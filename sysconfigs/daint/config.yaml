@@ -7,3 +7,4 @@ config:
   build_stage:
     - /scratch/snx3000/$user/spack-stages/daint
   install_path_scheme: '{name}/{version}/{compiler.name}/{hash}'
+  source_cache: ~/.spack/source_cache

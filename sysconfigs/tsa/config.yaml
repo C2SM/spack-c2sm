@@ -7,3 +7,4 @@ config:
   build_stage:
     - /scratch/$user/spack-stages/tsa
   install_path_scheme: '{name}/{version}/{compiler.name}/{hash}'
+  source_cache: ~/.spack/source_cache
