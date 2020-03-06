@@ -1,0 +1,9 @@
+config:
+  install_tree: /project/g110/spack-install/daint #to be changed to project/c14/install/daint
+  template_dirs:
+    - $spack/templates
+  module_roots:
+    tcl:  /project/g110/spack-modules
+  build_stage:
+    - /project/g110/spack-stages/daint
+  install_path_scheme: '{name}/{version}/{compiler.name}/{hash}'

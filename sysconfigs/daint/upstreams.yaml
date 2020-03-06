@@ -1,0 +1,3 @@
+upstreams:
+    spack-instance-1:
+          install_tree: /project/g110/spack-install/daint

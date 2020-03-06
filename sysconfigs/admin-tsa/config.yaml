@@ -1,0 +1,9 @@
+config:
+  install_tree: /project/g110/spack-install/tsa
+  template_dirs:
+    - $spack/templates
+  module_roots:
+    tcl:  /project/g110/spack-modules/
+  build_stage:
+    - /project/g110/spack-stages/tsa
+  install_path_scheme: '{name}/{version}/{compiler.name}/{hash}'

@@ -1,0 +1,9 @@
+config:
+  install_tree: /scratch/snx3000/$user/install/daint #to be changed to project/c14/install/daint
+  template_dirs:
+    - $spack/templates
+  module_roots:
+    tcl:  /scratch/snx3000/$user/modules
+  build_stage:
+    - /scratch/snx3000/$user/spack-stages/daint
+  install_path_scheme: '{name}/{version}/{compiler.name}/{hash}'

@@ -1,0 +1,9 @@
+config:
+  install_tree: /scratch/$user/install/tsa #to be changed to project/c14/install/tsa
+  template_dirs:
+    - $spack/templates
+  module_roots:
+    tcl:  /scratch/$user/modules/ #to be changed to ?
+  build_stage:
+    - /scratch/$user/spack-stages/tsa
+  install_path_scheme: '{name}/{version}/{compiler.name}/{hash}'

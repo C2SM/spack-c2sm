@@ -1,0 +1,50 @@
+modules:
+  enable:
+    - tcl
+  tcl: 
+    all:
+      autoload: 'direct'
+    naming_scheme: '${PACKAGE}/${VERSION}'
+    hash_length: 0
+    blacklist: ['cuda', 'cmake', 'slurm', 'boost', 'automake', 'autoconf', 'jasper', 'libtool', 'm4', 'ncurses', 'netcdf-c', 'netcdf-fortran', 'perl', 'openmpi', 'libjpeg'] 
+    boost:
+      environment:
+        set:
+          BOOST_ROOT: '${PREFIX}'
+    gridtools:
+      environment:
+        set:
+          GRIDTOOLS_DIR: '${PREFIX}'
+          GRIDTOOLS_ROOT: '${PREFIX}' 
+    cosmo-dycore:
+      environment:
+        set:
+          DYCOREGT_DIR: '${PREFIX}'
+          UCX_MEMTYPE_CACHE: 'n'
+          UCX_TLS: 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cm'
+          MPICH_G2G_PIPELINE: '64'
+          MPICH_RDMA_ENABLED_CUDA: '1'
+    cosmo-grib-api:
+      environment:
+        set:
+          GRIB_DEFINITION_PATH: '${PREFIX}/share/grib_api/definitions/:${PREFIX}/cosmo_definitions/'
+          GRIB_SAMPLES_PATH: '${PREFIX}/cosmo_samples/'
+    serialbox:
+      environment:
+        set:
+          SERIALBOX_DIR: '${PREFIX}'
+          SERIALBOX_ROOT: '${PREFIX}'
+    claw:
+      environment:
+        set:
+          CLAWDIR: '${PREFIX}'
+          CLAWFC: '${PREFIX}/bin/clawfc'
+          CLAWXMODSPOOL: '/project/c14/install/omni-xmod-pool/'
+    ant:
+      environment:
+        set:
+         ANT_HOME: '${PREFIX}'
+    bison:
+      environment:
+        set:
+          YACC: 'bison -y'
