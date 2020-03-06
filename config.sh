@@ -31,7 +31,7 @@ echo "Installing mch packages &" $hostname "config files"
 
 cp -rf $PWD/packages/* $install_dir/spack/var/spack/repos/builtin/packages
 
-cp -rf $PWD/sysconfigs/$hostname/* $install_dir/spack/etc
+cp -rf $PWD/sysconfigs/$hostname/* $install_dir/spack/etc/spack
 
 echo "MCH Spack installed"
 
