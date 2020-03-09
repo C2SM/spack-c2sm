@@ -16,10 +16,6 @@ Next and final installation step is to source the spack file under spack/share/s
 
     $ . <spack-installation-directory>/share/spack/setup-env.sh
     $ (mch users): . /project/g110/spack/user/<machine>/spack/share/spack/setup-env.sh
- 
-Then activate the environment machine (tsa, daint)
-
-    $ spack env activate <machine>
     
 You are then able to build any packages available (_spack list_ to print the whole list of available packages)
 
