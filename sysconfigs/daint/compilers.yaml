@@ -44,3 +44,19 @@ compilers::
     - cce/9.0.2
     environment: {}
     extra_rpaths: []
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: 
+    - PrgEnv-pgi
+    - pgi/19.7.0
+    operating_system: rhel7
+    paths:
+      cc: /opt/gcc/8.3.0/bin/gcc
+      cxx: /opt/gcc/8.3.0/bin/g++
+      f77: ftn
+      fc: ftn
+    spec: pgi@19.9-gcc
+    target: any
+
