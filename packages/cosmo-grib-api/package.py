@@ -25,9 +25,10 @@ class CosmoGribApi(AutotoolsPackage):
     depends_on('automake')
     depends_on('libtool')
     depends_on('jasper@1.900.1')
+    depends_on('cosmo-grib-api-definitions@1.20.0.2', when='@1.20.0.2')
     
     force_autoreconf = True
-
+ 
     def configure_args(self):
         args = [
             '--build=x86_64',
@@ -36,8 +37,6 @@ class CosmoGribApi(AutotoolsPackage):
             '--enable-static',
             'enable_share=no',
             '--disable-jpeg',
-            '--enable-pthread',
-            '--enable-omp-packing',
         ]
 
         return args                                   

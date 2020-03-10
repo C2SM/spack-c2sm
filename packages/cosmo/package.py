@@ -54,7 +54,10 @@ class Cosmo(MakefilePackage):
     build_directory = 'cosmo/ACC'
 
     def setup_environment(self, spack_env, run_env):
-        spack_env.set('GRIBAPI_DIR', self.spec['cosmo-grib-api'].prefix)
+        grib_definition_path = self.spec['cosmo-grib-api-definitions'].prefix + '/cosmoDefinitions/definitions/:' + self.spec['cosmo-grib-api'].prefix + '/share/grib_api/definitions/'
+        spack_env.set('GRIB_DEFINITION_PATH', grib_definition_path)
+        grib_samples_path = self.spec['cosmo-grib-api-definitions'].prefix + '/cosmoDefinitions/samples/'
+        spack_env.set('GRIB_SAMPLES_PATH', grib_samples_path)
         spack_env.set('GRIB1_DIR', self.spec['libgrib1'].prefix)
         spack_env.set('JASPER_DIR', self.spec['jasper'].prefix)
         if self.spec.variants['cosmo_target'].value == 'gpu' or '+serialize' in self.spec:
