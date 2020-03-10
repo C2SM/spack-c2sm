@@ -16,7 +16,7 @@ class Cosmo(MakefilePackage):
     git      = 'git@github.com:COSMO-ORG/cosmo.git'
     maintainers = ['elsagermann']
 
-    version('master', branch='master')
+    version('master', commit='master')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
     version('5.05a', commit='ef85dacc25cbadec42b0a7b77633c4cfe2aa9fb9')
     version('5.05',  commit='5ade2c96776db00ea945ef18bfeacbeb7835277a')
@@ -35,8 +35,10 @@ class Cosmo(MakefilePackage):
     depends_on('serialbox@2.6.0', when='+serialize')
     depends_on('mpi', type=('build', 'run'))
     depends_on('libgrib1')
-    depends_on('cosmo-grib-api')    
+    depends_on('jasper@1.900.1')
+    depends_on('cosmo-grib-api')
     depends_on('perl@5.16.3:')
+    depends_on('omni-xmod-pool')
     depends_on('claw', when='+claw')
     depends_on('boost', when='cosmo_target=gpu ~cppdycore')
 
@@ -60,6 +62,7 @@ class Cosmo(MakefilePackage):
         spack_env.set('GRIB_SAMPLES_PATH', grib_samples_path)
         spack_env.set('GRIB1_DIR', self.spec['libgrib1'].prefix)
         spack_env.set('JASPER_DIR', self.spec['jasper'].prefix)
+        spack_env.set('MPI_ROOT', self.spec['mpi'].prefix)
         if self.spec.variants['cosmo_target'].value == 'gpu' or '+serialize' in self.spec:
             spack_env.set('BOOST_ROOT',  self.spec['boost'].prefix)
         if '+cppdycore' in self.spec:
@@ -69,11 +72,10 @@ class Cosmo(MakefilePackage):
         if '+serialize' in self.spec:
           spack_env.set('SERIALBOX_DIR', self.spec['serialbox'].prefix)
           spack_env.set('SERIALBOX_FORTRAN_LIBRARIES', self.spec['serialbox'].prefix + '/lib/libSerialboxFortran.a ' +  self.spec['serialbox'].prefix + '/lib/libSerialboxC.a ' + self.spec['serialbox'].prefix + '/lib/libSerialboxCore.a -lstdc++fs -lpthread')
-        # sets CLAW paths if variant +claw
         if '+claw' in self.spec:
-            env['CLAWDIR'] = '{0}'.format(spec['claw'].prefix) 
-            env['CLAWFC'] = '{0}/bin/clawfc'.format(spec['claw'].prefix)
-            env['CLAWXMODSPOOL'] = '/project/c14/install/omni-xmod-pool/'                                       
+            spack_env.set('CLAWDIR', self.spec['claw'].prefix)
+            spack_env.set('CLAWFC', self.spec['claw'].prefix + '/bin/clawfc')
+            spack_env.set('CLAWXMODSPOOL', self.spec['omni-xmod-pool'].prefix + '/omniXmodPool/')
         spack_env.set('UCX_MEMTYPE_CACHE', 'n')
         if '+cppdycore' in self.spec and self.spec.variants['cosmo_target'].value == 'gpu':
           spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
