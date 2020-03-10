@@ -4,7 +4,7 @@ packages:
     all:
         # default compilers defined by the system
         # these reflect the current installed PE
-        compiler: [gcc@8.3.0, cce@9.0.2, pgi/19.7.0]
+        compiler: [pgi/19.7.0, gcc@8.3.0, cce@9.0.2]
         providers:
             mpi: [mpich]
             mkl: [intel-mkl]
