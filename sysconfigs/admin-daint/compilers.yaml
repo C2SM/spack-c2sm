@@ -51,12 +51,12 @@ compilers::
     modules: 
     - PrgEnv-pgi
     - pgi/19.7.0
-    operating_system: rhel7
+    operating_system: cnl7
     paths:
       cc: /opt/gcc/8.3.0/bin/gcc
       cxx: /opt/gcc/8.3.0/bin/g++
       f77: ftn
       fc: ftn
-    spec: pgi@19.9-gcc
+    spec: pgi@19.7.0-gcc
     target: any
 

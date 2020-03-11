@@ -4,7 +4,7 @@ packages:
     all:
         # default compilers defined by the system
         # these reflect the current installed PE
-        compiler: [pgi/19.7.0, gcc@8.3.0, cce@9.0.2]
+        compiler: [pgi@19.7.0, gcc@8.3.0, cce@9.0.2]
         providers:
             mpi: [mpich]
             mkl: [intel-mkl]
@@ -32,7 +32,7 @@ packages:
     cosmo:
       variants: slave=daint
       version: [master]
-      compiler: [pgi]
+      compiler: [pgi@19.7.0]
     gridtools:
       variants: cuda_arch=sm_60
       compiler: [gcc]
