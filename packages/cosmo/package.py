@@ -44,7 +44,6 @@ class Cosmo(MakefilePackage):
     depends_on('boost', when='cosmo_target=gpu ~cppdycore')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
-    variant('dycoretest', default=False, description='Compile Dycore unittest')
     variant('serialize', default=False, description='Build with serialization enabled')
     variant('parallel', default=True, description='Build parallel COSMO')
     variant('debug', default=False, description='Build debug mode')
