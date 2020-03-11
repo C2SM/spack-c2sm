@@ -21,11 +21,6 @@ packages:
         variants: +gold~headers+libiberty+nls~plugin
         paths:
              binutils@2.31: /usr
-    boost:
-        paths:
-            boost@1.71.0: /project/g110/install/daint/boost/boost_1_71_0
-            boost@1.67.0: /project/g110/install/daint/boost/boost_1_67_0
-        variants: +atomic+chrono~clanglibcpp+date_time~debug+filesystem~graph~icu+iostreams+locale+log+math+mpi+multithreaded +program_options+python+random+regex+serialization+shared+signals~singlethreaded+system~taggedlayout+test+thread+timer~versionedlayout+wave
     bzip2:
         paths:
              bzip2@1.0.6: /usr
