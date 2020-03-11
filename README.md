@@ -10,12 +10,12 @@ First git clone the Meteoschweiz spack configuration repository and install your
     $ cd spack-config
     $ ./config.sh -m <machine> -i <spack-installation-directory> -v <version>
 
-For the mch users, a spack instance for both tsa and daint will be maintained and installed under _/project/g110/spack/user/'machine'/spack_, so you can skip the previous step if you are not interested in the developement of our spack packages and config files.
+For the cscs users, a spack instance for both tsa and daint will be maintained and installed under _/project/g110/spack/user/'machine'/spack_, so you can skip the previous step if you are not interested in the developement of our spack packages and config files.
 	
 Next and final installation step is to source the spack file under spack/share/spack in order to activate spack.
 
     $ . <spack-installation-directory>/share/spack/setup-env.sh
-    $ (mch users): . /project/g110/spack/user/<machine>/spack/share/spack/setup-env.sh
+    $ (cscs users): . /project/g110/spack/user/<machine>/spack/share/spack/setup-env.sh
     
 You are then able to build any packages available (_spack list_ to print the whole list of available packages)
 
