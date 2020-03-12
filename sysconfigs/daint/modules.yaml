@@ -5,8 +5,8 @@ modules:
     all:
       autoload: 'direct'
     naming_scheme: '${PACKAGE}/${VERSION}'
-    hash_length: 0
-    blacklist: ['cuda', 'cmake', 'slurm', 'boost', 'automake', 'autoconf', 'jasper', 'libtool', 'm4', 'ncurses', 'netcdf-c', 'netcdf-fortran', 'perl', 'openmpi', 'libjpeg'] 
+    hash_length: 7
+    blacklist: ['cmake', 'slurm', 'boost', 'automake', 'autoconf', 'jasper', 'libtool', 'm4', 'ncurses', 'netcdf-c', 'netcdf-fortran', 'perl', 'libjpeg']
     boost:
       environment:
         set:
@@ -20,15 +20,17 @@ modules:
       environment:
         set:
           DYCOREGT_DIR: '${PREFIX}'
-          UCX_MEMTYPE_CACHE: 'n'
-          UCX_TLS: 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cm'
-          MPICH_G2G_PIPELINE: '64'
-          MPICH_RDMA_ENABLED_CUDA: '1'
+    cosmo-grib-api-definitions:
+      environment:
+        prepend_path:
+          GRIB_DEFINITION_PATH: '${PREFIX}/cosmoDefinitions/definitions/'
+          GRIB_SAMPLES_PATH: '${PREFIX}/cosmoDefinitions/samples'
     cosmo-grib-api:
       environment:
         set:
-          GRIB_DEFINITION_PATH: '${PREFIX}/share/grib_api/definitions/:${PREFIX}/cosmo_definitions/'
-          GRIB_SAMPLES_PATH: '${PREFIX}/cosmo_samples/'
+          GRIBAPI_DIR: '${PREFIX}'
+        prepend_path:
+          GRIB_DEFINITION_PATH: '{PREFIX}/share/grib_api/definitions'
     serialbox:
       environment:
         set:
@@ -39,7 +41,10 @@ modules:
         set:
           CLAWDIR: '${PREFIX}'
           CLAWFC: '${PREFIX}/bin/clawfc'
-          CLAWXMODSPOOL: '/project/c14/install/omni-xmod-pool/'
+    omni-xmod-pool:
+      environment:
+        set:
+          CLAWXMODSPOOL: '${PREFIX}'
     ant:
       environment:
         set:
@@ -48,3 +53,19 @@ modules:
       environment:
         set:
           YACC: 'bison -y'
+    cosmo-dycore:
+      environment:
+        set:
+          UCX_MEMTYPE_CACHE: 'n'
+          UCX_TLS: 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cm'
+          MPICH_G2G_PIPELINE: '64'
+          MPICH_RDMA_ENABLED_CUDA: '1'
+    cosmo cosmo_target=cpu:
+      environment:
+        set:
+          UCX_MEMTYPE_CACHE: 'n'
+          UCX_TLS: 'rc_x,ud_x,mm,shm,cm'
+    mpi:
+      environment:
+        set:
+          MPI_ROOT: '${PREFIX}'
