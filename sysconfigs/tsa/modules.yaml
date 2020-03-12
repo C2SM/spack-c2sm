@@ -57,12 +57,12 @@ modules:
       environment:
         set:
           UCX_MEMTYPE_CACHE: 'n'
-          UCX_TLS: 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cm'
+          UCX_TLS: 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma'
     cosmo cosmo_target=cpu:
       environment:
         set:
           UCX_MEMTYPE_CACHE: 'n'
-          UCX_TLS: 'rc_x,ud_x,mm,shm,cm'
+          UCX_TLS: 'rc_x,ud_x,mm,shm,cma'
     mpi:
       environment:
         set:
