@@ -27,7 +27,7 @@ if [[ -z ${install_dir} ]]; then
   install_dir=$PWD
 fi
 
-if [[ -z ${install_dir}/spack ]]; then
+if [[ ! -d "${install_dir}/spack" ]]; then
     echo "Cloning spack instance to:" $install_dir
     git clone git@github.com:spack/spack.git -b $version $install_dir/spack
 fi
