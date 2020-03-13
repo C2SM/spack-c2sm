@@ -28,6 +28,16 @@ Ex:
 
 This will clone the package, build it and then install the chosen package and all its dependencies under _/scratch/$USER/install/tsa_ (see _config.yaml_ file section for details). The build-stage of your package and its dependencies are not kept (add _--keep-stage_ after the install command in order to keep it). Module files are also created during this process and installed under _/scratch/$USER/modules/_
 
+## CSCS users: automatically source the correct spack instance when using bash
+
+As said above, if you are not wanting to develop for the spack-mch you can just source the correct spack instance depending on the machine you are working on. Add those line to your .bashrc file if you want to do that automatically when opening a new terminal.
+
+	$ case $(hostname -s) in
+	$ 	tsa*|arolla*) export SPACK_ROOT=/project/g110/spack/user/tsa/spack ;;
+	$ 	daint*) export SPACK_ROOT=/project/g110/spack/user/daint/spack ;;
+	$ esac
+	$ source $SPACK_ROOT/share/spack/setup-env.sh
+
 ## Dev-building software on tsa/daint
 
 If you do not want to git clone the source of the package you want to install, especially if you are developing, you can use a local source in order to install your package. In order to do so, first go to the base directory of the package and then use spack _dev-build_ instead of spack install 
@@ -55,20 +65,16 @@ in order to open the correspondig _package.py_ file and edit it directly
 
 ## Machine specific config files
 
-Are available under _spack/var/spack/environements/`<machine>`_. Their structure is:
- 
+Are available under _spack/etc/spack_. Their structure is:
 <ul>
-    <li>spack.yaml (spack environment file, describes the set of packages to be installed, and includes the below machine config files)</li>
-    <li>config:</li>
-        <ul>
-            <li>
-	    -compilers.yaml (all info about available compilers, machine specific compiler flags, module to load (PrgEnv) before compiling)</li>
-            <li>-packages.yaml (all info about the already installed dependencies, i.e their module names or paths)</li>
-            <li>-modules.yaml (all info about the created modules, i.e which env variable or modules should be set once loaded)</li>
-            <li>-config.yaml (specifies the main installation path and the main module installation path, where to find the binaries etc.)</li>
-        </ul>
-    </li>
+	<li>-compilers.yaml (all info about available compilers, machine specific compiler flags, module to load (PrgEnv) before compiling)</li>
+	<li>-packages.yaml (all info about the already installed dependencies, i.e their module names or paths)</li>
+	<li>-modules.yaml (all info about the created modules, i.e which env variable or modules should be set once loaded)</li>
+	<li>-config.yaml (specifies the main installation path and the main module installation path, where to find thebinaries etc.)</li>
+	<li>-upstreams.yaml (specifies where to find the pre-installed software, that are under /project/g110/spack-install/<machine> </li>
+	<li>-repos.yaml (specifies where to find the only mch packages that are stored in spack-mch repository)</li>
 </ul>
+
 
 # <img src="https://cdn.rawgit.com/spack/spack/develop/share/spack/logo/spack-logo.svg" width="64" valign="middle" alt="Spack"/> Spack
 
