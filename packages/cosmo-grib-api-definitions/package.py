@@ -34,6 +34,8 @@ class CosmoGribApiDefinitions(Package):
     maintainers = ['elsagermann']
 
     version('1.20.0.2', commit='06f61f95ca2f5f0ddea668d82429331927ce81dc')
+    
+    depends_on('cosmo-grib-api@1.20.0.2', when='@1.20.0.2')
 
     def install(self, spec, prefix):
         mkdir(prefix.cosmoDefinitions)
