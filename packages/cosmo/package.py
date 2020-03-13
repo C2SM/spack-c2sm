@@ -37,7 +37,7 @@ class Cosmo(MakefilePackage):
     depends_on('mpi', type=('build', 'run'))
     depends_on('libgrib1')
     depends_on('jasper@1.900.1')
-    depends_on('cosmo-grib-api')
+    depends_on('cosmo-grib-api-definitions')
     depends_on('perl@5.16.3:')
     depends_on('omni-xmod-pool')
     depends_on('claw', when='+claw')

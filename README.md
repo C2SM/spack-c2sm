@@ -6,9 +6,9 @@ Official Spack documentation [below](#-spack).
 
 First git clone the Meteoschweiz spack configuration repository and install your own spack instance using the available config.sh script. Tell the script the machine you are working on using -m <machine> and where you want the instance to be installed using -i <spack-installation-directory>. You can also precise the spack version you want, or take the default value (last stable release).
 
-    $ git clone git@github.com:MeteoSwiss-APN/spack-config.git
-    $ cd spack-config
-    $ ./config.sh -m <machine> -i <spack-installation-directory> -v <version>
+    $ git clone git@github.com:MeteoSwiss-APN/spack-mch.git
+    $ cd spack-mch
+    $ ./config.sh -m <machine> -i <spack-installation-directory> -v <version> -r <repos.yaml-installation-directory>
 
 For the cscs users, a spack instance for both tsa and daint will be maintained and installed under _/project/g110/spack/user/'machine'/spack_, so you can skip the previous step if you are not interested in the developement of our spack packages and config files.
 	
@@ -27,6 +27,16 @@ Ex:
     
 
 This will clone the package, build it and then install the chosen package and all its dependencies under _/scratch/$USER/install/tsa_ (see _config.yaml_ file section for details). The build-stage of your package and its dependencies are not kept (add _--keep-stage_ after the install command in order to keep it). Module files are also created during this process and installed under _/scratch/$USER/modules/_
+
+## CSCS users: automatically source the correct spack instance when using bash
+
+As said above, if you are not wanting to develop for the spack-mch you can just source the correct spack instance depending on the machine you are working on. Add those line to your .bashrc file if you want to do that automatically when opening a new terminal.
+
+	$ case $(hostname -s) in
+	$ 	tsa*|arolla*) export SPACK_ROOT=/project/g110/spack/user/tsa/spack ;;
+	$ 	daint*) export SPACK_ROOT=/project/g110/spack/user/daint/spack ;;
+	$ esac
+	$ source $SPACK_ROOT/share/spack/setup-env.sh
 
 ## Dev-building software on tsa/daint
 
@@ -55,20 +65,16 @@ in order to open the correspondig _package.py_ file and edit it directly
 
 ## Machine specific config files
 
-Are available under _spack/var/spack/environements/`<machine>`_. Their structure is:
- 
+Are available under _spack/etc/spack_. Their structure is:
 <ul>
-    <li>spack.yaml (spack environment file, describes the set of packages to be installed, and includes the below machine config files)</li>
-    <li>config:</li>
-        <ul>
-            <li>
-	    -compilers.yaml (all info about available compilers, machine specific compiler flags, module to load (PrgEnv) before compiling)</li>
-            <li>-packages.yaml (all info about the already installed dependencies, i.e their module names or paths)</li>
-            <li>-modules.yaml (all info about the created modules, i.e which env variable or modules should be set once loaded)</li>
-            <li>-config.yaml (specifies the main installation path and the main module installation path, where to find the binaries etc.)</li>
-        </ul>
-    </li>
+	<li>-compilers.yaml (all info about available compilers, machine specific compiler flags, module to load (PrgEnv) before compiling)</li>
+	<li>-packages.yaml (all info about the already installed dependencies, i.e their module names or paths)</li>
+	<li>-modules.yaml (all info about the created modules, i.e which env variable or modules should be set once loaded)</li>
+	<li>-config.yaml (specifies the main installation path and the main module installation path, where to find thebinaries etc.)</li>
+	<li>-upstreams.yaml (specifies where to find the pre-installed software, that are under /project/g110/spack-install/<machine> </li>
+	<li>-repos.yaml (specifies where to find the only mch packages that are stored in spack-mch repository)</li>
 </ul>
+
 
 # <img src="https://cdn.rawgit.com/spack/spack/develop/share/spack/logo/spack-logo.svg" width="64" valign="middle" alt="Spack"/> Spack
 
