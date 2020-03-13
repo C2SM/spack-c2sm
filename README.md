@@ -28,6 +28,16 @@ Ex:
 
 This will clone the package, build it and then install the chosen package and all its dependencies under _/scratch/$USER/install/tsa_ (see _config.yaml_ file section for details). The build-stage of your package and its dependencies are not kept (add _--keep-stage_ after the install command in order to keep it). Module files are also created during this process and installed under _/scratch/$USER/modules/_
 
+## CSCS users: automatically source the correct spack instance when using bash
+
+As said above, if you are not wanting to develop for the spack-mch you can just source the correct spack instance depending on the machine you are working on. Add those line to your .bashrc file if you want to do that automatically when opening a new terminal.
+
+	$ case $(hostname -s) in
+	$ 	tsa*|arolla*) export SPACK_ROOT=/project/g110/spack/user/tsa/spack ;;
+	$ 	daint*) export SPACK_ROOT=/project/g110/spack/user/daint/spack ;;
+	$ esac
+	$ source $SPACK_ROOT/share/spack/setup-env.sh
+
 ## Dev-building software on tsa/daint
 
 If you do not want to git clone the source of the package you want to install, especially if you are developing, you can use a local source in order to install your package. In order to do so, first go to the base directory of the package and then use spack _dev-build_ instead of spack install 
