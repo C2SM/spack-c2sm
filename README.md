@@ -65,20 +65,16 @@ in order to open the correspondig _package.py_ file and edit it directly
 
 ## Machine specific config files
 
-Are available under _spack/var/spack/environements/`<machine>`_. Their structure is:
- 
+Are available under _spack/etc/spack_. Their structure is:
 <ul>
-    <li>spack.yaml (spack environment file, describes the set of packages to be installed, and includes the below machine config files)</li>
-    <li>config:</li>
-        <ul>
-            <li>
-	    -compilers.yaml (all info about available compilers, machine specific compiler flags, module to load (PrgEnv) before compiling)</li>
-            <li>-packages.yaml (all info about the already installed dependencies, i.e their module names or paths)</li>
-            <li>-modules.yaml (all info about the created modules, i.e which env variable or modules should be set once loaded)</li>
-            <li>-config.yaml (specifies the main installation path and the main module installation path, where to find the binaries etc.)</li>
-        </ul>
-    </li>
+	<li>-compilers.yaml (all info about available compilers, machine specific compiler flags, module to load (PrgEnv) before compiling)</li>
+	<li>-packages.yaml (all info about the already installed dependencies, i.e their module names or paths)</li>
+	<li>-modules.yaml (all info about the created modules, i.e which env variable or modules should be set once loaded)</li>
+	<li>-config.yaml (specifies the main installation path and the main module installation path, where to find thebinaries etc.)</li>
+	<li>-upstreams.yaml (specifies where to find the pre-installed software, that are under /project/g110/spack-install/<machine> </li>
+	<li>-repos.yaml (specifies where to find the only mch packages that are stored in spack-mch repository)</li>
 </ul>
+
 
 # <img src="https://cdn.rawgit.com/spack/spack/develop/share/spack/logo/spack-logo.svg" width="64" valign="middle" alt="Spack"/> Spack
 
