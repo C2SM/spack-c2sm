@@ -6,9 +6,9 @@ Official Spack documentation [below](#-spack).
 
 First git clone the Meteoschweiz spack configuration repository and install your own spack instance using the available config.sh script. Tell the script the machine you are working on using -m <machine> and where you want the instance to be installed using -i <spack-installation-directory>. You can also precise the spack version you want, or take the default value (last stable release).
 
-    $ git clone git@github.com:MeteoSwiss-APN/spack-config.git
-    $ cd spack-config
-    $ ./config.sh -m <machine> -i <spack-installation-directory> -v <version>
+    $ git clone git@github.com:MeteoSwiss-APN/spack-mch.git
+    $ cd spack-mch
+    $ ./config.sh -m <machine> -i <spack-installation-directory> -v <version> -r <repos.yaml-installation-directory>
 
 For the cscs users, a spack instance for both tsa and daint will be maintained and installed under _/project/g110/spack/user/'machine'/spack_, so you can skip the previous step if you are not interested in the developement of our spack packages and config files.
 	
