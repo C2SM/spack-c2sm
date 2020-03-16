@@ -37,6 +37,10 @@ As said above, if you are not wanting to develop for the spack-mch you can just 
 	$ 	daint*) export SPACK_ROOT=/project/g110/spack/user/daint/spack ;;
 	$ esac
 	$ source $SPACK_ROOT/share/spack/setup-env.sh
+	
+## Spack install --test=root 
+
+Submits the adequate testsuites for cosmo-dycore and cosmo. The results are printed directly for cosmo-dycore but not for cosmo (you have to open the testsuite.out file). Also needed if you use the +serialize variant with cosmo.
 
 ## Dev-building software on tsa/daint
 
