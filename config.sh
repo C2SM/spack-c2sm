@@ -35,7 +35,7 @@ fi
 echo "Installing mch packages &" $hostname "config files"
 
 if [[ -n ${reposdir} ]] && [[ ! -f "${reposdir}/repos.yaml" ]]; then
-    echo " -$PWD" >> repos.yaml
+    echo "  - $PWD" >> repos.yaml
     cp repos.yaml $reposdir/
 fi
 
