@@ -37,7 +37,8 @@ class Cosmo(MakefilePackage):
     depends_on('mpi', type=('build', 'run'))
     depends_on('libgrib1')
     depends_on('jasper@1.900.1')
-    depends_on('cosmo-grib-api-definitions')
+    depends_on('cosmo-grib-api-definitions', when='~eccodes')
+    depends_on('cosmo-eccodes-definitions@2.14.1.2', when='+eccodes')
     depends_on('perl@5.16.3:')
     depends_on('omni-xmod-pool')
     depends_on('claw', when='+claw')
@@ -51,16 +52,23 @@ class Cosmo(MakefilePackage):
     variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)
     variant('claw', default=False, description='Build with claw-compiler')
     variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
-
+    variant('eccodes', default=False, description='Build with eccodes instead of grib-api')
 
     build_directory = 'cosmo/ACC'
 
     def setup_environment(self, spack_env, run_env):
-        grib_definition_path = self.spec['cosmo-grib-api-definitions'].prefix + '/cosmoDefinitions/definitions/:' + self.spec['cosmo-grib-api'].prefix + '/share/grib_api/definitions/'
-        spack_env.set('GRIB_DEFINITION_PATH', grib_definition_path)
-        grib_samples_path = self.spec['cosmo-grib-api-definitions'].prefix + '/cosmoDefinitions/samples/'
-        spack_env.set('GRIB_SAMPLES_PATH', grib_samples_path)
-        spack_env.set('GRIBAPI_DIR', self.spec['cosmo-grib-api'].prefix)
+        if '~eccodes' in self.spec:
+          grib_definition_path = self.spec['cosmo-grib-api-definitions'].prefix + '/cosmoDefinitions/definitions/:' + self.spec['cosmo-grib-api'].prefix + '/share/grib_api/definitions/'
+          spack_env.set('GRIB_DEFINITION_PATH', grib_definition_path)
+          grib_samples_path = self.spec['cosmo-grib-api-definitions'].prefix + '/cosmoDefinitions/samples/'
+          spack_env.set('GRIB_SAMPLES_PATH', grib_samples_path)
+          spack_env.set('GRIBAPI_DIR', self.spec['cosmo-grib-api'].prefix)
+        else:
+          eccodes_definition_path = self.spec['cosmo-eccodes-definitions'].prefix + '/cosmoDefinitions/definitions/:' + self.spec['eccodes'].prefix + '/share/eccodes/definitions/'
+          spack_env.set('GRIB_DEFINITION_PATH', eccodes_definition_path)
+          eccodes_samples_path = self.spec['cosmo-eccodes-definitions'].prefix + '/cosmoDefinitions/samples/'
+          spack_env.set('GRIB_SAMPLES_PATH', eccodes_samples_path)
+          spack_env.set('GRIBAPI_DIR', self.spec['eccodes'].prefix)
         spack_env.set('GRIB1_DIR', self.spec['libgrib1'].prefix)
         spack_env.set('JASPER_DIR', self.spec['jasper'].prefix)
         spack_env.set('MPI_ROOT', self.spec['mpi'].prefix)
@@ -131,6 +139,8 @@ class Cosmo(MakefilePackage):
             else:
                 optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I$(NETCDF_DIR)/include')
                 optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf')
+            if '+eccodes' in spec:
+              optionsfilter.filter('GRIBAPIL *=.*', 'GRIBAPIL = -L$(GRIBAPI_DIR)/lib -leccodes_f90 -leccodes -L$(JASPER_DIR)/lib -ljasper')
             makefile.filter('/Options', '/' + OptionsFileName)
             if '~serialize' in spec:
               makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo_'+ spec.variants['cosmo_target'].value))

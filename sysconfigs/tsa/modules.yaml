@@ -31,6 +31,17 @@ modules:
           GRIBAPI_DIR: '${PREFIX}'
         prepend_path:
           GRIB_DEFINITION_PATH: '{PREFIX}/share/grib_api/definitions'
+    cosmo-eccodes-definitions:
+      environment:
+        prepend_path:
+          GRIB_DEFINITION_PATH: '${PREFIX}/cosmoDefinitions/definitions/'
+          GRIB_SAMPLES_PATH: '${PREFIX}/cosmoDefinitions/samples'
+    eccodes:
+      environment:
+        set:
+          GRIBAPI_DIR: '${PREFIX}'
+        prepend_path:
+          GRIB_DEFINITION_PATH: '{PREFIX}/share/eccodes/definitions'
     serialbox:
       environment:
         set:
@@ -67,3 +78,9 @@ modules:
       environment:
         set:
           MPI_ROOT: '${PREFIX}'
+    cuda:
+      environment:
+        prepend_path:
+          LD_LIBRARY_PATH: '${PREFIX}/extras/CUPTI/lib64'
+          LD_LIBRARY_PATH: '${PREFIX}/nvvm/lib64'
+          LIBRARY_PATH: '${PREFIX}/lib64/stubs' 
