@@ -40,8 +40,8 @@ As said above, if you are not wanting to develop for the spack-mch you can just 
 	
 ## Spack install --test=root 
 
-Submits the adequate testsuites for cosmo-dycore and cosmo. The results are printed directly for cosmo-dycore but not for cosmo (you have to open the testsuite.out file). Also needed if you use the +serialize variant with cosmo.
-
+Submits the adequate testsuites for cosmo-dycore and cosmo. The results are printed directly for cosmo-dycore but not for cosmo (you have to open the testsuite.out file). Also needed if you use the +serialize variant with cosmo. If you want to submit the **test manually** or after the installation, you can load the module of your package (module use /project/g110/spack-modules/<architecture>) created during its installation and then submit the tests.
+	
 ## Dev-building software on tsa/daint
 
 If you do not want to git clone the source of the package you want to install, especially if you are developing, you can use a local source in order to install your package. In order to do so, first go to the base directory of the package and then use spack _dev-build_ instead of spack install 
