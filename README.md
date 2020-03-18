@@ -40,7 +40,7 @@ As said above, if you are not wanting to develop for the spack-mch you can just 
 	
 ## Spack install --test=root 
 
-Submits the adequate testsuites for cosmo-dycore and cosmo. The results are printed directly for cosmo-dycore but not for cosmo (you have to open the testsuite.out file). Also needed if you use the +serialize variant with cosmo. If you want to submit the **test manually** or after the installation, you can load the module of your package (module use /project/g110/spack-modules/<architecture>) created during its installation and then submit the tests.
+Submits the adequate testsuites for cosmo-dycore and cosmo. The results are printed directly for cosmo-dycore but not for cosmo (you have to open the testsuite.out file). Also needed if you use the +serialize variant with cosmo. If you want to submit the **test manually** or after the installation, you can load the module of your package (module use _/project/g110/spack-modules/'architecture'_) created during its installation and then submit the tests.
 	
 ## Dev-building software on tsa/daint
 
