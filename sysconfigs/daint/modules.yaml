@@ -35,14 +35,14 @@ modules:
       environment:
         prepend_path:
           GRIB_DEFINITION_PATH: '${PREFIX}/cosmoDefinitions/definitions/'
-          GRIB_SAMPLES_PATH: '${PREFIX}/cosmoDefinitions/samples'    
+          GRIB_SAMPLES_PATH: '${PREFIX}/cosmoDefinitions/samples'
     eccodes:
       environment:
         set:
           GRIBAPI_DIR: '${PREFIX}'
         prepend_path:
           GRIB_DEFINITION_PATH: '{PREFIX}/share/eccodes/definitions'
-     serialbox:
+    serialbox:
       environment:
         set:
           SERIALBOX_DIR: '${PREFIX}'
