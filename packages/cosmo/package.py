@@ -17,12 +17,16 @@ class Cosmo(MakefilePackage):
 
     version('master', branch='master')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
+    version('5.07.mch1.0.p4', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p4')
     version('5.07.mch1.0.p3', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p3')
     version('5.07.mch1.0.p2', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p2')
     version('5.05a', tag='5.05a')
     version('5.05',  tag='5.05')
     version('5.06', tag='5.06')
     
+    patch('patches/5.07.mch1.0.p2/patch.Makefile', when='@5.07.mch1.0.p2')
+    patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
+
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
     depends_on('slurm', type='run')
@@ -57,6 +61,10 @@ class Cosmo(MakefilePackage):
     variant('pollen', default=False, description='Build with pollen enabled')
 
     conflicts('+pollen', when='@5.05:5.06,master')
+#    conflicts('+pollen', when='git=git@github.com:MeteoSwiss-APN/cosmo.git')
+    conflicts('+serialize', when='+parallel')
+    # previous versions contain a bug affecting serialization
+    conflicts('+serialize', when='@:5.07.mch1.0.p3')
     build_directory = 'cosmo/ACC'
 
     def setup_environment(self, spack_env, run_env):
@@ -144,7 +152,7 @@ class Cosmo(MakefilePackage):
                 optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf')
             if '+eccodes' in spec:
               optionsfilter.filter('GRIBAPIL *=.*', 'GRIBAPIL = -L$(GRIBAPI_DIR)/lib -leccodes_f90 -leccodes -L$(JASPER_DIR)/lib -ljasper')
-            makefile.filter('/Options', '/' + OptionsFileName)
+            makefile.filter('/Options.*', '/' + OptionsFileName)
             if '~serialize' in spec:
               makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo_'+ spec.variants['cosmo_target'].value))
 
