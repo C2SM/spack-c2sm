@@ -24,7 +24,6 @@ class Cosmo(MakefilePackage):
     version('5.05',  tag='5.05')
     version('5.06', tag='5.06')
     
-    patch('patches/5.07.mch1.0.p2/patch.Makefile', when='@5.07.mch1.0.p2')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
 
     depends_on('netcdf-fortran')
@@ -61,10 +60,9 @@ class Cosmo(MakefilePackage):
     variant('pollen', default=False, description='Build with pollen enabled')
 
     conflicts('+pollen', when='@5.05:5.06,master')
-#    conflicts('+pollen', when='git=git@github.com:MeteoSwiss-APN/cosmo.git')
     conflicts('+serialize', when='+parallel')
     # previous versions contain a bug affecting serialization
-    conflicts('+serialize', when='@:5.07.mch1.0.p3')
+    conflicts('+serialize', when='@5.07.mch1.0.p2:5.07.mch1.0.p3')
     build_directory = 'cosmo/ACC'
 
     def setup_environment(self, spack_env, run_env):
