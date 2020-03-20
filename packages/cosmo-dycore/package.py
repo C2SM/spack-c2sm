@@ -39,6 +39,7 @@ class CosmoDycore(CMakePackage):
     variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)
     variant('cuda_arch', default='none', description='Build with cuda_arch', values=('sm_70', 'sm_60', 'sm_37'), multi=False)
     variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
+    variant('pmeters', default=False, description="Enable the performance meters for the dycore stencils")
     variant('data_path', default='.', description='Serialization data path', multi=False)
     
     depends_on('gridtools@1.1.3 cosmo_target=gpu', when='cosmo_target=gpu')
@@ -74,7 +75,10 @@ class CosmoDycore(CMakePackage):
       args.append('-DCMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY=ON')
       args.append('-DBoost_USE_STATIC_LIBS=ON')
       args.append('-DBOOST_ROOT={0}'.format(spec['boost'].prefix))
-      args.append('-DDYCORE_ENABLE_PERFORMANCE_METERS=OFF')
+      if spec.variants['pmeters'].value:
+        args.append('-DDYCORE_ENABLE_PERFORMANCE_METERS=ON')
+      else:
+        args.append('-DDYCORE_ENABLE_PERFORMANCE_METERS=OFF')
       args.append('-DGT_ENABLE_BINDINGS_GENERATION=ON')
     
       if spec.variants['real_type'].value == 'float':
