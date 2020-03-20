@@ -22,7 +22,7 @@ If you want to automatically source the correct spack instance depending on the 
 	
 ### General
 
-**As said before a general installation is only needed if you wish to develop the mch packages or machines config file or if you are not a cscs user.**
+**As said before a general installation is only needed if you wish to develop the mch packages/machines config files or if you are not a cscs user.**
 
 First step is to clone this repository and use the available config.sh script to install your own spack instance with the corresponding mch packages and configuration files. 
 
@@ -32,9 +32,11 @@ Tell the script the machine you are working on using -m <machine> and where you 
     $ cd spack-mch
     $ ./config.sh -m <machine> -i <spack-installation-directory> -v <version> -r <repos.yaml-installation-directory>
 	
-The -r option usually needs to point to the **site scope** of your newly installed spack-instance, that is, _$SPACK_DIR/etc/spack_. It can however also be used if you are a CSCS user and do not want to have your own spack instance *but still want to develop the mch-packages*. In that case, you can clone the spack-mch repo, let the -i, -m options void, BUT overwrite the *site scoped* repos.yaml files of the maintained spack instances by installing a new repos.yaml in your **user scope** _~/.spack_. **Careful: the repos.yaml file is always modified in a way that it points to the spack-mch package repositories from which you call the config.sh script.**
+The -r option usually needs to point to the **site scope** of your newly installed spack-instance, that is, _$SPACK_DIR/etc/spack_. It can however also be used if you are a CSCS user and do not want to have your own spack instance *but still want to develop the mch-packages*. In that case, you can clone the spack-mch repo, let the -i, -m options void, BUT overwrite the *site scoped* repos.yaml files of the maintained spack instances by installing a new repos.yaml in your **user scope** _~/.spack_.
 
-Next and final step is to source your newly installed instance under $SPACK_DIR/share/spack in order to activate it.
+**Careful: the repos.yaml file is always modified in a way that it points to the spack-mch package repositories from which you call the config.sh script.**
+
+Next and final step is to source your newly installed instance under _$SPACK_DIR/share/spack_ in order to activate it.
 
     $ . <spack-installation-directory>/share/spack/setup-env.sh
 
@@ -50,7 +52,7 @@ _list and search available packages_
 	
 Print the whole list of spack available packages
 
-Second thing to do is to check the information of your package (i.e versions available, variants and so on) using the command:
+Second thing to do is to check the information of your package using the command:
 
 ### Spack info
 
@@ -58,9 +60,9 @@ _get detailed information on a particular package_
 
     $ spack info <package>
   
-Get a list of all possible building configuration available such as: version available, list of dependencies and variants. Variants are a key-feature of spack since it tells it which build configuration we want (i.e COSMO with target gpu or cpu).
+Get a list of all possible building configuration available such as: version available, list of dependencies and variants. Variants are a key-feature of spack since it describes which build configuration we want (i.e COSMO with target gpu or cpu).
 
-Third step, you want to check how your package will be installed (i.e the spec of you package and its dependencies) before actually installing.
+Third step, you want to check how your package will be installed (i.e the spec of you package and its dependencies) before actually installing it.
 
 ### Spack spec
 
@@ -80,7 +82,7 @@ Ex:
     
     $ spack install cosmo@master%pgi cosmo_target=gpu
     
-This will clone the package, build it and install the chosen package plus all its dependencies under _/scratch/$USER/install/tsa_ (see _config.yaml_ in the maching specific config file section for details). The build-stage of your package and its dependencies are not kept (add _--keep-stage_ after the install command in order to keep it). Module files are also created during this process and installed under _/scratch/$USER/modules/_
+This will clone the package, build it and install the chosen package plus all its dependencies under _/scratch/$USER/spack/install/tsa_ (see _config.yaml_ in the maching specific config file section for details). The build-stage of your package and its dependencies are not kept (add _--keep-stage_ after the install command in order to keep it). Module files are also created during this process and installed under _/scratch/$USER/spack/modules/_
 
 You might want to run tests after the installation of your package. In that case you can use:
 
@@ -90,8 +92,16 @@ _If 'root' is chosen, run package tests during installation for top-level packag
 
 	$ spack install --test=root cosmo@master%pgi cosmo_target=gpu
 	
-Submits the adequate testsuites for cosmo-dycore and cosmo after their installations. The results are printed directly for cosmo-dycore but not for cosmo (you have to open the testsuite.out file). Also needed if you use the +serialize variant with cosmo. If you want to submit the **test manually** or after the installation, you can load the module of your package (module use _/project/g110/spack-modules/'architecture'_) created during its installation and then submit the tests.
+Submits the adequate testsuites for cosmo-dycore or cosmo after their installations. The results are printed out directly for cosmo-dycore but not for cosmo (you have to open the testsuite.out file). *Careful: If you use the +serialize variant of cosmo, you also need to add this command to your installation command*. 
 
+If you want to submit your **tests manually** or after the installation, you first have to use the module of your package dependencies 
+
+	$ module use /project/g110/spack-modules/'architecture'
+	
+and then load your package module:
+
+	$ module load _/scratch/$USER/spack/modules/'architecture'/<package>/<version>-<hash>_
+	
 ## Developer guide
 	
 ### Spack dev-build
@@ -103,7 +113,7 @@ _developer build: build from code in current working directory_
     
 If you do not want to git clone the source of the package you want to install, especially if you are developing, you can use a local source in order to install your package. In order to do so, first go to the base directory of the package and then use spack _dev-build_ instead of spack install.
     
-The package, its dependencies and its modules will be still installed under _/scratch/$USER/install/tsa_ & _/scratch/$USER/modules/_
+The package, its dependencies and its modules will be still installed under _/scratch/$USER/spack/install_ & _/scratch/$USER/spack/modules/_
 
 ### Spack edit
 
