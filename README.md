@@ -94,7 +94,7 @@ Submits the adequate testsuites for cosmo-dycore and cosmo after their installat
 
 ## Developer guide
 	
-### Dev-building software on tsa/daint
+### Spack dev-build
 
 If you do not want to git clone the source of the package you want to install, especially if you are developing, you can use a local source in order to install your package. In order to do so, first go to the base directory of the package and then use spack _dev-build_ instead of spack install.
 
