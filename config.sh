@@ -8,8 +8,8 @@ while true; do
         --idir|-i) install_dir=$2; shift 2;;
         --machine|-m) hostname=$2; shift 2;;
         --version|-v) version=$2; shift 2;;
+        --reposdir|-r) reposdir=$2; shift 2;;
         --help|-h) help_enabled=yes; fwd_args="$fwd_args $1"; shift;;
-         --reposdir|-r) reposdir=$2; shift 2;;
         -- ) shift; break ;;
         * ) fwd_args="$fwd_args $1"; shift ;;
     esac
