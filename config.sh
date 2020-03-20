@@ -33,7 +33,8 @@ if [[ ! -d "${install_dir}/spack" ]]; then
 fi
 
 echo "Installing mch packages on $install_dir/spack/etc/repos.yaml"
-echo " - $PWD" >> repos.yaml
+echo "repos:" > repos.yaml
+echo "- $PWD" >> repos.yaml
 cp repos.yaml $install_dir/spack/etc/spack
 
 echo "Installing $hostname config files on $install_dir/spack/etc/spack"
