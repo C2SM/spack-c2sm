@@ -12,7 +12,7 @@ class Cosmo(MakefilePackage):
 
     homepage = "http://www.cosmo-model.org"
     url      = "https://github.com/COSMO-ORG/cosmo/archive/5.06.tar.gz" 
-    git      = 'https://github.com/COSMO-ORG/cosmo.git'
+    git      = 'git@github.com:COSMO-ORG/cosmo.git'
     maintainers = ['elsagermann']
 
     version('master', branch='master')
