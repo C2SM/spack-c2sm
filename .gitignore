@@ -1,2 +1,5 @@
 repos.yaml
 **.pyc
+**.swn
+**.swp
+**.swo
