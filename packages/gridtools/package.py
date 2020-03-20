@@ -50,37 +50,37 @@ class Gridtools(CMakePackage):
       args.append('-DCMAKE_BUILD_TYPE={0}'.format(self.spec.variants['build_type'].value))
       args.append('-DCUDA_ARCH={0}'.format(self.spec.variants['cuda_arch'].value))
 
-      if spec.variants['no_boost_cmake']:
+      if spec.variants['no_boost_cmake'].value:
         args.append('-DBoost_NO_BOOST_CMAKE=ON')
       else:
         args.append('-DBoost_NO_BOOST_CMAKE=OFF')
 
-      if spec.variants['install_examples']:
+      if spec.variants['install_examples'].value:
         args.append('-DGT_INSTALL_EXAMPLES=ON')
       else:
         args.append('-DGT_INSTALL_EXAMPLES=OFF')
 
-      if spec.variants['shared_libs']: 
+      if spec.variants['shared_libs'].value: 
         args.append('-DBUILD_SHARED_LIBS=ON')
       else:
         args.append('-DBUILD_SHARED_LIBS=OFF')
 
-      if spec.variants['export_no_package_registery']: 
+      if spec.variants['export_no_package_registery'].value: 
         args.append('-DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=ON')
       else:
         args.append('-DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=OFF')
  
-      if spec.variants['enable_bindings_gerneration']: 
+      if spec.variants['enable_bindings_gerneration'].value: 
         args.append('-DGT_ENABLE_BINDINGS_GENERATION=ON')
       else:
         args.append('-DGT_ENABLE_BINDINGS_GENERATION=OFF')
 
-      if spec.variants['build_testing']: 
+      if spec.variants['build_testing'].value: 
         args.append('-DBUILD_TESTING=ON')
       else:
         args.append('-DBUILD_TESTING=OFF')
 
-      if spec.variants['use_mpi']: 
+      if spec.variants['use_mpi'].value: 
         args.append('-DGT_USE_MPI=ON')
       else:
         args.append('-DGT_USE_MPI=OFF')
