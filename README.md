@@ -46,7 +46,7 @@ First thing to do when using spack is to check if the package you want to instal
 
 _list and search available packages_
 
-	$spack list <package>
+	$ spack list <package>
 	
 Print the whole list of spack available packages
 
