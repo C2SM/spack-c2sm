@@ -11,16 +11,17 @@ class Cosmo(MakefilePackage):
     """COSMO: Numerical Weather Prediction Model. Needs access to private GitHub."""
 
     homepage = "http://www.cosmo-model.org"
-    url      = "cosmo"
-
-    git      = 'git@github.com:COSMO-ORG/cosmo.git'
+    url      = "https://github.com/COSMO-ORG/cosmo/archive/5.06.tar.gz" 
+    git      = 'https://github.com/COSMO-ORG/cosmo.git'
     maintainers = ['elsagermann']
 
     version('master', branch='master')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
-    version('5.05a', commit='ef85dacc25cbadec42b0a7b77633c4cfe2aa9fb9')
-    version('5.05',  commit='5ade2c96776db00ea945ef18bfeacbeb7835277a')
-    version('5.06', commit='26b63054d3e98dc3fa8b7077b28cf24e10bec702')
+    version('5.07.mch1.0.p3', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p3')
+    version('5.07.mch1.0.p2', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p2')
+    version('5.05a', tag='5.05a')
+    version('5.05',  tag='5.05')
+    version('5.06', tag='5.06')
     
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
@@ -53,7 +54,9 @@ class Cosmo(MakefilePackage):
     variant('claw', default=False, description='Build with claw-compiler')
     variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
     variant('eccodes', default=False, description='Build with eccodes instead of grib-api')
+    variant('pollen', default=False, description='Build with pollen enabled')
 
+    conflicts('+pollen', when='@5.05:5.06,master')
     build_directory = 'cosmo/ACC'
 
     def setup_environment(self, spack_env, run_env):
@@ -94,7 +97,7 @@ class Cosmo(MakefilePackage):
     @property
     def build_targets(self):
         build = []
-        if self.version == Version('mch'):
+        if self.spec.variants['pollen']:
             build.append('POLLEN=1')
         if self.spec.variants['real_type'].value == 'float':
             build.append('SINGLEPRECISION=1')
