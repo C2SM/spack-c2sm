@@ -9,6 +9,7 @@ while true; do
         --machine|-m) hostname=$2; shift 2;;
         --version|-v) version=$2; shift 2;;
         --help|-h) help_enabled=yes; fwd_args="$fwd_args $1"; shift;;
+         --reposdir|-r) reposdir=$2; shift 2;;
         -- ) shift; break ;;
         * ) fwd_args="$fwd_args $1"; shift ;;
     esac
@@ -32,12 +33,13 @@ if [[ ! -d "${install_dir}/spack" ]]; then
     git clone git@github.com:spack/spack.git -b $version $install_dir/spack
 fi
 
-echo "Installing mch packages on $install_dir/spack/etc/repos.yaml"
-echo "repos:" > repos.yaml
-echo "- $PWD" >> repos.yaml
-cp repos.yaml $install_dir/spack/etc/spack
+echo "Installing mch packages &" $hostname "config files"
 
-echo "Installing $hostname config files on $install_dir/spack/etc/spack"
+if [[ -n ${reposdir} ]] && [[ ! -f "${reposdir}/repos.yaml" ]]; then
+    echo " - $PWD" >> repos.yaml
+    cp repos.yaml $reposdir/
+fi
+
 cp -rf $PWD/sysconfigs/$hostname/* $install_dir/spack/etc/spack
 
 echo "MCH Spack installed"
