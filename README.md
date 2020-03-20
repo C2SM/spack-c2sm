@@ -6,13 +6,13 @@ Official Spack documentation [below](#-spack).
 
 ### CSCS users
 
-For the cscs users a spack instance including the mch packages and the mch machine configuration files will be maintained for both tsa and daint under _/project/g110/spack/user/'machine'/spack_. If you are therefore not interested in the developement of our spack packages and config files you can directly source the instance there and skip the general installation section:
+For the cscs users a spack instance including the mch packages and the mch machine configuration files will be maintained for both tsa and daint under _/project/g110/spack/user/'machine'/spack_. Therefore, if you are not interested in the developement of our spack packages and config files you can directly source those instances and skip the general installation section:
 
   	$ (cscs users): . /project/g110/spack/user/<machine>/spack/share/spack/setup-env.sh
 	
 #### Automatically source the correct spack instance when using bash
 
-If you want to automatically source the correct spack instance when opening a new terminal and depending on the machine you are working on, you can add the following lines to your .bashrc file:
+If you want to automatically source the correct spack instance depending on the machine you are working on, you can add the following lines to your .bashrc file:
 
 	$ case $(hostname -s) in
 	$ 	tsa*|arolla*) export SPACK_ROOT=/project/g110/spack/user/tsa/spack ;;
@@ -52,7 +52,7 @@ Print the whole list of spack available packages
 
 Second thing to do is to check the information of your package (i.e versions available, variants and so on) using the command:
 
-## Spack info
+### Spack info
 
 _get detailed information on a particular package_
 
@@ -62,7 +62,7 @@ Get a list of all possible building configuration available such as: version ava
 
 Third step, you want to check how your package will be installed (i.e the spec of you package and its dependencies) before actually installing.
 
-## Spack spec
+### Spack spec
 
 _show what would be installed, given a spec_
 
@@ -84,7 +84,7 @@ This will clone the package, build it and install the chosen package plus all it
 
 You might want to run tests after the installation of your package. In that case you can use:
 
-## Spack install --test=root 
+### Spack install --test=root 
 
 _If 'root' is chosen, run package tests during installation for top-level packages (but skip tests for dependencies)._
 
