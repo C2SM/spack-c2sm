@@ -48,6 +48,7 @@ class CosmoDycore(CMakePackage):
     depends_on('mpi', type=('build', 'run'))
     depends_on('cuda', type=('build', 'run'))
     depends_on('slurm', type='run')
+    depends_on('cmake@3.12:%gcc', type='build')
 
     root_cmakelists_dir='dycore'
     

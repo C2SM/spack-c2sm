@@ -35,7 +35,7 @@ class Gridtools(CMakePackage):
     variant('enable_bindings_gerneration', default=True, description="Build with bindings generation")
 
     depends_on('ncurses')
-    depends_on('cmake')
+    depends_on('cmake@3.14.5:%gcc')
     depends_on('boost@1.67.0:')
     depends_on('mpi',  type=('build', 'run'))
     depends_on('cuda', when='cosmo_target=gpu',  type=('build', 'run'))
