@@ -54,6 +54,7 @@ class Cosmo(MakefilePackage):
     variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
     variant('eccodes', default=False, description='Build with eccodes instead of grib-api')
 
+    conflicts('+cppdycore', when='cosmo_target=cpu')
     build_directory = 'cosmo/ACC'
 
     def setup_environment(self, spack_env, run_env):
