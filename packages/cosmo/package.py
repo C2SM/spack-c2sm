@@ -26,8 +26,8 @@ class Cosmo(MakefilePackage):
     
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
 
-    depends_on('netcdf-fortran')
-    depends_on('netcdf-c')
+    depends_on('netcdf-fortran~mpi')
+    depends_on('netcdf-c~mpi')
     depends_on('slurm', type='run')
     depends_on('cuda', type=('build', 'run'))
     depends_on('cosmo-dycore%gcc +build_tests', when='+dycoretest')
