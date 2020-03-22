@@ -41,7 +41,9 @@ class CosmoDycore(CMakePackage):
     variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
     variant('pmeters', default=False, description="Enable the performance meters for the dycore stencils")
     variant('data_path', default='.', description='Serialization data path', multi=False)
-    
+    variant('debug', default=False, description='Build debug mode')
+    variant('production', default=False, description='Force all variants to be the ones used in production')   
+ 
     depends_on('gridtools@1.1.3 cosmo_target=gpu', when='cosmo_target=gpu')
     depends_on('gridtools@1.1.3 cosmo_target=cpu', when='cosmo_target=cpu')
     depends_on('boost@1.67.0')
@@ -49,6 +51,10 @@ class CosmoDycore(CMakePackage):
     depends_on('mpi', type=('build', 'run'))
     depends_on('cuda', type=('build', 'run'))
     depends_on('slurm', type='run')
+
+    conflicts('+production', when='+debug')
+    conflicts('+production', when='cosmo_target=cpu')
+    conflicts('+production', when='+pmeters')
 
     root_cmakelists_dir='dycore'
     
@@ -70,7 +76,10 @@ class CosmoDycore(CMakePackage):
       GridToolsDir = spec['gridtools'].prefix + '/lib/cmake'
       
       args.append('-DGridTools_DIR={0}'.format(GridToolsDir))  
-      args.append('-DCMAKE_BUILD_TYPE=Release')
+      if spec.variants['debug'].value:
+          args.append('-DCMAKE_BUILD_TYPE=DEBUG')
+      else:
+          args.append('-DCMAKE_BUILD_TYPE=Release')
       args.append('-DCMAKE_INSTALL_PREFIX={0}'.format(self.prefix))
       args.append('-DCMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY=ON')
       args.append('-DBoost_USE_STATIC_LIBS=ON')
