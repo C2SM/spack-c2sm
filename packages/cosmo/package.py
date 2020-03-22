@@ -8,7 +8,11 @@ from spack import *
 
 
 class Cosmo(MakefilePackage):
-    """COSMO: Numerical Weather Prediction Model. Needs access to private GitHub."""
+    """COSMO: Numerical Weather Prediction Model. Needs access to private GitHub.
+       This package is expecting the following variables to be defined in the module environment:
+       NETCDFF_DIR: root directory to netcdf-fortran installation
+       NETCDFC_DIR: root directory to netcdf-c installation
+    """
 
     homepage = "http://www.cosmo-model.org"
     url      = "cosmo"
