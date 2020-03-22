@@ -1,0 +1,18 @@
+#%Module1.0
+## Module file created by spack (https://github.com/spack/spack) on 2020-03-22 15:18:20.526181
+##
+## cosmo@master%pgi@19.9~claw cosmo_target=cpu +cppdycore~debug~eccodes+parallel real_type=double ~serialize slave=tsa arch=linux-rhel7-skylake_avx512/nkoxtws
+##
+
+
+module-whatis "COSMO: Numerical Weather Prediction Model. Needs access to private GitHub."
+
+proc ModulesHelp { } {
+puts stderr "COSMO: Numerical Weather Prediction Model. Needs access to private"
+puts stderr "GitHub."
+}
+
+prereq netcdf/4.7.0-pgi-19.9-gcc-8.3.0
+
+setenv NETCDFC_DIR $env(EBROOTNETCDF)
+

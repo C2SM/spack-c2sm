@@ -1,0 +1,12 @@
+#%Module1.0
+
+module-whatis "meta-package for netcdf"
+
+proc ModulesHelp { } {
+puts stderr "metapackage for netcdf"
+}
+
+source /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/modules/all/netcdf-fortran/4.4.5-fosscuda-2019b
+
+setenv NETCDFF_DIR $env(EBROOTNETCDFMINFORTRAN)
+

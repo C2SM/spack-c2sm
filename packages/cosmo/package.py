@@ -133,12 +133,8 @@ class Cosmo(MakefilePackage):
                 OptionsFileName += '.cray'
             OptionsFileName += '.' + spec.variants['cosmo_target'].value
             optionsfilter = FileFilter('Options.lib.' + spec.variants['cosmo_target'].value)
-            if self.spec.variants['slave'].value == 'tsa':
-                optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I{0}/include'.format(spec['netcdf-fortran'].prefix))
-                optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L{0}/lib -lnetcdff -L{1}/lib -lnetcdf'.format(spec['netcdf-fortran'].prefix, spec['netcdf-c'].prefix))
-            else:
-                optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I$(NETCDF_DIR)/include')
-                optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf')
+            optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I{NETCDFF_DIR}/include')
+            optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L{NETCDFF_DIR}/lib -lnetcdff -L{NETCDFC_DIR}/lib -lnetcdf')
             if '+eccodes' in spec:
               optionsfilter.filter('GRIBAPIL *=.*', 'GRIBAPIL = -L$(GRIBAPI_DIR)/lib -leccodes_f90 -leccodes -L$(JASPER_DIR)/lib -ljasper')
             makefile.filter('/Options', '/' + OptionsFileName)
