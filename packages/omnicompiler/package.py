@@ -45,7 +45,6 @@ class Omnicompiler(AutotoolsPackage):
     depends_on('automake')
     depends_on('libtool')
     depends_on('mpfr', when='+mod2xmod')
-    depends_on('gmp', when='+mod2xmod')
     depends_on('mpi')
 
     def setup_environment(self, spack_env, run_env):
@@ -55,7 +54,7 @@ class Omnicompiler(AutotoolsPackage):
         args = []
         if '+mod2xmod' in self.spec:
           args = ['--enable-mod2xmod',
-            '--with-gmp={0}'.format(self.spec['gmp'].prefix), 
+            '--with-gmp=/usr/..',
             '--with-mpfr-include={0}'.format(self.spec['mpfr'].prefix + '/include'),
             '--with-mpfr-lib={0}'.format(self.spec['mpfr'].prefix + '/lib'),
             ]
