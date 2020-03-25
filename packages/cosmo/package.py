@@ -36,7 +36,7 @@ class Cosmo(MakefilePackage):
     depends_on('serialbox@2.6.0', when='%gcc +serialize')
     depends_on('mpi', type=('build', 'run'))
     depends_on('libgrib1')
-    depends_on('jasper@1.900.1')
+    depends_on('jasper@1.900.1%gcc')
     depends_on('cosmo-grib-api-definitions', when='~eccodes')
     depends_on('cosmo-eccodes-definitions@2.14.1.2', when='+eccodes')
     depends_on('perl@5.16.3:')
