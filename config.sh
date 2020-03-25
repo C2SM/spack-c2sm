@@ -19,8 +19,10 @@ if [[ "${help_enabled}" == "yes" ]]; then
     echo "Available Options:"
     echo "* --help.  |-h {print help}"
     echo "* --machine|-m {machine name}     Required"
-    echo "* --version|-v {spack version}     Default: v0.14.0"
+    echo "* --version|-v {spack version}     Default: v0.14.0"¨
+    echo "* --reposdir|-r {repos.yaml install dir}  Site scope install dir: $install_dir/spack/etc or user scope install dir: ~/.spack"
     echo "* --idir.  |-i {install dir}      Where the Spack instance is installed or you want it to be installed. Default: \$(pwd)"
+    exit 0
 fi
 
 if [[ -z ${install_dir} ]]; then
@@ -36,6 +38,7 @@ echo "Installing mch packages &" $hostname "config files"
 
 if [[ -n ${reposdir} ]] && [[ ! -f "${reposdir}/repos.yaml" ]]; then
     echo " - $PWD" >> repos.yaml
+    echo "Installing repos.yaml on $reposdir"
     cp repos.yaml $reposdir/
 fi
 
