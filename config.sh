@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-version="v0.14.0"
+version="v0.14.1"
 
 TEMP=$@
 eval set -- "$TEMP --"
