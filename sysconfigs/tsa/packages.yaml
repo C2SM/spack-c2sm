@@ -34,13 +34,13 @@ packages:
       perl@5.16.3: /usr
   m4:
     paths: 
-      m4@1.4.16: /usr
+      m4@1.4.16%gcc: /usr
   automake:
     paths:
-      automake@1.13.4: /usr
+      automake@1.13.4%gcc: /usr
   autoconf:
     paths:
-      autoconf@2.69: /usr
+      autoconf@2.69%gcc: /usr
   bison:
     paths:
       bison@3.0.4: /usr
@@ -52,10 +52,10 @@ packages:
       libxml2@2.9.9: /usr
   libtool:
     paths:
-      libtool@2.4.2: /usr
+      libtool@2.4.2%gcc: /usr
   jasper:
     paths:
-      jasper@1.900.1: /usr/bin
+      jasper@1.900.1%gcc: /usr/bin
   slurm:
     modules:
       slurm@19.05.04: slurm/19.05.04

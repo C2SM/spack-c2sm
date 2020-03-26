@@ -13,10 +13,10 @@ packages:
             pkgconfig: [pkg-config]
     autoconf:
         paths:
-             autoconf@2.69: /usr
+             autoconf@2.69%gcc: /usr
     automake:
         paths:
-             automake@1.15.1: /usr
+             automake@1.15.1%gcc: /usr
     binutils:
         variants: +gold~headers+libiberty+nls~plugin
         paths:
@@ -119,13 +119,13 @@ packages:
             intel-mkl@2019.1.144%cce~ilp64 threads=none:   /opt/intel
     libtool:
         paths:
-             libtool@2.4.6: /usr
+             libtool@2.4.6%gcc: /usr
     lz4:
         paths:
              lz4@1.8.0: /usr
     m4:
         paths:
-             m4@1.4.18: /usr
+             m4@1.4.18%gcc: /usr
     mpich:
         buildable: false
         modules:
