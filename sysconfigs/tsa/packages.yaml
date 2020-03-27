@@ -56,6 +56,9 @@ packages:
   jasper:
     paths:
       jasper@1.900.1%gcc: /usr/bin
+  bzip2:
+    paths:
+      bzip2@1.0.6: /usr
   slurm:
     modules:
       slurm@19.05.04: slurm/19.05.04

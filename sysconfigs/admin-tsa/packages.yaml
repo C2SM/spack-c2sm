@@ -32,9 +32,6 @@ packages:
   perl:
     paths: 
       perl@5.16.3: /usr
-  bzip2:
-    paths:
-      bzip2@1.0.6: /usr
   m4:
     paths: 
       m4@1.4.16%gcc: /usr
@@ -59,6 +56,9 @@ packages:
   jasper:
     paths:
       jasper@1.900.1%gcc: /usr/bin
+  bzip2:
+    paths:
+      bzip2@1.0.6: /usr
   slurm:
     modules:
       slurm@19.05.04: slurm/19.05.04
