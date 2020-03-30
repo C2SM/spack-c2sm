@@ -6,7 +6,7 @@
 from spack import *
 
 
-class Gridtools(CMakePackage):
+class Gridtools(CMakePackage,  CudaPackage):
     """The GridTools framework is a set of libraries and utilities to develop performance portable applications in the area of weather and climate."""
     
     homepage = "https://github.com/GridTools/gridtools.git"
@@ -24,11 +24,9 @@ class Gridtools(CMakePackage):
     version('1.0.0', commit='5dfeace6f20eefa6633102533d5a0e1564361ecf')
     
     variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'DebugRelease'))
-    variant('cuda_arch', default='none', description='Build with cuda_arch', values=('sm_70', 'sm_60', 'sm_37'), multi=False)
     variant('shared_libs', default=False, description="Build shared librairies")
     variant('install_examples', default=False, description="Build with examples")
     variant('build_testing', default=False, description="Build with tests")
-    variant('cosmo_target', default='gpu', description='Build target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('use_mpi', default=True, description="Build with using mpi")
     variant('no_boost_cmake', default=True, description="Build with no boost for CMake")
     variant('export_no_package_registery', default=True, description="Build with export no package registery")
@@ -38,7 +36,6 @@ class Gridtools(CMakePackage):
     depends_on('cmake@3.14.5:%gcc')
     depends_on('boost@1.67.0:')
     depends_on('mpi',  type=('build', 'run'))
-    depends_on('cuda', when='cosmo_target=gpu',  type=('build', 'run'))
 
     def cmake_args(self):
       spec = self.spec
@@ -48,7 +45,6 @@ class Gridtools(CMakePackage):
       args.append('-DGT_ENABLE_BACKEND_NAIVE=OFF')
 
       args.append('-DCMAKE_BUILD_TYPE={0}'.format(self.spec.variants['build_type'].value))
-      args.append('-DCUDA_ARCH={0}'.format(self.spec.variants['cuda_arch'].value))
 
       if spec.variants['no_boost_cmake'].value:
         args.append('-DBoost_NO_BOOST_CMAKE=ON')
@@ -85,7 +81,8 @@ class Gridtools(CMakePackage):
       else:
         args.append('-DGT_USE_MPI=OFF')
   
-      if self.spec.variants['cosmo_target'].value == 'gpu':
+      if '+cuda' in spec:
+        args.append('-DCUDA_ARCH=sm_{0}'.format(self.spec.variants['cuda_arch'].value))
         args.append('-DGT_ENABLE_BACKEND_CUDA=ON')
         args.append('-DGT_ENABLE_BACKEND_X86=OFF')
       else:
