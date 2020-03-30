@@ -63,10 +63,10 @@ packages:
     modules:
       slurm@19.05.04: slurm/19.05.04
   cosmo-dycore:
-    variants: cuda_arch=sm_70 data_path=/scratch/jenkins/data/cosmo/ slave=tsa
+    variants: +cuda cuda_arch=70 data_path=/scratch/jenkins/data/cosmo/ slave=tsa
     compiler: [gcc]
   gridtools:
-    variants: cuda_arch=sm_70
+    variants: +cuda cuda_arch=70
     compiler: [gcc]
   cosmo:
     variants: slave=tsa

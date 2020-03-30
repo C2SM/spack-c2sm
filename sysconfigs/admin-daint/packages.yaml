@@ -29,10 +29,10 @@ packages:
       version: [master]
       compiler: [pgi@19.7.0]
     gridtools:
-      variants: cuda_arch=sm_60
+      variants: +cuda cuda_arch=60
       compiler: [gcc]
     cosmo-dycore:
-      variants: slave=daint cuda_arch=sm_60 data_path=/scratch/snx3000/wbenjami/cosmo-serialized-data/
+      variants: slave=daint +cuda cuda_arch=60 data_path=/scratch/snx3000/wbenjami/cosmo-serialized-data/
       compiler: [gcc]
     cmake:
         paths:
