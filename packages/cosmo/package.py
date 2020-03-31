@@ -7,7 +7,7 @@
 from spack import *
 
 
-class Cosmo(MakefilePackage):
+class Cosmo(MakefilePackage, CudaPackage):
     """COSMO: Numerical Weather Prediction Model. Needs access to private GitHub."""
 
     homepage = "http://www.cosmo-model.org"
@@ -27,8 +27,8 @@ class Cosmo(MakefilePackage):
     depends_on('slurm', type='run')
     depends_on('cuda', type=('build', 'run'))
     depends_on('cosmo-dycore%gcc +build_tests', when='+dycoretest')
-    depends_on('cosmo-dycore%gcc +cuda', when='cosmo_target=gpu +cppdycore')
-    depends_on('cosmo-dycore%gcc ~cuda cuda_arch=none', when='cosmo_target=cpu +cppdycore')
+    depends_on('cosmo-dycore%gcc +cuda', when='+cuda+cppdycore')
+    depends_on('cosmo-dycore%gcc ~cuda cuda_arch=none', when='~cuda cuda_arch=none +cppdycore')
     depends_on('cosmo-dycore%gcc real_type=float', when='real_type=float +cppdycore')
     depends_on('cosmo-dycore%gcc real_type=double', when='real_type=double +cppdycore')
     depends_on('serialbox@2.6.0%pgi@19.9-gcc', when='%pgi@19.9 +serialize')
@@ -42,13 +42,12 @@ class Cosmo(MakefilePackage):
     depends_on('perl@5.16.3:')
     depends_on('omni-xmod-pool')
     depends_on('claw', when='+claw')
-    depends_on('boost', when='cosmo_target=gpu ~cppdycore')
+    depends_on('boost', when='+cuda ~cppdycore')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('serialize', default=False, description='Build with serialization enabled')
     variant('parallel', default=True, description='Build parallel COSMO')
     variant('debug', default=False, description='Build debug mode')
-    variant('cosmo_target', default='gpu', description='Build with target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)
     variant('claw', default=False, description='Build with claw-compiler')
     variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
@@ -73,9 +72,7 @@ class Cosmo(MakefilePackage):
         spack_env.set('NETCDF_DIR', self.spec['netcdf-c'].prefix)
         spack_env.set('GRIB1_DIR', self.spec['libgrib1'].prefix)
         spack_env.set('JASPER_DIR', self.spec['jasper'].prefix)
-        spack_env.set('MPI_ROOT', self.spec['mpi'].prefix)
-        if self.spec.variants['cosmo_target'].value == 'gpu' or '+serialize' in self.spec:
-            spack_env.set('BOOST_ROOT',  self.spec['boost'].prefix)
+        spack_env.set('MPII', '-I'+ self.spec['mpi'].prefix + '/include')
         if '+cppdycore' in self.spec:
             spack_env.set('GRIDTOOLS_DIR', self.spec['gridtools'].prefix)
             spack_env.set('DYCOREGT', self.spec['cosmo-dycore'].prefix)
@@ -84,14 +81,26 @@ class Cosmo(MakefilePackage):
           spack_env.set('SERIALBOX_DIR', self.spec['serialbox'].prefix)
           spack_env.set('SERIALBOX_FORTRAN_LIBRARIES', self.spec['serialbox'].prefix + '/lib/libSerialboxFortran.a ' +  self.spec['serialbox'].prefix + '/lib/libSerialboxC.a ' + self.spec['serialbox'].prefix + '/lib/libSerialboxCore.a -lstdc++fs -lpthread')
         if '+claw' in self.spec:
+            if '+cuda' in self.spec:
+                spack_env.append_flags('CLAWFC_FLAGS', '--directive=openacc -v')
             spack_env.set('CLAWDIR', self.spec['claw'].prefix)
             spack_env.set('CLAWFC', self.spec['claw'].prefix + '/bin/clawfc')
             spack_env.set('CLAWXMODSPOOL', self.spec['omni-xmod-pool'].prefix + '/omniXmodPool/')
         spack_env.set('UCX_MEMTYPE_CACHE', 'n')
-        if '+cppdycore' in self.spec and self.spec.variants['cosmo_target'].value == 'gpu':
-          spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
+        if '+cuda' in self.spec:
+            cuda_version = self.spec['cuda'].version
+            fflags = '-ta=tesla,cc' + self.spec.variants['cuda_arch'].value[0] + ',cuda' + str(cuda_version.up_to(2))
+            spack_env.append_flags('FFLAGS', 'CUDA_HOME=' + self.spec['cuda'].prefix)
+            spack_env.append_flags('FFLAGS', fflags)
+            spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
         else:
-          spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cma')
+            spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cma')
+        if self.spec['mpi'].name == 'mpich': 
+            spack_env.append_flags('PFLAGS', '-DNO_MPI_HOST_DATA')
+        else:
+            spack_env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpi_cxx')
+            if '+cuda' in self.spec and self.compiler.name == 'pgi':
+                spack_env.append_flags('PFLAGS', '-DNO_ACC_FINALIZE')
 
     @property
     def build_targets(self):
@@ -120,27 +129,44 @@ class Cosmo(MakefilePackage):
         return build
 
     def edit(self, spec, prefix):
+        if self.compiler.name == 'gcc':
+            env['COMPILER'] = 'gnu'
+        else:
+            env['COMPILER'] = self.compiler.name
         env['CC'] = spec['mpi'].mpicc
         env['CXX'] = spec['mpi'].mpicxx
         env['F77'] = spec['mpi'].mpif77
-        env['FC'] = spec['mpi'].mpifc
+        if self.compiler.name == 'pgi':
+            env['F90'] = spec['mpi'].mpifc + ' -D__PGI_FORTRAN__'
+            env['LD'] = spec['mpi'].mpifc + ' -D__PGI_FORTRAN__'
+            if '~cppdycore' in spec:
+                env['LFLAGS'] = '-lstdc++'
+        else:
+            env['F90'] = spec['mpi'].mpifc
+            env['LD'] = spec['mpi'].mpifc
         with working_dir(self.build_directory):
             makefile = FileFilter('Makefile')
-            OptionsFileName= 'Options.' + self.spec.variants['slave'].value
+            OptionsFileName = 'Options'
             if self.compiler.name == 'gcc':
                 OptionsFileName += '.gnu'
             elif self.compiler.name == 'pgi':
                 OptionsFileName += '.pgi'
             elif self.compiler.name == 'cce':
                 OptionsFileName += '.cray'
-            OptionsFileName += '.' + spec.variants['cosmo_target'].value
-            optionsfilter = FileFilter('Options.lib.' + spec.variants['cosmo_target'].value)
+            if '+cuda' in spec:
+                OptionsFileName += '.gpu'
+                optionsfilter = FileFilter('Options.lib.gpu')
+            else:
+                OptionsFileName += '.cpu'
+                optionsfilter = FileFilter('Options.lib.cpu')
             if '+eccodes' in spec:
               optionsfilter.filter('GRIBAPIL *=.*', 'GRIBAPIL = -L$(GRIBAPI_DIR)/lib -leccodes_f90 -leccodes -L$(JASPER_DIR)/lib -ljasper')
-            makefile.filter('/Options', '/' + OptionsFileName)
+            makefile.filter('/Options.*', '/' + OptionsFileName)
             if '~serialize' in spec:
-              makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo_'+ spec.variants['cosmo_target'].value))
-
+                if '+cuda' in spec:
+                    makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo_gpu'))
+                else:
+                    makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo_cpu'))
     def install(self, spec, prefix):
         mkdir(prefix.cosmo)
         if '+serialize' in self.spec:
@@ -151,8 +177,12 @@ class Cosmo(MakefilePackage):
             if '+serialize' in spec:
                 install('cosmo_serialize', prefix.bin)            
             else:
-                install('cosmo_' + self.spec.variants['cosmo_target'].value, prefix.bin)
-                install('cosmo_' + self.spec.variants['cosmo_target'].value, prefix.cosmo + '/test/testsuite')
+                if '+cuda' in spec:
+                    install('cosmo_gpu', prefix.bin)
+                    install('cosmo_gpu', prefix.cosmo + '/test/testsuite')
+                else:
+                    install('cosmo_cpu', prefix.bin)
+                    install('cosmo_cpu', prefix.cosmo + '/test/testsuite')
 
     @run_after('install')
     @on_package_attributes(run_tests=True)
@@ -163,7 +193,7 @@ class Cosmo(MakefilePackage):
         if '~serialize' in self.spec:
             with working_dir(prefix.cosmo + '/test/testsuite'):
                 env['ASYNCIO'] = 'ON'
-                if self.spec.variants['cosmo_target'].value == 'gpu':
+                if '+cuda' in self.spec:
                     env['TARGET'] = 'GPU'
                 else:
                     env['TARGET'] = 'CPU'

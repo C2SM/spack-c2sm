@@ -12,7 +12,7 @@ packages:
     paths: {}
   cuda:
     modules:
-      cuda@10.1.243: cuda/10.1.243
+      cuda@10.1: cuda/10.1.243
     buildable: true
     version: []
     target: []
@@ -69,7 +69,7 @@ packages:
     variants: +cuda cuda_arch=70
     compiler: [gcc]
   cosmo:
-    variants: slave=tsa
+    variants: +cuda cuda_arch=70 slave=tsa
     version: [master]
     compiler: [pgi@19.9, gcc@8.3.0]
 
