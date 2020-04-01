@@ -115,7 +115,6 @@ class Cosmo(MakefilePackage, CudaPackage):
         if '+cuda' in self.spec:
             cuda_version = self.spec['cuda'].version
             fflags = '-ta=tesla,cc' + self.spec.variants['cuda_arch'].value[0] + ',cuda' + str(cuda_version.up_to(2))
-            spack_env.append_flags('FFLAGS', 'CUDA_HOME=' + self.spec['cuda'].prefix)
             spack_env.append_flags('FFLAGS', fflags)
 
         # Pre-processor flags
