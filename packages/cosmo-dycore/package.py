@@ -34,8 +34,7 @@ class CosmoDycore(CMakePackage):
     
     version('master', branch='master')
     
-    variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'Debu
-gRelease'))
+    variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'DebugRelease'))
     variant('build_tests', default=True, description="Compile Dycore unittests & regressiontests")
     variant('cosmo_target', default='gpu', description='Build target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)
