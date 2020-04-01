@@ -25,7 +25,7 @@
 from spack import *
 
 
-class CosmoDycore(CMakePackage):
+class CosmoDycore(CMakePackage, CudaPackage):
     """FIXME: Put a proper description of your package here."""
     
     homepage = "https://github.com/COSMO-ORG/cosmo/tree/master/dycore"
@@ -36,22 +36,19 @@ class CosmoDycore(CMakePackage):
     
     variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'DebugRelease'))
     variant('build_tests', default=True, description="Compile Dycore unittests & regressiontests")
-    variant('cosmo_target', default='gpu', description='Build target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)
-    variant('cuda_arch', default='none', description='Build with cuda_arch', values=('sm_70', 'sm_60', 'sm_37'), multi=False)
     variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
     variant('pmeters', default=False, description="Enable the performance meters for the dycore stencils")
     variant('data_path', default='.', description='Serialization data path', multi=False)
-    variant('debug', default=False, description='Build debug mode')
     variant('production', default=False, description='Force all variants to be the ones used in production')   
- 
-    depends_on('gridtools@1.1.3 cosmo_target=gpu', when='cosmo_target=gpu')
-    depends_on('gridtools@1.1.3 cosmo_target=cpu', when='cosmo_target=cpu')
+   
+    depends_on('gridtools@1.1.3 +cuda', when='+cuda')
+    depends_on('gridtools@1.1.3 ~cuda cuda_arch=none', when='~cuda')
     depends_on('boost@1.67.0')
     depends_on('serialbox@2.6.0', when='+build_tests')
     depends_on('mpi', type=('build', 'run'))
-    depends_on('cuda', type=('build', 'run'))
     depends_on('slurm', type='run')
+    depends_on('cmake@3.12:%gcc', type='build')
 
     conflicts('+production', when='build_type=Debug')
     conflicts('+production', when='cosmo_target=cpu')
@@ -60,14 +57,15 @@ class CosmoDycore(CMakePackage):
     root_cmakelists_dir='dycore'
     
     def setup_environment(self, spack_env, run_env):
-        if self.spec.variants['slave'].value == 'daint':
-            spack_env.set('MPICH_RDMA_ENABLED_CUDA', '1')
+        if self.spec['mpi'].name == 'mpich':
             spack_env.set('MPICH_G2G_PIPELINE', '64')
+            if '+cuda' in self.spec:
+                spack_env.set('MPICH_RDMA_ENABLED_CUDA', '1')
         spack_env.set('UCX_MEMTYPE_CACHE', 'n')
-        spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
-        spack_env.set('GRIDTOOLS_ROOT', self.spec['gridtools'].prefix)
-        if self.spec.variants['build_tests'].value:
-          spack_env.set('SERIALBOX_ROOT', self.spec['serialbox'].prefix)
+        if '+cuda' in self.spec:
+            spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
+        else:
+            spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cma')
 
     def cmake_args(self):
       spec = self.spec
@@ -79,19 +77,19 @@ class CosmoDycore(CMakePackage):
       args.append('-DGridTools_DIR={0}'.format(GridToolsDir))  
       args.append('-DCMAKE_BUILD_TYPE={0}'.format(self.spec.variants['build_type'].value))
       args.append('-DCMAKE_INSTALL_PREFIX={0}'.format(self.prefix))
+      args.append('-DBOOST_ROOT={0}'.format(spec['boost'].prefix))
+      args.append('-DGT_ENABLE_BINDINGS_GENERATION=ON')
       args.append('-DCMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY=ON')
       args.append('-DBoost_USE_STATIC_LIBS=ON')
-      args.append('-DBOOST_ROOT={0}'.format(spec['boost'].prefix))
+
       if spec.variants['pmeters'].value:
-        args.append('-DDYCORE_ENABLE_PERFORMANCE_METERS=ON')
+          args.append('-DDYCORE_ENABLE_PERFORMANCE_METERS=ON')
       else:
-        args.append('-DDYCORE_ENABLE_PERFORMANCE_METERS=OFF')
-      args.append('-DGT_ENABLE_BINDINGS_GENERATION=ON')
-    
+          args.append('-DDYCORE_ENABLE_PERFORMANCE_METERS=OFF')
       if spec.variants['real_type'].value == 'float':
-        args.append('-DPRECISION=float')
+          args.append('-DPRECISION=float')
       else:
-        args.append('-DPRECISION=double')
+          args.append('-DPRECISION=double')
       
       if not spec.variants['build_tests'].value:
           args.append('-DBUILD_TESTING=OFF')
@@ -99,12 +97,13 @@ class CosmoDycore(CMakePackage):
           args.append('-DBUILD_TESTING=ON')
           SerialBoxRoot = spec['serialbox'].prefix + '/cmake'
           args.append('-DSerialbox_DIR={0}'.format(SerialBoxRoot))
-
       # target=gpu
-      if self.spec.variants['cosmo_target'].value == 'gpu':
-        args.append('-DENABLE_CUDA=ON')
-        args.append('-DCUDA_ARCH={0}'.format(self.spec.variants['cuda_arch'].value))
-        args.append('-DDYCORE_TARGET_ARCHITECTURE=CUDA')
+      if '+cuda' in spec:
+          args.append('-DENABLE_CUDA=ON')
+          cuda_arch = spec.variants['cuda_arch'].value
+          if cuda_arch is not None:
+              args.append('-DCUDA_ARCH=sm_{0}'.format(cuda_arch[0]))
+          args.append('-DDYCORE_TARGET_ARCHITECTURE=CUDA')
       # target=cpu
       else:
         args.append('-DENABLE_CUDA=OFF')

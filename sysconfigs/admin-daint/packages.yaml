@@ -13,10 +13,10 @@ packages:
             pkgconfig: [pkg-config]
     autoconf:
         paths:
-             autoconf@2.69: /usr
+             autoconf@2.69%gcc: /usr
     automake:
         paths:
-             automake@1.15.1: /usr
+             automake@1.15.1%gcc: /usr
     binutils:
         variants: +gold~headers+libiberty+nls~plugin
         paths:
@@ -29,10 +29,10 @@ packages:
       version: [master]
       compiler: [pgi@19.7.0]
     gridtools:
-      variants: cuda_arch=sm_60
+      variants: +cuda cuda_arch=60
       compiler: [gcc]
     cosmo-dycore:
-      variants: slave=daint cuda_arch=sm_60 data_path=/scratch/snx3000/wbenjami/cosmo-serialized-data/
+      variants: slave=daint +cuda cuda_arch=60 data_path=/scratch/snx3000/wbenjami/cosmo-serialized-data/
       compiler: [gcc]
     cmake:
         paths:
@@ -119,13 +119,13 @@ packages:
             intel-mkl@2019.1.144%cce~ilp64 threads=none:   /opt/intel
     libtool:
         paths:
-             libtool@2.4.6: /usr
+             libtool@2.4.6%gcc: /usr
     lz4:
         paths:
              lz4@1.8.0: /usr
     m4:
         paths:
-             m4@1.4.18: /usr
+             m4@1.4.18%gcc: /usr
     mpich:
         buildable: false
         modules:

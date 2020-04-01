@@ -16,10 +16,6 @@ modules:
         set:
           GRIDTOOLS_DIR: '${PREFIX}'
           GRIDTOOLS_ROOT: '${PREFIX}' 
-    cosmo-dycore:
-      environment:
-        set:
-          DYCOREGT_DIR: '${PREFIX}'
     cosmo-grib-api-definitions:
       environment:
         prepend_path:
@@ -67,6 +63,7 @@ modules:
     cosmo-dycore:
       environment:
         set:
+          DYCOREGT_DIR: '${PREFIX}'
           UCX_MEMTYPE_CACHE: 'n'
           UCX_TLS: 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma'
     cosmo cosmo_target=cpu:
@@ -78,3 +75,9 @@ modules:
       environment:
         set:
           MPI_ROOT: '${PREFIX}'
+    cuda:
+      environment:
+        prepend_path:
+          LD_LIBRARY_PATH: '${PREFIX}/extras/CUPTI/lib64'
+          LD_LIBRARY_PATH: '${PREFIX}/nvvm/lib64'
+          LIBRARY_PATH: '${PREFIX}/lib64/stubs' 

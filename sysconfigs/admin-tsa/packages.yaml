@@ -32,18 +32,15 @@ packages:
   perl:
     paths: 
       perl@5.16.3: /usr
-  bzip2:
-    paths:
-      bzip2@1.0.6: /usr
   m4:
     paths: 
-      m4@1.4.16: /usr
+      m4@1.4.16%gcc: /usr
   automake:
     paths:
-      automake@1.13.4: /usr
+      automake@1.13.4%gcc: /usr
   autoconf:
     paths:
-      autoconf@2.69: /usr
+      autoconf@2.69%gcc: /usr
   bison:
     paths:
       bison@3.0.4: /usr
@@ -55,18 +52,21 @@ packages:
       libxml2@2.9.9: /usr
   libtool:
     paths:
-      libtool@2.4.2: /usr
+      libtool@2.4.2%gcc: /usr
   jasper:
     paths:
-      jasper@1.900.1: /usr/bin
+      jasper@1.900.1%gcc: /usr/bin
+  bzip2:
+    paths:
+      bzip2@1.0.6: /usr
   slurm:
     modules:
       slurm@19.05.04: slurm/19.05.04
   cosmo-dycore:
-    variants: cuda_arch=sm_70 data_path=/scratch/jenkins/data/cosmo/ slave=tsa
+    variants: +cuda cuda_arch=70 data_path=/scratch/jenkins/data/cosmo/ slave=tsa
     compiler: [gcc]
   gridtools:
-    variants: cuda_arch=sm_70
+    variants: +cuda cuda_arch=70
     compiler: [gcc]
   cosmo:
     variants: slave=tsa
