@@ -103,6 +103,8 @@ class Cosmo(MakefilePackage, CudaPackage):
 
         # Claw library
         if '+claw' in self.spec:
+            if '+cuda' in self.spec:
+                spack_env.append_flags('CLAWFC_FLAGS', '--directive=openacc -v')
             spack_env.set('CLAWDIR', self.spec['claw'].prefix)
             spack_env.set('CLAWFC', self.spec['claw'].prefix + '/bin/clawfc')
             spack_env.set('CLAWXMODSPOOL', self.spec['omni-xmod-pool'].prefix + '/omniXmodPool/')
