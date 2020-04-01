@@ -33,7 +33,9 @@ class CosmoDycore(CMakePackage):
     maintainers = ['elsagermann']
     
     version('master', branch='master')
-
+    
+    variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'Debu
+gRelease'))
     variant('build_tests', default=True, description="Compile Dycore unittests & regressiontests")
     variant('cosmo_target', default='gpu', description='Build target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)
@@ -52,7 +54,7 @@ class CosmoDycore(CMakePackage):
     depends_on('cuda', type=('build', 'run'))
     depends_on('slurm', type='run')
 
-    conflicts('+production', when='+debug')
+    conflicts('+production', when='build_type=Debug')
     conflicts('+production', when='cosmo_target=cpu')
     conflicts('+production', when='+pmeters')
 
@@ -76,10 +78,7 @@ class CosmoDycore(CMakePackage):
       GridToolsDir = spec['gridtools'].prefix + '/lib/cmake'
       
       args.append('-DGridTools_DIR={0}'.format(GridToolsDir))  
-      if spec.variants['debug'].value:
-          args.append('-DCMAKE_BUILD_TYPE=DEBUG')
-      else:
-          args.append('-DCMAKE_BUILD_TYPE=Release')
+      args.append('-DCMAKE_BUILD_TYPE={0}'.format(self.spec.variants['build_type'].value))
       args.append('-DCMAKE_INSTALL_PREFIX={0}'.format(self.prefix))
       args.append('-DCMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY=ON')
       args.append('-DBoost_USE_STATIC_LIBS=ON')
