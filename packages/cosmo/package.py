@@ -31,6 +31,8 @@ class Cosmo(MakefilePackage):
     depends_on('cosmo-dycore%gcc ~cuda cuda_arch=none', when='cosmo_target=cpu +cppdycore')
     depends_on('cosmo-dycore%gcc real_type=float', when='real_type=float +cppdycore')
     depends_on('cosmo-dycore%gcc real_type=double', when='real_type=double +cppdycore')
+    depends_on('cosmo-dycore%gcc +production', when='+production +cppdycore')
+
     depends_on('serialbox@2.6.0%pgi@19.9-gcc', when='%pgi@19.9 +serialize')
     depends_on('serialbox@2.6.0%pgi@19.7.0-gcc', when='%pgi@19.7.0 +serialize')
     depends_on('serialbox@2.6.0', when='%gcc +serialize')
@@ -53,6 +55,14 @@ class Cosmo(MakefilePackage):
     variant('claw', default=False, description='Build with claw-compiler')
     variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
     variant('eccodes', default=False, description='Build with eccodes instead of grib-api')
+    variant('production', default=False, description='Force all variants to be the ones used in production')
+    
+    conflicts('+production', when='~cppdycore')
+    conflicts('+production', when='+serialize')
+    conflicts('+production', when='+debug')
+    conflicts('+production', when='~claw')
+    conflicts('+production', when='~parallel')
+    conflicts('+production', when='cosmo_target=cpu')
 
     conflicts('+cppdycore', when='%pgi cosmo_target=cpu')
     build_directory = 'cosmo/ACC'
