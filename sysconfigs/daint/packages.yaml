@@ -133,17 +133,17 @@ packages:
             mpich@3.2%intel: cray-mpich/7.7.10
             mpich@3.2%cce:   cray-mpich/7.7.10
             mpich@3.2%pgi:   cray-mpich/7.7.10
-    netcdf:
+    netcdf-c:
         buildable: false
         modules:
-            netcdf@4.6.3.1%gcc+parallel-netcdf+mpi:   cray-netcdf-hdf5parallel/4.6.3.1
-            netcdf@4.6.3.1%intel+parallel-netcdf+mpi: cray-netcdf-hdf5parallel/4.6.3.1
-            netcdf@4.6.3.1%cce+parallel-netcdf+mpi:   cray-netcdf-hdf5parallel/4.6.3.1
-            netcdf@4.6.3.1%pgi+parallel-netcdf+mpi:   cray-netcdf-hdf5parallel/4.6.3.1
-            netcdf@4.6.3.1%gcc~parallel-netcdf~mpi:   cray-netcdf/4.6.3.1
-            netcdf@4.6.3.1%intel~parallel-netcdf~mpi: cray-netcdf/4.6.3.1
-            netcdf@4.6.3.1%cce~parallel-netcdf~mpi:   cray-netcdf/4.6.3.1
-            netcdf@4.6.3.1%pgi~parallel-netcdf~mpi:   cray-netcdf/4.6.3.1
+            netcdf-c@4.6.3.1%gcc+parallel-netcdf+mpi:   cray-netcdf-hdf5parallel/4.6.3.1
+            netcdf-c@4.6.3.1%intel+parallel-netcdf+mpi: cray-netcdf-hdf5parallel/4.6.3.1
+            netcdf-c@4.6.3.1%cce+parallel-netcdf+mpi:   cray-netcdf-hdf5parallel/4.6.3.1
+            netcdf-c@4.6.3.1%pgi+parallel-netcdf+mpi:   cray-netcdf-hdf5parallel/4.6.3.1
+            netcdf-c@4.6.3.1%gcc~parallel-netcdf~mpi:   cray-netcdf/4.6.3.1
+            netcdf-c@4.6.3.1%intel~parallel-netcdf~mpi: cray-netcdf/4.6.3.1
+            netcdf-c@4.6.3.1%cce~parallel-netcdf~mpi:   cray-netcdf/4.6.3.1
+            netcdf-c@4.6.3.1%pgi~parallel-netcdf~mpi:   cray-netcdf/4.6.3.1
     netcdf-fortran:
         buildable: false
         modules:
