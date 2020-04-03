@@ -21,25 +21,25 @@ if args.machine is None:
   
 if args.idir is not None:
     if not os.path.isdir(args.idir + '/spack'):
-        print('Cloning spack instance to:' + args.idir)
+        print('Cloning spack instance to: ' + args.idir)
         if args.version is None:
             args.version = spack_version
-        clone_cmd = 'git clone git@github.com:spack/spack.git -b' + args.version + ' ' + args.idir + '/spack'   
-        os.system(clone_cmd)
+        print('git clone git@github.com:spack/spack.git -b ' + args.version + ' ' + args.idir + '/spack')
+        os.popen('git clone git@github.com:spack/spack.git -b ' + args.version + ' ' + args.idir + '/spack')   
 
 print('Installing mch packages & ' + args.machine + ' config files')
 
 if args.reposdir is not None:
     if os.path.isdir(args.reposdir) and not os.path.isfile(args.reposdir + '/repos.yaml'):
-        repos_data = yaml.load(open('./sysconfigs/repos.yaml', 'r+'))
+        repos_data = yaml.safe_load(open('./sysconfigs/repos.yaml', 'r+'))
         repos_data['repos'] = args.reposdir
-        yaml.dump(repos_data, open('./sysconfigs/repos.yaml', 'r+'))
+        yaml.safe_dump(repos_data, open('./sysconfigs/repos.yaml', 'r+'), default_flow_style=False)
         print('Installing repos.yaml on ' + args.reposdir)
         os.popen('cp ' + dir_path + '/sysconfigs/repos.yaml ' + args.reposdir)
 
 # configure config.yaml
 
-config_data = yaml.load(open('sysconfigs/config.yaml', 'r+'))
+config_data = yaml.safe_load(open('sysconfigs/config.yaml', 'r+'))
 
 if args.pckgidir is None:
     if 'admin' in args.machine:
@@ -52,16 +52,16 @@ if args.pckgidir is None:
 config_data['config']['install_tree'] = args.pckgidir + '/spack-install/' + args.machine.replace('admin-', '')
 config_data['config']['build_stage'] = args.pckgidir + '/spack-stages/' + args.machine.replace('admin-', '')
 config_data['config']['module_roots']['tcl'] = args.pckgidir + '/modules'
-yaml.dump(config_data, open('./sysconfigs/config.yaml', 'r+'))
+yaml.safe_dump(config_data, open('./sysconfigs/config.yaml', 'r+'), default_flow_style=False)
 
 # copy modified config.yaml file in site scope of spack instance
 os.popen('cp -rf sysconfigs/config.yaml ' + args.idir + '/spack/etc/spack')
 
 # copy modified upstreams.yaml if not admin
 if not 'admin' in args.machine:
-    upstreams_data = yaml.load(open('./sysconfigs/upstreams.yaml', 'r+'))
+    upstreams_data = yaml.safe_load(open('./sysconfigs/upstreams.yaml', 'r+'))
     upstreams_data['upstreams']['spack-instance-1']['install_tree'] = '/project/g110/spack-install/' + args.machine.replace('admin-', '')
-    yaml.dump(upstreams_data, open('./sysconfigs/upstreams.yaml', 'r+'))
+    yaml.safe_dump(upstreams_data, open('./sysconfigs/upstreams.yaml', 'r+'), default_flow_style=False)
     os.popen('cp -rf sysconfigs/upstreams.yaml ' + args.idir + '/spack/etc/spack')
 
 # copy modules.yaml, packages.yaml and compiles.yaml files in site scope of spack instance
