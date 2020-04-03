@@ -1,4 +1,6 @@
 repos.yaml
+config.yaml
+upstreams.yaml
 **.pyc
 **.swn
 **.swp
