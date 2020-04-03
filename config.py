@@ -28,6 +28,7 @@ if args.idir is not None:
         os.system(clone_cmd)
 
 print('Installing mch packages & ' + args.machine + ' config files')
+
 if args.reposdir is not None:
     if os.path.isdir(args.reposdir) and not os.path.isfile(args.reposdir + '/repos.yaml'):
         repos_data = yaml.load(open('./sysconfigs/repos.yaml', 'r+'))
