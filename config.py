@@ -31,7 +31,7 @@ print('Installing mch packages & ' + args.machine + ' config files')
 if args.reposdir is not None:
     if os.path.isdir(args.reposdir) and not os.path.isfile(args.reposdir + '/repos.yaml'):
         repos_data = yaml.safe_load(open('./sysconfigs/repos.yaml', 'r+'))
-        repos_data['repos'] = args.reposdir
+        repos_data['repos'] = [dir_path]
         yaml.safe_dump(repos_data, open('./sysconfigs/repos.yaml', 'r+'), default_flow_style=False)
         print('Installing repos.yaml on ' + args.reposdir)
         os.popen('cp ' + dir_path + '/sysconfigs/repos.yaml ' + args.reposdir)
@@ -49,7 +49,7 @@ if args.pckgidir is None:
         args.pckgidir = '/scratch/snx3000/$user/spack'
       
 config_data['config']['install_tree'] = args.pckgidir + '/spack-install/' + args.machine.replace('admin-', '')
-config_data['config']['build_stage'] = args.pckgidir + '/spack-stages/' + args.machine.replace('admin-', '')
+config_data['config']['build_stage'] = [args.pckgidir + '/spack-stages/' + args.machine.replace('admin-', '')]
 config_data['config']['module_roots']['tcl'] = args.pckgidir + '/modules'
 yaml.safe_dump(config_data, open('./sysconfigs/config.yaml', 'r+'), default_flow_style=False)
 
