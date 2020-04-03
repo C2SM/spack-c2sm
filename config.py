@@ -24,9 +24,8 @@ if args.idir is not None:
         print('Cloning spack instance to: ' + args.idir)
         if args.version is None:
             args.version = spack_version
-        print('git clone git@github.com:spack/spack.git -b ' + args.version + ' ' + args.idir + '/spack')
-        os.popen('git clone git@github.com:spack/spack.git -b ' + args.version + ' ' + args.idir + '/spack')   
-
+        clone_cmd = 'git clone git@github.com:spack/spack.git -b' + args.version + ' ' + args.idir + '/spack'   
+        os.system(clone_cmd)
 print('Installing mch packages & ' + args.machine + ' config files')
 
 if args.reposdir is not None:
