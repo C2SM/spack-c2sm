@@ -1,9 +1,0 @@
-config:
-  install_tree: /project/g110/spack-install/tsa_rh7.7
-  template_dirs:
-    - $spack/templates
-  module_roots:
-    tcl:  /project/g110/spack-modules/
-  build_stage:
-    - /project/g110/spack-stages/tsa_rh7.7
-  install_path_scheme: '{name}/{version}/{compiler.name}/{hash}'
