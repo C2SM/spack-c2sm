@@ -16,11 +16,11 @@ def main():
     parser.add_argument('-p', '--pckgidir', type=str, help='Define spack package, modules & stages installation directory. Default: tsa; /scratch/$USER/spack, daint; /scratch/snx3000/$USER/spack')
     args=parser.parse_args()
 
-    if args.machine is None:
+    if not args.machine:
         print('Error: machine name required!')
         exit()
       
-    if args.idir is not None:
+    if args.idir:
         if not os.path.isdir(args.idir + '/spack'):
             print('Cloning spack instance to: ' + args.idir)
             if args.version is None:
@@ -29,7 +29,7 @@ def main():
             os.system(clone_cmd)
     print('Installing mch packages & ' + args.machine + ' config files')
 
-    if args.reposdir is not None:
+    if args.reposdir:
         if os.path.isdir(args.reposdir) and not os.path.isfile(args.reposdir + '/repos.yaml'):
             repos_data = yaml.safe_load(open('./sysconfigs/repos.yaml', 'r'))
             repos_data['repos'] = [dir_path]
@@ -40,7 +40,7 @@ def main():
     # configure config.yaml
     config_data = yaml.safe_load(open('sysconfigs/config.yaml', 'r'))
 
-    if args.pckgidir is None:
+    if not args.pckgidir:
         if 'admin' in args.machine:
             args.pckgidir = '/project/g110'
         elif args.machine == 'tsa':
