@@ -43,10 +43,10 @@ def main():
     if not args.pckgidir:
         if 'admin' in args.machine:
             args.pckgidir = '/project/g110'
-        elif args.machine == 'tsa':
-            args.pckgidir = '/scratch/$user/spack'
         elif args.machine == 'daint':
             args.pckgidir = '/scratch/snx3000/$user/spack'
+        else:
+            args.pckgidir = '/scratch/$user/spack'
 
     config_data['config']['install_tree'] = args.pckgidir + '/spack-install/' + args.machine.replace('admin-', '')
     config_data['config']['build_stage'] = [args.pckgidir + '/spack-stages/' + args.machine.replace('admin-', '')]
