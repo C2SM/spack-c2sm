@@ -14,6 +14,9 @@ packages:
     autoconf:
         paths:
              autoconf@2.69%gcc: /usr
+    bison:
+      paths:
+        bison@3.0.4%gcc: /usr
     automake:
         paths:
              automake@1.15.1%gcc: /usr
