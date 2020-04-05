@@ -44,7 +44,7 @@ packages:
       autoconf@2.69%gcc: /usr
   bison:
     paths:
-      bison@3.0.4: /usr
+      bison@3.0.4%gcc: /usr
   ncurses:
     paths:
       ncurses@6.1: /usr
