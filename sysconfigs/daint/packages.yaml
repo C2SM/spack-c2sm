@@ -36,7 +36,8 @@ packages:
       compiler: [gcc]
     cmake:
         paths:
-          cmake@3.14.5: /apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5
+          cmake@3.14.5%gcc: /apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5
+          cmake@3.14.5%pgi: /apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5
         buildable: false
         variants: ~doc+ncurses+openssl~ownlibs~qt
     cp2k:
