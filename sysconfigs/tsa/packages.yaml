@@ -3,7 +3,8 @@ packages:
     compiler: [pgi@19.9, gcc@8.3.0]
   cmake:
     modules:
-      cmake@3.14.5: cmake/3.14.5
+      cmake@3.14.5%gcc: cmake/3.14.5
+      cmake@3.14.5%pgi: cmake/3.14.5
     buildable: true
     version: [3.14.5]
     target: []
