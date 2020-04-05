@@ -31,16 +31,18 @@ class Cosmo(MakefilePackage):
     depends_on('slurm', type='run')
     depends_on('cuda', type=('build', 'run'))
     depends_on('cosmo-dycore%gcc +build_tests', when='+dycoretest')
-    depends_on('cosmo-dycore%gcc cosmo_target=gpu', when='cosmo_target=gpu +cppdycore')
-    depends_on('cosmo-dycore%gcc cosmo_target=cpu', when='cosmo_target=cpu +cppdycore')
+    depends_on('cosmo-dycore%gcc +cuda', when='cosmo_target=gpu +cppdycore')
+    depends_on('cosmo-dycore%gcc ~cuda cuda_arch=none', when='cosmo_target=cpu +cppdycore')
     depends_on('cosmo-dycore%gcc real_type=float', when='real_type=float +cppdycore')
     depends_on('cosmo-dycore%gcc real_type=double', when='real_type=double +cppdycore')
+    depends_on('cosmo-dycore%gcc +production', when='+production +cppdycore')
+
     depends_on('serialbox@2.6.0%pgi@19.9-gcc', when='%pgi@19.9 +serialize')
     depends_on('serialbox@2.6.0%pgi@19.7.0-gcc', when='%pgi@19.7.0 +serialize')
     depends_on('serialbox@2.6.0', when='%gcc +serialize')
     depends_on('mpi', type=('build', 'run'))
     depends_on('libgrib1')
-    depends_on('jasper@1.900.1')
+    depends_on('jasper@1.900.1%gcc')
     depends_on('cosmo-grib-api-definitions', when='~eccodes')
     depends_on('cosmo-eccodes-definitions@2.14.1.2', when='+eccodes')
     depends_on('perl@5.16.3:')
@@ -63,6 +65,16 @@ class Cosmo(MakefilePackage):
     conflicts('+serialize', when='+parallel')
     # previous versions contain a bug affecting serialization
     conflicts('+serialize', when='@5.07.mch1.0.p2:5.07.mch1.0.p3')
+    variant('production', default=False, description='Force all variants to be the ones used in production')
+    
+    conflicts('+production', when='~cppdycore')
+    conflicts('+production', when='+serialize')
+    conflicts('+production', when='+debug')
+    conflicts('+production', when='~claw')
+    conflicts('+production', when='~parallel')
+    conflicts('+production', when='cosmo_target=cpu')
+    conflicts('+production', when='~pollen')
+    conflicts('+cppdycore', when='%pgi cosmo_target=cpu')
     build_directory = 'cosmo/ACC'
 
     def setup_environment(self, spack_env, run_env):
