@@ -30,7 +30,7 @@ Tell the script the machine you are working on using -m <machine> and where you 
 		
     $ git clone git@github.com:MeteoSwiss-APN/spack-mch.git
     $ cd spack-mch
-    $ ./config.sh -m <machine> -i <spack-installation-directory> -v <version> -r <repos.yaml-installation-directory>
+    $ ./config.py -m <machine> -i <spack-installation-directory> -v <version> -r <repos.yaml-installation-directory> -p <spack packages, modules & stages installation-directory> -u <ON or OFF, install upstreams.yaml>
 	
 The -r option usually needs to point to the **site scope** of your newly installed spack-instance, that is, _$SPACK_DIR/etc/spack_. It can however also be used if you are a CSCS user and do not want to have your own spack instance *but still want to develop the mch-packages*. In that case, you can clone the spack-mch repo, let the -i, -m options void, BUT overwrite the *site scoped* repos.yaml files of the maintained spack instances by installing a new repos.yaml in your **user scope** _~/.spack_.
 

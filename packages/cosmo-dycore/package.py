@@ -40,15 +40,19 @@ class CosmoDycore(CMakePackage, CudaPackage):
     variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
     variant('pmeters', default=False, description="Enable the performance meters for the dycore stencils")
     variant('data_path', default='.', description='Serialization data path', multi=False)
-    
+    variant('production', default=False, description='Force all variants to be the ones used in production')   
+   
     depends_on('gridtools@1.1.3 +cuda', when='+cuda')
     depends_on('gridtools@1.1.3 ~cuda cuda_arch=none', when='~cuda')
     depends_on('boost@1.67.0')
     depends_on('serialbox@2.6.0', when='+build_tests')
     depends_on('mpi', type=('build', 'run'))
-    depends_on('cuda', when='+cuda', type=('build', 'run'))
     depends_on('slurm', type='run')
     depends_on('cmake@3.12:%gcc', type='build')
+
+    conflicts('+production', when='build_type=Debug')
+    conflicts('+production', when='cosmo_target=cpu')
+    conflicts('+production', when='+pmeters')
 
     root_cmakelists_dir='dycore'
     

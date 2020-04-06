@@ -36,7 +36,6 @@ class Gridtools(CMakePackage,  CudaPackage):
     depends_on('cmake@3.14.5:%gcc')
     depends_on('boost@1.67.0:')
     depends_on('mpi',  type=('build', 'run'))
-    depends_on('cuda', when='+cuda', type=('build', 'run'))
 
     def cmake_args(self):
       spec = self.spec

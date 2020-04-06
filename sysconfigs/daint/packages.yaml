@@ -14,6 +14,9 @@ packages:
     autoconf:
         paths:
              autoconf@2.69%gcc: /usr
+    bison:
+      paths:
+        bison%gcc: /usr
     automake:
         paths:
              automake@1.15.1%gcc: /usr
@@ -36,7 +39,8 @@ packages:
       compiler: [gcc]
     cmake:
         paths:
-          cmake@3.14.5: /apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5
+          cmake@3.14.5%gcc: /apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5
+          cmake@3.14.5%pgi: /apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5
         buildable: false
         variants: ~doc+ncurses+openssl~ownlibs~qt
     cp2k:
@@ -117,9 +121,15 @@ packages:
             intel-mkl@2019.1.144%intel~ilp64 threads=none: /opt/intel
             intel-mkl@2019.1.144%gcc~ilp64 threads=none:   /opt/intel
             intel-mkl@2019.1.144%cce~ilp64 threads=none:   /opt/intel
+    libjpeg:
+        paths:
+            libjpeg%gcc: /usr
     libtool:
         paths:
              libtool@2.4.6%gcc: /usr
+    libxml2:
+        paths:
+             libxml2%gcc: /usr
     lz4:
         paths:
              lz4@1.8.0: /usr
@@ -160,6 +170,9 @@ packages:
     openssl:
         paths:
              openssl@1.1.0i: /usr
+    openjdk:
+        paths:
+             openjdk%gcc: /usr/lib64/jvm/java-11-openjdk
     papi:
         buildable: false
         modules:
