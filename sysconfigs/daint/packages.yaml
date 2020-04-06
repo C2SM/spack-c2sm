@@ -16,7 +16,7 @@ packages:
              autoconf@2.69%gcc: /usr
     bison:
       paths:
-        bison@3.0.4%gcc: /usr
+        bison%gcc: /usr
     automake:
         paths:
              automake@1.15.1%gcc: /usr
@@ -143,17 +143,17 @@ packages:
             mpich@3.2%intel: cray-mpich/7.7.10
             mpich@3.2%cce:   cray-mpich/7.7.10
             mpich@3.2%pgi:   cray-mpich/7.7.10
-    netcdf:
+    netcdf-c:
         buildable: false
         modules:
-            netcdf@4.6.3.1%gcc+parallel-netcdf+mpi:   cray-netcdf-hdf5parallel/4.6.3.1
-            netcdf@4.6.3.1%intel+parallel-netcdf+mpi: cray-netcdf-hdf5parallel/4.6.3.1
-            netcdf@4.6.3.1%cce+parallel-netcdf+mpi:   cray-netcdf-hdf5parallel/4.6.3.1
-            netcdf@4.6.3.1%pgi+parallel-netcdf+mpi:   cray-netcdf-hdf5parallel/4.6.3.1
-            netcdf@4.6.3.1%gcc~parallel-netcdf~mpi:   cray-netcdf/4.6.3.1
-            netcdf@4.6.3.1%intel~parallel-netcdf~mpi: cray-netcdf/4.6.3.1
-            netcdf@4.6.3.1%cce~parallel-netcdf~mpi:   cray-netcdf/4.6.3.1
-            netcdf@4.6.3.1%pgi~parallel-netcdf~mpi:   cray-netcdf/4.6.3.1
+            netcdf-c@4.6.3.1%gcc+parallel-netcdf+mpi:   cray-netcdf-hdf5parallel/4.6.3.1
+            netcdf-c@4.6.3.1%intel+parallel-netcdf+mpi: cray-netcdf-hdf5parallel/4.6.3.1
+            netcdf-c@4.6.3.1%cce+parallel-netcdf+mpi:   cray-netcdf-hdf5parallel/4.6.3.1
+            netcdf-c@4.6.3.1%pgi+parallel-netcdf+mpi:   cray-netcdf-hdf5parallel/4.6.3.1
+            netcdf-c@4.6.3.1%gcc~parallel-netcdf~mpi:   cray-netcdf/4.6.3.1
+            netcdf-c@4.6.3.1%intel~parallel-netcdf~mpi: cray-netcdf/4.6.3.1
+            netcdf-c@4.6.3.1%cce~parallel-netcdf~mpi:   cray-netcdf/4.6.3.1
+            netcdf-c@4.6.3.1%pgi~parallel-netcdf~mpi:   cray-netcdf/4.6.3.1
     netcdf-fortran:
         buildable: false
         modules:
@@ -172,7 +172,7 @@ packages:
              openssl@1.1.0i: /usr
     openjdk:
         paths:
-             openjdk%gcc: /usr
+             openjdk%gcc: /usr/lib64/jvm/java-11-openjdk
     papi:
         buildable: false
         modules:
