@@ -116,7 +116,7 @@ class Cosmo(MakefilePackage):
     @property
     def build_targets(self):
         build = []
-        if self.spec.variants['pollen']:
+        if self.spec.variants['pollen'].value:
             build.append('POLLEN=1')
         if self.spec.variants['real_type'].value == 'float':
             build.append('SINGLEPRECISION=1')
