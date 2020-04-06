@@ -31,13 +31,8 @@ class Cosmo(MakefilePackage, CudaPackage):
     depends_on('slurm', type='run')
     depends_on('cuda', type=('build', 'run'))
     depends_on('cosmo-dycore%gcc +build_tests', when='+dycoretest')
-<<<<<<< HEAD
     depends_on('cosmo-dycore%gcc +cuda', when='+cuda+cppdycore')
     depends_on('cosmo-dycore%gcc ~cuda cuda_arch=none', when='~cuda cuda_arch=none +cppdycore')
-=======
-    depends_on('cosmo-dycore%gcc +cuda', when='cosmo_target=gpu +cppdycore')
-    depends_on('cosmo-dycore%gcc ~cuda cuda_arch=none', when='cosmo_target=cpu +cppdycore')
->>>>>>> master
     depends_on('cosmo-dycore%gcc real_type=float', when='real_type=float +cppdycore')
     depends_on('cosmo-dycore%gcc real_type=double', when='real_type=double +cppdycore')
     depends_on('cosmo-dycore%gcc +production', when='+production +cppdycore')
