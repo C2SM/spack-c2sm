@@ -11,10 +11,15 @@ def main():
     parser=argparse.ArgumentParser(description='Small config script which can be used to install a spack instance with the correct configuration files and mch spack packages.')
     parser.add_argument('-i', '--idir', type=str, default=dir_path, help='Where the Spack instance is installed or you want it to be installed')
     parser.add_argument('-m', '--machine', type=str, help='Required: machine name')
+    parser.add_argument('-u', '--upstreams', type=str, default='ON', help='ON or OFF, install upstreams.yaml file')
     parser.add_argument('-v', '--version', type=str, default='v0.14.1', help='Spack version, Default: ' + spack_version)
     parser.add_argument('-r', '--reposdir', type=str, help='repos.yaml install directory')
     parser.add_argument('-p', '--pckgidir', type=str, help='Define spack package, modules & stages installation directory. Default: tsa; /scratch/$USER/spack, daint; /scratch/snx3000/$USER/spack')
     args=parser.parse_args()
+    
+    if args.upstreams != 'OFF' and args.upstreams != 'ON':
+        print('Upstreams must be set to ON or OFF!')
+        exit()
 
     if not args.machine:
         print('Error: machine name required!')
@@ -57,7 +62,7 @@ def main():
     os.popen('cp -rf sysconfigs/config.yaml ' + args.idir + '/spack/etc/spack')
 
     # copy modified upstreams.yaml if not admin
-    if not 'admin' in args.machine:
+    if not 'admin' in args.machine and args.upstreams=='ON':
         upstreams_data = yaml.safe_load(open('./sysconfigs/upstreams.yaml', 'r'))
         upstreams_data['upstreams']['spack-instance-1']['install_tree'] = '/project/g110/spack-install/' + args.machine.replace('admin-', '')
         yaml.safe_dump(upstreams_data, open('./sysconfigs/upstreams.yaml', 'w'), default_flow_style=False)
