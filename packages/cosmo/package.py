@@ -107,6 +107,8 @@ class Cosmo(MakefilePackage):
             spack_env.set('CLAWDIR', self.spec['claw'].prefix)
             spack_env.set('CLAWFC', self.spec['claw'].prefix + '/bin/clawfc')
             spack_env.set('CLAWXMODSPOOL', self.spec['omni-xmod-pool'].prefix + '/omniXmodPool/')
+            if self.spec['mpi'].name == 'mpich':
+                spack_env.append_flags('CLAWFC_FLAGS', '-U__CRAYXC')
         spack_env.set('UCX_MEMTYPE_CACHE', 'n')
         if '+cppdycore' in self.spec and self.spec.variants['cosmo_target'].value == 'gpu':
           spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
