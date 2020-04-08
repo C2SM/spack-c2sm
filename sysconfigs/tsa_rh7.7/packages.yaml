@@ -3,7 +3,8 @@ packages:
     compiler: [pgi@19.9, gcc@8.3.0]
   cmake:
     modules:
-      cmake@3.14.5: cmake/3.14.5
+      cmake@3.14.5%gcc: cmake/3.14.5
+      cmake@3.14.5%pgi: cmake/3.14.5
     buildable: true
     version: [3.14.5]
     target: []
@@ -12,7 +13,7 @@ packages:
     paths: {}
   cuda:
     modules:
-      cuda@10.1: cuda/10.1.243
+      cuda@10.1.243: cuda/10.1.243
     buildable: true
     version: []
     target: []
@@ -43,13 +44,13 @@ packages:
       autoconf@2.69%gcc: /usr
   bison:
     paths:
-      bison@3.0.4: /usr
+      bison@3.0.4%gcc: /usr
   ncurses:
     paths:
       ncurses@6.1: /usr
   libxml2:
     paths:
-      libxml2@2.9.9: /usr
+      libxml2@2.9.9%gcc: /usr
   libtool:
     paths:
       libtool@2.4.2%gcc: /usr
