@@ -49,6 +49,7 @@ class CosmoDycore(CMakePackage, CudaPackage):
     depends_on('mpi', type=('build', 'run'))
     depends_on('slurm', type='run')
     depends_on('cmake@3.12:%gcc', type='build')
+    depends_on('cuda', when='+cuda', type=('build', 'run'))
 
     conflicts('+production', when='build_type=Debug')
     conflicts('+production', when='cosmo_target=cpu')
