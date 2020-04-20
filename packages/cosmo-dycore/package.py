@@ -25,7 +25,7 @@
 from spack import *
 
 
-class CosmoDycore(CMakePackage, CudaPackage):
+class CosmoDycore(CMakePackage):
     """FIXME: Put a proper description of your package here."""
     
     homepage = "https://github.com/COSMO-ORG/cosmo/tree/master/dycore"
@@ -40,8 +40,10 @@ class CosmoDycore(CMakePackage, CudaPackage):
     variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
     variant('pmeters', default=False, description="Enable the performance meters for the dycore stencils")
     variant('data_path', default='.', description='Serialization data path', multi=False)
-    variant('production', default=False, description='Force all variants to be the ones used in production')   
-   
+    variant('production', default=False, description='Force all variants to be the ones used in production')
+    variant('cuda_arch', default='none', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
+    variant('cuda', default=True, description='Build with cuda or target gpu')
+
     depends_on('gridtools@1.1.3 +cuda', when='+cuda')
     depends_on('gridtools@1.1.3 ~cuda cuda_arch=none', when='~cuda')
     depends_on('boost@1.67.0')
@@ -49,6 +51,7 @@ class CosmoDycore(CMakePackage, CudaPackage):
     depends_on('mpi', type=('build', 'run'))
     depends_on('slurm', type='run')
     depends_on('cmake@3.12:%gcc', type='build')
+    depends_on('cuda', when='+cuda', type=('build', 'run'))
 
     conflicts('+production', when='build_type=Debug')
     conflicts('+production', when='cosmo_target=cpu')
@@ -102,7 +105,7 @@ class CosmoDycore(CMakePackage, CudaPackage):
           args.append('-DENABLE_CUDA=ON')
           cuda_arch = spec.variants['cuda_arch'].value
           if cuda_arch is not None:
-              args.append('-DCUDA_ARCH=sm_{0}'.format(cuda_arch[0]))
+              args.append('-DCUDA_ARCH=sm_{0}'.format(cuda_arch))
           args.append('-DDYCORE_TARGET_ARCHITECTURE=CUDA')
       # target=cpu
       else:

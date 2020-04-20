@@ -4,7 +4,7 @@ compilers::
     extra_rpaths: []
     flags: {}
     modules: 
-    - /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/modules/all/pgi/19.9-gcc-8.3.0
+    - /apps/arolla/UES/jenkins/RH7.7/pgi/19.9/easybuild/modules/all/pgi/19.9-gcc-8.3.0
     operating_system: rhel7
     paths:
       cc: pgcc
@@ -32,7 +32,7 @@ compilers::
     extra_rpaths: []
     flags: {}
     modules: 
-    - /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/modules/all/pgi/19.9-gcc-8.3.0
+    - /apps/arolla/UES/jenkins/RH7.7/pgi/19.9/easybuild/modules/all/pgi/19.9-gcc-8.3.0
     operating_system: rhel7
     paths:
       cc: /apps/arolla/UES/jenkins/RH7.7/generic/easybuild/software/GCCcore/8.3.0/bin/gcc
