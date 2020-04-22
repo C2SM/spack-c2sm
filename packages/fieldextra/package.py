@@ -31,20 +31,53 @@ class Fieldextra(MakefilePackage):
     git      = 'git@github.com:COSMO-ORG/fieldextra.git'
     maintainers = ['elsagermann']
 
-    version('v13.2.0', 'fe0a8b14314d7527168fd5684d89828bbd83ebf2')
-    version('v13.1.0', '9649ec36dc36dfe3ef679a507f9a849dc2fdd452')
-        
+    version('v13.2.0', commit='fe0a8b14314d7527168fd5684d89828bbd83ebf2')
+    version('v13.1.0', commit='9649ec36dc36dfe3ef679a507f9a849dc2fdd452')
+    
+    variant('build_type', default='optimized', description='Build type', values=('debug', 'optimized'))
+    variant('openmp', default=True)
+
     depends_on('libaec@1.0.0')
     depends_on('jasper@1.900.1')
-    depends_on('eccodes@2.14.1 jp2k=jasper +openmp')
+    depends_on('eccodes@2.14.1 jp2k=jasper +openmp', when='+openmp')
+    depends_on('eccodes@2.14.1 jp2k=jasper ~openmp', when='~openmp')
     depends_on('hdf5@1.8.21')
     depends_on('zlib@1.2.11')
     depends_on('netcdf-c')
     depends_on('netcdf-fortran')
-    depends_on('rttov')
+    depends_on('rttov@11.2.0')
     depends_on('libgrib1')
-    depends_on('icontools@2.3.6')
+    depends_on('icontools@13.2.0 ~openmp', when='~openmp')
+    depends_on('icontools@13.2.0 +openmp', when='+openmp')
     
+    build_directory = 'src'
+
+    def edit(self, spec, prefix):
+        if self.compiler.name == 'gcc':
+            mode = 'gnu'
+        else:
+            mode = self.compiler.name
+        if spec.variants['build_type'].value == 'debug':
+            mode += ',dbg'
+        elif spec.variants['build_type'].value == 'optimized':
+            mode += ',opt'
+        if self.spec.variants['openmp'].value:
+            mode += ',omp'
+        env['mode'] = mode
+        
+        with working_dir(self.build_directory):
+            optionsfilter = FileFilter('Makefile')
+            optionsfilter.filter('lgrib1dir *=.*', 'lgrib1dir = ' + spec['libgrib1'].prefix + '/lib')
+            optionsfilter.filter('laecdir *=.*', 'laecdir = ' + spec['libaec'].prefix + '/lib')
+            optionsfilter.filter('ljasperdir *=.*', 'ljasperdir = ' + spec['jasper'].prefix)
+            optionsfilter.filter('leccdir *=.*', 'leccdir = ' + spec['eccodes'].prefix + '/lib')
+            optionsfilter.filter('lzdir *=.*', 'lzdir = ' + spec['zlib'].prefix + '/lib')
+            optionsfilter.filter('lhdf5dir *=.*', 'lhdf5dir = ' + spec['hdf5'].prefix + '/lib')
+            optionsfilter.filter('lnetcdfdir *=.*', 'lnetcdfdir = ' + spec['netcdf-c'].prefix + '/lib')
+            optionsfilter.filter('lnetcdffortrandir *=.*', 'lnetcdffortrandir = ' + spec['netcdf-fortran'].prefix + '/lib')
+            optionsfilter.filter('lrttovdir *=.*', 'lrttovdir = ' + spec['rttov'].prefix + '/lib')
+            optionsfilter.filter('licontoolsdir *=.*', 'licontoolsdir = ' + spec['icontools'].prefix + '/lib')
+
     def install(self, spec, prefix):
-        make()
-        make('install')
+        mkdir(prefix.bin)
+        install_tree('bin', prefix.bin)
