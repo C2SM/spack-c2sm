@@ -78,6 +78,7 @@ modules:
     cuda:
       environment:
         prepend_path:
-          LD_LIBRARY_PATH: '${PREFIX}/extras/CUPTI/lib64'
-          LD_LIBRARY_PATH: '${PREFIX}/nvvm/lib64'
-          LIBRARY_PATH: '${PREFIX}/lib64/stubs' 
+          CPATH: '${PREFIX}/extras/CUPTI/include:${PREFIX}/nvvm/include'
+          LD_LIBRARY_PATH: '${PREFIX}/extras/CUPTI/lib64:${PREFIX}/nvvm/lib64:/cm/local/apps/cuda/libs/current/lib64'
+          LIBRARY_PATH: '${PREFIX}/lib64/stubs'
+          PATH: '${PREFIX}:${PREFIX}/nvvm/bin'

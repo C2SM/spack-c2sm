@@ -17,6 +17,7 @@ class Cosmo(MakefilePackage, CudaPackage):
 
     version('master', branch='master')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
+    version('5.07.mch1.0.p5', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p5')
     version('5.07.mch1.0.p4', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p4')
     version('5.07.mch1.0.p3', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p3')
     version('5.07.mch1.0.p2', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p2')
@@ -25,6 +26,8 @@ class Cosmo(MakefilePackage, CudaPackage):
     version('5.06', tag='5.06')
     
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
+    patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
+
 
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
