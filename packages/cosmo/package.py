@@ -63,6 +63,7 @@ class Cosmo(MakefilePackage):
     variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
     variant('eccodes', default=False, description='Build with eccodes instead of grib-api')
     variant('pollen', default=False, description='Build with pollen enabled')
+    variant('verbose', default=False, description='Build cosmo with verbose enabled')
 
     conflicts('+pollen', when='@5.05:5.06,master')
     conflicts('+serialize', when='+parallel')
@@ -131,6 +132,8 @@ class Cosmo(MakefilePackage):
             build.append('CLAW=1')
         if '+serialize' in self.spec:
             build.append('SERIALIZE=1')
+        if self.spec.variants['verbose'].value:
+            build.append('VERBOSE=1')
         MakeFileTarget = ''
         if '+parallel' in self.spec:
             MakeFileTarget += 'par'
