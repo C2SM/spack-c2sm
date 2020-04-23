@@ -41,7 +41,7 @@ class Fieldextra(MakefilePackage):
     depends_on('jasper@1.900.1')
     depends_on('eccodes@2.14.1 jp2k=jasper +openmp', when='+openmp')
     depends_on('eccodes@2.14.1 jp2k=jasper ~openmp', when='~openmp')
-    depends_on('hdf5@1.8.21')
+    depends_on('hdf5@1.8.21 +hl')
     depends_on('zlib@1.2.11')
     depends_on('netcdf-c')
     depends_on('netcdf-fortran')
