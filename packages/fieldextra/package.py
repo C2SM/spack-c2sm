@@ -37,7 +37,7 @@ class Fieldextra(MakefilePackage):
     variant('build_type', default='optimized', description='Build type', values=('debug', 'optimized'))
     variant('openmp', default=True)
 
-    depends_on('libaec@1.0.0')
+    depends_on('libaec@1.0.0 ~build_shared_libs')
     depends_on('jasper@1.900.1 ~shared')
     depends_on('eccodes@2.14.1 jp2k=jasper +openmp', when='+openmp')
     depends_on('eccodes@2.14.1 jp2k=jasper ~openmp', when='~openmp')
@@ -69,7 +69,7 @@ class Fieldextra(MakefilePackage):
             optionsfilter = FileFilter('Makefile')
             optionsfilter.filter('lgrib1dir *=.*', 'lgrib1dir = ' + spec['fieldextra-grib1'].prefix + '/lib')
             optionsfilter.filter('laecdir *=.*', 'laecdir = ' + spec['libaec'].prefix + '/lib')
-            optionsfilter.filter('ljasperdir *=.*', 'ljasperdir = ' + spec['jasper'].prefix + '/../lib64')
+            optionsfilter.filter('ljasperdir *=.*', 'ljasperdir = ' + spec['jasper'].prefix + '/lib')
             optionsfilter.filter('leccdir *=.*', 'leccdir = ' + spec['eccodes'].prefix + '/lib')
             optionsfilter.filter('lzdir *=.*', 'lzdir = ' + spec['zlib'].prefix + '/lib')
             optionsfilter.filter('lhdf5dir *=.*', 'lhdf5dir = ' + spec['hdf5'].prefix + '/lib')
