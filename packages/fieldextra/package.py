@@ -38,7 +38,7 @@ class Fieldextra(MakefilePackage):
     variant('openmp', default=True)
 
     depends_on('libaec@1.0.0')
-    depends_on('jasper@1.900.1')
+    depends_on('jasper@1.900.1 ~shared')
     depends_on('eccodes@2.14.1 jp2k=jasper +openmp', when='+openmp')
     depends_on('eccodes@2.14.1 jp2k=jasper ~openmp', when='~openmp')
     depends_on('hdf5@1.8.21 +hl')
@@ -69,14 +69,16 @@ class Fieldextra(MakefilePackage):
             optionsfilter = FileFilter('Makefile')
             optionsfilter.filter('lgrib1dir *=.*', 'lgrib1dir = ' + spec['fieldextra-grib1'].prefix + '/lib')
             optionsfilter.filter('laecdir *=.*', 'laecdir = ' + spec['libaec'].prefix + '/lib')
-            optionsfilter.filter('ljasperdir *=.*', 'ljasperdir = ' + spec['jasper'].prefix)
+            optionsfilter.filter('ljasperdir *=.*', 'ljasperdir = ' + spec['jasper'].prefix + '/../lib64')
             optionsfilter.filter('leccdir *=.*', 'leccdir = ' + spec['eccodes'].prefix + '/lib')
             optionsfilter.filter('lzdir *=.*', 'lzdir = ' + spec['zlib'].prefix + '/lib')
             optionsfilter.filter('lhdf5dir *=.*', 'lhdf5dir = ' + spec['hdf5'].prefix + '/lib')
             optionsfilter.filter('lnetcdfcdir *=.*', 'lnetcdfcdir = ' + spec['netcdf-c'].prefix + '/lib64')
             optionsfilter.filter('lnetcdffortrandir *=.*', 'lnetcdffortrandir = ' + spec['netcdf-fortran'].prefix + '/lib')
             optionsfilter.filter('lrttovdir *=.*', 'lrttovdir = ' + spec['rttov'].prefix + '/lib')
-            optionsfilter.filter('licontoolsdir *=.*', 'licontoolsdir = ' + spec['icontools'].prefix + '/lib')
+            optionsfilter.filter('licontoolsdir *=.*', 'licontoolsdir = ' + spec['icontools'].prefix + '/lib')      
+            force_symlink('locale_mch/fxtr_operator_specific.f90', 'fxtr_operator_specific.f90')
+            force_symlink('locale_mch/fxtr_write_specific.f90', 'fxtr_write_specific.f90')
 
     def install(self, spec, prefix):
         mkdir(prefix.bin)
