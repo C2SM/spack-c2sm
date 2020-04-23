@@ -46,7 +46,7 @@ class Fieldextra(MakefilePackage):
     depends_on('netcdf-c')
     depends_on('netcdf-fortran')
     depends_on('rttov@11.2.0')
-    depends_on('libgrib1')
+    depends_on('fieldextra-grib1@2.15')
     depends_on('icontools@13.2.0 ~openmp', when='~openmp')
     depends_on('icontools@13.2.0 +openmp', when='+openmp')
     
@@ -67,7 +67,7 @@ class Fieldextra(MakefilePackage):
         
         with working_dir(self.build_directory):
             optionsfilter = FileFilter('Makefile')
-            optionsfilter.filter('lgrib1dir *=.*', 'lgrib1dir = ' + spec['libgrib1'].prefix + '/lib')
+            optionsfilter.filter('lgrib1dir *=.*', 'lgrib1dir = ' + spec['fieldextra-grib1'].prefix + '/lib')
             optionsfilter.filter('laecdir *=.*', 'laecdir = ' + spec['libaec'].prefix + '/lib')
             optionsfilter.filter('ljasperdir *=.*', 'ljasperdir = ' + spec['jasper'].prefix)
             optionsfilter.filter('leccdir *=.*', 'leccdir = ' + spec['eccodes'].prefix + '/lib')
