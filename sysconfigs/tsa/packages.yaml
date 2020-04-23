@@ -13,7 +13,7 @@ packages:
     paths: {}
   cuda:
     modules:
-      cuda@10.1.243: cuda/10.1.243
+      cuda@10.1: cuda/10.1.243
     buildable: true
     version: []
     target: []
@@ -23,13 +23,13 @@ packages:
       openmpi@4.0.2%pgi: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/OpenMPI/4.0.2-PGI-19.9-GCC-8.3.0-cuda-10.1
       openmpi@4.0.2%gcc: /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/OpenMPI/4.0.2-gcccuda-2019b-cuda-10.1
   netcdf-fortran:
-    paths:
-      netcdf-fortran@4.4.5%pgi: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/netCDF-Fortran/4.4.5-PGI-19.9-GCC-8.3.0/
-      netcdf-fortran@4.4.5%gcc: /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/netCDF-Fortran/4.4.5-fosscuda-2019b
+    modules:
+      netcdf-fortran@4.4.5%gcc: /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/modules/all/netcdf-fortran/4.4.5-fosscuda-2019b
+      netcdf-fortran@4.4.5%pgi: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/modules/all/netcdf-fortran/4.4.5-pgi-19.9-gcc-8.3.0
   netcdf-c:
-    paths:
-      netcdf-c@4.7.0%pgi : /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/netCDF/4.7.0-PGI-19.9-GCC-8.3.0
-      netcdf-c@4.7.0%gcc : /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/netCDF/4.7.0-fosscuda-2019b
+    modules:
+      netcdf-c@4.7.0%gcc: /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/modules/all/netcdf/4.7.0-fosscuda-2019b
+      netcdf-c@4.7.0%pgi: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/modules/all/netcdf/4.7.0-pgi-19.9-gcc-8.3.0
   perl:
     paths: 
       perl@5.16.3: /usr
@@ -56,7 +56,7 @@ packages:
       libtool@2.4.2%gcc: /usr
   jasper:
     paths:
-      jasper@1.900.1%gcc: /usr/bin
+      jasper@1.900.1%gcc: /usr
   bzip2:
     paths:
       bzip2@1.0.6: /usr
@@ -70,7 +70,7 @@ packages:
     variants: +cuda cuda_arch=70
     compiler: [gcc]
   cosmo:
-    variants: slave=tsa
+    variants: +cuda cuda_arch=70 slave=tsa
     version: [master]
     compiler: [pgi@19.9, gcc@8.3.0]
 

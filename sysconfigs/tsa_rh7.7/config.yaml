@@ -1,0 +1,10 @@
+config:
+  install_tree: /scratch/$user/spack/install/tsa_rh7.7 #to be changed to project/c14/install/tsa
+  template_dirs:
+    - $spack/templates
+  module_roots:
+    tcl:  /scratch/$user/spack/modules/ #to be changed to ?
+  build_stage:
+    - /scratch/$user/spack/spack-stages/tsa_rh7.7
+  install_path_scheme: '{name}/{version}/{compiler.name}/{hash}'
+  source_cache: ~/.spack/source_cache
