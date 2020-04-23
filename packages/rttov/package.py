@@ -28,12 +28,12 @@ class Rttov(MakefilePackage):
 
     # FIXME: Add a proper url for your package's homepage here.
     homepage = "https://www.nwpsaf.eu/site/software/rttov/"
-    url      = "https://github.com/elsagermann/rttov.git"
-    git      = 'git@github.com:elsagermann/rttov.git'
+    url      = "https://github.com/C2SM-RCM/rttov.git"
+    git      = 'git@github.com:C2SM-RCM/rttov.git'
 
     maintainers = ['elsagermann']
 
-    version('11.2.0', branch='add_rttov11')
+    version('11.2.0', branch='master')
 
     build_directory = 'rttov11/rttov-11.2.0/src'
     
