@@ -123,5 +123,6 @@ class Eccodes(CMakePackage):
 
         if '^python' in self.spec:
             args.append('-DPYTHON_EXECUTABLE:FILEPATH=' + python.path)
+        args.append('-DBUILD_SHARED_LIBS=' + self.spec.variants['build_shared_libs'].value)
 
         return args
