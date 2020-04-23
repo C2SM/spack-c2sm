@@ -28,14 +28,14 @@ class Rttov(MakefilePackage):
 
     # FIXME: Add a proper url for your package's homepage here.
     homepage = "https://www.nwpsaf.eu/site/software/rttov/"
-    url      = "file:///store/mch/msopr/tsm"
-    #git      = 'git@github.com:C2SM-RCM/rttov.git'
+    url      = "https://github.com/elsagermann/rttov.git"
+    git      = 'git@github.com:elsagermann/rttov.git'
 
     maintainers = ['elsagermann']
 
-    version('11.2.0', extension='tar.gz')
+    version('11.2.0', branch='add_rttov11')
 
-    build_directory = 'src'
+    build_directory = 'rttov11/rttov-11.2.0/src'
     
     @property
     def build_targets(self):
@@ -52,6 +52,9 @@ class Rttov(MakefilePackage):
         mkdir(prefix.bin)
         mkdir(prefix.mod)
         mkdir(prefix.lib)
-        install_tree('bin', prefix.bin)
-        install_tree('mod', prefix.mod)
-        install_tree('lib', prefix.lib)
+        mkdir(prefix.include)
+        with working_dir('rttov11/rttov-11.2.0'):
+            install_tree('bin', prefix.bin)
+            install_tree('mod', prefix.mod)
+            install_tree('lib', prefix.lib)
+            install_tree('include', prefix.include)
