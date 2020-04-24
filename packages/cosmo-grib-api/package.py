@@ -32,7 +32,7 @@ class CosmoGribApi(AutotoolsPackage):
         args = [
             '--build=x86_64',
             '--host=x86_64',
-            '--with-jasper={0}'.format(self.spec['jasper'].prefix + '/lib64'),
+            '--with-jasper={0}'.format(self.spec['jasper'].prefix + '/lib'),
             '--enable-static',
             'enable_share=no',
             '--disable-jpeg',
