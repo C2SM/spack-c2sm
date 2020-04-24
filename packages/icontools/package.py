@@ -36,8 +36,8 @@ class Icontools(MakefilePackage):
     variant('build_type', default='optimized', description='Build type', values=('debug', 'optimized'))
     variant('openmp', default=True)
 
-    depends_on('netcdf-c')
-    depends_on('netcdf-fortran')
+    depends_on('netcdf-c ~mpi')
+    depends_on('netcdf-fortran ~mpi')
 
     build_directory = 'icontools/icontools-2.3.6'
 
