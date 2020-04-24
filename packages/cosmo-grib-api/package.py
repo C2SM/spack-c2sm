@@ -36,6 +36,8 @@ class CosmoGribApi(AutotoolsPackage):
             '--enable-static',
             'enable_share=no',
             '--disable-jpeg',
+            '--enable-pthread',
+            '--enable-omp-packing',
         ]
 
         return args                                   
