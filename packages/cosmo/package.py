@@ -94,7 +94,7 @@ class Cosmo(MakefilePackage):
           eccodes_samples_path = self.spec['cosmo-eccodes-definitions'].prefix + '/cosmoDefinitions/samples/'
           spack_env.set('GRIB_SAMPLES_PATH', eccodes_samples_path)
           spack_env.set('GRIBAPI_DIR', self.spec['eccodes'].prefix)
-        spack_env.set('GRIB1_DIR', self.spec['libgrib1'].prefix)
+        spack_env.set('GRIB1_DIR', self.spec['libgrib1'].prefix + '/lib')
         spack_env.set('JASPER_DIR', self.spec['jasper'].prefix)
         spack_env.set('MPI_ROOT', self.spec['mpi'].prefix)
         if self.spec.variants['cosmo_target'].value == 'gpu' or '+serialize' in self.spec:
@@ -159,13 +159,14 @@ class Cosmo(MakefilePackage):
             elif self.compiler.name == 'cce':
                 OptionsFileName += '.cray'
             OptionsFileName += '.' + spec.variants['cosmo_target'].value
-            optionsfilter = FileFilter('Options.lib.' + spec.variants['cosmo_target'].value)
+            optionsfilter = FileFilter(OptionsFileName)
             if self.spec.variants['slave'].value == 'tsa':
                 optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I{0}/include'.format(spec['netcdf-fortran'].prefix))
                 optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L{0}/lib -lnetcdff -L{1}/lib -lnetcdf'.format(spec['netcdf-fortran'].prefix, spec['netcdf-c'].prefix))
             else:
                 optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I$(NETCDF_DIR)/include')
                 optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf')
+            optionsfilter = FileFilter('Options.lib.' + spec.variants['cosmo_target'].value)
             if '+eccodes' in spec:
               optionsfilter.filter('GRIBAPIL *=.*', 'GRIBAPIL = -L$(GRIBAPI_DIR)/lib -leccodes_f90 -leccodes -L$(JASPER_DIR)/lib -ljasper')
             makefile.filter('/Options.*', '/' + OptionsFileName)
