@@ -24,7 +24,7 @@ class CosmoGribApi(AutotoolsPackage):
     depends_on('autoconf%gcc')
     depends_on('automake%gcc')
     depends_on('libtool%gcc')
-    depends_on('jasper@1.900.1%gcc')
+    depends_on('jasper@1.900.1%gcc ~shared')
     
     force_autoreconf = True
  
@@ -32,12 +32,10 @@ class CosmoGribApi(AutotoolsPackage):
         args = [
             '--build=x86_64',
             '--host=x86_64',
-            '--with-jasper={0}'.format(self.spec['jasper'].prefix),
+            '--with-jasper={0}'.format(self.spec['jasper'].prefix + '/lib64'),
             '--enable-static',
             'enable_share=no',
             '--disable-jpeg',
-            '--enable-pthread',
-            '--enable-omp-packing',
         ]
 
         return args                                   
