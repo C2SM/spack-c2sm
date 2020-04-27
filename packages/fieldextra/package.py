@@ -81,5 +81,17 @@ class Fieldextra(MakefilePackage):
             force_symlink('locale_mch/fxtr_write_specific.f90', 'fxtr_write_specific.f90')
 
     def install(self, spec, prefix):
+        binary_name = 'fieldextra'
+        if self.compiler.name == 'gcc':
+          binary_name += '_gnu'
+        else:
+            binary_name +=  '_' + self.compiler.name
+        if spec.variants['build_type'].value == 'debug':
+            binary_name += '_dbg'
+        elif spec.variants['build_type'].value == 'optimized':
+            binary_name += '_opt'
+        if self.spec.variants['openmp'].value:
+            binary_name += '_omp'
         mkdir(prefix.bin)
-        install_tree('bin', prefix.bin)
+        with working_dir(self.build_directory):
+            install(binary_name, prefix.bin)

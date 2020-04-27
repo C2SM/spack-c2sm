@@ -66,6 +66,8 @@ class Eccodes(CMakePackage):
     depends_on('python@2.6:2.999', when='@:2.12+python',
                type=('build', 'link', 'run'))
     depends_on('py-numpy', when='+python', type=('build', 'run'))
+
+    patch('fxtr_parallel_import.patch', when='@2.14.1')
     extends('python', when='+python')
 
     conflicts('+openmp', when='+pthreads',
