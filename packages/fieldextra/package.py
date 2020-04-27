@@ -34,23 +34,37 @@ class Fieldextra(MakefilePackage):
     version('v13.2.0', commit='fe0a8b14314d7527168fd5684d89828bbd83ebf2')
     version('v13.1.0', commit='9649ec36dc36dfe3ef679a507f9a849dc2fdd452')
     
-    variant('build_type', default='optimized', description='Build type', values=('debug', 'optimized'))
+    variant('build_type', default='optimized', description='Build type', values=('debug', 'optimized', 'profiling'))
     variant('openmp', default=True)
 
     depends_on('libaec@1.0.0 ~build_shared_libs')
     depends_on('jasper@1.900.1 ~shared')
-    depends_on('eccodes@2.14.1 jp2k=jasper +openmp', when='+openmp')
-    depends_on('eccodes@2.14.1 jp2k=jasper ~openmp', when='~openmp')
     depends_on('hdf5@1.8.21 +hl ~mpi +fortran')
     depends_on('zlib@1.2.11')
     depends_on('netcdf-c ~mpi')
     depends_on('netcdf-fortran ~mpi')
     depends_on('rttov@11.2.0')
-    depends_on('fieldextra-grib1@2.15')
-    depends_on('icontools@13.2.0 ~openmp', when='~openmp')
+
+    # parallelization
+    depends_on('eccodes@2.14.1 build_type=Production jp2k=jasper +openmp', when='+openmp')
+    depends_on('eccodes@2.14.1 build_type=Production jp2k=jasper ~openmp', when='~openmp')
     depends_on('icontools@13.2.0 +openmp', when='+openmp')
+    depends_on('icontools@13.2.0 ~openmp', when='~openmp')
+    depends_on('fieldextra-grib1@2.15 +openmp', when='+openmp')
+    depends_on('fieldextra-grib1@2.15 ~openmp', when='~openmp')
     
-    build_directory = 'src'
+    # optimization
+    # optimized
+    depends_on('icontools@13.2.0 build_type=optimized', when='build_type=optimized')
+    depends_on('fieldextra-grib1@2.15 build_type=optimized', when='build_type=optimized')
+
+    # debug
+    depends_on('icontools@13.2.0 build_type=debug', when='build_type=debug')
+    depends_on('fieldextra-grib1@2.15 build_type=debug', when='build_type=debug')
+
+    # profiling
+    depends_on('icontools@13.2.0 build_type=debug', when='build_type=debug')
+    depends_on('fieldextra-grib1@2.15 build_type=profiling', when='build_type=profiling')
 
     def edit(self, spec, prefix):
         if self.compiler.name == 'gcc':
@@ -61,6 +75,8 @@ class Fieldextra(MakefilePackage):
             mode += ',dbg'
         elif spec.variants['build_type'].value == 'optimized':
             mode += ',opt'
+        elif spec.variants['build_type'].value == 'profiling':
+            mode += ',prof'
         if self.spec.variants['openmp'].value:
             mode += ',omp'
         env['mode'] = mode

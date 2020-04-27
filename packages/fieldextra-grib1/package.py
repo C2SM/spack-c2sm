@@ -32,7 +32,7 @@ class FieldextraGrib1(MakefilePackage):
 
     version('2.15', commit='fe0a8b14314d7527168fd5684d89828bbd83ebf2')
 
-    variant('build_type', default='optimized', description='Build type', values=('debug', 'optimized'))
+    variant('build_type', default='optimized', description='Build type', values=('debug', 'optimize    d', 'profiling'))
     variant('openmp', default=True)
 
     build_directory = 'grib1/src'
@@ -46,8 +46,11 @@ class FieldextraGrib1(MakefilePackage):
             mode += ',dbg'
         elif spec.variants['build_type'].value == 'optimized':
             mode += ',opt'
+        elif spec.variants['build_type'].value == 'profiling':
+            mode += ',prof'
         if self.spec.variants['openmp'].value:
             mode += ',omp'
+
         env['mode'] = mode
 
         with working_dir(self.build_directory):
