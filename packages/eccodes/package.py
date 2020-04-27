@@ -67,7 +67,7 @@ class Eccodes(CMakePackage):
                type=('build', 'link', 'run'))
     depends_on('py-numpy', when='+python', type=('build', 'run'))
 
-    patch('fxtr_parallel_import.patch', when='@2.14.1')
+    patch('fxtr_parallel_import.patch', when='@2.14.1 +openmp')
     extends('python', when='+python')
 
     conflicts('+openmp', when='+pthreads',
@@ -110,6 +110,9 @@ class Eccodes(CMakePackage):
 
         if self.spec.variants['jp2k'].value == 'openjpeg':
             args.append('-DOPENJPEG_PATH=' + self.spec['openjpeg'].prefix)
+
+        if self.spec.variants['jp2k'].value == 'jasper':
+            args.append('-DJASPER_PATH=' + self.spec['jasper'].prefix)
 
         if '+png' in self.spec:
             args.extend(['-DENABLE_PNG=ON',
