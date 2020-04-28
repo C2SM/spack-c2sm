@@ -63,3 +63,21 @@ class FieldextraGrib1(MakefilePackage):
             optionsfilter.filter('INCDIR *=.*', 'INCDIR = ../include')
             optionsfilter.filter('LIBDIR *=.*', 'LIBDIR = ' + self.prefix + '/lib')
             optionsfilter.filter('INCLUDEDIR *=.*', 'INCLUDEDIR = ' + self.prefix + '/include')
+
+    def install(self, spec, prefix):
+        if self.compiler.name == 'gcc':
+            mode = 'gnu'
+        else:
+            mode = self.compiler.name
+        if spec.variants['build_type'].value == 'debug':
+            mode += ',dbg'
+        elif spec.variants['build_type'].value == 'optimized':
+            mode += ',opt'
+        elif spec.variants['build_type'].value == 'profiling':
+            mode += ',prof'
+        if self.spec.variants['openmp'].value:
+            mode += ',omp'
+        
+        with working_dir(self.build_directory):
+            options = ['mode=' + mode]
+            make('install', *options)    

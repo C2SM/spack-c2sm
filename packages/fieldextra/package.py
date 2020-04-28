@@ -100,25 +100,30 @@ class Fieldextra(MakefilePackage):
             optionsfilter.filter('lnetcdfcdir *=.*', 'lnetcdfcdir = ' + spec['netcdf-c'].prefix + '/lib')
             optionsfilter.filter('lnetcdffortrandir *=.*', 'lnetcdffortrandir = ' + spec['netcdf-fortran'].prefix + '/lib')
             optionsfilter.filter('lrttovdir *=.*', 'lrttovdir = ' + spec['rttov'].prefix + '/lib')
-            optionsfilter.filter('licontoolsdir *=.*', 'licontoolsdir = ' + spec['icontools'].prefix + '/lib')      
+            optionsfilter.filter('licontoolsdir *=.*', 'licontoolsdir = ' + spec['icontools'].prefix + '/lib')  
+            optionsfilter.filter('BINDIR *=.*', 'BINDIR = ' + self.prefix + '/bin')
+
             force_symlink('locale_mch/fxtr_operator_specific.f90', 'fxtr_operator_specific.f90')
             force_symlink('locale_mch/fxtr_write_specific.f90', 'fxtr_write_specific.f90')
 
     def install(self, spec, prefix):
-        binary_name = 'fieldextra'
         if self.compiler.name == 'gcc':
-          binary_name += '_gnu'
+            mode = 'gnu'
         else:
-            binary_name +=  '_' + self.compiler.name
+            mode = self.compiler.name
         if spec.variants['build_type'].value == 'debug':
-            binary_name += '_dbg'
+            mode += ',dbg'
         elif spec.variants['build_type'].value == 'optimized':
-            binary_name += '_opt'
+            mode += ',opt'
+        elif spec.variants['build_type'].value == 'profiling':
+            mode += ',prof'
         if self.spec.variants['openmp'].value:
-            binary_name += '_omp'
-        mkdir(prefix.bin)
+            mode += ',omp'
+        
         with working_dir(self.build_directory):
-            install(binary_name, prefix.bin)
+            options = ['mode=' + mode]
+            make('install', *options)
+
 
     @run_after('install')
     @on_package_attributes(run_tests=True)

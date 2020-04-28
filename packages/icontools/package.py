@@ -67,3 +67,18 @@ class Icontools(MakefilePackage):
             optionsfilter.filter('lnetcdfdir *=.*', 'lnetcdfdir = ' + spec['netcdf-c'].prefix + '/lib')
             optionsfilter.filter('lnetcdffortrandir *=.*', 'lnetcdffortrandir = ' + spec['netcdf-fortran'].prefix + '/lib')
     
+    def install(self, spec, prefix):
+        if self.compiler.name == 'gcc':
+            mode = 'gnu'
+        else:
+            mode = self.compiler.name
+        if spec.variants['build_type'].value == 'debug':
+            mode += ',dbg'
+        elif spec.variants['build_type'].value == 'optimized':
+            mode += ',opt'
+        if self.spec.variants['openmp'].value:
+            mode += ',omp'
+        
+        with working_dir(self.build_directory):
+            options = ['mode=' + mode]
+            make('install', *options)
