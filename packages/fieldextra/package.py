@@ -65,6 +65,8 @@ class Fieldextra(MakefilePackage):
     # profiling
     depends_on('icontools@13.2.0 build_type=debug', when='build_type=debug')
     depends_on('fieldextra-grib1@2.15 build_type=profiling', when='build_type=profiling')
+    
+    build_directory = 'src'
 
     def edit(self, spec, prefix):
         if self.compiler.name == 'gcc':
