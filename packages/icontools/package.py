@@ -40,8 +40,11 @@ class Icontools(MakefilePackage):
     depends_on('netcdf-fortran ~mpi')
 
     build_directory = 'icontools/icontools-2.3.6'
+    
+    @property
+    def build_targets(self):
+        spec = self.spec
 
-    def edit(self, spec, prefix):
         if self.compiler.name == 'gcc':
             mode = 'gnu'
         else:
@@ -52,8 +55,11 @@ class Icontools(MakefilePackage):
             mode += ',opt'
         if self.spec.variants['openmp'].value:
             mode += ',omp'
-        env['mode'] = mode
 
+        return ['mode=' + mode,
+        ]
+
+    def edit(self, spec, prefix):
         with working_dir(self.build_directory):
             optionsfilter = FileFilter('Makefile')
             optionsfilter.filter('LIBDIR *=.*', 'LIBDIR = ' + self.prefix + '/lib')

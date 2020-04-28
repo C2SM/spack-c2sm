@@ -36,8 +36,11 @@ class FieldextraGrib1(MakefilePackage):
     variant('openmp', default=True)
 
     build_directory = 'grib1/src'
+     
+    @property
+    def build_targets(self):
+        spec = self.spec
 
-    def edit(self, spec, prefix):
         if self.compiler.name == 'gcc':
             mode = 'gnu'
         else:
@@ -51,8 +54,10 @@ class FieldextraGrib1(MakefilePackage):
         if self.spec.variants['openmp'].value:
             mode += ',omp'
 
-        env['mode'] = mode
-
+        return ['mode=' + mode,
+        ]
+ 
+    def edit(self, spec, prefix):
         with working_dir(self.build_directory):
             optionsfilter = FileFilter('Makefile')
             optionsfilter.filter('INCDIR *=.*', 'INCDIR = ../include')

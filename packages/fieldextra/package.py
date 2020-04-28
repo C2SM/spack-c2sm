@@ -65,10 +65,13 @@ class Fieldextra(MakefilePackage):
     # profiling
     depends_on('icontools@13.2.0 build_type=debug', when='build_type=debug')
     depends_on('fieldextra-grib1@2.15 build_type=profiling', when='build_type=profiling')
-    
-    build_directory = 'src'
 
-    def edit(self, spec, prefix):
+    build_directory = 'src'
+    
+    @property
+    def build_targets(self):
+        spec = self.spec
+
         if self.compiler.name == 'gcc':
             mode = 'gnu'
         else:
@@ -81,8 +84,11 @@ class Fieldextra(MakefilePackage):
             mode += ',prof'
         if self.spec.variants['openmp'].value:
             mode += ',omp'
-        env['mode'] = mode
-        
+
+        return ['mode=' + mode,
+        ]
+
+    def edit(self, spec, prefix): 
         with working_dir(self.build_directory):
             optionsfilter = FileFilter('Makefile')
             optionsfilter.filter('lgrib1dir *=.*', 'lgrib1dir = ' + spec['fieldextra-grib1'].prefix + '/lib')
@@ -113,3 +119,13 @@ class Fieldextra(MakefilePackage):
         mkdir(prefix.bin)
         with working_dir(self.build_directory):
             install(binary_name, prefix.bin)
+
+    @run_after('install')
+    @on_package_attributes(run_tests=True)
+    def test(self):
+        with working_dir('cookbook'):
+            run_command = './run.bash'
+            if self.compiler.name == 'gcc':
+                run_command += ' -c gnu'
+            else:
+                run_command +=  ' -c ' + self.compiler.name
