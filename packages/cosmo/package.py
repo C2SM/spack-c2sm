@@ -67,6 +67,7 @@ class Cosmo(MakefilePackage):
     variant('pollen', default=False, description='Build with pollen enabled')
     variant('verbose', default=False, description='Build cosmo with verbose enabled')
 
+    conflicts('+claw', when='cosmo_target=cpu')
     conflicts('+pollen', when='@5.05:5.06,master')
     conflicts('+serialize', when='+parallel')
     # previous versions contain a bug affecting serialization
