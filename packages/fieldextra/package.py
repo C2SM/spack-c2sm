@@ -101,8 +101,6 @@ class Fieldextra(MakefilePackage):
             optionsfilter.filter('lnetcdffortrandir *=.*', 'lnetcdffortrandir = ' + spec['netcdf-fortran'].prefix + '/lib')
             optionsfilter.filter('lrttovdir *=.*', 'lrttovdir = ' + spec['rttov'].prefix + '/lib')
             optionsfilter.filter('licontoolsdir *=.*', 'licontoolsdir = ' + spec['icontools'].prefix + '/lib')  
-            optionsfilter.filter('BINDIR *=.*', 'BINDIR = ' + self.prefix + '/bin')
-
             force_symlink('locale_mch/fxtr_operator_specific.f90', 'fxtr_operator_specific.f90')
             force_symlink('locale_mch/fxtr_write_specific.f90', 'fxtr_write_specific.f90')
 
@@ -123,14 +121,21 @@ class Fieldextra(MakefilePackage):
         with working_dir(self.build_directory):
             options = ['mode=' + mode]
             make('install', *options)
+        install_tree('bin', prefix.bin)
 
 
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def test(self):
+        copy_tree(self.spec['eccodes'].prefix +'/bin', self.build_directory + '/../tools')
+        copy_tree(self.spec['netcdf-c'].prefix +'/bin', self.build_directory + '/../tools')
+        copy_tree(self.spec['netcdf-fortran'].prefix +'/bin', self.build_directory + '/../tools')
         with working_dir('cookbook'):
-            run_command = './run.bash'
+            run_cmd = './run.bash'
             if self.compiler.name == 'gcc':
-                run_command += ' -c gnu'
+                run_cmd += ' -c gnu'
             else:
-                run_command +=  ' -c ' + self.compiler.name
+                run_cmd +=  ' -c ' + self.compiler.name
+            run_cmd += ' -m opt_omp'
+            run_test = Executable(run_cmd)
+            run_test()
