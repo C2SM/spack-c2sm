@@ -114,6 +114,10 @@ _developer build: build from code in current working directory_
 If you do not want to git clone the source of the package you want to install, especially if you are developing, you can use a local source in order to install your package. In order to do so, first go to the base directory of the package and then use spack _dev-build_ instead of spack install.
     
 The package, its dependencies and its modules will be still installed under _/scratch/$USER/spack/install_ & _/scratch/$USER/spack/modules/_
+Notice that once installed, the package will not be rebuilt at the next attempt to _spack dev-build_, even if the sources of the local directory have changed. 
+In order to force spack to build the local developments anytime, you need to avoid the installation phase
+
+    $ spack dev-build --until build <package>@<version>%<compiler> +<variants>
 
 ### Spack edit
 
