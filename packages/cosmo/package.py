@@ -46,6 +46,7 @@ class Cosmo(MakefilePackage):
     depends_on('mpi', type=('build', 'run'))
     depends_on('libgrib1')
     depends_on('jasper@1.900.1%gcc ~shared')
+    depends_on('cosmo-grib-api-definitions%gcc', when='%gcc ~eccodes')
     depends_on('cosmo-grib-api-definitions%pgi@19.9-gcc', when='%pgi@19.9 ~eccodes')
     depends_on('cosmo-grib-api-definitions%pgi@19.7.0-gcc', when='%pgi@19.7.0 ~eccodes')
     depends_on('cosmo-eccodes-definitions@2.14.1.2', when='+eccodes')
