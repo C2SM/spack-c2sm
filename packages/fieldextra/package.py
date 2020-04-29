@@ -71,6 +71,8 @@ class Fieldextra(MakefilePackage):
     @property
     def build_targets(self):
         spec = self.spec
+        
+        global mode
 
         if self.compiler.name == 'gcc':
             mode = 'gnu'
@@ -105,19 +107,6 @@ class Fieldextra(MakefilePackage):
             force_symlink('locale_mch/fxtr_write_specific.f90', 'fxtr_write_specific.f90')
 
     def install(self, spec, prefix):
-        if self.compiler.name == 'gcc':
-            mode = 'gnu'
-        else:
-            mode = self.compiler.name
-        if spec.variants['build_type'].value == 'debug':
-            mode += ',dbg'
-        elif spec.variants['build_type'].value == 'optimized':
-            mode += ',opt'
-        elif spec.variants['build_type'].value == 'profiling':
-            mode += ',prof'
-        if self.spec.variants['openmp'].value:
-            mode += ',omp'
-        
         with working_dir(self.build_directory):
             options = ['mode=' + mode]
             make('install', *options)
