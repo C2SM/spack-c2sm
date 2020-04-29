@@ -17,6 +17,7 @@ class Cosmo(MakefilePackage):
 
     version('master', branch='master')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
+    version('5.07.mch1.0.p5', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p5')
     version('5.07.mch1.0.p4', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p4')
     version('5.07.mch1.0.p3', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p3')
     version('5.07.mch1.0.p2', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p2')
@@ -25,6 +26,8 @@ class Cosmo(MakefilePackage):
     version('5.06', tag='5.06')
     
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
+    patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
+
 
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
@@ -43,7 +46,8 @@ class Cosmo(MakefilePackage):
     depends_on('mpi', type=('build', 'run'))
     depends_on('libgrib1')
     depends_on('jasper@1.900.1%gcc ~shared')
-    depends_on('cosmo-grib-api-definitions', when='~eccodes')
+    depends_on('cosmo-grib-api-definitions%pgi@19.9-gcc', when='%pgi@19.9 ~eccodes')
+    depends_on('cosmo-grib-api-definitions%pgi@19.7.0-gcc', when='%pgi@19.7.0 ~eccodes')
     depends_on('cosmo-eccodes-definitions@2.14.1.2', when='+eccodes')
     depends_on('perl@5.16.3:')
     depends_on('omni-xmod-pool', when='+claw')
@@ -60,6 +64,7 @@ class Cosmo(MakefilePackage):
     variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
     variant('eccodes', default=False, description='Build with eccodes instead of grib-api')
     variant('pollen', default=False, description='Build with pollen enabled')
+    variant('verbose', default=False, description='Build cosmo with verbose enabled')
 
     conflicts('+pollen', when='@5.05:5.06,master')
     conflicts('+serialize', when='+parallel')
@@ -91,7 +96,7 @@ class Cosmo(MakefilePackage):
           eccodes_samples_path = self.spec['cosmo-eccodes-definitions'].prefix + '/cosmoDefinitions/samples/'
           spack_env.set('GRIB_SAMPLES_PATH', eccodes_samples_path)
           spack_env.set('GRIBAPI_DIR', self.spec['eccodes'].prefix)
-        spack_env.set('GRIB1_DIR', self.spec['libgrib1'].prefix)
+        spack_env.set('GRIB1_DIR', self.spec['libgrib1'].prefix + '/lib')
         spack_env.set('JASPER_DIR', self.spec['jasper'].prefix)
         spack_env.set('MPI_ROOT', self.spec['mpi'].prefix)
         if self.spec.variants['cosmo_target'].value == 'gpu' or '+serialize' in self.spec:
@@ -128,6 +133,8 @@ class Cosmo(MakefilePackage):
             build.append('CLAW=1')
         if '+serialize' in self.spec:
             build.append('SERIALIZE=1')
+        if self.spec.variants['verbose'].value:
+            build.append('VERBOSE=1')
         MakeFileTarget = ''
         if '+parallel' in self.spec:
             MakeFileTarget += 'par'
@@ -156,13 +163,14 @@ class Cosmo(MakefilePackage):
             elif self.compiler.name == 'cce':
                 OptionsFileName += '.cray'
             OptionsFileName += '.' + spec.variants['cosmo_target'].value
-            optionsfilter = FileFilter('Options.lib.' + spec.variants['cosmo_target'].value)
+            optionsfilter = FileFilter(OptionsFileName)
             if self.spec.variants['slave'].value == 'tsa':
                 optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I{0}/include'.format(spec['netcdf-fortran'].prefix))
-                optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L{0}/lib -lnetcdff -L{1}/lib -lnetcdf'.format(spec['netcdf-fortran'].prefix, spec['netcdf-c'].prefix))
+                optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L{0}/lib -lnetcdff -L{1}/lib64 -lnetcdf'.format(spec['netcdf-fortran'].prefix, spec['netcdf-c'].prefix))
             else:
                 optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I$(NETCDF_DIR)/include')
                 optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf')
+            optionsfilter = FileFilter('Options.lib.' + spec.variants['cosmo_target'].value)
             if '+eccodes' in spec:
               optionsfilter.filter('GRIBAPIL *=.*', 'GRIBAPIL = -L$(GRIBAPI_DIR)/lib -leccodes_f90 -leccodes -L$(JASPER_DIR)/lib -ljasper')
             makefile.filter('/Options.*', '/' + OptionsFileName)

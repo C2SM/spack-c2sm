@@ -6,7 +6,7 @@
 from spack import *
 
 
-class Gridtools(CMakePackage,  CudaPackage):
+class Gridtools(CMakePackage):
     """The GridTools framework is a set of libraries and utilities to develop performance portable applications in the area of weather and climate."""
     
     homepage = "https://github.com/GridTools/gridtools.git"
@@ -31,11 +31,14 @@ class Gridtools(CMakePackage,  CudaPackage):
     variant('no_boost_cmake', default=True, description="Build with no boost for CMake")
     variant('export_no_package_registery', default=True, description="Build with export no package registery")
     variant('enable_bindings_gerneration', default=True, description="Build with bindings generation")
+    variant('cuda_arch', default='none', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
+    variant('cuda', default=True, description='Build with cuda or target gpu')
 
     depends_on('ncurses')
     depends_on('cmake@3.14.5:%gcc')
     depends_on('boost@1.67.0:')
     depends_on('mpi',  type=('build', 'run'))
+    depends_on('cuda', when='+cuda', type=('build', 'run'))
 
     def cmake_args(self):
       spec = self.spec
@@ -82,7 +85,7 @@ class Gridtools(CMakePackage,  CudaPackage):
         args.append('-DGT_USE_MPI=OFF')
   
       if '+cuda' in spec:
-        args.append('-DCUDA_ARCH=sm_{0}'.format(self.spec.variants['cuda_arch'].value[0]))
+        args.append('-DCUDA_ARCH=sm_{0}'.format(self.spec.variants['cuda_arch'].value))
         args.append('-DGT_ENABLE_BACKEND_CUDA=ON')
         args.append('-DGT_ENABLE_BACKEND_X86=OFF')
       else:
