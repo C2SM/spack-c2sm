@@ -205,6 +205,8 @@ class Cosmo(MakefilePackage):
                     env['TARGET'] = 'GPU'
                 else:
                     env['TARGET'] = 'CPU'
+                if self.spec.variants['real_type'].value == 'float':
+                    env['REAL_TYPE'] = 'FLOAT'
                 if '~cppdycore' in self.spec:
                     env['JENKINS_NO_DYCORE'] = 'ON'
                 run_testsuite = Executable('sbatch submit.' + self.spec.variants['slave'].value + '.slurm')
