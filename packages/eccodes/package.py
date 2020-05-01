@@ -23,7 +23,7 @@ class Eccodes(CMakePackage):
     version('2.2.0', sha256='1a4112196497b8421480e2a0a1164071221e467853486577c4f07627a702f4c3')
 
     variant('build_type', default='Production', description='Build type', values=('Production','Debug', 'Release', 'RelWithDebInfo'))
-    variant('build_shared_libs', default='OFF', values=('ON', 'OFF', 'BOTH'), description="Select the type of library built")
+    variant('build_shared_libs', default=False, description="Select the type of library built")
     variant('netcdf', default=False, 
             description='Enable GRIB to NetCDF conversion tool')
     variant('jp2k', default='jasper', values=('openjpeg', 'jasper', 'none'), description='Specify JPEG2000 decoding/encoding backend')
@@ -130,6 +130,10 @@ class Eccodes(CMakePackage):
 
         if '^python' in self.spec:
             args.append('-DPYTHON_EXECUTABLE:FILEPATH=' + python.path)
-        args.append('-DBUILD_SHARED_LIBS=' + self.spec.variants['build_shared_libs'].value)
+
+        if self.spec.variants['build_shared_libs'].value:
+            args.append('-DBUILD_SHARED_LIBS=ON')
+        else:
+            args.append('-DBUILD_SHARED_LIBS=OFF')
 
         return args
