@@ -43,9 +43,6 @@ class Eccodes(CMakePackage):
     variant('examples', default=True,
             description='Build the examples (part of the full test suite)')
     variant('test', default=True, description='Enable the tests')
-    variant('build_type', default='RelWithDebInfo',
-            description='The build type to build',
-            values=('Debug', 'Release', 'RelWithDebInfo', 'Production'))
 
     # The building script tries to find an optional package valgrind when
     # tests are enabled but the testing scripts don't use it.
@@ -53,9 +50,8 @@ class Eccodes(CMakePackage):
 
     depends_on('netcdf-c', when='+netcdf')
     depends_on('openjpeg@1.5.0:1.5.999,2.1.0:2.1.999', when='jp2k=openjpeg')
-    depends_on('jasper%gcc ~shared', when='jp2k=jasper build_shared_libs=OFF')
-    depends_on('jasper%gcc +shared', when='jp2k=jasper build_shared_libs=ON')
-    depends_on('jasper%gcc +shared', when='jp2k=jasper build_shared_libs=BOTH')
+    depends_on('jasper%gcc ~shared', when='jp2k=jasper ~build_shared_libs')
+    depends_on('jasper%gcc +shared', when='jp2k=jasper +build_shared_libs')
     depends_on('libpng', when='+png')
     depends_on('libaec', when='+aec')
     # Can be built with Python2 or Python3.
