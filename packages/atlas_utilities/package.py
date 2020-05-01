@@ -10,12 +10,12 @@ from spack import *
 class AtlasUtilities(CMakePackage):
     """This repoistory contains some utilities to transform Atlas meshes as well as the first ICON stencil prototype computing a Laplacian."""
 
-    homepage = 'https://github.com/cosunae/AtlasUtilities'
-    url      = "https://github.com/cosunae/AtlasUtilities"
-    git      = 'https://github.com/cosunae/AtlasUtilities'
+    homepage = 'https://github.com/mroethlin/AtlasUtilities'
+    url      = "https://github.com/mroethlin/AtlasUtilities"
+    git      = 'https://github.com/mroethlin/AtlasUtilities'
     maintainers = ['cosunae']
 
-    version('master', branch='cmake_netcdf')
+    version('master', branch='master')
 
     depends_on('atlas@develop')
     depends_on('eckit')
