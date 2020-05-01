@@ -1,0 +1,9 @@
+config:
+  install_tree:
+  template_dirs:
+    - $spack/templates
+  module_roots:
+    tcl:
+  build_stage:
+  install_path_scheme: '{name}/{version}/{compiler.name}/{hash}'
+  source_cache: ~/.spack/source_cache
