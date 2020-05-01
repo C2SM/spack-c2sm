@@ -161,6 +161,13 @@ packages:
             netcdf-fortran@4.6.3.1%intel+mpi: cray-netcdf-hdf5parallel/4.6.3.1
             netcdf-fortran@4.6.3.1%cce+mpi:   cray-netcdf-hdf5parallel/4.6.3.1
             netcdf-fortran@4.6.3.1%pgi+mpi:   cray-netcdf-hdf5parallel/4.6.3.1
+    netcdf-cxx4:
+        buildable: false
+        modules:
+            netcdf-cxx4@4.6.3.1%gcc~parallel-netcdf~mpi:   cray-netcdf/4.6.3.1
+            netcdf-cxx4@4.6.3.1%intel~parallel-netcdf~mpi: cray-netcdf/4.6.3.1
+            netcdf-cxx4@4.6.3.1%cce~parallel-netcdf~mpi:   cray-netcdf/4.6.3.1
+            netcdf-cxx4@4.6.3.1%pgi~parallel-netcdf~mpi:   cray-netcdf/4.6.3.1
     netlib-scalapack:
         variants: build_type=Release
     netlib-lapack:
