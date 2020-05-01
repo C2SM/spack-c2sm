@@ -16,9 +16,14 @@ class Atlas(CMakePackage):
     maintainers = ['cosunae']
 
     version('master', branch='master')
+    version('develop', branch='develop')
 
     depends_on('ecbuild')
     depends_on('eckit')
+
+    patch('patches/find.gtstorage.patch', when='@develop')
+    patch('patches/find.gtstorage.patch', when='@master')
+
 
     def cmake_args(self):
         args = []
