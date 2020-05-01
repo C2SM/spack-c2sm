@@ -11,7 +11,7 @@ class Cosmo(MakefilePackage):
     """COSMO: Numerical Weather Prediction Model. Needs access to private GitHub."""
 
     homepage = "http://www.cosmo-model.org"
-    url      = "https://github.com/COSMO-ORG/cosmo/archive/5.06.tar.gz" 
+    url      = "https://github.com/MeteoSwiss-APN/cosmo/archive/5.07.mch1.0.p5.tar.gz"
     git      = 'git@github.com:COSMO-ORG/cosmo.git'
     maintainers = ['elsagermann']
 
