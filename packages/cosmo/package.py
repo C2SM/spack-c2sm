@@ -49,7 +49,7 @@ class Cosmo(MakefilePackage):
     depends_on('cosmo-grib-api-definitions%gcc', when='%gcc ~eccodes')
     depends_on('cosmo-grib-api-definitions%pgi@19.9-gcc', when='%pgi@19.9 ~eccodes')
     depends_on('cosmo-grib-api-definitions%pgi@19.7.0-gcc', when='%pgi@19.7.0 ~eccodes')
-    depends_on('cosmo-eccodes-definitions@2.14.1.2', when='+eccodes')
+    depends_on('cosmo-eccodes-definitions@2.14.1.2 ~aec', when='+eccodes')
     depends_on('perl@5.16.3:')
     depends_on('omni-xmod-pool', when='+claw')
     depends_on('claw', when='+claw')
