@@ -29,8 +29,8 @@ class AtlasUtilities(CMakePackage):
                     format(spec['ecbuild'].prefix))
         args.append('-Deckit_DIR={0}'.format(spec['eckit'].prefix))
         args.append('-Datlas_DIR={0}'.format(spec['atlas'].prefix))
-        args.append('-Dnetcdfcxx4_DIR='.format(spec['netcdf-cxx4'].prefix))
-        args.append('-Dnetcdf_DIR='.format(spec['netcdf-c'].prefix))
+        args.append('-Dnetcdfcxx4_DIR{0}='.format(spec['netcdf-cxx4'].prefix))
+        args.append('-Dnetcdf_DIR{0}='.format(spec['netcdf-c'].prefix))
 
 
         return args
