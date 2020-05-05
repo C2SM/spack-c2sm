@@ -17,6 +17,7 @@ class Cosmo(MakefilePackage, CudaPackage):
 
     version('master', branch='master')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
+    version('5.07.mch1.0.p5', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p5')
     version('5.07.mch1.0.p4', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p4')
     version('5.07.mch1.0.p3', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p3')
     version('5.07.mch1.0.p2', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p2')
@@ -25,6 +26,8 @@ class Cosmo(MakefilePackage, CudaPackage):
     version('5.06', tag='5.06')
     
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
+    patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
+
 
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
@@ -92,7 +95,7 @@ class Cosmo(MakefilePackage, CudaPackage):
         spack_env.set('GRIB_SAMPLES_PATH', grib_definition_prefix + '/cosmoDefinitions/samples/')
 
         # Netcdf library
-        spack_env.set('NETCDFL', '-L' + self.spec['netcdf-fortran'].prefix + '/lib -lnetcdff -L' + self.spec['netcdf-c'].prefix + '/lib -lnetcdf')
+        spack_env.set('NETCDFL', '-L' + self.spec['netcdf-fortran'].prefix + '/lib -lnetcdff -L' + self.spec['netcdf-c'].prefix + '/lib64 -lnetcdf')
         spack_env.set('NETCDFI', '-I' + self.spec['netcdf-fortran'].prefix + '/include')
 
         # Grib1 library
@@ -130,8 +133,8 @@ class Cosmo(MakefilePackage, CudaPackage):
             spack_env.set('CLAWDIR', self.spec['claw'].prefix)
             spack_env.set('CLAWFC', self.spec['claw'].prefix + '/bin/clawfc')
             spack_env.set('CLAWXMODSPOOL', self.spec['omni-xmod-pool'].prefix + '/omniXmodPool/')
-            if '+cuda' in self.spec:
-                spack_env.append_flags('CLAWFC_FLAGS', '--directive=openacc -v')
+            if self.spec['mpi'].name == 'mpich':
+                spack_env.append_flags('CLAWFC_FLAGS', '-U__CRAYXC')
 
         # Fortran flags
         if '+cuda' in self.spec:
@@ -167,7 +170,7 @@ class Cosmo(MakefilePackage, CudaPackage):
     @property
     def build_targets(self):
         build = []
-        if self.spec.variants['pollen']:
+        if self.spec.variants['pollen'].value:
             build.append('POLLEN=1')
         if self.spec.variants['real_type'].value == 'float':
             build.append('SINGLEPRECISION=1')
