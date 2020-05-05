@@ -118,6 +118,9 @@ class CosmoDycore(CMakePackage):
     @on_package_attributes(run_tests=True)
     def test(self):
         if '+build_tests' in self.spec:
+            with working_dir(self.build_directory + '/src'):
+                mkdir(prefix.tests)
+                install_tree('tests', prefix.tests)
             with working_dir(prefix + '/tests/unittests'):
                 if self.spec.variants['slave'].value == 'tsa':
                     run_unittests = Executable('srun -n 1 -p normal --gres=gpu:1 ./unittests  --gtest_filter=-TracerBindings.TracerVariable')
