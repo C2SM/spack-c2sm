@@ -58,7 +58,6 @@ class CosmoDycore(CMakePackage):
     conflicts('+production', when='+pmeters')
 
     root_cmakelists_dir='dycore'
-    build_directory='dycore/spack_build'
     
     def setup_environment(self, spack_env, run_env):
         if self.spec['mpi'].name == 'mpich':
@@ -114,12 +113,6 @@ class CosmoDycore(CMakePackage):
         args.append('-DDYCORE_TARGET_ARCHITECTURE=x86')
 
       return args
-
-    def install(self, spec, prefix):
-        with working_dir(self.build_directory):
-            make('install')
-        if spec.variants['build_tests'].value:
-            install_tree('dycore/src/tests', prefix.tests)
 
     @run_after('install')
     @on_package_attributes(run_tests=True)
