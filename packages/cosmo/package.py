@@ -7,7 +7,7 @@
 from spack import *
 
 
-class Cosmo(MakefilePackage, CudaPackage):
+class Cosmo(MakefilePackage):
     """COSMO: Numerical Weather Prediction Model. Needs access to private GitHub."""
 
     homepage = "http://www.cosmo-model.org"
@@ -104,12 +104,11 @@ class Cosmo(MakefilePackage, CudaPackage):
         else:
             spack_env.set('GRIBDWDL', '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_' + self.compiler.name)
         spack_env.set('GRIBDWDI', '-I' + self.spec['libgrib1'].prefix + '/include')
-
+        
         # MPI library
         if self.spec['mpi'].name == 'openmpi':
             spack_env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpi_cxx')        
         spack_env.set('MPII', '-I'+ self.spec['mpi'].prefix + '/include')
-
         # Dycoregt & Gridtools linrary
         if '+cppdycore' in self.spec:
             spack_env.set('DYCOREGTL', '-L' + self.spec['cosmo-dycore'].prefix + '/lib' + ' -ldycore_bindings_' + self.spec.variants['real_type'].value + ' -ldycore_base_bindings_' + self.spec.variants['real_type'].value + ' -ldycore -ldycore_base -ldycore_backend -lstdc++ -lcpp_bindgen_generator -lcpp_bindgen_handle -lgt_gcl_bindings')
@@ -139,7 +138,7 @@ class Cosmo(MakefilePackage, CudaPackage):
         # Fortran flags
         if '+cuda' in self.spec:
             cuda_version = self.spec['cuda'].version
-            fflags = '-ta=tesla,cc' + self.spec.variants['cuda_arch'].value[0] + ',cuda' + str(cuda_version.up_to(2))
+            fflags = '-ta=tesla,cc' + self.spec.variants['cuda_arch'].value + ',cuda' + str(cuda_version.up_to(2))
             spack_env.append_flags('FFLAGS', fflags)
 
         # Pre-processor flags

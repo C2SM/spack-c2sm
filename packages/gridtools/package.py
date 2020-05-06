@@ -85,7 +85,7 @@ class Gridtools(CMakePackage):
         args.append('-DGT_USE_MPI=OFF')
   
       if '+cuda' in spec:
-        args.append('-DCUDA_ARCH=sm_{0}'.format(self.spec.variants['cuda_arch'].value[0]))
+        args.append('-DCUDA_ARCH=sm_{0}'.format(self.spec.variants['cuda_arch'].value))
         args.append('-DGT_ENABLE_BACKEND_CUDA=ON')
         args.append('-DGT_ENABLE_BACKEND_X86=OFF')
       else:
