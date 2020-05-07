@@ -32,7 +32,7 @@ class Cosmo(MakefilePackage):
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
     depends_on('slurm', type='run')
-    depends_on('cuda', type=('build', 'run'))
+    depends_on('cuda', type=('build', 'run'), when='+cuda')
     depends_on('cosmo-dycore%gcc +build_tests', when='+dycoretest')
     depends_on('cosmo-dycore%gcc +cuda', when='+cuda+cppdycore')
     depends_on('cosmo-dycore%gcc ~cuda cuda_arch=none', when='~cuda cuda_arch=none +cppdycore')
@@ -62,6 +62,8 @@ class Cosmo(MakefilePackage):
     variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
     variant('eccodes', default=False, description='Build with eccodes instead of grib-api')
     variant('pollen', default=False, description='Build with pollen enabled')
+    variant('cuda_arch', default='70', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
+    variant('cuda', default=True, description='Build with cuda or target gpu')
 
     conflicts('+pollen', when='@5.05:5.06,master')
     conflicts('+serialize', when='+parallel')
@@ -138,7 +140,7 @@ class Cosmo(MakefilePackage):
         # Fortran flags
         if '+cuda' in self.spec:
             cuda_version = self.spec['cuda'].version
-            fflags = '-ta=tesla,cc' + self.spec.variants['cuda_arch'].value + ',cuda' + str(cuda_version.up_to(2))
+            fflags = ' -ta=tesla,cc' + self.spec.variants['cuda_arch'].value + ',cuda' + str(cuda_version.up_to(2))
             spack_env.append_flags('FFLAGS', fflags)
 
         # Pre-processor flags
