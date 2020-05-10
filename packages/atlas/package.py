@@ -24,6 +24,7 @@ class Atlas(CMakePackage):
     patch('patches/find.gtstorage.patch', when='@develop')
     patch('patches/find.gtstorage.patch', when='@master')
 
+    variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'DebugRelease'))
 
     def cmake_args(self):
         args = []
@@ -33,6 +34,7 @@ class Atlas(CMakePackage):
                     format(spec['ecbuild'].prefix))
         args.append('-Deckit_DIR={0}'.format(spec['eckit'].prefix))
         args.append('-DENABLE_GRIDTOOLS_STORAGE=OFF')
+        args.append('-DCMAKE_BUILD_TYPE={0}'.format(self.spec.variants['build_type'].value))
 
         return args
 
