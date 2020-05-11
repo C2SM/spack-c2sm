@@ -3,7 +3,8 @@ compilers::
     environment: {}
     extra_rpaths: []
     flags: {}
-    modules: 
+    modules:
+    - gcc/8.3.0 
     - /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/modules/all/pgi/19.9-gcc-8.3.0
     operating_system: rhel7
     paths:
