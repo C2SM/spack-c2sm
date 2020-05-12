@@ -1,6 +1,6 @@
 pipeline {
-    agent any
-
+    agent { label 'tsa' 
+    }
     stages {
         stage('Install Spack Instance') {
             steps {
