@@ -21,9 +21,4 @@ pipeline {
     triggers {
         issueCommentTrigger('launch jenkins.*')
     }
-    post {
-        failure {
-            mail to: elsa.germann@meteoswiss.ch, subject: 'Spack_PR Pipeline failed'
-        }
-    }
 }
