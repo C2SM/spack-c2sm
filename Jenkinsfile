@@ -5,6 +5,7 @@ pipeline {
         stage('Install Spack Instance') {
             steps {
                 echo 'Install spack temp instance with branch config files and mch spack packages'
+                sh 'module load python/2.7.16'
                 sh './config.py -m $slave -i . -r ./spack/etc/spack -p $PWD/spack -u OFF'
                 echo 'Source spack instance'
                 sh '. spack/share/spack/setup-env.sh'
