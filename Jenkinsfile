@@ -1,13 +1,10 @@
 pipeline {
     agent { label 'tsa' 
     }
-    environment { 
-        GITHUB_COMMENT = "${env.GITHUB_COMMENT}"
-    }
     stages {
         stage('Build') {
             steps {
-                sh './jenkins_build.sh'
+                sh '${env.GITHUB_COMMENT} ./jenkins_build.sh'
             }
         }
     }
