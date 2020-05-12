@@ -5,7 +5,6 @@ pipeline {
         stage('Build') {
             steps {
                 echo "${triggerCause.comment}"
-                sh '"${triggerCause.comment}" ./jenkins_build.sh'
             }
         }
     }
