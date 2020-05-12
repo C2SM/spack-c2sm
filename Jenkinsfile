@@ -12,13 +12,13 @@ pipeline {
         }
         stage('Install spec') {
             steps {
-                echo 'spack install $spec'
-                sh 'spack install $spec'
+                echo 'spack install ${GITHUB_COMMENT#"launch jenkins "}'
+                sh 'spack install ${GITHUB_COMMENT#"launch jenkins "}'
             }
         }
     }
     
     triggers {
-        issueCommentTrigger('.*launch jenkins.*')
+        issueCommentTrigger('launch jenkins.*')
     }
 }
