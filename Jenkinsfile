@@ -1,6 +1,9 @@
 pipeline {
     agent { label 'tsa' 
     }
+    environment { 
+        GITHUB_COMMENT = ${env.GITHUB_COMMENT}
+    }
     stages {
         stage('Build') {
             steps {
