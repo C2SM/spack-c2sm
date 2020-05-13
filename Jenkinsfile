@@ -7,7 +7,6 @@ pipeline {
         stage('Build') {
             steps {
                     sh 'GITHUB_COMMENT=' + "${triggerCause.comment}" + ' ./jenkins_build.sh'
-                }
             }
         }
     }
