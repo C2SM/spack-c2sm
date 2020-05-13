@@ -1,11 +1,15 @@
+script {
+    def triggerCause = currentBuild.rawBuild.getCause(org.jenkinsci.plugins.pipeline.github.trigger.IssueCommentCause)
+    GITHUB_COMMENT = "${triggerCause.comment}"
+}
+
 pipeline {
     agent { label 'tsa' 
     }
     stages {
         stage('Build') {
             steps {
-                echo "${triggerCause.comment}"
-                sh '"${triggerCause.comment}" ./jenkins_build.sh'
+                    sh 'GITHUB_COMMENT="' + GITHUB_COMMENT + '" ./jenkins_build.sh'
             }
         }
     }
