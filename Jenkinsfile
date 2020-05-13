@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh('GITHUB_COMMENT=env.GITHUB_COMMENT ./jenkins_build.sh')
+                    sh('GITHUB_COMMENT=' + env.GITHUB_COMMENT + './jenkins_build.sh')
                 }
             }
         }
