@@ -35,7 +35,7 @@ Tell the script the machine you are working on using -m <machine> and where you 
 ```bash
 git clone git@github.com:MeteoSwiss-APN/spack-mch.git
 cd spack-mch
-./config.py -m <machine> -i <spack-installation-directory> -v <version> -r <repos.yaml-installation-directory> -p <spack packages, modules & stages installation-directory> -u <ON or OFF, install upstreams.yaml>
+./tools/config.py -m <machine> -i <spack-installation-directory> -v <version> -r <repos.yaml-installation-directory> -p <spack packages, modules & stages installation-directory> -u <ON or OFF, install upstreams.yaml>
 ```
 
 The -r option usually needs to point to the **site scope** of your newly installed spack-instance, that is, _$SPACK_DIR/etc/spack_. It can however also be used if you are a CSCS user and do not want to have your own spack instance *but still want to develop the mch-packages*. In that case, you can clone the spack-mch repo, let the -i, -m options void, BUT overwrite the *site scoped* repos.yaml files of the maintained spack instances by installing a new repos.yaml in your **user scope** _~/.spack_.
@@ -100,7 +100,7 @@ Ex:
 spack install cosmo@master%pgi cosmo_target=gpu
 ```
 
-This will clone the package, build it and install the chosen package plus all its dependencies under _/scratch/$USER/spack/install/tsa_ (see _config.yaml_ in the maching specific config file section for details). The build-stage of your package and its dependencies are not kept (add _--keep-stage_ after the install command in order to keep it). Module files are also created during this process and installed under _/scratch/$USER/spack/modules/_
+This will clone the package, build it and install the chosen package plus all its dependencies under _/scratch/$USER/spack/spack-install/'machine'_ (see _config.yaml_ in the maching specific config file section for details). The build-stage of your package and its dependencies are not kept (add _--keep-stage_ after the install command in order to keep it). Module files are also created during this process and installed under _/scratch/$USER/spack/modules/'machine'/'architecture'/_
 
 You might want to run tests after the installation of your package. In that case you can use:
 
@@ -117,13 +117,13 @@ Submits the adequate testsuites for cosmo-dycore or cosmo after their installati
 If you want to submit your **tests manually** or after the installation, you first have to use the module of your package dependencies
 
 ```bash
-module use /project/g110/spack-modules/'architecture'
+module use /project/g110/modules/admin-'machine'/'architecture'
 ```
 
 and then load your package module:
 
 ```bash
-module load _/scratch/$USER/spack/modules/'architecture'/<package>/<version>-<hash>_
+module load /scratch/$USER/spack/modules/'machine'/'architecture'/<package>/<version>-<hash>
 ```
 
 ## Developer guide
@@ -139,7 +139,7 @@ spack dev-build <package>@<version>%<compiler> +<variants>
 
 If you do not want to git clone the source of the package you want to install, especially if you are developing, you can use a local source in order to install your package. In order to do so, first go to the base directory of the package and then use spack _dev-build_ instead of spack install.
 
-The package, its dependencies and its modules will be still installed under _/scratch/$USER/spack/install_ & _/scratch/$USER/spack/modules/_
+The package, its dependencies and its modules will be still installed under _/scratch/$USER/spack/spack-install_ & _/scratch/$USER/spack/modules/'machine'/'architecture'_
 Notice that once installed, the package will not be rebuilt at the next attempt to _spack dev-build_, even if the sources of the local directory have changed.
 In order to force spack to build the local developments anytime, you need to avoid the installation phase
 
