@@ -120,6 +120,7 @@ class Cosmo(MakefilePackage):
         else:
             run_env_variables['UCX_TLS'] = 'rc_x,ud_x,mm,shm,cma'
         for key in run_env_variables:
+          spack_env.set(key, run_env_variables[key])
           spack_env.append_flags('SPACK_RUN_ENV' , key + '=' + run_env_variables[key]) 
 
     @property
