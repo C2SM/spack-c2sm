@@ -2,7 +2,7 @@ echo ${GITHUB_COMMENT}
 spec=${GITHUB_COMMENT#"launch jenkins "}
 
 # install spack temp instance with branch config files and mch spack packages
-./config.py -m tsa -i . -r ./spack/etc/spack -p $PWD/spack -u OFF
+./tools/config.py -m tsa -i . -r ./spack/etc/spack -p $PWD/spack -u OFF
 
 # source spack instance
 . spack/share/spack/setup-env.sh

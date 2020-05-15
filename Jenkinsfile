@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                    sh 'GITHUB_COMMENT="' + GITHUB_COMMENT + '" ./jenkins_build.sh'
+                    sh 'GITHUB_COMMENT="' + GITHUB_COMMENT + '" ./tools/jenkins_build.sh'
             }
         }
     }
