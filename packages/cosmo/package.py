@@ -112,11 +112,15 @@ class Cosmo(MakefilePackage):
             spack_env.set('CLAWXMODSPOOL', self.spec['omni-xmod-pool'].prefix + '/omniXmodPool/')
             if self.spec['mpi'].name == 'mpich':
                 spack_env.append_flags('CLAWFC_FLAGS', '-U__CRAYXC')
-        spack_env.set('UCX_MEMTYPE_CACHE', 'n')
+        
+        run_env_variables = {}
+        run_env_variables['UCX_MEMTYPE_CACHE'] = 'n'
         if '+cppdycore' in self.spec and self.spec.variants['cosmo_target'].value == 'gpu':
-          spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
+            run_env_variables['UCX_TLS'] = 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma'
         else:
-          spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cma')
+            run_env_variables['UCX_TLS'] = 'rc_x,ud_x,mm,shm,cma'
+        for key in run_env_variables:
+          spack_env.append_flags('SPACK_RUN_ENV' , key + '=' + run_env_variables[key]) 
 
     @property
     def build_targets(self):
