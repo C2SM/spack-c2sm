@@ -1,4 +1,4 @@
-# The Meteoschweiz Spack Deployment
+# The MeteoSwiss Spack Deployment
 
 Official Spack documentation [Here](https://spack.readthedocs.io/en/latest/).
 
