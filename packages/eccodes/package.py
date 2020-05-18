@@ -50,8 +50,7 @@ class Eccodes(CMakePackage):
 
     depends_on('netcdf-c', when='+netcdf')
     depends_on('openjpeg@1.5.0:1.5.999,2.1.0:2.1.999', when='jp2k=openjpeg')
-    depends_on('jasper%gcc ~shared', when='jp2k=jasper ~build_shared_libs')
-    depends_on('jasper%gcc +shared', when='jp2k=jasper +build_shared_libs')
+    depends_on('jasper%gcc ~shared', when='jp2k=jasper')
     depends_on('libpng', when='+png')
     depends_on('libaec', when='+aec')
     # Can be built with Python2 or Python3.
