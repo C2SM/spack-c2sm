@@ -3,8 +3,8 @@ packages:
     compiler: [pgi@19.9, gcc@8.3.0]
   cmake:
     modules:
-      cmake@3.14.5%gcc: cmake/3.14.5
-      cmake@3.14.5%pgi: cmake/3.14.5
+      cmake@3.13.4%gcc: cmake/3.13.4
+      cmake@3.13.4%pgi: cmake/3.13.4
     buildable: true
     version: [3.14.5]
     target: []
@@ -19,10 +19,10 @@ packages:
     version: []
     target: []
     providers: {}
-  mvapich:
+  mpich:
     modules:
-      mvapich@2.3%cce: mvapich2_cce/2.2rc1.0.3_cuda80
-      mvapich@2.2%gcc: /apps/escha/UES/jenkins/RH7.5/gnu/17.02/easybuild/modules/all/mvapich2/2.2-gcc-5.4.0-2.26
+      mpich@2.3%cce: mvapich2_cce/2.2rc1.0.3_cuda80
+      mpich@2.2%gcc: /apps/escha/UES/jenkins/RH7.5/gnu/17.02/easybuild/modules/all/mvapich2/2.2-gcc-5.4.0-2.26
   netcdf-fortran:
     modules:
       netcdf-fortran@4.4.4%cce: /apps/escha/UES/jenkins/RH7.5/cce/17.06/easybuild/modules/all/netCDF-Fortran/4.4.4-CrayCCE-17.06
@@ -57,7 +57,7 @@ packages:
       libtool@2.4.2%gcc: /usr
   jasper:
     paths:
-      jasper@1.900.1%gcc: /usr
+      jasper@1.900.1%gcc +shared: /usr
   bzip2:
     paths:
       bzip2@1.0.6: /usr
