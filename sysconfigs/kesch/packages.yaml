@@ -1,0 +1,77 @@
+packages:
+  all:
+    compiler: [pgi@19.9, gcc@8.3.0]
+  cmake:
+    modules:
+      cmake@3.14.5%gcc: cmake/3.14.5
+      cmake@3.14.5%pgi: cmake/3.14.5
+    buildable: true
+    version: [3.14.5]
+    target: []
+    providers: {}
+    compiler: []
+    paths: {}
+  cuda:
+    modules:
+      cuda@10.1%pgi: cudatoolkit/9.2.148
+      cuda@10.1%cce: cudatoolkit/8.0.61
+    buildable: true
+    version: []
+    target: []
+    providers: {}
+  mvapich:
+    modules:
+      mvapich@2.3%cce: mvapich2_cce/2.2rc1.0.3_cuda80
+      mvapich@2.2%gcc: /apps/escha/UES/jenkins/RH7.5/gnu/17.02/easybuild/modules/all/mvapich2/2.2-gcc-5.4.0-2.26
+  netcdf-fortran:
+    modules:
+      netcdf-fortran@4.4.4%cce: /apps/escha/UES/jenkins/RH7.5/cce/17.06/easybuild/modules/all/netCDF-Fortran/4.4.4-CrayCCE-17.06
+      netcdf-fortran@4.4.4%gcc: 
+  netcdf-c:
+    modules:
+      netcdf-c@4.4.4%cce: /apps/escha/UES/jenkins/RH7.5/cce/17.06/easybuild/modules/all/netCDF-Fortran/4.4.4-CrayCCE-17.06
+      netcdf-c@4.7.0%pgi: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/modules/all/netcdf/4.7.0-pgi-19.9-gcc-8.3.0
+  perl:
+    paths: 
+      perl@5.16.3: /usr
+  m4:
+    paths: 
+      m4@1.4.16%gcc: /usr
+  automake:
+    paths:
+      automake@1.13.4%gcc: /usr
+  autoconf:
+    paths:
+      autoconf@2.69%gcc: /usr
+  bison:
+    paths:
+      bison@3.0.4%gcc: /usr
+  ncurses:
+    paths:
+      ncurses@5.9: /usr
+  libxml2:
+    paths:
+      libxml2@2.9.1%gcc: /usr
+  libtool:
+    paths:
+      libtool@2.4.2%gcc: /usr
+  jasper:
+    paths:
+      jasper@1.900.1%gcc: /usr
+  bzip2:
+    paths:
+      bzip2@1.0.6: /usr
+  slurm:
+    modules:
+      slurm@17.11: slurm/17.11
+  cosmo-dycore:
+    variants: +cuda cuda_arch=37 data_path=/scratch/jenkins/data/cosmo/ slave=tsa
+    compiler: [gcc]
+  gridtools:
+    variants: +cuda cuda_arch=37
+    compiler: [gcc]
+  cosmo:
+    variants: +cuda cuda_arch=37 slave=tsa
+    version: [master]
+    compiler: [pgi@19.9, gcc@8.3.0]
+

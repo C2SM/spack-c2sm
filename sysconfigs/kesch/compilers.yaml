@@ -1,0 +1,86 @@
+compilers::
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: 
+    - PrgEnv-cray/1.0.4
+    - cce/8.7.7
+    operating_system: rhel7
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    spec: cce@8.7.7
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - /apps/escha/UES/jenkins/RH7.5/pgi_PE18.10/easybuild/modules/all/pgi/18.10-gcc-5.4.0-2.26
+    operating_system: rhel7
+    paths:
+      cc: pgcc
+      cxx: pg++
+      f77: pgfortran
+      fc: pgfortran
+    spec: pgi@18.10
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: 
+    - gcc/5.4.0-2.26
+    operating_system: rhel7
+    paths:
+      cc: /apps/escha/UES/jenkins/RH7.5/generic/easybuild/software/gcccore/5.4.0/bin/gcc
+      cxx: /apps/escha/UES/jenkins/RH7.5/generic/easybuild/software/gcccore/5.4.0/bin/g++
+      f77: /apps/escha/UES/jenkins/RH7.5/generic/easybuild/software/gcccore/5.4.0/gfortran
+      fc: /apps/escha/UES/jenkins/RH7.5/generic/easybuild/software/gcccore/5.4.0/gfortran
+    spec: gcc@5.4.0
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: 
+    - gcc/6.1.0
+    operating_system: rhel7
+    paths:
+      cc: /opt/gcc/6.1.0/bin/gcc
+      cxx: /opt/gcc/6.1.0/bin/g++
+      f77: /opt/gcc/6.1.0/bin/gfortran
+      fc: /opt/gcc/6.1.0/bin/gfortran
+    spec: gcc@6.1.0
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: 
+    - gcc/4.8.1
+    operating_system: rhel7
+    paths:
+      cc: /opt/gcc/4.8.1/bin/gcc
+      cxx: /opt/gcc/4.8.1/bin/g++
+      f77: /opt/gcc/4.8.1/bin/gfortran
+      fc: /opt/gcc/4.8.1/bin/gfortran
+    spec: gcc@4.8.1
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: 
+    - gcc/4.9.1
+    operating_system: rhel7
+    paths:
+      cc: /opt/gcc/4.9.1/bin/gcc
+      cxx: /opt/gcc/4.9.1/bin/g++
+      f77: /opt/gcc/4.9.1/bin/gfortran
+      fc: /opt/gcc/4.9.1/bin/gfortran
+    spec: gcc@4.9.1
+    target: any
