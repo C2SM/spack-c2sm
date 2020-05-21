@@ -23,3 +23,4 @@ class Dawn4py(PythonPackage):
     build_directory = 'dawn'
     phases = ['build', 'install']
 
+    depends_on('py-setuptools', type='build')
