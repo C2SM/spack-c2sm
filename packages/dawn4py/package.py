@@ -24,3 +24,4 @@ class Dawn4py(PythonPackage):
     phases = ['build', 'install']
 
     depends_on('py-setuptools', type='build')
+    depends_on('py-protobuf', type=('build','run'))
