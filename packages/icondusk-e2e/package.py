@@ -20,11 +20,14 @@ class IconduskE2e(CMakePackage):
     depends_on('dawn4py',  type=('build','run'))
     depends_on('python@3.8.0')
     depends_on('atlas')
+    depends_on('cuda', type=('build', 'run'))
+
 
 #    depends_on('py-setuptools', type='build')
 #    depends_on('py-protobuf', type=('build','run'))
 
     variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'DebugRelease'))
+    variant('precision', default='double', values=('double','float'))
 
     def cmake_args(self):
         args = []
@@ -34,7 +37,7 @@ class IconduskE2e(CMakePackage):
         args.append('-DPython3_EXECUTABLE=' + spec['python'].prefix +'/bin/python3.8')
         args.append('-Ddawn4py_DIR='+spec['dawn4py'].prefix)
         args.append('-Datlas_DIR='+spec['atlas'].prefix)
+        args.append('-DPRECISION='+spec.variants['precision'].value)
 
-        print("PPPPP ", spec['py-protobuf'].prefix) 
         return args
 
