@@ -35,6 +35,8 @@ class Libgrib1(MakefilePackage):
 
     version('master', branch='master')
     version('2019-11-22', commit='0ef8d36734609170459a536329dddcad0d930675')
+    
+    variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
 
     depends_on('mpi')
 
@@ -43,16 +45,8 @@ class Libgrib1(MakefilePackage):
         spack_env.set('LIBNAME', 'grib1')
 
     def build(self, spec, prefix):
-        env['CC'] = spec['mpi'].mpicc
-        env['CXX'] = spec['mpi'].mpicxx
-        env['F77'] = spec['mpi'].mpif77
-        env['FC'] = spec['mpi'].mpifc
         with working_dir(self.build_directory):
-            MakeFileName = 'Makefile'
-            if self.spec.architecture.target == 'skylake_avx512':
-                MakeFileName += '.arolla'
-            if self.spec.architecture.target == 'haswell':
-                MakeFileName += '.daint'
+            MakeFileName= 'Makefile.' + self.spec.variants['slave'].value
             if self.compiler.name == 'gcc':
                 MakeFileName += '.gnu'
             elif self.compiler.name == 'pgi':

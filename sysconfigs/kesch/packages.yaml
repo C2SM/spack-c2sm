@@ -21,16 +21,19 @@ packages:
     providers: {}
   mpich:
     modules:
-      mpich@2.3%cce: mvapich2_cce/2.2rc1.0.3_cuda80
+      mpich@2.2%cce: mvapich2_cce/2.2rc1.0.3_cuda80
       mpich@2.2%gcc: /apps/escha/UES/jenkins/RH7.5/gnu/17.02/easybuild/modules/all/mvapich2/2.2-gcc-5.4.0-2.26
+      mpich@2.2%pgi: /opt/modulefiles/mvapich2gdr_gnu/2.3_cuda_8.0_gcc54
   netcdf-fortran:
     modules:
       netcdf-fortran@4.4.4%cce: /apps/escha/UES/jenkins/RH7.5/cce/17.06/easybuild/modules/all/netCDF-Fortran/4.4.4-CrayCCE-17.06
-      netcdf-fortran@4.4.4%gcc: 
+      netcdf-fortran@4.4.4%gcc: /apps/escha/UES/jenkins/RH7.5/gnu_PE17.02/easybuild/modules/all/netcdf-fortran/4.4.4-gmvolf-17.02 
+      netcdf-fortran@4.4.4%pgi: /apps/escha/UES/jenkins/RH7.5/pgi_PE18.5/easybuild/modules/all/netcdf-fortran/4.4.4-pgi-18.5-gcc-5.4.0-2.26
   netcdf-c:
     modules:
+      netcdf-c@4.4.1%gcc: /apps/escha/UES/jenkins/RH7.5/gnu_PE17.02/easybuild/modules/all/netcdf/4.4.1.1-gmvolf-17.02
       netcdf-c@4.4.4%cce: /apps/escha/UES/jenkins/RH7.5/cce/17.06/easybuild/modules/all/netCDF-Fortran/4.4.4-CrayCCE-17.06
-      netcdf-c@4.7.0%pgi: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/modules/all/netcdf/4.7.0-pgi-19.9-gcc-8.3.0
+      netcdf-c@4.6.1%pgi: /apps/escha/UES/jenkins/RH7.5/pgi_PE18.5/easybuild/modules/all/netcdf/4.6.1-pgi-18.5-gcc-5.4.0-2.26
   perl:
     paths: 
       perl@5.16.3: /usr
