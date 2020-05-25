@@ -32,10 +32,10 @@ class Cosmo(MakefilePackage):
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
     depends_on('slurm', type='run')
-    depends_on('cuda', type=('build', 'run'), when='+cuda')
+    depends_on('cuda', type=('build', 'run'), when='cosmo_target=gpu')
     depends_on('cosmo-dycore%gcc +build_tests', when='+dycoretest')
-    depends_on('cosmo-dycore%gcc +cuda', when='+cuda+cppdycore')
-    depends_on('cosmo-dycore%gcc ~cuda cuda_arch=none', when='~cuda cuda_arch=none +cppdycore')
+    depends_on('cosmo-dycore%gcc +cuda', when='cosmo_target=gpu +cppdycore')
+    depends_on('cosmo-dycore%gcc ~cuda cuda_arch=none', when='cosmo_target=cpu cuda_arch=none +cppdycore')
     depends_on('cosmo-dycore%gcc real_type=float', when='real_type=float +cppdycore')
     depends_on('cosmo-dycore%gcc real_type=double', when='real_type=double +cppdycore')
     depends_on('cosmo-dycore%gcc +production', when='+production +cppdycore')
@@ -51,7 +51,7 @@ class Cosmo(MakefilePackage):
     depends_on('perl@5.16.3:')
     depends_on('omni-xmod-pool', when='+claw')
     depends_on('claw', when='+claw')
-    depends_on('boost', when='+cuda ~cppdycore')
+    depends_on('boost', when='cosmo_target=gpu ~cppdycore')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('serialize', default=False, description='Build with serialization enabled')
@@ -63,7 +63,7 @@ class Cosmo(MakefilePackage):
     variant('eccodes', default=False, description='Build with eccodes instead of grib-api')
     variant('pollen', default=False, description='Build with pollen enabled')
     variant('cuda_arch', default='70', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
-    variant('cuda', default=True, description='Build with cuda or target gpu')
+    variant('cosmo_target', default='gpu', description='Build with target gpu or cpu', values=('gpu', 'cpu'), multi=False)
 
     conflicts('+pollen', when='@5.05:5.06,master')
     conflicts('+serialize', when='+parallel')
@@ -129,7 +129,7 @@ class Cosmo(MakefilePackage):
 
         # Claw library
         if '+claw' in self.spec:
-            if '+cuda' in self.spec:
+            if 'cosmo_target=gpu' in self.spec:
                 spack_env.append_flags('CLAWFC_FLAGS', '--directive=openacc -v')
             spack_env.set('CLAWDIR', self.spec['claw'].prefix)
             spack_env.set('CLAWFC', self.spec['claw'].prefix + '/bin/clawfc')
@@ -143,7 +143,7 @@ class Cosmo(MakefilePackage):
 
         # Test-enabling variables
         spack_env.set('UCX_MEMTYPE_CACHE', 'n')
-        if '+cuda' in self.spec:
+        if 'cosmo_target=gpu' in self.spec:
             spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
         else:
             spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cma')
@@ -192,27 +192,27 @@ class Cosmo(MakefilePackage):
                 OptionsFileName += '.pgi'
             elif self.compiler.name == 'cce':
                 OptionsFileName += '.cray'
-            if '+cuda' in spec:
+            if 'cosmo_target=gpu' in spec:
                 OptionsFileName += '.gpu'
             else:
                 OptionsFileName += '.cpu'
 
             makefile.filter('/Options.*', '/' + OptionsFileName)
             if '~serialize' in spec:
-                if '+cuda' in spec:
+                if 'cosmo_target=gpu' in spec:
                     makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo_gpu'))
                 else:
                     makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo_cpu'))
 
             OptionsFile = FileFilter(OptionsFileName)
-            if '+cuda' in self.spec:
+            if 'cosmo_target=gpu' in self.spec:
                 cuda_version = self.spec['cuda'].version
                 fflags = 'CUDA_HOME=' + self.spec['cuda'].prefix + ' -ta=tesla,cc' + self.spec.variants['cuda_arch'].value + ',cuda' + str(cuda_version.up_to(2))
                 OptionsFile.filter('FFLAGS   = -Kieee', 'FFLAGS   = -Kieee {0}'.format(fflags))
             # Pre-processor flags
             if self.spec['mpi'].name == 'mpich':
                 OptionsFile.filter('PFLAGS   = -Mpreprocess', 'PFLAGS   = -Mpreprocess -DNO_MPI_HOST_DATA')
-            if '+cuda' in self.spec and self.compiler.name == 'pgi':
+            if 'cosmo_target=gpu' in self.spec and self.compiler.name == 'pgi':
                 OptionsFile.filter('PFLAGS   = -Mpreprocess', 'PFLAGS   = -Mpreprocess -DNO_ACC_FINALIZE')
 
     def install(self, spec, prefix):
@@ -225,7 +225,7 @@ class Cosmo(MakefilePackage):
             if '+serialize' in spec:
                 install('cosmo_serialize', prefix.bin)            
             else:
-                if '+cuda' in spec:
+                if 'cosmo_target=gpu' in spec:
                     install('cosmo_gpu', prefix.bin)
                     install('cosmo_gpu', prefix.cosmo + '/test/testsuite')
                 else:
@@ -241,7 +241,7 @@ class Cosmo(MakefilePackage):
         if '~serialize' in self.spec:
             with working_dir(prefix.cosmo + '/test/testsuite'):
                 env['ASYNCIO'] = 'ON'
-                if '+cuda' in self.spec:
+                if 'cosmo_target=gpu' in self.spec:
                     env['TARGET'] = 'GPU'
                 else:
                     env['TARGET'] = 'CPU'
