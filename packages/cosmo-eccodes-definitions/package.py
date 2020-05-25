@@ -35,7 +35,9 @@ class CosmoEccodesDefinitions(Package):
     version('2.14.1.2', commit='15f3a862d0349f4fc332e383c69acbed71b7804d')
     version('2.14.1.1', commit='708d7a4590964c094b6df7fec4a9ccb2981de9fa')
 
-    depends_on('eccodes@2.14.1')
+    variant('aec', default=True, description='Enable Adaptive Entropy Coding for decoding/encoding')
+
+    depends_on('eccodes@2.14.1 ~aec', when='~aec')
 
     def install(self, spec, prefix):
         mkdir(prefix.cosmoDefinitions)
