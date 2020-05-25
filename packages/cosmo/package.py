@@ -135,19 +135,7 @@ class Cosmo(MakefilePackage):
             spack_env.set('CLAWFC', self.spec['claw'].prefix + '/bin/clawfc')
             spack_env.set('CLAWXMODSPOOL', self.spec['omni-xmod-pool'].prefix + '/omniXmodPool/')
             if self.spec['mpi'].name == 'mpich':
-                spack_env.append_flags('CLAWFC_FLAGS', '-U__CRAYXC')
-
-        # Fortran flags
-        if '+cuda' in self.spec:
-            cuda_version = self.spec['cuda'].version
-            fflags = ' -ta=tesla,cc' + self.spec.variants['cuda_arch'].value + ',cuda' + str(cuda_version.up_to(2))
-            spack_env.append_flags('FFLAGS', fflags)
-
-        # Pre-processor flags
-        if self.spec['mpi'].name == 'mpich': 
-            spack_env.append_flags('PFLAGS', '-DNO_MPI_HOST_DATA')
-        if '+cuda' in self.spec and self.compiler.name == 'pgi':
-            spack_env.append_flags('PFLAGS', '-DNO_ACC_FINALIZE')
+                spack_env.set('CLAWFC_FLAGS', '-U__CRAYXC')
 
         # Linker flags
         if self.compiler.name == 'pgi' and '~cppdycore' in self.spec:
@@ -208,12 +196,24 @@ class Cosmo(MakefilePackage):
                 OptionsFileName += '.gpu'
             else:
                 OptionsFileName += '.cpu'
+
             makefile.filter('/Options.*', '/' + OptionsFileName)
             if '~serialize' in spec:
                 if '+cuda' in spec:
                     makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo_gpu'))
                 else:
                     makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo_cpu'))
+
+            OptionsFile = FileFilter(OptionsFileName)
+            if '+cuda' in self.spec:
+                cuda_version = self.spec['cuda'].version
+                fflags = 'CUDA_HOME=' + self.spec['cuda'].prefix + ' -ta=tesla,cc' + self.spec.variants['cuda_arch'].value + ',cuda' + str(cuda_version.up_to(2))
+                OptionsFile.filter('FFLAGS   = -Kieee', 'FFLAGS   = -Kieee {0}'.format(fflags))
+            # Pre-processor flags
+            if self.spec['mpi'].name == 'mpich':
+                OptionsFile.filter('PFLAGS   = -Mpreprocess', 'PFLAGS   = -Mpreprocess -DNO_MPI_HOST_DATA')
+            if '+cuda' in self.spec and self.compiler.name == 'pgi':
+                OptionsFile.filter('PFLAGS   = -Mpreprocess', 'PFLAGS   = -Mpreprocess -DNO_ACC_FINALIZE')
 
     def install(self, spec, prefix):
         mkdir(prefix.cosmo)
