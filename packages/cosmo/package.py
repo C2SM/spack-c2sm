@@ -11,7 +11,7 @@ class Cosmo(MakefilePackage):
     """COSMO: Numerical Weather Prediction Model. Needs access to private GitHub."""
 
     homepage = "http://www.cosmo-model.org"
-    url      = "https://github.com/COSMO-ORG/cosmo/archive/5.06.tar.gz" 
+    url      = "https://github.com/MeteoSwiss-APN/cosmo/archive/5.07.mch1.0.p5.tar.gz"
     git      = 'git@github.com:COSMO-ORG/cosmo.git'
     maintainers = ['elsagermann']
 
@@ -40,14 +40,12 @@ class Cosmo(MakefilePackage):
     depends_on('cosmo-dycore%gcc real_type=double', when='real_type=double +cppdycore')
     depends_on('cosmo-dycore%gcc +production', when='+production +cppdycore')
 
-    depends_on('serialbox@2.6.0%pgi@19.9-gcc', when='%pgi@19.9 +serialize')
-    depends_on('serialbox@2.6.0%pgi@19.7.0-gcc', when='%pgi@19.7.0 +serialize')
-    depends_on('serialbox@2.6.0', when='%gcc +serialize')
+    depends_on('serialbox@2.6.0', when='+serialize')
     depends_on('mpi', type=('build', 'run'))
     depends_on('libgrib1')
-    depends_on('jasper@1.900.1%gcc')
+    depends_on('jasper@1.900.1%gcc ~shared')
     depends_on('cosmo-grib-api-definitions', when='~eccodes')
-    depends_on('cosmo-eccodes-definitions@2.14.1.2', when='+eccodes')
+    depends_on('cosmo-eccodes-definitions@2.14.1.2 ~aec', when='+eccodes')
     depends_on('perl@5.16.3:')
     depends_on('omni-xmod-pool', when='+claw')
     depends_on('claw', when='+claw')
@@ -64,7 +62,9 @@ class Cosmo(MakefilePackage):
     variant('pollen', default=False, description='Build with pollen enabled')
     variant('cuda_arch', default='70', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
     variant('cosmo_target', default='gpu', description='Build with target gpu or cpu', values=('gpu', 'cpu'), multi=False)
+    variant('verbose', default=False, description='Build cosmo with verbose enabled')
 
+    conflicts('+claw', when='cosmo_target=cpu')
     conflicts('+pollen', when='@5.05:5.06,master')
     conflicts('+serialize', when='+parallel')
     # previous versions contain a bug affecting serialization
@@ -111,6 +111,7 @@ class Cosmo(MakefilePackage):
         if self.spec['mpi'].name == 'openmpi':
             spack_env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpi_cxx')        
         spack_env.set('MPII', '-I'+ self.spec['mpi'].prefix + '/include')
+        
         # Dycoregt & Gridtools linrary
         if '+cppdycore' in self.spec:
             spack_env.set('DYCOREGTL', '-L' + self.spec['cosmo-dycore'].prefix + '/lib' + ' -ldycore_bindings_' + self.spec.variants['real_type'].value + ' -ldycore_base_bindings_' + self.spec.variants['real_type'].value + ' -ldycore -ldycore_base -ldycore_backend -lstdc++ -lcpp_bindgen_generator -lcpp_bindgen_handle -lgt_gcl_bindings')
@@ -169,6 +170,8 @@ class Cosmo(MakefilePackage):
             build.append('CLAW=1')
         if '+serialize' in self.spec:
             build.append('SERIALIZE=1')
+        if self.spec.variants['verbose'].value:
+            build.append('VERBOSE=1')
         MakeFileTarget = ''
         if '+parallel' in self.spec:
             MakeFileTarget += 'par'
@@ -245,6 +248,8 @@ class Cosmo(MakefilePackage):
                     env['TARGET'] = 'GPU'
                 else:
                     env['TARGET'] = 'CPU'
+                if self.spec.variants['real_type'].value == 'float':
+                    env['REAL_TYPE'] = 'FLOAT'
                 if '~cppdycore' in self.spec:
                     env['JENKINS_NO_DYCORE'] = 'ON'
                 run_testsuite = Executable('sbatch submit.' + self.spec.variants['slave'].value + '.slurm')

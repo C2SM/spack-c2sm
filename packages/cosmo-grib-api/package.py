@@ -24,12 +24,14 @@ class CosmoGribApi(AutotoolsPackage):
     depends_on('autoconf%gcc')
     depends_on('automake%gcc')
     depends_on('libtool%gcc')
-    depends_on('jasper@1.900.1%gcc')
+    depends_on('jasper@1.900.1%gcc ~shared')
     
     force_autoreconf = True
- 
+
     def configure_args(self):
         args = [
+            'CC=gcc',
+            'CXX= g++',
             '--build=x86_64',
             '--host=x86_64',
             '--with-jasper={0}'.format(self.spec['jasper'].prefix),
