@@ -97,8 +97,12 @@ class Cosmo(MakefilePackage):
         spack_env.set('GRIB_SAMPLES_PATH', grib_definition_prefix + '/cosmoDefinitions/samples/')
 
         # Netcdf library
-        spack_env.set('NETCDFL', '-L' + self.spec['netcdf-fortran'].prefix + '/lib -lnetcdff -L' + self.spec['netcdf-c'].prefix + '/lib64 -lnetcdf')
-        spack_env.set('NETCDFI', '-I' + self.spec['netcdf-fortran'].prefix + '/include')
+        if self.spec.variants['slave'].value == 'daint':
+            spack_env.set('NETCDFL', '-L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf')
+            spack_env.set('NETCDFI', '-I$(NETCDF_DIR)/include')
+        else:
+            spack_env.set('NETCDFL', '-L' + self.spec['netcdf-fortran'].prefix + '/lib -lnetcdff -L' + self.spec['netcdf-c'].prefix + '/lib64 -lnetcdf')
+            spack_env.set('NETCDFI', '-I' + self.spec['netcdf-fortran'].prefix + '/include')
 
         # Grib1 library
         if self.compiler.name == 'gcc':
