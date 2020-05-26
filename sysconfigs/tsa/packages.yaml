@@ -28,8 +28,8 @@ packages:
       netcdf-fortran@4.4.5%pgi: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/modules/all/netcdf-fortran/4.4.5-pgi-19.9-gcc-8.3.0
   netcdf-c:
     modules:
-      netcdf-c@4.7.0%pgi +mpi: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/netCDF/4.7.0-PGI-19.9-GCC-8.3.0
-      netcdf-c@4.7.0%gcc +mpi: /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/netCDF/4.7.0-fosscuda-2019b
+      netcdf-c@4.7.0%pgi +mpi: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/modules/all/netcdf/4.7.0-pgi-19.9-gcc-8.3.0
+      netcdf-c@4.7.0%gcc +mpi: /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/modules/all/netcdf/4.7.0-fosscuda-2019b
   netcdf-cxx4:
     paths:
       netcdf-cxx4@4.3.0%gcc: /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/netCDF-C++/4.3.0-fosscuda-2019b/
