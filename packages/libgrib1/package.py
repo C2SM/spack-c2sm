@@ -36,7 +36,7 @@ class Libgrib1(MakefilePackage):
     version('master', branch='master')
     version('2019-11-22', commit='0ef8d36734609170459a536329dddcad0d930675')
     
-    variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
+    variant('slave', default='tsa', description='Build on slave tsa, daint or kesch', multi=False)
 
     depends_on('mpi')
 
@@ -46,7 +46,7 @@ class Libgrib1(MakefilePackage):
 
     def build(self, spec, prefix):
         with working_dir(self.build_directory):
-            MakeFileName= 'Makefile.' + self.spec.variants['slave'].value
+            MakeFileName = 'Makefile.' + self.spec.variants['slave'].value
             if self.compiler.name == 'gcc':
                 MakeFileName += '.gnu'
             elif self.compiler.name == 'pgi':

@@ -60,7 +60,7 @@ class Cosmo(MakefilePackage):
     variant('cosmo_target', default='gpu', description='Build with target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)
     variant('claw', default=False, description='Build with claw-compiler')
-    variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
+    variant('slave', default='tsa', description='Build on slave tsa, daint or kesch', multi=False)
     variant('eccodes', default=False, description='Build with eccodes instead of grib-api')
     variant('pollen', default=False, description='Build with pollen enabled')
     variant('verbose', default=False, description='Build cosmo with verbose enabled')
@@ -164,7 +164,7 @@ class Cosmo(MakefilePackage):
                 OptionsFileName += '.cray'
             OptionsFileName += '.' + spec.variants['cosmo_target'].value
             optionsfilter = FileFilter(OptionsFileName)
-            if self.spec.variants['slave'].value == 'tsa':
+            if self.spec.variants['slave'].value == 'tsa' or self.spec.variants['slave'].value == 'kesch':
                 optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I{0}/include'.format(spec['netcdf-fortran'].prefix))
                 optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L{0}/lib -lnetcdff -L{1}/lib64 -lnetcdf'.format(spec['netcdf-fortran'].prefix, spec['netcdf-c'].prefix))
             else:
