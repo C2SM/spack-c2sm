@@ -205,8 +205,12 @@ class Cosmo(MakefilePackage):
                     env['REAL_TYPE'] = 'FLOAT'
                 if '~cppdycore' in self.spec:
                     env['JENKINS_NO_DYCORE'] = 'ON'
-                run_testsuite = Executable('sbatch submit.' + self.spec.variants['slave'].value + '.slurm')
+                run_testsuite = Executable('sbatch -W submit.' + self.spec.variants['slave'].value + '.slurm')
                 run_testsuite()
+                cat_testsuite = Executable('cat testsuite.out')
+                cat_testsuite()
+                check_testsuite = Executable('./testfail.sh')
+                check_testsuite()
         if '+serialize' in self.spec:
             with working_dir(prefix.cosmo + '/ACC'):
                 get_serialization_data = Executable('./test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun')
