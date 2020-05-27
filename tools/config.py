@@ -37,7 +37,7 @@ def main():
     if args.reposdir:
         if os.path.isdir(args.reposdir) and not os.path.isfile(args.reposdir + '/repos.yaml'):
             repos_data = yaml.safe_load(open(dir_path + '/../sysconfigs/repos.yaml', 'r'))
-            repos_data['repos'] = [dir_path]
+            repos_data['repos'] = [dir_path + '/../']
             yaml.safe_dump(repos_data, open(dir_path + '/../sysconfigs/repos.yaml', 'w'), default_flow_style=False)
             print('Installing repos.yaml on ' + args.reposdir)
             os.popen('cp ' + dir_path + '/../sysconfigs/repos.yaml ' + args.reposdir)
