@@ -68,13 +68,13 @@ packages:
     modules:
       slurm@17.11: slurm/17.11
   cosmo-dycore:
-    variants: +cuda cuda_arch=37 data_path=/scratch/jenkins/data/cosmo/ slave=tsa
+    variants: +cuda cuda_arch=37 data_path=/scratch/jenkins/data/cosmo/ slave=kesch
     compiler: [gcc]
   gridtools:
     variants: +cuda cuda_arch=37
     compiler: [gcc]
   cosmo:
-    variants: +cuda cuda_arch=37 slave=tsa
+    variants: +cuda cuda_arch=37 slave=kesch
     version: [master]
     compiler: [pgi@19.9, gcc@8.3.0]
 
