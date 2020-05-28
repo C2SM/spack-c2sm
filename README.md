@@ -18,8 +18,10 @@ If you want to automatically source the correct spack instance depending on the 
 
 ```bash
 case $(hostname -s) in
-  tsa*|arolla*) export SPACK_ROOT=/project/g110/spack/user/tsa/spack ;;
-  daint*) export SPACK_ROOT=/project/g110/spack/user/daint/spack ;;
+      tsa-ln003) export SPACK_ROOT=/project/g110/spack/user/tsa_rh7.7/spack ;;
+      tsa*|arolla*) export SPACK_ROOT=/project/g110/spack/user/tsa/spack ;;
+      daint*) export SPACK_ROOT=/project/g110/spack/user/daint/spack ;;
+      kesch*) export SPACK_ROOT=/project/g110/spack/user/kesch/spack ;;
 esac
 source $SPACK_ROOT/share/spack/setup-env.sh
 ```

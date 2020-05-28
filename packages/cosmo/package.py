@@ -24,7 +24,7 @@ class Cosmo(MakefilePackage):
     version('5.05a', tag='5.05a')
     version('5.05',  tag='5.05')
     version('5.06', tag='5.06')
-    
+
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
 
@@ -67,11 +67,10 @@ class Cosmo(MakefilePackage):
 
     conflicts('+claw', when='cosmo_target=cpu')
     conflicts('+pollen', when='@5.05:5.06,master')
-    conflicts('+serialize', when='+parallel')
     # previous versions contain a bug affecting serialization
     conflicts('+serialize', when='@5.07.mch1.0.p2:5.07.mch1.0.p3')
     variant('production', default=False, description='Force all variants to be the ones used in production')
-    
+
     conflicts('+production', when='~cppdycore')
     conflicts('+production', when='+serialize')
     conflicts('+production', when='+debug')
@@ -181,11 +180,11 @@ class Cosmo(MakefilePackage):
         mkdir(prefix.cosmo)
         if '+serialize' in self.spec:
             mkdirp('data/' + self.spec.variants['real_type'].value, prefix.data + '/' + self.spec.variants['real_type'].value)
-        install_tree('cosmo', prefix.cosmo)        
+        install_tree('cosmo', prefix.cosmo)
         with working_dir(self.build_directory):
             mkdir(prefix.bin)
             if '+serialize' in spec:
-                install('cosmo_serialize', prefix.bin)            
+                install('cosmo_serialize', prefix.bin)
             else:
                 install('cosmo_' + self.spec.variants['cosmo_target'].value, prefix.bin)
                 install('cosmo_' + self.spec.variants['cosmo_target'].value, prefix.cosmo + '/test/testsuite')
@@ -214,4 +213,4 @@ class Cosmo(MakefilePackage):
                 get_serialization_data = Executable('./test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun')
                 get_serialization_data()
             with working_dir(prefix.cosmo + '/ACC/test/serialize'):
-                copy_tree('data', prefix.data + '/' + self.spec.variants['real_type'].value) 
+                copy_tree('data', prefix.data + '/' + self.spec.variants['real_type'].value)
