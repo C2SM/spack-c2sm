@@ -35,14 +35,12 @@ def dycore_deps(repo):
             depends_on(orig, when=dep)
 
 class Cosmo(MakefilePackage):
-
-    
-
     """COSMO: Numerical Weather Prediction Model. Needs access to private GitHub."""
 
     homepage = "http://www.cosmo-model.org"
     url      = "https://github.com/MeteoSwiss-APN/cosmo/archive/5.07.mch1.0.p5.tar.gz"
     git      = 'git@github.com:COSMO-ORG/cosmo.git'
+    apngit   = 'git@github.com:MeteoSwiss-APN/cosmo.git'
     maintainers = ['elsagermann']
 
     version('master', branch='master')
@@ -58,7 +56,7 @@ class Cosmo(MakefilePackage):
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
 
-    dycore_deps("git@github.com:MeteoSwiss-APN/cosmo.git")
+    dycore_deps(apngit)
 
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
