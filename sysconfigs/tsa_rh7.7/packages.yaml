@@ -30,6 +30,9 @@ packages:
     modules:
       netcdf-c@4.7.0%pgi +mpi: /apps/arolla/UES/jenkins/RH7.7/pgi/19.9/easybuild/modules/all/netcdf/4.7.0-pgi-19.9-gcc-8.3.0
       netcdf-c@4.7.0%gcc +mpi: /apps/arolla/UES/jenkins/RH7.7/gnu/19.2/easybuild/modules/all/netcdf/4.7.0-fosscuda-2019b
+  netcdf-cxx4:
+    paths:
+      netcdf-cxx4@4.3.0%gcc: /apps/arolla/UES/jenkins/RH7.7/gnu/19.2/easybuild/software/netCDF-C++/4.3.0-fosscuda-2019b/
   perl:
     paths: 
       perl@5.16.3: /usr
