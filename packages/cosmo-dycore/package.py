@@ -23,10 +23,19 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##############################################################################
 from spack import *
+import subprocess, re
 
+def get_releases(repo):
+        git_obj = subprocess.run(["git","ls-remote",repo], capture_output=True)
+        git_tags = [re.match('refs/tags/(.*)', x.decode('utf-8')).group(1) for x in git_obj.stdout.split() if re.match('refs/tags/(.*)', x.decode('utf-8'))]
+        return git_tags
+def dycore_tags(repo):
+    tags = get_releases(repo)
+    for tag in tags:
+        version(tag, git=repo, tag=tag)
 
 class CosmoDycore(CMakePackage):
-    """FIXME: Put a proper description of your package here."""
+    """C++ dycore of cosmo based on GridTools library"""
     
     homepage = "https://github.com/COSMO-ORG/cosmo/tree/master/dycore"
     git      = "git@github.com:COSMO-ORG/cosmo.git"
@@ -34,6 +43,8 @@ class CosmoDycore(CMakePackage):
     
     version('master', branch='master')
     
+    dycore_tags("git@github.com:MeteoSwiss-APN/cosmo.git")
+
     variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'DebugRelease'))
     variant('build_tests', default=True, description="Compile Dycore unittests & regressiontests")
     variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)

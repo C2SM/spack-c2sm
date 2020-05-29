@@ -16,6 +16,8 @@ def get_releases(repo):
 def dycore_deps(repo):
     tags = get_releases(repo)
     for tag in tags:
+        version(tag, git=repo, tag=tag)
+
         types = ['float','double']
         prod = [True,False]
         cuda = [True, False]
