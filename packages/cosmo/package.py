@@ -214,7 +214,7 @@ class Cosmo(MakefilePackage):
                 check_testsuite()
         if '+serialize' in self.spec:
             with working_dir(prefix.cosmo + '/ACC'):
-                get_serialization_data = Executable('./test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun')
+                get_serialization_data = Executable('./test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun > serialize_log.txt; grep Generation failed serialize_log.txt | wc -l')
                 get_serialization_data()
             with working_dir(prefix.cosmo + '/ACC/test/serialize'):
                 copy_tree('data', prefix.data + '/' + self.spec.variants['real_type'].value) 
