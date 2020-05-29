@@ -29,5 +29,5 @@ for module in ${module_array[@]}; do
 done
 
 for item in ${SPACK_RUN_ENV[@]}; do
-      echo $item >> env.txt
+      echo "export $item" >> env.txt
 done
