@@ -29,7 +29,6 @@ def dycore_deps(repo):
             test_opt = '+build_tests' if it[3] else '~build_tests'
             test_dep = '+dycoretest' if it[3] else '~dycoretest'
 
-
             orig='cosmo-dycore@'+tag+'%gcc real_type='+real_type+' '+ prod_opt + ' ' + cuda_opt+' ' +test_opt
             dep='@'+tag+' real_type='+real_type+' '+ prod_opt + ' '+ cuda_dep + ' +cppdycore'+' '+test_dep
             depends_on(orig, when=dep)
