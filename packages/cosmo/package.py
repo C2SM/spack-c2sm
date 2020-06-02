@@ -5,7 +5,7 @@
 
 
 from spack import *
-
+import os
 
 class Cosmo(MakefilePackage):
     """COSMO: Numerical Weather Prediction Model. Needs access to private GitHub."""
@@ -192,8 +192,8 @@ class Cosmo(MakefilePackage):
     @on_package_attributes(run_tests=True)
     def test(self):
         with working_dir(prefix.cosmo + '/test/testsuite/data'):
-            get_test_data = Executable('./get_data.sh')
-            get_test_data()
+            get_test_data = './get_data.sh'
+            os.system(get_test_data)
         if '~serialize' in self.spec:
             with working_dir(prefix.cosmo + '/test/testsuite'):
                 env['ASYNCIO'] = 'ON'
@@ -205,16 +205,16 @@ class Cosmo(MakefilePackage):
                     env['REAL_TYPE'] = 'FLOAT'
                 if '~cppdycore' in self.spec:
                     env['JENKINS_NO_DYCORE'] = 'ON'
-                run_testsuite = Executable('sbatch -W submit.' + self.spec.variants['slave'].value + '.slurm')
-                run_testsuite()
-                cat_testsuite = Executable('cat testsuite.out')
-                cat_testsuite()
-                check_testsuite = Executable('./testfail.sh')
-                check_testsuite()
+                run_testsuite = 'sbatch -W submit.' + self.spec.variants['slave'].value + '.slurm'
+                os.system(run_testsuite)
+                cat_testsuite = 'cat testsuite.out'
+                os.system(cat_testsuite)
+                check_testsuite = './testfail.sh'
+                os.system(check_testsuite)
         if '+serialize' in self.spec:
             with working_dir(prefix.cosmo + '/ACC'):
-                get_serialization_data = Executable('./test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun >> serialize_log.txt; grep \'Generation failed\' serialize_log.txt | wc -l')
-                if get_serialization_data() > 0:
+                get_serialization_data = './test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun >> serialize_log.txt; grep \'Generation failed\' serialize_log.txt | wc -l'
+                if os.system(get_serialization_data) > 0:
                     raise ValueError('Serialization failed.')
             with working_dir(prefix.cosmo + '/ACC/test/serialize'):
                 copy_tree('data', prefix.data + '/' + self.spec.variants['real_type'].value)
