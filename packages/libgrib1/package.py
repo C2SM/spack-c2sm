@@ -62,11 +62,7 @@ class Libgrib1(MakefilePackage):
 
     def install(self, spec, prefix):
         with working_dir(self.build_directory):
-            MakeFileName = 'Makefile'
-            if self.spec.architecture.target == 'skylake_avx512':
-                MakeFileName += '.arolla'
-            if self.spec.architecture.target == 'haswell':
-                MakeFileName += '.daint'
+            MakeFileName = 'Makefile.' + self.spec.variants['slave'].value
             if self.compiler.name == 'gcc':
                 MakeFileName += '.gnu'
             elif self.compiler.name == 'pgi':
