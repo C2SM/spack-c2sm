@@ -22,6 +22,7 @@
 
 from spack import *
 
+import os
 
 class Int2lm(MakefilePackage):
     """INT2LM performs the interpolation from coarse grid model data to initial
@@ -135,4 +136,21 @@ class Int2lm(MakefilePackage):
 
     def install(self, spec, prefix):
         mkdir(prefix.bin)
+        mkdir(prefix.test)
         install('int2lm', prefix.bin)
+        install_tree('test', prefix.test)
+
+    @run_after('install')
+    @on_package_attributes(run_tests=True)
+    def test(self):
+        with working_dir(prefix.test + '/testsuite/data'):
+            get_test_data = './get_data.sh'
+            os.system(get_test_data)
+        with working_dir(prefix.test + '/testsuite'):
+            if '+eccodes' in self.spec:
+                run_testsuite = 'sbatch -W submit.' + self.spec.variants['slave'].value + '.slurm.eccodes'
+            else:
+                run_testsuite = 'sbatch -W submit.' + self.spec.variants['slave'].value + '.slurm'
+            os.system(run_testsuite)
+            cat_testsuite = 'cat testsuite.out'
+            os.system(cat_testsuite)
