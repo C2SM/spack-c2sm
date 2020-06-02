@@ -103,6 +103,13 @@ class Int2lm(MakefilePackage):
             spack_env.set('F90', self.spec['mpi'].mpifc)
             spack_env.set('LD', self.spec['mpi'].mpifc)
 
+        # set runtime variables
+        run_env_variables = {}
+        run_env_variables['UCX_MEMTYPE_CACHE'] = 'n'
+        run_env_variables['UCX_TLS'] = 'rc_x,ud_x,mm,shm,cma'
+        for key in run_env_variables:
+            spack_env.set(key, run_env_variables[key])
+
     @property
     def build_targets(self):
         build = []
@@ -139,6 +146,7 @@ class Int2lm(MakefilePackage):
         mkdir(prefix.test)
         install('int2lm', prefix.bin)
         install_tree('test', prefix.test)
+        install('int2lm', prefix.test + '/testsuite')
 
     @run_after('install')
     @on_package_attributes(run_tests=True)
