@@ -88,15 +88,21 @@ class Int2lm(MakefilePackage):
         # MPI library
         if self.spec['mpi'].name == 'openmpi':
             spack_env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpi_mpifh')
+            spack_env.set('MPII', '-I'+ self.spec['mpi'].prefix + '/include')
         else:
-            spack_env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpi')
-        spack_env.set('MPII', '-I'+ self.spec['mpi'].prefix + '/include')
+            if self.compiler.name == 'gcc':
+                spack_env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich_gnu')
+            elif self.compiler.name == 'cce':
+                spack_env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich_cray')
+            else:
+                spack_env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich_' + self.compiler.name)
+            spack_env.set('MPII', '-I'+ self.spec['mpi'].prefix + '/include')
 
         # Compiler & linker variables
         if self.compiler.name == 'pgi':
             spack_env.set('F90', 'pgf90 -D__PGI_FORTRAN__')
             spack_env.set('LD', 'pgf90 -D__PGI_FORTRAN__')
-        elif self.compiler.name == 'pgi':
+        elif self.compiler.name == 'cce':
             spack_env.set('F90', 'ftn -D__CRAY_FORTRAN__')
             spack_env.set('LD', 'ftn -D__CRAY_FORTRAN__')
         else:
