@@ -42,7 +42,8 @@ class CosmoDycore(CMakePackage):
     maintainers = ['elsagermann']
     
     version('master', branch='master')
-    
+    version('dev-build', branch='dev-build')    
+
     dycore_tags("git@github.com:MeteoSwiss-APN/cosmo.git")
 
     variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'DebugRelease'))

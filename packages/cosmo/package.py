@@ -18,6 +18,9 @@ def dycore_deps(repo):
     for tag in tags:
         version(tag, git=repo, tag=tag)
 
+    tags.append('dev-build')
+
+    for tag in tags:    
         types = ['float','double']
         prod = [True,False]
         cuda = [True, False]
