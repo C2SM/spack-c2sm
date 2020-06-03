@@ -145,7 +145,7 @@ class CosmoDycore(CMakePackage):
                     run_unitests_gcl_bindings = Executable('srun --time=00:05:00 -C gpu -p normal -A g110 -N 4 ./unittests_gcl_bindings')
                 run_unitests_gcl_bindings()
             with working_dir(prefix + '/tests/regression'):
-                testlist=['cosmo1_cp_test1', 'cosmo1_test3', 'cosmo1_test3_all_off', 'cosmo1_test3_coldpool_uv', 'cosmo1_test3_non_default', 'cosmo1_test3_vdiffm1', 'cosmo7_test_3', 'cosmo7_test_namelist_irunge_kutta2', 'cosmoe_test_sppt', 'cosmoe_test_sppt_coldpools', 'cosmoe_test_sppt_bechtold']
+                testlist=['cosmo1_cp_test1', 'cosmo-1e_test_1', 'cosmo-1e_test_1_all_off', 'cosmo-1e_test_1_coldpool_uv', 'cosmo-1e_test_1_non_default', 'cosmo-1e_test_1_vdiffm1', 'cosmo7_test_3', 'cosmo7_test_namelist_irunge_kutta2', 'cosmo-2e_test_1', 'cosmo-2e_test_1_coldpools', 'cosmo-2e_test_1_bechtold']
                 for test in testlist:
                     if self.spec.variants['slave'].value == 'tsa':
                         run_regression_test = Executable('srun -n 1 -p debug --gres=gpu:1 ./regression_tests -p ' + self.spec.variants['data_path'].value + self.spec.variants['real_type'].value + '/' + test + ' --gtest_filter=-DycoreUnittest.Performance')
