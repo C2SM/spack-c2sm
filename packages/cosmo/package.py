@@ -153,7 +153,10 @@ class Cosmo(MakefilePackage):
         env['FC'] = spec['mpi'].mpifc
         with working_dir(self.build_directory):
             makefile = FileFilter('Makefile')
-            OptionsFileName= 'Options.' + self.spec.variants['slave'].value
+            if 'tsa' in self.spec.variants['slave'].value:
+                OptionsFileName= 'Options.tsa'
+            else:
+                OptionsFileName= 'Options.' + self.spec.variants['slave'].value
             if self.compiler.name == 'gcc':
                 OptionsFileName += '.gnu'
             elif self.compiler.name == 'pgi':
@@ -162,7 +165,7 @@ class Cosmo(MakefilePackage):
                 OptionsFileName += '.cray'
             OptionsFileName += '.' + spec.variants['cosmo_target'].value
             optionsfilter = FileFilter(OptionsFileName)
-            if self.spec.variants['slave'].value == 'tsa':
+            if 'tsa' in self.spec.variants['slave'].value:
                 optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I{0}/include'.format(spec['netcdf-fortran'].prefix))
                 optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L{0}/lib -lnetcdff -L{1}/lib64 -lnetcdf'.format(spec['netcdf-fortran'].prefix, spec['netcdf-c'].prefix))
             else:
@@ -205,7 +208,10 @@ class Cosmo(MakefilePackage):
                     env['REAL_TYPE'] = 'FLOAT'
                 if '~cppdycore' in self.spec:
                     env['JENKINS_NO_DYCORE'] = 'ON'
-                run_testsuite = 'sbatch -W submit.' + self.spec.variants['slave'].value + '.slurm'
+                if self.spec.variants['slave'].value == 'tsa_rh7.7':
+                    run_testsuite = 'sbatch -W --reservation=rh77 submit.tsa.slurm'
+                else:
+                    run_testsuite = 'sbatch -W submit.' + self.spec.variants['slave'].value + '.slurm'
                 os.system(run_testsuite)
                 cat_testsuite = 'cat testsuite.out'
                 os.system(cat_testsuite)
@@ -213,7 +219,10 @@ class Cosmo(MakefilePackage):
                 os.system(check_testsuite)
         if '+serialize' in self.spec:
             with working_dir(prefix.cosmo + '/ACC'):
-                get_serialization_data = './test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun >> serialize_log.txt; grep \'Generation failed\' serialize_log.txt | wc -l'
+                if self.spec.variants['slave'].value == 'tsa_rh7.7':
+                    get_serialization_data = './test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=\'srun --reservation=rh77\' >> serialize_log.txt; grep \'Generation failed\' serialize_log.txt | wc -l'
+                else:
+                    get_serialization_data = './test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun >> serialize_log.txt; grep \'Generation failed\' serialize_log.txt | wc -l'
                 cat_log = 'cat serialize_log.txt'
                 if os.system(get_serialization_data) > 0:
                     raise ValueError('Serialization failed.')
