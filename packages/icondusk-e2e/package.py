@@ -17,6 +17,7 @@ class IconduskE2e(CMakePackage):
 
     version('master', branch='master')
 
+    depends_on('atlas_utilities', type=('build','run'))
     depends_on('dawn4py',  type=('build','run'))
     depends_on('python@3.8.0')
     depends_on('atlas')
@@ -35,6 +36,7 @@ class IconduskE2e(CMakePackage):
 
         args.append('-DCMAKE_BUILD_TYPE={0}'.format(self.spec.variants['build_type'].value))
         args.append('-DPython3_EXECUTABLE=' + spec['python'].prefix +'/bin/python3.8')
+        args.append('-Datlas_utils_ROOT='+spec['atlas_utilities'].prefix)
         args.append('-Ddawn4py_DIR='+spec['dawn4py'].prefix)
         args.append('-Datlas_DIR='+spec['atlas'].prefix)
         args.append('-DPRECISION='+spec.variants['precision'].value)
