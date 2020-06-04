@@ -5,7 +5,7 @@
 
 
 from spack import *
-
+import os
 
 class Cosmo(MakefilePackage):
     """COSMO: Numerical Weather Prediction Model. Needs access to private GitHub."""
@@ -16,7 +16,6 @@ class Cosmo(MakefilePackage):
     maintainers = ['elsagermann']
 
     version('master', branch='master')
-    version('dev-build', branch='master')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
     version('5.07.mch1.0.p5', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p5')
     version('5.07.mch1.0.p4', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p4')
@@ -192,8 +191,8 @@ class Cosmo(MakefilePackage):
     @on_package_attributes(run_tests=True)
     def test(self):
         with working_dir(prefix.cosmo + '/test/testsuite/data'):
-            get_test_data = Executable('./get_data.sh')
-            get_test_data()
+            get_test_data = './get_data.sh'
+            os.system(get_test_data)
         if '~serialize' in self.spec:
             with working_dir(prefix.cosmo + '/test/testsuite'):
                 env['ASYNCIO'] = 'ON'
@@ -205,11 +204,18 @@ class Cosmo(MakefilePackage):
                     env['REAL_TYPE'] = 'FLOAT'
                 if '~cppdycore' in self.spec:
                     env['JENKINS_NO_DYCORE'] = 'ON'
-                run_testsuite = Executable('sbatch submit.' + self.spec.variants['slave'].value + '.slurm')
-                run_testsuite()
+                run_testsuite = 'sbatch -W submit.' + self.spec.variants['slave'].value + '.slurm'
+                os.system(run_testsuite)
+                cat_testsuite = 'cat testsuite.out'
+                os.system(cat_testsuite)
+                check_testsuite = './testfail.sh'
+                os.system(check_testsuite)
         if '+serialize' in self.spec:
             with working_dir(prefix.cosmo + '/ACC'):
-                get_serialization_data = Executable('./test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun')
-                get_serialization_data()
+                get_serialization_data = './test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun >> serialize_log.txt; grep \'Generation failed\' serialize_log.txt | wc -l'
+                cat_log = 'cat serialize_log.txt'
+                if os.system(get_serialization_data) > 0:
+                    raise ValueError('Serialization failed.')
+                os.system(cat_log)
             with working_dir(prefix.cosmo + '/ACC/test/serialize'):
                 copy_tree('data', prefix.data + '/' + self.spec.variants['real_type'].value)
