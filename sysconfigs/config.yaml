@@ -1,10 +1,9 @@
 config:
-  build_stage:
-  - /scratch/cosuna/tsa/spack/spack-stages/tsa
-  install_path_scheme: '{name}/{version}/{compiler.name}/{hash}'
-  install_tree: /scratch/cosuna/tsa/spack/spack-install/tsa
-  module_roots:
-    tcl: /scratch/cosuna/tsa/spack/modules/tsa
-  source_cache: ~/.spack/source_cache
+  install_tree:
   template_dirs:
-  - $spack/templates
+    - $spack/templates
+  module_roots:
+    tcl:
+  build_stage:
+  install_path_scheme: '{name}/{version}/{compiler.name}/{hash}'
+  source_cache: ~/.spack/source_cache
