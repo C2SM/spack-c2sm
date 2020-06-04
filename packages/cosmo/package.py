@@ -50,6 +50,7 @@ class Cosmo(MakefilePackage):
     maintainers = ['elsagermann']
 
     version('master', branch='master')
+    version('dev-build', branch='master')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
 
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
