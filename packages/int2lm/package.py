@@ -168,3 +168,6 @@ class Int2lm(MakefilePackage):
             os.system(run_testsuite)
             cat_testsuite = 'cat testsuite.out'
             os.system(cat_testsuite)
+            check_testsuite = 'grep -e \'CRASH|FAIL\' testsuite.out | wc -l'
+            if os.system(check_testsuite) > 0:
+                os._exit()
