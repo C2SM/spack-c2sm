@@ -123,7 +123,10 @@ class CosmoDycore(CMakePackage):
                 install_tree('tests', prefix.tests)
             with working_dir(prefix + '/tests/unittests'):
                 if 'tsa' in self.spec.variants['slave'].value:
-                    run_unittests = Executable('srun -n 1 -p normal --gres=gpu:1 ./unittests  --gtest_filter=-TracerBindings.TracerVariable')
+                    if self.spec.variants['slave'].value == 'tsa_rh7.7':
+                        run_unittests = Executable('srun --reservation=rh77 -n 1 -p normal --gres=gpu:1 ./unittests  --gtest_filter=-TracerBindings.TracerVariable')
+                    else:
+                        run_unittests = Executable('srun -n 1 -p normal --gres=gpu:1 ./unittests  --gtest_filter=-TracerBindings.TracerVariable')
                 if self.spec.variants['slave'].value == 'daint':
                     run_unittests = Executable('srun --time=00:05:00 -C gpu -p normal -A g110 -N 1 ./unittests  --gtest_filter=-TracerBindings.TracerVariable')
                 run_unittests()
