@@ -18,7 +18,8 @@ class Dawn(CMakePackage):
     version('master', branch='master')
 
     depends_on('cmake')
-    depends_on('python@3.8.0')
+    extends('python@3.8.0')
+    depends_on('py-setuptools', type='build')
 
     variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'DebugRelease'))
     root_cmakelists_dir='dawn'
@@ -27,7 +28,6 @@ class Dawn(CMakePackage):
         args = []
         spec = self.spec
 
-        print('DDDDDD', sys.version)
         args.append('-DCMAKE_BUILD_TYPE={0}'.format(self.spec.variants['build_type'].value))
         args.append('-DPython3_EXECUTABLE=' + spec['python'].prefix +'/bin/python3.8')
         args.append('-DDAWN_REQUIRE_PYTHON=ON')
