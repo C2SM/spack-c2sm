@@ -34,7 +34,6 @@ class Libgrib1(MakefilePackage):
     build_directory='libgrib1_cosmo/source'
 
     version('master', branch='master')
-    version('2019-11-22', commit='0ef8d36734609170459a536329dddcad0d930675')
     
     variant('slave', default='tsa', description='Build on slave tsa, daint or kesch', multi=False)
 
