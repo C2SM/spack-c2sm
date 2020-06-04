@@ -42,6 +42,7 @@ class Int2lm(MakefilePackage):
     depends_on('cosmo-grib-api-definitions', when='~eccodes')
     depends_on('cosmo-eccodes-definitions@2.14.1.2 ~aec', when='+eccodes')
     depends_on('libgrib1@master slave=tsa', when='slave=tsa')
+    depends_on('libgrib1@master slave=tsa', when='slave=tsa_rh7.7')
     depends_on('libgrib1@master slave=daint', when='slave=daint')
     depends_on('libgrib1@master slave=kesch', when='slave=kesch')
     depends_on('mpi', type=('build', 'run'), when='+parallel')
