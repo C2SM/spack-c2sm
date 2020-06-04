@@ -18,7 +18,9 @@ def dycore_deps(repo):
     for tag in tags:
         version(tag, git=repo, tag=tag)
 
+    tags.append('master')
     tags.append('dev-build')
+    tags.append('mch')
 
     for tag in tags:    
         types = ['float','double']
@@ -50,13 +52,6 @@ class Cosmo(MakefilePackage):
     version('master', branch='master')
     version('dev-build', branch='master')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
-    version('5.07.mch1.0.p5', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p5')
-    version('5.07.mch1.0.p4', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p4')
-    version('5.07.mch1.0.p3', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p3')
-    version('5.07.mch1.0.p2', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p2')
-    version('5.05a', tag='5.05a')
-    version('5.05',  tag='5.05')
-    version('5.06', tag='5.06')
 
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
