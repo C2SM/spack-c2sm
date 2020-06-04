@@ -63,6 +63,8 @@ packages:
   slurm:
     modules:
       slurm@19.05.05: slurm/19.05.05
+  int2lm:
+    variants: slave=tsa_rh7.7
   cosmo-dycore:
     variants: +cuda cuda_arch=70 data_path=/scratch/jenkins/data/cosmo/ slave=tsa
     compiler: [gcc]

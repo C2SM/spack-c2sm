@@ -161,7 +161,9 @@ class Int2lm(MakefilePackage):
             get_test_data = './get_data.sh'
             os.system(get_test_data)
         with working_dir(prefix.test + '/testsuite'):
-            if '+eccodes' in self.spec:
+            if self.spec.variants['slave'].value == 'tsa_rh7.7':
+                run_testsuite = 'sbatch -W --reservation=rh77 submit.tsa.slurm'
+            elif '+eccodes' in self.spec:
                 run_testsuite = 'sbatch -W submit.' + self.spec.variants['slave'].value + '.slurm.eccodes'
             else:
                 run_testsuite = 'sbatch -W submit.' + self.spec.variants['slave'].value + '.slurm'
