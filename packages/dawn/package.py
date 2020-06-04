@@ -18,8 +18,7 @@ class Dawn(CMakePackage):
     version('master', branch='master')
 
     depends_on('cmake')
-    extends('python@3.8.0')
-    depends_on('py-setuptools', type='build')
+    depends_on('python@3.8.0')
 
     variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'DebugRelease'))
     root_cmakelists_dir='dawn'

@@ -18,7 +18,7 @@ class Dawn4py(PythonPackage):
     version('master', branch='master')
 
     depends_on('cmake')
-    depends_on('python@3.8.0', type=('build','run'))
+    extends('python@3.8.0', type=('build','run'))
 
     build_directory = 'dawn'
     phases = ['build', 'install']
