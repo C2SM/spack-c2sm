@@ -121,6 +121,8 @@ packages:
             intel-mkl@2019.1.144%intel~ilp64 threads=none: /opt/intel
             intel-mkl@2019.1.144%gcc~ilp64 threads=none:   /opt/intel
             intel-mkl@2019.1.144%cce~ilp64 threads=none:   /opt/intel
+    int2lm:
+        variants: slave=daint
     libjpeg:
         paths:
             libjpeg%gcc: /usr
