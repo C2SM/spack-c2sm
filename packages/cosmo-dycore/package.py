@@ -33,6 +33,7 @@ class CosmoDycore(CMakePackage):
     maintainers = ['elsagermann']
     
     version('master', branch='master')
+    version('dev-build', branch='master')
     
     variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'DebugRelease'))
     variant('build_tests', default=True, description="Compile Dycore unittests & regressiontests")
