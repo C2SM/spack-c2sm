@@ -6,7 +6,7 @@
 
 import subprocess, re, itertools
 from spack import *
-
+import os
 
 
 def get_releases(repo):
@@ -50,7 +50,6 @@ class Cosmo(MakefilePackage):
     maintainers = ['elsagermann']
 
     version('master', branch='master')
-    version('dev-build', branch='master')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
 
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
@@ -61,11 +60,12 @@ class Cosmo(MakefilePackage):
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
     depends_on('slurm', type='run')
-    depends_on('cuda', type=('build', 'run'))
-
+    depends_on('cuda', when='cosmo_target=gpu', type=('build', 'run'))
     depends_on('serialbox@2.6.0', when='+serialize')
     depends_on('mpi', type=('build', 'run'))
-    depends_on('libgrib1')
+    depends_on('libgrib1 slave=tsa', when='slave=tsa')
+    depends_on('libgrib1 slave=daint', when='slave=daint')
+    depends_on('libgrib1 slave=kesch', when='slave=kesch')
     depends_on('jasper@1.900.1%gcc ~shared')
     depends_on('cosmo-grib-api-definitions', when='~eccodes')
     depends_on('cosmo-eccodes-definitions@2.14.1.2 ~aec', when='+eccodes')
@@ -82,7 +82,7 @@ class Cosmo(MakefilePackage):
     variant('cosmo_target', default='gpu', description='Build with target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)
     variant('claw', default=False, description='Build with claw-compiler')
-    variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
+    variant('slave', default='tsa', description='Build on slave tsa, daint or kesch', multi=False)
     variant('eccodes', default=False, description='Build with eccodes instead of grib-api')
     variant('pollen', default=False, description='Build with pollen enabled')
     variant('verbose', default=False, description='Build cosmo with verbose enabled')
@@ -185,7 +185,7 @@ class Cosmo(MakefilePackage):
                 OptionsFileName += '.cray'
             OptionsFileName += '.' + spec.variants['cosmo_target'].value
             optionsfilter = FileFilter(OptionsFileName)
-            if self.spec.variants['slave'].value == 'tsa':
+            if self.spec.variants['slave'].value == 'tsa' or self.spec.variants['slave'].value == 'kesch':
                 optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I{0}/include'.format(spec['netcdf-fortran'].prefix))
                 optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L{0}/lib -lnetcdff -L{1}/lib64 -lnetcdf'.format(spec['netcdf-fortran'].prefix, spec['netcdf-c'].prefix))
             else:
@@ -215,8 +215,8 @@ class Cosmo(MakefilePackage):
     @on_package_attributes(run_tests=True)
     def test(self):
         with working_dir(prefix.cosmo + '/test/testsuite/data'):
-            get_test_data = Executable('./get_data.sh')
-            get_test_data()
+            get_test_data = './get_data.sh'
+            os.system(get_test_data)
         if '~serialize' in self.spec:
             with working_dir(prefix.cosmo + '/test/testsuite'):
                 env['ASYNCIO'] = 'ON'
@@ -228,11 +228,18 @@ class Cosmo(MakefilePackage):
                     env['REAL_TYPE'] = 'FLOAT'
                 if '~cppdycore' in self.spec:
                     env['JENKINS_NO_DYCORE'] = 'ON'
-                run_testsuite = Executable('sbatch submit.' + self.spec.variants['slave'].value + '.slurm')
-                run_testsuite()
+                run_testsuite = 'sbatch -W submit.' + self.spec.variants['slave'].value + '.slurm'
+                os.system(run_testsuite)
+                cat_testsuite = 'cat testsuite.out'
+                os.system(cat_testsuite)
+                check_testsuite = './testfail.sh'
+                os.system(check_testsuite)
         if '+serialize' in self.spec:
             with working_dir(prefix.cosmo + '/ACC'):
-                get_serialization_data = Executable('./test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun')
-                get_serialization_data()
+                get_serialization_data = './test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun >> serialize_log.txt; grep \'Generation failed\' serialize_log.txt | wc -l'
+                cat_log = 'cat serialize_log.txt'
+                if os.system(get_serialization_data) > 0:
+                    raise ValueError('Serialization failed.')
+                os.system(cat_log)
             with working_dir(prefix.cosmo + '/ACC/test/serialize'):
                 copy_tree('data', prefix.data + '/' + self.spec.variants['real_type'].value)
