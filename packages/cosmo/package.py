@@ -44,6 +44,7 @@ class Cosmo(MakefilePackage):
     depends_on('serialbox@2.6.0', when='+serialize')
     depends_on('mpi', type=('build', 'run'))
     depends_on('libgrib1 slave=tsa', when='slave=tsa')
+    depends_on('libgrib1 slave=tsa', when='slave=tsa_rh7.7')
     depends_on('libgrib1 slave=daint', when='slave=daint')
     depends_on('libgrib1 slave=kesch', when='slave=kesch')
     depends_on('jasper@1.900.1%gcc ~shared')
