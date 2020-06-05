@@ -17,6 +17,7 @@ class Cosmo(MakefilePackage):
 
     version('master', branch='master')
     version('dev-build', branch='master')
+    version('test', git='git@github.com:elsagermann/cosmo.git', branch='thread_serialization')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
     version('5.07.mch1.0.p5', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p5')
     version('5.07.mch1.0.p4', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p4')
