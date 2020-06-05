@@ -16,6 +16,7 @@ class Cosmo(MakefilePackage):
     maintainers = ['elsagermann']
 
     version('master', branch='master')
+    version('dev-build', branch='master')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
     version('5.07.mch1.0.p5', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p5')
     version('5.07.mch1.0.p4', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p4')
@@ -32,7 +33,7 @@ class Cosmo(MakefilePackage):
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
     depends_on('slurm', type='run')
-    depends_on('cuda', type=('build', 'run'))
+    depends_on('cuda', when='cosmo_target=gpu', type=('build', 'run'))
     depends_on('cosmo-dycore%gcc +build_tests', when='+dycoretest')
     depends_on('cosmo-dycore%gcc +cuda', when='cosmo_target=gpu +cppdycore')
     depends_on('cosmo-dycore%gcc ~cuda cuda_arch=none', when='cosmo_target=cpu +cppdycore')
@@ -42,7 +43,9 @@ class Cosmo(MakefilePackage):
 
     depends_on('serialbox@2.6.0', when='+serialize')
     depends_on('mpi', type=('build', 'run'))
-    depends_on('libgrib1')
+    depends_on('libgrib1 slave=tsa', when='slave=tsa')
+    depends_on('libgrib1 slave=daint', when='slave=daint')
+    depends_on('libgrib1 slave=kesch', when='slave=kesch')
     depends_on('jasper@1.900.1%gcc ~shared')
     depends_on('cosmo-grib-api-definitions', when='~eccodes')
     depends_on('cosmo-eccodes-definitions@2.14.1.2 ~aec', when='+eccodes')
@@ -58,7 +61,7 @@ class Cosmo(MakefilePackage):
     variant('cosmo_target', default='gpu', description='Build with target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)
     variant('claw', default=False, description='Build with claw-compiler')
-    variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
+    variant('slave', default='tsa', description='Build on slave tsa, daint or kesch', multi=False)
     variant('eccodes', default=False, description='Build with eccodes instead of grib-api')
     variant('pollen', default=False, description='Build with pollen enabled')
     variant('verbose', default=False, description='Build cosmo with verbose enabled')
@@ -164,6 +167,7 @@ class Cosmo(MakefilePackage):
                 OptionsFileName += '.cray'
             OptionsFileName += '.' + spec.variants['cosmo_target'].value
             optionsfilter = FileFilter(OptionsFileName)
+
             if 'tsa' in self.spec.variants['slave'].value:
                 optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I{0}/include'.format(spec['netcdf-fortran'].prefix))
                 optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L{0}/lib -lnetcdff -L{1}/lib64 -lnetcdf'.format(spec['netcdf-fortran'].prefix, spec['netcdf-c'].prefix))
