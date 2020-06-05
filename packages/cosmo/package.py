@@ -217,11 +217,8 @@ class Cosmo(MakefilePackage):
                 check_testsuite = './testfail.sh'
                 os.system(check_testsuite)
         if '+serialize' in self.spec:
-            with working_dir(prefix.cosmo + '/ACC'):
-                if self.spec.variants['slave'].value == 'tsa_rh7.7':
-                    get_serialization_data = './test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=\'srun --reservation=rh77\' >> serialize_log.txt; grep \'Generation failed\' serialize_log.txt | wc -l'
-                else:
-                    get_serialization_data = './test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun >> serialize_log.txt; grep \'Generation failed\' serialize_log.txt | wc -l'
+            with working_dir(prefix.cosmo + '/ACC')
+                get_serialization_data = './test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun >> serialize_log.txt; grep \'Generation failed\' serialize_log.txt | wc -l'
                 cat_log = 'cat serialize_log.txt'
                 if os.system(get_serialization_data) > 0:
                     raise ValueError('Serialization failed.')
