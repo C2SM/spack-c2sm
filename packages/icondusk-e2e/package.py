@@ -10,9 +10,8 @@ import sys
 class IconduskE2e(CMakePackage):
     """A library for numerical weather prediction and climate modelling"""
 
-    homepage = 'https://github.com/MeteoSwiss-APN/icondusk-e2e'
-    url      = "https://github.com/MeteoSwiss-APN/dawn/archive/0.0.1.tar.gz"
-    git      = 'https://github.com/MeteoSwiss-APN/icondusk-e2e'
+    homepage = 'https://github.com/dawn-ico/icondusk-e2e'
+    git      = 'https://github.com/dawn-ico/icondusk-e2e'
     maintainers = ['cosunae']
 
     version('master', branch='master')
