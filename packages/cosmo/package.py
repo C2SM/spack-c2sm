@@ -243,7 +243,8 @@ class Cosmo(MakefilePackage):
                 cat_testsuite = 'cat testsuite.out'
                 os.system(cat_testsuite)
                 check_testsuite = './testfail.sh'
-                os.system(check_testsuite)
+                if os.system(check_testsuite) == 0:
+                    raise ValueError('Testsuite failed.')
         if '+serialize' in self.spec:
             with working_dir(prefix.cosmo + '/ACC'):
                 get_serialization_data = 'python2 test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun >> serialize_log.txt; grep \'Generation failed\' serialize_log.txt | wc -l'
