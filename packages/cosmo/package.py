@@ -4,8 +4,41 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 
+import subprocess, re, itertools
 from spack import *
 import os
+
+
+def get_releases(repo):
+        git_obj = subprocess.run(["git","ls-remote",repo], stdout=subprocess.PIPE)
+        git_tags = [re.match('refs/tags/(.*)', x.decode('utf-8')).group(1) for x in git_obj.stdout.split() if re.match('refs/tags/(.*)', x.decode('utf-8'))]
+        return git_tags
+def dycore_deps(repo):
+    tags = get_releases(repo)
+    for tag in tags:
+        version(tag, git=repo, tag=tag)
+
+    tags.append('master')
+    tags.append('dev-build')
+    tags.append('mch')
+
+    for tag in tags:    
+        types = ['float','double']
+        prod = [True,False]
+        cuda = [True, False]
+        testing = [True, False]
+        comb=list(itertools.product(*[types, prod, cuda, testing]))
+        for it in comb:
+            real_type=it[0]
+            prod_opt = '+production' if it[1] else '~production'
+            cuda_opt = '+cuda' if it[2] else '~cuda cuda_arch=none'
+            cuda_dep = 'cosmo_target=gpu' if it[2] else ' cosmo_target=cpu'
+            test_opt = '+build_tests' if it[3] else '~build_tests'
+            test_dep = '+dycoretest' if it[3] else '~dycoretest'
+
+            orig='cosmo-dycore@'+tag+'%gcc real_type='+real_type+' '+ prod_opt + ' ' + cuda_opt+' ' +test_opt
+            dep='@'+tag+' real_type='+real_type+' '+ prod_opt + ' '+ cuda_dep + ' +cppdycore'+' '+test_dep
+            depends_on(orig, when=dep)
 
 class Cosmo(MakefilePackage):
     """COSMO: Numerical Weather Prediction Model. Needs access to private GitHub."""
@@ -13,34 +46,22 @@ class Cosmo(MakefilePackage):
     homepage = "http://www.cosmo-model.org"
     url      = "https://github.com/MeteoSwiss-APN/cosmo/archive/5.07.mch1.0.p5.tar.gz"
     git      = 'git@github.com:COSMO-ORG/cosmo.git'
+    apngit   = 'git@github.com:MeteoSwiss-APN/cosmo.git'
     maintainers = ['elsagermann']
 
     version('master', branch='master')
     version('dev-build', branch='master')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
-    version('5.07.mch1.0.p5', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p5')
-    version('5.07.mch1.0.p4', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p4')
-    version('5.07.mch1.0.p3', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p3')
-    version('5.07.mch1.0.p2', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p2')
-    version('5.05a', tag='5.05a')
-    version('5.05',  tag='5.05')
-    version('5.06', tag='5.06')
 
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
 
+    dycore_deps(apngit)
 
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
     depends_on('slurm', type='run')
     depends_on('cuda', when='cosmo_target=gpu', type=('build', 'run'))
-    depends_on('cosmo-dycore%gcc +build_tests', when='+dycoretest')
-    depends_on('cosmo-dycore%gcc +cuda', when='cosmo_target=gpu +cppdycore')
-    depends_on('cosmo-dycore%gcc ~cuda cuda_arch=none', when='cosmo_target=cpu +cppdycore')
-    depends_on('cosmo-dycore%gcc real_type=float', when='real_type=float +cppdycore')
-    depends_on('cosmo-dycore%gcc real_type=double', when='real_type=double +cppdycore')
-    depends_on('cosmo-dycore%gcc +production', when='+production +cppdycore')
-
     depends_on('serialbox@2.6.0', when='+serialize')
     depends_on('mpi', type=('build', 'run'))
     depends_on('libgrib1 slave=tsa', when='slave=tsa')
@@ -55,6 +76,7 @@ class Cosmo(MakefilePackage):
     depends_on('boost', when='cosmo_target=gpu ~cppdycore')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
+    variant('dycoretest', default=True, description='Build C++ dycore with testing')
     variant('serialize', default=False, description='Build with serialization enabled')
     variant('parallel', default=True, description='Build parallel COSMO')
     variant('debug', default=False, description='Build debug mode')
