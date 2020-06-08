@@ -65,6 +65,7 @@ class Cosmo(MakefilePackage):
     depends_on('serialbox@2.6.0', when='+serialize')
     depends_on('mpi', type=('build', 'run'))
     depends_on('libgrib1 slave=tsa', when='slave=tsa')
+    depends_on('libgrib1 slave=tsa', when='slave=tsa_rh7.7')
     depends_on('libgrib1 slave=daint', when='slave=daint')
     depends_on('libgrib1 slave=kesch', when='slave=kesch')
     depends_on('jasper@1.900.1%gcc ~shared')
@@ -177,7 +178,10 @@ class Cosmo(MakefilePackage):
         env['FC'] = spec['mpi'].mpifc
         with working_dir(self.build_directory):
             makefile = FileFilter('Makefile')
-            OptionsFileName= 'Options.' + self.spec.variants['slave'].value
+            if 'tsa' in self.spec.variants['slave'].value:
+                OptionsFileName= 'Options.tsa'
+            else:
+                OptionsFileName= 'Options.' + self.spec.variants['slave'].value
             if self.compiler.name == 'gcc':
                 OptionsFileName += '.gnu'
             elif self.compiler.name == 'pgi':
@@ -186,7 +190,8 @@ class Cosmo(MakefilePackage):
                 OptionsFileName += '.cray'
             OptionsFileName += '.' + spec.variants['cosmo_target'].value
             optionsfilter = FileFilter(OptionsFileName)
-            if self.spec.variants['slave'].value == 'tsa' or self.spec.variants['slave'].value == 'kesch':
+
+            if 'tsa' in self.spec.variants['slave'].value:
                 optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I{0}/include'.format(spec['netcdf-fortran'].prefix))
                 optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L{0}/lib -lnetcdff -L{1}/lib64 -lnetcdf'.format(spec['netcdf-fortran'].prefix, spec['netcdf-c'].prefix))
             else:
@@ -229,7 +234,10 @@ class Cosmo(MakefilePackage):
                     env['REAL_TYPE'] = 'FLOAT'
                 if '~cppdycore' in self.spec:
                     env['JENKINS_NO_DYCORE'] = 'ON'
-                run_testsuite = 'sbatch -W submit.' + self.spec.variants['slave'].value + '.slurm'
+                if self.spec.variants['slave'].value == 'tsa_rh7.7':
+                    run_testsuite = 'sbatch -W --reservation=rh77 submit.tsa.slurm'
+                else:
+                    run_testsuite = 'sbatch -W submit.' + self.spec.variants['slave'].value + '.slurm'
                 os.system(run_testsuite)
                 cat_testsuite = 'cat testsuite.out'
                 os.system(cat_testsuite)

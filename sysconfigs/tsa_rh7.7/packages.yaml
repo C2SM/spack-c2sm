@@ -69,13 +69,13 @@ packages:
   int2lm:
     variants: slave=tsa_rh7.7
   cosmo-dycore:
-    variants: +cuda cuda_arch=70 data_path=/scratch/jenkins/data/cosmo/ slave=tsa
+    variants: +cuda cuda_arch=70 data_path=/scratch/jenkins/data/cosmo/ slave=tsa_rh7.7
     compiler: [gcc]
   gridtools:
     variants: +cuda cuda_arch=70
     compiler: [gcc]
   cosmo:
-    variants: +cuda cuda_arch=70 slave=tsa
+    variants: +cuda cuda_arch=70 slave=tsa_rh7.7
     version: [master]
     compiler: [pgi@19.9, gcc@8.3.0]
 
