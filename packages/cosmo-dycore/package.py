@@ -26,7 +26,7 @@ from spack import *
 import subprocess, re
 
 def get_releases(repo):
-        git_obj = subprocess.run(["git","ls-remote",repo], capture_output=True)
+        git_obj = subprocess.run(["git","ls-remote",repo], stdout=subprocess.PIPE)
         git_tags = [re.match('refs/tags/(.*)', x.decode('utf-8')).group(1) for x in git_obj.stdout.split() if re.match('refs/tags/(.*)', x.decode('utf-8'))]
         return git_tags
 def dycore_tags(repo):
