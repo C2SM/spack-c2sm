@@ -243,7 +243,7 @@ class Cosmo(MakefilePackage):
                 cat_testsuite = 'cat testsuite.out'
                 os.system(cat_testsuite)
                 check_testsuite = './testfail.sh'
-                if os.system(check_testsuite) == 0:
+                if os.system(check_testsuite) != 0:
                     raise ValueError('Testsuite failed.')
         if '+serialize' in self.spec:
             with working_dir(prefix.cosmo + '/ACC'):
