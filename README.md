@@ -4,6 +4,8 @@ Official Spack documentation [Here](https://spack.readthedocs.io/en/latest/).
 
 ## Installation
 
+**!!! Please not that the package cosmo and cosmo-dycore now requires a Python version >= 3.6!!!**
+
 ### CSCS users
 
 For the cscs users a spack instance including the mch packages and the mch machine configuration files will be maintained for both tsa and daint under _/project/g110/spack/user/'machine'/spack_. Therefore, if you are not interested in the developement of our spack packages and config files you can directly source those instances and skip the general installation section:
@@ -18,9 +20,9 @@ If you want to automatically source the correct spack instance depending on the 
 
 ```bash
 case $(hostname -s) in
-      tsa-ln003) export SPACK_ROOT=/project/g110/spack/user/tsa_rh7.7/spack ;;
-      tsa*|arolla*) export SPACK_ROOT=/project/g110/spack/user/tsa/spack ;;
-      daint*) export SPACK_ROOT=/project/g110/spack/user/daint/spack ;;
+      tsa-ln003) module load python/3.7.4; export SPACK_ROOT=/project/g110/spack/user/tsa_rh7.7/spack ;;
+      tsa*|arolla*) module load python/3.7.4; export SPACK_ROOT=/project/g110/spack/user/tsa/spack ;;
+      daint*) module load cray-python; export SPACK_ROOT=/project/g110/spack/user/daint/spack ;;
       kesch*) export SPACK_ROOT=/project/g110/spack/user/kesch/spack ;;
 esac
 source $SPACK_ROOT/share/spack/setup-env.sh
