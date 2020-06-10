@@ -104,6 +104,8 @@ class Cosmo(MakefilePackage):
     conflicts('+production', when='cosmo_target=cpu')
     conflicts('+production', when='~pollen')
     conflicts('+production', when='%gcc')
+    conflicts('+production', when='~eccodes')
+
     conflicts('+cppdycore', when='%pgi cosmo_target=cpu')
     build_directory = 'cosmo/ACC'
 
