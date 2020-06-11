@@ -98,6 +98,9 @@ def dev_build_cosmo(self, args):
         cosmo_serialize_spec.concretize()
         
         args.spec = str(dycore_spec)
+
+        if args.until == 'build':
+            os.system('rm -rf ' + dycore_spec.prefix)
         
         # Dev-build dycore
         os.chdir(base_directory)
@@ -141,7 +144,7 @@ def dev_build_cosmo(self, args):
         os.system('source ' + base_directory + '/spack-build-env.txt')
 
         if '~serialize' in cosmo_spec:
-            os.chdir('cosmo/test/testsuite')
+            os.chdir(base_directory + '/cosmo/test/testsuite')
 
             run_testsuite = 'ASYNCIO=ON'
             if cosmo_spec.variants['cosmo_target'].value == 'gpu':
@@ -165,7 +168,7 @@ def dev_build_cosmo(self, args):
                 raise ValueError('Testsuite failed.')
 
         if '+serialize' in cosmo_spec:
-            os.chdir('cosmo/ACC')
+            os.chdir(base_directory + '/cosmo/ACC')
             get_serialization_data = 'python2 test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun >> serialize_log.txt; grep \'Generation failed\' serialize_log.txt | wc -l'
             cat_log = 'cat serialize_log.txt'
             if os.system(get_serialization_data) > 0:
