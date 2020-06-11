@@ -14,6 +14,7 @@ import spack.cmd.common.arguments as arguments
 import spack.repo
 from spack.stage import DIYStage
 from spack.spec import Spec
+from spack.cmd.dev_build import dev_build
 
 description = "Dev-build cosmo and dycore with or without testing."
 section = "build"
@@ -42,8 +43,11 @@ def setup_parser(subparser):
         '-u', '--until', type=str, dest='until', default=None,
         help="phase to stop after when installing (default None)")
     subparser.add_argument(
-        '-t', '--test', type=str, default='ON',
-        help="ON or OFF, dev-build with testing")
+        '-t', '--test', action='store_true', help="Dev-build with testing")
+    subparser.add_argument(
+        '-c', '--clean_build', action='store_true', help="Clean dev-build")
+    subparser.add_argument(
+        '-w', '--without_dycore', action='store_true', help="Dev-build cosmo but not dycore")
 
     arguments.add_common_arguments(subparser, ['spec'])
 
@@ -51,59 +55,11 @@ def setup_parser(subparser):
     arguments.add_common_arguments(cd_group, ['clean', 'dirty'])
 
 
-def dev_build(self, args):
-    if not args.spec:
-        tty.die("spack dev-build requires a package spec argument.")
-
-    specs = spack.cmd.parse_specs(args.spec)
-    if len(specs) > 1:
-        tty.die("spack dev-build only takes one spec.")
-
-    spec = specs[0]
-    if not spack.repo.path.exists(spec.name):
-        tty.die("No package for '{0}' was found.".format(spec.name),
-                "  Use `spack create` to create a new package")
-
-    if not spec.versions.concrete:
-        tty.die(
-            "spack dev-build spec must have a single, concrete version. "
-            "Did you forget a package version number?")
-
-    spec.concretize()
-
-    package = spack.repo.get(spec)
-
-    if package.installed:
-        tty.error("Already installed in %s" % package.prefix)
-        tty.msg("Uninstall or try adding a version suffix for this dev build.")
-        sys.exit(1)
-
-    source_path = args.source_path
-    if source_path is None:
-        source_path = os.getcwd()
-    source_path = os.path.abspath(source_path)
-
-    # Forces the build to run out of the current directory.
-    package.stage = DIYStage(source_path)
-
-    # disable checksumming if requested
-    if args.no_checksum:
-        spack.config.set('config:checksum', False, scope='command_line')
-
-    package.do_install(
-        make_jobs=args.jobs,
-        keep_prefix=args.keep_prefix,
-        install_deps=not args.ignore_deps,
-        verbose=not args.quiet,
-        keep_stage=True,   # don't remove source dir for dev build.
-        dirty=args.dirty,
-        stop_at=args.until)
-  
 def dev_build_cosmo(self, args):
+    # Extract and concretize cosmo_spec
     if not args.spec:
         tty.die("spack dev-build requires a package spec argument.")
 
-    # extract cosmo_spec
     specs = spack.cmd.parse_specs(args.spec)
     if len(specs) > 1:
         tty.die("spack dev-build only takes one spec.")
@@ -111,19 +67,107 @@ def dev_build_cosmo(self, args):
     cosmo_spec = specs[0]
     cosmo_spec.concretize()
 
-    dycore_spec = 'cosmo-dycore@dev-build'
-    cosmo_serialize_spec='cosmo@master%pgi cosmo_target=cpu +serialize ~cppdycore'
+    # Set dycore_spec
+    if not args.without_dycore:
+        dycore_spec = 'cosmo-dycore@dev-build'
+    else:
+        dycore_spec = 'cosmo-dycore@master'
+    dycore_spec += ' real_type=' + cosmo_spec.variants['real_type'].value
 
-    if cosmo_spec.satisfies('real_type=float'):
-        real_type='float'
-        dycore_spec += ' real_type=' + real_type
-        cosmo_serialize_spec += ' real_type=' + real_type
+    cosmo_serialize_spec = 'cosmo@master%pgi cosmo_target=cpu +serialize ~cppdycore' + ' real_type=' + cosmo_spec.variants['real_type'].value
 
-    # dev-build dycore
-    if cosmo_spec.satisfies('+cppdycore'):
-        args.spec = dycore_spec
+    base_directory = os.getcwd()
+    
+    # Clean if needed
+    if args.clean_build:
+        print('==> cosmo: Cleaning build directory')
+        os.chdir(base_directory + '/cosmo/ACC')
+        os.system('make clean')
+        os.chdir(base_directory)
+
+        if not args.without_dycore:
+          print('==> dycore: Cleaning build directory')
+          os.chdir(base_directory)
+          os.system('rm -rf spack-build')
+
+    if cosmo_spec.satisfies('+cppdycore') and not args.without_dycore:
+        # Concretize dycore spec and cosmo_serialize spec
+        dycore_spec = Spec(dycore_spec)
+        dycore_spec.concretize()
+        cosmo_serialize_spec = Spec(cosmo_serialize_spec)
+        cosmo_serialize_spec.concretize()
+        
+        args.spec = str(dycore_spec)
+        
+        # Dev-build dycore
+        os.chdir(base_directory)
         dev_build(self, args)
-        args.spec = str(cosmo_spec) + ' ^' + dycore_spec
 
-     # dev-build cosmo
+        serialization_data_path = cosmo_serialize_spec.prefix + '/data'
+        
+        # Launch dycore tests
+        if args.test:
+            print('==> cosmo-dycore: Launching dycore tests')
+
+            # Source env
+            os.system('source' + base_directory +'/spack-build-env.txt')
+
+            os.chdir(base_directory + '/spack-build/src/tests/unittests')
+            os.system('srun -n 1 -p debug --gres=gpu:1 ./unittests  --gtest_filter=-TracerBindings.TracerVariable')
+
+            os.chdir('gcl_fortran')
+            os.system('srun -n 4 -p debug --gres=gpu:4 ./unittests_gcl_bindings')
+
+            os.chdir(base_directory + '/spack-build/src/tests/regression')
+            testlist=['cosmo1_cp_test1', 'cosmo-1e_test_1', 'cosmo-1e_test_1_all_off', 'cosmo-1e_test_1_coldpool_uv', 'cosmo-1e_test_1_non_default', 'cosmo-1e_test_1_vdiffm1', 'cosmo7_test_3', 'cosmo7_test_namelist_irunge_kutta2', 'cosmo-2e_test_1', 'cosmo-2e_test_1_coldpools', 'cosmo-2e_test_1_bechtold']
+            for test in testlist:
+                os.system('srun -n 1 -p debug --gres=gpu:1 ./regression_tests -p ' + serialization_data_path + '/' + dycore_spec.variants['slave'].value + '/' + test + ' --gtest_filter=-DycoreUnittest.Performance')
+
+        args.spec = str(cosmo_spec)
+    
+    os.chdir(base_directory)
+    # Dev-build cosmo
     dev_build(self, args)
+    
+    # Launch cosmo tests
+    if args.test:
+        print('==> cosmo: Launching cosmo tests')
+        
+        # Create data
+        os.system(base_directory + '/cosmo/test/testsuite/data')
+        os.system('./get_data.sh')
+        
+        # Source env test
+        os.system('source' + base_directory + '/spack-build-env.txt')
+
+        if '~serialize' in cosmo_spec:
+            os.chdir('cosmo/test/testsuite')
+
+            run_testsuite = 'ASYNCIO=ON'
+            if cosmo_spec.variants['cosmo_target'].value == 'gpu':
+                run_testsuite += ' TARGET=GPU'
+            else:
+                run_testsuite += ' TARGET=CPU'
+            if cosmo_spec.variants['real_type'].value == 'float':
+                run_testsuite += ' REAL_TYPE=FLOAT'
+            if '~cppdycore' in cosmo_spec:
+                run_testsuite += 'JENKINS_NO_DYCORE=ON'
+            if cosmo_spec.variants['slave'].value == 'tsa_rh7.7':
+                run_testsuite = 'sbatch -W --reservation=rh77 submit.tsa.slurm'
+            else:
+                run_testsuite = 'sbatch -W submit.' + cosmo_spec.variants['slave'].value + '.slurm'
+            
+            os.system(run_testsuite)
+            cat_testsuite = 'cat testsuite.out'
+            os.system(cat_testsuite)
+            check_testsuite = './testfail.sh'
+            if os.system(check_testsuite) != 0:
+                raise ValueError('Testsuite failed.')
+
+        if '+serialize' in cosmo_spec:
+            os.chdir('cosmo/ACC')
+            get_serialization_data = 'python2 test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun >> serialize_log.txt; grep \'Generation failed\' serialize_log.txt | wc -l'
+            cat_log = 'cat serialize_log.txt'
+            if os.system(get_serialization_data) > 0:
+                raise ValueError('Serialization failed.')
+            os.system(cat_log)
