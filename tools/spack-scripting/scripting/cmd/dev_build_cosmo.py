@@ -110,7 +110,7 @@ def dev_build_cosmo(self, args):
             print('==> cosmo-dycore: Launching dycore tests')
 
             # Source env
-            os.system('source' + base_directory +'/spack-build-env.txt')
+            os.system('source ' + base_directory +'/spack-build-env.txt')
 
             os.chdir(base_directory + '/spack-build/src/tests/unittests')
             os.system('srun -n 1 -p debug --gres=gpu:1 ./unittests  --gtest_filter=-TracerBindings.TracerVariable')
@@ -138,7 +138,7 @@ def dev_build_cosmo(self, args):
         os.system('./get_data.sh')
         
         # Source env test
-        os.system('source' + base_directory + '/spack-build-env.txt')
+        os.system('source ' + base_directory + '/spack-build-env.txt')
 
         if '~serialize' in cosmo_spec:
             os.chdir('cosmo/test/testsuite')
