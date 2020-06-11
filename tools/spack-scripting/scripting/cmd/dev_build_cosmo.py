@@ -134,7 +134,7 @@ def dev_build_cosmo(self, args):
         print('==> cosmo: Launching cosmo tests')
         
         # Create data
-        os.system(base_directory + '/cosmo/test/testsuite/data')
+        os.chdir(base_directory + '/cosmo/test/testsuite/data')
         os.system('./get_data.sh')
         
         # Source env test
