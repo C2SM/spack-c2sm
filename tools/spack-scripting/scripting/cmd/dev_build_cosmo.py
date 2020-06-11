@@ -101,6 +101,7 @@ def dev_build_cosmo(self, args):
 
         if args.until == 'build':
             os.system('rm -rf ' + dycore_spec.prefix)
+            args.until = None
         
         # Dev-build dycore
         os.chdir(base_directory)
