@@ -74,8 +74,6 @@ def dev_build_cosmo(self, args):
         dycore_spec = 'cosmo-dycore@master'
     dycore_spec += ' real_type=' + cosmo_spec.variants['real_type'].value
 
-    cosmo_serialize_spec = 'cosmo@master%pgi cosmo_target=cpu +serialize ~cppdycore' + ' real_type=' + cosmo_spec.variants['real_type'].value
-
     base_directory = os.getcwd()
     
     # Clean if needed
@@ -94,8 +92,6 @@ def dev_build_cosmo(self, args):
         # Concretize dycore spec and cosmo_serialize spec
         dycore_spec = Spec(dycore_spec)
         dycore_spec.concretize()
-        cosmo_serialize_spec = Spec(cosmo_serialize_spec)
-        cosmo_serialize_spec.concretize()
         
         args.spec = str(dycore_spec)
 
@@ -104,74 +100,18 @@ def dev_build_cosmo(self, args):
             args.until = None
         
         # Dev-build dycore
-        os.chdir(base_directory)
         dev_build(self, args)
-
-        serialization_data_path = cosmo_serialize_spec.prefix + '/data'
         
         # Launch dycore tests
         if args.test:
             print('==> cosmo-dycore: Launching dycore tests')
-
-            # Source env
-            os.system('source ' + base_directory +'/spack-build-env.txt')
-
-            os.chdir(base_directory + '/spack-build/src/tests/unittests')
-            os.system('srun -n 1 -p debug --gres=gpu:1 ./unittests  --gtest_filter=-TracerBindings.TracerVariable')
-
-            os.chdir('gcl_fortran')
-            os.system('srun -n 4 -p debug --gres=gpu:4 ./unittests_gcl_bindings')
-
-            os.chdir(base_directory + '/spack-build/src/tests/regression')
-            testlist=['cosmo1_cp_test1', 'cosmo-1e_test_1', 'cosmo-1e_test_1_all_off', 'cosmo-1e_test_1_coldpool_uv', 'cosmo-1e_test_1_non_default', 'cosmo-1e_test_1_vdiffm1', 'cosmo7_test_3', 'cosmo7_test_namelist_irunge_kutta2', 'cosmo-2e_test_1', 'cosmo-2e_test_1_coldpools', 'cosmo-2e_test_1_bechtold']
-            for test in testlist:
-                os.system('srun -n 1 -p debug --gres=gpu:1 ./regression_tests -p ' + serialization_data_path + '/' + dycore_spec.variants['slave'].value + '/' + test + ' --gtest_filter=-DycoreUnittest.Performance')
-
+            os.system('./dycore/test/jenkins/spack-test.py "' + str(dycore_spec) + '" ' + base_directory+ '/spack-build')
         args.spec = str(cosmo_spec)
     
-    os.chdir(base_directory)
     # Dev-build cosmo
     dev_build(self, args)
     
     # Launch cosmo tests
     if args.test:
         print('==> cosmo: Launching cosmo tests')
-        
-        # Create data
-        os.chdir(base_directory + '/cosmo/test/testsuite/data')
-        os.system('./get_data.sh')
-        
-        # Source env test
-        os.system('source ' + base_directory + '/spack-build-env.txt')
-
-        if '~serialize' in cosmo_spec:
-            os.chdir(base_directory + '/cosmo/test/testsuite')
-
-            run_testsuite = 'ASYNCIO=ON'
-            if cosmo_spec.variants['cosmo_target'].value == 'gpu':
-                run_testsuite += ' TARGET=GPU'
-            else:
-                run_testsuite += ' TARGET=CPU'
-            if cosmo_spec.variants['real_type'].value == 'float':
-                run_testsuite += ' REAL_TYPE=FLOAT'
-            if '~cppdycore' in cosmo_spec:
-                run_testsuite += 'JENKINS_NO_DYCORE=ON'
-            if cosmo_spec.variants['slave'].value == 'tsa_rh7.7':
-                run_testsuite = 'sbatch -W --reservation=rh77 submit.tsa.slurm'
-            else:
-                run_testsuite = 'sbatch -W submit.' + cosmo_spec.variants['slave'].value + '.slurm'
-            
-            os.system(run_testsuite)
-            cat_testsuite = 'cat testsuite.out'
-            os.system(cat_testsuite)
-            check_testsuite = './testfail.sh'
-            if os.system(check_testsuite) != 0:
-                raise ValueError('Testsuite failed.')
-
-        if '+serialize' in cosmo_spec:
-            os.chdir(base_directory + '/cosmo/ACC')
-            get_serialization_data = 'python2 test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun >> serialize_log.txt; grep \'Generation failed\' serialize_log.txt | wc -l'
-            cat_log = 'cat serialize_log.txt'
-            if os.system(get_serialization_data) > 0:
-                raise ValueError('Serialization failed.')
-            os.system(cat_log)
+        os.system('./cosmo/ACC/test/jenkins/spack-test.py "' + str(cosmo_spec) + '" ' + base_directory)
