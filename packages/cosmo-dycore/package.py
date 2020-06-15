@@ -44,6 +44,7 @@ class CosmoDycore(CMakePackage):
     version('master', branch='master')
     version('dev-build', branch='master')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
+    version('gt2', git='git@github.com:havogt/cosmo.git', branch='gt2')
 
     dycore_tags("git@github.com:MeteoSwiss-APN/cosmo.git")
 
@@ -87,10 +88,11 @@ class CosmoDycore(CMakePackage):
       spec = self.spec
 
       args = []
-
-      GridToolsDir = spec['gridtools'].prefix + '/lib/cmake'
       
-      args.append('-DGridTools_DIR={0}'.format(GridToolsDir))  
+      if not '@gt2' in spec:
+          GridToolsDir = spec['gridtools'].prefix + '/lib/cmake'
+          args.append('-DGridTools_DIR={0}'.format(GridToolsDir))
+
       args.append('-DCMAKE_BUILD_TYPE={0}'.format(self.spec.variants['build_type'].value))
       args.append('-DCMAKE_INSTALL_PREFIX={0}'.format(self.prefix))
       args.append('-DBOOST_ROOT={0}'.format(spec['boost'].prefix))
@@ -119,11 +121,17 @@ class CosmoDycore(CMakePackage):
           cuda_arch = spec.variants['cuda_arch'].value
           if cuda_arch is not None:
               args.append('-DCUDA_ARCH=sm_{0}'.format(cuda_arch))
-          args.append('-DDYCORE_TARGET_ARCHITECTURE=CUDA')
+          if '@gt2' in spec:
+              args.append('-DDYCORE_TARGET_ARCHITECTURE=gpu')
+          else:
+              args.append('-DDYCORE_TARGET_ARCHITECTURE=CUDA')
       # target=cpu
       else:
         args.append('-DENABLE_CUDA=OFF')
-        args.append('-DDYCORE_TARGET_ARCHITECTURE=x86')
+        if '@gt2' in spec:
+            args.append('-DDYCORE_TARGET_ARCHITECTURE=cpu_ifirst')
+        else:
+            args.append('-DDYCORE_TARGET_ARCHITECTURE=x86')
 
       return args
 
