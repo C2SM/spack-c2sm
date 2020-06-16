@@ -34,13 +34,16 @@ def main():
             os.system(clone_cmd)
     print('Installing mch packages & ' + args.machine + ' config files')
 
-    if args.reposdir:
-        if os.path.isdir(args.reposdir) and not os.path.isfile(args.reposdir + '/repos.yaml'):
-            repos_data = yaml.safe_load(open('./sysconfigs/repos.yaml', 'r'))
-            repos_data['repos'] = [dir_path]
-            yaml.safe_dump(repos_data, open('./sysconfigs/repos.yaml', 'w'), default_flow_style=False)
-            print('Installing repos.yaml on ' + args.reposdir)
-            os.popen('cp ' + dir_path + '/sysconfigs/repos.yaml ' + args.reposdir)
+    if not args.reposdir:
+        args.reposdir = args.idir + '/spack/etc/spack'
+    
+    # installing repos.yaml
+    if os.path.isdir(args.reposdir) and not os.path.isfile(args.reposdir + '/repos.yaml'):
+        repos_data = yaml.safe_load(open('./sysconfigs/repos.yaml', 'r'))
+        repos_data['repos'] = [dir_path]
+        yaml.safe_dump(repos_data, open('./sysconfigs/repos.yaml', 'w'), default_flow_style=False)
+        print('Installing repos.yaml on ' + args.reposdir)
+        os.popen('cp ' + dir_path + '/sysconfigs/repos.yaml ' + args.reposdir)
 
     # configure config.yaml
     config_data = yaml.safe_load(open('sysconfigs/config.yaml', 'r'))
