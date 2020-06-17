@@ -34,18 +34,19 @@ class Libgrib1(MakefilePackage):
     build_directory='libgrib1_cosmo/source'
 
     version('master', branch='master')
+    version('25-10-19', commit='0ef8d36734609170459a536329dddcad0d930675')
     
     variant('slave', default='tsa', description='Build on slave tsa, daint or kesch', multi=False)
-
-    depends_on('mpi')
-
 
     def setup_environment(self, spack_env, run_env):
         spack_env.set('LIBNAME', 'grib1')
 
     def build(self, spec, prefix):
         with working_dir(self.build_directory):
-            MakeFileName = 'Makefile.' + self.spec.variants['slave'].value
+            if 'tsa' in self.spec.variants['slave'].value:
+                MakeFileName = 'Makefile.arolla'
+            else:
+                MakeFileName = 'Makefile.' + self.spec.variants['slave'].value
             if self.compiler.name == 'gcc':
                 MakeFileName += '.gnu'
             elif self.compiler.name == 'pgi':
@@ -61,7 +62,10 @@ class Libgrib1(MakefilePackage):
 
     def install(self, spec, prefix):
         with working_dir(self.build_directory):
-            MakeFileName = 'Makefile.' + self.spec.variants['slave'].value
+            if 'tsa' in self.spec.variants['slave'].value:
+                MakeFileName = 'Makefile.arolla'
+            else:
+                MakeFileName = 'Makefile.' + self.spec.variants['slave'].value
             if self.compiler.name == 'gcc':
                 MakeFileName += '.gnu'
             elif self.compiler.name == 'pgi':
