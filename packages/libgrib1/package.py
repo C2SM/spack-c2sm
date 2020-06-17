@@ -38,6 +38,8 @@ class Libgrib1(MakefilePackage):
     
     variant('slave', default='tsa', description='Build on slave tsa, daint or kesch', multi=False)
 
+    depends_on('mpi')
+
     def setup_environment(self, spack_env, run_env):
         spack_env.set('LIBNAME', 'grib1')
 
