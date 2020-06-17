@@ -4,7 +4,7 @@ Official Spack documentation [Here](https://spack.readthedocs.io/en/latest/).
 
 ## Installation
 
-**!!! Please not that the package cosmo and cosmo-dycore now requires a Python version >= 3.6 !!!**
+**!!! Please note that the package cosmo and cosmo-dycore now requires a Python version >= 3.6 !!!**
 
 ### CSCS users
 
