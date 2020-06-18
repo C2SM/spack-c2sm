@@ -5,6 +5,8 @@
 
 import sys
 import os
+import subprocess
+import shutil
 
 import llnl.util.tty as tty
 
@@ -80,15 +82,12 @@ def dev_build_cosmo(self, args):
 
     # Clean if needed
     if args.clean_build:
-        print('==> cosmo: Cleaning build directory')
-        os.chdir(base_directory + '/cosmo/ACC')
-        os.system('make clean')
-        os.chdir(base_directory)
+        print('\033[92m' + '==> ' + '\033[0m' + 'cosmo: Cleaning build directory')
+        subprocess.run(["make", "clean"], cwd = base_directory + '/cosmo/ACC')
 
         if not args.without_dycore:
-          print('==> dycore: Cleaning build directory')
-          os.chdir(base_directory)
-          os.system('rm -rf spack-build')
+          print('\033[92m' + '==> ' + '\033[0m' + 'dycore: Cleaning build directory')
+          shutil.rmtree(base_directory + '/spack-build')
 
     if cosmo_spec.satisfies('+cppdycore') and not args.without_dycore:
         # Concretize dycore spec and cosmo_serialize spec
@@ -98,7 +97,7 @@ def dev_build_cosmo(self, args):
         args.spec = str(dycore_spec)
 
         if args.until == 'build':
-            os.system('rm -rf ' + dycore_spec.prefix)
+            shutil.rmtree(dycore_spec.prefix)
             args.until = None
         
         # Dev-build dycore
@@ -106,8 +105,8 @@ def dev_build_cosmo(self, args):
         
         # Launch dycore tests
         if args.test:
-            print('==> cosmo-dycore: Launching dycore tests')
-            os.system('./dycore/test/jenkins/spack-test.py "' + str(dycore_spec) + '" ' + base_directory+ '/spack-build')
+            print('\033[92m' + '==> ' + '\033[0m' + 'cosmo-dycore: Launching dycore tests')
+            subprocess.run(['./dycore/test/jenkins/spack-test.py', str(dycore_spec), base_directory + '/spack-build'])
 
         temp_cosmo_spec = temp_cosmo_spec + ' ^/' + str(dycore_spec.dag_hash())
         args.spec = temp_cosmo_spec
@@ -118,5 +117,5 @@ def dev_build_cosmo(self, args):
     
     # Launch cosmo tests
     if args.test:
-        print('==> cosmo: Launching cosmo tests')
-        os.system('./cosmo/ACC/test/jenkins/spack-test.py "' + str(cosmo_spec) + '" ' + base_directory)
+        print('\033[92m' + '==> ' + '\033[0m' + 'cosmo: Launching cosmo tests')
+        subprocess.run(["./cosmo/ACC/test/jenkins/spack-test.py", str(cosmo_spec), base_directory])
