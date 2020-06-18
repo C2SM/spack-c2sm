@@ -65,17 +65,19 @@ def dev_build_cosmo(self, args):
         tty.die("spack dev-build only takes one spec.")
 
     cosmo_spec = specs[0]
+    temp_cosmo_spec = str(cosmo_spec)
     cosmo_spec.concretize()
-
+    
     # Set dycore_spec
     if not args.without_dycore:
         dycore_spec = 'cosmo-dycore@dev-build'
     else:
         dycore_spec = 'cosmo-dycore@master'
     dycore_spec += ' real_type=' + cosmo_spec.variants['real_type'].value
+    dycore_spec += ' ^' + cosmo_spec.format('{^mpi.name}') + '%' + cosmo_spec.compiler.name
 
     base_directory = os.getcwd()
-    
+
     # Clean if needed
     if args.clean_build:
         print('==> cosmo: Cleaning build directory')
@@ -92,7 +94,7 @@ def dev_build_cosmo(self, args):
         # Concretize dycore spec and cosmo_serialize spec
         dycore_spec = Spec(dycore_spec)
         dycore_spec.concretize()
-        
+
         args.spec = str(dycore_spec)
 
         if args.until == 'build':
@@ -106,8 +108,11 @@ def dev_build_cosmo(self, args):
         if args.test:
             print('==> cosmo-dycore: Launching dycore tests')
             os.system('./dycore/test/jenkins/spack-test.py "' + str(dycore_spec) + '" ' + base_directory+ '/spack-build')
-        args.spec = str(cosmo_spec)
-    
+
+        temp_cosmo_spec = temp_cosmo_spec + ' ^/' + str(dycore_spec.dag_hash())
+        args.spec = temp_cosmo_spec
+        args.ignore_deps = True
+
     # Dev-build cosmo
     dev_build(self, args)
     
