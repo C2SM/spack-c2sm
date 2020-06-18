@@ -29,6 +29,16 @@ esac
 source $SPACK_ROOT/share/spack/setup-env.sh
 ```
 
+#### Error: Initialization hangs
+
+If `source $SPACK_ROOT/share/spack/setup-env.sh` hangs, clean your cache:
+
+```
+rm -rf ~/.spack/cray ~/.spack/cache
+```
+
+Then try again.
+
 ### General
 
 **As said before a general installation is only needed if you wish to develop the mch packages/machines config files or if you are not a cscs user.**
