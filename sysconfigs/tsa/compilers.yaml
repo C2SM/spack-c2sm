@@ -3,9 +3,8 @@ compilers::
     environment: {}
     extra_rpaths: []
     flags: {}
-    modules:
-    - gcc/8.3.0 
-    - /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/modules/all/pgi/19.9-gcc-8.3.0
+    modules: 
+    - /apps/arolla/UES/jenkins/RH7.7/pgi/19.9/easybuild/modules/all/pgi/19.9-gcc-8.3.0
     operating_system: rhel7
     paths:
       cc: pgcc
@@ -22,10 +21,9 @@ compilers::
     - gcc/8.3.0
     operating_system: rhel7
     paths:
-      cc: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0/bin/gcc
-      cxx: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0/bin/g++
-      f77: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0/bin/gfortran
-      fc: /apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/GCCcore/8.3.0/bin/gfortran
+      cc: /apps/arolla/UES/jenkins/RH7.7/generic/easybuild/software/GCCcore/8.3.0/bin/gcc
+      cxx: /apps/arolla/UES/jenkins/RH7.7/generic/easybuild/software/GCCcore/8.3.0/bin/g++
+      f77: /apps/arolla/UES/jenkins/RH7.7/generic/easybuild/software/GCCcore/8.3.0/bin/gfortran
+      fc: /apps/arolla/UES/jenkins/RH7.7/generic/easybuild/software/GCCcore/8.3.0/bin/gfortran
     spec: gcc@8.3.0
     target: any
-
