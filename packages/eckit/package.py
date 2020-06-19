@@ -17,6 +17,7 @@ class Eckit(CMakePackage):
     maintainers = ['cosunae']
 
     version('master', branch='master')
+    version('develop', branch='develop')
 
     depends_on('ecbuild')
 
