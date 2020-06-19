@@ -67,10 +67,7 @@ class Cosmo(MakefilePackage):
     depends_on('cuda', when='cosmo_target=gpu', type=('build', 'run'))
     depends_on('serialbox@2.6.0', when='+serialize')
     depends_on('mpi', type=('build', 'run'))
-    depends_on('libgrib1 slave=tsa', when='slave=tsa')
-    depends_on('libgrib1 slave=tsa', when='slave=tsa_rh7.7')
-    depends_on('libgrib1 slave=daint', when='slave=daint')
-    depends_on('libgrib1 slave=kesch', when='slave=kesch')
+    depends_on('libgrib1')
     depends_on('jasper@1.900.1%gcc ~shared')
     depends_on('cosmo-grib-api-definitions', when='~eccodes')
     depends_on('cosmo-eccodes-definitions@2.14.1.2 ~aec', when='+eccodes')
@@ -237,10 +234,7 @@ class Cosmo(MakefilePackage):
                     env['REAL_TYPE'] = 'FLOAT'
                 if '~cppdycore' in self.spec:
                     env['JENKINS_NO_DYCORE'] = 'ON'
-                if self.spec.variants['slave'].value == 'tsa_rh7.7':
-                    run_testsuite = 'sbatch -W --reservation=rh77 submit.tsa.slurm'
-                else:
-                    run_testsuite = 'sbatch -W submit.' + self.spec.variants['slave'].value + '.slurm'
+                run_testsuite = 'sbatch -W submit.' + self.spec.variants['slave'].value + '.slurm'
                 os.system(run_testsuite)
                 cat_testsuite = 'cat testsuite.out'
                 os.system(cat_testsuite)
