@@ -143,31 +143,22 @@ class CosmoDycore(CMakePackage):
                 mkdir(prefix.tests)
                 install_tree('tests', prefix.tests)
             with working_dir(prefix + '/tests/unittests'):
-                if 'tsa' in self.spec.variants['slave'].value:
-                    if self.spec.variants['slave'].value == 'tsa_rh7.7':
-                        run_unittests = Executable('srun --reservation=rh77 -n 1 -p normal --gres=gpu:1 ./unittests  --gtest_filter=-TracerBindings.TracerVariable')
-                    else:
-                        run_unittests = Executable('srun -n 1 -p normal --gres=gpu:1 ./unittests  --gtest_filter=-TracerBindings.TracerVariable')
+                if self.spec.variants['slave'].value == 'tsa':
+                    run_unittests = Executable('srun -n 1 -p normal --gres=gpu:1 ./unittests  --gtest_filter=-TracerBindings.TracerVariable')
                 if self.spec.variants['slave'].value == 'daint':
                     run_unittests = Executable('srun --time=00:05:00 -C gpu -p normal -A g110 -N 1 ./unittests  --gtest_filter=-TracerBindings.TracerVariable')
                 run_unittests()
             with working_dir(prefix + '/tests/unittests/gcl_fortran'):
-                if 'tsa' in self.spec.variants['slave'].value:
-                    if self.spec.variants['slave'].value == 'tsa_rh7.7':
-                        run_unitests_gcl_bindings = Executable('srun --reservation=rh77 -n 4 -p normal --gres=gpu:4 ./unittests_gcl_bindings')
-                    else:
-                        run_unitests_gcl_bindings = Executable('srun -n 4 -p normal --gres=gpu:4 ./unittests_gcl_bindings')
+                if self.spec.variants['slave'].value == 'tsa':
+                    run_unitests_gcl_bindings = Executable('srun -n 4 -p normal --gres=gpu:4 ./unittests_gcl_bindings')
                 if self.spec.variants['slave'].value == 'daint':
                     run_unitests_gcl_bindings = Executable('srun --time=00:05:00 -C gpu -p normal -A g110 -N 4 ./unittests_gcl_bindings')
                 run_unitests_gcl_bindings()
             with working_dir(prefix + '/tests/regression'):
                 testlist=['cosmo1_cp_test1', 'cosmo-1e_test_1', 'cosmo-1e_test_1_all_off', 'cosmo-1e_test_1_coldpool_uv', 'cosmo-1e_test_1_non_default', 'cosmo-1e_test_1_vdiffm1', 'cosmo7_test_3', 'cosmo7_test_namelist_irunge_kutta2', 'cosmo-2e_test_1', 'cosmo-2e_test_1_coldpools', 'cosmo-2e_test_1_bechtold']
                 for test in testlist:
-                    if 'tsa' in self.spec.variants['slave'].value:
-                        if self.spec.variants['slave'].value == 'tsa_rh7.7':
-                            run_regression_test = Executable('srun --reservation=rh77 -n 1 -p debug --gres=gpu:1 ./regression_tests -p ' + self.spec.variants['data_path'].value + self.spec.variants['real_type'].value + '/' + test + ' --gtest_filter=-DycoreUnittest.Performance')
-                        else:
-                            run_regression_test = Executable('srun -n 1 -p debug --gres=gpu:1 ./regression_tests -p ' + self.spec.variants['data_path'].value + self.spec.variants['real_type'].value + '/' + test + ' --gtest_filter=-DycoreUnittest.Performance')
+                    if self.spec.variants['slave'].value == 'tsa':
+                        run_regression_test = Executable('srun -n 1 -p debug --gres=gpu:1 ./regression_tests -p ' + self.spec.variants['data_path'].value + self.spec.variants['real_type'].value + '/' + test + ' --gtest_filter=-DycoreUnittest.Performance')
                     if self.spec.variants['slave'].value == 'daint':
                         run_regression_test = Executable('srun --time=00:05:00 -C gpu -p normal -A g110 -N 1 ./regression_tests -p ' + self.spec.variants['data_path'].value + self.spec.variants['real_type'].value + '/' + test + ' --gtest_filter=-DycoreUnittest.Performance')
                     run_regression_test()
