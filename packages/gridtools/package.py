@@ -48,6 +48,7 @@ class Gridtools(CMakePackage):
       args.append('-DGT_ENABLE_BACKEND_NAIVE=OFF')
 
       args.append('-DCMAKE_BUILD_TYPE={0}'.format(self.spec.variants['build_type'].value))
+      args.append('-DBOOST_ROOT={0}'.format(spec['boost'].prefix))
 
       if spec.variants['no_boost_cmake'].value:
         args.append('-DBoost_NO_BOOST_CMAKE=ON')

@@ -67,15 +67,15 @@ packages:
     modules:
       slurm@19.05.05: slurm/19.05.05
   int2lm:
-    variants: slave=tsa_rh7.7
+    variants: slave=tsa
   cosmo-dycore:
-    variants: +cuda cuda_arch=70 data_path=/scratch/jenkins/data/cosmo/ slave=tsa_rh7.7
+    variants: +cuda cuda_arch=70 data_path=/scratch/jenkins/data/cosmo/ slave=tsa
     compiler: [gcc]
   gridtools:
     variants: +cuda cuda_arch=70
     compiler: [gcc]
   cosmo:
-    variants: +cuda cuda_arch=70 slave=tsa_rh7.7
+    variants: +cuda cuda_arch=70 slave=tsa
     version: [master]
     compiler: [pgi@19.9, gcc@8.3.0]
 
