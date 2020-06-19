@@ -1,9 +1,10 @@
 config:
-  install_tree:
-  template_dirs:
-    - $spack/templates
-  module_roots:
-    tcl:
   build_stage:
+  - /scratch/$user/spack/spack-stages/aws
   install_path_scheme: '{name}/{version}/{compiler.name}/{hash}'
+  install_tree: /scratch/$user/spack/spack-install/aws
+  module_roots:
+    tcl: /scratch/$user/spack/modules/aws
   source_cache: ~/.spack/source_cache
+  template_dirs:
+  - $spack/templates

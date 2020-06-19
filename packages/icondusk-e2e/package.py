@@ -22,10 +22,6 @@ class IconduskE2e(CMakePackage):
     depends_on('atlas')
     depends_on('cuda', type=('build', 'run'))
 
-
-#    depends_on('py-setuptools', type='build')
-#    depends_on('py-protobuf', type=('build','run'))
-
     variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'DebugRelease'))
     variant('precision', default='double', values=('double','float'))
 
