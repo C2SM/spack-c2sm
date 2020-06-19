@@ -4,8 +4,42 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 
+import subprocess, re, itertools
 from spack import *
+import os
 
+
+def get_releases(repo):
+        git_obj = subprocess.run(["git","ls-remote",repo], stdout=subprocess.PIPE)
+        git_tags = [re.match('refs/tags/(.*)', x.decode('utf-8')).group(1) for x in git_obj.stdout.split() if re.match('refs/tags/(.*)', x.decode('utf-8'))]
+        return git_tags
+def dycore_deps(repo):
+    tags = get_releases(repo)
+    for tag in tags:
+        version(tag, git=repo, tag=tag)
+
+    tags.append('master')
+    tags.append('dev-build')
+    tags.append('mch')
+    tags.append('gt2')
+
+    for tag in tags:    
+        types = ['float','double']
+        prod = [True,False]
+        cuda = [True, False]
+        testing = [True, False]
+        comb=list(itertools.product(*[types, prod, cuda, testing]))
+        for it in comb:
+            real_type=it[0]
+            prod_opt = '+production' if it[1] else '~production'
+            cuda_opt = '+cuda' if it[2] else '~cuda cuda_arch=none'
+            cuda_dep = 'cosmo_target=gpu' if it[2] else ' cosmo_target=cpu'
+            test_opt = '+build_tests' if it[3] else '~build_tests'
+            test_dep = '+dycoretest' if it[3] else '~dycoretest'
+
+            orig='cosmo-dycore@'+tag+'%gcc real_type='+real_type+' '+ prod_opt + ' ' + cuda_opt+' ' +test_opt
+            dep='@'+tag+' real_type='+real_type+' '+ prod_opt + ' '+ cuda_dep + ' +cppdycore'+' '+test_dep
+            depends_on(orig, when=dep)
 
 class Cosmo(MakefilePackage):
     """COSMO: Numerical Weather Prediction Model. Needs access to private GitHub."""
@@ -13,33 +47,24 @@ class Cosmo(MakefilePackage):
     homepage = "http://www.cosmo-model.org"
     url      = "https://github.com/MeteoSwiss-APN/cosmo/archive/5.07.mch1.0.p5.tar.gz"
     git      = 'git@github.com:COSMO-ORG/cosmo.git'
+    apngit   = 'git@github.com:MeteoSwiss-APN/cosmo.git'
     maintainers = ['elsagermann']
 
     version('master', branch='master')
+    version('dev-build', branch='master')
+    version('test', git='git@github.com:elsagermann/cosmo.git', branch='thread_serialization')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
-    version('5.07.mch1.0.p5', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p5')
-    version('5.07.mch1.0.p4', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p4')
-    version('5.07.mch1.0.p3', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p3')
-    version('5.07.mch1.0.p2', git='git@github.com:MeteoSwiss-APN/cosmo.git', tag='5.07.mch1.0.p2')
-    version('5.05a', tag='5.05a')
-    version('5.05',  tag='5.05')
-    version('5.06', tag='5.06')
-    
+    version('gt2', git='git@github.com:havogt/cosmo.git', branch='gt2')
+
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
 
+    dycore_deps(apngit)
 
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
     depends_on('slurm', type='run')
-    depends_on('cuda', type=('build', 'run'))
-    depends_on('cosmo-dycore%gcc +build_tests', when='+dycoretest')
-    depends_on('cosmo-dycore%gcc +cuda', when='cosmo_target=gpu +cppdycore')
-    depends_on('cosmo-dycore%gcc ~cuda cuda_arch=none', when='cosmo_target=cpu +cppdycore')
-    depends_on('cosmo-dycore%gcc real_type=float', when='real_type=float +cppdycore')
-    depends_on('cosmo-dycore%gcc real_type=double', when='real_type=double +cppdycore')
-    depends_on('cosmo-dycore%gcc +production', when='+production +cppdycore')
-
+    depends_on('cuda', when='cosmo_target=gpu', type=('build', 'run'))
     depends_on('serialbox@2.6.0', when='+serialize')
     depends_on('mpi', type=('build', 'run'))
     depends_on('libgrib1')
@@ -52,24 +77,24 @@ class Cosmo(MakefilePackage):
     depends_on('boost', when='cosmo_target=gpu ~cppdycore')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
+    variant('dycoretest', default=True, description='Build C++ dycore with testing')
     variant('serialize', default=False, description='Build with serialization enabled')
     variant('parallel', default=True, description='Build parallel COSMO')
     variant('debug', default=False, description='Build debug mode')
     variant('cosmo_target', default='gpu', description='Build with target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)
     variant('claw', default=False, description='Build with claw-compiler')
-    variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
+    variant('slave', default='tsa', description='Build on slave tsa, daint or kesch', multi=False)
     variant('eccodes', default=False, description='Build with eccodes instead of grib-api')
     variant('pollen', default=False, description='Build with pollen enabled')
     variant('verbose', default=False, description='Build cosmo with verbose enabled')
 
     conflicts('+claw', when='cosmo_target=cpu')
     conflicts('+pollen', when='@5.05:5.06,master')
-    conflicts('+serialize', when='+parallel')
     # previous versions contain a bug affecting serialization
     conflicts('+serialize', when='@5.07.mch1.0.p2:5.07.mch1.0.p3')
     variant('production', default=False, description='Force all variants to be the ones used in production')
-    
+
     conflicts('+production', when='~cppdycore')
     conflicts('+production', when='+serialize')
     conflicts('+production', when='+debug')
@@ -153,7 +178,10 @@ class Cosmo(MakefilePackage):
         env['FC'] = spec['mpi'].mpifc
         with working_dir(self.build_directory):
             makefile = FileFilter('Makefile')
-            OptionsFileName= 'Options.' + self.spec.variants['slave'].value
+            if 'tsa' in self.spec.variants['slave'].value:
+                OptionsFileName= 'Options.tsa'
+            else:
+                OptionsFileName= 'Options.' + self.spec.variants['slave'].value
             if self.compiler.name == 'gcc':
                 OptionsFileName += '.gnu'
             elif self.compiler.name == 'pgi':
@@ -162,7 +190,8 @@ class Cosmo(MakefilePackage):
                 OptionsFileName += '.cray'
             OptionsFileName += '.' + spec.variants['cosmo_target'].value
             optionsfilter = FileFilter(OptionsFileName)
-            if self.spec.variants['slave'].value == 'tsa':
+
+            if 'tsa' in self.spec.variants['slave'].value:
                 optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I{0}/include'.format(spec['netcdf-fortran'].prefix))
                 optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L{0}/lib -lnetcdff -L{1}/lib64 -lnetcdf'.format(spec['netcdf-fortran'].prefix, spec['netcdf-c'].prefix))
             else:
@@ -179,11 +208,11 @@ class Cosmo(MakefilePackage):
         mkdir(prefix.cosmo)
         if '+serialize' in self.spec:
             mkdirp('data/' + self.spec.variants['real_type'].value, prefix.data + '/' + self.spec.variants['real_type'].value)
-        install_tree('cosmo', prefix.cosmo)        
+        install_tree('cosmo', prefix.cosmo)
         with working_dir(self.build_directory):
             mkdir(prefix.bin)
             if '+serialize' in spec:
-                install('cosmo_serialize', prefix.bin)            
+                install('cosmo_serialize', prefix.bin)
             else:
                 install('cosmo_' + self.spec.variants['cosmo_target'].value, prefix.bin)
                 install('cosmo_' + self.spec.variants['cosmo_target'].value, prefix.cosmo + '/test/testsuite')
@@ -192,8 +221,8 @@ class Cosmo(MakefilePackage):
     @on_package_attributes(run_tests=True)
     def test(self):
         with working_dir(prefix.cosmo + '/test/testsuite/data'):
-            get_test_data = Executable('./get_data.sh')
-            get_test_data()
+            get_test_data = './get_data.sh'
+            os.system(get_test_data)
         if '~serialize' in self.spec:
             with working_dir(prefix.cosmo + '/test/testsuite'):
                 env['ASYNCIO'] = 'ON'
@@ -205,11 +234,19 @@ class Cosmo(MakefilePackage):
                     env['REAL_TYPE'] = 'FLOAT'
                 if '~cppdycore' in self.spec:
                     env['JENKINS_NO_DYCORE'] = 'ON'
-                run_testsuite = Executable('sbatch submit.' + self.spec.variants['slave'].value + '.slurm')
-                run_testsuite()
+                run_testsuite = 'sbatch -W submit.' + self.spec.variants['slave'].value + '.slurm'
+                os.system(run_testsuite)
+                cat_testsuite = 'cat testsuite.out'
+                os.system(cat_testsuite)
+                check_testsuite = './testfail.sh'
+                if os.system(check_testsuite) != 0:
+                    raise ValueError('Testsuite failed.')
         if '+serialize' in self.spec:
             with working_dir(prefix.cosmo + '/ACC'):
-                get_serialization_data = Executable('./test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun')
-                get_serialization_data()
+                get_serialization_data = 'python2 test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun >> serialize_log.txt; grep \'Generation failed\' serialize_log.txt | wc -l'
+                cat_log = 'cat serialize_log.txt'
+                if os.system(get_serialization_data) > 0:
+                    raise ValueError('Serialization failed.')
+                os.system(cat_log)
             with working_dir(prefix.cosmo + '/ACC/test/serialize'):
-                copy_tree('data', prefix.data + '/' + self.spec.variants['real_type'].value) 
+                copy_tree('data', prefix.data + '/' + self.spec.variants['real_type'].value)
