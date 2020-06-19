@@ -19,7 +19,7 @@ from spack.spec import Spec
 from spack.cmd.dev_build import dev_build
 
 description = "Dev-build cosmo and dycore with or without testing."
-section = "build"
+section = "scripting"
 level = "long"
 
 
@@ -57,7 +57,7 @@ def setup_parser(subparser):
     arguments.add_common_arguments(cd_group, ['clean', 'dirty'])
 
 
-def dev_build_cosmo(self, args):
+def devbuildcosmo(self, args):
     # Extract and concretize cosmo_spec
     if not args.spec:
         tty.die("spack dev-build requires a package spec argument.")
