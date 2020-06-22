@@ -34,11 +34,11 @@ class Libgrib1(MakefilePackage):
     build_directory='libgrib1_cosmo/source'
 
     version('master', branch='master')
+    version('22-01-2020', commit='3d3db9a9a090f6798c2fd4290c271dd58ff694e0')
     
     variant('slave', default='tsa', description='Build on slave tsa, daint or kesch', multi=False)
 
     depends_on('mpi')
-
 
     def setup_environment(self, spack_env, run_env):
         spack_env.set('LIBNAME', 'grib1')

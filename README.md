@@ -4,7 +4,7 @@ Official Spack documentation [Here](https://spack.readthedocs.io/en/latest/).
 
 ## Installation
 
-**!!! Please not that the package cosmo and cosmo-dycore now requires a Python version >= 3.6 !!!**
+**!!! Please note that the package cosmo and cosmo-dycore now requires a Python version >= 3.6 !!!**
 
 ### CSCS users
 
@@ -28,6 +28,16 @@ case $(hostname -s) in
 esac
 source $SPACK_ROOT/share/spack/setup-env.sh
 ```
+
+#### Error: Initialization hangs
+
+If `source $SPACK_ROOT/share/spack/setup-env.sh` hangs, clean your cache:
+
+```
+rm -rf ~/.spack/cray ~/.spack/cache
+```
+
+Then try again.
 
 ### General
 

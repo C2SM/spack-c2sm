@@ -19,20 +19,20 @@ packages:
     target: []
     providers: {}
   openmpi:
-    paths:
-      openmpi@4.0.2%pgi: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/OpenMPI/4.0.2-PGI-19.9-GCC-8.3.0-cuda-10.1
-      openmpi@4.0.2%gcc: /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/OpenMPI/4.0.2-gcccuda-2019b-cuda-10.1
+    modules:
+      openmpi@4.0.2%pgi: /apps/arolla/UES/jenkins/RH7.7/pgi/19.9/easybuild/modules/all/openmpi/4.0.2-pgi-19.9-gcc-8.3.0-cuda-10.1
+      openmpi@4.0.2%gcc: /apps/arolla/UES/jenkins/RH7.7/gnu/19.2/easybuild/modules/all/openmpi/4.0.2-gcccuda-2019b-cuda-10.1
   netcdf-fortran:
-    paths:
-      netcdf-fortran@4.4.5%pgi +mpi: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/netCDF-Fortran/4.4.5-PGI-19.9-GCC-8.3.0/
-      netcdf-fortran@4.4.5%gcc +mpi: /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/netCDF-Fortran/4.4.5-fosscuda-2019b
+    modules:
+      netcdf-fortran@4.4.5%gcc +mpi: /apps/arolla/UES/jenkins/RH7.7/gnu/19.2/easybuild/modules/all/netcdf-fortran/4.4.5-fosscuda-2019b
+      netcdf-fortran@4.4.5%pgi +mpi: /apps/arolla/UES/jenkins/RH7.7/pgi/19.9/easybuild/modules/all/netcdf-fortran/4.4.5-pgi-19.9-gcc-8.3.0
   netcdf-c:
-    paths:
-      netcdf-c@4.7.0%pgi +mpi: /apps/arolla/UES/jenkins/RH7.6/pgi/19.9/easybuild/software/netCDF/4.7.0-PGI-19.9-GCC-8.3.0
-      netcdf-c@4.7.0%gcc +mpi: /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/netCDF/4.7.0-fosscuda-2019b
+    modules:
+      netcdf-c@4.7.0%gcc +mpi: /apps/arolla/UES/jenkins/RH7.7/gnu/19.2/easybuild/modules/all/netcdf/4.7.0-fosscuda-2019b
+      netcdf-c@4.7.0%pgi +mpi: /apps/arolla/UES/jenkins/RH7.7/pgi/19.9/easybuild/modules/all/netcdf/4.7.0-pgi-19.9-gcc-8.3.0
   netcdf-cxx4:
     paths:
-      netcdf-cxx4@4.3.0%gcc: /apps/arolla/UES/jenkins/RH7.6/gnu/19.2/easybuild/software/netCDF-C++/4.3.0-fosscuda-2019b/
+      netcdf-cxx4@4.3.0%gcc: /apps/arolla/UES/jenkins/RH7.7/gnu/19.2/easybuild/software/netCDF-C++/4.3.0-fosscuda-2019b/
   perl:
     paths: 
       perl@5.16.3: /usr
@@ -65,7 +65,11 @@ packages:
       bzip2@1.0.6: /usr
   slurm:
     modules:
-      slurm@19.05.04: slurm/19.05.04
+      slurm@19.05.05: slurm/19.05.05
+  int2lm:
+    variants: slave=tsa
+  libgrib1:
+    variants: slave=tsa
   cosmo-dycore:
     variants: +cuda cuda_arch=70 data_path=/scratch/jenkins/data/cosmo/ slave=tsa
     compiler: [gcc]
@@ -73,7 +77,7 @@ packages:
     variants: +cuda cuda_arch=70
     compiler: [gcc]
   cosmo:
-    variants: slave=tsa
+    variants: +cuda cuda_arch=70 slave=tsa
     version: [master]
     compiler: [pgi@19.9, gcc@8.3.0]
 

@@ -21,6 +21,7 @@ def dycore_deps(repo):
     tags.append('master')
     tags.append('dev-build')
     tags.append('mch')
+    tags.append('gt2')
 
     for tag in tags:    
         types = ['float','double']
@@ -53,6 +54,7 @@ class Cosmo(MakefilePackage):
     version('dev-build', branch='master')
     version('test', git='git@github.com:elsagermann/cosmo.git', branch='add_spack_tests')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
+    version('gt2', git='git@github.com:havogt/cosmo.git', branch='gt2')
 
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
@@ -65,10 +67,7 @@ class Cosmo(MakefilePackage):
     depends_on('cuda', when='cosmo_target=gpu', type=('build', 'run'))
     depends_on('serialbox@2.6.0', when='+serialize')
     depends_on('mpi', type=('build', 'run'))
-    depends_on('libgrib1 slave=tsa', when='slave=tsa')
-    depends_on('libgrib1 slave=tsa', when='slave=tsa_rh7.7')
-    depends_on('libgrib1 slave=daint', when='slave=daint')
-    depends_on('libgrib1 slave=kesch', when='slave=kesch')
+    depends_on('libgrib1')
     depends_on('jasper@1.900.1%gcc ~shared')
     depends_on('cosmo-grib-api-definitions', when='~eccodes')
     depends_on('cosmo-eccodes-definitions@2.14.1.2 ~aec', when='+eccodes')
@@ -222,6 +221,7 @@ class Cosmo(MakefilePackage):
     @on_package_attributes(run_tests=True)
     def test(self):
         with working_dir(self.build_directory):
-            os.system('./test/jenkins/spack-test.py "' + str(cosmo_spec) + '" ' + prefix)
-        with working_dir(prefix.cosmo + '/ACC/test/serialize'):
-            copy_tree('data', prefix.data + '/' + self.spec.variants['real_type'].value)
+            os.system('./test/tools/spack-test.py "' + str(cosmo_spec) + '" ' + prefix)
+        if '+serialize' in spec:
+            with working_dir(prefix.cosmo + '/ACC/test/serialize'):
+                copy_tree('data', prefix.data + '/' + self.spec.variants['real_type'].value)
