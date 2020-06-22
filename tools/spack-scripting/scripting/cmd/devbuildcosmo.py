@@ -96,7 +96,6 @@ def devbuildcosmo(self, args):
 
         args.spec = str(dycore_spec)
         
-        print(str(dycore_spec))
         if args.until == 'build':
             shutil.rmtree(dycore_spec.prefix)
             args.until = None
