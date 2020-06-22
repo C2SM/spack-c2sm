@@ -5,7 +5,7 @@ Official Spack documentation [Here](https://spack.readthedocs.io/en/latest/).
 ## Installation of your local cosmo with spack:
 
 ```bash
-module load python3.7
+module load python/3.7.4
 source /project/g110/spack/user/tsa/spack/share/spack/setup-env.sh
 spack info cosmo # Check available options 
 spack spec cosmo # Check if your spec is precised enough, else precise more options
@@ -14,7 +14,7 @@ spack devbuildcosmo cosmo@dev-build # -t option for test, -w for no dycore, usua
 ```
 
 
-## Installation
+## General Spack Installation
 
 **!!! Please note that the package cosmo and cosmo-dycore now requires a Python version >= 3.6 !!!**
 
