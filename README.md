@@ -33,10 +33,8 @@ If you want to automatically source the correct spack instance depending on the 
 
 ```bash
 case $(hostname -s) in
-      tsa-ln003) module load python/3.7.4; export SPACK_ROOT=/project/g110/spack/user/tsa_rh7.7/spack ;;
       tsa*|arolla*) module load python/3.7.4; export SPACK_ROOT=/project/g110/spack/user/tsa/spack ;;
       daint*) module load cray-python; export SPACK_ROOT=/project/g110/spack/user/daint/spack ;;
-      kesch*) export SPACK_ROOT=/project/g110/spack/user/kesch/spack ;;
 esac
 source $SPACK_ROOT/share/spack/setup-env.sh
 ```
