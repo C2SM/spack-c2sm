@@ -57,7 +57,7 @@ class CosmoDycore(CMakePackage):
     variant('production', default=False, description='Force all variants to be the ones used in production')
     variant('cuda_arch', default='none', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
     variant('cuda', default=True, description='Build with cuda or target gpu')
-    variant('slurm_args', default='srun -p debug -n {0} --gres=gpu:{0}', description='Slurm arguments for testing')
+    variant('slurm_args', default='"-p debug -n {0} --gres=gpu:{0}"', description='Slurm arguments for testing')
 
     depends_on('gridtools@1.1.3 +cuda', when='+cuda')
     depends_on('gridtools@1.1.3 ~cuda cuda_arch=none', when='~cuda')
