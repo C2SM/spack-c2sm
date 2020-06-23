@@ -71,7 +71,7 @@ packages:
   libgrib1:
     variants: slave=tsa
   cosmo-dycore:
-    variants: +cuda cuda_arch=70 data_path=/scratch/jenkins/data/cosmo/ slave=tsa
+    variants: +cuda cuda_arch=70 data_path=/scratch/jenkins/data/cosmo/ slave=tsa slurm_args= "'-p debug -n {0} --gres=gpu:{0}'"
     compiler: [gcc]
   gridtools:
     variants: +cuda cuda_arch=70
