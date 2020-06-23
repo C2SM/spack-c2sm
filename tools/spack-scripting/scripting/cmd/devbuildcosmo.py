@@ -106,7 +106,7 @@ def devbuildcosmo(self, args):
         # Launch dycore tests
         if args.test:
             print('\033[92m' + '==> ' + '\033[0m' + 'cosmo-dycore: Launching dycore tests')
-            subprocess.run(['./dycore/test/jenkins/spack-test.py', str(dycore_spec), base_directory + '/spack-build'])
+            subprocess.run(['./dycore/test/tools/spack-test.py', str(dycore_spec), base_directory + '/spack-build'])
 
         temp_cosmo_spec = temp_cosmo_spec + ' ^/' + str(dycore_spec.dag_hash())
         args.spec = temp_cosmo_spec
@@ -118,4 +118,4 @@ def devbuildcosmo(self, args):
     # Launch cosmo tests
     if args.test:
         print('\033[92m' + '==> ' + '\033[0m' + 'cosmo: Launching cosmo tests')
-        subprocess.run(["./cosmo/ACC/test/jenkins/spack-test.py", str(cosmo_spec), base_directory])
+        subprocess.run(["./cosmo/ACC/test/tools/spack-test.py", str(cosmo_spec), base_directory])
