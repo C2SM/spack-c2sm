@@ -143,6 +143,16 @@ class Cosmo(MakefilePackage):
         else:
           spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cma')
 
+        run_env_variables = {}
+        run_env_variables['UCX_MEMTYPE_CACHE'] = 'n'
+        if '+cppdycore' in self.spec and self.spec.variants['cosmo_target'].value == 'gpu':
+            run_env_variables['UCX_TLS'] = 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma'
+        else:
+            run_env_variables['UCX_TLS'] = 'rc_x,ud_x,mm,shm,cma'
+        for key in run_env_variables:
+            spack_env.set(key, run_env_variables[key])
+        spack_env.set('SPACK_RUN_ENV' , run_env_variables)
+
     @property
     def build_targets(self):
         build = []
