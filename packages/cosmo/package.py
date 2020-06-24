@@ -6,8 +6,6 @@
 
 import subprocess, re, itertools
 from spack import *
-import os
-
 
 def get_releases(repo):
         git_obj = subprocess.run(["git","ls-remote",repo], stdout=subprocess.PIPE)
@@ -221,8 +219,7 @@ class Cosmo(MakefilePackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def test(self):
-        with working_dir(self.build_directory):
-            os.system('./test/tools/spack-test.py "' + str(cosmo_spec) + '" ' + prefix)
+        subprocess.run(['./test/tools/spack-test.py', str(self.spec), prefix], cwd = self.build_directory)
         if '+serialize' in spec:
             with working_dir(prefix.cosmo + '/ACC/test/serialize'):
                 copy_tree('data', prefix.data + '/' + self.spec.variants['real_type'].value)

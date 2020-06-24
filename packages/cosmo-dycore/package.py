@@ -24,7 +24,6 @@
 ##############################################################################
 from spack import *
 import subprocess, re
-import os
 
 def get_releases(repo):
         git_obj = subprocess.run(["git","ls-remote",repo], stdout=subprocess.PIPE)
@@ -60,7 +59,7 @@ class CosmoDycore(CMakePackage):
     variant('production', default=False, description='Force all variants to be the ones used in production')
     variant('cuda_arch', default='none', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
     variant('cuda', default=True, description='Build with cuda or target gpu')
-    variant('slurm_args', default='srun -p debug -n {0} --gres=gpu:{0}', description='Slurm arguments for testing')
+    variant('slurm_args', default='"-p debug -n {0} --gres=gpu:{0}"', description='Slurm arguments for testing')
 
     depends_on('gridtools@1.1.3 +cuda', when='+cuda')
     depends_on('gridtools@1.1.3 ~cuda cuda_arch=none', when='~cuda')
@@ -142,6 +141,5 @@ class CosmoDycore(CMakePackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def test(self):
-        if '+build_tests' in self.spec:
-            with working_dir(self.root_cmakelists_dir + '/test/tools'):
-                os.system('./spack-test.py "' + str(self.spec) + '" ' + self.build_directory)
+      if '+build_tests' in self.spec: 
+            subprocess.run(['./spack-test.py',  str(self.spec),  self.build_directory], cwd = self.root_cmakelists_dir + '/test/tools')
