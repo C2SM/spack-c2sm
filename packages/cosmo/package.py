@@ -22,6 +22,7 @@ def dycore_deps(repo):
     tags.append('dev-build')
     tags.append('mch')
     tags.append('gt2')
+    tags.append('test')
 
     for tag in tags:    
         types = ['float','double']
