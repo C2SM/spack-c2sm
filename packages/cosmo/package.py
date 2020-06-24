@@ -220,6 +220,6 @@ class Cosmo(MakefilePackage):
     @on_package_attributes(run_tests=True)
     def test(self):
         subprocess.run(['./test/tools/spack-test.py', str(self.spec), prefix], cwd = self.build_directory)
-        if '+serialize' in spec:
+        if '+serialize' in self.spec:
             with working_dir(prefix.cosmo + '/ACC/test/serialize'):
                 copy_tree('data', prefix.data + '/' + self.spec.variants['real_type'].value)
