@@ -15,10 +15,8 @@ def main():
     
     env_file = open("env.txt","w+")
 
-    module_list = os.environ['LOADEDMODULES'].split(':')
-
-    for module in module_list:
-        env_file.write('module load ' + module + '\n')
+    env_file.write('export _LMFILES_=' + os.environ['_LMFILES_'] + '\n')
+    env_file.write('export LOADEDMODULES=' + os.environ['LOADEDMODULES'] + '\n')
 
     run_env_variables = {}
     try: 
