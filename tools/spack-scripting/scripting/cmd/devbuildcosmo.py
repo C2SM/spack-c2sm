@@ -102,7 +102,6 @@ def devbuildcosmo(self, args):
         
         # Dev-build dycore
         dev_build(self, args)
-        
         # Launch dycore tests
         if args.test:
             print('\033[92m' + '==> ' + '\033[0m' + 'cosmo-dycore: Launching dycore tests')
@@ -114,7 +113,7 @@ def devbuildcosmo(self, args):
 
     # Dev-build cosmo
     dev_build(self, args)
-    
+
     # Launch cosmo tests
     if args.test:
         print('\033[92m' + '==> ' + '\033[0m' + 'cosmo: Launching cosmo tests')
