@@ -20,7 +20,6 @@ def dycore_deps(repo):
     tags.append('dev-build')
     tags.append('mch')
     tags.append('gt2')
-    tags.append('test')
 
     for tag in tags:    
         types = ['float','double']
@@ -51,7 +50,6 @@ class Cosmo(MakefilePackage):
 
     version('master', branch='master')
     version('dev-build', branch='master')
-    version('test', git='git@github.com:elsagermann/cosmo.git', branch='add_spack_tests')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
     version('gt2', git='git@github.com:havogt/cosmo.git', branch='gt2')
 
@@ -219,7 +217,9 @@ class Cosmo(MakefilePackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def test(self):
-        subprocess.run(['./test/tools/spack-test.py', str(self.spec), prefix], cwd = self.build_directory)
+        if '~serialize' in self.spec:
+            subprocess.run(['./test/tools/test_cosmo.py', str(self.spec), prefix], cwd = self.build_directory)
         if '+serialize' in self.spec:
+            subprocess.run(['./test/tools/serialize_cosmo.py', str(self.spec), prefix], cwd = self.build_directory)
             with working_dir(prefix.cosmo + '/ACC/test/serialize'):
                 copy_tree('data', prefix.data + '/' + self.spec.variants['real_type'].value)

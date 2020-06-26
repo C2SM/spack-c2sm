@@ -43,10 +43,8 @@ class CosmoDycore(CMakePackage):
     
     version('master', branch='master')
     version('dev-build', branch='master')
-    version('test', git='git@github.com:elsagermann/cosmo.git', branch='add_spack_tests')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
     version('gt2', git='git@github.com:havogt/cosmo.git', branch='gt2')
-    version('test', git='git@github.com:elsagermann/cosmo.git', branch='add_spack_tests')
 
     dycore_tags("git@github.com:MeteoSwiss-APN/cosmo.git")
 
@@ -142,4 +140,4 @@ class CosmoDycore(CMakePackage):
     @on_package_attributes(run_tests=True)
     def test(self):
       if '+build_tests' in self.spec: 
-            subprocess.run(['./spack-test.py',  str(self.spec),  self.build_directory], cwd = self.root_cmakelists_dir + '/test/tools')
+            subprocess.run(['./test_dycore.py',  str(self.spec),  self.build_directory], cwd = self.root_cmakelists_dir + '/test/tools')
