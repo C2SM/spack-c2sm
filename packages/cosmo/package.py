@@ -106,7 +106,10 @@ class Cosmo(MakefilePackage):
     conflicts('+production', when='~eccodes')
 
     conflicts('+cppdycore', when='%pgi cosmo_target=cpu')
-    build_directory = 'cosmo/ACC'
+    if 'COSMO_BUILD_DIR' in os.environ:
+            build_directory = os.environ.get('COSMO_BUILD_DIR')
+    else:
+            build_directory = 'cosmo/ACC'
 
     def setup_environment(self, spack_env, run_env):
         if '~eccodes' in self.spec:
