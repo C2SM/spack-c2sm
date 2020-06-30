@@ -71,7 +71,7 @@ class Cosmo(MakefilePackage):
     depends_on('perl@5.16.3:')
     depends_on('omni-xmod-pool', when='+claw')
     depends_on('claw', when='+claw')
-    depends_on('boost', when='cosmo_target=gpu ~cppdycore')
+    depends_on('boost%gcc', when='cosmo_target=gpu ~cppdycore')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('dycoretest', default=True, description='Build C++ dycore with testing')
@@ -137,7 +137,7 @@ class Cosmo(MakefilePackage):
             if self.spec['mpi'].name == 'mpich':
                 spack_env.append_flags('CLAWFC_FLAGS', '-U__CRAYXC')
         spack_env.set('UCX_MEMTYPE_CACHE', 'n')
-        if '+cppdycore' in self.spec and self.spec.variants['cosmo_target'].value == 'gpu':
+        if self.spec.variants['cosmo_target'].value == 'gpu':
           spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
         else:
           spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cma')
