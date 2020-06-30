@@ -52,7 +52,6 @@ class Cosmo(MakefilePackage):
 
     version('master', branch='master')
     version('dev-build', branch='master')
-    version('test', git='git@github.com:elsagermann/cosmo.git', branch='thread_serialization')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
     version('gt2', git='git@github.com:havogt/cosmo.git', branch='gt2')
 
@@ -103,6 +102,8 @@ class Cosmo(MakefilePackage):
     conflicts('+production', when='cosmo_target=cpu')
     conflicts('+production', when='~pollen')
     conflicts('+production', when='%gcc')
+    conflicts('+production', when='~eccodes')
+
     conflicts('+cppdycore', when='%pgi cosmo_target=cpu')
     build_directory = 'cosmo/ACC'
 
