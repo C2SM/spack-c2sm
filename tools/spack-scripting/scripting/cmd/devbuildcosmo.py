@@ -69,7 +69,7 @@ def devbuildcosmo(self, args):
     cosmo_spec = specs[0]
     temp_cosmo_spec = str(cosmo_spec)
     cosmo_spec.concretize()
-    
+
     # Set dycore_spec
     if not args.without_dycore:
         dycore_spec = 'cosmo-dycore@dev-build'
@@ -99,13 +99,13 @@ def devbuildcosmo(self, args):
         if args.until == 'build':
             shutil.rmtree(dycore_spec.prefix)
             args.until = None
-        
+
         # Dev-build dycore
         dev_build(self, args)
         # Launch dycore tests
         if args.test:
             print('\033[92m' + '==> ' + '\033[0m' + 'cosmo-dycore: Launching dycore tests')
-            subprocess.run(['./dycore/test/jenkins/test_dycore.py', str(dycore_spec), base_directory + '/spack-build'])
+            subprocess.run(['./dycore/test/tools/test_dycore.py', str(dycore_spec), base_directory + '/spack-build'])
 
         temp_cosmo_spec = temp_cosmo_spec + ' ^/' + str(dycore_spec.dag_hash())
         args.spec = temp_cosmo_spec
@@ -115,6 +115,11 @@ def devbuildcosmo(self, args):
     dev_build(self, args)
 
     # Launch cosmo tests
-    if args.test:
+    if args.test and '~serialize' in cosmo_spec:
         print('\033[92m' + '==> ' + '\033[0m' + 'cosmo: Launching cosmo tests')
-        subprocess.run(["./cosmo/ACC/test/jenkins/test_cosmo.py", str(cosmo_spec), base_directory])
+        subprocess.run(["./cosmo/ACC/test/tools/test_cosmo.py", str(cosmo_spec), base_directory])
+
+    # Serialize data
+    if '+serialize' in cosmo_spec:
+        print('\033[92m' + '==> ' + '\033[0m' + 'cosmo: Serializing data')
+        subprocess.run(["./cosmo/ACC/test/tools/serialize_cosmo.py", str(cosmo_spec), base_directory])
