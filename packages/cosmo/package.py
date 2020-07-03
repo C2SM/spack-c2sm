@@ -48,9 +48,9 @@ class Cosmo(MakefilePackage):
     apngit   = 'git@github.com:MeteoSwiss-APN/cosmo.git'
     maintainers = ['elsagermann']
 
-    version('master', branch='master')
-    version('dev-build', branch='master')
-    version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
+    version('master', branch='master', get_full_repo=True)
+    version('dev-build', branch='master', get_full_repo=True)
+    version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch', get_full_repo=True)
     version('gt2', git='git@github.com:havogt/cosmo.git', branch='gt2')
 
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
