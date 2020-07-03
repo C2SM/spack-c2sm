@@ -3,6 +3,7 @@
 import argparse
 import os
 import yaml
+import shutil
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 spack_version='v0.14.2'
@@ -32,6 +33,8 @@ def main():
                 args.version = spack_version
             clone_cmd = 'git clone git@github.com:spack/spack.git -b' + args.version + ' ' + args.idir + '/spack'   
             os.system(clone_cmd)
+            print('Installing custom dev-build command')
+            shutil.copy('./tools/spack-scripting/scripting/cmd/dev_build.py', args.idir + '/spack/lib/spack/spack/cmd/')
     print('Installing mch packages & ' + args.machine + ' config files')
 
     if not args.reposdir:

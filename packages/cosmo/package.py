@@ -6,8 +6,6 @@
 
 import subprocess, re, itertools
 from spack import *
-import os
-
 
 def get_releases(repo):
         git_obj = subprocess.run(["git","ls-remote",repo], stdout=subprocess.PIPE)
@@ -52,7 +50,6 @@ class Cosmo(MakefilePackage):
 
     version('master', branch='master')
     version('dev-build', branch='master')
-    version('test', git='git@github.com:elsagermann/cosmo.git', branch='thread_serialization')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
     version('gt2', git='git@github.com:havogt/cosmo.git', branch='gt2')
 
@@ -74,7 +71,7 @@ class Cosmo(MakefilePackage):
     depends_on('perl@5.16.3:')
     depends_on('omni-xmod-pool', when='+claw')
     depends_on('claw', when='+claw')
-    depends_on('boost', when='cosmo_target=gpu ~cppdycore')
+    depends_on('boost%gcc', when='cosmo_target=gpu ~cppdycore')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('dycoretest', default=True, description='Build C++ dycore with testing')
@@ -143,7 +140,7 @@ class Cosmo(MakefilePackage):
             if self.spec['mpi'].name == 'mpich':
                 spack_env.append_flags('CLAWFC_FLAGS', '-U__CRAYXC')
         spack_env.set('UCX_MEMTYPE_CACHE', 'n')
-        if '+cppdycore' in self.spec and self.spec.variants['cosmo_target'].value == 'gpu':
+        if self.spec.variants['cosmo_target'].value == 'gpu':
           spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
         else:
           spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cma')
@@ -225,33 +222,9 @@ class Cosmo(MakefilePackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def test(self):
-        with working_dir(prefix.cosmo + '/test/testsuite/data'):
-            get_test_data = './get_data.sh'
-            os.system(get_test_data)
         if '~serialize' in self.spec:
-            with working_dir(prefix.cosmo + '/test/testsuite'):
-                env['ASYNCIO'] = 'ON'
-                if self.spec.variants['cosmo_target'].value == 'gpu':
-                    env['TARGET'] = 'GPU'
-                else:
-                    env['TARGET'] = 'CPU'
-                if self.spec.variants['real_type'].value == 'float':
-                    env['REAL_TYPE'] = 'FLOAT'
-                if '~cppdycore' in self.spec:
-                    env['JENKINS_NO_DYCORE'] = 'ON'
-                run_testsuite = 'sbatch -W submit.' + self.spec.variants['slave'].value + '.slurm'
-                os.system(run_testsuite)
-                cat_testsuite = 'cat testsuite.out'
-                os.system(cat_testsuite)
-                check_testsuite = './testfail.sh'
-                if os.system(check_testsuite) != 0:
-                    raise ValueError('Testsuite failed.')
+            subprocess.run(['./test/tools/test_cosmo.py', str(self.spec), prefix], cwd = self.build_directory)
         if '+serialize' in self.spec:
-            with working_dir(prefix.cosmo + '/ACC'):
-                get_serialization_data = 'python2 test/serialize/generateUnittestData.py -v -e cosmo_serialize --mpirun=srun >> serialize_log.txt; grep \'Generation failed\' serialize_log.txt | wc -l'
-                cat_log = 'cat serialize_log.txt'
-                if os.system(get_serialization_data) > 0:
-                    raise ValueError('Serialization failed.')
-                os.system(cat_log)
+            subprocess.run(['./test/tools/serialize_cosmo.py', str(self.spec), prefix], cwd = self.build_directory)
             with working_dir(prefix.cosmo + '/ACC/test/serialize'):
                 copy_tree('data', prefix.data + '/' + self.spec.variants['real_type'].value)
