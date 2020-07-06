@@ -82,7 +82,7 @@ class Cosmo(MakefilePackage):
     variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)
     variant('claw', default=False, description='Build with claw-compiler')
     variant('slave', default='tsa', description='Build on slave tsa, daint or kesch', multi=False)
-    variant('eccodes', default=False, description='Build with eccodes instead of grib-api')
+    variant('eccodes', default=True, description='Build with eccodes instead of grib-api')
     variant('pollen', default=False, description='Build with pollen enabled')
     variant('verbose', default=False, description='Build cosmo with verbose enabled')
 
