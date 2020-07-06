@@ -32,6 +32,7 @@ class Claw(CMakePackage):
     depends_on('ant@1.9:%gcc')
     depends_on('libxml2%gcc')
     depends_on('bison%gcc')
+    depends_on('flex%gcc')
     
     def setup_environment(self, spack_env, run_env):
         spack_env.set('YACC', 'bison -y')
