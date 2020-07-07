@@ -48,9 +48,9 @@ class Cosmo(MakefilePackage):
     apngit   = 'git@github.com:MeteoSwiss-APN/cosmo.git'
     maintainers = ['elsagermann']
 
-    version('master', branch='master')
-    version('dev-build', branch='master')
-    version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
+    version('master', branch='master', get_full_repo=True)
+    version('dev-build', branch='master', get_full_repo=True)
+    version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch', get_full_repo=True)
     version('gt2', git='git@github.com:havogt/cosmo.git', branch='gt2')
 
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
@@ -82,7 +82,7 @@ class Cosmo(MakefilePackage):
     variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)
     variant('claw', default=False, description='Build with claw-compiler')
     variant('slave', default='tsa', description='Build on slave tsa, daint or kesch', multi=False)
-    variant('eccodes', default=False, description='Build with eccodes instead of grib-api')
+    variant('eccodes', default=True, description='Build with eccodes instead of grib-api')
     variant('pollen', default=False, description='Build with pollen enabled')
     variant('verbose', default=False, description='Build cosmo with verbose enabled')
 
@@ -224,11 +224,8 @@ class Cosmo(MakefilePackage):
                 subprocess.run(['./test/tools/test_cosmo.py', str(self.spec), prefix], cwd = self.build_directory, stderr=subprocess.STDOUT, check=True)
             except subprocess.CalledProcessError:
                 raise InstallError('Testsuite failed')
-
         if '+serialize' in self.spec:
             try:
                 subprocess.run(['./test/tools/serialize_cosmo.py', str(self.spec), prefix], cwd = self.build_directory, stderr=subprocess.STDOUT, check=True)
             except subprocess.CalledProcessError:
                 raise InstallError('Serialization failed')
-            with working_dir(prefix.cosmo + '/ACC/test/serialize'):
-                copy_tree('data', prefix.data + '/' + self.spec.variants['real_type'].value)
