@@ -221,15 +221,14 @@ class Cosmo(MakefilePackage):
     def test(self):
         if '~serialize' in self.spec:
             try:
-                output = subprocess.check_output(['./test/tools/test_cosmo.py', str(self.spec), prefix], cwd = self.build_directory, stderr=subprocess.STDOUT, universal_newlines=True)
-                print(output)
+                subprocess.run(['./test/tools/test_cosmo.py', str(self.spec), prefix], cwd = self.build_directory, stderr=subprocess.STDOUT, check=True)
             except subprocess.CalledProcessError:
-                sys.exit('Testsuite failed')
+                raise InstallError('Testsuite failed')
 
         if '+serialize' in self.spec:
             try:
-                subprocess.check_output(['./test/tools/serialize_cosmo.py', str(self.spec), prefix], cwd = self.build_directory, stderr=subprocess.STDOUT)
+                subprocess.run(['./test/tools/serialize_cosmo.py', str(self.spec), prefix], cwd = self.build_directory, stderr=subprocess.STDOUT, check=True)
             except subprocess.CalledProcessError:
-                sys.exit('Serialization failed')
+                raise InstallError('Serialization failed')
             with working_dir(prefix.cosmo + '/ACC/test/serialize'):
                 copy_tree('data', prefix.data + '/' + self.spec.variants['real_type'].value)

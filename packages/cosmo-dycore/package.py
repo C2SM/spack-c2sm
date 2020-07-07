@@ -143,4 +143,4 @@ class CosmoDycore(CMakePackage):
           try:
               subprocess.run(['./test_dycore.py',  str(self.spec),  self.build_directory], cwd = self.root_cmakelists_dir + '/test/tools', check=True, stderr=subprocess.STDOUT)
           except subprocess.CalledProcessError:
-              sys.exit('Dycore tests failed')
+              raise InstallError('Dycore tests failed')
