@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-
+import sys
 import subprocess, re, itertools
 from spack import *
 
@@ -220,8 +220,16 @@ class Cosmo(MakefilePackage):
     @on_package_attributes(run_tests=True)
     def test(self):
         if '~serialize' in self.spec:
-            subprocess.run(['./test/tools/test_cosmo.py', str(self.spec), prefix], cwd = self.build_directory, check=True, stderr=subprocess.STDOUT)
+            try:
+                output = subprocess.check_output(['./test/tools/test_cosmo.py', str(self.spec), prefix], cwd = self.build_directory, stderr=subprocess.STDOUT, universal_newlines=True)
+                print(output)
+            except subprocess.CalledProcessError:
+                sys.exit('Testsuite failed')
+
         if '+serialize' in self.spec:
-            subprocess.run(['./test/tools/serialize_cosmo.py', str(self.spec), prefix], cwd = self.build_directory, check=True, stderr=subprocess.STDOUT)
+            try:
+                subprocess.check_output(['./test/tools/serialize_cosmo.py', str(self.spec), prefix], cwd = self.build_directory, stderr=subprocess.STDOUT)
+            except subprocess.CalledProcessError:
+                sys.exit('Serialization failed')
             with working_dir(prefix.cosmo + '/ACC/test/serialize'):
                 copy_tree('data', prefix.data + '/' + self.spec.variants['real_type'].value)
