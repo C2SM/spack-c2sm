@@ -72,6 +72,7 @@ class Cosmo(MakefilePackage):
     depends_on('omni-xmod-pool', when='+claw')
     depends_on('claw', when='+claw')
     depends_on('boost%gcc', when='cosmo_target=gpu ~cppdycore')
+    depends_on('cmake%gcc')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('dycoretest', default=True, description='Build C++ dycore with testing')
