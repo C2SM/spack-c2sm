@@ -1,6 +1,6 @@
-repos.yaml
-config.yaml
-upstreams.yaml
+sysconfigs/config.yaml
+sysconfigs/repos.yaml
+sysconfigs/upstreams.yaml
 **.pyc
 **.swn
 **.swp

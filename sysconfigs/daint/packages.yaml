@@ -35,7 +35,7 @@ packages:
       variants: +cuda cuda_arch=60
       compiler: [gcc]
     cosmo-dycore:
-      variants: slave=daint +cuda cuda_arch=60 data_path=/scratch/snx3000/wbenjami/cosmo-serialized-data/
+      variants: slave=daint +cuda cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/ slurm_args= "'-C gpu -p normal -A g110 -N {0}'"
       compiler: [gcc]
     cmake:
         paths:
@@ -121,6 +121,10 @@ packages:
             intel-mkl@2019.1.144%intel~ilp64 threads=none: /opt/intel
             intel-mkl@2019.1.144%gcc~ilp64 threads=none:   /opt/intel
             intel-mkl@2019.1.144%cce~ilp64 threads=none:   /opt/intel
+    int2lm:
+        variants: slave=daint
+    libgrib1:
+        variants: slave=daint
     libjpeg:
         paths:
             libjpeg%gcc: /usr
@@ -161,6 +165,12 @@ packages:
             netcdf-fortran@4.6.3.1%intel+mpi: cray-netcdf-hdf5parallel/4.6.3.1
             netcdf-fortran@4.6.3.1%cce+mpi:   cray-netcdf-hdf5parallel/4.6.3.1
             netcdf-fortran@4.6.3.1%pgi+mpi:   cray-netcdf-hdf5parallel/4.6.3.1
+    netcdf-cxx4:
+        buildable: false
+        modules:
+            netcdf-cxx4@4.6.3.1%gcc:   cray-netcdf/4.6.3.1
+        paths:
+            netcdf-cxx4@4.6.3.1%gcc: /opt/cray/pe/netcdf/4.6.3.1/gnu/8.2/
     netlib-scalapack:
         variants: build_type=Release
     netlib-lapack:

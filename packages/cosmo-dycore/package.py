@@ -23,17 +23,31 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##############################################################################
 from spack import *
+import subprocess, re
 
+def get_releases(repo):
+        git_obj = subprocess.run(["git","ls-remote",repo], stdout=subprocess.PIPE)
+        git_tags = [re.match('refs/tags/(.*)', x.decode('utf-8')).group(1) for x in git_obj.stdout.split() if re.match('refs/tags/(.*)', x.decode('utf-8'))]
+        return git_tags
+def dycore_tags(repo):
+    tags = get_releases(repo)
+    for tag in tags:
+        version(tag, git=repo, tag=tag)
 
 class CosmoDycore(CMakePackage):
-    """FIXME: Put a proper description of your package here."""
+    """C++ dycore of cosmo based on GridTools library"""
     
     homepage = "https://github.com/COSMO-ORG/cosmo/tree/master/dycore"
     git      = "git@github.com:COSMO-ORG/cosmo.git"
     maintainers = ['elsagermann']
     
     version('master', branch='master')
-    
+    version('dev-build', branch='master')
+    version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
+    version('gt2', git='git@github.com:havogt/cosmo.git', branch='gt2')
+
+    dycore_tags("git@github.com:MeteoSwiss-APN/cosmo.git")
+
     variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'DebugRelease'))
     variant('build_tests', default=True, description="Compile Dycore unittests & regressiontests")
     variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)
@@ -43,6 +57,7 @@ class CosmoDycore(CMakePackage):
     variant('production', default=False, description='Force all variants to be the ones used in production')
     variant('cuda_arch', default='none', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
     variant('cuda', default=True, description='Build with cuda or target gpu')
+    variant('slurm_args', default='"-p debug -n {0} --gres=gpu:{0}"', description='Slurm arguments for testing')
 
     depends_on('gridtools@1.1.3 +cuda', when='+cuda')
     depends_on('gridtools@1.1.3 ~cuda cuda_arch=none', when='~cuda')
@@ -74,10 +89,11 @@ class CosmoDycore(CMakePackage):
       spec = self.spec
 
       args = []
-
-      GridToolsDir = spec['gridtools'].prefix + '/lib/cmake'
       
-      args.append('-DGridTools_DIR={0}'.format(GridToolsDir))  
+      if not '@gt2' in spec:
+          GridToolsDir = spec['gridtools'].prefix + '/lib/cmake'
+          args.append('-DGridTools_DIR={0}'.format(GridToolsDir))
+
       args.append('-DCMAKE_BUILD_TYPE={0}'.format(self.spec.variants['build_type'].value))
       args.append('-DCMAKE_INSTALL_PREFIX={0}'.format(self.prefix))
       args.append('-DBOOST_ROOT={0}'.format(spec['boost'].prefix))
@@ -106,41 +122,25 @@ class CosmoDycore(CMakePackage):
           cuda_arch = spec.variants['cuda_arch'].value
           if cuda_arch is not None:
               args.append('-DCUDA_ARCH=sm_{0}'.format(cuda_arch))
-          args.append('-DDYCORE_TARGET_ARCHITECTURE=CUDA')
+          if '@gt2' in spec:
+              args.append('-DDYCORE_TARGET_ARCHITECTURE=gpu')
+          else:
+              args.append('-DDYCORE_TARGET_ARCHITECTURE=CUDA')
       # target=cpu
       else:
         args.append('-DENABLE_CUDA=OFF')
-        args.append('-DDYCORE_TARGET_ARCHITECTURE=x86')
+        if '@gt2' in spec:
+            args.append('-DDYCORE_TARGET_ARCHITECTURE=cpu_ifirst')
+        else:
+            args.append('-DDYCORE_TARGET_ARCHITECTURE=x86')
 
       return args
 
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def test(self):
-        if '+build_tests' in self.spec:
-            with working_dir(self.build_directory + '/src'):
-                mkdir(prefix.tests)
-                install_tree('tests', prefix.tests)
-            with working_dir(prefix + '/tests/unittests'):
-                if self.spec.variants['slave'].value == 'tsa':
-                    run_unittests = Executable('srun -n 1 -p normal --gres=gpu:1 ./unittests  --gtest_filter=-TracerBindings.TracerVariable')
-                if self.spec.variants['slave'].value == 'daint':
-                    run_unittests = Executable('srun --time=00:05:00 -C gpu -p normal -A g110 -N 1 ./unittests  --gtest_filter=-TracerBindings.TracerVariable')
-                run_unittests()
-            with working_dir(prefix + '/tests/unittests/gcl_fortran'):
-                if self.spec.variants['slave'].value == 'tsa':
-                    run_unitests_gcl_bindings = Executable('srun -n 4 -p normal --gres=gpu:4 ./unittests_gcl_bindings')
-                if self.spec.variants['slave'].value == 'daint':
-                    run_unitests_gcl_bindings = Executable('srun --time=00:05:00 -C gpu -p normal -A g110 -N 4 ./unittests_gcl_bindings')
-                run_unitests_gcl_bindings()
-            with working_dir(prefix + '/tests/regression'):
-                testlist=['cosmo1_cp_test1', 'cosmo1_test3', 'cosmo1_test3_all_off', 'cosmo1_test3_coldpool_uv', 'cosmo1_test3_non_default', 'cosmo1_test3_vdiffm1', 'cosmo7_test_3', 'cosmo7_test_namelist_irunge_kutta2', 'cosmoe_test_sppt', 'cosmoe_test_sppt_coldpools', 'cosmoe_test_sppt_bechtold']
-                for test in testlist:
-                    if self.spec.variants['slave'].value == 'tsa':
-                        run_regression_test = Executable('srun -n 1 -p debug --gres=gpu:1 ./regression_tests -p ' + self.spec.variants['data_path'].value + self.spec.variants['real_type'].value + '/' + test + ' --gtest_filter=-DycoreUnittest.Performance')
-                    if self.spec.variants['slave'].value == 'daint':
-                        run_regression_test = Executable('srun --time=00:05:00 -C gpu -p normal -A g110 -N 1 ./regression_tests -p ' + self.spec.variants['data_path'].value + self.spec.variants['real_type'].value + '/' + test + ' --gtest_filter=-DycoreUnittest.Performance')
-                    run_regression_test()
-                     
-
-
+      if '+build_tests' in self.spec:
+          try:
+              subprocess.run(['./test_dycore.py',  str(self.spec),  self.build_directory], cwd = self.root_cmakelists_dir + '/test/tools', check=True, stderr=subprocess.STDOUT)
+          except:
+              raise InstallError('Dycore tests failed')

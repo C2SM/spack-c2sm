@@ -1,8 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 import argparse
 import os
 import yaml
+import shutil
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 spack_version='v0.14.2'
@@ -32,15 +33,20 @@ def main():
                 args.version = spack_version
             clone_cmd = 'git clone git@github.com:spack/spack.git -b' + args.version + ' ' + args.idir + '/spack'   
             os.system(clone_cmd)
+            print('Installing custom dev-build command')
+            shutil.copy('./tools/spack-scripting/scripting/cmd/dev_build.py', args.idir + '/spack/lib/spack/spack/cmd/')
     print('Installing mch packages & ' + args.machine + ' config files')
 
-    if args.reposdir:
-        if os.path.isdir(args.reposdir) and not os.path.isfile(args.reposdir + '/repos.yaml'):
-            repos_data = yaml.safe_load(open('./sysconfigs/repos.yaml', 'r'))
-            repos_data['repos'] = [dir_path]
-            yaml.safe_dump(repos_data, open('./sysconfigs/repos.yaml', 'w'), default_flow_style=False)
-            print('Installing repos.yaml on ' + args.reposdir)
-            os.popen('cp ' + dir_path + '/sysconfigs/repos.yaml ' + args.reposdir)
+    if not args.reposdir:
+        args.reposdir = args.idir + '/spack/etc/spack'
+    
+    # installing repos.yaml
+    if os.path.isdir(args.reposdir) and not os.path.isfile(args.reposdir + '/repos.yaml'):
+        repos_data = yaml.safe_load(open('./sysconfigs/repos.yaml', 'r'))
+        repos_data['repos'] = [dir_path]
+        yaml.safe_dump(repos_data, open('./sysconfigs/repos.yaml', 'w'), default_flow_style=False)
+        print('Installing repos.yaml on ' + args.reposdir)
+        os.popen('cp ' + dir_path + '/sysconfigs/repos.yaml ' + args.reposdir)
 
     # configure config.yaml
     config_data = yaml.safe_load(open('sysconfigs/config.yaml', 'r'))
@@ -56,6 +62,7 @@ def main():
     config_data['config']['install_tree'] = args.pckgidir + '/spack-install/' + args.machine.replace('admin-', '')
     config_data['config']['build_stage'] = [args.pckgidir + '/spack-stages/' + args.machine.replace('admin-', '')]
     config_data['config']['module_roots']['tcl'] = args.pckgidir + '/modules/' + args.machine
+    config_data['config']['extensions'] = [dir_path + '/tools/spack-scripting']
     yaml.safe_dump(config_data, open('./sysconfigs/config.yaml', 'w'), default_flow_style=False)
 
     # copy modified config.yaml file in site scope of spack instance

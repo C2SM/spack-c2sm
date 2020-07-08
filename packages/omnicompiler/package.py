@@ -57,6 +57,7 @@ class Omnicompiler(AutotoolsPackage):
             '--with-gmp=/usr/..',
             '--with-mpfr-include={0}'.format(self.spec['mpfr'].prefix + '/include'),
             '--with-mpfr-lib={0}'.format(self.spec['mpfr'].prefix + '/lib'),
+            '--with-libxml2={0}'.format(spec['libxml2'].prefix),
             ]
 
         return args

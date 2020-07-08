@@ -23,6 +23,8 @@ class Claw(CMakePackage):
     version('1.2.1', commit='939989ab52edb5c292476e729608725654d0a59a', submodules=True)
     version('1.2.0', commit='fc9c50fe02be97b910ff9c7015064f89be88a3a2', submodules=True)
     version('1.1.0', commit='16b165a443b11b025a77cad830b1280b8c9bcf01', submodules=True)
+    
+    variant('omni-master', default=False, description='Build with the master version of the omni-compiler')
 
     depends_on('cmake@3.0:%gcc', type='build')
     depends_on('java@8:', when="@2.0:")
@@ -30,12 +32,16 @@ class Claw(CMakePackage):
     depends_on('ant@1.9:%gcc')
     depends_on('libxml2%gcc')
     depends_on('bison%gcc')
+    depends_on('flex%gcc')
     
     def setup_environment(self, spack_env, run_env):
         spack_env.set('YACC', 'bison -y')
     def cmake_args(self):
         args = []
         spec = self.spec
+        
+        if spec.variants['omni-master'].value:
+            args.append('-DOMNI_GIT_HASH=master')
 
         args.append('-DOMNI_CONF_OPTION=--with-libxml2={0}'.
                     format(spec['libxml2'].prefix))
