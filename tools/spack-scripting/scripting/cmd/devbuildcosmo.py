@@ -17,6 +17,7 @@ import spack.repo
 from spack.stage import DIYStage
 from spack.spec import Spec
 from spack.cmd.dev_build import dev_build
+from spack.main import SpackCommand
 
 description = "Dev-build cosmo and dycore with or without testing."
 section = "scripting"
@@ -107,7 +108,10 @@ def devbuildcosmo(self, args):
             print('\033[92m' + '==> ' + '\033[0m' + 'cosmo-dycore: Launching dycore tests')
             subprocess.run(['./dycore/test/tools/test_dycore.py', str(dycore_spec), base_directory + '/spack-build'])
 
-        temp_cosmo_spec = temp_cosmo_spec + ' ^/' + str(dycore_spec.dag_hash())
+        find_cmd = SpackCommand('find')
+        dycore_hash = find_cmd('--format', '{hash}', 'cosmo-dycore@dev-build', 'real_type=' + cosmo_spec.variants['real_type'].value, ' ^' + cosmo_spec.format('{^mpi.name}') + '%' + cosmo_spec.compiler.name)
+
+        temp_cosmo_spec = temp_cosmo_spec + ' ^/' + dycore_hash
         args.spec = temp_cosmo_spec
         args.ignore_deps = True
 
