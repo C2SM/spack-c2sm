@@ -96,6 +96,12 @@ def dev_build(self, args):
     if args.no_checksum:
         spack.config.set('config:checksum', False, scope='command_line')
 
+    tests = False
+    if args.test == 'all':
+        tests = True
+    elif args.test == 'root':
+        tests = [spec.name for spec in specs]
+
     package.do_install(
         tests=tests,
         make_jobs=args.jobs,
