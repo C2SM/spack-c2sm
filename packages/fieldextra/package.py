@@ -48,22 +48,22 @@ class Fieldextra(MakefilePackage):
     # parallelization
     depends_on('eccodes@2.14.1 build_type=Production jp2k=jasper +openmp', when='+openmp')
     depends_on('eccodes@2.14.1 build_type=Production jp2k=jasper ~openmp', when='~openmp')
-    depends_on('icontools@13.2.0 +openmp', when='+openmp')
-    depends_on('icontools@13.2.0 ~openmp', when='~openmp')
+    depends_on('icontools@2.3.6 +openmp', when='+openmp')
+    depends_on('icontools@2.3.6 ~openmp', when='~openmp')
     depends_on('fieldextra-grib1@2.15 +openmp', when='+openmp')
     depends_on('fieldextra-grib1@2.15 ~openmp', when='~openmp')
     
     # optimization
     # optimized
-    depends_on('icontools@13.2.0 build_type=optimized', when='build_type=optimized')
+    depends_on('icontools@2.3.6 build_type=optimized', when='build_type=optimized')
     depends_on('fieldextra-grib1@2.15 build_type=optimized', when='build_type=optimized')
 
     # debug
-    depends_on('icontools@13.2.0 build_type=debug', when='build_type=debug')
+    depends_on('icontools@2.3.6 build_type=debug', when='build_type=debug')
     depends_on('fieldextra-grib1@2.15 build_type=debug', when='build_type=debug')
 
     # profiling
-    depends_on('icontools@13.2.0 build_type=debug', when='build_type=debug')
+    depends_on('icontools@2.3.6 build_type=debug', when='build_type=debug')
     depends_on('fieldextra-grib1@2.15 build_type=profiling', when='build_type=profiling')
 
     build_directory = 'src'
@@ -111,6 +111,8 @@ class Fieldextra(MakefilePackage):
             options = ['mode=' + mode]
             make('install', *options)
         install_tree('bin', prefix.bin)
+        install_tree('cookbook', prefix.cookbook)
+        install_tree('resources', prefix.resources)
 
 
     @run_after('install')

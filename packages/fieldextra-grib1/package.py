@@ -26,17 +26,17 @@ from spack import *
 class FieldextraGrib1(MakefilePackage):
 
     homepage = "http://www.cosmo-model.org/content/support/software/default.html"
-    url      = "https://github.com/COSMO-ORG/fieldextra/archive/v13.2.0.tar.gz"
-    git      = 'git@github.com:COSMO-ORG/fieldextra.git'
+    url      = "https://github.com/MeteoSwiss-APN/fieldextra-grib1.git"
+    git      = 'git@github.com:MeteoSwiss-APN/fieldextra-grib1.git'
     maintainers = ['elsagermann']
 
-    version('2.15', commit='fe0a8b14314d7527168fd5684d89828bbd83ebf2')
+    version('2.15', commit='26d9f416adf395779813e67e37f51f2b5cef7da2')
 
     variant('build_type', default='optimized', description='Build type', values=('debug', 'optimize    d', 'profiling'))
     variant('openmp', default=True)
 
-    build_directory = 'grib1/src'
-     
+    build_directory = 'src'
+
     @property
     def build_targets(self):
         spec = self.spec
@@ -56,7 +56,7 @@ class FieldextraGrib1(MakefilePackage):
 
         return ['mode=' + mode,
         ]
- 
+
     def edit(self, spec, prefix):
         with working_dir(self.build_directory):
             optionsfilter = FileFilter('Makefile')
@@ -77,7 +77,7 @@ class FieldextraGrib1(MakefilePackage):
             mode += ',prof'
         if self.spec.variants['openmp'].value:
             mode += ',omp'
-        
+
         with working_dir(self.build_directory):
             options = ['mode=' + mode]
-            make('install', *options)    
+            make('install', *options)

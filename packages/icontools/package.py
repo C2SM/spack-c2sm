@@ -27,20 +27,18 @@ class Icontools(MakefilePackage):
     """The ICON tools are a set of command-line tools for remapping, extracting and querying ICON data files. They are based on a common library, and written in Fortran 90/95. Interfaces to C are available. The code is multi- threaded with OpenMP and MPI-parallel. The DWD ICON tools have replaced the former prepicon utility program."""
 
     homepage = "http://www.cosmo-model.org/content/support/software/default.html"
-    url      = "https://github.com/COSMO-ORG/fieldextra/archive/v13.2.0.tar.gz"
-    git      = 'git@github.com:COSMO-ORG/fieldextra.git'
+    url = "https://github.com/MeteoSwiss-APN/fieldextra-icontools.git"
+    git      = 'git@github.com:MeteoSwiss-APN/fieldextra-icontools.git'
     maintainers = ['elsagermann']
 
-    version('13.2.0', commit='fe0a8b14314d7527168fd5684d89828bbd83ebf2')
-    
+    version('2.3.6', commit='33d2784c14ed7d2c82911f2fd5c76449a3a00cae')
+
     variant('build_type', default='optimized', description='Build type', values=('debug', 'optimized'))
     variant('openmp', default=True)
 
     depends_on('netcdf-c ~mpi')
     depends_on('netcdf-fortran ~mpi')
 
-    build_directory = 'icontools/icontools-2.3.6'
-    
     @property
     def build_targets(self):
         spec = self.spec
@@ -66,7 +64,7 @@ class Icontools(MakefilePackage):
             optionsfilter.filter('INCLUDEDIR *=.*', 'INCLUDEDIR = ' + self.prefix + '/include')
             optionsfilter.filter('lnetcdfdir *=.*', 'lnetcdfdir = ' + spec['netcdf-c'].prefix + '/lib')
             optionsfilter.filter('lnetcdffortrandir *=.*', 'lnetcdffortrandir = ' + spec['netcdf-fortran'].prefix + '/lib')
-    
+
     def install(self, spec, prefix):
         if self.compiler.name == 'gcc':
             mode = 'gnu'
@@ -78,7 +76,7 @@ class Icontools(MakefilePackage):
             mode += ',opt'
         if self.spec.variants['openmp'].value:
             mode += ',omp'
-        
+
         with working_dir(self.build_directory):
             options = ['mode=' + mode]
             make('install', *options)
