@@ -64,7 +64,7 @@ class Int2lm(MakefilePackage):
             spack_env.set('GRIBAPIL', '-L' + grib_prefix + '/lib -lgrib_api_f90 -lgrib_api -L' + self.spec['jasper'].prefix + '/lib64 -ljasper')
         else:
             grib_prefix = self.spec['eccodes'].prefix
-            grib_definition_prefix = self.spec['cosmo-grib-api-definitions'].prefix
+            grib_definition_prefix = self.spec['eccodes'].prefix
             spack_env.set('GRIBAPIL', '-L' + grib_prefix + '/lib -leccodes_f90 -leccodes -L' + self.spec['jasper'].prefix + '/lib64 -ljasper')
         spack_env.set('GRIBAPII', '-I' + grib_prefix + '/include')
         spack_env.set('GRIB_DEFINITION_PATH', grib_definition_prefix + '/cosmoDefinitions/definitions/:' + grib_prefix + '/share/grib_api/definitions/')
@@ -91,12 +91,6 @@ class Int2lm(MakefilePackage):
             spack_env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpi_mpifh')
             spack_env.set('MPII', '-I'+ self.spec['mpi'].prefix + '/include')
         else:
-            if self.compiler.name == 'gcc':
-                spack_env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich_gnu')
-            elif self.compiler.name == 'cce':
-                spack_env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich_cray')
-            else:
-                spack_env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich_' + self.compiler.name)
             spack_env.set('MPII', '-I'+ self.spec['mpi'].prefix + '/include')
 
         # Compiler & linker variables
