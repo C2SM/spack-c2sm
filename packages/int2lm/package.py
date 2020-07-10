@@ -93,6 +93,8 @@ class Int2lm(MakefilePackage):
             spack_env.set('MPII', '-I'+ self.spec['mpi'].prefix + '/include')
         else:
             spack_env.set('MPII', '-I'+ self.spec['mpi'].prefix + '/include')
+            if self.compiler.name != 'gcc':
+                spack_env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich_' + self.compiler.name)
 
         # Compiler & linker variables
         if self.compiler.name == 'pgi':
