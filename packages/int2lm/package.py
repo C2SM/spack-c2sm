@@ -35,6 +35,7 @@ class Int2lm(MakefilePackage):
     maintainers = ['egermann']
     
     version('master', branch='master')
+    version('dev-build', branch='master')
     version('v2.7.2', commit='7a460906e826142be1fb9338d2210ccf7566d5a2')
     version('v2.7.1', commit='ee0780f86ecc676a9650170f361b92ff93379071')
     version('v2.6.2', commit='07690dab05c931ba02c947ec32c988eea65898f8')
