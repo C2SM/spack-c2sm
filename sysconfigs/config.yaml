@@ -1,10 +1,12 @@
 config:
-  install_tree:
-  template_dirs:
-    - $spack/templates
-  module_roots:
-    tcl:
   build_stage:
+  - /scratch/cosuna/tsa/spack-mch/spack/spack-stages/tsa
   extensions:
+  - /scratch-shared/meteoswiss/scratch/cosuna/tsa/spack-mch/tools/spack-scripting
   install_path_scheme: '{name}/{version}/{compiler.name}/{hash}'
+  install_tree: /scratch/cosuna/tsa/spack-mch/spack/spack-install/tsa
+  module_roots:
+    tcl: /scratch/cosuna/tsa/spack-mch/spack/modules/tsa
   source_cache: ~/.spack/source_cache
+  template_dirs:
+  - $spack/templates
