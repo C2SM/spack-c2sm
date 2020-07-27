@@ -102,8 +102,12 @@ class Cosmo(MakefilePackage):
     conflicts('+production', when='~pollen')
     conflicts('+production', when='%gcc')
     conflicts('+production', when='~eccodes')
-
+    conflicts('~gt1', when='@5.07.mch1.0.p11')
+    conflicts('~gt1', when='@5.07a.mch1.0.p1')
+    conflicts('~gt1', when='@5.07a.mch1.0.base')
+    conflicts('~gt1', when='@5.07.mch1.0.p10')
     conflicts('+cppdycore', when='%pgi cosmo_target=cpu')
+
     build_directory = 'cosmo/ACC'
 
     def setup_environment(self, spack_env, run_env):
