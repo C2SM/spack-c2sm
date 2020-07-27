@@ -122,14 +122,14 @@ class CosmoDycore(CMakePackage):
           cuda_arch = spec.variants['cuda_arch'].value
           if cuda_arch is not None:
               args.append('-DCUDA_ARCH=sm_{0}'.format(cuda_arch))
-          if '+gt1' in spec:
+          if '~gt1' in spec:
               args.append('-DDYCORE_TARGET_ARCHITECTURE=gpu')
           else:
               args.append('-DDYCORE_TARGET_ARCHITECTURE=CUDA')
       # target=cpu
       else:
         args.append('-DENABLE_CUDA=OFF')
-        if '+gt1' in spec:
+        if '~gt1' in spec:
             args.append('-DDYCORE_TARGET_ARCHITECTURE=cpu_ifirst')
         else:
             args.append('-DDYCORE_TARGET_ARCHITECTURE=x86')
