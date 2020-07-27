@@ -58,11 +58,6 @@ class Int2lm(MakefilePackage):
     variant('slave', default='tsa', description='Build on slave tsa, daint or kesch', multi=False)
     variant('verbose', default=False, description='Build with verbose enabled')
 
-    @run_before('build')
-    @on_package_attributes(clean=True)
-    def clean(self):
-        make('clean')
-
     def setup_environment(self, spack_env, run_env):
         # Grib-api. eccodes library
         if '~eccodes' in self.spec:
