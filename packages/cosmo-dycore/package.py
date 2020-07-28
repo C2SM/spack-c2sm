@@ -44,7 +44,6 @@ class CosmoDycore(CMakePackage):
     version('master', branch='master')
     version('dev-build', branch='master')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
-    version('gt2', git='git@github.com:havogt/cosmo.git', branch='gt2')
 
     dycore_tags("git@github.com:MeteoSwiss-APN/cosmo.git")
 
@@ -58,9 +57,10 @@ class CosmoDycore(CMakePackage):
     variant('cuda_arch', default='none', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
     variant('cuda', default=True, description='Build with cuda or target gpu')
     variant('slurm_args', default='"-p debug -n {0} --gres=gpu:{0}"', description='Slurm arguments for testing')
+    variant('gt1', default=False, description='Build with gridtools 1.1.3')
 
-    depends_on('gridtools@1.1.3 +cuda', when='+cuda')
-    depends_on('gridtools@1.1.3 ~cuda cuda_arch=none', when='~cuda')
+    depends_on('gridtools@1.1.3 ~cuda cuda_arch=none', when='~cuda+gt1')
+    depends_on('gridtools@1.1.3 +cuda', when='+cuda+gt1')
     depends_on('boost@1.67.0')
     depends_on('serialbox@2.6.0', when='+build_tests')
     depends_on('mpi', type=('build', 'run'))
@@ -73,7 +73,7 @@ class CosmoDycore(CMakePackage):
     conflicts('+production', when='+pmeters')
 
     root_cmakelists_dir='dycore'
-    
+
     def setup_environment(self, spack_env, run_env):
         if self.spec['mpi'].name == 'mpich':
             spack_env.set('MPICH_G2G_PIPELINE', '64')
@@ -89,8 +89,8 @@ class CosmoDycore(CMakePackage):
       spec = self.spec
 
       args = []
-      
-      if not '@gt2' in spec:
+
+      if '+gt1' in spec:
           GridToolsDir = spec['gridtools'].prefix + '/lib/cmake'
           args.append('-DGridTools_DIR={0}'.format(GridToolsDir))
 
@@ -109,7 +109,7 @@ class CosmoDycore(CMakePackage):
           args.append('-DPRECISION=float')
       else:
           args.append('-DPRECISION=double')
-      
+
       if not spec.variants['build_tests'].value:
           args.append('-DBUILD_TESTING=OFF')
       else:
@@ -122,14 +122,14 @@ class CosmoDycore(CMakePackage):
           cuda_arch = spec.variants['cuda_arch'].value
           if cuda_arch is not None:
               args.append('-DCUDA_ARCH=sm_{0}'.format(cuda_arch))
-          if '@gt2' in spec:
+          if '~gt1' in spec:
               args.append('-DDYCORE_TARGET_ARCHITECTURE=gpu')
           else:
               args.append('-DDYCORE_TARGET_ARCHITECTURE=CUDA')
       # target=cpu
       else:
         args.append('-DENABLE_CUDA=OFF')
-        if '@gt2' in spec:
+        if '~gt1' in spec:
             args.append('-DDYCORE_TARGET_ARCHITECTURE=cpu_ifirst')
         else:
             args.append('-DDYCORE_TARGET_ARCHITECTURE=x86')
