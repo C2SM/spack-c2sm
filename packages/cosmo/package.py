@@ -129,7 +129,8 @@ class Cosmo(MakefilePackage):
         if self.spec.variants['cosmo_target'].value == 'gpu' or '+serialize' in self.spec:
             spack_env.set('BOOST_ROOT',  self.spec['boost'].prefix)
         if '+cppdycore' in self.spec:
-            spack_env.set('GRIDTOOLS_DIR', self.spec['gridtools'].prefix)
+            if '+gt1' in self.spec:
+                spack_env.set('GRIDTOOLS_DIR', self.spec['gridtools'].prefix)
             spack_env.set('DYCOREGT', self.spec['cosmo-dycore'].prefix)
             spack_env.set('DYCOREGT_DIR', self.spec['cosmo-dycore'].prefix)
         if '+serialize' in self.spec:
