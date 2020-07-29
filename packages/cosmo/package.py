@@ -57,8 +57,8 @@ class Cosmo(MakefilePackage):
 
     dycore_deps(apngit)
 
-    depends_on('netcdf-fortran')
-    depends_on('netcdf-c')
+    depends_on('netcdf-fortran +mpi')
+    depends_on('netcdf-c +mpi')
     depends_on('slurm', type='run')
     depends_on('cuda', when='cosmo_target=gpu', type=('build', 'run'))
     depends_on('serialbox@2.6.0', when='+serialize')
@@ -213,25 +213,24 @@ class Cosmo(MakefilePackage):
         mkdir(prefix.cosmo)
         if '+serialize' in self.spec:
             mkdirp('data/' + self.spec.variants['real_type'].value, prefix.data + '/' + self.spec.variants['real_type'].value)
-        install_tree('cosmo', prefix.cosmo)
         with working_dir(self.build_directory):
             mkdir(prefix.bin)
             if '+serialize' in spec:
                 install('cosmo_serialize', prefix.bin)
             else:
                 install('cosmo_' + self.spec.variants['cosmo_target'].value, prefix.bin)
-                install('cosmo_' + self.spec.variants['cosmo_target'].value, prefix.cosmo + '/test/testsuite')
+                install('cosmo_' + self.spec.variants['cosmo_target'].value, 'test/testsuite')
 
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def test(self):
         if '~serialize' in self.spec:
             try:
-                subprocess.run(['./test/tools/test_cosmo.py', str(self.spec), prefix], cwd = self.build_directory, stderr=subprocess.STDOUT, check=True)
+                subprocess.run([self.build_directory + '/test/tools/test_cosmo.py', str(self.spec), '.'], stderr=subprocess.STDOUT, check=True)
             except:
                 raise InstallError('Testsuite failed')
         if '+serialize' in self.spec:
             try:
-                subprocess.run(['./test/tools/serialize_cosmo.py', str(self.spec), prefix], cwd = self.build_directory, stderr=subprocess.STDOUT, check=True)
+                subprocess.run([self.build_directory + '/test/tools/serialize_cosmo.py', str(self.spec), '.'], stderr=subprocess.STDOUT, check=True)
             except:
                 raise InstallError('Serialization failed')
