@@ -5,7 +5,6 @@ config:
   module_roots:
     tcl:
   build_stage:
-  - $SCRATCH
   extensions:
   install_path_scheme: '{name}/{version}/{compiler.name}/{hash}'
   source_cache: ~/.spack/source_cache

@@ -52,10 +52,14 @@ def main():
     config_data = yaml.safe_load(open('sysconfigs/config.yaml', 'r'))
 
     if not args.pckgidir:
-        args.pckgidir = '$SCRATCH'
+        if 'admin' in args.machine:
+            args.pckgidir = '/project/g110'
+        else:
+            args.pckgidir = '$SCRATCH'
 
     config_data['config']['install_tree'] = args.pckgidir + '/spack-install/' + args.machine.replace('admin-', '')
-    config_data['config']['module_roots']['tcl'] = args.pckgidir + '/modules/' + args.machine
+    config_data['config']['build_stage'] = ['$SCRATCH/spack-stages/' + args.machine]
+    config_data['config']['module_roots']['tcl'] = '$SCRATCH/modules/' + args.machine
     config_data['config']['extensions'] = [dir_path + '/tools/spack-scripting']
     yaml.safe_dump(config_data, open('./sysconfigs/config.yaml', 'w'), default_flow_style=False)
 
