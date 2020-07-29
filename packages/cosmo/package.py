@@ -3,7 +3,6 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-
 import subprocess, re, itertools
 from spack import *
 
@@ -19,14 +18,14 @@ def dycore_deps(repo):
     tags.append('master')
     tags.append('dev-build')
     tags.append('mch')
-    tags.append('gt2')
 
     for tag in tags:    
         types = ['float','double']
         prod = [True,False]
         cuda = [True, False]
         testing = [True, False]
-        comb=list(itertools.product(*[types, prod, cuda, testing]))
+        gt1 = [True, False]
+        comb=list(itertools.product(*[types, prod, cuda, testing, gt1]))
         for it in comb:
             real_type=it[0]
             prod_opt = '+production' if it[1] else '~production'
@@ -34,9 +33,10 @@ def dycore_deps(repo):
             cuda_dep = 'cosmo_target=gpu' if it[2] else ' cosmo_target=cpu'
             test_opt = '+build_tests' if it[3] else '~build_tests'
             test_dep = '+dycoretest' if it[3] else '~dycoretest'
+            gt1_dep = '+gt1' if it[4] else '~gt1'
 
-            orig='cosmo-dycore@'+tag+'%gcc real_type='+real_type+' '+ prod_opt + ' ' + cuda_opt+' ' +test_opt
-            dep='@'+tag+' real_type='+real_type+' '+ prod_opt + ' '+ cuda_dep + ' +cppdycore'+' '+test_dep
+            orig='cosmo-dycore@'+tag+'%gcc real_type='+real_type+' '+ prod_opt + ' ' + cuda_opt+' ' +test_opt + ' ' + gt1_dep
+            dep='@'+tag+' real_type='+real_type+' '+ prod_opt + ' '+ cuda_dep + ' +cppdycore'+' '+test_dep + ' ' + gt1_dep
             depends_on(orig, when=dep)
 
 class Cosmo(MakefilePackage):
@@ -51,7 +51,6 @@ class Cosmo(MakefilePackage):
     version('master', branch='master', get_full_repo=True)
     version('dev-build', branch='master', get_full_repo=True)
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch', get_full_repo=True)
-    version('gt2', git='git@github.com:havogt/cosmo.git', branch='gt2')
 
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
@@ -62,6 +61,7 @@ class Cosmo(MakefilePackage):
     depends_on('netcdf-c +mpi')
     depends_on('slurm%gcc', type='run')
     depends_on('cuda%gcc', when='cosmo_target=gpu', type=('build', 'run'))
+
     depends_on('serialbox@2.6.0', when='+serialize')
     depends_on('mpi', type=('build', 'run'))
     depends_on('libgrib1')
@@ -72,6 +72,7 @@ class Cosmo(MakefilePackage):
     depends_on('omni-xmod-pool', when='+claw')
     depends_on('claw', when='+claw')
     depends_on('boost%gcc', when='cosmo_target=gpu ~cppdycore')
+    depends_on('cmake%gcc')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('dycoretest', default=True, description='Build C++ dycore with testing')
@@ -85,6 +86,7 @@ class Cosmo(MakefilePackage):
     variant('eccodes', default=True, description='Build with eccodes instead of grib-api')
     variant('pollen', default=False, description='Build with pollen enabled')
     variant('verbose', default=False, description='Build cosmo with verbose enabled')
+    variant('gt1', default=False, description='Build dycore with gridtools 1.1.3')
 
     conflicts('+claw', when='cosmo_target=cpu')
     conflicts('+pollen', when='@5.05:5.06,master')
@@ -101,8 +103,12 @@ class Cosmo(MakefilePackage):
     conflicts('+production', when='~pollen')
     conflicts('+production', when='%gcc')
     conflicts('+production', when='~eccodes')
-
+    conflicts('~gt1', when='@5.07.mch1.0.p11')
+    conflicts('~gt1', when='@5.07a.mch1.0.p1')
+    conflicts('~gt1', when='@5.07a.mch1.0.base')
+    conflicts('~gt1', when='@5.07.mch1.0.p10')
     conflicts('+cppdycore', when='%pgi cosmo_target=cpu')
+
     build_directory = 'cosmo/ACC'
 
     def setup_environment(self, spack_env, run_env):
@@ -124,7 +130,8 @@ class Cosmo(MakefilePackage):
         if self.spec.variants['cosmo_target'].value == 'gpu' or '+serialize' in self.spec:
             spack_env.set('BOOST_ROOT',  self.spec['boost'].prefix)
         if '+cppdycore' in self.spec:
-            spack_env.set('GRIDTOOLS_DIR', self.spec['gridtools'].prefix)
+            if '+gt1' in self.spec:
+                spack_env.set('GRIDTOOLS_DIR', self.spec['gridtools'].prefix)
             spack_env.set('DYCOREGT', self.spec['cosmo-dycore'].prefix)
             spack_env.set('DYCOREGT_DIR', self.spec['cosmo-dycore'].prefix)
         if '+serialize' in self.spec:
@@ -207,19 +214,24 @@ class Cosmo(MakefilePackage):
         mkdir(prefix.cosmo)
         if '+serialize' in self.spec:
             mkdirp('data/' + self.spec.variants['real_type'].value, prefix.data + '/' + self.spec.variants['real_type'].value)
-        install_tree('cosmo', prefix.cosmo)
         with working_dir(self.build_directory):
             mkdir(prefix.bin)
             if '+serialize' in spec:
                 install('cosmo_serialize', prefix.bin)
             else:
                 install('cosmo_' + self.spec.variants['cosmo_target'].value, prefix.bin)
-                install('cosmo_' + self.spec.variants['cosmo_target'].value, prefix.cosmo + '/test/testsuite')
+                install('cosmo_' + self.spec.variants['cosmo_target'].value, 'test/testsuite')
 
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def test(self):
         if '~serialize' in self.spec:
-            subprocess.run(['./test/tools/test_cosmo.py', str(self.spec), prefix], cwd = self.build_directory)
+            try:
+                subprocess.run([self.build_directory + '/test/tools/test_cosmo.py', str(self.spec), '.'], stderr=subprocess.STDOUT, check=True)
+            except:
+                raise InstallError('Testsuite failed')
         if '+serialize' in self.spec:
-            subprocess.run(['./test/tools/serialize_cosmo.py', str(self.spec), prefix], cwd = self.build_directory)
+            try:
+                subprocess.run([self.build_directory + '/test/tools/serialize_cosmo.py', str(self.spec), '.'], stderr=subprocess.STDOUT, check=True)
+            except:
+                raise InstallError('Serialization failed')
