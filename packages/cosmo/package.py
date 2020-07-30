@@ -207,7 +207,9 @@ class Cosmo(MakefilePackage):
               optionsfilter.filter('GRIBAPIL *=.*', 'GRIBAPIL = -L$(GRIBAPI_DIR)/lib -leccodes_f90 -leccodes -L$(JASPER_DIR)/lib -ljasper')
             makefile.filter('/Options.*', '/' + OptionsFileName)
             if '~serialize' in spec:
-              makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo_'+ spec.variants['cosmo_target'].value))
+                makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo_'+ spec.variants['cosmo_target'].value))
+            else:
+                makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo'))
 
     def install(self, spec, prefix):
         mkdir(prefix.cosmo)
