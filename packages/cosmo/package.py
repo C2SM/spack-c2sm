@@ -83,7 +83,6 @@ class Cosmo(MakefilePackage):
     variant('slave', default='tsa', description='Build on slave tsa, daint or kesch', multi=False)
     variant('eccodes', default=True, description='Build with eccodes instead of grib-api')
     variant('pollen', default=False, description='Build with pollen enabled')
-    variant('cuda_arch', default='70', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
     variant('cosmo_target', default='gpu', description='Build with target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('verbose', default=False, description='Build cosmo with verbose enabled')
     variant('gt1', default=False, description='Build dycore with gridtools 1.1.3')
