@@ -151,6 +151,8 @@ class Cosmo(MakefilePackage):
                 spack_env.set('GRIDTOOLSL', '-L' + self.spec['gridtools'].prefix + '/lib -lgcl')
                 spack_env.set('GRIDTOOLSI', '-I' + self.spec['gridtools'].prefix + '/include/gridtools')
                 spack_env.set('GRIDTOOLS_DIR', self.spec['gridtools'].prefix)
+            spack_env.set('DYCOREGTL', '-L' + self.spec['cosmo-dycore'].prefix + '/lib ' + ' -ldycore_bindings_' + self.spec.variants['real_type'].value + ' -ldycore_base_bindings_' +  self.spec.variants['real_type'].value + ' -ldycore -ldycore_base -ldycore_backend -lstdc++ -lcpp_bindgen_generator -lcpp_bindgen_handle -lgt_gcl_bindings')
+            spack_env.set('DYCOREGTI', '-I' + self.spec['cosmo-dycore'].prefix)
             spack_env.set('DYCOREGT', self.spec['cosmo-dycore'].prefix)
             spack_env.set('DYCOREGT_DIR', self.spec['cosmo-dycore'].prefix)
 
@@ -220,12 +222,10 @@ class Cosmo(MakefilePackage):
     def edit(self, spec, prefix):
         with working_dir(self.build_directory):
             makefile = FileFilter('Makefile')
-            makefile.filter('/Options.*', '/' + OptionsFileName)
             if '~serialize' in spec:
                 makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo_'+ spec.variants['cosmo_target'].value))
             else:
                 makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo'))
-
             OptionsFileName= 'Options'
             if self.compiler.name == 'gcc':
                 OptionsFileName += '.gnu'
@@ -234,6 +234,8 @@ class Cosmo(MakefilePackage):
             elif self.compiler.name == 'cce':
                 OptionsFileName += '.cray'
             OptionsFileName += '.' + spec.variants['cosmo_target'].value
+
+            makefile.filter('/Options.*', '/' + OptionsFileName)
             OptionsFile = FileFilter(OptionsFileName)
 
             if 'cosmo_target=gpu' in self.spec:
