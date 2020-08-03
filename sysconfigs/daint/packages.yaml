@@ -28,7 +28,7 @@ packages:
         paths:
              bzip2@1.0.6: /usr
     cosmo:
-      variants: cosmo_target=gpu cuda_arch=60 slave=daint
+      variants: cosmo_target=gpu slave=daint
       version: [master]
       compiler: [pgi@19.7.0]
     gridtools:
