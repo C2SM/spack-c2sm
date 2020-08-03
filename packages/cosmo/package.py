@@ -152,7 +152,6 @@ class Cosmo(MakefilePackage):
                 spack_env.set('GRIDTOOLS_DIR', self.spec['gridtools'].prefix)
             spack_env.set('DYCOREGT', self.spec['cosmo-dycore'].prefix)
             spack_env.set('DYCOREGT_DIR', self.spec['cosmo-dycore'].prefix)
-            spack_env.set('GRIDTOOLSL', '-L' + self.spec['gridtools'].prefix + '/lib -lgcl')
 
         # Serialbox library
         if '+serialize' in self.spec:
