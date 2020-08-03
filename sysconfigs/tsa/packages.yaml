@@ -77,7 +77,7 @@ packages:
     variants: +cuda cuda_arch=70
     compiler: [gcc]
   cosmo:
-    variants: cosmo_target=gpu slave=tsa
+    variants: cosmo_target=gpu cuda_arch=70 slave=tsa
     version: [master]
     compiler: [pgi@19.9, gcc@8.3.0]
 
