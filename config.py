@@ -3,9 +3,10 @@
 import argparse
 import os
 import yaml
+import shutil
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-spack_version='v0.14.2'
+spack_version='v0.15.0'
 
 def main():
     parser=argparse.ArgumentParser(description='Small config script which can be used to install a spack instance with the correct configuration files and mch spack packages.')
@@ -32,15 +33,20 @@ def main():
                 args.version = spack_version
             clone_cmd = 'git clone git@github.com:spack/spack.git -b' + args.version + ' ' + args.idir + '/spack'   
             os.system(clone_cmd)
+            print('Installing custom dev-build command')
+            shutil.copy('./tools/spack-scripting/scripting/cmd/dev_build.py', args.idir + '/spack/lib/spack/spack/cmd/')
     print('Installing mch packages & ' + args.machine + ' config files')
 
-    if args.reposdir:
-        if os.path.isdir(args.reposdir) and not os.path.isfile(args.reposdir + '/repos.yaml'):
-            repos_data = yaml.safe_load(open('./sysconfigs/repos.yaml', 'r'))
-            repos_data['repos'] = [dir_path]
-            yaml.safe_dump(repos_data, open('./sysconfigs/repos.yaml', 'w'), default_flow_style=False)
-            print('Installing repos.yaml on ' + args.reposdir)
-            os.popen('cp ' + dir_path + '/sysconfigs/repos.yaml ' + args.reposdir)
+    if not args.reposdir:
+        args.reposdir = args.idir + '/spack/etc/spack'
+    
+    # installing repos.yaml
+    if os.path.isdir(args.reposdir) and not os.path.isfile(args.reposdir + '/repos.yaml'):
+        repos_data = yaml.safe_load(open('./sysconfigs/repos.yaml', 'r'))
+        repos_data['repos'] = [dir_path]
+        yaml.safe_dump(repos_data, open('./sysconfigs/repos.yaml', 'w'), default_flow_style=False)
+        print('Installing repos.yaml on ' + args.reposdir)
+        os.popen('cp ' + dir_path + '/sysconfigs/repos.yaml ' + args.reposdir)
 
     # configure config.yaml
     config_data = yaml.safe_load(open('sysconfigs/config.yaml', 'r'))
@@ -48,21 +54,20 @@ def main():
     if not args.pckgidir:
         if 'admin' in args.machine:
             args.pckgidir = '/project/g110'
-        elif args.machine == 'daint':
-            args.pckgidir = '/scratch/snx3000/$user/spack'
         else:
-            args.pckgidir = '/scratch/$user/spack'
+            args.pckgidir = '$SCRATCH'
 
     config_data['config']['install_tree'] = args.pckgidir + '/spack-install/' + args.machine.replace('admin-', '')
-    config_data['config']['build_stage'] = [args.pckgidir + '/spack-stages/' + args.machine.replace('admin-', '')]
-    config_data['config']['module_roots']['tcl'] = args.pckgidir + '/modules/' + args.machine
+    config_data['config']['build_stage'] = ['$SCRATCH/spack-stages/' + args.machine]
+    config_data['config']['module_roots']['tcl'] = '$SCRATCH/modules/' + args.machine
+    config_data['config']['extensions'] = [dir_path + '/tools/spack-scripting']
     yaml.safe_dump(config_data, open('./sysconfigs/config.yaml', 'w'), default_flow_style=False)
 
     # copy modified config.yaml file in site scope of spack instance
     os.popen('cp -rf sysconfigs/config.yaml ' + args.idir + '/spack/etc/spack')
 
     # copy modified upstreams.yaml if not admin
-    if not 'admin' in args.machine and args.upstreams=='ON':
+    if args.upstreams=='ON':
         upstreams_data = yaml.safe_load(open('./sysconfigs/upstreams.yaml', 'r'))
         upstreams_data['upstreams']['spack-instance-1']['install_tree'] = '/project/g110/spack-install/' + args.machine.replace('admin-', '')
         yaml.safe_dump(upstreams_data, open('./sysconfigs/upstreams.yaml', 'w'), default_flow_style=False)

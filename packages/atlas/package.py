@@ -19,7 +19,8 @@ class Atlas(CMakePackage):
     version('develop', branch='develop')
 
     depends_on('ecbuild')
-    depends_on('eckit')
+    depends_on('eckit@develop', when='@develop')
+    depends_on('eckit@master', when='@master')
 
     patch('patches/find.gtstorage.patch', when='@develop')
     patch('patches/find.gtstorage.patch', when='@master')

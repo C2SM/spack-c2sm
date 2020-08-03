@@ -2,13 +2,28 @@
 
 Official Spack documentation [Here](https://spack.readthedocs.io/en/latest/).
 
-## Installation
+## Quickly build your local cosmo with spack (on Tsa):
+
+```bash
+module load python/3.7.4
+source /project/g110/spack/user/tsa/spack/share/spack/setup-env.sh # Source spack instance
+spack info cosmo # Check available options 
+spack spec cosmo # Check if your spec is precised enough, else precise more options
+spack devbuildcosmo -u build cosmo@dev-build # -t option for test, -w for no dycore, usually cosmo@dev-build%pgi is enough
+
+```
+
+
+## Spack Installation
+
+**!!! Please note that the package cosmo and cosmo-dycore now requires a Python version >= 3.6 !!!**
 
 ### CSCS users
 
-For the cscs users a spack instance including the mch packages and the mch machine configuration files will be maintained for both tsa and daint under _/project/g110/spack/user/'machine'/spack_. Therefore, if you are not interested in the developement of our spack packages and config files you can directly source those instances and skip the general installation section:
+For the cscs users a spack instance including the mch packages and the mch machine configuration files will be maintained for both tsa and daint under _/project/g110/spack/user/\<machine>/spack_. Therefore, if you are not interested in the developement of our spack packages and config files you can directly source those instances and skip the general installation section:
 
 ```bash
+# module load python >= 3.6
 source /project/g110/spack/user/<machine>/spack/share/spack/setup-env.sh # cscs users
 ```
 
@@ -18,11 +33,21 @@ If you want to automatically source the correct spack instance depending on the 
 
 ```bash
 case $(hostname -s) in
-  tsa*|arolla*) export SPACK_ROOT=/project/g110/spack/user/tsa/spack ;;
-  daint*) export SPACK_ROOT=/project/g110/spack/user/daint/spack ;;
+      tsa*|arolla*) module load python/3.7.4; export SPACK_ROOT=/project/g110/spack/user/tsa/spack ;;
+      daint*) module load cray-python; export SPACK_ROOT=/project/g110/spack/user/daint/spack ;;
 esac
 source $SPACK_ROOT/share/spack/setup-env.sh
 ```
+
+#### Error: Initialization hangs
+
+If `source $SPACK_ROOT/share/spack/setup-env.sh` hangs, clean your cache:
+
+```
+rm -rf ~/.spack/cray ~/.spack/cache
+```
+
+Then try again.
 
 ### General
 
@@ -30,15 +55,21 @@ source $SPACK_ROOT/share/spack/setup-env.sh
 
 First step is to clone this repository and use the available config.sh script to install your own spack instance with the corresponding mch packages and configuration files.
 
-Tell the script the machine you are working on using -m <machine> and where you want the instance to be installed using -i <spack-installation-directory>. You can also precise the spack version you want, or take the default value (last stable release).
+Tell the script the machine you are working on using -m \<machine> and where you want the instance to be installed using -i <spack-installation-directory>. You can also precise the spack version you want, or take the default value (last stable release).
 
 ```bash
 git clone git@github.com:MeteoSwiss-APN/spack-mch.git
 cd spack-mch
 ./config.py -m <machine> -i <spack-installation-directory> -v <version> -r <repos.yaml-installation-directory> -p <spack packages, modules & stages installation-directory> -u <ON or OFF, install upstreams.yaml>
 ```
+Note the config will append _spack/_ directory to \<spack-installation-directory>.  
+The -r option usually needs to point to the **site scope** of your spack-instance installation, that is, _\<spack-installation-directory>/spack/etc/spack_. It can however also be used if you are a CSCS user and do not want to have your own spack instance *but still want to develop the mch-packages*. In that case, you can clone the spack-mch repo, let the -i, -m options void, BUT overwrite the *site scoped* repos.yaml files of the maintained spack instances by installing a new repos.yaml in your **user scope** _~/.spack_.
 
-The -r option usually needs to point to the **site scope** of your newly installed spack-instance, that is, _$SPACK_DIR/etc/spack_. It can however also be used if you are a CSCS user and do not want to have your own spack instance *but still want to develop the mch-packages*. In that case, you can clone the spack-mch repo, let the -i, -m options void, BUT overwrite the *site scoped* repos.yaml files of the maintained spack instances by installing a new repos.yaml in your **user scope** _~/.spack_.
+Example
+```bash
+SPACK_DIR=$SCRATCH
+./config.py -m tsa -i $SPACK_DIR -r $SPACK_DIR/spack/etc/spack -u ON
+```
 
 **Careful: the repos.yaml file is always modified in a way that it points to the spack-mch package repositories from which you call the config.sh script.**
 

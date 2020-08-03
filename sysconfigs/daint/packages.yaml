@@ -35,7 +35,7 @@ packages:
       variants: +cuda cuda_arch=60
       compiler: [gcc]
     cosmo-dycore:
-      variants: slave=daint +cuda cuda_arch=60 data_path=/scratch/snx3000/wbenjami/cosmo-serialized-data/
+      variants: slave=daint +cuda cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/ slurm_args= "'-C gpu -p normal -A g110 -N {0}'"
       compiler: [gcc]
     cmake:
         paths:
@@ -61,8 +61,8 @@ packages:
             cray-libsci_acc@19.10.1%pgi:   cray-libsci_acc/19.10.1
     cuda:
         modules:
-          cuda@10.0: cudatoolkit/10.0.130_3.22-7.0.1.0_5.2__gdfb4ce5
-          cuda@10.1: cudatoolkit/10.1.105_3.27-7.0.1.1_4.1__ga311ce7
+          cuda@10.0%gcc: cudatoolkit/10.0.130_3.22-7.0.1.0_5.2__gdfb4ce5
+          cuda@10.1%gcc: cudatoolkit/10.1.105_3.27-7.0.1.1_4.1__ga311ce7
         version: ['10.1']
     curl:
         paths:
@@ -121,6 +121,10 @@ packages:
             intel-mkl@2019.1.144%intel~ilp64 threads=none: /opt/intel
             intel-mkl@2019.1.144%gcc~ilp64 threads=none:   /opt/intel
             intel-mkl@2019.1.144%cce~ilp64 threads=none:   /opt/intel
+    int2lm:
+        variants: slave=daint
+    libgrib1:
+        variants: slave=daint
     libjpeg:
         paths:
             libjpeg%gcc: /usr
@@ -218,7 +222,7 @@ packages:
             readline@7.0: /usr
     slurm:
       modules:
-        slurm@19.05.3-2: slurm/19.05.3-2
+        slurm@19.05.3-2%gcc: slurm/19.05.3-2
     tar:
         paths:
              tar@1.30.0: /bin
