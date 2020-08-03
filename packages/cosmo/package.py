@@ -225,7 +225,7 @@ class Cosmo(MakefilePackage):
             else:
                 makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo'))
 
-            OptionsFileName= 'Options.' + self.spec.variants['slave'].value
+            OptionsFileName= 'Options'
             if self.compiler.name == 'gcc':
                 OptionsFileName += '.gnu'
             elif self.compiler.name == 'pgi':
