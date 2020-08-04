@@ -37,7 +37,7 @@ class Int2lm(MakefilePackage):
 
     version('master', branch='master')
     version('dev-build', branch='master')
-    version('v2.7.1_p1', commit='ace7914d24fff5ed05a4f2494e6e1e9c51bd3c46')
+    version('v2.7.1_p2', commit='05e2a405a66f62706df17f01bbc463d0c365e168')
     version('v2.8.1', commit='844d239cfa83bc9980696cae56f47da3d08ce4ec')
     version('v2.7.2', commit='7a460906e826142be1fb9338d2210ccf7566d5a2')
     version('v2.7.1', commit='ee0780f86ecc676a9650170f361b92ff93379071')
