@@ -61,7 +61,6 @@ class Cosmo(MakefilePackage):
     depends_on('netcdf-c +mpi')
     depends_on('slurm%gcc', type='run')
     depends_on('cuda%gcc', when='cosmo_target=gpu', type=('build', 'run'))
-
     depends_on('serialbox@2.6.0', when='+serialize')
     depends_on('mpi', type=('build', 'run'))
     depends_on('libgrib1')
