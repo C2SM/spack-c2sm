@@ -38,10 +38,10 @@ class Libgrib1(MakefilePackage):
     
     variant('slave', default='tsa', description='Build on slave tsa, daint or kesch', multi=False)
 
-    depends_on('mpi')
-
     def setup_environment(self, spack_env, run_env):
         spack_env.set('LIBNAME', 'grib1')
+        if self.compiler.name == 'pgi':
+            spack_env.set('pgf90', self.compiler.fc)
 
     def build(self, spec, prefix):
         with working_dir(self.build_directory):

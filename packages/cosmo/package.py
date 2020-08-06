@@ -61,8 +61,10 @@ class Cosmo(MakefilePackage):
     depends_on('netcdf-c +mpi')
     depends_on('slurm%gcc', type='run')
     depends_on('cuda%gcc', when='cosmo_target=gpu', type=('build', 'run'))
-    depends_on('serialbox@2.6.0', when='+serialize')
-    depends_on('mpi', type=('build', 'run'))
+    depends_on('serialbox@2.6.0%gcc', when='+serialize')
+    depends_on('mpi', type=('build', 'run'), when='slave=daint')
+    depends_on('openmpi +cuda', type=('build', 'run'), when='cosmo_target=gpu slave=tsa')
+    depends_on('openmpi ~cuda', type=('build', 'run'), when='cosmo_target=cpu slave=tsa')
     depends_on('libgrib1')
     depends_on('jasper@1.900.1%gcc ~shared')
     depends_on('cosmo-grib-api-definitions', when='~eccodes')
@@ -70,6 +72,7 @@ class Cosmo(MakefilePackage):
     depends_on('perl@5.16.3:')
     depends_on('omni-xmod-pool', when='+claw')
     depends_on('claw', when='+claw')
+    depends_on('cuda%gcc', when='cosmo_target=gpu')
     depends_on('boost%gcc', when='cosmo_target=gpu ~cppdycore')
     depends_on('cmake%gcc')
 
@@ -138,7 +141,6 @@ class Cosmo(MakefilePackage):
             spack_env.set('GRIBDWDL', '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_gnu')
         else:
             spack_env.set('GRIBDWDL', '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_' + self.compiler.name)
-        spack_env.set('GRIBDWDI', '-I' + self.spec['libgrib1'].prefix + '/include')
         
         # MPI library
         if self.spec['mpi'].name == 'openmpi':
@@ -178,10 +180,6 @@ class Cosmo(MakefilePackage):
 
         # Test-enabling variables
         spack_env.set('UCX_MEMTYPE_CACHE', 'n')
-        if self.spec.variants['cosmo_target'].value == 'gpu':
-          spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
-        else:
-            spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cma')
 
         # Compiler & linker variables
         if self.compiler.name == 'pgi':

@@ -59,11 +59,13 @@ class CosmoDycore(CMakePackage):
     variant('slurm_args', default='"-p debug -n {0} --gres=gpu:{0}"', description='Slurm arguments for testing')
     variant('gt1', default=False, description='Build with gridtools 1.1.3')
 
-    depends_on('gridtools@1.1.3 ~cuda cuda_arch=none', when='~cuda+gt1')
-    depends_on('gridtools@1.1.3 +cuda', when='+cuda+gt1')
-    depends_on('boost@1.67.0')
-    depends_on('serialbox@2.6.0', when='+build_tests')
-    depends_on('mpi', type=('build', 'run'))
+    depends_on('gridtools@1.1.3%gcc ~cuda cuda_arch=none', when='~cuda+gt1')
+    depends_on('gridtools@1.1.3%gcc +cuda', when='+cuda+gt1')
+    depends_on('boost@1.67.0%gcc')
+    depends_on('serialbox@2.6.0%gcc', when='+build_tests')
+    depends_on('mpi', type=('build', 'run'), when='slave=daint')
+    depends_on('openmpi +cuda', type=('build', 'run'), when='+cuda slave=tsa')
+    depends_on('openmpi ~cuda', type=('build', 'run'), when='~cuda slave=tsa')
     depends_on('slurm%gcc', type='run')
     depends_on('cmake@3.12:%gcc', type='build')
     depends_on('cuda%gcc', when='+cuda', type=('build', 'run'))
@@ -80,10 +82,6 @@ class CosmoDycore(CMakePackage):
             if '+cuda' in self.spec:
                 spack_env.set('MPICH_RDMA_ENABLED_CUDA', '1')
         spack_env.set('UCX_MEMTYPE_CACHE', 'n')
-        if '+cuda' in self.spec:
-            spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
-        else:
-            spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cma')
 
     def cmake_args(self):
       spec = self.spec
