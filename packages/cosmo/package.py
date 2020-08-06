@@ -65,6 +65,7 @@ class Cosmo(MakefilePackage):
     depends_on('mpi', type=('build', 'run'), when='slave=daint')
     depends_on('openmpi +cuda', type=('build', 'run'), when='cosmo_target=gpu slave=tsa')
     depends_on('openmpi ~cuda', type=('build', 'run'), when='cosmo_target=cpu slave=tsa')
+
     depends_on('libgrib1')
     depends_on('jasper@1.900.1%gcc ~shared')
     depends_on('cosmo-grib-api-definitions', when='~eccodes')
