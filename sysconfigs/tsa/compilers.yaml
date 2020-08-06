@@ -22,7 +22,7 @@ compilers::
     operating_system: rhel7
     paths:
       cc: gcc
-      cxx: gc++
+      cxx: g++
       f77: gfortran
       fc: gfortran
     spec: gcc@8.3.0
