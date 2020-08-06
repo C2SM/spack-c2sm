@@ -6,7 +6,7 @@ import yaml
 import shutil
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-spack_version='releases/latest'
+spack_version='v0.15.3'
 
 def main():
     parser=argparse.ArgumentParser(description='Small config script which can be used to install a spack instance with the correct configuration files and mch spack packages.')
