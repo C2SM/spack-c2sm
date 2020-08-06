@@ -18,20 +18,6 @@ compilers::
     extra_rpaths: []
     flags: {}
     modules: 
-    - PrgEnv-pgi/19.9-nocuda
-    operating_system: rhel7
-    paths:
-      cc: pgcc
-      cxx: pgc++
-      f77: pgfortran
-      fc: pgfortran
-    spec: pgi@19.9-nocuda
-    target: any
-- compiler:
-    environment: {}
-    extra_rpaths: []
-    flags: {}
-    modules: 
     - PrgEnv-gnu/19.2
     operating_system: rhel7
     paths:
@@ -40,18 +26,4 @@ compilers::
       f77: gfortran
       fc: gfortran
     spec: gcc@8.3.0
-    target: any
-- compiler:
-    environment: {}
-    extra_rpaths: []
-    flags: {}
-    modules: 
-    - PrgEnv-gnu/19.2-nocuda
-    operating_system: rhel7
-    paths:
-      cc: gcc
-      cxx: g++
-      f77: gfortran
-      fc: gfortran
-    spec: gcc@8.3.0-nocuda
     target: any
