@@ -13,7 +13,7 @@ def main():
     parser.add_argument('-i', '--idir', type=str, default=dir_path, help='Where the Spack instance is installed or you want it to be installed')
     parser.add_argument('-m', '--machine', type=str, help='Required: machine name')
     parser.add_argument('-u', '--upstreams', type=str, default='ON', help='ON or OFF, install upstreams.yaml file')
-    parser.add_argument('-v', '--version', type=str, default='v0.14.2', help='Spack version, Default: ' + spack_version)
+    parser.add_argument('-v', '--version', type=str, default=spack_version, help='Spack version, Default: ' + spack_version)
     parser.add_argument('-r', '--reposdir', type=str, help='repos.yaml install directory')
     parser.add_argument('-p', '--pckgidir', type=str, help='Define spack package, modules & stages installation directory. Default: tsa; /scratch/$USER/spack, daint; /scratch/snx3000/$USER/spack')
     args=parser.parse_args()
