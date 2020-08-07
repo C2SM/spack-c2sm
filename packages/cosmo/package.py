@@ -65,8 +65,8 @@ class Cosmo(MakefilePackage):
     depends_on('mpi', type=('build', 'run'))
     depends_on('libgrib1')
     depends_on('jasper@1.900.1%gcc ~shared')
-    depends_on('cosmo-grib-api-definitions', when='~eccodes')
-    depends_on('cosmo-eccodes-definitions@2.14.1.2 ~aec', when='+eccodes')
+    depends_on('cosmo-grib-api-definitions', type=('build','run'), when='~eccodes')
+    depends_on('cosmo-eccodes-definitions@2.14.1.2 ~aec', type=('build','run'), when='+eccodes')
     depends_on('perl@5.16.3:')
     depends_on('omni-xmod-pool', when='+claw')
     depends_on('claw', when='+claw')
@@ -112,16 +112,8 @@ class Cosmo(MakefilePackage):
 
     def setup_environment(self, spack_env, run_env):
         if '~eccodes' in self.spec:
-          grib_definition_path = self.spec['cosmo-grib-api-definitions'].prefix + '/cosmoDefinitions/definitions/:' + self.spec['cosmo-grib-api'].prefix + '/share/grib_api/definitions/'
-          spack_env.set('GRIB_DEFINITION_PATH', grib_definition_path)
-          grib_samples_path = self.spec['cosmo-grib-api-definitions'].prefix + '/cosmoDefinitions/samples/'
-          spack_env.set('GRIB_SAMPLES_PATH', grib_samples_path)
           spack_env.set('GRIBAPI_DIR', self.spec['cosmo-grib-api'].prefix)
         else:
-          eccodes_definition_path = self.spec['cosmo-eccodes-definitions'].prefix + '/cosmoDefinitions/definitions/:' + self.spec['eccodes'].prefix + '/share/eccodes/definitions/'
-          spack_env.set('GRIB_DEFINITION_PATH', eccodes_definition_path)
-          eccodes_samples_path = self.spec['cosmo-eccodes-definitions'].prefix + '/cosmoDefinitions/samples/'
-          spack_env.set('GRIB_SAMPLES_PATH', eccodes_samples_path)
           spack_env.set('GRIBAPI_DIR', self.spec['eccodes'].prefix)
         spack_env.set('GRIB1_DIR', self.spec['libgrib1'].prefix + '/lib')
         spack_env.set('JASPER_DIR', self.spec['jasper'].prefix)
@@ -142,11 +134,12 @@ class Cosmo(MakefilePackage):
             spack_env.set('CLAWXMODSPOOL', self.spec['omni-xmod-pool'].prefix + '/omniXmodPool/')
             if self.spec['mpi'].name == 'mpich':
                 spack_env.append_flags('CLAWFC_FLAGS', '-U__CRAYXC')
-        spack_env.set('UCX_MEMTYPE_CACHE', 'n')
-        if self.spec.variants['cosmo_target'].value == 'gpu':
-          spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
-        else:
-          spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cma')
+        if '~cppdycore' in self.spec:
+            run_env.prepend_path('UCX_MEMTYPE_CACHE', 'n')
+            if self.spec.variants['cosmo_target'].value == 'gpu':
+                run_env.prepend_path('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
+            else:
+                run_env.prepend_path('UCX_TLS', 'rc_x,ud_x,mm,shm,cma')
 
     @property
     def build_targets(self):

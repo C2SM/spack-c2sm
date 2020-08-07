@@ -79,11 +79,11 @@ class CosmoDycore(CMakePackage):
             spack_env.set('MPICH_G2G_PIPELINE', '64')
             if '+cuda' in self.spec:
                 spack_env.set('MPICH_RDMA_ENABLED_CUDA', '1')
-        spack_env.set('UCX_MEMTYPE_CACHE', 'n')
+        run_env.prepend_path('UCX_MEMTYPE_CACHE', 'n')
         if '+cuda' in self.spec:
-            spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
+            run_env.prepend_path('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
         else:
-            spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cma')
+            run_env.prepend_path('UCX_TLS', 'rc_x,ud_x,mm,shm,cma')
 
     def cmake_args(self):
       spec = self.spec
