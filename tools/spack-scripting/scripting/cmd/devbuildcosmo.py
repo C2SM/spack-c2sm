@@ -43,8 +43,9 @@ def setup_parser(subparser):
         '-q', '--quiet', action='store_true', dest='quiet',
         help="do not display verbose build output while installing")
     subparser.add_argument(
-        '-u', '--until', type=str, dest='until', default=None,
-        help="phase to stop after when installing (default None)")
+        '--drop-in', type=str, dest='shell', default=None,
+        help="drop into a build environment in a new shell, e.g. bash, zsh")
+
     subparser.add_argument(
         '-t', '--test', action='store_true', help="Dev-build with testing")
     subparser.add_argument(
@@ -53,6 +54,14 @@ def setup_parser(subparser):
         '-w', '--without_dycore', action='store_true', help="Dev-build cosmo but not dycore")
 
     arguments.add_common_arguments(subparser, ['spec'])
+
+    stop_group = subparser.add_mutually_exclusive_group()
+    stop_group.add_argument(
+        '-b', '--before', type=str, dest='before', default=None,
+        help="phase to stop before when installing (default None)")
+    stop_group.add_argument(
+        '-u', '--until', type=str, dest='until', default=None,
+        help="phase to stop after when installing (default None)")
 
     cd_group = subparser.add_mutually_exclusive_group()
     arguments.add_common_arguments(cd_group, ['clean', 'dirty'])
