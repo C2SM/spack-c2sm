@@ -63,9 +63,10 @@ class CosmoDycore(CMakePackage):
     depends_on('gridtools@1.1.3 +cuda', when='+cuda+gt1')
     depends_on('boost@1.67.0')
     depends_on('serialbox@2.6.0', when='+build_tests')
-    depends_on('mpi', type=('build', 'run'))
+    depends_on('mpicuda', type=('build', 'run'), when='+cuda')
+    depends_on('mpi', type=('build', 'run'), when='~cuda')
     depends_on('slurm%gcc', type='run')
-    depends_on('cmake@3.12:%gcc', type='build')
+    depends_on('cmake@3.12:%gcc')
     depends_on('cuda%gcc', when='+cuda', type=('build', 'run'))
 
     conflicts('+production', when='build_type=Debug')
@@ -74,16 +75,12 @@ class CosmoDycore(CMakePackage):
 
     root_cmakelists_dir='dycore'
 
-    def setup_environment(self, spack_env, run_env):
-        if self.spec['mpi'].name == 'mpich':
-            spack_env.set('MPICH_G2G_PIPELINE', '64')
+    def setup_build_environment(self, env):
+        self.setup_run_environment(env)
+        if '~cuda' in self.spec and self.spec['mpi'].name == 'mpich':
+            env.set('MPICH_G2G_PIPELINE', '64')
             if '+cuda' in self.spec:
-                spack_env.set('MPICH_RDMA_ENABLED_CUDA', '1')
-        run_env.prepend_path('UCX_MEMTYPE_CACHE', 'n')
-        if '+cuda' in self.spec:
-            run_env.prepend_path('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
-        else:
-            run_env.prepend_path('UCX_TLS', 'rc_x,ud_x,mm,shm,cma')
+                env.set('MPICH_RDMA_ENABLED_CUDA', '1')
 
     def cmake_args(self):
       spec = self.spec
@@ -141,6 +138,6 @@ class CosmoDycore(CMakePackage):
     def test(self):
       if '+build_tests' in self.spec:
           try:
-              subprocess.run(['./test_dycore.py',  str(self.spec),  self.build_directory], cwd = self.root_cmakelists_dir + '/test/tools', check=True, stderr=subprocess.STDOUT)
+              subprocess.run(['./test_dycore.py',  str(self.spec),  self.build_directory], cwd = self.root_cmakelists_dir + '/test/tools', check=True, env=None, stderr=subprocess.STDOUT)
           except:
               raise InstallError('Dycore tests failed')

@@ -62,7 +62,8 @@ class Cosmo(MakefilePackage):
     depends_on('slurm%gcc', type='run')
     depends_on('cuda%gcc', when='cosmo_target=gpu', type=('build', 'run'))
     depends_on('serialbox@2.6.0', when='+serialize')
-    depends_on('mpi', type=('build', 'run'))
+    depends_on('mpicuda', type=('build', 'run'), when='cosmo_target=gpu')
+    depends_on('mpi', type=('build', 'run'), when='cosmo_target=cpu')
     depends_on('libgrib1')
     depends_on('jasper@1.900.1%gcc ~shared')
     depends_on('cosmo-grib-api-definitions', type=('build','run'), when='~eccodes')
@@ -170,10 +171,10 @@ class Cosmo(MakefilePackage):
         return build
 
     def edit(self, spec, prefix):
-        env['CC'] = spec['mpi'].mpicc
-        env['CXX'] = spec['mpi'].mpicxx
-        env['F77'] = spec['mpi'].mpif77
-        env['FC'] = spec['mpi'].mpifc
+        if 'cosmo_target=gpu' in spec:
+            env['FC'] = spec['mpicuda'].mpifc
+        else:
+            env['FC'] = spec['mpi'].mpifc
         with working_dir(self.build_directory):
             makefile = FileFilter('Makefile')
             if 'tsa' in self.spec.variants['slave'].value:
@@ -221,11 +222,11 @@ class Cosmo(MakefilePackage):
     def test(self):
         if '~serialize' in self.spec:
             try:
-                subprocess.run([self.build_directory + '/test/tools/test_cosmo.py', str(self.spec), '.'], stderr=subprocess.STDOUT, check=True)
+                subprocess.run([self.build_directory + '/test/tools/test_cosmo.py', str(self.spec), '.'], stderr=subprocess.STDOUT, check=True, env=None)
             except:
                 raise InstallError('Testsuite failed')
         if '+serialize' in self.spec:
             try:
-                subprocess.run([self.build_directory + '/test/tools/serialize_cosmo.py', str(self.spec), '.'], stderr=subprocess.STDOUT, check=True)
+                subprocess.run([self.build_directory + '/test/tools/serialize_cosmo.py', str(self.spec), '.'], stderr=subprocess.STDOUT, check=True, env=None)
             except:
                 raise InstallError('Serialization failed')

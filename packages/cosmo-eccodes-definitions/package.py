@@ -45,6 +45,9 @@ class CosmoEccodesDefinitions(Package):
         eccodes_samples_path = self.spec['cosmo-eccodes-definitions'].prefix + '/cosmoDefinitions/samples/'
         env.prepend_path('GRIB_SAMPLES_PATH', eccodes_samples_path)
 
+    def setup_dependent_build_environment(self, env, dependent_spec):
+        self.setup_run_environment(env)
+
     def install(self, spec, prefix):
         mkdir(prefix.cosmoDefinitions)
         mkdir(prefix.cosmoDefinitions + '/definitions')

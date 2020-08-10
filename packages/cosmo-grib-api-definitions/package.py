@@ -43,6 +43,9 @@ class CosmoGribApiDefinitions(Package):
         grib_samples_path = self.spec['cosmo-grib-api-definitions'].prefix + '/cosmoDefinitions/samples/'
         env.prepend_path('GRIB_SAMPLES_PATH', grib_samples_path)
 
+    def setup_dependent_build_environment(self, env, dependent_spec):
+        self.setup_run_environment(env)
+
     def install(self, spec, prefix):
         mkdir(prefix.cosmoDefinitions)
         mkdir(prefix.cosmoDefinitions + '/definitions')

@@ -85,7 +85,6 @@ class Cuda(Package):
 
     def setup_run_environment(self, env):
         env.set('CUDA_HOME', self.prefix)
-        env.set('CUDAHOSTCXX', self.compiler.cxx)
         env.append_path('CPATH', self.prefix + '/extras/CUPTI/include:' + self.prefix + '/nvvm/include')
         env.append_path('LD_LIBRARY_PATH', self.prefix + '/extras/CUPTI/lib64:/cm/local/apps/cuda/libs/current/lib64')
         env.append_path('LIBRARY_PATH', self.prefix + '/lib64/stubs')
