@@ -32,12 +32,16 @@ def setup_parser(subparser):
         '-c', '--clean_build', action='store_true', help="Clean dev-build")
     arguments.add_common_arguments(subparser, ['spec'])
 
-def custom_devbuild(source_path, spec, jobs):
-    package = spack.repo.get(spec)
-    package.stage = DIYStage(source_path)
+    stop_group = subparser.add_mutually_exclusive_group()
+    stop_group.add_argument(
+        '-b', '--before', type=str, dest='before', default=None,
+        help="phase to stop before when installing (default None)")
+    stop_group.add_argument(
+        '-u', '--until', type=str, dest='until', default=None,
+        help="phase to stop after when installing (default None)")
 
-    if package.installed:
-        package.do_uninstall(force=True)
+    cd_group = subparser.add_mutually_exclusive_group()
+    arguments.add_common_arguments(cd_group, ['clean', 'dirty'])
 
     package.do_install(verbose=True, make_jobs=jobs)
 
