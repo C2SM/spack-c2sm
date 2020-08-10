@@ -111,36 +111,34 @@ class Cosmo(MakefilePackage):
 
     build_directory = 'cosmo/ACC'
 
-    def setup_environment(self, spack_env, run_env):
+    def setup_build_environment(self, env):
+        self.setup_run_environment(env)
         if '~eccodes' in self.spec:
-          spack_env.set('GRIBAPI_DIR', self.spec['cosmo-grib-api'].prefix)
+          env.set('GRIBAPI_DIR', self.spec['cosmo-grib-api'].prefix)
         else:
-          spack_env.set('GRIBAPI_DIR', self.spec['eccodes'].prefix)
-        spack_env.set('GRIB1_DIR', self.spec['libgrib1'].prefix + '/lib')
-        spack_env.set('JASPER_DIR', self.spec['jasper'].prefix)
-        spack_env.set('MPI_ROOT', self.spec['mpi'].prefix)
+          env.set('GRIBAPI_DIR', self.spec['eccodes'].prefix)
+        env.set('GRIB1_DIR', self.spec['libgrib1'].prefix + '/lib')
+        env.set('JASPER_DIR', self.spec['jasper'].prefix)
+        if 'cosmo_target=gpu' in self.spec:
+            env.set('MPI_ROOT', self.spec['mpicuda'].prefix)
+        else:
+            env.set('MPI_ROOT', self.spec['mpi'].prefix)
         if self.spec.variants['cosmo_target'].value == 'gpu' or '+serialize' in self.spec:
-            spack_env.set('BOOST_ROOT',  self.spec['boost'].prefix)
+            env.set('BOOST_ROOT',  self.spec['boost'].prefix)
         if '+cppdycore' in self.spec:
             if '+gt1' in self.spec:
-                spack_env.set('GRIDTOOLS_DIR', self.spec['gridtools'].prefix)
-            spack_env.set('DYCOREGT', self.spec['cosmo-dycore'].prefix)
-            spack_env.set('DYCOREGT_DIR', self.spec['cosmo-dycore'].prefix)
+                env.set('GRIDTOOLS_DIR', self.spec['gridtools'].prefix)
+            env.set('DYCOREGT', self.spec['cosmo-dycore'].prefix)
+            env.set('DYCOREGT_DIR', self.spec['cosmo-dycore'].prefix)
         if '+serialize' in self.spec:
-          spack_env.set('SERIALBOX_DIR', self.spec['serialbox'].prefix)
-          spack_env.set('SERIALBOX_FORTRAN_LIBRARIES', self.spec['serialbox'].prefix + '/lib/libSerialboxFortran.a ' +  self.spec['serialbox'].prefix + '/lib/libSerialboxC.a ' + self.spec['serialbox'].prefix + '/lib/libSerialboxCore.a -lstdc++fs -lpthread')
+          env.set('SERIALBOX_DIR', self.spec['serialbox'].prefix)
+          env.set('SERIALBOX_FORTRAN_LIBRARIES', self.spec['serialbox'].prefix + '/lib/libSerialboxFortran.a ' +  self.spec['serialbox'].prefix + '/lib/libSerialboxC.a ' + self.spec['serialbox'].prefix + '/lib/libSerialboxCore.a -lstdc++fs -lpthread')
         if '+claw' in self.spec:
-            spack_env.set('CLAWDIR', self.spec['claw'].prefix)
-            spack_env.set('CLAWFC', self.spec['claw'].prefix + '/bin/clawfc')
-            spack_env.set('CLAWXMODSPOOL', self.spec['omni-xmod-pool'].prefix + '/omniXmodPool/')
-            if self.spec['mpi'].name == 'mpich':
-                spack_env.append_flags('CLAWFC_FLAGS', '-U__CRAYXC')
-        if '~cppdycore' in self.spec:
-            run_env.prepend_path('UCX_MEMTYPE_CACHE', 'n')
-            if self.spec.variants['cosmo_target'].value == 'gpu':
-                run_env.prepend_path('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
-            else:
-                run_env.prepend_path('UCX_TLS', 'rc_x,ud_x,mm,shm,cma')
+            env.set('CLAWDIR', self.spec['claw'].prefix)
+            env.set('CLAWFC', self.spec['claw'].prefix + '/bin/clawfc')
+            env.set('CLAWXMODSPOOL', self.spec['omni-xmod-pool'].prefix + '/omniXmodPool/')
+            if self.spec['mpi'].name == 'mpich' or self.spec['mpicuda'].name == 'mpich':
+                env.append_flags('CLAWFC_FLAGS', '-U__CRAYXC')
 
     @property
     def build_targets(self):
