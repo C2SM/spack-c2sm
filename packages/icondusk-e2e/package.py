@@ -23,6 +23,9 @@ class IconduskE2e(CMakePackage):
     depends_on('python@3.8.0')
     depends_on('atlas')
     depends_on('cuda', type=('build', 'run'))
+    depends_on('boost@1.72.0')
+    depends_on('netcdf-fortran')
+    depends_on('netcdf-c')
 
     variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'DebugRelease'))
     variant('precision', default='double', values=('double','float'))
@@ -42,6 +45,8 @@ class IconduskE2e(CMakePackage):
         # Hack in order to fix this spack issue with RPATH
         # https://github.com/spack/spack/issues/4261#issuecomment-466005631
         args.append('-DCMAKE_INSTALL_RPATH='+gcclibdir)
+        args.append('-Dnetcdff_DIR={0}'.format(spec['netcdf-fortran'].prefix))
+        args.append('-Dnetcdf_DIR={0}'.format(spec['netcdf-c'].prefix))
 
         return args
 
