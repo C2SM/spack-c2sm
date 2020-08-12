@@ -38,7 +38,7 @@ class IconduskE2e(CMakePackage):
         gcclibdir = os.path.dirname(subprocess.run([self.compiler.cxx,"-print-file-name=libstdc++.so"], capture_output=True).stdout.decode("utf-8"))
         args.append('-DCMAKE_BUILD_TYPE={0}'.format(self.spec.variants['build_type'].value))
         args.append('-DPython3_EXECUTABLE=' + spec['python'].prefix +'/bin/python3.8')
-        args.append('-Datlas_utils_ROOT='+spec['atlas_utilities'].prefix)
+        args.append('-Datlas_utils_DIR='+spec['atlas_utilities'].prefix+'/lib/cmake/atlas_utils')
         args.append('-Ddawn4py_DIR='+spec['dawn4py'].prefix)
         args.append('-Datlas_DIR='+spec['atlas'].prefix)
         args.append('-DPRECISION='+spec.variants['precision'].value)
