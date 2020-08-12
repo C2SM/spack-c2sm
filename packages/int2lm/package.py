@@ -58,7 +58,7 @@ class Int2lm(MakefilePackage):
     variant('verbose', default=False, description='Build with verbose enabled')
 
     def setup_build_environment(self, env):
-        # Grib-api. Eccodes librairies
+        # Grib-api. Eccodes libraries
         if '~eccodes' in self.spec:
             grib_prefix = self.spec['cosmo-grib-api'].prefix
             grib_lib_names = '-lgrib_api_f90 -lgrib_api'
