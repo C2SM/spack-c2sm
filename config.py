@@ -6,14 +6,14 @@ import yaml
 import shutil
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-spack_version='v0.15.0'
+spack_version='v0.15.3'
 
 def main():
     parser=argparse.ArgumentParser(description='Small config script which can be used to install a spack instance with the correct configuration files and mch spack packages.')
     parser.add_argument('-i', '--idir', type=str, default=dir_path, help='Where the Spack instance is installed or you want it to be installed')
     parser.add_argument('-m', '--machine', type=str, help='Required: machine name')
     parser.add_argument('-u', '--upstreams', type=str, default='ON', help='ON or OFF, install upstreams.yaml file')
-    parser.add_argument('-v', '--version', type=str, default='v0.14.2', help='Spack version, Default: ' + spack_version)
+    parser.add_argument('-v', '--version', type=str, default=spack_version, help='Spack version, Default: ' + spack_version)
     parser.add_argument('-r', '--reposdir', type=str, help='repos.yaml install directory')
     parser.add_argument('-p', '--pckgidir', type=str, help='Define spack package, modules & stages installation directory. Default: tsa; /scratch/$USER/spack, daint; /scratch/snx3000/$USER/spack')
     args=parser.parse_args()
@@ -54,14 +54,12 @@ def main():
     if not args.pckgidir:
         if 'admin' in args.machine:
             args.pckgidir = '/project/g110'
-        elif args.machine == 'daint':
-            args.pckgidir = '/scratch/snx3000/$user/spack'
         else:
-            args.pckgidir = '/scratch/$user/spack'
+            args.pckgidir = '$SCRATCH'
 
     config_data['config']['install_tree'] = args.pckgidir + '/spack-install/' + args.machine.replace('admin-', '')
-    config_data['config']['build_stage'] = [args.pckgidir + '/spack-stages/' + args.machine.replace('admin-', '')]
-    config_data['config']['module_roots']['tcl'] = args.pckgidir + '/modules/' + args.machine
+    config_data['config']['build_stage'] = ['$SCRATCH/spack-stages/' + args.machine]
+    config_data['config']['module_roots']['tcl'] = '$SCRATCH/modules/' + args.machine
     config_data['config']['extensions'] = [dir_path + '/tools/spack-scripting']
     yaml.safe_dump(config_data, open('./sysconfigs/config.yaml', 'w'), default_flow_style=False)
 
@@ -69,7 +67,7 @@ def main():
     os.popen('cp -rf sysconfigs/config.yaml ' + args.idir + '/spack/etc/spack')
 
     # copy modified upstreams.yaml if not admin
-    if not 'admin' in args.machine and args.upstreams=='ON':
+    if args.upstreams=='ON':
         upstreams_data = yaml.safe_load(open('./sysconfigs/upstreams.yaml', 'r'))
         upstreams_data['upstreams']['spack-instance-1']['install_tree'] = '/project/g110/spack-install/' + args.machine.replace('admin-', '')
         yaml.safe_dump(upstreams_data, open('./sysconfigs/upstreams.yaml', 'w'), default_flow_style=False)

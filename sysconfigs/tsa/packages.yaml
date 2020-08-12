@@ -13,7 +13,7 @@ packages:
     paths: {}
   cuda:
     modules:
-      cuda@10.1.243: cuda/10.1.243
+      cuda@10.1.243%gcc: cuda/10.1.243
     buildable: true
     version: []
     target: []
@@ -65,7 +65,7 @@ packages:
       bzip2@1.0.6: /usr
   slurm:
     modules:
-      slurm@19.05.05: slurm/19.05.05
+      slurm@19.05.05%gcc: slurm/19.05.05
   int2lm:
     variants: slave=tsa
   libgrib1:

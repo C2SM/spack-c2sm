@@ -41,6 +41,6 @@ compilers::
     target: any
     modules:
     - PrgEnv-cray
-    - cce/9.0.2
+    - cce/9.0.2-classic
     environment: {}
     extra_rpaths: []
