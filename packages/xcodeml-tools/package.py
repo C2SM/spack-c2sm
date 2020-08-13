@@ -35,7 +35,7 @@ class XcodemlTools(AutotoolsPackage):
     depends_on('m4')
     depends_on('automake')
     depends_on('libxml2%gcc')
-    depends_on('java@8:')
+    depends_on('openjdk@1.8:')
     depends_on('bison%gcc')
     depends_on('flex%gcc')
 
