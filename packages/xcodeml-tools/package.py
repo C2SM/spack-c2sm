@@ -36,6 +36,7 @@ class XcodemlTools(AutotoolsPackage):
     depends_on('java@8:')
     depends_on('bison%gcc')
     depends_on('flex%gcc')
+    depends_on('libtool')
 
     def configure_args(self):
         args = ['--prefix=' + self.prefix,
