@@ -49,7 +49,7 @@ def main():
         os.popen('cp ' + dir_path + '/sysconfigs/repos.yaml ' + args.reposdir)
 
     # configure config.yaml
-    config_data = yaml.safe_load(open('sysconfigs/config.yaml', 'r'))
+    config_data = yaml.safe_load(open('sysconfigs/' + args.machine.replace('admin-', '') + '/config.yaml', 'r'))
 
     if not args.pckgidir:
         if 'admin' in args.machine:
@@ -64,7 +64,7 @@ def main():
     yaml.safe_dump(config_data, open('./sysconfigs/config.yaml', 'w'), default_flow_style=False)
 
     # copy modified config.yaml file in site scope of spack instance
-    os.popen('cp -rf sysconfigs/config.yaml ' + args.idir + '/spack/etc/spack')
+    os.popen('cp -rf sysconfigs/' + args.machine.replace('admin-', '') + '/config.yaml ' + args.idir + '/spack/etc/spack')
 
     # copy modified upstreams.yaml if not admin
     if args.upstreams=='ON':
