@@ -44,9 +44,9 @@ class XcodemlTools(AutotoolsPackage):
                 '--with-libxml2=' + self.spec['libxml2'].prefix,
                 '--without-native-fortran-compiler']
         java_prefix = self.spec['java'].prefix
-        path = {'java': '/bin/java',
-                'javac': '/bin/javac',
-                'jar': '/bin/jar'}
+        path = {'java': 'bin/java',
+                'javac': 'bin/javac',
+                'jar': 'bin/jar'}
         for name, rel_path in path.items():
             abs_path = os.path.normpath(os.path.join(java_prefix, rel_path))
             assert os.path.exists(abs_path) and os.path.isfile(abs_path), '%s not found at "%s"' % (name, abs_path)
