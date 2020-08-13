@@ -28,8 +28,6 @@ class XcodemlTools(AutotoolsPackage):
     maintainers = ['FrostyMike']
 
     version('latest', branch='master', commit=_get_latest_commit_id())
-    version('test', branch='master', commit='826403a')
-    #version('test', branch='master', commit='39edc71')
     
     depends_on('autoconf@2.69:')
     depends_on('m4')
