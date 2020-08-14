@@ -82,11 +82,18 @@ def devbuildcosmo(self, args):
 
     # Set dycore_spec
     if not args.without_dycore:
-        dycore_spec = 'cosmo-dycore@dev-build'
+        dycore_spec = 'cosmo-dycore@dev-build '
     else:
-        dycore_spec = 'cosmo-dycore@master'
-    dycore_spec += ' real_type=' + cosmo_spec.variants['real_type'].value
+        dycore_spec = 'cosmo-dycore@master '
+
+    # extracting dycore variants
+    dycore_spec += cosmo_spec.format('{^cosmo-dycore.variants}')
+
+    # extracting correct mpi variant
     dycore_spec += ' ^' + cosmo_spec.format('{^mpi.name}') + '%' + cosmo_spec.compiler.name
+
+    # remove the slum_args variant causing troubles to the concretizer
+    dycore_spec = dycore_spec.replace(cosmo_spec.format('{^cosmo-dycore.variants.slurm_args}'), ' ')
 
     base_directory = os.getcwd()
 
