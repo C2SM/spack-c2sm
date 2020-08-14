@@ -92,7 +92,7 @@ def devbuildcosmo(self, args):
     # extracting correct mpi variant
     dycore_spec += ' ^' + cosmo_spec.format('{^mpi.name}') + '%' + cosmo_spec.compiler.name
 
-    # remove the slum_args variant causing troubles to the concretizer
+    # remove the slurm_args variant causing troubles to the concretizer
     dycore_spec = dycore_spec.replace(cosmo_spec.format('{^cosmo-dycore.variants.slurm_args}'), ' ')
 
     base_directory = os.getcwd()
