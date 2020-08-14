@@ -46,7 +46,7 @@ def main():
         repos_data['repos'] = [dir_path]
         yaml.safe_dump(repos_data, open('./sysconfigs/repos.yaml', 'w'), default_flow_style=False)
         print('Installing repos.yaml on ' + args.reposdir)
-        os.popen('cp ' + dir_path + '/sysconfigs/repos.yaml ' + args.reposdir)
+        shutil.copy(dir_path + '/sysconfigs/repos.yaml', args.reposdir)
 
     # configure config.yaml
     config_data = yaml.safe_load(open('sysconfigs/' + args.machine.replace('admin-', '') + '/config.yaml', 'r'))
@@ -64,17 +64,17 @@ def main():
     yaml.safe_dump(config_data, open('./sysconfigs/config.yaml', 'w'), default_flow_style=False)
 
     # copy modified config.yaml file in site scope of spack instance
-    os.popen('cp -rf sysconfigs/' + args.machine.replace('admin-', '') + '/config.yaml ' + args.idir + '/spack/etc/spack')
+    shutil.copy('sysconfigs/' + args.machine.replace('admin-', '') + '/config.yaml', args.idir + '/spack/etc/spack')
 
     # copy modified upstreams.yaml if not admin
     if args.upstreams=='ON':
         upstreams_data = yaml.safe_load(open('./sysconfigs/upstreams.yaml', 'r'))
         upstreams_data['upstreams']['spack-instance-1']['install_tree'] = '/project/g110/spack-install/' + args.machine.replace('admin-', '')
         yaml.safe_dump(upstreams_data, open('./sysconfigs/upstreams.yaml', 'w'), default_flow_style=False)
-        os.popen('cp -rf sysconfigs/upstreams.yaml ' + args.idir + '/spack/etc/spack')
+        shutil.copy('sysconfigs/upstreams.yaml', args.idir + '/spack/etc/spack')
 
     # copy modules.yaml, packages.yaml and compiles.yaml files in site scope of spack instance
-    os.popen('cp -rf sysconfigs/' + args.machine.replace('admin-', '') + '/* ' +  args.idir + '/spack/etc/spack')
+    shutil.copy('sysconfigs/' + args.machine.replace('admin-', '') + '/*', args.idir + '/spack/etc/spack')
 
     print('MCH Spack installed.')
 
