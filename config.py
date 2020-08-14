@@ -4,9 +4,11 @@ import argparse
 import os
 import yaml
 import shutil
+import subprocess
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 spack_version='v0.15.3'
+spack_repo='git@github.com:spack/spack.git'
 
 def main():
     parser=argparse.ArgumentParser(description='Small config script which can be used to install a spack instance with the correct configuration files and mch spack packages.')
@@ -31,8 +33,7 @@ def main():
             print('Cloning spack instance to: ' + args.idir)
             if args.version is None:
                 args.version = spack_version
-            clone_cmd = 'git clone git@github.com:spack/spack.git -b' + args.version + ' ' + args.idir + '/spack'   
-            os.system(clone_cmd)
+            os.system('git clone ' + spack_repo + ' -b {0} {1}'.format(args.version, os.path.join(args.idir, 'spack')))
             print('Installing custom dev-build command')
             shutil.copy('./tools/spack-scripting/scripting/cmd/dev_build.py', args.idir + '/spack/lib/spack/spack/cmd/')
     print('Installing mch packages & ' + args.machine + ' config files')
@@ -74,7 +75,7 @@ def main():
         shutil.copy('sysconfigs/upstreams.yaml', args.idir + '/spack/etc/spack')
 
     # copy modules.yaml, packages.yaml and compiles.yaml files in site scope of spack instance
-    shutil.copy('sysconfigs/' + args.machine.replace('admin-', '') + '/*', args.idir + '/spack/etc/spack')
+    os.popen('cp -rf sysconfigs/' + args.machine.replace('admin-', '') + '/* ' +  args.idir + '/spack/etc/spack')
 
     print('MCH Spack installed.')
 
