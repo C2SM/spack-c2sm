@@ -62,7 +62,7 @@ def main():
     config_data['config']['build_stage'] = ['$SCRATCH/spack-stages/' + args.machine]
     config_data['config']['module_roots']['tcl'] = '$SCRATCH/modules/' + args.machine
     config_data['config']['extensions'] = [dir_path + '/tools/spack-scripting']
-    yaml.safe_dump(config_data, open('./sysconfigs/config.yaml', 'w'), default_flow_style=False)
+    yaml.safe_dump(config_data, open('./sysconfigs/' + args.machine.replace('admin-', '') + '/config.yaml', 'w'), default_flow_style=False)
 
     # copy modified config.yaml file in site scope of spack instance
     shutil.copy('sysconfigs/' + args.machine.replace('admin-', '') + '/config.yaml', args.idir + '/spack/etc/spack')
