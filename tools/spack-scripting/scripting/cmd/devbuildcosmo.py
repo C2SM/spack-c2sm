@@ -104,7 +104,8 @@ def devbuildcosmo(self, args):
 
         if not args.without_dycore:
           print('\033[92m' + '==> ' + '\033[0m' + 'dycore: Cleaning build directory')
-          shutil.rmtree(base_directory + '/spack-build')
+          if os.path.exists(base_directory + '/spack-build'):
+              shutil.rmtree(base_directory + '/spack-build')
 
     if cosmo_spec.satisfies('+cppdycore') and not args.without_dycore:
         # Concretize dycore spec and cosmo_serialize spec
