@@ -41,6 +41,7 @@ class XcodemlTools(AutotoolsPackage):
     def configure_args(self):
         args = ['--prefix=' + self.prefix,
                 '--with-libxml2=' + self.spec['libxml2'].prefix,
+                '--with-force-explicit-lxml2',
                 '--without-native-fortran-compiler']
         java_prefix = self.spec['java'].prefix
         path = {'java': 'bin/java',
