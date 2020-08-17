@@ -34,7 +34,7 @@ def main():
             print('Cloning spack instance to: ' + args.idir)
             if args.version is None:
                 args.version = spack_version
-            os.system('git clone ' + spack_repo + ' -b {0} {1}'.format(args.version, os.path.join(args.idir, 'spack')))
+            os.system('git clone {repo} -b {branch} {dest_dir}'.format(repo=spack_repo, branch=args.version, dest_dir=os.path.join(args.idir, 'spack')))
             print('Installing custom dev-build command')
             shutil.copy('./tools/spack-scripting/scripting/cmd/dev_build.py', args.idir + '/spack/lib/spack/spack/cmd/')
     print('Installing mch packages & ' + args.machine + ' config files')
