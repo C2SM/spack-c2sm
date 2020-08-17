@@ -8,3 +8,4 @@ config:
   extensions:
   install_path_scheme: '{name}/{version}/{compiler.name}/{hash}'
   source_cache: ~/.spack/source_cache
+  build_jobs: 4

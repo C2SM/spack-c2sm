@@ -39,6 +39,15 @@ class CosmoEccodesDefinitions(Package):
 
     depends_on('eccodes@2.14.1 ~aec', when='~aec')
 
+    def setup_run_environment(self, env):
+        eccodes_definition_path = self.spec['cosmo-eccodes-definitions'].prefix + '/cosmoDefinitions/definitions/:' + self.spec['eccodes'].prefix + '/share/eccodes/definitions/'
+        env.prepend_path('ECCODES_DEFINITION_PATH', eccodes_definition_path)
+        eccodes_samples_path = self.spec['cosmo-eccodes-definitions'].prefix + '/cosmoDefinitions/samples/'
+        env.prepend_path('ECCODES_SAMPLES_PATH', eccodes_samples_path)
+
+    def setup_dependent_build_environment(self, env, dependent_spec):
+        self.setup_run_environment(env)
+
     def install(self, spec, prefix):
         mkdir(prefix.cosmoDefinitions)
         mkdir(prefix.cosmoDefinitions + '/definitions')
