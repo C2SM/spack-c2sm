@@ -35,27 +35,29 @@ class Libgrib1(MakefilePackage):
 
     version('master', branch='master')
     version('22-01-2020', commit='3d3db9a9a090f6798c2fd4290c271dd58ff694e0')
+   
+    def edit(self, spec, prefix):
+        MakeFileName = 'Makefile.linux'
+        if self.compiler.name == 'gcc':
+            MakeFileName += '.gnu'
+        elif self.compiler.name == 'pgi':
+            MakeFileName += '.pgi'
+        elif self.compiler.name == 'cce':
+            MakeFileName += '.cray'
+        self.MakeFileName = MakeFileName
 
     def build(self, spec, prefix):
         with working_dir(self.build_directory):
-            global MakeFileName
-            MakeFileName = 'Makefile.linux'
-            if self.compiler.name == 'gcc':
-                MakeFileName += '.gnu'
-            elif self.compiler.name == 'pgi':
-                MakeFileName += '.pgi'
-            elif self.compiler.name == 'cce':
-                MakeFileName += '.cray'
-            MakeFileFilter = FileFilter(MakeFileName)
+            MakeFileFilter = FileFilter(self.MakeFileName)
             stage_path = self.stage.source_path + '/libgrib1_cosmo'
             MakeFileFilter.filter('INCDIR   =.*',  'INCDIR   = {0}/include'.format(stage_path))
             MakeFileFilter.filter('LIBDIR   =.*',  'LIBDIR   = {0}/lib'.format(stage_path))
-            options = ['-f', MakeFileName]
+            options = ['-f', self.MakeFileName]
             make(*options)
 
     def install(self, spec, prefix):
         with working_dir(self.build_directory):
-            options = ['-f', MakeFileName, 'install']
+            options = ['-f', self.MakeFileName, 'install']
             make(*options)
         with working_dir('libgrib1_cosmo'):
             install_tree('lib', prefix.lib)
