@@ -37,7 +37,7 @@ class CosmoEccodesDefinitions(Package):
 
     variant('aec', default=True, description='Enable Adaptive Entropy Coding for decoding/encoding')
 
-    depends_on('eccodes@2.14.1 ~aec', when='~aec', type='build')
+    depends_on('eccodes@2.14.1 ~aec', when='~aec')
 
     def setup_run_environment(self, env):
         eccodes_definition_path = self.spec['cosmo-eccodes-definitions'].prefix + '/cosmoDefinitions/definitions/:' + self.spec['eccodes'].prefix + '/share/eccodes/definitions/'
