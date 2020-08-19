@@ -13,8 +13,9 @@ from spack.pkg.builtin.openmpi import Openmpi
 class Openmpi(Openmpi):
 
     provides('mpicuda', when='+cuda')
-
+    
     def setup_run_environment(self, env):
+        super().setup_run_environment(env)
         env.set('UCX_MEMTYPE_CACHE', 'n')
         if '+cuda' in self.spec:
             env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')

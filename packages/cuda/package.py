@@ -9,12 +9,14 @@ from llnl.util.filesystem import LibraryList
 import os
 import platform
 import llnl.util.tty as tty
-from spack.pkg.builtin.cuda import Cuda
+from spack.pkg.builtin.cuda import Cuda as SpackCuda
 
-class Cuda(Cuda):
+class Cuda(SpackCuda):
 
     def setup_run_environment(self, env):
-       env.set('CUDA_HOME', self.prefix)
+        # let the original package setup its environment
+        super().setup_run_environment(env)
+        # add our own environment afterwards
         env.append_path('CPATH', self.prefix + '/extras/CUPTI/include:' + self.prefix + '/nvvm/include')
         env.append_path('LD_LIBRARY_PATH', self.prefix + '/extras/CUPTI/lib64:/cm/local/apps/cuda/libs/current/lib64')
         env.append_path('LIBRARY_PATH', self.prefix + '/lib64/stubs')
