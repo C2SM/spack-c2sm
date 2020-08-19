@@ -8,9 +8,9 @@ import itertools
 import os
 import sys
 import llnl.util.tty as tty
-from spack.pkg.builtin.openmpi import Openmpi
+from spack.pkg.builtin.openmpi import Openmpi as SpackOpenmpi
 
-class Openmpi(Openmpi):
+class Openmpi(SpackOpenmpi):
 
     provides('mpicuda', when='+cuda')
     
