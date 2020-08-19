@@ -37,7 +37,7 @@ def dycore_deps(repo):
 
             orig='cosmo-dycore@'+tag+'%gcc real_type='+real_type+' '+ prod_opt + ' ' + cuda_opt+' ' +test_opt + ' ' + gt1_dep
             dep='@'+tag+' real_type='+real_type+' '+ prod_opt + ' '+ cuda_dep + ' +cppdycore'+' '+test_dep + ' ' + gt1_dep
-            depends_on(orig, when=dep)
+            depends_on(orig, when=dep, type='build')
 
 class Cosmo(MakefilePackage):
     """COSMO: Numerical Weather Prediction Model. Needs access to private GitHub."""
@@ -57,22 +57,22 @@ class Cosmo(MakefilePackage):
 
     dycore_deps(apngit)
 
-    depends_on('netcdf-fortran +mpi')
-    depends_on('netcdf-c +mpi')
+    depends_on('netcdf-fortran +mpi', type='build')
+    depends_on('netcdf-c +mpi', type='build')
     depends_on('slurm%gcc', type='run')
     depends_on('cuda%gcc', when='cosmo_target=gpu', type=('build', 'run'))
-    depends_on('serialbox@2.6.0', when='+serialize')
+    depends_on('serialbox@2.6.0', when='+serialize', type='build')
     depends_on('mpicuda', type=('build', 'run'), when='cosmo_target=gpu')
     depends_on('mpi', type=('build', 'run'), when='cosmo_target=cpu')
-    depends_on('libgrib1')
-    depends_on('jasper@1.900.1%gcc ~shared')
+    depends_on('libgrib1', type='build')
+    depends_on('jasper@1.900.1%gcc ~shared', type='build')
     depends_on('cosmo-grib-api-definitions', type=('build','run'), when='~eccodes')
     depends_on('cosmo-eccodes-definitions@2.14.1.2 ~aec', type=('build','run'), when='+eccodes')
-    depends_on('perl@5.16.3:')
-    depends_on('omni-xmod-pool', when='+claw')
-    depends_on('claw', when='+claw')
-    depends_on('boost%gcc', when='cosmo_target=gpu ~cppdycore')
-    depends_on('cmake%gcc')
+    depends_on('perl@5.16.3:', type='build')
+    depends_on('omni-xmod-pool', when='+claw', type='build')
+    depends_on('claw', when='+claw', type='build')
+    depends_on('boost%gcc', when='cosmo_target=gpu ~cppdycore', type='build')
+    depends_on('cmake%gcc', type='build')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('dycoretest', default=True, description='Build C++ dycore with testing')
