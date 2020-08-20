@@ -70,6 +70,7 @@ def devbuildcosmo(self, args):
     source_path = os.getcwd()
     source_path = os.path.abspath(source_path)
 
+
     # Clean if needed
     if args.clean_build:
         print('\033[92m' + '==> ' + '\033[0m' + 'cosmo: Cleaning build directory')
