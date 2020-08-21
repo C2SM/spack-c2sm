@@ -10,6 +10,7 @@ import sys
 import llnl.util.tty as tty
 from spack.pkg.builtin.openmpi import Openmpi as SpackOpenmpi
 
+# Extend the official spack openmpi package so that we can set the run environment correctly on Tsa (since spack is not loading the module at run time)
 class Openmpi(SpackOpenmpi):
 
     provides('mpicuda', when='+cuda')

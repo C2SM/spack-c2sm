@@ -11,6 +11,7 @@ import platform
 import llnl.util.tty as tty
 from spack.pkg.builtin.cuda import Cuda as SpackCuda
 
+# Extend the official spack cuda package so that we can set the run environment correctly on Tsa (since spack is not loading the module at run time)
 class Cuda(SpackCuda):
 
     def setup_run_environment(self, env):
