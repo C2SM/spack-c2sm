@@ -57,13 +57,13 @@ class Cosmo(MakefilePackage):
 
     dycore_deps(apngit)
 
-    depends_on('netcdf-fortran +mpi', type='build')
-    depends_on('netcdf-c +mpi', type='build')
+    depends_on('netcdf-fortran +mpi', type=('build', 'link'))
+    depends_on('netcdf-c +mpi', type=('build', 'link'))
     depends_on('slurm%gcc', type='run')
-    depends_on('cuda%gcc', when='cosmo_target=gpu', type=('build', 'run'))
+    depends_on('cuda%gcc', when='cosmo_target=gpu', type=('build', 'link', 'run'))
     depends_on('serialbox@2.6.0', when='+serialize', type='build')
-    depends_on('mpicuda', type=('build', 'run'), when='cosmo_target=gpu')
-    depends_on('mpi', type=('build', 'run'), when='cosmo_target=cpu')
+    depends_on('mpicuda', type=('build', 'link', 'run'), when='cosmo_target=gpu')
+    depends_on('mpi', type=('build', 'link', 'run'), when='cosmo_target=cpu')
     depends_on('libgrib1', type='build')
     depends_on('jasper@1.900.1%gcc ~shared', type='build')
     depends_on('cosmo-grib-api-definitions', type=('build','run'), when='~eccodes')
