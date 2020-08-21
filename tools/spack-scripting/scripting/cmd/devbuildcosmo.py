@@ -36,7 +36,7 @@ def custom_devbuild(source_path, spec):
 
     if package.installed:
         package.do_uninstall()
-        
+
     package.do_install(verbose=True)
 
 
@@ -59,13 +59,13 @@ def devbuildcosmo(self, args):
     dycore_spec += cosmo_spec.format('{^cosmo-dycore.variants}')
 
     # Extracting correct mpi variant
-    dycore_spec += ' ^' + cosmo_spec.format('{^mpicuda.name}') + '%' + cosmo_spec.compiler.name + cosmo_spec.format('{^mpicuda.variants}') 
-    
+    dycore_spec += ' ^' + cosmo_spec.format('{^mpi.name}') + '%' + cosmo_spec.compiler.name + cosmo_spec.format('{^mpi.variants}')
+
     # remove the slurm_args variant causing troubles to the concretizer
     dycore_spec = dycore_spec.replace(cosmo_spec.format('{^cosmo-dycore.variants.slurm_args}'), ' ')
-    
+
     dycore_spec = Spec(dycore_spec).concretized()
-    
+
     # Setting source_path to current working directory
     source_path = os.getcwd()
     source_path = os.path.abspath(source_path)
