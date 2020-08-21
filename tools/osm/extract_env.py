@@ -10,7 +10,7 @@ from spack.spec import Spec
 from spack.paths import bin_path
 
 def main():  
-    parser=argparse.ArgumentParser(description='Small config script which can be used to install a spack instance with the correct configuration files and mch spack packages.')
+    parser=argparse.ArgumentParser(description='Installs a release of COSMO, its used ECCODES, defintions and its run env which can be directly sourced to idir.')
     parser.add_argument('-s', '--spec', type=str, help='Spack spec from which you want to extract the run environement.')
     parser.add_argument('-idir', '--idir', type=str, help='Installation directory for the installation of cosmo & eccodes.')
     args=parser.parse_args()
