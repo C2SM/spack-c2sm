@@ -7,6 +7,7 @@ packages:
         compiler: [pgi@19.7.0, gcc@8.3.0, cce@9.0.2]
         providers:
             mpi: [mpich]
+            # if the mpich package support +cuda in the future it needs to be put there
             mpicuda: [mpich]
             mkl: [intel-mkl]
             blas: [cray-libsci_acc, cray-libsci, intel-mkl]
