@@ -39,7 +39,6 @@ def custom_devbuild(source_path, spec):
 
     package.do_install(verbose=True)
 
-
 def devbuildcosmo(self, args):
     # Extract and concretize cosmo_spec
     if not args.spec:
@@ -60,9 +59,10 @@ def devbuildcosmo(self, args):
 
     # Extracting correct mpi variant
     dycore_spec += ' ^' + cosmo_spec.format('{^mpi.name}') + '%' + cosmo_spec.compiler.name + cosmo_spec.format('{^mpi.variants}')
-
+    
     # remove the slurm_args variant causing troubles to the concretizer
     dycore_spec = dycore_spec.replace(cosmo_spec.format('{^cosmo-dycore.variants.slurm_args}'), ' ')
+
 
     dycore_spec = Spec(dycore_spec).concretized()
 
