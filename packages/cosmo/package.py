@@ -219,13 +219,6 @@ class Cosmo(MakefilePackage):
 
     def edit(self, spec, prefix):
         with working_dir(self.build_directory):
-            makefile = FileFilter('Makefile')
-            makefile.filter('/Options.*', '/' + OptionsFileName)
-            if '~serialize' in spec:
-                makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo_'+ spec.variants['cosmo_target'].value))
-            else:
-                makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo'))
-
             OptionsFileName= 'Options'
             if self.compiler.name == 'gcc':
                 OptionsFileName += '.gnu'
@@ -235,6 +228,13 @@ class Cosmo(MakefilePackage):
                 OptionsFileName += '.cray'
             OptionsFileName += '.' + spec.variants['cosmo_target'].value
             OptionsFile = FileFilter(OptionsFileName)
+            
+            makefile = FileFilter('Makefile')
+            makefile.filter('/Options.*', '/' + OptionsFileName)
+            if '~serialize' in spec:
+                makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo_'+ spec.variants['cosmo_target'].value))
+            else:
+                makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo'))
 
             if 'cosmo_target=gpu' in self.spec:
                 cuda_version = self.spec['cuda'].version
