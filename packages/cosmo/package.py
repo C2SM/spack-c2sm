@@ -86,6 +86,7 @@ class Cosmo(MakefilePackage):
     variant('cosmo_target', default='gpu', description='Build with target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('verbose', default=False, description='Build cosmo with verbose enabled')
     variant('gt1', default=False, description='Build dycore with gridtools 1.1.3')
+    variant('cuda_arch', default='none', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
 
     conflicts('+claw', when='cosmo_target=cpu')
     conflicts('+pollen', when='@5.05:5.06,master')
