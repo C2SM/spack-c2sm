@@ -148,11 +148,13 @@ class Cosmo(MakefilePackage):
         # Dycoregt & Gridtools linrary
         if '+cppdycore' in self.spec:
             if '+gt1' in self.spec:
+                spack_env.set('GRIDTOOLS_DIR', self.spec['gridtools'].prefix)
                 spack_env.set('GRIDTOOLSL', '-L' + self.spec['gridtools'].prefix + '/lib -lgcl')
                 spack_env.set('GRIDTOOLSI', '-I' + self.spec['gridtools'].prefix + '/include/gridtools')
-                spack_env.set('GRIDTOOLS_DIR', self.spec['gridtools'].prefix)
             spack_env.set('DYCOREGT', self.spec['cosmo-dycore'].prefix)
             spack_env.set('DYCOREGT_DIR', self.spec['cosmo-dycore'].prefix)
+            spack_env.set('DYCOREGTL', '-L' + self.spec['cosmo-dycore'].prefix + '/lib -ldycore_bindings_' + self.spec.variants['real_type'].value + ' -ldycore_base_bindings_' + self.spec.variants['real_type'].value + ' -ldycore -ldycore_base -ldycore_backend -lstdc++ -lcpp_bindgen_generator -lcpp_bindgen_handle -lgt_gcl_bindings')
+            spack_env.set('DYCOREGTI', '-I' + self.spec['cosmo-dycore'].prefix)
 
         # Serialbox library
         if '+serialize' in self.spec:
