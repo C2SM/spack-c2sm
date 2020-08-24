@@ -23,6 +23,7 @@
 from spack import *
 
 import os
+import subprocess
 
 class Int2lm(MakefilePackage):
     """INT2LM performs the interpolation from coarse grid model data to initial
@@ -33,8 +34,11 @@ class Int2lm(MakefilePackage):
     git      = 'git@github.com:MeteoSwiss-APN/int2lm.git'
 
     maintainers = ['egermann']
-    
+
     version('master', branch='master')
+    version('dev-build', branch='master')
+    version('v2.7.1_p2', commit='05e2a405a66f62706df17f01bbc463d0c365e168')
+    version('v2.8.1', commit='844d239cfa83bc9980696cae56f47da3d08ce4ec')
     version('v2.7.2', commit='7a460906e826142be1fb9338d2210ccf7566d5a2')
     version('v2.7.1', commit='ee0780f86ecc676a9650170f361b92ff93379071')
     version('v2.6.2', commit='07690dab05c931ba02c947ec32c988eea65898f8')
@@ -47,8 +51,8 @@ class Int2lm(MakefilePackage):
     depends_on('libgrib1@master slave=kesch', when='slave=kesch')
     depends_on('mpi', type=('build', 'run'), when='+parallel')
     depends_on('netcdf-c')
-    depends_on('netcdf-fortran')
-    
+    depends_on('netcdf-fortran +mpi')
+
     variant('debug', default=False, description='Build debug INT2LM')
     variant('eccodes', default=False, description='Build with eccodes instead of grib-api')
     variant('parallel', default=True, description='Build parallel INT2LM')
@@ -62,12 +66,13 @@ class Int2lm(MakefilePackage):
             grib_prefix = self.spec['cosmo-grib-api'].prefix
             grib_definition_prefix = self.spec['cosmo-grib-api-definitions'].prefix
             spack_env.set('GRIBAPIL', '-L' + grib_prefix + '/lib -lgrib_api_f90 -lgrib_api -L' + self.spec['jasper'].prefix + '/lib64 -ljasper')
+            spack_env.set('GRIB_DEFINITION_PATH', grib_definition_prefix + '/cosmoDefinitions/definitions/:' + grib_prefix + '/share/grib_api/definitions/')
         else:
             grib_prefix = self.spec['eccodes'].prefix
-            grib_definition_prefix = self.spec['cosmo-grib-api-definitions'].prefix
+            grib_definition_prefix = self.spec['cosmo-eccodes-definitions'].prefix
             spack_env.set('GRIBAPIL', '-L' + grib_prefix + '/lib -leccodes_f90 -leccodes -L' + self.spec['jasper'].prefix + '/lib64 -ljasper')
+            spack_env.set('GRIB_DEFINITION_PATH', grib_definition_prefix + '/cosmoDefinitions/definitions/:' + grib_prefix + '/share/eccodes/definitions/')
         spack_env.set('GRIBAPII', '-I' + grib_prefix + '/include')
-        spack_env.set('GRIB_DEFINITION_PATH', grib_definition_prefix + '/cosmoDefinitions/definitions/:' + grib_prefix + '/share/grib_api/definitions/')
         spack_env.set('GRIB_SAMPLES_PATH', grib_definition_prefix + '/cosmoDefinitions/samples/')
 
         # Netcdf library
@@ -91,13 +96,9 @@ class Int2lm(MakefilePackage):
             spack_env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpi_mpifh')
             spack_env.set('MPII', '-I'+ self.spec['mpi'].prefix + '/include')
         else:
-            if self.compiler.name == 'gcc':
-                spack_env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich_gnu')
-            elif self.compiler.name == 'cce':
-                spack_env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich_cray')
-            else:
-                spack_env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich_' + self.compiler.name)
             spack_env.set('MPII', '-I'+ self.spec['mpi'].prefix + '/include')
+            if self.compiler.name != 'gcc':
+                spack_env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich_' + self.compiler.name)
 
         # Compiler & linker variables
         if self.compiler.name == 'pgi':
@@ -152,25 +153,13 @@ class Int2lm(MakefilePackage):
         mkdir(prefix.bin)
         mkdir(prefix.test)
         install('int2lm', prefix.bin)
-        install_tree('test', prefix.test)
-        install('int2lm', prefix.test + '/testsuite')
+        install('int2lm', 'test/testsuite')
 
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def test(self):
-        with working_dir(prefix.test + '/testsuite/data'):
-            get_test_data = './get_data.sh'
-            os.system(get_test_data)
-        with working_dir(prefix.test + '/testsuite'):
-            if self.spec.variants['slave'].value == 'tsa_rh7.7':
-                run_testsuite = 'sbatch -W --reservation=rh77 submit.tsa.slurm'
-            elif '+eccodes' in self.spec:
-                run_testsuite = 'sbatch -W submit.' + self.spec.variants['slave'].value + '.slurm.eccodes'
-            else:
-                run_testsuite = 'sbatch -W submit.' + self.spec.variants['slave'].value + '.slurm'
-            os.system(run_testsuite)
-            cat_testsuite = 'cat testsuite.out'
-            os.system(cat_testsuite)
-            check_testsuite = 'grep -e \'CRASH|FAIL\' testsuite.out | wc -l'
-            if os.system(check_testsuite) > 0:
-                os._exit()
+        with working_dir('test/testsuite'):
+            try:
+                subprocess.run(['./test_int2lm.py', str(self.spec)], stderr=subprocess.STDOUT, check=True)
+            except:
+                raise InstallError('Testsuite failed')

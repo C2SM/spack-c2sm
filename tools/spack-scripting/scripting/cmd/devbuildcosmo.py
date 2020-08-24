@@ -17,6 +17,7 @@ import spack.repo
 from spack.stage import DIYStage
 from spack.spec import Spec
 from spack.cmd.dev_build import dev_build
+from spack.main import SpackCommand
 
 description = "Dev-build cosmo and dycore with or without testing."
 section = "scripting"
@@ -42,8 +43,9 @@ def setup_parser(subparser):
         '-q', '--quiet', action='store_true', dest='quiet',
         help="do not display verbose build output while installing")
     subparser.add_argument(
-        '-u', '--until', type=str, dest='until', default=None,
-        help="phase to stop after when installing (default None)")
+        '--drop-in', type=str, dest='shell', default=None,
+        help="drop into a build environment in a new shell, e.g. bash, zsh")
+
     subparser.add_argument(
         '-t', '--test', action='store_true', help="Dev-build with testing")
     subparser.add_argument(
@@ -52,6 +54,14 @@ def setup_parser(subparser):
         '-w', '--without_dycore', action='store_true', help="Dev-build cosmo but not dycore")
 
     arguments.add_common_arguments(subparser, ['spec'])
+
+    stop_group = subparser.add_mutually_exclusive_group()
+    stop_group.add_argument(
+        '-b', '--before', type=str, dest='before', default=None,
+        help="phase to stop before when installing (default None)")
+    stop_group.add_argument(
+        '-u', '--until', type=str, dest='until', default=None,
+        help="phase to stop after when installing (default None)")
 
     cd_group = subparser.add_mutually_exclusive_group()
     arguments.add_common_arguments(cd_group, ['clean', 'dirty'])
@@ -72,11 +82,18 @@ def devbuildcosmo(self, args):
 
     # Set dycore_spec
     if not args.without_dycore:
-        dycore_spec = 'cosmo-dycore@dev-build'
+        dycore_spec = 'cosmo-dycore@dev-build '
     else:
-        dycore_spec = 'cosmo-dycore@master'
-    dycore_spec += ' real_type=' + cosmo_spec.variants['real_type'].value
+        dycore_spec = 'cosmo-dycore@master '
+
+    # extracting dycore variants
+    dycore_spec += cosmo_spec.format('{^cosmo-dycore.variants}')
+
+    # extracting correct mpi variant
     dycore_spec += ' ^' + cosmo_spec.format('{^mpi.name}') + '%' + cosmo_spec.compiler.name
+
+    # remove the slurm_args variant causing troubles to the concretizer
+    dycore_spec = dycore_spec.replace(cosmo_spec.format('{^cosmo-dycore.variants.slurm_args}'), ' ')
 
     base_directory = os.getcwd()
 
@@ -87,7 +104,8 @@ def devbuildcosmo(self, args):
 
         if not args.without_dycore:
           print('\033[92m' + '==> ' + '\033[0m' + 'dycore: Cleaning build directory')
-          shutil.rmtree(base_directory + '/spack-build')
+          if os.path.exists(base_directory + '/spack-build'):
+              shutil.rmtree(base_directory + '/spack-build')
 
     if cosmo_spec.satisfies('+cppdycore') and not args.without_dycore:
         # Concretize dycore spec and cosmo_serialize spec
@@ -107,7 +125,10 @@ def devbuildcosmo(self, args):
             print('\033[92m' + '==> ' + '\033[0m' + 'cosmo-dycore: Launching dycore tests')
             subprocess.run(['./dycore/test/tools/test_dycore.py', str(dycore_spec), base_directory + '/spack-build'])
 
-        temp_cosmo_spec = temp_cosmo_spec + ' ^/' + str(dycore_spec.dag_hash())
+        find_cmd = SpackCommand('find')
+        dycore_hash = find_cmd('--format', '{hash}', 'cosmo-dycore@dev-build', 'real_type=' + cosmo_spec.variants['real_type'].value, ' ^' + cosmo_spec.format('{^mpi.name}') + '%' + cosmo_spec.compiler.name)
+
+        temp_cosmo_spec = temp_cosmo_spec + ' ^/' + dycore_hash
         args.spec = temp_cosmo_spec
         args.ignore_deps = True
 

@@ -13,7 +13,7 @@ class Gridtools(CMakePackage):
     git = "git@github.com:GridTools/gridtools.git"
 
     maintainers = ['elsagermann']
-    
+
     version('master', branch='master')
     version('1.1.3', commit='d33fa6fecee0a7bd9e080212c1038f0dbd31fe97')
     version('1.1.2', commit='685880444d4599cc0871e4ec8032e7cccd1755e0')
@@ -22,7 +22,7 @@ class Gridtools(CMakePackage):
     version('1.0.2', commit='2d42ea7d7639de1b52a2106e049a21cfea7192ea')
     version('1.0.1', commit='11053321adac080abee0c6d8399ed6a63479bb48')
     version('1.0.0', commit='5dfeace6f20eefa6633102533d5a0e1564361ecf')
-    
+
     variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'DebugRelease'))
     variant('shared_libs', default=False, description="Build shared librairies")
     variant('install_examples', default=False, description="Build with examples")
@@ -68,7 +68,7 @@ class Gridtools(CMakePackage):
         args.append('-DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=ON')
       else:
         args.append('-DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=OFF')
- 
+
       if spec.variants['enable_bindings_gerneration'].value: 
         args.append('-DGT_ENABLE_BINDINGS_GENERATION=ON')
       else:
@@ -83,7 +83,7 @@ class Gridtools(CMakePackage):
         args.append('-DGT_USE_MPI=ON')
       else:
         args.append('-DGT_USE_MPI=OFF')
-  
+
       if '+cuda' in spec:
         args.append('-DCUDA_ARCH=sm_{0}'.format(self.spec.variants['cuda_arch'].value))
         args.append('-DGT_ENABLE_BACKEND_CUDA=ON')

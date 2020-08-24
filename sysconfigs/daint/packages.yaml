@@ -61,8 +61,8 @@ packages:
             cray-libsci_acc@19.10.1%pgi:   cray-libsci_acc/19.10.1
     cuda:
         modules:
-          cuda@10.0: cudatoolkit/10.0.130_3.22-7.0.1.0_5.2__gdfb4ce5
-          cuda@10.1: cudatoolkit/10.1.105_3.27-7.0.1.1_4.1__ga311ce7
+          cuda@10.0%gcc: cudatoolkit/10.0.130_3.22-7.0.1.0_5.2__gdfb4ce5
+          cuda@10.1%gcc: cudatoolkit/10.1.105_3.27-7.0.1.1_4.1__ga311ce7
         version: ['10.1']
     curl:
         paths:
@@ -222,7 +222,7 @@ packages:
             readline@7.0: /usr
     slurm:
       modules:
-        slurm@19.05.3-2: slurm/19.05.3-2
+        slurm@19.05.3-2%gcc: slurm/19.05.3-2
     tar:
         paths:
              tar@1.30.0: /bin
