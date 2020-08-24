@@ -35,7 +35,7 @@ def custom_devbuild(source_path, spec):
     package.stage = DIYStage(source_path)
 
     if package.installed:
-        package.do_uninstall()
+        package.do_uninstall(force=True)
 
     package.do_install(verbose=True)
 
