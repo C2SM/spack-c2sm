@@ -117,13 +117,16 @@ class Cosmo(MakefilePackage):
             grib_prefix = self.spec['cosmo-grib-api'].prefix
             grib_definition_prefix = self.spec['cosmo-grib-api-definitions'].prefix
             spack_env.set('GRIBAPIL', '-L' + grib_prefix + '/lib -lgrib_api_f90 -lgrib_api -L' + self.spec['jasper'].prefix + '/lib64 -ljasper')
+            spack_env.set('GRIBAPII', '-I' + grib_prefix + '/include')
+            spack_env.set('GRIB_DEFINITION_PATH', grib_definition_prefix + '/cosmoDefinitions/definitions/:' + grib_prefix + '/share/grib_api/definitions/')
+            spack_env.set('GRIB_SAMPLES_PATH', grib_definition_prefix + '/cosmoDefinitions/samples/')
         else:
             grib_prefix = self.spec['eccodes'].prefix
             grib_definition_prefix = self.spec['cosmo-eccodes-definitions'].prefix
             spack_env.set('GRIBAPIL', '-L' + grib_prefix + '/lib -leccodes_f90 -leccodes -L' + self.spec['jasper'].prefix + '/lib64 -ljasper')
-        spack_env.set('GRIBAPII', '-I' + grib_prefix + '/include')
-        spack_env.set('GRIB_DEFINITION_PATH', grib_definition_prefix + '/cosmoDefinitions/definitions/:' + grib_prefix + '/share/grib_api/definitions/')
-        spack_env.set('GRIB_SAMPLES_PATH', grib_definition_prefix + '/cosmoDefinitions/samples/')
+            spack_env.set('GRIBAPII', '-I' + grib_prefix + '/include')
+            spack_env.set('ECCODES_DEFINITION_PATH', grib_definition_prefix + '/cosmoDefinitions/definitions/:' + grib_prefix + '/share/eccodes/definitions/')
+            spack_env.set('ECCODES_SAMPLES_PATH', grib_definition_prefix + '/cosmoDefinitions/samples/')
 
         # Netcdf library
         if self.spec.variants['slave'].value == 'daint':
