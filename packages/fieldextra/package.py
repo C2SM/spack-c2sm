@@ -23,7 +23,7 @@
 from spack import *
 
 
-class Fieldextra(MakefilePackage):
+class Fieldextra(CMakePackage):
     """Fieldextra is a generic tool to manipulate NWP model data and gridded observations; simple data processing and more complex data operations are supported. Fieldextra is designed as a toolbox; a large set of primitive operations which can be arbitrarily combined are provided."""
 
     homepage = "http://www.cosmo-model.org/content/support/software/default.html"
@@ -65,68 +65,15 @@ class Fieldextra(MakefilePackage):
     # profiling
     depends_on('icontools@2.3.6 build_type=debug', when='build_type=debug')
     depends_on('fieldextra-grib1@2.15 build_type=profiling', when='build_type=profiling')
-
-    build_directory = 'src'
     
-    @property
-    def build_targets(self):
+    
+    def cmake_args(self):
         spec = self.spec
         
-        global mode
+        args = []
 
-        if self.compiler.name == 'gcc':
-            mode = 'gnu'
-        else:
-            mode = self.compiler.name
-        if spec.variants['build_type'].value == 'debug':
-            mode += ',dbg'
-        elif spec.variants['build_type'].value == 'optimized':
-            mode += ',opt'
-        elif spec.variants['build_type'].value == 'profiling':
-            mode += ',prof'
-        if self.spec.variants['openmp'].value:
-            mode += ',omp'
+        return args
 
-        return ['mode=' + mode,
-        ]
-
-    def edit(self, spec, prefix): 
-        with working_dir(self.build_directory):
-            optionsfilter = FileFilter('Makefile')
-            optionsfilter.filter('lgrib1dir *=.*', 'lgrib1dir = ' + spec['fieldextra-grib1'].prefix + '/lib')
-            optionsfilter.filter('laecdir *=.*', 'laecdir = ' + spec['libaec'].prefix + '/lib')
-            optionsfilter.filter('ljasperdir *=.*', 'ljasperdir = ' + spec['jasper'].prefix + '/lib')
-            optionsfilter.filter('leccdir *=.*', 'leccdir = ' + spec['eccodes'].prefix + '/lib')
-            optionsfilter.filter('lzdir *=.*', 'lzdir = ' + spec['zlib'].prefix + '/lib')
-            optionsfilter.filter('lhdf5dir *=.*', 'lhdf5dir = ' + spec['hdf5'].prefix + '/lib')
-            optionsfilter.filter('lnetcdfcdir *=.*', 'lnetcdfcdir = ' + spec['netcdf-c'].prefix + '/lib')
-            optionsfilter.filter('lnetcdffortrandir *=.*', 'lnetcdffortrandir = ' + spec['netcdf-fortran'].prefix + '/lib')
-            optionsfilter.filter('lrttovdir *=.*', 'lrttovdir = ' + spec['rttov'].prefix + '/lib')
-            optionsfilter.filter('licontoolsdir *=.*', 'licontoolsdir = ' + spec['icontools'].prefix + '/lib')  
-            force_symlink('locale_mch/fxtr_operator_specific.f90', 'fxtr_operator_specific.f90')
-            force_symlink('locale_mch/fxtr_write_specific.f90', 'fxtr_write_specific.f90')
-
-    def install(self, spec, prefix):
-        with working_dir(self.build_directory):
-            options = ['mode=' + mode]
-            make('install', *options)
-        install_tree('bin', prefix.bin)
-        install_tree('cookbook', prefix.cookbook)
-        install_tree('resources', prefix.resources)
-
-
-    @run_after('install')
-    @on_package_attributes(run_tests=True)
-    def test(self):
-        copy_tree(self.spec['eccodes'].prefix +'/bin', self.build_directory + '/../tools')
-        copy_tree(self.spec['netcdf-c'].prefix +'/bin', self.build_directory + '/../tools')
-        copy_tree(self.spec['netcdf-fortran'].prefix +'/bin', self.build_directory + '/../tools')
-        with working_dir('cookbook'):
-            run_cmd = './run.bash'
-            if self.compiler.name == 'gcc':
-                run_cmd += ' -c gnu'
-            else:
-                run_cmd +=  ' -c ' + self.compiler.name
-            run_cmd += ' -m opt_omp'
-            run_test = Executable(run_cmd)
-            run_test()
+    # @run_after('install')
+    # @on_package_attributes(run_tests=True)
+    # def test(self):
