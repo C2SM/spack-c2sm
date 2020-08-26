@@ -39,10 +39,10 @@ class Fieldextra(CMakePackage):
 
     depends_on('libaec@1.0.0 ~build_shared_libs')
     depends_on('jasper@1.900.1 ~shared')
-    depends_on('hdf5@1.8.21 +hl ~mpi +fortran')
-    depends_on('zlib@1.2.11')
-    depends_on('netcdf-c@4.7.0 ~mpi')
-    depends_on('netcdf-fortran ~mpi')
+    depends_on('hdf5@1.8.21 +hl ~mpi +fortran ~shared')
+    depends_on('zlib@1.2.11 ~shared')
+    depends_on('netcdf-c@4.7.0 ~mpi ~shared')
+    depends_on('netcdf-fortran ~mpi ~shared')
     depends_on('rttov@11.2.0')
 
     # parallelization
