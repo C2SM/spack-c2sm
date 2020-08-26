@@ -65,13 +65,16 @@ class Fieldextra(CMakePackage):
     # profiling
     depends_on('icontools@2.3.6 build_type=debug', when='build_type=debug')
     depends_on('fieldextra-grib1@2.15 build_type=profiling', when='build_type=profiling')
-    
-    
+
+
     def cmake_args(self):
         spec = self.spec
-        
+
         args = []
 
+        args.append('-DRTTOV_VERSION={0}'.format(spec.format('{^rttov.version}')))
+        if '~openmp' in spec:
+            args.append('-DMULTITHREAD_BUILD=False')
         return args
 
     # @run_after('install')
