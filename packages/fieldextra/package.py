@@ -41,7 +41,7 @@ class Fieldextra(CMakePackage):
     depends_on('jasper@1.900.1 ~shared')
     depends_on('hdf5@1.8.21 +hl ~mpi +fortran')
     depends_on('zlib@1.2.11')
-    depends_on('netcdf-c ~mpi')
+    depends_on('netcdf-c@4.7.0 ~mpi')
     depends_on('netcdf-fortran ~mpi')
     depends_on('rttov@11.2.0')
 
