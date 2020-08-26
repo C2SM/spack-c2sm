@@ -34,7 +34,7 @@ class Fieldextra(CMakePackage):
     version('v13.2.0', commit='fe0a8b14314d7527168fd5684d89828bbd83ebf2')
     version('v13.1.0', commit='9649ec36dc36dfe3ef679a507f9a849dc2fdd452')
     
-    variant('build_type', default='optimized', description='Build type', values=('debug', 'optimized', 'profiling'))
+    variant('build_type', default='RELEASE', description='Build type', values=('RELEASE', 'DEBUG', 'PROFILING'))
     variant('openmp', default=True)
 
     depends_on('libaec@1.0.0 ~build_shared_libs')
