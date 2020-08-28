@@ -139,6 +139,8 @@ class Cosmo(MakefilePackage):
         # Grib1 library
         if self.compiler.name == 'gcc':
             spack_env.set('GRIBDWDL', '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_gnu')
+        elif self.compiler.name == 'cce':
+            spack_env.set('GRIBDWDL', '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_cray')
         else:
             spack_env.set('GRIBDWDL', '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_' + self.compiler.name)
         spack_env.set('GRIBDWDI', '-I' + self.spec['libgrib1'].prefix + '/include')
