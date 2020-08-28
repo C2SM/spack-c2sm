@@ -190,6 +190,9 @@ class Cosmo(MakefilePackage):
         if self.compiler.name == 'pgi':
             spack_env.set('F90', self.spec['mpi'].mpifc + ' -D__PGI_FORTRAN__')
             spack_env.set('LD', self.spec['mpi'].mpifc + ' -D__PGI_FORTRAN__')
+        if self.compiler.name == 'cce':
+            spack_env.set('F90', 'ftn -D__CRAY_FORTRAN__')
+            spack_env.set('LD', 'ftn -D__CRAY_FORTRAN__')
         else:
             spack_env.set('F90', self.spec['mpi'].mpifc)
             spack_env.set('LD', self.spec['mpi'].mpifc)

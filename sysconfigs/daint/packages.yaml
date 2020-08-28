@@ -70,6 +70,8 @@ packages:
     diffutils:
         paths:
              diffutils@3.6: /usr
+    eccodes:
+        variants: build_type=Production
     elpa:
         variants: +openmp +optflags
 

@@ -69,6 +69,8 @@ packages:
   slurm:
     modules:
       slurm@19.05.05%gcc: slurm/19.05.05
+  eccodes:
+    variants: build_type=Production
   int2lm:
     variants: slave=tsa
   libgrib1:
