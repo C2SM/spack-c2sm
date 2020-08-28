@@ -28,17 +28,18 @@ class Icontools(MakefilePackage):
 
     homepage = "http://www.cosmo-model.org/content/support/software/default.html"
     url = "https://github.com/MeteoSwiss-APN/fieldextra-icontools.git"
-    git      = 'git@github.com:MeteoSwiss-APN/fieldextra-icontools.git'
+    git      = 'git@github.com:COSMO-ORG/fieldextra.git'
     maintainers = ['elsagermann']
 
-    version('2.3.6', commit='33d2784c14ed7d2c82911f2fd5c76449a3a00cae')
+    version('2.4.3', commit='38a9f830ab15fb9f3b770173f63a3692a6a381a4')
 
     variant('build_type', default='optimized', description='Build type', values=('debug', 'optimized'))
     variant('openmp', default=True)
 
-    depends_on('netcdf-c ~mpi')
-    depends_on('netcdf-fortran ~mpi')
+    depends_on('netcdf-c')
+    depends_on('netcdf-fortran')
 
+    build_directory= 'icontools/icontools-2.4.3/'
     @property
     def build_targets(self):
         spec = self.spec

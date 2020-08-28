@@ -27,15 +27,15 @@ class FieldextraGrib1(MakefilePackage):
 
     homepage = "http://www.cosmo-model.org/content/support/software/default.html"
     url      = "https://github.com/MeteoSwiss-APN/fieldextra-grib1.git"
-    git      = 'git@github.com:MeteoSwiss-APN/fieldextra-grib1.git'
+    git      = 'git@github.com:COSMO-ORG/fieldextra.git'
     maintainers = ['elsagermann']
 
-    version('2.15', commit='26d9f416adf395779813e67e37f51f2b5cef7da2')
+    version('v13.2.2', commit='38a9f830ab15fb9f3b770173f63a3692a6a381a4')
 
     variant('build_type', default='optimized', description='Build type', values=('debug', 'optimize    d', 'profiling'))
     variant('openmp', default=True)
 
-    build_directory = 'src'
+    build_directory = 'grib1/src'
 
     @property
     def build_targets(self):

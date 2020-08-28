@@ -30,7 +30,8 @@ class Fieldextra(CMakePackage):
     url      = "https://github.com/COSMO-ORG/fieldextra"
     git      = 'git@github.com:COSMO-ORG/fieldextra.git'
     maintainers = ['elsagermann']
-
+    
+    version('v13.2.2', commit='38a9f830ab15fb9f3b770173f63a3692a6a381a4')
     version('v13.2.0', commit='fe0a8b14314d7527168fd5684d89828bbd83ebf2')
     version('v13.1.0', commit='9649ec36dc36dfe3ef679a507f9a849dc2fdd452')
     
@@ -38,33 +39,33 @@ class Fieldextra(CMakePackage):
     variant('openmp', default=True)
 
     depends_on('libaec@1.0.0 ~build_shared_libs')
-    depends_on('jasper@1.900.1 ~shared')
-    depends_on('hdf5@1.8.21 +hl ~mpi +fortran ~shared')
-    depends_on('zlib@1.2.11 ~shared')
-    depends_on('netcdf-c@4.7.0 ~mpi ~shared')
-    depends_on('netcdf-fortran ~mpi ~shared')
+    depends_on('jasper@2.0.14: ~shared')
+    depends_on('hdf5@1.8.21 +hl +fortran')
+    depends_on('zlib@1.2.11')
+    depends_on('netcdf-c@4.4.0')
+    depends_on('netcdf-fortran@4.4.4')
     depends_on('rttov@11.2.0')
 
     # parallelization
-    depends_on('eccodes@2.14.1 build_type=Production jp2k=jasper +openmp', when='+openmp')
-    depends_on('eccodes@2.14.1 build_type=Production jp2k=jasper ~openmp', when='~openmp')
-    depends_on('icontools@2.3.6 +openmp', when='+openmp')
-    depends_on('icontools@2.3.6 ~openmp', when='~openmp')
-    depends_on('fieldextra-grib1@2.15 +openmp', when='+openmp')
-    depends_on('fieldextra-grib1@2.15 ~openmp', when='~openmp')
+    depends_on('eccodes@2.18.0 build_type=Production +netcdf jp2k=jasper +openmp', when='+openmp')
+    depends_on('eccodes@2.18.0 build_type=Production +netcdf jp2k=jasper ~openmp', when='~openmp')
+    depends_on('icontools@2.4.3 +openmp', when='+openmp')
+    depends_on('icontools@2.4.3 ~openmp', when='~openmp')
+    depends_on('fieldextra-grib1@v13.2.2 +openmp', when='+openmp')
+    depends_on('fieldextra-grib1@v13.2.2 ~openmp', when='~openmp')
     
     # optimization
     # optimized
-    depends_on('icontools@2.3.6 build_type=optimized', when='build_type=optimized')
-    depends_on('fieldextra-grib1@2.15 build_type=optimized', when='build_type=optimized')
+    depends_on('icontools build_type=optimized', when='build_type=RELEASE')
+    depends_on('fieldextra-grib1 build_type=optimized', when='build_type=RELEASE')
 
     # debug
-    depends_on('icontools@2.3.6 build_type=debug', when='build_type=debug')
-    depends_on('fieldextra-grib1@2.15 build_type=debug', when='build_type=debug')
+    depends_on('icontools build_type=debug', when='build_type=DEBUG')
+    depends_on('fieldextra-grib1 build_type=debug', when='build_type=DEBUG')
 
     # profiling
-    depends_on('icontools@2.3.6 build_type=debug', when='build_type=debug')
-    depends_on('fieldextra-grib1@2.15 build_type=profiling', when='build_type=profiling')
+    depends_on('icontools build_type=debug', when='build_type=PROFILING')
+    depends_on('fieldextra-grib1 build_type=profiling', when='build_type=PROFILING')
 
 
     def cmake_args(self):
@@ -74,7 +75,7 @@ class Fieldextra(CMakePackage):
 
         args.append('-DRTTOV_VERSION={0}'.format(spec.format('{^rttov.version}')))
         if '~openmp' in spec:
-            args.append('-DMULTITHREAD_BUILD=False')
+            args.append('-DMULTITHREADED_BUILD=OFF')
         return args
 
     # @run_after('install')
