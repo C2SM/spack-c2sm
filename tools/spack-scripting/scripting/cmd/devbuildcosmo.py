@@ -58,7 +58,7 @@ def devbuildcosmo(self, args):
     dycore_spec = cosmo_spec.format('{^cosmo-dycore.name}') + cosmo_spec.format('{^cosmo-dycore.@version}') + cosmo_spec.format('{^cosmo-dycore.%compiler}') + cosmo_spec.format('{^cosmo-dycore.variants}')
 
     # Extracting correct mpi variant
-    dycore_spec += ' ^' + cosmo_spec.format('{^mpi.name}') + cosmo_spec.format('{^mpi.@version}') + cosmo_spec.format('{^mpi.%compiler}') + cosmo_spec.format('{^mpi.variants}')
+    dycore_spec += ' ^' + cosmo_spec.format('{^mpicuda.name}') + cosmo_spec.format('{^mpicuda.@version}') + cosmo_spec.format('{^mpicuda.%compiler}') + cosmo_spec.format('{^mpicuda.variants}')
 
     # remove the slurm_args variant causing troubles to the concretizer
     dycore_spec = dycore_spec.replace(cosmo_spec.format('{^cosmo-dycore.variants.slurm_args}'), ' ')
