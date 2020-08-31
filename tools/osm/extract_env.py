@@ -37,7 +37,7 @@ def main():
     shutil.copytree(cosmo_spec.format('{^eccodes.prefix}'), os.path.join(args.idir, eccodes_dir))
 
     print('Installing ' + cosmo_spec.format('{^cosmo-eccodes-definitions.prefix}') + ' to: ' + os.path.join(args.idir, eccodes_definitions_dir))
-    #shutil.copytree(cosmo_spec.format('{^cosmo-eccodes-definitions.prefix}'), os.path.join(args.idir, eccodes_definitions_dir))
+    shutil.copytree(cosmo_spec.format('{^cosmo-eccodes-definitions.prefix}'), os.path.join(args.idir, eccodes_definitions_dir))
     
     with open(cosmo_dir + '_run-env', 'w') as outfile:
         subprocess.run(['spack', 'load', '--sh', args.spec], stdout=outfile)
