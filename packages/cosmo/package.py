@@ -79,14 +79,15 @@ class Cosmo(MakefilePackage):
     variant('serialize', default=False, description='Build with serialization enabled')
     variant('parallel', default=True, description='Build parallel COSMO')
     variant('debug', default=False, description='Build debug mode')
-    variant('cosmo_target', default='gpu', description='Build with target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('real_type', default='double', description='Build with double or single precision enabled', values=('double', 'float'), multi=False)
     variant('claw', default=False, description='Build with claw-compiler')
     variant('slave', default='tsa', description='Build on slave tsa, daint or kesch', multi=False)
     variant('eccodes', default=True, description='Build with eccodes instead of grib-api')
     variant('pollen', default=False, description='Build with pollen enabled')
+    variant('cosmo_target', default='gpu', description='Build with target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('verbose', default=False, description='Build cosmo with verbose enabled')
     variant('gt1', default=False, description='Build dycore with gridtools 1.1.3')
+    variant('cuda_arch', default='none', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
 
     conflicts('+claw', when='cosmo_target=cpu')
     conflicts('+pollen', when='@5.05:5.06,master')
@@ -111,34 +112,92 @@ class Cosmo(MakefilePackage):
 
     build_directory = 'cosmo/ACC'
 
-    def setup_build_environment(self, env):
-        self.setup_run_environment(env)
+    def setup_environment(self, spack_env, run_env):
+        # Grib-api. eccodes library
         if '~eccodes' in self.spec:
-          env.set('GRIBAPI_DIR', self.spec['cosmo-grib-api'].prefix)
+            grib_prefix = self.spec['cosmo-grib-api'].prefix
+            grib_definition_prefix = self.spec['cosmo-grib-api-definitions'].prefix
+            spack_env.set('GRIBAPIL', '-L' + grib_prefix + '/lib -lgrib_api_f90 -lgrib_api -L' + self.spec['jasper'].prefix + '/lib64 -ljasper')
+            spack_env.set('GRIBAPII', '-I' + grib_prefix + '/include')
+            spack_env.set('GRIB_DEFINITION_PATH', grib_definition_prefix + '/cosmoDefinitions/definitions/:' + grib_prefix + '/share/grib_api/definitions/')
+            spack_env.set('GRIB_SAMPLES_PATH', grib_definition_prefix + '/cosmoDefinitions/samples/')
         else:
-          env.set('GRIBAPI_DIR', self.spec['eccodes'].prefix)
-        env.set('GRIB1_DIR', self.spec['libgrib1'].prefix + '/lib')
-        env.set('JASPER_DIR', self.spec['jasper'].prefix)
-        if 'cosmo_target=gpu' in self.spec:
-            env.set('MPI_ROOT', self.spec['mpicuda'].prefix)
+            grib_prefix = self.spec['eccodes'].prefix
+            grib_definition_prefix = self.spec['cosmo-eccodes-definitions'].prefix
+            spack_env.set('GRIBAPIL', '-L' + grib_prefix + '/lib -leccodes_f90 -leccodes -L' + self.spec['jasper'].prefix + '/lib64 -ljasper')
+            spack_env.set('GRIBAPII', '-I' + grib_prefix + '/include')
+            spack_env.set('ECCODES_DEFINITION_PATH', grib_definition_prefix + '/cosmoDefinitions/definitions/:' + grib_prefix + '/share/eccodes/definitions/')
+            spack_env.set('ECCODES_SAMPLES_PATH', grib_definition_prefix + '/cosmoDefinitions/samples/')
+
+        # Netcdf library
+        if self.spec.variants['slave'].value == 'daint':
+            spack_env.set('NETCDFL', '-L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf')
+            spack_env.set('NETCDFI', '-I$(NETCDF_DIR)/include')
         else:
-            env.set('MPI_ROOT', self.spec['mpi'].prefix)
-        if self.spec.variants['cosmo_target'].value == 'gpu' or '+serialize' in self.spec:
-            env.set('BOOST_ROOT',  self.spec['boost'].prefix)
+            spack_env.set('NETCDFL', '-L' + self.spec['netcdf-fortran'].prefix + '/lib -lnetcdff -L' + self.spec['netcdf-c'].prefix + '/lib64 -lnetcdf')
+            spack_env.set('NETCDFI', '-I' + self.spec['netcdf-fortran'].prefix + '/include')
+
+        # Grib1 library
+        if self.compiler.name == 'gcc':
+            spack_env.set('GRIBDWDL', '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_gnu')
+        else:
+            spack_env.set('GRIBDWDL', '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_' + self.compiler.name)
+        spack_env.set('GRIBDWDI', '-I' + self.spec['libgrib1'].prefix + '/include')
+        
+        # MPI library
+        if self.spec['mpi'].name == 'openmpi':
+            spack_env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpi_cxx')        
+        spack_env.set('MPII', '-I'+ self.spec['mpi'].prefix + '/include')
+        
+        # Dycoregt & Gridtools linrary
         if '+cppdycore' in self.spec:
             if '+gt1' in self.spec:
-                env.set('GRIDTOOLS_DIR', self.spec['gridtools'].prefix)
-            env.set('DYCOREGT', self.spec['cosmo-dycore'].prefix)
-            env.set('DYCOREGT_DIR', self.spec['cosmo-dycore'].prefix)
+                spack_env.set('GRIDTOOLS_DIR', self.spec['gridtools'].prefix)
+                spack_env.set('GRIDTOOLSL', '-L' + self.spec['gridtools'].prefix + '/lib -lgcl')
+                spack_env.set('GRIDTOOLSI', '-I' + self.spec['gridtools'].prefix + '/include/gridtools')
+            spack_env.set('DYCOREGT', self.spec['cosmo-dycore'].prefix)
+            spack_env.set('DYCOREGT_DIR', self.spec['cosmo-dycore'].prefix)
+            spack_env.set('DYCOREGTL', '-L' + self.spec['cosmo-dycore'].prefix + '/lib -ldycore_bindings_' + self.spec.variants['real_type'].value + ' -ldycore_base_bindings_' + self.spec.variants['real_type'].value + ' -ldycore -ldycore_base -ldycore_backend -lstdc++ -lcpp_bindgen_generator -lcpp_bindgen_handle -lgt_gcl_bindings')
+            spack_env.set('DYCOREGTI', '-I' + self.spec['cosmo-dycore'].prefix)
+
+        # Serialbox library
         if '+serialize' in self.spec:
-          env.set('SERIALBOX_DIR', self.spec['serialbox'].prefix)
-          env.set('SERIALBOX_FORTRAN_LIBRARIES', self.spec['serialbox'].prefix + '/lib/libSerialboxFortran.a ' +  self.spec['serialbox'].prefix + '/lib/libSerialboxC.a ' + self.spec['serialbox'].prefix + '/lib/libSerialboxCore.a -lstdc++fs -lpthread')
+            spack_env.set('SERIALBOX', self.spec['serialbox'].prefix)
+            spack_env.set('SERIALBOXL', self.spec['serialbox'].prefix + '/lib/libSerialboxFortran.a ' +  self.spec['serialbox'].prefix + '/lib/libSerialboxC.a ' + self.spec['serialbox'].prefix + '/lib/libSerialboxCore.a -lstdc++fs -lpthread -lstdc++')
+            spack_env.set('SERIALBOXI','-I' + self.spec['serialbox'].prefix + '/include')
+
+        # Claw library
         if '+claw' in self.spec:
-            env.set('CLAWDIR', self.spec['claw'].prefix)
-            env.set('CLAWFC', self.spec['claw'].prefix + '/bin/clawfc')
-            env.set('CLAWXMODSPOOL', self.spec['omni-xmod-pool'].prefix + '/omniXmodPool/')
-            if self.spec['mpi'].name == 'mpich' or self.spec['mpicuda'].name == 'mpich':
-                env.append_flags('CLAWFC_FLAGS', '-U__CRAYXC')
+            if 'cosmo_target=gpu' in self.spec:
+                spack_env.append_flags('CLAWFC_FLAGS', '--directive=openacc -v')
+            spack_env.set('CLAWDIR', self.spec['claw'].prefix)
+            spack_env.set('CLAWFC', self.spec['claw'].prefix + '/bin/clawfc')
+            spack_env.set('CLAWXMODSPOOL', self.spec['omni-xmod-pool'].prefix + '/omniXmodPool/')
+            if self.spec['mpi'].name == 'mpich':
+                spack_env.set('CLAWFC_FLAGS', '-U__CRAYXC')
+
+        # Linker flags
+        if self.compiler.name == 'pgi' and '~cppdycore' in self.spec:
+            env['LFLAGS'] = '-lstdc++'
+
+        # Test-enabling variables
+        spack_env.set('UCX_MEMTYPE_CACHE', 'n')
+        if self.spec.variants['cosmo_target'].value == 'gpu':
+          spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
+        else:
+            spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cma')
+
+        # Compiler & linker variables
+        if 'cosmo_target=gpu' in spec:
+            mpi_spec = spec['mpicuda'].mpifc
+        else:
+            mpi_spec = spec['mpi'].mpifc
+        if self.compiler.name == 'pgi':
+            spack_env.set('F90', mpi_spec + ' -D__PGI_FORTRAN__')
+            spack_env.set('LD', mpi_spec + ' -D__PGI_FORTRAN__')
+        else:
+            spack_env.set('F90', MPISPEC)
+            spack_env.set('LD', MPISPEC)
 
     @property
     def build_targets(self):
@@ -169,16 +228,8 @@ class Cosmo(MakefilePackage):
         return build
 
     def edit(self, spec, prefix):
-        if 'cosmo_target=gpu' in spec:
-            env['FC'] = spec['mpicuda'].mpifc
-        else:
-            env['FC'] = spec['mpi'].mpifc
         with working_dir(self.build_directory):
-            makefile = FileFilter('Makefile')
-            if 'tsa' in self.spec.variants['slave'].value:
-                OptionsFileName= 'Options.tsa'
-            else:
-                OptionsFileName= 'Options.' + self.spec.variants['slave'].value
+            OptionsFileName= 'Options'
             if self.compiler.name == 'gcc':
                 OptionsFileName += '.gnu'
             elif self.compiler.name == 'pgi':
@@ -186,22 +237,24 @@ class Cosmo(MakefilePackage):
             elif self.compiler.name == 'cce':
                 OptionsFileName += '.cray'
             OptionsFileName += '.' + spec.variants['cosmo_target'].value
-            optionsfilter = FileFilter(OptionsFileName)
-
-            if 'tsa' in self.spec.variants['slave'].value:
-                optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I{0}/include'.format(spec['netcdf-fortran'].prefix))
-                optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L{0}/lib -lnetcdff -L{1}/lib64 -lnetcdf'.format(spec['netcdf-fortran'].prefix, spec['netcdf-c'].prefix))
-            else:
-                optionsfilter.filter('NETCDFI *=.*', 'NETCDFI = -I$(NETCDF_DIR)/include')
-                optionsfilter.filter('NETCDFL *=.*', 'NETCDFL = -L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf')
-            optionsfilter = FileFilter('Options.lib.' + spec.variants['cosmo_target'].value)
-            if '+eccodes' in spec:
-              optionsfilter.filter('GRIBAPIL *=.*', 'GRIBAPIL = -L$(GRIBAPI_DIR)/lib -leccodes_f90 -leccodes -L$(JASPER_DIR)/lib -ljasper')
+            OptionsFile = FileFilter(OptionsFileName)
+            
+            makefile = FileFilter('Makefile')
             makefile.filter('/Options.*', '/' + OptionsFileName)
             if '~serialize' in spec:
                 makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo_'+ spec.variants['cosmo_target'].value))
             else:
                 makefile.filter('TARGET     :=.*', 'TARGET     := {0}'.format('cosmo'))
+
+            if 'cosmo_target=gpu' in self.spec:
+                cuda_version = self.spec['cuda'].version
+                fflags = 'CUDA_HOME=' + self.spec['cuda'].prefix + ' -ta=tesla,cc' + self.spec.variants['cuda_arch'].value + ',cuda' + str(cuda_version.up_to(2))
+                OptionsFile.filter('FFLAGS   = -Kieee', 'FFLAGS   = -Kieee {0}'.format(fflags))
+            # Pre-processor flags
+            if self.spec['mpi'].name == 'mpich':
+                OptionsFile.filter('PFLAGS   = -Mpreprocess', 'PFLAGS   = -Mpreprocess -DNO_MPI_HOST_DATA')
+            if 'cosmo_target=gpu' in self.spec and self.compiler.name == 'pgi':
+                OptionsFile.filter('PFLAGS   = -Mpreprocess', 'PFLAGS   = -Mpreprocess -DNO_ACC_FINALIZE')
 
     def install(self, spec, prefix):
         mkdir(prefix.cosmo)
