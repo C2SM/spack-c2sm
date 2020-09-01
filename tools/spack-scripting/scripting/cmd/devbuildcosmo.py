@@ -25,6 +25,7 @@ level = "long"
 
 def setup_parser(subparser):
     arguments.add_common_arguments(subparser, ['jobs'])
+
     subparser.add_argument(
         '-t', '--test', action='store_true', help="Dev-build with testing")
     subparser.add_argument(
@@ -75,15 +76,14 @@ def devbuildcosmo(self, args):
         # Extracting correct mpi variant
         dycore_spec += ' ^' + cosmo_spec.format('{^mpi.name}') + cosmo_spec.format('{^mpi.@version}') + cosmo_spec.format('{^mpi.%compiler}') + cosmo_spec.format('{^mpi.variants}')
 
-        # remove the slurm_args variant causing troubles to the concretizer
+        # Remove the slurm_args variant causing troubles to the concretizer
         dycore_spec = dycore_spec.replace(cosmo_spec.format('{^cosmo-dycore.variants.slurm_args}'), ' ')
-
 
         dycore_spec = Spec(dycore_spec).concretized()
 
-        # Dev-build dycore
         custom_devbuild(source_path, dycore_spec, args.jobs)
-
+        
+        # Launch dycore tests
         if args.test:
             print('\033[92m' + '==> ' + '\033[0m' + 'cosmo-dycore: Launching dycore tests')
             subprocess.run(['./dycore/test/tools/test_dycore.py', str(dycore_spec), source_path + '/spack-build'])
