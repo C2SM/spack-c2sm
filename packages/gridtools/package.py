@@ -37,9 +37,9 @@ class Gridtools(CMakePackage):
     depends_on('ncurses')
     depends_on('cmake@3.14.5:%gcc')
     depends_on('boost@1.67.0:')
-    depends_on('mpi',  type=('build', 'run'), when='~cuda')
-    depends_on('mpicuda',  type=('build', 'run'), when='+cuda')
-    depends_on('cuda', type=('build', 'run'), when='+cuda')
+    depends_on('mpi',  type=('build', 'link', 'run'), when='~cuda')
+    depends_on('mpicuda',  type=('build', 'link', 'run'), when='+cuda')
+    depends_on('cuda', type=('build', 'link', 'run'), when='+cuda')
 
     def cmake_args(self):
       spec = self.spec
