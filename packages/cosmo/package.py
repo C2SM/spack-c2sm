@@ -111,9 +111,6 @@ class Cosmo(MakefilePackage):
     conflicts('+cppdycore', when='%pgi cosmo_target=cpu')
 
     build_directory = 'cosmo/ACC'
-    
-    def setup_run_environment(self, env):
-        env.set('REAL_TYPE', self.spec.variants['real_type'].value.upper())
 
     def setup_build_environment(self, env):
         self.setup_run_environment(env)
