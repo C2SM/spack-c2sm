@@ -24,20 +24,22 @@ section = "scripting"
 level = "long"
 
 def setup_parser(subparser):
+    arguments.add_common_arguments(subparser, ['jobs'])
+
     subparser.add_argument(
         '-t', '--test', action='store_true', help="Dev-build with testing")
     subparser.add_argument(
         '-c', '--clean_build', action='store_true', help="Clean dev-build")
     arguments.add_common_arguments(subparser, ['spec'])
 
-def custom_devbuild(source_path, spec):
+def custom_devbuild(source_path, spec, jobs):
     package = spack.repo.get(spec)
     package.stage = DIYStage(source_path)
 
     if package.installed:
         package.do_uninstall(force=True)
 
-    package.do_install(verbose=True)
+    package.do_install(verbose=True, make_jobs=jobs)
 
 def devbuildcosmo(self, args):
     # Extract and concretize cosmo_spec
@@ -50,21 +52,6 @@ def devbuildcosmo(self, args):
 
     cosmo_spec = specs[0]
     cosmo_spec.concretize()
-
-    # Set dycore_spec
-    dycore_spec = 'cosmo-dycore@dev-build'
-
-    # Extracting dycore variants
-    dycore_spec = cosmo_spec.format('{^cosmo-dycore.name}') + cosmo_spec.format('{^cosmo-dycore.@version}') + cosmo_spec.format('{^cosmo-dycore.%compiler}') + cosmo_spec.format('{^cosmo-dycore.variants}')
-
-    # Extracting correct mpi variant
-    dycore_spec += ' ^' + cosmo_spec.format('{^mpicuda.name}') + cosmo_spec.format('{^mpicuda.@version}') + cosmo_spec.format('{^mpicuda.%compiler}') + cosmo_spec.format('{^mpicuda.variants}')
-
-    # remove the slurm_args variant causing troubles to the concretizer
-    dycore_spec = dycore_spec.replace(cosmo_spec.format('{^cosmo-dycore.variants.slurm_args}'), ' ')
-
-
-    dycore_spec = Spec(dycore_spec).concretized()
 
     # Setting source_path to current working directory
     source_path = os.getcwd()
@@ -80,15 +67,29 @@ def devbuildcosmo(self, args):
             shutil.rmtree(source_path + '/spack-build')
 
     if cosmo_spec.satisfies('+cppdycore'):
-        # Dev-build dycore
-        custom_devbuild(source_path, dycore_spec)
+        # Set dycore_spec
+        dycore_spec = 'cosmo-dycore@dev-build'
 
+        # Extracting dycore variants
+        dycore_spec = cosmo_spec.format('{^cosmo-dycore.name}') + cosmo_spec.format('{^cosmo-dycore.@version}') + cosmo_spec.format('{^cosmo-dycore.%compiler}') + cosmo_spec.format('{^cosmo-dycore.variants}')
+
+        # Extracting correct mpi variant
+        dycore_spec += ' ^' + cosmo_spec.format('{^mpi.name}') + cosmo_spec.format('{^mpi.@version}') + cosmo_spec.format('{^mpi.%compiler}') + cosmo_spec.format('{^mpi.variants}')
+
+        # Remove the slurm_args variant causing troubles to the concretizer
+        dycore_spec = dycore_spec.replace(cosmo_spec.format('{^cosmo-dycore.variants.slurm_args}'), ' ')
+
+        dycore_spec = Spec(dycore_spec).concretized()
+
+        custom_devbuild(source_path, dycore_spec, args.jobs)
+        
+        # Launch dycore tests
         if args.test:
             print('\033[92m' + '==> ' + '\033[0m' + 'cosmo-dycore: Launching dycore tests')
             subprocess.run(['./dycore/test/tools/test_dycore.py', str(dycore_spec), source_path + '/spack-build'])
 
     # Dev-build cosmo
-    custom_devbuild(source_path, cosmo_spec)
+    custom_devbuild(source_path, cosmo_spec, args.jobs)
 
     # Launch cosmo tests
     if args.test:
