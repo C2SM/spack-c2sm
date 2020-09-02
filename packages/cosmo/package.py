@@ -185,7 +185,7 @@ class Cosmo(MakefilePackage):
 
         # Linker flags
         if self.compiler.name == 'pgi' and '~cppdycore' in self.spec:
-            env['LFLAGS'] = '-lstdc++'
+            env.set('LFLAGS', '-lstdc++')
 
         # Compiler & linker variables
         if self.compiler.name == 'pgi':
