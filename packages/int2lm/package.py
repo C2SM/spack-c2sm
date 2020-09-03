@@ -45,10 +45,7 @@ class Int2lm(MakefilePackage):
 
     depends_on('cosmo-grib-api-definitions', when='~eccodes')
     depends_on('cosmo-eccodes-definitions@2.14.1.2 ~aec', when='+eccodes')
-    depends_on('libgrib1@master slave=tsa', when='slave=tsa')
-    depends_on('libgrib1@master slave=tsa', when='slave=tsa_rh7.7')
-    depends_on('libgrib1@master slave=daint', when='slave=daint')
-    depends_on('libgrib1@master slave=kesch', when='slave=kesch')
+    depends_on('libgrib1@master')
     depends_on('mpi', type=('build', 'run'), when='+parallel')
     depends_on('netcdf-c')
     depends_on('netcdf-fortran +mpi')
@@ -60,63 +57,52 @@ class Int2lm(MakefilePackage):
     variant('slave', default='tsa', description='Build on slave tsa, daint or kesch', multi=False)
     variant('verbose', default=False, description='Build with verbose enabled')
 
-    def setup_environment(self, spack_env, run_env):
-        # Grib-api. eccodes library
+    def setup_build_environment(self, env):
+        # Grib-api. Eccodes libraries
         if '~eccodes' in self.spec:
             grib_prefix = self.spec['cosmo-grib-api'].prefix
-            grib_definition_prefix = self.spec['cosmo-grib-api-definitions'].prefix
-            spack_env.set('GRIBAPIL', '-L' + grib_prefix + '/lib -lgrib_api_f90 -lgrib_api -L' + self.spec['jasper'].prefix + '/lib64 -ljasper')
-            spack_env.set('GRIB_DEFINITION_PATH', grib_definition_prefix + '/cosmoDefinitions/definitions/:' + grib_prefix + '/share/grib_api/definitions/')
+            grib_lib_names = '-lgrib_api_f90 -lgrib_api'
         else:
             grib_prefix = self.spec['eccodes'].prefix
-            grib_definition_prefix = self.spec['cosmo-eccodes-definitions'].prefix
-            spack_env.set('GRIBAPIL', '-L' + grib_prefix + '/lib -leccodes_f90 -leccodes -L' + self.spec['jasper'].prefix + '/lib64 -ljasper')
-            spack_env.set('GRIB_DEFINITION_PATH', grib_definition_prefix + '/cosmoDefinitions/definitions/:' + grib_prefix + '/share/eccodes/definitions/')
-        spack_env.set('GRIBAPII', '-I' + grib_prefix + '/include')
-        spack_env.set('GRIB_SAMPLES_PATH', grib_definition_prefix + '/cosmoDefinitions/samples/')
+            grib_lib_names = '-leccodes_f90 -leccodes'
+        env.set('GRIBAPIL', '-L' + grib_prefix + '/lib ' + grib_lib_names + ' -L' + self.spec['jasper'].prefix + '/lib64 -ljasper')
+        env.set('GRIBAPII', '-I' + grib_prefix + '/include')
 
         # Netcdf library
         if self.spec.variants['slave'].value == 'daint':
-            spack_env.set('NETCDFL', '-L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf')
-            spack_env.set('NETCDFI', '-I$(NETCDF_DIR)/include')
+            env.set('NETCDFL', '-L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf')
+            env.set('NETCDFI', '-I$(NETCDF_DIR)/include')
         else:
-            spack_env.set('NETCDFL', '-L' + self.spec['netcdf-fortran'].prefix + '/lib -lnetcdff -L' + self.spec['netcdf-c'].prefix + '/lib64 -lnetcdf')
-            spack_env.set('NETCDFI', '-I' + self.spec['netcdf-fortran'].prefix + '/include')
+            env.set('NETCDFL', '-L' + self.spec['netcdf-fortran'].prefix + '/lib -lnetcdff -L' + self.spec['netcdf-c'].prefix + '/lib64 -lnetcdf')
+            env.set('NETCDFI', '-I' + self.spec['netcdf-fortran'].prefix + '/include')
 
         # Grib1 library
         if self.compiler.name == 'gcc':
-            spack_env.set('GRIBDWDL', '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_gnu')
+            env.set('GRIBDWDL', '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_gnu')
         elif self.compiler.name == 'cce':
-            spack_env.set('GRIBDWDL', '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_cray')
+            env.set('GRIBDWDL', '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_cray')
         else:
-            spack_env.set('GRIBDWDL', '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_' + self.compiler.name)
+            env.set('GRIBDWDL', '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_' + self.compiler.name)
 
         # MPI library
         if self.spec['mpi'].name == 'openmpi':
-            spack_env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpi_mpifh')
-            spack_env.set('MPII', '-I'+ self.spec['mpi'].prefix + '/include')
+            env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpi_mpifh')
+            env.set('MPII', '-I'+ self.spec['mpi'].prefix + '/include')
         else:
-            spack_env.set('MPII', '-I'+ self.spec['mpi'].prefix + '/include')
+            env.set('MPII', '-I'+ self.spec['mpi'].prefix + '/include')
             if self.compiler.name != 'gcc':
-                spack_env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich_' + self.compiler.name)
+                env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich_' + self.compiler.name)
 
         # Compiler & linker variables
         if self.compiler.name == 'pgi':
-            spack_env.set('F90', 'pgf90 -D__PGI_FORTRAN__')
-            spack_env.set('LD', 'pgf90 -D__PGI_FORTRAN__')
+            env.set('F90', 'pgf90 -D__PGI_FORTRAN__')
+            env.set('LD', 'pgf90 -D__PGI_FORTRAN__')
         elif self.compiler.name == 'cce':
-            spack_env.set('F90', 'ftn -D__CRAY_FORTRAN__')
-            spack_env.set('LD', 'ftn -D__CRAY_FORTRAN__')
+            env.set('F90', 'ftn -D__CRAY_FORTRAN__')
+            env.set('LD', 'ftn -D__CRAY_FORTRAN__')
         else:
-            spack_env.set('F90', self.spec['mpi'].mpifc)
-            spack_env.set('LD', self.spec['mpi'].mpifc)
-
-        # set runtime variables
-        run_env_variables = {}
-        run_env_variables['UCX_MEMTYPE_CACHE'] = 'n'
-        run_env_variables['UCX_TLS'] = 'rc_x,ud_x,mm,shm,cma'
-        for key in run_env_variables:
-            spack_env.set(key, run_env_variables[key])
+            env.set('F90', self.spec['mpi'].mpifc)
+            env.set('LD', self.spec['mpi'].mpifc)
 
     @property
     def build_targets(self):
