@@ -36,6 +36,15 @@ class CosmoGribApiDefinitions(Package):
     version('1.20.0.2', commit='06f61f95ca2f5f0ddea668d82429331927ce81dc')
     
     depends_on('cosmo-grib-api@1.20.0.2', when='@1.20.0.2')
+    
+    def setup_run_environment(self, env):
+        grib_definition_path = self.spec['cosmo-grib-api-definitions'].prefix + '/cosmoDefinitions/definition    s/:' + self.spec['cosmo-grib-api'].prefix + '/share/grib_api/definitions/'
+        env.prepend_path('GRIB_DEFINITION_PATH', grib_definition_path)
+        grib_samples_path = self.spec['cosmo-grib-api-definitions'].prefix + '/cosmoDefinitions/samples/'
+        env.prepend_path('GRIB_SAMPLES_PATH', grib_samples_path)
+
+    def setup_dependent_build_environment(self, env, dependent_spec):
+        self.setup_run_environment(env)
 
     def install(self, spec, prefix):
         mkdir(prefix.cosmoDefinitions)

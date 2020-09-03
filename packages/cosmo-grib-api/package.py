@@ -31,7 +31,7 @@ class CosmoGribApi(AutotoolsPackage):
     def configure_args(self):
         args = [
             'CC=gcc',
-            'CXX= g++',
+            'CXX=g++',
             '--build=x86_64',
             '--host=x86_64',
             '--with-jasper={0}'.format(self.spec['jasper'].prefix),

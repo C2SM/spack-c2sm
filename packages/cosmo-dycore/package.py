@@ -63,10 +63,11 @@ class CosmoDycore(CMakePackage):
     depends_on('gridtools@1.1.3 +cuda', when='+cuda+gt1')
     depends_on('boost@1.67.0')
     depends_on('serialbox@2.6.0', when='+build_tests')
-    depends_on('mpi', type=('build', 'run'))
+    depends_on('mpicuda', type=('build', 'link', 'run'), when='+cuda')
+    depends_on('mpi', type=('build', 'link', 'run'), when='~cuda')
     depends_on('slurm%gcc', type='run')
-    depends_on('cmake@3.12:%gcc', type='build')
-    depends_on('cuda%gcc', when='+cuda', type=('build', 'run'))
+    depends_on('cmake@3.12:%gcc')
+    depends_on('cuda%gcc', when='+cuda', type=('build', 'link', 'run'))
 
     conflicts('+production', when='build_type=Debug')
     conflicts('+production', when='cosmo_target=cpu')
@@ -74,16 +75,13 @@ class CosmoDycore(CMakePackage):
 
     root_cmakelists_dir='dycore'
 
-    def setup_environment(self, spack_env, run_env):
-        if self.spec['mpi'].name == 'mpich':
-            spack_env.set('MPICH_G2G_PIPELINE', '64')
-            if '+cuda' in self.spec:
-                spack_env.set('MPICH_RDMA_ENABLED_CUDA', '1')
-        spack_env.set('UCX_MEMTYPE_CACHE', 'n')
-        if '+cuda' in self.spec:
-            spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma')
-        else:
-            spack_env.set('UCX_TLS', 'rc_x,ud_x,mm,shm,cma')
+    def setup_run_environment(self, env):
+        if '+cuda' in self.spec and self.spec['mpi'].name == 'mpich':
+            env.set('MPICH_G2G_PIPELINE', '64')
+            env.set('MPICH_RDMA_ENABLED_CUDA', '1')
+    
+    def setup_build_environment(self, env):
+        self.setup_run_environment(env)
 
     def cmake_args(self):
       spec = self.spec

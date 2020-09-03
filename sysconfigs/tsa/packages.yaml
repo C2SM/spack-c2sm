@@ -1,6 +1,9 @@
 packages:
   all:
     compiler: [pgi@19.9, gcc@8.3.0]
+    providers:
+      mpicuda: [openmpi+cuda, mpich]
+      mpi: [openmpi~cuda]
   cmake:
     modules:
       cmake@3.14.5%gcc: cmake/3.14.5
@@ -20,8 +23,11 @@ packages:
     providers: {}
   openmpi:
     modules:
-      openmpi@4.0.2%pgi: /apps/arolla/UES/jenkins/RH7.7/pgi/19.9/easybuild/modules/all/openmpi/4.0.2-pgi-19.9-gcc-8.3.0-cuda-10.1
-      openmpi@4.0.2%gcc: /apps/arolla/UES/jenkins/RH7.7/gnu/19.2/easybuild/modules/all/openmpi/4.0.2-gcccuda-2019b-cuda-10.1
+      openmpi@4.0.2%pgi +cuda: /apps/arolla/UES/jenkins/RH7.7/MCH-PE20.06/pgi/19.9/easybuild/modules/all/openmpi/4.0.2-pgi-19.9-gcc-8.3.0-cuda-10.1-rh7.7
+      openmpi@4.0.2%pgi ~cuda: /apps/arolla/UES/jenkins/RH7.7/MCH-PE20.06/pgi/19.9-nocuda/easybuild/modules/all/openmpi/4.0.2-pgi-19.9-gcc-8.3.0-nocuda
+      openmpi@4.0.2%gcc +cuda: /apps/arolla/UES/jenkins/RH7.7/MCH-PE20.06/gnu/19.2/easybuild/modules/all/openmpi/4.0.2-gcccuda-2019b-cuda-10.1
+      openmpi@4.0.2%gcc ~cuda: /apps/arolla/UES/jenkins/RH7.7/MCH-PE20.06/gnu/19.2-nocuda/easybuild/modules/all/openmpi/4.0.2-gcc-8.3.0
+    variants: +cuda
   netcdf-fortran:
     modules:
       netcdf-fortran@4.4.5%gcc +mpi: /apps/arolla/UES/jenkins/RH7.7/gnu/19.2/easybuild/modules/all/netcdf-fortran/4.4.5-fosscuda-2019b
