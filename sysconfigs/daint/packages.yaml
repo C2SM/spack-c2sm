@@ -7,6 +7,8 @@ packages:
         compiler: [pgi@19.7.0, gcc@8.3.0, cce@9.0.2]
         providers:
             mpi: [mpich]
+            # if the mpich package support +cuda in the future it needs to be put there
+            mpicuda: [mpich]
             mkl: [intel-mkl]
             blas: [cray-libsci_acc, cray-libsci, intel-mkl]
             scalapack: [cray-libsci_acc, cray-libsci, intel-mkl]
@@ -28,7 +30,7 @@ packages:
         paths:
              bzip2@1.0.6: /usr
     cosmo:
-      variants: slave=daint
+      variants: cuda_arch=60 cosmo_target=gpu slave=daint
       version: [master]
       compiler: [pgi@19.7.0]
     gridtools:
@@ -122,8 +124,6 @@ packages:
             intel-mkl@2019.1.144%gcc~ilp64 threads=none:   /opt/intel
             intel-mkl@2019.1.144%cce~ilp64 threads=none:   /opt/intel
     int2lm:
-        variants: slave=daint
-    libgrib1:
         variants: slave=daint
     libjpeg:
         paths:
