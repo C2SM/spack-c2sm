@@ -79,6 +79,9 @@ class CosmoDycore(CMakePackage):
         if '+cuda' in self.spec and self.spec['mpi'].name == 'mpich':
             env.set('MPICH_G2G_PIPELINE', '64')
             env.set('MPICH_RDMA_ENABLED_CUDA', '1')
+    
+    def setup_build_environment(self, env):
+        self.setup_run_environment(env)
 
     def cmake_args(self):
       spec = self.spec
