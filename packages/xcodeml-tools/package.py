@@ -2,14 +2,12 @@ __author__      = "Mikhail Zhigun"
 __copyright__   = "Copyright 2020, MeteoSwiss"
 
 from spack import *
-import sys
-assert sys.version_info[0] >= 3 and sys.version_info[1] >= 6, 'Python >= 3.6 is required'
 import os, subprocess
 
 _GIT = 'https://github.com/claw-project/xcodeml-tools.git'
 
 
-def _get_latest_commit_id() -> str:
+def _get_latest_commit_id(): # type: () -> str
     git_url = _GIT
     args = ['git', 'ls-remote', git_url, 'HEAD']
     timeout = 5  # seconds
@@ -19,8 +17,14 @@ def _get_latest_commit_id() -> str:
     commit = s.strip().split()[0]
     return commit
 
+_LAST_COMMIT = _get_latest_commit_id()
+
 class XcodemlTools(AutotoolsPackage):
     """Set of tools for translating C and Fortran code to XCodeML and back """
+
+    @property
+    def latest_commit(self):
+        return _LAST_COMMIT
 
     homepage = 'https://omni-compiler.org/manual/en/'
     git = _GIT
@@ -28,7 +32,7 @@ class XcodemlTools(AutotoolsPackage):
     maintainers = ['FrostyMike']
 
     version('92a35f9', branch='master', commit='92a35f9dbe3601f6177b099825d318cbc3285945')
-    version('latest', branch='master', commit=_get_latest_commit_id())
+    version('latest', branch='master', commit=_LAST_COMMIT)
     
     depends_on('autoconf@2.69:')
     depends_on('m4')
