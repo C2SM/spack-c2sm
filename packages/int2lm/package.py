@@ -53,7 +53,7 @@ class Int2lm(MakefilePackage):
     variant('debug', default=False, description='Build debug INT2LM')
     variant('eccodes', default=True, description='Build with eccodes instead of grib-api')
     variant('parallel', default=True, description='Build parallel INT2LM')
-    variant('pollen', default=False, description='Build with pollen enabled')
+    variant('pollen', default=True, description='Build with pollen enabled')
     variant('slave', default='tsa', description='Build on slave tsa, daint or kesch', multi=False)
     variant('verbose', default=False, description='Build with verbose enabled')
 
