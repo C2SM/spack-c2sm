@@ -46,7 +46,7 @@ class Int2lm(MakefilePackage):
     depends_on('cosmo-grib-api-definitions', when='~eccodes')
     depends_on('cosmo-eccodes-definitions@2.14.1.2 ~aec', when='+eccodes')
     depends_on('libgrib1@master')
-    depends_on('mpi', type=('build', 'run'), when='+parallel')
+    depends_on('mpi', type=('build', 'link', 'run'), when='+parallel')
     depends_on('netcdf-c')
     depends_on('netcdf-fortran +mpi')
 
