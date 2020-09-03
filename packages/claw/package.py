@@ -31,7 +31,7 @@ class Claw(CMakePackage):
 
     depends_on('xcodeml-tools@92a35f9', when='@2.1~omni-master')
 
-    depends_on('cmake@3.16.3:', type='build')
+    depends_on('cmake@3:', type='build')
     depends_on('java@8:', when='@2.0:')
     depends_on('java@7:', when='@1.1.0:1.2.3')
     depends_on('ant@1.9:%gcc')
