@@ -6,7 +6,7 @@ import sys
 assert sys.version_info[0] >= 3 and sys.version_info[1] >= 6, 'Python >= 3.6 is required'
 import os, subprocess
 
-_GIT = 'https://github.com/MeteoSwiss-APN/xcodeml-tools.git'
+_GIT = 'https://github.com/claw-project/xcodeml-tools.git'
 
 
 def _get_latest_commit_id() -> str:
@@ -27,6 +27,7 @@ class XcodemlTools(AutotoolsPackage):
 
     maintainers = ['FrostyMike']
 
+    version('92a35f9', branch='master', commit='92a35f9dbe3601f6177b099825d318cbc3285945')
     version('latest', branch='master', commit=_get_latest_commit_id())
     
     depends_on('autoconf@2.69:')
