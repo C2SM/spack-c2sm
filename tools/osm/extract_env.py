@@ -31,20 +31,23 @@ def main():
     cosmo_dir = 'cosmo' + cosmo_spec.format('{@version}') + cosmo_spec.format('{%compiler}')  + '-' + cosmo_spec.format('{variants.real_type.value}') + '-' + cosmo_spec.format('{variants.cosmo_target.value}')
     eccodes_dir = 'eccodes' + cosmo_spec.format('{^eccodes.@version}')
     eccodes_definitions_dir = 'cosmo-eccodes-definitions' + cosmo_spec.format('{^cosmo-eccodes-definitions.@version}')
-
+    
+    # Warning if eccodes installation already exists
+    if os.path.exists(os.path.join(args.idircosmo, cosmo_dir)):
+        print('Warning: The cosmo installation path: ' + os.path.join(args.idircosmo, cosmo_dir) + ' already exists!')
     print('Installing ' + cosmo_spec.format('{prefix}') + ' to: ' + os.path.join(args.idircosmo, cosmo_dir))
     os.system('cp -rf ' + cosmo_spec.format('{prefix}') + ' ' + os.path.join(args.idircosmo, cosmo_dir))
 
     # Warning if eccodes installation already exists
     if os.path.exists(os.path.join(args.idireccodes, eccodes_dir)):
-      print('Warning: The eccodes installation: ' + os.path.join(args.idireccodes, eccodes_dir) + ' already exists!')
+        print('Warning: The eccodes installation path: ' + os.path.join(args.idireccodes, eccodes_dir) + ' already exists!')
 
     print('Installing ' + cosmo_spec.format('{^eccodes.prefix}') + ' to: ' + os.path.join(args.idireccodes, eccodes_dir))
     os.system('cp -rf ' + cosmo_spec.format('{^eccodes.prefix}') + ' ' + os.path.join(args.idireccodes, eccodes_dir))
 
     # Warning if path is already used
     if os.path.exists(os.path.join(args.idireccodes, eccodes_definitions_dir)):
-        print('Warning: The eccodes-definitions installation: ' +  os.path.join(args.idireccodes, eccodes_definitions_dir) + ' already exists!')
+        print('Warning: The eccodes-definitions installation path: ' +  os.path.join(args.idireccodes, eccodes_definitions_dir) + ' already exists!')
 
     print('Installing ' + cosmo_spec.format('{^cosmo-eccodes-definitions.prefix}') + ' to: ' + os.path.join(args.idireccodes, eccodes_definitions_dir))
     os.system('cp -rf ' + cosmo_spec.format('{^cosmo-eccodes-definitions.prefix}') + ' ' + os.path.join(args.idireccodes, eccodes_definitions_dir))
