@@ -30,7 +30,8 @@ class FieldextraGrib1(MakefilePackage):
     git      = 'git@github.com:COSMO-ORG/fieldextra.git'
     maintainers = ['elsagermann']
 
-    version('v13.2.2', commit='38a9f830ab15fb9f3b770173f63a3692a6a381a4')
+    version('v13_2_2', commit='38a9f830ab15fb9f3b770173f63a3692a6a381a4')
+    version('v13_2_1', commit='1f0d57cdb5819bca3249648e9accaabf8f540e00')
 
     variant('build_type', default='optimized', description='Build type', values=('debug', 'optimize    d', 'profiling'))
     variant('openmp', default=True)

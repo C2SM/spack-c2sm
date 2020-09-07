@@ -60,8 +60,10 @@ class Fieldextra(CMakePackage):
     depends_on('eccodes@2.14.1 ~aec ~openmp', when='~openmp@v13_2_0:v13_2_1')
     depends_on('icontools@2.4.3 +openmp', when='+openmp')
     depends_on('icontools@2.4.3 ~openmp', when='~openmp')
-    depends_on('fieldextra-grib1@v13.2.2 +openmp', when='+openmp')
-    depends_on('fieldextra-grib1@v13.2.2 ~openmp', when='~openmp')
+    depends_on('fieldextra-grib1@v13_2_2 +openmp', when='+openmp @v13_2_2')
+    depends_on('fieldextra-grib1@v13_2_2 ~openmp', when='~openmp @v13_2_2')
+    depends_on('fieldextra-grib1@v13_2_1 +openmp', when='+openmp @v13_2_1')
+    depends_on('fieldextra-grib1@v13_2_1 ~openmp', when='~openmp @v13_2_1')
 
     # optimization
     # optimized
