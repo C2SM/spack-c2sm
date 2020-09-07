@@ -21,6 +21,7 @@
 # ----------------------------------------------------------------------------
 
 from spack import *
+import subprocess
 
 
 class Fieldextra(CMakePackage):
@@ -31,9 +32,9 @@ class Fieldextra(CMakePackage):
     git      = 'git@github.com:COSMO-ORG/fieldextra.git'
     maintainers = ['elsagermann']
     
-    version('v13.2.2', commit='38a9f830ab15fb9f3b770173f63a3692a6a381a4')
-    version('v13.2.0', commit='fe0a8b14314d7527168fd5684d89828bbd83ebf2')
-    version('v13.1.0', commit='9649ec36dc36dfe3ef679a507f9a849dc2fdd452')
+    version('v13_2_2', commit='38a9f830ab15fb9f3b770173f63a3692a6a381a4')
+    version('v13_2_0', commit='fe0a8b14314d7527168fd5684d89828bbd83ebf2')
+    version('v13_1_0', commit='9649ec36dc36dfe3ef679a507f9a849dc2fdd452')
     
     variant('build_type', default='Optimized', description='Build type', values=('Optimized', 'Profiling', 'Debug'))
     variant('openmp', default=True)
@@ -80,4 +81,18 @@ class Fieldextra(CMakePackage):
         if '~openmp' in spec:
             args.append('-DMULTITHREADED_BUILD=OFF')
         return args
+    
+    @run_after('install')
+    @on_package_attributes(run_tests=True)
+    def test(self):
+        with working_dir('cookbook/support'):
+            force_symlink('/store/s83/tsm/fieldextra/static/cookbook/input' ,'input')
+        copy_tree(self.spec['eccodes'].prefix +'/bin', 'tools')
+        copy_tree(self.spec['netcdf-c'].prefix +'/bin', 'tools')
+        copy_tree(self.spec['netcdf-fortran'].prefix +'/bin', 'tools')
+        force_symlink('/store/s83/tsm/fieldextra/static/cookbook/' + spec.format('{version}'), 'reference_cookbook')
+        try:
+            subprocess.run(['./cookbook/run.bash'])
+        except:
+            raise InstallError('Tests failed')
 

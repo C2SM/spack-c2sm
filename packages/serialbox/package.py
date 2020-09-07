@@ -37,6 +37,8 @@ class Serialbox(CMakePackage):
     version('2.4.3', commit='f15bd29db2e75d4e775bd133400bab33df55856b')
 
     depends_on('boost@1.67.0%gcc')
+    depends_on('netcdf-c', when='+netcdf')
+    depends_on('netcdf-cxx4', when='+netcdf')
 
     variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'DebugRelease'))
     variant('fortran', default=True, description='Build the C interface of Serialbox (libSerialboxFortran)')
