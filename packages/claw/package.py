@@ -42,7 +42,7 @@ class Claw(CMakePackage):
     depends_on('flex%gcc', when='@master')
 
     def setup_environment(self, spack_env, run_env):
-        if self.version < Version('2.1'):
+        if self.version < Version('2.1') or self.version == Version('master'):
             spack_env.set('YACC', 'bison -y')
 
     def cmake_args(self):
