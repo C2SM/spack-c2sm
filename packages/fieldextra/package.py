@@ -86,6 +86,25 @@ class Fieldextra(CMakePackage):
 
         args = []
 
+        exe_name='fieldextra'
+
+        if self.compiler.name == 'gcc':
+            exe_name = exe_name + '_gnu'
+        else:
+            exe_name = exe_name + self.compiler.name
+        if self.spec.variants['build_type'].value == 'Optimized':
+            exe_name = exe_name + '_opt'
+        elif self.spec.variants['build_type'].value == 'Debug':
+            exe_name = exe_name + '_dbg'
+        elif self.spec.variants['build_type'].value == 'Profiling':
+            exe_name = exe_name + '_prof'
+        if '+openmp' in spec:
+            exe_name = exe_name + '_omp'
+        elif '~openmp' in spec:
+            exe_name = exe_name + '_noomp'
+
+        args.append('-DFXTREXE=' + exe_name)
+
         # needed to avoid conflicts with CMake Rpath settings
         args.append('-DCMAKE_BUILD_WITH_INSTALL_RPATH=1')
         args.append('-DRTTOV_VERSION={0}'.format(spec.format('{^rttov.version}')))
