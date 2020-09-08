@@ -28,9 +28,7 @@ class Claw(CMakePackage):
     variant('omni-master', default=False, description='Build with the latest claw-project/xcodeml-tools')
 
     depends_on('xcodeml-tools@latest', when='@2.1:+omni-master')
-    depends_on('xcodeml-tools@latest', when='@master:+omni-master')
     depends_on('xcodeml-tools@92a35f9', when='@2.1~omni-master')
-    depends_on('xcodeml-tools@92a35f9', when='@master:~omni-master')
 
     depends_on('cmake@3:', type='build')
     depends_on('java@8:', when='@2.0:')
@@ -39,6 +37,9 @@ class Claw(CMakePackage):
     depends_on('libxml2%gcc', when='@1.1.0:2.0.1')
     depends_on('bison%gcc', when='@1.1.0:2.0.1')
     depends_on('flex%gcc', when='@1.1.0:2.0.1')
+    depends_on('libxml2%gcc', when='@master')
+    depends_on('bison%gcc', when='@master')
+    depends_on('flex%gcc', when='@master')
 
     def setup_environment(self, spack_env, run_env):
         if self.version < Version('2.1'):
@@ -47,7 +48,7 @@ class Claw(CMakePackage):
     def cmake_args(self):
         args = []
         spec = self.spec
-        if self.version >= Version('2.1'):
+        if self.version >= Version('2.1') and self.version != Version('master'):
             args += ['-DJAVA_HOME=' + self.spec['java'].prefix,
                      '-DADD_OMNI_XCODEML_TOOLS_TO_INSTALL=OFF',
                      '-DBUILD_OMNI_XCODEML_TOOLS=OFF',
