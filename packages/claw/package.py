@@ -28,8 +28,9 @@ class Claw(CMakePackage):
     variant('omni-master', default=False, description='Build with the latest claw-project/xcodeml-tools')
 
     depends_on('xcodeml-tools@latest', when='@2.1:+omni-master')
-
+    depends_on('xcodeml-tools@latest', when='@master:+omni-master')
     depends_on('xcodeml-tools@92a35f9', when='@2.1~omni-master')
+    depends_on('xcodeml-tools@92a35f9', when='@master:~omni-master')
 
     depends_on('cmake@3:', type='build')
     depends_on('java@8:', when='@2.0:')
