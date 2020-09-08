@@ -70,7 +70,7 @@ class Cosmo(MakefilePackage):
     depends_on('cosmo-eccodes-definitions@2.14.1.2 ~aec', type=('build','run'), when='+eccodes')
     depends_on('perl@5.16.3:', type='build')
     depends_on('omni-xmod-pool', when='+claw', type='build')
-    depends_on('claw@v2.0.1', when='+claw', type='build')
+    depends_on('claw@2.0.1', when='+claw', type='build')
     depends_on('boost%gcc', when='cosmo_target=gpu ~cppdycore', type='build')
     depends_on('cmake%gcc', type='build')
 
