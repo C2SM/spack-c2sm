@@ -37,8 +37,9 @@ class Fieldextra(CMakePackage):
     version('v13_2_0', commit='fe0a8b14314d7527168fd5684d89828bbd83ebf2')
     version('v13_1_0', commit='9649ec36dc36dfe3ef679a507f9a849dc2fdd452')
 
-    variant('build_type', default='Optimized', description='Build type', values=('Optimized', 'Profiling', 'Debug'))
+    variant('build_type', default='Released', description='Build type', values=('Released', 'Debug'))
     variant('openmp', default=True)
+    variant('profiling', default=False)
 
     depends_on('libaec@1.0.0 ~build_shared_libs')
     depends_on('jasper@1.900.1 ~shared', when='@v13_2_0:v13_2_1')
@@ -67,16 +68,17 @@ class Fieldextra(CMakePackage):
 
     # optimization
     # optimized
-    depends_on('icontools build_type=optimized', when='build_type=Optimized')
-    depends_on('fieldextra-grib1 build_type=optimized', when='build_type=Optimized')
+    depends_on('icontools build_type=optimized', when='~profiling build_type=Released')
+    depends_on('fieldextra-grib1 build_type=optimized', when='~profiling build_type=Released')
 
     # debug
     depends_on('icontools build_type=debug', when='build_type=Debug')
-    depends_on('fieldextra-grib1 build_type=debug', when='build_type=Debug')
+    depends_on('fieldextra-grib1 build_type=debug', when='~profiling build_type=Debug')
 
     # profiling
-    depends_on('icontools build_type=debug', when='build_type=Profiling')
-    depends_on('fieldextra-grib1 build_type=profiling', when='build_type=Profiling')
+    depends_on('fieldextra-grib1 build_type=profiling', when='+profiling')
+
+    conflicts('+profiling', when='build_type=Released')
 
     def setup_build_environment(self, env):
         self.setup_run_environment(env)
@@ -92,11 +94,11 @@ class Fieldextra(CMakePackage):
             exe_name = exe_name + '_gnu'
         else:
             exe_name = exe_name + self.compiler.name
-        if self.spec.variants['build_type'].value == 'Optimized':
+        if self.spec.variants['build_type'].value == 'Released':
             exe_name = exe_name + '_opt'
         elif self.spec.variants['build_type'].value == 'Debug':
             exe_name = exe_name + '_dbg'
-        elif self.spec.variants['build_type'].value == 'Profiling':
+        if '+profiling' in spec:
             exe_name = exe_name + '_prof'
         if '+openmp' in spec:
             exe_name = exe_name + '_omp'
@@ -110,7 +112,9 @@ class Fieldextra(CMakePackage):
         args.append('-DRTTOV_VERSION={0}'.format(spec.format('{^rttov.version}')))
 
         if '~openmp' in spec:
-            args.append('-DMULTITHREADED_BUILD=OFF')
+            args.append('-DUSE_OpenMP=OFF')
+        if '+profiling' in spec:
+           args.append('-DPROFILING=ON')
         return args
 
     @run_after('install')
@@ -122,7 +126,7 @@ class Fieldextra(CMakePackage):
             compiler_name = self.compiler.name
 
         # Check if correct mode
-        if '~openmp' in self.spec or self.spec.variants['build_type'].value != 'Optimized':
+        if '~openmp' in self.spec or self.spec.variants['build_type'].value != 'Released':
             raise InstallError('Tests only available for optimized openmp mode!')
 
         force_symlink(self.prefix + '/bin', 'bin')
