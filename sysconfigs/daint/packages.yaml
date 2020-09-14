@@ -18,7 +18,7 @@ packages:
              autoconf@2.69%gcc: /usr
     bison:
       paths:
-        bison%gcc: /usr
+        bison@3.0.4%gcc: /usr
     automake:
         paths:
              automake@1.15.1%gcc: /usr
@@ -32,7 +32,7 @@ packages:
     cosmo:
       variants: cuda_arch=60 cosmo_target=gpu slave=daint
       version: [master]
-      compiler: [pgi@19.7.0]
+      compiler: [pgi]
     gridtools:
       variants: +cuda cuda_arch=60
       compiler: [gcc]
@@ -43,6 +43,8 @@ packages:
         paths:
           cmake@3.14.5%gcc: /apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5
           cmake@3.14.5%pgi: /apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5
+          cmake@3.18.1%gcc: /apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.18.1
+          cmake@3.18.1%pgi: /apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.18.1
         buildable: false
         variants: ~doc+ncurses+openssl~ownlibs~qt
     cp2k:
@@ -50,22 +52,21 @@ packages:
     cray-libsci:
         buildable: false
         modules:
-            cray-libsci@19.06.1%gcc:   cray-libsci/19.06.1
-            cray-libsci@19.06.1%intel: cray-libsci/19.06.1
-            cray-libsci@19.06.1%cce:   cray-libsci/19.06.1
-            cray-libsci@19.06.1%pgi:   cray-libsci/19.06.1
+            cray-libsci@20.06.1%gcc:   cray-libsci
+            cray-libsci@20.06.1%intel: cray-libsci
+            cray-libsci@20.06.1%cce:   cray-libsci
+            cray-libsci@20.06.1%pgi:   cray-libsci
     cray-libsci_acc:
         buildable: false
         modules:
-            cray-libsci_acc@19.10.1%gcc:   cray-libsci_acc/19.10.1
-            cray-libsci_acc@19.10.1%intel: cray-libsci_acc/19.10.1
-            cray-libsci_acc@19.10.1%cce:   cray-libsci_acc/19.10.1
-            cray-libsci_acc@19.10.1%pgi:   cray-libsci_acc/19.10.1
+            cray-libsci_acc@20.06.1%gcc:   cray-libsci_acc/20.06.1
+            cray-libsci_acc@20.06.1%intel: cray-libsci_acc/20.06.1
+            cray-libsci_acc@20.06.1%cce:   cray-libsci_acc/20.06.1
+            cray-libsci_acc@20.06.1%pgi:   cray-libsci_acc/20.06.1
     cuda:
         modules:
-          cuda@10.0%gcc: cudatoolkit/10.0.130_3.22-7.0.1.0_5.2__gdfb4ce5
-          cuda@10.1%gcc: cudatoolkit/10.1.105_3.27-7.0.1.1_4.1__ga311ce7
-        version: ['10.1']
+          cuda@10.2%gcc: cudatoolkit/10.2.89_3.28-7.0.2.1_2.17__g52c0314
+        version: ['10.2']
     curl:
         paths:
              curl@7.60.0: /usr
@@ -78,10 +79,10 @@ packages:
     fftw:
         buildable: false
         modules:
-            fftw@3.3.8.3%gcc+openmp:   cray-fftw/3.3.8.3
-            fftw@3.3.8.3%intel+openmp: cray-fftw/3.3.8.3
-            fftw@3.3.8.3%cce+openmp:   cray-fftw/3.3.8.3
-            fftw@3.3.8.3%pgi+openmp:   cray-fftw/3.3.8.3
+            fftw@3.3.8.7%gcc+openmp:   cray-fftw/3.3.8.7
+            fftw@3.3.8.7%intel+openmp: cray-fftw/3.3.8.7
+            fftw@3.3.8.7%cce+openmp:   cray-fftw/3.3.8.7
+            fftw@3.3.8.7%pgi+openmp:   cray-fftw/3.3.8.7
     gawk:
         paths:
              gawk@4.2.1: /usr
@@ -93,22 +94,22 @@ packages:
     hdf5:
         buildable: false
         modules:
-            hdf5@1.10.5.1%intel~mpi+hl: cray-hdf5/1.10.5.1
-            hdf5@1.10.5.1%gcc~mpi+hl:   cray-hdf5/1.10.5.1
-            hdf5@1.10.5.1%cce~mpi+hl:   cray-hdf5/1.10.5.1
-            hdf5@1.10.5.1%pgi~mpi+hl:   cray-hdf5/1.10.5.1
-            hdf5@1.10.5.1%intel+mpi+hl: cray-hdf5-parallel/1.10.5.1
-            hdf5@1.10.5.1%gcc+mpi+hl:   cray-hdf5-parallel/1.10.5.1
-            hdf5@1.10.5.1%cce+mpi+hl:   cray-hdf5-parallel/1.10.5.1
-            hdf5@1.10.5.1%pgi+mpi+hl:   cray-hdf5-parallel/1.10.5.1
-            hdf5@1.10.5.1%intel~mpi+hl+fortran: cray-hdf5/1.10.5.1
-            hdf5@1.10.5.1%gcc~mpi+hl+fortran:   cray-hdf5/1.10.5.1
-            hdf5@1.10.5.1%cce~mpi+hl+fortran:   cray-hdf5/1.10.5.1
-            hdf5@1.10.5.1%pgi~mpi+hl+fortran:   cray-hdf5/1.10.5.1
-            hdf5@1.10.5.1%intel+mpi+hl+fortran: cray-hdf5-parallel/1.10.5.1
-            hdf5@1.10.5.1%gcc+mpi+hl+fortran:   cray-hdf5-parallel/1.10.5.1
-            hdf5@1.10.5.1%cce+mpi+hl+fortran:   cray-hdf5-parallel/1.10.5.1
-            hdf5@1.10.5.1%pgi+mpi+hl+fortran:   cray-hdf5-parallel/1.10.5.1
+            hdf5@1.12.0.0%intel~mpi+hl: cray-hdf5/1.12.0.0
+            hdf5@1.12.0.0%gcc~mpi+hl:   cray-hdf5/1.12.0.0
+            hdf5@1.12.0.0%cce~mpi+hl:   cray-hdf5/1.12.0.0
+            hdf5@1.12.0.0%pgi~mpi+hl:   cray-hdf5/1.12.0.0
+            hdf5@1.12.0.0%intel+mpi+hl: cray-hdf5-parallel/1.12.0.0
+            hdf5@1.12.0.0%gcc+mpi+hl:   cray-hdf5-parallel/1.12.0.0
+            hdf5@1.12.0.0%cce+mpi+hl:   cray-hdf5-parallel/1.12.0.0
+            hdf5@1.12.0.0%pgi+mpi+hl:   cray-hdf5-parallel/1.12.0.0
+            hdf5@1.12.0.0%intel~mpi+hl+fortran: cray-hdf5/1.12.0.0
+            hdf5@1.12.0.0%gcc~mpi+hl+fortran:   cray-hdf5/1.12.0.0
+            hdf5@1.12.0.0%cce~mpi+hl+fortran:   cray-hdf5/1.12.0.0
+            hdf5@1.12.0.0%pgi~mpi+hl+fortran:   cray-hdf5/1.12.0.0
+            hdf5@1.12.0.0%intel+mpi+hl+fortran: cray-hdf5-parallel/1.12.0.0
+            hdf5@1.12.0.0%gcc+mpi+hl+fortran:   cray-hdf5-parallel/1.12.0.0
+            hdf5@1.12.0.0%cce+mpi+hl+fortran:   cray-hdf5-parallel/1.12.0.0
+            hdf5@1.12.0.0%pgi+mpi+hl+fortran:   cray-hdf5-parallel/1.12.0.0
     hwloc:
         variants: +cuda
     intel-mkl:
@@ -143,34 +144,34 @@ packages:
     mpich:
         buildable: false
         modules:
-            mpich@3.2%gcc:   cray-mpich/7.7.10
-            mpich@3.2%intel: cray-mpich/7.7.10
-            mpich@3.2%cce:   cray-mpich/7.7.10
-            mpich@3.2%pgi:   cray-mpich/7.7.10
+            mpich@3.2%gcc:   cray-mpich/7.7.15
+            mpich@3.2%intel: cray-mpich/7.7.15
+            mpich@3.2%cce:   cray-mpich/7.7.15
+            mpich@3.2%pgi:   cray-mpich/7.7.15
     netcdf-c:
         buildable: false
         modules:
-            netcdf-c@4.6.3.1%gcc+parallel-netcdf+mpi:   cray-netcdf-hdf5parallel/4.6.3.1
-            netcdf-c@4.6.3.1%intel+parallel-netcdf+mpi: cray-netcdf-hdf5parallel/4.6.3.1
-            netcdf-c@4.6.3.1%cce+parallel-netcdf+mpi:   cray-netcdf-hdf5parallel/4.6.3.1
-            netcdf-c@4.6.3.1%pgi+parallel-netcdf+mpi:   cray-netcdf-hdf5parallel/4.6.3.1
-            netcdf-c@4.6.3.1%gcc~parallel-netcdf~mpi:   cray-netcdf/4.6.3.1
-            netcdf-c@4.6.3.1%intel~parallel-netcdf~mpi: cray-netcdf/4.6.3.1
-            netcdf-c@4.6.3.1%cce~parallel-netcdf~mpi:   cray-netcdf/4.6.3.1
-            netcdf-c@4.6.3.1%pgi~parallel-netcdf~mpi:   cray-netcdf/4.6.3.1
+            netcdf-c@4.7.4.0%gcc+parallel-netcdf+mpi:   cray-netcdf-hdf5parallel/4.7.4.0
+            netcdf-c@4.7.4.0%intel+parallel-netcdf+mpi: cray-netcdf-hdf5parallel/4.7.4.0
+            netcdf-c@4.7.4.0%cce+parallel-netcdf+mpi:   cray-netcdf-hdf5parallel/4.7.4.0
+            netcdf-c@4.7.4.0%pgi+parallel-netcdf+mpi:   cray-netcdf-hdf5parallel/4.7.4.0
+            netcdf-c@4.7.4.0%gcc~parallel-netcdf~mpi:   cray-netcdf/4.7.4.0
+            netcdf-c@4.7.4.0%intel~parallel-netcdf~mpi: cray-netcdf/4.7.4.0
+            netcdf-c@4.7.4.0%cce~parallel-netcdf~mpi:   cray-netcdf/4.7.4.0
+            netcdf-c@4.7.4.0%pgi~parallel-netcdf~mpi:   cray-netcdf/4.7.4.0
     netcdf-fortran:
         buildable: false
         modules:
-            netcdf-fortran@4.6.3.1%gcc+mpi:   cray-netcdf-hdf5parallel/4.6.3.1
-            netcdf-fortran@4.6.3.1%intel+mpi: cray-netcdf-hdf5parallel/4.6.3.1
-            netcdf-fortran@4.6.3.1%cce+mpi:   cray-netcdf-hdf5parallel/4.6.3.1
-            netcdf-fortran@4.6.3.1%pgi+mpi:   cray-netcdf-hdf5parallel/4.6.3.1
+            netcdf-fortran@4.7.4.0%gcc+mpi:   cray-netcdf-hdf5parallel/4.7.4.0
+            netcdf-fortran@4.7.4.0%intel+mpi: cray-netcdf-hdf5parallel/4.7.4.0
+            netcdf-fortran@4.7.4.0%cce+mpi:   cray-netcdf-hdf5parallel/4.7.4.0
+            netcdf-fortran@4.7.4.0%pgi+mpi:   cray-netcdf-hdf5parallel/4.7.4.0
     netcdf-cxx4:
         buildable: false
         modules:
-            netcdf-cxx4@4.6.3.1%gcc:   cray-netcdf/4.6.3.1
+            netcdf-cxx4@4.7.4.0%gcc:   cray-netcdf/4.7.4.0
         paths:
-            netcdf-cxx4@4.6.3.1%gcc: /opt/cray/pe/netcdf/4.6.3.1/gnu/8.2/
+            netcdf-cxx4@4.7.4.0%gcc: /opt/cray/pe/netcdf/4.7.4.0/gnu/8.2/
     netlib-scalapack:
         variants: build_type=Release
     netlib-lapack:
@@ -186,35 +187,35 @@ packages:
     papi:
         buildable: false
         modules:
-            papi@5.7.0.2%gcc:   papi/5.7.0.2
-            papi@5.7.0.2%intel: papi/5.7.0.2
-            papi@5.7.0.2%cce:   papi/5.7.0.2
-            papi@5.7.0.2%pgi:   papi/5.7.0.2
+            papi@6.0.0.2%gcc:   papi/6.0.0.2
+            papi@6.0.0.2%intel: papi/6.0.0.2
+            papi@6.0.0.2%cce:   papi/6.0.0.2
+            papi@6.0.0.2%pgi:   papi/6.0.0.2
     perl:
         paths:
              perl@5.26.1: /usr
     pkg-config:
-        paths:
+      paths:
              pkg-config@0.29.2: /usr
     petsc:
          buildable: false
          modules:
-            petsc@3.11.2.0%gcc~complex~int64:    cray-petsc/3.11.2.0
-            petsc@3.11.2.0%intel~complex~int64:  cray-petsc/3.11.2.0
-            petsc@3.11.2.0%cce~complex~int64:    cray-petsc/3.11.2.0
-            petsc@3.11.2.0%pgi~complex~int64:    cray-petsc/3.11.2.0
-            petsc@3.11.2.0%gcc+complex~int64:    cray-petsc-complex/3.11.2.0
-            petsc@3.11.2.0%intel+complex~int64:  cray-petsc-complex/3.11.2.0
-            petsc@3.11.2.0%cce+complex~int64:    cray-petsc-complex/3.11.2.0
-            petsc@3.11.2.0%pgi+complex~int64:    cray-petsc-complex/3.11.2.0
-            petsc@3.11.2.0%gcc~complex+int64:    cray-petsc-64/3.11.2.0
-            petsc@3.11.2.0%intel~complex+int64:  cray-petsc-64/3.11.2.0
-            petsc@3.11.2.0%cce~complex+int64:    cray-petsc-64/3.11.2.0
-            petsc@3.11.2.0%pgi~complex+int64:    cray-petsc-64/3.11.2.0
-            petsc@3.11.2.0%gcc+complex+int64:    cray-petsc-complex-64/3.11.2.0
-            petsc@3.11.2.0%intel+complex+int64:  cray-petsc-complex-64/3.11.2.0
-            petsc@3.11.2.0%cce+complex+int64:    cray-petsc-complex-64/3.11.2.0
-            petsc@3.11.2.0%pgi+complex+int64:    cray-petsc-complex-64/3.11.2.0
+            petsc@3.13.3.0%gcc~complex~int64:    cray-petsc/3.13.3.0
+            petsc@3.13.3.0%intel~complex~int64:  cray-petsc/3.13.3.0
+            petsc@3.13.3.0%cce~complex~int64:    cray-petsc/3.13.3.0
+            petsc@3.13.3.0%pgi~complex~int64:    cray-petsc/3.13.3.0
+            petsc@3.13.3.0%gcc+complex~int64:    cray-petsc-complex/3.13.3.0
+            petsc@3.13.3.0%intel+complex~int64:  cray-petsc-complex/3.13.3.0
+            petsc@3.13.3.0%cce+complex~int64:    cray-petsc-complex/3.13.3.0
+            petsc@3.13.3.0%pgi+complex~int64:    cray-petsc-complex/3.13.3.0
+            petsc@3.13.3.0%gcc~complex+int64:    cray-petsc-64/3.13.3.0
+            petsc@3.13.3.0%intel~complex+int64:  cray-petsc-64/3.13.3.0
+            petsc@3.13.3.0%cce~complex+int64:    cray-petsc-64/3.13.3.0
+            petsc@3.13.3.0%pgi~complex+int64:    cray-petsc-64/3.13.3.0
+            petsc@3.13.3.0%gcc+complex+int64:    cray-petsc-complex-64/3.13.3.0
+            petsc@3.13.3.0%intel+complex+int64:  cray-petsc-complex-64/3.13.3.0
+            petsc@3.13.3.0%cce+complex+int64:    cray-petsc-complex-64/3.13.3.0
+            petsc@3.13.3.0%pgi+complex+int64:    cray-petsc-complex-64/3.13.3.0
     quantum-espresso:
         variants: ~elpa +mpi +openmp
     readline:
@@ -222,17 +223,17 @@ packages:
             readline@7.0: /usr
     slurm:
       modules:
-        slurm@19.05.3-2%gcc: slurm/19.05.3-2
+        slurm@20.02.2-1%gcc: slurm/20.02.2-1
     tar:
         paths:
              tar@1.30.0: /bin
     trilinos:
         buildable: false
         modules:
-            trilinos@12.14.1.0%gcc:   cray-trilinos/12.14.1.0
-            trilinos@12.14.1.0%intel: cray-trilinos/12.14.1.0
-            trilinos@12.14.1.0%cce:   cray-trilinos/12.14.1.0
-            trilinos@12.14.1.0%pgi:   cray-trilinos/12.14.1.0
+            trilinos@12.18.1.1%gcc:   cray-trilinos/12.18.1.1
+            trilinos@12.18.1.1%intel: cray-trilinos/12.18.1.1
+            trilinos@12.18.1.1%cce:   cray-trilinos/12.18.1.1
+            trilinos@12.18.1.1%pgi:   cray-trilinos/12.18.1.1
     xz:
         paths:
              xz@5.2.3: /usr
