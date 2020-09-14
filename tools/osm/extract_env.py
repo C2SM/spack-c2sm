@@ -34,7 +34,7 @@ def main():
     
     # Warning if eccodes installation already exists
     if os.path.exists(os.path.join(args.idircosmo, cosmo_dir)):
-        print('Warning: The cosmo installation path: ' + os.path.join(args.idircosmo, cosmo_dir) + ' already exists!')
+        sys.exit('Exit: The cosmo installation path: ' + os.path.join(args.idircosmo, cosmo_dir) + ' already exists!')
     print('Installing ' + cosmo_spec.format('{prefix}') + ' to: ' + os.path.join(args.idircosmo, cosmo_dir))
     os.system('cp -rf ' + cosmo_spec.format('{prefix}') + ' ' + os.path.join(args.idircosmo, cosmo_dir))
 
