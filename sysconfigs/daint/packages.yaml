@@ -4,7 +4,7 @@ packages:
     all:
         # default compilers defined by the system
         # these reflect the current installed PE
-        compiler: [pgi@19.7.0, gcc@8.3.0, cce@9.0.2]
+        compiler: [pgi@20.1.1, pgi@20.1.0, gcc@9.3.0, gcc@8.1.0, cce@10.0.2, intel@19.1.1.217, intel@19.0.1.144]
         providers:
             mpi: [mpich]
             # if the mpich package support +cuda in the future it needs to be put there
@@ -25,7 +25,7 @@ packages:
     binutils:
         variants: +gold~headers+libiberty+nls~plugin
         paths:
-             binutils@2.31: /usr
+             binutils@2.32: /usr
     bzip2:
         paths:
              bzip2@1.0.6: /usr
@@ -134,7 +134,7 @@ packages:
              libtool@2.4.6%gcc: /usr
     libxml2:
         paths:
-             libxml2%gcc: /usr
+             libxml2@2.9.7%gcc: /usr
     lz4:
         paths:
              lz4@1.8.0: /usr
@@ -180,10 +180,10 @@ packages:
         variants: +pic +shared threads=openmp ~virtual_machine
     openssl:
         paths:
-             openssl@1.1.0i: /usr
+            openssl@1.1.0i: /usr
     openjdk:
         paths:
-             openjdk%gcc: /usr/lib64/jvm/java-11-openjdk
+            openjdk@11.0.7%gcc: /usr/lib64/jvm/java-11-openjdk
     papi:
         buildable: false
         modules:
