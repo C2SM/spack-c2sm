@@ -60,8 +60,8 @@ def main():
             args.pckgidir = '$SCRATCH'
 
     config_data['config']['install_tree'] = args.pckgidir + '/spack-install/' + args.machine.replace('admin-', '')
-    config_data['config']['build_stage'] = ['$SCRATCH/spack-stages/' + args.machine]
-    config_data['config']['module_roots']['tcl'] = '$SCRATCH/modules/' + args.machine
+    config_data['config']['build_stage'] = [args.pckgidir + '/spack-stages/' + args.machine]
+    config_data['config']['module_roots']['tcl'] = args.pckgidir + '/modules/' + args.machine
     config_data['config']['extensions'] = [dir_path + '/tools/spack-scripting']
     yaml.safe_dump(config_data, open('./sysconfigs/' + args.machine.replace('admin-', '') + '/config.yaml', 'w'), default_flow_style=False)
 
