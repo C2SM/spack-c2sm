@@ -54,6 +54,12 @@ packages:
   bison:
     paths:
       bison@3.0.4%gcc: /usr
+  gettext:
+    paths:
+      gettext@0.19.8.1%gcc: /usr
+  flex:
+    paths:
+      flex@2.5.37%gcc: /usr
   ncurses:
     paths:
       ncurses@6.1: /usr

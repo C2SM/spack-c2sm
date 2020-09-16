@@ -35,7 +35,7 @@ def dycore_deps(repo):
             test_dep = '+dycoretest' if it[3] else '~dycoretest'
             gt1_dep = '+gt1' if it[4] else '~gt1'
 
-            orig='cosmo-dycore@'+tag+'%gcc real_type='+real_type+' '+ prod_opt + ' ' + cuda_opt+' ' +test_opt + ' ' + gt1_dep
+            orig='cosmo-dycore@'+tag+'%gcc@8.1.0:8.4.0 real_type='+real_type+' '+ prod_opt + ' ' + cuda_opt+' ' +test_opt + ' ' + gt1_dep
             dep='@'+tag+' real_type='+real_type+' '+ prod_opt + ' '+ cuda_dep + ' +cppdycore'+' '+test_dep + ' ' + gt1_dep
             depends_on(orig, when=dep, type='build')
 
@@ -70,7 +70,7 @@ class Cosmo(MakefilePackage):
     depends_on('cosmo-eccodes-definitions@2.14.1.2 ~aec', type=('build','run'), when='+eccodes')
     depends_on('perl@5.16.3:', type='build')
     depends_on('omni-xmod-pool', when='+claw', type='build')
-    depends_on('claw', when='+claw', type='build')
+    depends_on('claw@2.0.1', when='+claw', type='build')
     depends_on('boost%gcc', when='cosmo_target=gpu ~cppdycore', type='build')
     depends_on('cmake%gcc', type='build')
 
