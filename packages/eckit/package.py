@@ -12,8 +12,8 @@ class Eckit(CMakePackage):
     of tools and applications at ECMWF"""
 
     homepage = 'https://software.ecmwf.int/wiki/display/ECKIT'
-    url      = "https://github.com/ecmwf/eckit/archive/1.10.1.tar.gz"
-    git      = 'https://github.com/ecmwf/eckit.git'
+    url = "https://github.com/ecmwf/eckit/archive/1.10.1.tar.gz"
+    git = 'https://github.com/ecmwf/eckit.git'
     maintainers = ['cosunae']
 
     version('master', branch='master')
@@ -27,6 +27,6 @@ class Eckit(CMakePackage):
 
         args.append('-DCMAKE_MODULE_PATH={0}/share/ecbuild/cmake'.
                     format(spec['ecbuild'].prefix))
+        args.append('-DENABLE_MPI=OFF')
 
         return args
-
