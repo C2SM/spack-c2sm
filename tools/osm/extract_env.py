@@ -32,7 +32,7 @@ def main():
     eccodes_dir = 'eccodes' + cosmo_spec.format('{^eccodes.@version}')
     eccodes_definitions_dir = 'cosmo-eccodes-definitions' + cosmo_spec.format('{^cosmo-eccodes-definitions.@version}')
     
-    # Warning if eccodes installation already exists
+    # Exist if cosmo installation already exists
     if os.path.exists(os.path.join(args.idircosmo, cosmo_dir)):
         sys.exit('Exit: The cosmo installation path: ' + os.path.join(args.idircosmo, cosmo_dir) + ' already exists!')
     print('Installing ' + cosmo_spec.format('{prefix}') + ' to: ' + os.path.join(args.idircosmo, cosmo_dir))
