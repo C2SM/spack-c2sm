@@ -219,9 +219,9 @@ packages:
 
     pgi:
         buildable: false
-        modules:
-            pgi@20.1.0:   pgi/20.1.0
-            pgi@20.1.1:   pgi/20.1.1
+        externals:
+        - spec: pgi@20.1
+          prefix: /opt/pgi/20.1.0
 
     quantum-espresso:
         variants: ~elpa +mpi +openmp
