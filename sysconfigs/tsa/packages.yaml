@@ -4,6 +4,8 @@ packages:
     providers:
       mpicuda: [openmpi+cuda, mpich]
       mpi: [openmpi~cuda]
+  cce:
+      buildable: false
   cmake:
     modules:
       cmake@3.14.5%gcc: cmake/3.14.5
@@ -21,6 +23,14 @@ packages:
     version: []
     target: []
     providers: {}
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@8.3.0
+      modules:
+      - gcc/8.3.0
+  intel:
+    buildable: false
   openmpi:
     modules:
       openmpi@4.0.2%pgi +cuda: /apps/arolla/UES/jenkins/RH7.7/MCH-PE20.06/pgi/19.9/easybuild/modules/all/openmpi/4.0.2-pgi-19.9-gcc-8.3.0-cuda-10.1-rh7.7
@@ -42,6 +52,11 @@ packages:
   perl:
     paths: 
       perl@5.16.3: /usr
+  pgi:
+        buildable: false
+        externals:
+        - spec: pgi@19.9
+          prefix: PrgEnv-pgi/19.9
   m4:
     paths: 
       m4@1.4.16%gcc: /usr
@@ -95,10 +110,4 @@ packages:
     variants: cuda_arch=70 cosmo_target=gpu slave=tsa
     version: [master]
     compiler: [pgi@19.9, gcc@8.3.0]
-
-    pgi:
-        buildable: false
-        externals:
-        - spec: pgi@19.9
-          prefix: /apps/arolla/UES/jenkins/RH7.7/MCH-PE20.06/pgi/19.9/easybuild/software/PGI/19.9-GCC-8.3.0
 
