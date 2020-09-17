@@ -96,3 +96,9 @@ packages:
     version: [master]
     compiler: [pgi@19.9, gcc@8.3.0]
 
+    pgi:
+        buildable: false
+        externals:
+        - spec: pgi@19.9
+          prefix: /apps/arolla/UES/jenkins/RH7.7/MCH-PE20.06/pgi/19.9/easybuild/software/PGI/19.9-GCC-8.3.0
+

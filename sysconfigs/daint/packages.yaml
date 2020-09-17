@@ -4,7 +4,7 @@ packages:
     all:
         # default compilers defined by the system
         # these reflect the current installed PE
-        compiler: [pgi@20.1.1, pgi@20.1.0, gcc@9.3.0, gcc@8.1.0, cce@10.0.2, intel@19.1.1.217, intel@19.0.1.144]
+        compiler: [pgi@20.1, gcc@9.3.0, gcc@8.1.0, cce@10.0.2, intel@19.1.1.217, intel@19.0.1.144]
         providers:
             mpi: [mpich]
             # if the mpich package support +cuda in the future it needs to be put there
@@ -112,6 +112,17 @@ packages:
             hdf5@1.12.0.0%pgi+mpi+hl+fortran:   cray-hdf5-parallel/1.12.0.0
     hwloc:
         variants: +cuda
+    intel:
+        buildable: false
+        externals:
+        - spec: intel@19.0.1.144
+          modules:
+          - PrgEnv-intel
+          - intel/19.0.1.144
+        - spec: intel@19.1.1.217
+          modules:
+          - PrgEnv-intel
+          - intel/19.1.1.217
     intel-mkl:
         buildable: false
         paths:
