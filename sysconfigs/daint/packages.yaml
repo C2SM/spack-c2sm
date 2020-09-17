@@ -31,11 +31,8 @@ packages:
              bzip2@1.0.6: /usr
     cce:
         buildable: false
-        externals:
-        - spec: cce@10.0.2
-          modules:
-          - PrgEnv-cray
-          - cce/10.0.2
+        modules:
+          cce@10.0.2: PrgEnv-cray cce/10.0.2
     cosmo:
       variants: cuda_arch=60 cosmo_target=gpu slave=daint
       version: [master]
@@ -96,15 +93,9 @@ packages:
 
     gcc:
         buildable: false
-        externals:
-        - spec: gcc@8.1.0
-          modules:
-          - PrgEnv-gnu
-          - gcc/8.1.0
-        - spec: gcc@9.3.0
-          modules:
-          - PrgEnv-gnu
-          - gcc/9.3.0
+        modules:
+          gcc@8.1.0: PrgEnv-gnu gcc/8.1.0
+          gcc@9.3.0: PrgEnv-gnu gcc/9.3.0
     gettext:
         paths:
              gettext@0.19.8.1: /usr
@@ -133,15 +124,9 @@ packages:
         variants: +cuda
     intel:
         buildable: false
-        externals:
-        - spec: intel@19.0.1.144
-          modules:
-          - PrgEnv-intel
-          - intel/19.0.1.144
-        - spec: intel@19.1.1.217
-          modules:
-          - PrgEnv-intel
-          - intel/19.1.1.217
+        modules:
+          intel@19.0.1.144: PrgEnv-intel intel/19.0.1.144
+          intel@19.1.1.217: PrgEnv-intel intel/19.1.1.217
     intel-mkl:
         buildable: false
         paths:
@@ -249,10 +234,8 @@ packages:
 
     pgi:
         buildable: false
-        externals:
-        - spec: pgi@20.1
-          prefix: /opt/pgi/20.1.0
-
+        modules:
+          pgi@20.1: PrgEnv-pgi pgi/20.1.1
     quantum-espresso:
         variants: ~elpa +mpi +openmp
     readline:
