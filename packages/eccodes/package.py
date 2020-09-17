@@ -17,6 +17,7 @@ class Eccodes(CMakePackage):
 
     maintainers = ['skosukhin']
     
+    version('2.18.0', sha256='d88943df0f246843a1a062796edbf709ef911de7269648eef864be259e9704e3')
     version('2.14.1', sha256='16da742691c0ac81ccc378ae3f97311ef0dfdc82505aa4c652eb773e911cc9d6')
     version('2.13.0', sha256='c5ce1183b5257929fc1f1c8496239e52650707cfab24f4e0e1f1a471135b8272')
     version('2.5.0', sha256='18ab44bc444168fd324d07f7dea94f89e056f5c5cd973e818c8783f952702e4e')
@@ -42,7 +43,7 @@ class Eccodes(CMakePackage):
     variant('examples', default=True,
             description='Build the examples (part of the full test suite)')
     variant('test', default=True, description='Enable the tests')
-    variant('build_type', default='Production',
+    variant('build_type', default='RelWithDebInfo',
             description='The build type to build',
             values=('Debug', 'Release', 'RelWithDebInfo', 'Production'))
 
