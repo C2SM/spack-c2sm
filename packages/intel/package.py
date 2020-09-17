@@ -1,6 +1,6 @@
 from spack import *
 
-class Intel(IntelPackage):
+class Intel(Package):
     """Intel Compilers.
        Note: This package cannot be installed, it wraps existing installation, specified 
        in packages.yaml.
