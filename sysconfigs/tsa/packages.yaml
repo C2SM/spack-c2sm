@@ -25,10 +25,8 @@ packages:
     providers: {}
   gcc:
     buildable: false
-    externals:
-    - spec: gcc@8.3.0
-      modules:
-      - gcc/8.3.0
+    modules:
+      gcc@8.3.0: gcc/8.3.0
   intel:
     buildable: false
   openmpi:
@@ -53,10 +51,9 @@ packages:
     paths: 
       perl@5.16.3: /usr
   pgi:
-        buildable: false
-        externals:
-        - spec: pgi@19.9
-          prefix: PrgEnv-pgi/19.9
+    buildable: false
+    modules:
+      pgi@19.9: PrgEnv-pgi/19.9
   m4:
     paths: 
       m4@1.4.16%gcc: /usr
