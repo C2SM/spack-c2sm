@@ -4,7 +4,24 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+from spack.spec import Spec
 
+def _fc_variant_name(cp):
+    return str(cp.spec).replace('@', '')
+
+def _fc_variant_get_compiler(fc_variant_name):
+    for cp in spack.compilers.all_compilers():
+        if _fc_variant_name(cp) == fc_variant_name:
+            return cp
+    return None
+
+def _add_claw_fc_variant():
+    cp_spec_by_val = {_fc_variant_name(cp): str(cp.spec) for cp in spack.compilers.all_compilers()}
+    cp_vals = tuple(['build-fc'] + [cp_name for cp_name in cp_spec_by_val])
+    variant('fc', description='Fortran compiler, used by CLAW at runtime. "build-fc" means that CLAW should use ' +
+                              'build-time compiler', default='build-fc', values=cp_vals, multi=False)
+    for cp_name, cp_spec in cp_spec_by_val.items():
+        depends_on(cp_spec, type=('build', 'run'), when='fc=' + cp_name)
 
 class Claw(CMakePackage):
     """CLAW Compiler targets performance portability problem in climate and
@@ -24,7 +41,9 @@ class Claw(CMakePackage):
     version('1.2.1', commit='939989ab52edb5c292476e729608725654d0a59a', submodules=True)
     version('1.2.0', commit='fc9c50fe02be97b910ff9c7015064f89be88a3a2', submodules=True)
     version('1.1.0', commit='16b165a443b11b025a77cad830b1280b8c9bcf01', submodules=True)
-    
+
+    _add_claw_fc_variant()
+
     variant('omni-master', default=False, description='Build with the master version of the omni-compiler')
 
     depends_on('cmake@3.0:%gcc', type='build')
@@ -37,6 +56,7 @@ class Claw(CMakePackage):
     
     def setup_environment(self, spack_env, run_env):
         spack_env.set('YACC', 'bison -y')
+
     def cmake_args(self):
         args = []
         spec = self.spec
@@ -47,7 +67,11 @@ class Claw(CMakePackage):
         args.append('-DOMNI_CONF_OPTION=--with-libxml2={0}'.
                     format(spec['libxml2'].prefix))
 
-        args.append('-DCMAKE_Fortran_COMPILER={0}'.
-                    format(self.compiler.fc))
+        fc_variant_val = self.spec.variants['fc'].value
+        if fc_variant_val == 'build-fc':
+            fc_variant_val = _fc_variant_name(self.compiler)
 
+        compiler = _fc_variant_get_compiler(fc_variant_val)
+        assert compiler is not None, "Compiler %s not found" % fc_variant_val
+        args.append('-DCMAKE_Fortran_COMPILER=%s' % compiler.fc)
         return args
