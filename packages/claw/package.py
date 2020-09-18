@@ -22,6 +22,8 @@ def _add_claw_fc_variant():
                               'build-time compiler', default='build-fc', values=cp_vals, multi=False)
     for cp_name, cp_spec in cp_spec_by_val.items():
         depends_on(cp_spec, type=('build', 'run'), when='fc=' + cp_name)
+    for cp_name, cp_spec in cp_spec_by_val.items():
+        depends_on(cp_spec, type=('build', 'run'), when='%' + cp_spec + ' fc=build-fc ')
 
 class Claw(CMakePackage):
     """CLAW Compiler targets performance portability problem in climate and
@@ -56,6 +58,16 @@ class Claw(CMakePackage):
     
     def setup_environment(self, spack_env, run_env):
         spack_env.set('YACC', 'bison -y')
+        spack_env.set('FC', self._get_fc_runtime_path())
+
+    def _get_fc_runtime_path(self):
+        fc_variant_val = self.spec.variants['fc'].value
+        if fc_variant_val == 'build-fc':
+            fc_variant_val = _fc_variant_name(self.compiler)
+
+        compiler = _fc_variant_get_compiler(fc_variant_val)
+        assert compiler is not None, "Compiler %s not found" % fc_variant_val
+        return compiler.fc
 
     def cmake_args(self):
         args = []
@@ -67,11 +79,6 @@ class Claw(CMakePackage):
         args.append('-DOMNI_CONF_OPTION=--with-libxml2={0}'.
                     format(spec['libxml2'].prefix))
 
-        fc_variant_val = self.spec.variants['fc'].value
-        if fc_variant_val == 'build-fc':
-            fc_variant_val = _fc_variant_name(self.compiler)
 
-        compiler = _fc_variant_get_compiler(fc_variant_val)
-        assert compiler is not None, "Compiler %s not found" % fc_variant_val
-        args.append('-DCMAKE_Fortran_COMPILER=%s' % compiler.fc)
+        args.append('-DCMAKE_Fortran_COMPILER=%s' % self._get_fc_runtime_path())
         return args
