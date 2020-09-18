@@ -53,7 +53,7 @@ def main():
     os.system('cp -rf ' + cosmo_spec.format('{^cosmo-eccodes-definitions.prefix}') + ' ' + os.path.join(args.idireccodes, eccodes_definitions_dir))
 
     with open(cosmo_dir + '_run-env', 'w') as outfile:
-        subprocess.run(['spack', 'load', '--sh', args.spec], stdout=outfile)
+        subprocess.run(['spack load --sh ' + args.spec], shell=True, stdout=outfile)
 
     with open(cosmo_dir + '_run-env', 'r') as outfile:
         filedata = outfile.read()
