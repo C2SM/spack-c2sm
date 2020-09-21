@@ -86,7 +86,7 @@ compilers:
     target: any
     modules:
     - PrgEnv-pgi
-    - pgi/20.1.0
+    - pgi/20.1.1
     environment: {}
     extra_rpaths: []
 - compiler:
