@@ -5,6 +5,7 @@
 
 from spack import *
 from spack.spec import Spec
+from spack.version import Version, VersionRange
 
 def _fc_variant_name(cp):
     return str(cp.spec).replace('@', '')
@@ -58,7 +59,6 @@ class Claw(CMakePackage):
     
     def setup_environment(self, spack_env, run_env):
         spack_env.set('YACC', 'bison -y')
-        spack_env.set('FC', self._get_fc_runtime_path())
 
     def _get_fc_runtime_path(self):
         fc_variant_val = self.spec.variants['fc'].value
@@ -68,6 +68,11 @@ class Claw(CMakePackage):
         compiler = _fc_variant_get_compiler(fc_variant_val)
         assert compiler is not None, "Compiler %s not found" % fc_variant_val
         return compiler.fc
+
+    def patch(self):
+        if self.version in VersionRange(Version('2.0'), Version('2.0.2')):
+            filter_file('${CMAKE_Fortran_COMPILER}', '${CLAW_Fortran_COMPILER}',
+                        'CMakeLists.txt', 'properties.cmake', 'cmake/omni_compiler.cmake', string=True)
 
     def cmake_args(self):
         args = []
@@ -79,6 +84,5 @@ class Claw(CMakePackage):
         args.append('-DOMNI_CONF_OPTION=--with-libxml2={0}'.
                     format(spec['libxml2'].prefix))
 
-
-        args.append('-DCMAKE_Fortran_COMPILER=%s' % self._get_fc_runtime_path())
+        args.append('-DCLAW_Fortran_COMPILER=%s' % self._get_fc_runtime_path())
         return args
