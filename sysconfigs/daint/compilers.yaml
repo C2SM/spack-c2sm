@@ -188,21 +188,6 @@ compilers:
     environment: {}
     extra_rpaths: []
 - compiler:
-    spec: pgi@20.1.0
-    paths:
-      cc: cc
-      cxx: CC
-      f77: ftn
-      fc: ftn
-    flags: {}
-    operating_system: cnl7
-    target: any
-    modules:
-    - PrgEnv-pgi
-    - pgi/20.1.0
-    environment: {}
-    extra_rpaths: []
-- compiler:
     spec: pgi@20.1
     paths:
       cc: /opt/pgi/20.1.1/linux86-64/20.1/bin/pgcc

@@ -4,7 +4,7 @@ packages:
     all:
         # default compilers defined by the system
         # these reflect the current installed PE
-        compiler: [pgi@20.1.1, pgi@20.1.0, gcc@9.3.0, gcc@8.1.0, cce@10.0.2, intel@19.1.1.217, intel@19.0.1.144]
+        compiler: [pgi@20.1, gcc@9.3.0, gcc@8.1.0, cce@10.0.2, intel@19.1.1.217, intel@19.0.1.144]
         providers:
             mpi: [mpich]
             # if the mpich package support +cuda in the future it needs to be put there
