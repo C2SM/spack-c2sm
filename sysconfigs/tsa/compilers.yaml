@@ -3,7 +3,8 @@ compilers::
     environment: {}
     extra_rpaths: []
     flags: {}
-    modules: 
+    modules:
+    - /apps/arolla/UES/jenkins/RH7.7/MCH-PE20.06/pgi/19.9/easybuild/modules/all/pgi/19.9-gcc-8.3.0
     operating_system: rhel7
     paths:
       cc: /apps/arolla/UES/jenkins/RH7.7/MCH-PE20.06/pgi/19.9/easybuild/software/PGI/19.9-GCC-8.3.0/linux86-64/19.9/bin/pgcc
@@ -16,7 +17,8 @@ compilers::
     environment: {}
     extra_rpaths: []
     flags: {}
-    modules: 
+    modules:
+    - /apps/arolla/UES/jenkins/RH7.7/MCH-PE20.08-dev0/pgi/20.4/easybuild/modules/all/pgi/20.4-gcc-8.3.0
     operating_system: rhel7
     paths:
       cc: /apps/arolla/UES/jenkins/RH7.7/MCH-PE20.08-dev0/pgi/20.4/easybuild/software/PGI/20.4-GCC-8.3.0/linux86-64/20.4/bin/pgcc
