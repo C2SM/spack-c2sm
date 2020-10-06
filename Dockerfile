@@ -12,6 +12,8 @@
 
 FROM nvidia/cuda:10.0-devel-ubuntu18.04 AS devel
 ARG nproc=2
+ARG ssh_prv_key
+ARG ssh_pub_key
 
 # Python
 RUN apt-get update -y && \
