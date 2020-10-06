@@ -2,12 +2,13 @@ packages:
   all:
     compiler: [gcc@8.3.0]
     providers:
-      mpicuda: [openmpi+cuda, mpich]
+      mpicuda: [openmpi+cuda]
       mpi: [openmpi~cuda]
   cuda:
     version: [10.1.243]
   openmpi:
     version: [4.0.2]
+    variants: +cuda
   netcdf-fortran:
     version: [4.4.5]
     variants: +mpi
@@ -24,8 +25,4 @@ packages:
     variants: cuda_arch=70 cosmo_target=gpu slave=tsa
     version: [master]
     compiler: [gcc@8.3.0]
-  bzip2:
-    bzip2%gcc: /usr
-  zlib:
-    zlib%gcc: /usr
 
