@@ -23,5 +23,9 @@ packages:
   cosmo:
     variants: cuda_arch=70 cosmo_target=gpu slave=tsa
     version: [master]
-    compiler: [pgi@19.9, gcc@8.3.0]
+    compiler: [gcc@8.3.0]
+  bzip2:
+    bzip2%gcc: /usr
+  zlib:
+    zlib%gcc: /usr
 
