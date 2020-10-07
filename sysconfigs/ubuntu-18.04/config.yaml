@@ -1,0 +1,7 @@
+config:
+  extensions:
+  - /opt/spack/spack-mch/tools/spack-scripting
+  install_path_scheme: '{name}/{version}/{compiler.name}/{hash}'
+  source_cache: ~/.spack/source_cache
+  template_dirs:
+  - $spack/templates
