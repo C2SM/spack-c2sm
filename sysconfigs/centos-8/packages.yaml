@@ -7,7 +7,7 @@ packages:
   cuda:
     version: [10.1.243]
     paths:
-      cuda@10.1.243: /opt/nvidia/hpc_sdk/Linux_x86_64/20.7/cuda
+      cuda@10.1.243%gcc: /opt/nvidia/hpc_sdk/Linux_x86_64/20.7/cuda
   openmpi:
     paths:
       openmpi@4.0.4%pgi +cuda: /usr/local/openmpi
