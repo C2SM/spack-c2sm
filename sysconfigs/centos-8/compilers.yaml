@@ -1,0 +1,14 @@
+compilers:
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: 
+    operating_system: centos8
+    paths:
+      cc: /opt/nvidia/hpc_sdk/Linux_x86_64/20.7/compilers/bin/pgcc
+      cxx: /opt/nvidia/hpc_sdk/Linux_x86_64/20.7/compilers/bin/pgc++
+      f77: /opt/nvidia/hpc_sdk/Linux_x86_64/20.7/compilers/bin/pgfortran
+      fc: /opt/nvidia/hpc_sdk/Linux_x86_64/20.7/compilers/bin/pgfortran
+    spec: pgi@20.7
+    target: any
