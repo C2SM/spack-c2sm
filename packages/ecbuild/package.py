@@ -12,7 +12,7 @@ class Ecbuild(CMakePackage):
     that ease the managing of software build systems"""
 
     homepage = 'https://github.com/ecmwf/ecbuild.git'
-    url      = "https://github.com/ecmwf/ecbuild/archive/3.3.2.tar.gz"
+    url      = "https://github.com/ecmwf/ecbuild.git"
     git      = 'https://github.com/ecmwf/ecbuild.git'
     maintainers = ['cosunae']
 
