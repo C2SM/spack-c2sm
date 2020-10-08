@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler: [gcc@8.3.1, pgi@20.7]
+    compiler: [gcc@8.3.1]
     providers:
       mpicuda: [openmpi+cuda]
       mpi: [openmpi~cuda]
@@ -60,10 +60,8 @@ packages:
       glib: /usr
   cmake:
     paths:
-      cmake: /usr
-  boost:
-    paths:
-      boost: /usr
+      cmake%gcc: /usr
+      cmake%pgi: /usr
   slurm:
     compiler: [gcc]
   m4:
