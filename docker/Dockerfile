@@ -23,6 +23,10 @@ RUN yum install -y \
         python2-pip \
         git \
         openssh-server \
+        json-c \
+        lz4 \
+        munge \
+        cmake \
         mysql-devel && \
     rm -rf /var/cache/yum/*
 
@@ -108,7 +112,7 @@ RUN mkdir -p /opt/spack && cd /opt/spack && \
     cd spack-mch && pip2 install -U pip setuptools wheel && pip2 install pyyaml && \
     ./config.py -m centos-8 -p /opt/spack -r spack/etc/spack -u OFF && \
     . spack/share/spack/setup-env.sh && spack compiler find && \
-    spack compiler list && spack spec cosmo@master%pgi
+    spack compiler list && spack install cosmo@master%pgi
 
 FROM centos:8
 
