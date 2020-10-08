@@ -29,5 +29,20 @@ packages:
     compiler: [gcc@8.3.0]
   perl:
     paths:
-      perl: /usr
+      perl@5.26.3: /usr
+  pkgconf:
+    paths:
+      pkgconf@1.4.2: /usr
+  curl:
+    paths:
+      curl@7.61.1: /usr
+  tar:
+    paths:
+      tar@1.30: /usr
+  gawk:
+    paths:
+      gawk@4.2.1: /usr
+  bzip2:
+    paths:
+      bzip2: /usr
 
