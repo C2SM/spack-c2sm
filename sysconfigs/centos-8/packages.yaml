@@ -59,6 +59,8 @@ packages:
     paths:
       glib: /usr
   slurm:
+    paths:
+      slurm: /usr
     compiler: [gcc]
   m4:
     paths:
