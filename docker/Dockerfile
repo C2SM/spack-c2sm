@@ -26,6 +26,8 @@ RUN yum install -y \
         json-c \
         lz4 \
         munge \
+        ncurses \
+        openssl \
         autoconf \
         automake \
         libtool \
