@@ -77,9 +77,6 @@ packages:
   python:
     paths:
       python: /usr
-  slurm:
-    paths:
-      slurm: /usr
   ncurses:
     paths:
       ncurses: /usr
