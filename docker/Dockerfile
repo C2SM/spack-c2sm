@@ -27,6 +27,7 @@ RUN yum install -y \
         lz4 \
         munge \
         cmake \
+        boost \
         mysql-devel && \
     rm -rf /var/cache/yum/*
 
