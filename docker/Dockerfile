@@ -26,7 +26,9 @@ RUN yum install -y \
         json-c \
         lz4 \
         munge \
-        cmake \
+        autoconf \
+        automake \
+        libtool \
         mysql-devel && \
     rm -rf /var/cache/yum/*
 
