@@ -45,4 +45,16 @@ packages:
   bzip2:
     paths:
       bzip2: /usr
+  munge:
+    paths:
+      munge: /usr
+  lz4:
+    paths:
+      lz4: /usr
+  json-c:
+    paths:
+      json-c: /usr
+  glib:
+    paths:
+      glib: /usr
 
