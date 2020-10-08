@@ -58,12 +58,20 @@ packages:
   glib:
     paths:
       glib: /usr
-  cmake:
-    paths:
-      cmake%gcc: /usr
-      cmake%pgi: /usr
   slurm:
     compiler: [gcc]
   m4:
-    compiler: [gcc]
-
+    paths:
+      m4: /usr
+  libtool:
+    paths:
+      libtool: /usr
+  autoconf:
+    paths:
+      autoconf: /usr
+  automake:
+    paths: 
+      automake: /usr
+  python:
+    paths:
+      python: /usr
