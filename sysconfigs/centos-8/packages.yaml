@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler: [gcc@8.3.0]
+    compiler: [gcc@8.3.1, pgi@20.7]
     providers:
       mpicuda: [openmpi+cuda]
       mpi: [openmpi~cuda]
@@ -13,10 +13,12 @@ packages:
       openmpi@4.0.4%pgi +cuda: /usr/local/openmpi
   netcdf-fortran:
     version: [4.4.5]
+    compiler: [gcc]
     variants: +mpi
   netcdf-c:
     version: [4.7.0]
     variants: +mpi
+    compiler: [gcc]
   cosmo-dycore:
     variants: +cuda cuda_arch=70 slave=tsa slurm_args= "'-p debug -n {0} --gres=gpu:{0}'"
     compiler: [gcc]
@@ -26,7 +28,6 @@ packages:
   cosmo:
     variants: cuda_arch=70 cosmo_target=gpu slave=tsa
     version: [master]
-    compiler: [gcc@8.3.0]
   perl:
     paths:
       perl@5.26.3: /usr
@@ -57,4 +58,14 @@ packages:
   glib:
     paths:
       glib: /usr
+  cmake:
+    paths:
+      cmake: /usr
+  boost:
+    paths:
+      boost: /usr
+  slurm:
+    compiler: [gcc]
+  m4:
+    compiler: [gcc]
 
