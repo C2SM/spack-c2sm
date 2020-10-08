@@ -83,3 +83,6 @@ packages:
   openssl:
     paths:
       openssl: /usr
+  zlib:
+    paths:
+      zlib: /usr

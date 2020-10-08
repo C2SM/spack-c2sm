@@ -31,6 +31,8 @@ RUN yum install -y \
         autoconf \
         automake \
         libtool \
+        zlib \
+        patch \
         mysql-devel && \
     rm -rf /var/cache/yum/*
 
