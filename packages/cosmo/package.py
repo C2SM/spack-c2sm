@@ -242,12 +242,12 @@ class Cosmo(MakefilePackage):
             if 'cosmo_target=gpu' in self.spec:
                 cuda_version = self.spec['cuda'].version
                 fflags = 'CUDA_HOME=' + self.spec['cuda'].prefix + ' -ta=tesla,cc' + self.spec.variants['cuda_arch'].value + ',cuda' + str(cuda_version.up_to(2))
-                OptionsFile.filter('FFLAGS   = -Kieee', 'FFLAGS   = -Kieee {0}'.format(fflags))
+                OptionsFile.filter('FFLAGS   = -Kieee.*', 'FFLAGS   = -Kieee {0}'.format(fflags))
             # Pre-processor flags
             if self.mpi_spec.name == 'mpich':
-                OptionsFile.filter('PFLAGS   = -Mpreprocess', 'PFLAGS   = -Mpreprocess -DNO_MPI_HOST_DATA')
+                OptionsFile.filter('PFLAGS   = -Mpreprocess.*', 'PFLAGS   = -Mpreprocess -DNO_MPI_HOST_DATA')
             if 'cosmo_target=gpu' in self.spec and self.compiler.name == 'pgi':
-                OptionsFile.filter('PFLAGS   = -Mpreprocess', 'PFLAGS   = -Mpreprocess -DNO_ACC_FINALIZE')
+                OptionsFile.filter('PFLAGS   = -Mpreprocess.*', 'PFLAGS   = -Mpreprocess -DNO_ACC_FINALIZE')
 
     def install(self, spec, prefix):
         mkdir(prefix.cosmo)
