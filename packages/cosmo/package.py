@@ -149,8 +149,6 @@ class Cosmo(MakefilePackage):
         env.set('GRIBDWDI', '-I' + self.spec['libgrib1'].prefix + '/include')
         
         # MPI library
-        if self.mpi_spec.name == 'openmpi':
-            env.set('MPIL', '-L' + self.mpi_spec.prefix + ' -lmpi_cxx')        
         env.set('MPII', '-I'+ self.mpi_spec.prefix + '/include')
         
         # Dycoregt & Gridtools linrary
