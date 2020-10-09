@@ -20,9 +20,9 @@ else:
 
 # Choose between either Ubuntu 18.04 (default) or CentOS 8
 # Add '--userarg centos=true' to the command line to select CentOS
-image = 'ubuntu:18.04'
+image = 'nvidia/cuda:10.1-devel-ubuntu18.04'
 if USERARG.get('centos', False):
-  image = 'centos:8'
+  image = 'nvidia/cuda:10.1-devel-centos8'
 
 ######
 # Devel stage
