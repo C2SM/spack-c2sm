@@ -125,12 +125,12 @@ class Cosmo(MakefilePackage):
         if '~eccodes' in self.spec:
             grib_prefix = self.spec['cosmo-grib-api'].prefix
             grib_definition_prefix = self.spec['cosmo-grib-api-definitions'].prefix
-            env.set('GRIBAPIL', '-L' + grib_prefix + '/lib -lgrib_api_f90 -lgrib_api -L' + self.spec['jasper'].prefix + '/lib64 -ljasper')
+            env.set('GRIBAPIL', '-L' + grib_prefix + '/lib -lgrib_api_f90 -lgrib_api -L' + self.spec['jasper'].prefix + '/lib -ljasper')
             env.set('GRIBAPII', '-I' + grib_prefix + '/include')
         else:
             grib_prefix = self.spec['eccodes'].prefix
             grib_definition_prefix = self.spec['cosmo-eccodes-definitions'].prefix
-            env.set('GRIBAPIL', '-L' + grib_prefix + '/lib -leccodes_f90 -leccodes -L' + self.spec['jasper'].prefix + '/lib64 -ljasper')
+            env.set('GRIBAPIL', '-L' + grib_prefix + '/lib -leccodes_f90 -leccodes -L' + self.spec['jasper'].prefix + '/lib -ljasper')
             env.set('GRIBAPII', '-I' + grib_prefix + '/include')
 
         # Netcdf library
