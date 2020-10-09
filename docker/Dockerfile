@@ -12,6 +12,7 @@ FROM nvidia/cuda:10.1-devel-centos8 AS devel
 
 ARG ssh_prv_key
 ARG ssh_pub_key
+ARG spack_spec=cosmo@master%pgi
 
 # Python
 RUN yum install -y \
@@ -115,7 +116,7 @@ RUN mkdir -p /opt/spack && cd /opt/spack && \
     cd spack-mch && pip2 install -U pip setuptools wheel && pip2 install pyyaml && \
     ./config.py -m centos-8 -p /opt/spack -r spack/etc/spack -u OFF && \
     . spack/share/spack/setup-env.sh && spack compiler find && \
-    spack compiler list &&  spack install -v cosmo@master%pgi
+    spack compiler list &&  spack install -v $spack_spec
 
 FROM nvidia/cuda:10.1-devel-centos8
 
@@ -165,3 +166,6 @@ ENV LD_LIBRARY_PATH=/usr/local/openmpi/lib:$LD_LIBRARY_PATH \
 COPY --from=devel /usr/local/cuda /usr/local/cuda
 ENV LD_LIBRARY_PATH=/usr/local/cuda/compat:$LD_LIBRARY_PATH \
     PATH=/usr/local/cuda/bin:$PATH
+
+# Spack
+COPY --from=devel /opt/spack /opt/spack
