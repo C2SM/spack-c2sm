@@ -250,7 +250,6 @@ class Cosmo(MakefilePackage):
                 OptionsFile.filter('PFLAGS   = -Mpreprocess.*', 'PFLAGS   = -Mpreprocess -DNO_ACC_FINALIZE')
 
     def install(self, spec, prefix):
-        mkdir(prefix.cosmo)
         if '+serialize' in self.spec:
             mkdirp('data/' + self.spec.variants['real_type'].value, prefix.data + '/' + self.spec.variants['real_type'].value)
         with working_dir(self.build_directory):
