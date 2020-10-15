@@ -12,14 +12,17 @@ class Eckit(CMakePackage):
     of tools and applications at ECMWF"""
 
     homepage = 'https://software.ecmwf.int/wiki/display/ECKIT'
-    url = "https://github.com/ecmwf/eckit/archive/1.10.1.tar.gz"
+    url = "https://github.com/ecmwf/eckit/archive/1.13.0.tar.gz"
     git = 'https://github.com/ecmwf/eckit.git'
     maintainers = ['cosunae']
 
+    version('1.13.0', sha256='90f809c66c7eef5045cce1dc2f50304541c1d7f5270d80a4483f79591eda90aa')
     version('master', branch='master')
     version('develop', branch='develop')
 
-    depends_on('ecbuild')
+    depends_on('ecbuild@master', when='@develop')
+    depends_on('ecbuild@master', when='@master')
+    depends_on('ecbuild@3.4.0', when='@1.13.0')
 
     def cmake_args(self):
         args = []
