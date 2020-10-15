@@ -67,7 +67,7 @@ class Cosmo(MakefilePackage):
     depends_on('libgrib1', type='build')
     depends_on('jasper@1.900.1%gcc ~shared', type='build')
     depends_on('cosmo-grib-api-definitions', type=('build','run'), when='~eccodes')
-    depends_on('cosmo-eccodes-definitions@2.14.1.2 ~aec', type=('build','run'), when='+eccodes')
+    depends_on('cosmo-eccodes-definitions ~aec', type=('build','run'), when='+eccodes')
     depends_on('perl@5.16.3:', type='build')
     depends_on('omni-xmod-pool', when='+claw', type='build')
     depends_on('claw@2.0.1', when='+claw', type='build')
@@ -248,7 +248,6 @@ class Cosmo(MakefilePackage):
                 OptionsFile.filter('PFLAGS   = -Mpreprocess.*', 'PFLAGS   = -Mpreprocess -DNO_ACC_FINALIZE')
 
     def install(self, spec, prefix):
-        mkdir(prefix.cosmo)
         if '+serialize' in self.spec:
             mkdirp('data/' + self.spec.variants['real_type'].value, prefix.data + '/' + self.spec.variants['real_type'].value)
         with working_dir(self.build_directory):
