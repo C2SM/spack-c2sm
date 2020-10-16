@@ -9,6 +9,7 @@
 # 
 
 FROM nvidia/cuda:10.1-devel-centos8 AS devel
+ARG nproc=8
 
 # Python
 RUN yum install -y \
@@ -88,10 +89,6 @@ RUN mkdir -p /var/tmp && wget -q -nc --no-check-certificate -P /var/tmp https://
     rm -rf /var/tmp/openmpi-4.0.2 /var/tmp/openmpi-4.0.2.tar.bz2
 ENV LD_LIBRARY_PATH=/usr/local/openmpi/lib:$LD_LIBRARY_PATH \
     PATH=/usr/local/openmpi/bin:$PATH
-
-ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility \
-    NVIDIA_REQUIRE_CUDA="cuda>=10.1 brand=tesla,driver>=384,driver<385 brand=tesla,driver>=396,driver<397 brand=tesla,driver>=410,driver<411" \
-    NVIDIA_VISIBLE_DEVICES=all
 
 ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility \
     NVIDIA_REQUIRE_CUDA="cuda>=10.1 brand=tesla,driver>=384,driver<385 brand=tesla,driver>=396,driver<397 brand=tesla,driver>=410,driver<411" \
