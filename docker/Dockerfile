@@ -30,7 +30,8 @@ RUN mkdir -p /opt/spack && cd /opt/spack && \
     cd spack-mch && pip2 install -U pip setuptools wheel && pip2 install pyyaml && \
     ./config.py -m centos-8 -p /opt/spack -r spack/etc/spack -u OFF && \
     . spack/share/spack/setup-env.sh && spack compiler find && \
-    spack compiler list &&  spack install -v $spack_spec
+    git clone git@github.com:jonasjucker/cosmo.git -b docker && \
+    cd cosmo && spack dev-build $spack_spec
 
 FROM nvidia/cuda:10.1-devel-centos8
 
