@@ -82,7 +82,7 @@ RUN yum install -y \
 RUN mkdir -p /var/tmp && wget -q -nc --no-check-certificate -P /var/tmp https://www.open-mpi.org/software/ompi/v4.0/downloads/openmpi-4.0.2.tar.bz2 && \
     mkdir -p /var/tmp && tar -x -f /var/tmp/openmpi-4.0.2.tar.bz2 -C /var/tmp -j && \
     cd /var/tmp/openmpi-4.0.2 &&  CC=nvc CFLAGS=-O1 CXX=nvc++ F77=nvfortran F90=nvfortran FC=nvfortran FCFLAGS='-fpic -DPIC' ./configure --prefix=/usr/local/openmpi \
-    --disable-getpwuid --enable-orterun-prefix-by-default --with-cuda=/usr/local/cuda --with-verbs && \
+    --disable-getpwuid --enable-orterun-prefix-by-default --with-cuda=/opt/nvidia/hpc_sdk/Linux_x86_64/20.7/cuda --with-verbs && \
     make -j$(nproc) && \
     make -j$(nproc) install && \
     rm -rf /var/tmp/openmpi-4.0.2 /var/tmp/openmpi-4.0.2.tar.bz2
