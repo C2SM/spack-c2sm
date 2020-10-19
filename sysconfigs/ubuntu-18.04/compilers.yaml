@@ -1,0 +1,27 @@
+compilers:
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules: 
+    operating_system: ubuntu18
+    paths:
+      cc: /opt/nvidia/hpc_sdk/Linux_x86_64/20.7/compilers/bin/pgcc
+      cxx: /opt/nvidia/hpc_sdk/Linux_x86_64/20.7/compilers/bin/pgc++
+      f77: /opt/nvidia/hpc_sdk/Linux_x86_64/20.7/compilers/bin/pgfortran
+      fc: /opt/nvidia/hpc_sdk/Linux_x86_64/20.7/compilers/bin/pgfortran
+    spec: pgi@20.7
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    operating_system: ubuntu18
+    paths:
+      cc: /usr/bin/gcc
+      cxx: /usr/bin/gc++
+      f77: /usr/bin/gfortran
+      fc: /usr/bin/gfortran
+    spec: gcc@8.3.1
+    target: any

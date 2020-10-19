@@ -1,0 +1,81 @@
+packages:
+  all:
+    compiler: [gcc@8.3.1]
+    providers:
+      mpicuda: [mpich]
+      mpi: [mpich]
+  cuda:
+    paths:
+      cuda@10.2.89%gcc: /usr/local/cuda
+      cuda@10.2.89%pgi: /usr/local/cuda
+  mpich:
+    paths:
+      mpich@3.1.4%pgi: /usr/local/mpich
+      mpich@3.1.4%gcc: /usr/local/mpich
+  netcdf-fortran:
+    paths:
+      netcdf-fortran@4.4.4%pgi: /usr/local/netcdf-fortran
+      netcdf-fortran@4.4.4%gcc: /usr/local/netcdf-fortran
+    variants: +mpi
+  netcdf:
+    paths:
+      netcdf@4.6.1%pgi: /usr/local/netcdf
+      netcdf@4.6.1%gcc: /usr/local/netcdf
+    variants: +mpi
+  cosmo-dycore:
+    variants: slave=daint +cuda cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/ slurm_args= "'-C gpu -p normal -A g110 -N {0}'"
+  gridtools:
+    variants: +cuda cuda_arch=60
+  cosmo:
+    variants: cuda_arch=60 cosmo_target=gpu slave=daint
+  cmake:
+    paths:
+      cmake@3.14.5%gcc: /usr/local
+      cmake@3.14.5%pgi: /usr/local
+  hdf5:
+    paths:
+      hdf5@1.10.1: /usr/local/hdf5
+  perl:
+    paths:
+      perl@5.16.3 : /usr
+  pkgconf:
+    paths:
+      pkgconf@1.4.2: /usr
+  curl:
+    paths:
+      curl@7.61.1: /usr
+  tar:
+    paths:
+      tar@1.30: /usr
+  gawk:
+    paths:
+      gawk@4.2.1: /usr
+  bzip2:
+    paths:
+      bzip2@1.0.6: /usr
+  munge:
+    paths:
+      munge@0.5.13: /usr
+  lz4:
+    paths:
+      lz4@1.8.1: /usr
+  slurm:
+    paths:
+      slurm%pgi: /usr
+      slurm%gcc: /usr
+  m4:
+    paths:
+      m4@1.4.18: /usr
+  libtool:
+    paths:
+      libtool@2.4.6: /usr
+  autoconf:
+    paths:
+      autoconf@2.69: /usr
+  automake:
+    paths: 
+      automake@1.13: /usr
+  python:
+    paths:
+      python@2.7.17: /usr
+      python@3.6.8: /usr
