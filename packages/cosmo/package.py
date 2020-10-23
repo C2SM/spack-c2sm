@@ -13,7 +13,7 @@ def get_releases(repo):
 def dycore_deps(repo):
     tags = get_releases(repo)
     for tag in tags:
-        version(tag, git=repo, tag=tag)
+        version(tag, git=repo, tag=tag, get_full_repo=True)
 
     tags.append('master')
     tags.append('dev-build')
