@@ -36,6 +36,7 @@ def main():
     if os.path.exists(os.path.join(args.idircosmo, cosmo_dir)):
         sys.exit('Exit: The cosmo installation path: ' + os.path.join(args.idircosmo, cosmo_dir) + ' already exists!')
     print('Installing ' + cosmo_spec.format('{prefix}') + ' to: ' + os.path.join(args.idircosmo, cosmo_dir))
+    print('COSMO_INSTALLATION_FULL_PATH=' + os.path.join(args.idircosmo, cosmo_dir))
     os.system('cp -rf ' + cosmo_spec.format('{prefix}') + ' ' + os.path.join(args.idircosmo, cosmo_dir))
 
     # Warning if eccodes installation already exists
@@ -43,6 +44,7 @@ def main():
         print('Warning: The eccodes installation path: ' + os.path.join(args.idireccodes, eccodes_dir) + ' already exists!')
 
     print('Installing ' + cosmo_spec.format('{^eccodes.prefix}') + ' to: ' + os.path.join(args.idireccodes, eccodes_dir))
+    print('ECCODES_INSTALLATION_FULL_PATH=' + os.path.join(args.idireccodes, eccodes_dir))
     os.system('cp -rf ' + cosmo_spec.format('{^eccodes.prefix}') + ' ' + os.path.join(args.idireccodes, eccodes_dir))
 
     # Warning if path is already used
@@ -50,19 +52,20 @@ def main():
         print('Warning: The eccodes-definitions installation path: ' +  os.path.join(args.idireccodes, eccodes_definitions_dir) + ' already exists!')
 
     print('Installing ' + cosmo_spec.format('{^cosmo-eccodes-definitions.prefix}') + ' to: ' + os.path.join(args.idireccodes, eccodes_definitions_dir))
+    print('ECCODES_DEFINITIONS_INSTALLATION_FULL_PATH=' + os.path.join(args.idireccodes, eccodes_definitions_dir))
     os.system('cp -rf ' + cosmo_spec.format('{^cosmo-eccodes-definitions.prefix}') + ' ' + os.path.join(args.idireccodes, eccodes_definitions_dir))
 
-    with open(cosmo_dir + '_run-env', 'w') as outfile:
+    with open('run-env', 'w') as outfile:
         subprocess.run(['spack load --sh ' + args.spec], shell=True, stdout=outfile)
 
-    with open(cosmo_dir + '_run-env', 'r') as outfile:
+    with open('run-env', 'r') as outfile:
         filedata = outfile.read()
         newdata = filedata.replace(cosmo_spec.format('{prefix}'), os.path.join(args.idircosmo, cosmo_dir))
         newdata = newdata.replace(cosmo_spec.format('{^eccodes.prefix}'), os.path.join(args.idireccodes, eccodes_dir))
         newdata = newdata.replace(cosmo_spec.format('{^cosmo-eccodes-definitions.prefix}'), os.path.join(args.idireccodes, eccodes_definitions_dir))
         newdata = newdata.replace(bin_path + ':', '')
 
-    with open(cosmo_dir + '_run-env', 'w') as outfile:
+    with open('run-env', 'w') as outfile:
         outfile.write(newdata)
 
 if __name__ == "__main__":
