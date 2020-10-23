@@ -68,5 +68,8 @@ def main():
     with open('run-env', 'w') as outfile:
         outfile.write(newdata)
 
+    print('Installing run-env file to: ' + os.path.join(args.idircosmo, cosmo_dir))
+    os.system('mv run-env ' + os.path.join(args.idircosmo, cosmo_dir))
+
 if __name__ == "__main__":
     main()
