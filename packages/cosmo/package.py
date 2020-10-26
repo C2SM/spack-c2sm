@@ -13,7 +13,7 @@ def get_releases(repo):
 def dycore_deps(repo):
     tags = get_releases(repo)
     for tag in tags:
-        version(tag, git=repo, tag=tag)
+        version(tag, git=repo, tag=tag, get_full_repo=True)
 
     tags.append('master')
     tags.append('dev-build')
@@ -67,7 +67,7 @@ class Cosmo(MakefilePackage):
     depends_on('libgrib1', type='build')
     depends_on('jasper@1.900.1%gcc ~shared', type='build')
     depends_on('cosmo-grib-api-definitions', type=('build','run'), when='~eccodes')
-    depends_on('cosmo-eccodes-definitions@2.14.1.2 ~aec', type=('build','run'), when='+eccodes')
+    depends_on('cosmo-eccodes-definitions ~aec', type=('build','run'), when='+eccodes')
     depends_on('perl@5.16.3:', type='build')
     depends_on('omni-xmod-pool', when='+claw', type='build')
     depends_on('claw@2.0.1', when='+claw', type='build')
@@ -242,15 +242,14 @@ class Cosmo(MakefilePackage):
             if 'cosmo_target=gpu' in self.spec:
                 cuda_version = self.spec['cuda'].version
                 fflags = 'CUDA_HOME=' + self.spec['cuda'].prefix + ' -ta=tesla,cc' + self.spec.variants['cuda_arch'].value + ',cuda' + str(cuda_version.up_to(2))
-                OptionsFile.filter('FFLAGS   = -Kieee', 'FFLAGS   = -Kieee {0}'.format(fflags))
+                OptionsFile.filter('FFLAGS   = -Kieee.*', 'FFLAGS   = -Kieee {0}'.format(fflags))
             # Pre-processor flags
             if self.mpi_spec.name == 'mpich':
-                OptionsFile.filter('PFLAGS   = -Mpreprocess', 'PFLAGS   = -Mpreprocess -DNO_MPI_HOST_DATA')
+                OptionsFile.filter('PFLAGS   = -Mpreprocess.*', 'PFLAGS   = -Mpreprocess -DNO_MPI_HOST_DATA')
             if 'cosmo_target=gpu' in self.spec and self.compiler.name == 'pgi':
-                OptionsFile.filter('PFLAGS   = -Mpreprocess', 'PFLAGS   = -Mpreprocess -DNO_ACC_FINALIZE')
+                OptionsFile.filter('PFLAGS   = -Mpreprocess.*', 'PFLAGS   = -Mpreprocess -DNO_ACC_FINALIZE')
 
     def install(self, spec, prefix):
-        mkdir(prefix.cosmo)
         if '+serialize' in self.spec:
             mkdirp('data/' + self.spec.variants['real_type'].value, prefix.data + '/' + self.spec.variants['real_type'].value)
         with working_dir(self.build_directory):
