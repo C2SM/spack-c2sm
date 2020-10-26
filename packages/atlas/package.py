@@ -11,21 +11,26 @@ class Atlas(CMakePackage):
     """A library for numerical weather prediction and climate modelling"""
 
     homepage = 'https://confluence.ecmwf.int/display/atlas'
-    url      = "https://github.com/ecmwf/atlas/archive/0.20.2.tar.gz"
-    git      = 'https://github.com/ecmwf/atlas.git'
+    url = "https://github.com/ecmwf/atlas/archive/0.22.0.tar.gz"
+    git = 'https://github.com/ecmwf/atlas.git'
     maintainers = ['cosunae']
 
+    version('0.22.0', sha256='2f79de432238cfd3c3e6ad39e4f01e850dd0d37266b610f079fdbca0a71ce095')
     version('master', branch='master')
     version('develop', branch='develop')
 
-    depends_on('ecbuild')
+    depends_on('ecbuild@master', when='@develop')
+    depends_on('ecbuild@master', when='@master')
+    depends_on('ecbuild@3.4.0', when='@0.22.0')
     depends_on('eckit@develop', when='@develop')
     depends_on('eckit@master', when='@master')
+    depends_on('eckit@1.13.0', when='@0.22.0')
 
-    patch('patches/find.gtstorage.patch', when='@develop')
-    patch('patches/find.gtstorage.patch', when='@master')
+    # patch('patches/find.gtstorage.patch', when='@develop')
+    # patch('patches/find.gtstorage.patch', when='@master')
 
-    variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'DebugRelease'))
+    variant('build_type', default='Release', description='Build type',
+            values=('Debug', 'Release', 'DebugRelease'))
 
     def cmake_args(self):
         args = []
@@ -35,7 +40,7 @@ class Atlas(CMakePackage):
                     format(spec['ecbuild'].prefix))
         args.append('-Deckit_DIR={0}'.format(spec['eckit'].prefix))
         args.append('-DENABLE_GRIDTOOLS_STORAGE=OFF')
-        args.append('-DCMAKE_BUILD_TYPE={0}'.format(self.spec.variants['build_type'].value))
+        args.append(
+            '-DCMAKE_BUILD_TYPE={0}'.format(self.spec.variants['build_type'].value))
 
         return args
-

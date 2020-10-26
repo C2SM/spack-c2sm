@@ -17,7 +17,7 @@ class AtlasUtilities(CMakePackage):
 
     version('master', branch='master')
 
-    depends_on('atlas@develop')
+    depends_on('atlas@0.22.0')
     depends_on('eckit')
     depends_on('netcdf-cxx4')
     depends_on('netcdf-c')
