@@ -250,8 +250,6 @@ class Cosmo(MakefilePackage):
                 OptionsFile.filter('PFLAGS   = -Mpreprocess.*', 'PFLAGS   = -Mpreprocess -DNO_ACC_FINALIZE')
 
     def install(self, spec, prefix):
-        if '+serialize' in self.spec:
-            mkdirp('data/' + self.spec.variants['real_type'].value, prefix.data + '/' + self.spec.variants['real_type'].value)
         with working_dir(self.build_directory):
             mkdir(prefix.bin)
             if '+serialize' in spec:
@@ -263,13 +261,7 @@ class Cosmo(MakefilePackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def test(self):
-        if '~serialize' in self.spec:
-            try:
-                subprocess.run([self.build_directory + '/test/tools/test_cosmo.py', str(self.spec), '.'], stderr=subprocess.STDOUT, check=True, env=None)
-            except:
-                raise InstallError('Testsuite failed')
-        if '+serialize' in self.spec:
-            try:
-                subprocess.run([self.build_directory + '/test/tools/serialize_cosmo.py', str(self.spec), '.'], stderr=subprocess.STDOUT, check=True, env=None)
-            except:
-                raise InstallError('Serialization failed')
+        try:
+            subprocess.run([self.build_directory + '/test/tools/test_cosmo.py', str(self.spec), '.'], stderr=subprocess.STDOUT, check=True)
+        except:
+            raise InstallError('Testsuite failed')
