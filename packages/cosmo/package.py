@@ -261,7 +261,7 @@ class Cosmo(MakefilePackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def test(self):
-        try:
-            subprocess.run([self.build_directory + '/test/tools/test_cosmo.py', str(self.spec), '.'], stderr=subprocess.STDOUT, check=True)
-        except:
-            raise InstallError('Testsuite failed')
+            try:
+                subprocess.run([self.build_directory + '/test/tools/test_cosmo.py', '-s', str(self.spec),'-b', str('.')], stderr=subprocess.STDOUT, check=True)
+            except:
+                raise InstallError('Testsuite failed')
