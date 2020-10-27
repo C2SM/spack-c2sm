@@ -2,14 +2,12 @@ __author__      = "Mikhail Zhigun"
 __copyright__   = "Copyright 2020, MeteoSwiss"
 
 from spack import *
-import sys
-assert sys.version_info[0] >= 3 and sys.version_info[1] >= 6, 'Python >= 3.6 is required'
 import os, subprocess
 
-_GIT = 'https://github.com/MeteoSwiss-APN/xcodeml-tools.git'
+_GIT = 'https://github.com/claw-project/xcodeml-tools.git'
 
 
-def _get_latest_commit_id() -> str:
+def _get_latest_commit_id(): # type: () -> str
     git_url = _GIT
     args = ['git', 'ls-remote', git_url, 'HEAD']
     timeout = 5  # seconds
@@ -19,15 +17,22 @@ def _get_latest_commit_id() -> str:
     commit = s.strip().split()[0]
     return commit
 
+_LAST_COMMIT = _get_latest_commit_id()
+
 class XcodemlTools(AutotoolsPackage):
     """Set of tools for translating C and Fortran code to XCodeML and back """
+
+    @property
+    def latest_commit(self):
+        return _LAST_COMMIT
 
     homepage = 'https://omni-compiler.org/manual/en/'
     git = _GIT
 
     maintainers = ['FrostyMike']
 
-    version('latest', branch='master', commit=_get_latest_commit_id())
+    version('92a35f9', branch='master', commit='92a35f9dbe3601f6177b099825d318cbc3285945')
+    version('latest', branch='master', commit=_LAST_COMMIT)
     
     depends_on('autoconf@2.69:')
     depends_on('m4')
@@ -40,9 +45,17 @@ class XcodemlTools(AutotoolsPackage):
 
     def configure_args(self):
         args = ['--prefix=' + self.prefix,
-                '--with-libxml2=' + self.spec['libxml2'].prefix,
                 '--with-force-explicit-lxml2',
                 '--without-native-fortran-compiler']
+        libxml2_prefix = self.spec['libxml2'].prefix
+        if libxml2_prefix == '/usr':
+            args.append('--with-libxml2-include=/usr/include/libxml2')
+            for lib_dir_name in ('lib', 'lib64'):
+                lib_path = '/usr/%s/libxml2.so' % lib_dir_name
+                if os.path.isfile(lib_path):
+                    args.append('--with-libxml2-lib=/usr/%s' % lib_dir_name)
+        else:
+            args.append('--with-libxml2=' + libxml2_prefix)
         java_prefix = self.spec['java'].prefix
         path = {'java': 'bin/java',
                 'javac': 'bin/javac',

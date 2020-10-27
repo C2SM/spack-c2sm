@@ -43,21 +43,23 @@ class Int2lm(MakefilePackage):
     version('v2.7.1', commit='ee0780f86ecc676a9650170f361b92ff93379071')
     version('v2.6.2', commit='07690dab05c931ba02c947ec32c988eea65898f8')
 
-    depends_on('cosmo-grib-api-definitions', when='~eccodes')
-    depends_on('cosmo-eccodes-definitions@2.14.1.2 ~aec', when='+eccodes')
+    depends_on('cosmo-grib-api-definitions', type=('build','run'), when='~eccodes')
+    depends_on('cosmo-eccodes-definitions@2.14.1.2 ~aec', type=('build','run'), when='+eccodes')
     depends_on('libgrib1@master')
-    depends_on('mpi', type=('build', 'run'), when='+parallel')
+    depends_on('mpi', type=('build', 'link', 'run'), when='+parallel')
     depends_on('netcdf-c')
     depends_on('netcdf-fortran +mpi')
 
     variant('debug', default=False, description='Build debug INT2LM')
-    variant('eccodes', default=False, description='Build with eccodes instead of grib-api')
+    variant('eccodes', default=True, description='Build with eccodes instead of grib-api')
     variant('parallel', default=True, description='Build parallel INT2LM')
-    variant('pollen', default=False, description='Build with pollen enabled')
+    variant('pollen', default=True, description='Build with pollen enabled')
     variant('slave', default='tsa', description='Build on slave tsa, daint or kesch', multi=False)
     variant('verbose', default=False, description='Build with verbose enabled')
 
     def setup_build_environment(self, env):
+        self.setup_run_environment(env)
+
         # Grib-api. Eccodes libraries
         if '~eccodes' in self.spec:
             grib_prefix = self.spec['cosmo-grib-api'].prefix

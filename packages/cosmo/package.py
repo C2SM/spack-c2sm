@@ -13,7 +13,7 @@ def get_releases(repo):
 def dycore_deps(repo):
     tags = get_releases(repo)
     for tag in tags:
-        version(tag, git=repo, tag=tag)
+        version(tag, git=repo, tag=tag, get_full_repo=True)
 
     tags.append('master')
     tags.append('dev-build')
@@ -35,7 +35,7 @@ def dycore_deps(repo):
             test_dep = '+dycoretest' if it[3] else '~dycoretest'
             gt1_dep = '+gt1' if it[4] else '~gt1'
 
-            orig='cosmo-dycore@'+tag+'%gcc real_type='+real_type+' '+ prod_opt + ' ' + cuda_opt+' ' +test_opt + ' ' + gt1_dep
+            orig='cosmo-dycore@'+tag+'%gcc@8.1.0:8.4.0 real_type='+real_type+' '+ prod_opt + ' ' + cuda_opt+' ' +test_opt + ' ' + gt1_dep
             dep='@'+tag+' real_type='+real_type+' '+ prod_opt + ' '+ cuda_dep + ' +cppdycore'+' '+test_dep + ' ' + gt1_dep
             depends_on(orig, when=dep, type='build')
 
@@ -67,10 +67,10 @@ class Cosmo(MakefilePackage):
     depends_on('libgrib1', type='build')
     depends_on('jasper@1.900.1%gcc ~shared', type='build')
     depends_on('cosmo-grib-api-definitions', type=('build','run'), when='~eccodes')
-    depends_on('cosmo-eccodes-definitions@2.14.1.2 ~aec', type=('build','run'), when='+eccodes')
+    depends_on('cosmo-eccodes-definitions ~aec', type=('build','run'), when='+eccodes')
     depends_on('perl@5.16.3:', type='build')
     depends_on('omni-xmod-pool', when='+claw', type='build')
-    depends_on('claw', when='+claw', type='build')
+    depends_on('claw@2.0.1', when='+claw', type='build')
     depends_on('boost%gcc', when='cosmo_target=gpu ~cppdycore', type='build')
     depends_on('cmake%gcc', type='build')
 
@@ -242,17 +242,14 @@ class Cosmo(MakefilePackage):
             if 'cosmo_target=gpu' in self.spec:
                 cuda_version = self.spec['cuda'].version
                 fflags = 'CUDA_HOME=' + self.spec['cuda'].prefix + ' -ta=tesla,cc' + self.spec.variants['cuda_arch'].value + ',cuda' + str(cuda_version.up_to(2))
-                OptionsFile.filter('FFLAGS   = -Kieee', 'FFLAGS   = -Kieee {0}'.format(fflags))
+                OptionsFile.filter('FFLAGS   = -Kieee.*', 'FFLAGS   = -Kieee {0}'.format(fflags))
             # Pre-processor flags
             if self.mpi_spec.name == 'mpich':
-                OptionsFile.filter('PFLAGS   = -Mpreprocess', 'PFLAGS   = -Mpreprocess -DNO_MPI_HOST_DATA')
+                OptionsFile.filter('PFLAGS   = -Mpreprocess.*', 'PFLAGS   = -Mpreprocess -DNO_MPI_HOST_DATA')
             if 'cosmo_target=gpu' in self.spec and self.compiler.name == 'pgi':
-                OptionsFile.filter('PFLAGS   = -Mpreprocess', 'PFLAGS   = -Mpreprocess -DNO_ACC_FINALIZE')
+                OptionsFile.filter('PFLAGS   = -Mpreprocess.*', 'PFLAGS   = -Mpreprocess -DNO_ACC_FINALIZE')
 
     def install(self, spec, prefix):
-        mkdir(prefix.cosmo)
-        if '+serialize' in self.spec:
-            mkdirp('data/' + self.spec.variants['real_type'].value, prefix.data + '/' + self.spec.variants['real_type'].value)
         with working_dir(self.build_directory):
             mkdir(prefix.bin)
             if '+serialize' in spec:
@@ -264,13 +261,7 @@ class Cosmo(MakefilePackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def test(self):
-        if '~serialize' in self.spec:
             try:
                 subprocess.run([self.build_directory + '/test/tools/test_cosmo.py', '-s', str(self.spec),'-b', str('.')], stderr=subprocess.STDOUT, check=True)
             except:
                 raise InstallError('Testsuite failed')
-        if '+serialize' in self.spec:
-            try:
-                subprocess.run([self.build_directory + '/test/tools/serialize_cosmo.py', '-s', str(self.spec), '-b', str('.')], stderr=subprocess.STDOUT, check=True)
-            except:
-                raise InstallError('Serialization failed')
