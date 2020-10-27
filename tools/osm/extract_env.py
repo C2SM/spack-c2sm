@@ -14,7 +14,7 @@ def main():
     parser.add_argument('-s', '--spec', type=str, help='Spack spec from which you want to extract the run environement.')
     parser.add_argument('-i', '--idircosmo', type=str, help='Cosmo installation directory.')
     parser.add_argument('-j', '--idireccodes', type=str, help='Eccodes installation directory.')
-    
+
     args=parser.parse_args()
 
     if not args.spec:
@@ -31,7 +31,7 @@ def main():
     cosmo_dir = 'cosmo' + cosmo_spec.format('{@version}') + cosmo_spec.format('{%compiler}')  + '-' + cosmo_spec.format('{variants.real_type.value}') + '-' + cosmo_spec.format('{variants.cosmo_target.value}')
     eccodes_dir = 'eccodes' + cosmo_spec.format('{^eccodes.@version}')
     eccodes_definitions_dir = 'cosmo-eccodes-definitions' + cosmo_spec.format('{^cosmo-eccodes-definitions.@version}')
-    
+
     # Exist if cosmo installation already exists
     if os.path.exists(os.path.join(args.idircosmo, cosmo_dir)):
         sys.exit('Exit: The cosmo installation path: ' + os.path.join(args.idircosmo, cosmo_dir) + ' already exists!')
@@ -42,18 +42,18 @@ def main():
     # Warning if eccodes installation already exists
     if os.path.exists(os.path.join(args.idireccodes, eccodes_dir)):
         print('Warning: The eccodes installation path: ' + os.path.join(args.idireccodes, eccodes_dir) + ' already exists!')
+    else:
+        print('Installing ' + cosmo_spec.format('{^eccodes.prefix}') + ' to: ' + os.path.join(args.idireccodes, eccodes_dir))
+        print('ECCODES_INSTALLATION_FULL_PATH=' + os.path.join(args.idireccodes, eccodes_dir))
+        os.system('cp -rf ' + cosmo_spec.format('{^eccodes.prefix}') + ' ' + os.path.join(args.idireccodes, eccodes_dir))
 
-    print('Installing ' + cosmo_spec.format('{^eccodes.prefix}') + ' to: ' + os.path.join(args.idireccodes, eccodes_dir))
-    print('ECCODES_INSTALLATION_FULL_PATH=' + os.path.join(args.idireccodes, eccodes_dir))
-    os.system('cp -rf ' + cosmo_spec.format('{^eccodes.prefix}') + ' ' + os.path.join(args.idireccodes, eccodes_dir))
-
-    # Warning if path is already used
+    # Warning if eccodes definitions installation already exists
     if os.path.exists(os.path.join(args.idireccodes, eccodes_definitions_dir)):
         print('Warning: The eccodes-definitions installation path: ' +  os.path.join(args.idireccodes, eccodes_definitions_dir) + ' already exists!')
-
-    print('Installing ' + cosmo_spec.format('{^cosmo-eccodes-definitions.prefix}') + ' to: ' + os.path.join(args.idireccodes, eccodes_definitions_dir))
-    print('ECCODES_DEFINITIONS_INSTALLATION_FULL_PATH=' + os.path.join(args.idireccodes, eccodes_definitions_dir))
-    os.system('cp -rf ' + cosmo_spec.format('{^cosmo-eccodes-definitions.prefix}') + ' ' + os.path.join(args.idireccodes, eccodes_definitions_dir))
+    else:
+        print('Installing ' + cosmo_spec.format('{^cosmo-eccodes-definitions.prefix}') + ' to: ' + os.path.join(args.idireccodes, eccodes_definitions_dir))
+        print('ECCODES_DEFINITIONS_INSTALLATION_FULL_PATH=' + os.path.join(args.idireccodes, eccodes_definitions_dir))
+        os.system('cp -rf ' + cosmo_spec.format('{^cosmo-eccodes-definitions.prefix}') + ' ' + os.path.join(args.idireccodes, eccodes_definitions_dir))
 
     with open('run-env', 'w') as outfile:
         subprocess.run(['spack load --sh ' + args.spec], shell=True, stdout=outfile)
