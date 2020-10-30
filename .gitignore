@@ -5,3 +5,4 @@ sysconfigs/upstreams.yaml
 **.swn
 **.swp
 **.swo
+/spack
