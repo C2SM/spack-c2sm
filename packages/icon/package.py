@@ -19,28 +19,97 @@ class Icon(AutotoolsPackage):
     git = 'git@gitlab.dkrz.de:icon/icon-cscs.git'
 
     maintainers = ['egermann']
-    
+
     version('master', branch='master', submodules=True)
     version('2.6.x-rc', commit='040de650', submodules=True)
     version('2.0.17', commit='39ed04ad', submodules=True)
-    
+
     depends_on('m4')
     depends_on('autoconf%gcc')
     depends_on('automake%gcc')
     depends_on('libtool%gcc')
+    depends_on('cmake%gcc')
     depends_on('jasper@1.900.1%gcc ~shared')
-    depends_on('libxml2@2.9.7')
+    depends_on('libxml2@2.9.7%gcc')
     depends_on('serialbox@2.6.0')
     depends_on('claw@2.0.1', when='+claw', type='build')
     depends_on('netcdf-c +mpi', type=('build', 'link'))
-   
-    variant('target', default='gpu', description='Build with target gpu or cpu', values=('gpu', 'cpu'), multi=False)
+    depends_on('mpicuda', when='icon_target=gpu')
+    depends_on('mpi', when='icon_target=cpu')
+    depends_on('cuda%gcc', when='icon_target=gpu')
+
+    variant('icon_target', default='gpu', description='Build with target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('host', default='daint', description='Build on host daint', multi=False)
     variant('cuda_arch', default='none', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
     variant('claw', default=True, description='Build with claw directories enabled')
-
-    config_args.extend(self.enable_or_disable('claw'))
+    variant('rte-rrtmgp', default=True, description='Build with rte-rrtmgp enabled')
+    variant('mpi-checks', default=False, description='Build with mpi-check enabled')
 
     def configure_args(self):
         args = []
-        return args                                   
+        if '+claw' in self.spec:
+            args.append('CLAW=' + self.spec['claw'].prefix + '/bin/clawfc')
+            args.append('CLAWFLAGS=-I${NETCDF_DIR}/include')
+            args.append('--enable-claw')
+
+        if '+rte-rrtmgp' in self.spec:
+            args.append('--enable-rte-rrtmgp')
+
+        if '~mpi-checks' in self.spec:
+            args.append('--disable-mpi-checks')
+
+        # Serialbox library
+        SERIALBOXI='-I' + self.spec['serialbox'].prefix + '/include '
+        SERIALBOXL='-L' + self.spec['serialbox'].prefix + '/lib '
+        SERIALBOX_LIBS='-lSerialboxFortran '
+        args.append('SB2PP=' + self.spec['serialbox'].prefix +  '/python/pp_ser/pp_ser.py ')
+
+        # Libxml2 library
+        XML2I='-I'  + self.spec['libxml2'].prefix + '/include/libxml2 '
+        XML2L='-L' + self.spec['libxml2'].prefix + '/lib '
+        XML2L_LIBS='-lxml2 '
+
+        # Blas lapack library
+        BLAS_LAPACK_LIBS='-llapack -lblas '
+
+        # Standard cpp library
+        STDCPPL='-L/opt/gcc/8.3.0/snos/lib64 '
+        STDCPP_LIBS='-lstdc++'
+
+        # Set MPI_LAUNCH
+        args.append('MPI_LAUNCH=false')
+
+        # Set CFLAGS
+        args.append('CFLAGS=-g -O2')
+
+        # Set CPPFLAGS
+        args.append('CPPFLAGS=' + XML2I)
+
+        # Set NVCFLAGS
+        args.append('NVCC=nvcc')
+        args.append('NVCFLAGS=--std=c++11 -arch=sm_60 -g -O3')
+
+        # Set FCFLAGS
+        FCFLAGS='-g -O -Mrecursive -Mallocatable=03 '
+
+        if self.spec.variants['icon_target'].value == 'gpu':
+            args.append('--disable-loop-exchange')
+            args.append('--enable-gpu')
+            #FCFLAGS+=' -acc=verystrict  -ta=nvidia:cc' + self.spec.variants['cuda_arch'].value + ' -Minfo=accel,inline '
+
+        elif self.spec.variants['icon_target'].value == 'cpu':
+            FCFLAGS+='-tp=haswell '
+
+        FCFLAGS+= SERIALBOXI + ' -D__SWAPDIM'
+        args.append('FCFLAGS=' + FCFLAGS)
+
+        # Set LDFLAGS
+        LDFLAGS= STDCPPL + SERIALBOXL + XML2L + ' -L/opt/pgi/20.1.1/linux86-64-llvm/20.1/lib/libomp '
+        args.append('LDFLAGS=' + LDFLAGS)
+
+        # Set LIBS
+        LIBS= '-lomptarget -Wl,--as-needed '
+        LIBS+= XML2L_LIBS + BLAS_LAPACK_LIBS + SERIALBOX_LIBS + STDCPP_LIBS
+        args.append('LIBS=' + LIBS)
+
+        return args
