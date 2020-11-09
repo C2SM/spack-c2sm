@@ -45,6 +45,12 @@ class Icon(AutotoolsPackage):
     variant('rte-rrtmgp', default=True, description='Build with rte-rrtmgp enabled')
     variant('mpi-checks', default=False, description='Build with mpi-check enabled')
 
+    def setup_build_environment(self, env):
+        self.setup_run_environment(env)
+
+        if self.spec.variants['icon_target'].value == 'gpu':
+            env.set('CUDA_HOME', self.spec['cuda'].prefix)
+
     def configure_args(self):
         args = []
         if '+claw' in self.spec:
@@ -85,9 +91,10 @@ class Icon(AutotoolsPackage):
         # Set CPPFLAGS
         args.append('CPPFLAGS=' + XML2I)
 
-        # Set NVCFLAGS
-        args.append('NVCC=nvcc')
-        args.append('NVCFLAGS=--std=c++11 -arch=sm_60 -g -O3')
+        if self.spec.variants['icon_target'].value == 'gpu':
+            # Set NVCFLAGS
+            args.append('NVCC=nvcc')
+            args.append('NVCFLAGS=--std=c++11 -arch=sm_60 -g -O3')
 
         # Set FCFLAGS
         FCFLAGS='-g -O -Mrecursive -Mallocatable=03 '
@@ -95,7 +102,7 @@ class Icon(AutotoolsPackage):
         if self.spec.variants['icon_target'].value == 'gpu':
             args.append('--disable-loop-exchange')
             args.append('--enable-gpu')
-            #FCFLAGS+=' -acc=verystrict  -ta=nvidia:cc' + self.spec.variants['cuda_arch'].value + ' -Minfo=accel,inline '
+            FCFLAGS+=' -acc=verystrict  -ta=nvidia:cc' + self.spec.variants['cuda_arch'].value + ' -Minfo=accel,inline '
 
         elif self.spec.variants['icon_target'].value == 'cpu':
             FCFLAGS+='-tp=haswell '
@@ -108,8 +115,8 @@ class Icon(AutotoolsPackage):
         args.append('LDFLAGS=' + LDFLAGS)
 
         # Set LIBS
-        LIBS= '-lomptarget -Wl,--as-needed '
-        LIBS+= XML2L_LIBS + BLAS_LAPACK_LIBS + SERIALBOX_LIBS + STDCPP_LIBS
+        #LIBS= '-lomptarget -Wl,--as-needed '
+        LIBS= XML2L_LIBS + BLAS_LAPACK_LIBS + SERIALBOX_LIBS + STDCPP_LIBS
         args.append('LIBS=' + LIBS)
 
         return args
