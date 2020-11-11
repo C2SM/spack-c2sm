@@ -21,6 +21,7 @@ class Icon(AutotoolsPackage):
     maintainers = ['egermann']
 
     version('master', branch='master', submodules=True)
+    version('ham', git='git@git.iac.ethz.ch:hammoz/icon-hammoz.git', branch='hammoz/sylvaine_merge_marc_hammoz', submodules=True)
     version('2.6.x-rc', commit='040de650', submodules=True)
     version('2.0.17', commit='39ed04ad', submodules=True)
 
@@ -31,6 +32,7 @@ class Icon(AutotoolsPackage):
     depends_on('cmake%gcc')
     depends_on('libxml2@2.9.7%gcc', type=('build', 'link', 'run'))
     depends_on('serialbox@2.6.0', when='+serialize', type=('build', 'link', 'run'))
+    depends_on('eccodes@2.18.0 +build_shared_libs', when='+eccodes', type=('build', 'link', 'run'))
     depends_on('hdf5', type=('build', 'link', 'run'))
     depends_on('claw@2.0.1', when='+claw', type=('build', 'link', 'run'))
     depends_on('netcdf-c ~mpi', type=('build', 'link', 'run'))
@@ -47,6 +49,7 @@ class Icon(AutotoolsPackage):
     variant('mpi-checks', default=False, description='Build with mpi-check enabled')
     variant('openmp', default=True, description='Build with openmp enabled')
     variant('serialize', default=True, description='Build with serialization enabled')
+    variant('eccodes', default=False, description='Build with grib2 enabled')
 
     conflicts('+openmp', when='%intel')
     conflicts('+openmp', when='%cce')
@@ -68,6 +71,22 @@ class Icon(AutotoolsPackage):
         FCFLAGS=''
         LDFLAGS=''
         LIBS=''
+
+        # Icon-hammoz:
+        if '@ham' in self.spec:
+            args.append('--enable-atm-phy-echam-submodels')
+            args.append('--enable-hammoz')
+
+        # Eccodes library:
+        if '+eccodes' in self.spec:
+            args.append('--enable-grib2')
+            args.append('--without-external-cdi')
+            ECCODESI='-I' + self.spec['eccodes'].prefix + '/include '
+            ECCODESL='-L' + self.spec['eccodes'].prefix + '/lib '
+            ECCODES_LIBS='-leccodes '
+            CPPFLAGS+=ECCODESI
+            LDFLAGS+=ECCODESL
+            LIBS+=ECCODES_LIBS
 
         # Claw library
         if '+claw' in self.spec:
@@ -144,7 +163,7 @@ class Icon(AutotoolsPackage):
 
             FCFLAGS+=SERIALBOXI
             LDFLAGS+=STDCPPL + SERIALBOXL + XML2L + NETCDFL
-            LIBS+=XML2L_LIBS + BLAS_LAPACK_LIBS + SERIALBOX_LIBS + STDCPP_LIBS + NETCDF_LIBS
+            LIBS+='-Wl,--as-needed ' + XML2L_LIBS + BLAS_LAPACK_LIBS + SERIALBOX_LIBS + STDCPP_LIBS + NETCDF_LIBS
 
         # INTEL compiler flags
         elif self.compiler.name == 'intel':
