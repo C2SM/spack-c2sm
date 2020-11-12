@@ -3,6 +3,7 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+import os, subprocess
 from spack import *
 
 
@@ -50,6 +51,7 @@ class Icon(AutotoolsPackage):
     variant('openmp', default=True, description='Build with openmp enabled')
     variant('serialize', default=True, description='Build with serialization enabled')
     variant('eccodes', default=False, description='Build with grib2 enabled')
+    variant('test_name', default='none', description='Launch test: test_name after installation')
 
     conflicts('+openmp', when='%intel')
     conflicts('+openmp', when='%cce')
@@ -58,10 +60,18 @@ class Icon(AutotoolsPackage):
     conflicts('icon_target=gpu', when='%intel')
     conflicts('icon_target=gpu', when='%cce')
 
+    atm_phy_echam_submodels_namelists_dir = 'externals/atm_phy_echam_submodels/namelists'
+
     def setup_build_environment(self, env):
         self.setup_run_environment(env)
         if self.spec.variants['icon_target'].value == 'gpu':
             env.set('CUDA_HOME', self.spec['cuda'].prefix)
+
+    @run_before('configure')
+    def generate_hammoz_nml(self):
+        if '@ham' in self.spec:
+            with working_dir(self.atm_phy_echam_submodels_namelists_dir):
+                make()
 
     def configure_args(self):
         args = []
@@ -186,3 +196,25 @@ class Icon(AutotoolsPackage):
         args.append('LIBS=' + LIBS)
 
         return args
+
+    @run_after('install')
+    def test(self):
+        if self.spec.variants['test_name'].value != 'none':
+            try:
+                subprocess.run(['./config.status', '--file=run/set-up.info'], stderr=subprocess.STDOUT, cwd=self.build_directory, check=True)
+            except:
+                raise InstallError('config.status script failed')
+            try:
+                subprocess.run(['./make_runscripts', '-s', self.spec.variants['test_name'].value], stderr=subprocess.STDOUT, cwd=self.build_directory, check=True)
+            except:
+                raise InstallError('make runscripts failed')
+            try:
+                subprocess.run(['sbatch', '-W', '--time=00:15:00', 'exp.' + self.spec.variants['test_name'].value + '.run'], stderr=subprocess.STDOUT, cwd=os.path.join(self.build_directory, 'run') , check=True)
+            except:
+                raise InstallError('Submitting test failed')
+
+            test_status=subprocess.check_output(['cat', 'finish.status'], cwd=os.path.join(self.build_directory, 'experiments', self.spec.variants['test_name'].value))
+            if not 'OK' in str(test_status):
+                raise InstallError('Test failed')
+            elif 'OK' in str(test_status):
+                print('Test OK!')
