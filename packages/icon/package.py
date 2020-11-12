@@ -49,7 +49,7 @@ class Icon(AutotoolsPackage):
     variant('rte-rrtmgp', default=True, description='Build with rte-rrtmgp enabled')
     variant('mpi-checks', default=False, description='Build with mpi-check enabled')
     variant('openmp', default=True, description='Build with openmp enabled')
-    variant('serialize', default=True, description='Build with serialization enabled')
+    variant('serialize', default=False, description='Build with serialization enabled')
     variant('eccodes', default=False, description='Build with grib2 enabled')
     variant('test_name', default='none', description='Launch test: test_name after installation')
 
@@ -124,7 +124,12 @@ class Icon(AutotoolsPackage):
             SERIALBOXI='-I' + self.spec['serialbox'].prefix + '/include '
             SERIALBOXL='-L' + self.spec['serialbox'].prefix + '/lib '
             SERIALBOX_LIBS='-lSerialboxFortran '
+            FCFLAGS+=SERIALBOXI
+            LDFLAGS+=SERIALBOXL
+            LIBS+=SERIALBOX_LIBS
+
             args.append('SB2PP=' + self.spec['serialbox'].prefix +  '/python/pp_ser/pp_ser.py ')
+            args.append('--enable-serialization')
 
         # Libxml2 library
         XML2I='-I' + self.spec['libxml2'].prefix + '/include/libxml2 '
@@ -171,9 +176,8 @@ class Icon(AutotoolsPackage):
             elif self.spec.variants['icon_target'].value == 'cpu':
                 FCFLAGS+='-tp=haswell '
 
-            FCFLAGS+=SERIALBOXI
-            LDFLAGS+=STDCPPL + SERIALBOXL + XML2L + NETCDFL
-            LIBS+='-Wl,--as-needed ' + XML2L_LIBS + BLAS_LAPACK_LIBS + SERIALBOX_LIBS + STDCPP_LIBS + NETCDF_LIBS
+            LDFLAGS+=STDCPPL + XML2L + NETCDFL
+            LIBS+='-Wl,--as-needed ' + XML2L_LIBS + BLAS_LAPACK_LIBS + STDCPP_LIBS + NETCDF_LIBS
 
         # INTEL compiler flags
         elif self.compiler.name == 'intel':
