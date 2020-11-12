@@ -178,6 +178,9 @@ packages:
         variants: build_type=Release
     netlib-lapack:
         variants: build_type=Release +external-blas+lapacke
+    ompt-openmp:
+        paths:
+            ompt-openmp%pgi: /opt/pgi/20.1.1/linux86-64-llvm/20.1/lib/libomp
     openblas:
         variants: +pic +shared threads=openmp ~virtual_machine
     openssl:
