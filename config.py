@@ -54,10 +54,7 @@ def main():
     config_data = yaml.safe_load(open('sysconfigs/' + args.machine.replace('admin-', '') + '/config.yaml', 'r'))
 
     if not args.pckgidir:
-        if 'admin' in args.machine:
-            args.pckgidir = '/project/g110'
-        else:
-            args.pckgidir = '$SCRATCH'
+        args.pckgidir = '$SCRATCH'
 
     config_data['config']['install_tree'] = args.pckgidir + '/spack-install/' + args.machine.replace('admin-', '')
     config_data['config']['build_stage'] = [args.pckgidir + '/spack-stages/' + args.machine]
