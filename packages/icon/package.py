@@ -207,6 +207,13 @@ class Icon(AutotoolsPackage):
             configure = Executable('./configure')
             configure(*self.configure_args())
 
+    def install(self, spec, prefix):
+        if '~skip-config' in spec:
+            make('install')
+        else:
+            mkdir(prefix.bin)
+            install('bin/icon', prefix.bin)
+
     @run_after('build')
     def test(self):
         if self.spec.variants['test_name'].value != 'none':
