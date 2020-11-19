@@ -52,6 +52,7 @@ class Icon(AutotoolsPackage):
     variant('serialize', default=False, description='Build with serialization enabled')
     variant('eccodes', default=False, description='Build with grib2 enabled')
     variant('test_name', default='none', description='Launch test: test_name after installation')
+    variant('skip-config', default=False, description='Skip configure phase')
 
     conflicts('+openmp', when='%intel')
     conflicts('+openmp', when='%cce')
@@ -201,7 +202,12 @@ class Icon(AutotoolsPackage):
 
         return args
 
-    @run_after('install')
+    def configure(self, spec, prefix):
+        if '~skip-config' in spec:
+            configure = Executable('./configure')
+            configure(*self.configure_args())
+
+    @run_after('build')
     def test(self):
         if self.spec.variants['test_name'].value != 'none':
             try:
