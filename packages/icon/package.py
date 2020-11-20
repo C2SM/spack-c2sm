@@ -207,7 +207,7 @@ class Icon(AutotoolsPackage):
 
     def configure(self, spec, prefix):
         if '~skip-config' in spec:
-            configure = Executable('./configure')
+            configure = Executable('./configure --prefix=' + prefix)
             configure(*self.configure_args())
 
     def install(self, spec, prefix):
