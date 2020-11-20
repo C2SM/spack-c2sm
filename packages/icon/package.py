@@ -129,8 +129,11 @@ class Icon(AutotoolsPackage):
             LDFLAGS+=SERIALBOXL
             LIBS+=SERIALBOX_LIBS
 
-            args.append('SB2PP=' + self.spec['serialbox'].prefix +  '/python/pp_ser/pp_ser.py ')
-            args.append('--enable-serialization')
+            args.append('SB2PP=python2 ' + self.spec['serialbox'].prefix +  '/python/pp_ser/pp_ser.py ')
+            if self.spec.variants['icon_target'].value == 'gpu':
+                args.append('--enable-serialization=read')
+            else:
+                args.append('--enable-serialization=create')
 
         # Libxml2 library
         XML2I='-I' + self.spec['libxml2'].prefix + '/include/libxml2 '
