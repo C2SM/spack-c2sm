@@ -226,7 +226,7 @@ class Icon(AutotoolsPackage):
                 raise InstallError('config.status script failed')
 
             try:
-                subprocess.run(['indata_hammoz_root=/project/s903/sferrach/icon/', './make_runscripts', '-s', self.spec.variants['test_name'].value], shell=True, stderr=subprocess.STDOUT, cwd=self.build_directory, check=True)
+                subprocess.run(['indata_hammoz_root=/project/s903/sferrach/icon/ ./make_runscripts -s ' +  self.spec.variants['test_name'].value], shell=True, stderr=subprocess.STDOUT, cwd=self.build_directory, check=True)
             except:
                 raise InstallError('make runscripts failed')
             try:
