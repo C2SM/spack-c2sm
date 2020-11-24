@@ -18,7 +18,8 @@ def main():
     parser.add_argument('-u', '--upstreams', type=str, default='ON', help='ON or OFF, install upstreams.yaml file')
     parser.add_argument('-v', '--version', type=str, default=spack_version, help='Spack version, Default: ' + spack_version)
     parser.add_argument('-r', '--reposdir', type=str, help='repos.yaml install directory')
-    parser.add_argument('-p', '--pckgidir', type=str, help='Define spack package, modules & stages installation directory. Default: tsa; /scratch/$USER/spack, daint; /scratch/snx3000/$USER/spack')
+    parser.add_argument('-p', '--pckgidir', type=str, help='Define spack package, modules installation directory. Default: tsa; /scratch/$USER/spack, daint; /scratch/snx3000/$USER/spack')
+    parser.add_argument('-s', '--stgidir', type=str, help='Define spack stages directory. Default: tsa; /scratch/$USER/spack, daint; /scratch/snx3000/$USER/spack')
     args=parser.parse_args()
     
     if args.upstreams != 'OFF' and args.upstreams != 'ON':
@@ -59,8 +60,11 @@ def main():
         else:
             args.pckgidir = '$SCRATCH'
 
+    if not args.stgidir:
+        args.stgidir = '$SCRATCH'
+
     config_data['config']['install_tree'] = args.pckgidir + '/spack-install/' + args.machine.replace('admin-', '')
-    config_data['config']['build_stage'] = [args.pckgidir + '/spack-stages/' + args.machine]
+    config_data['config']['build_stage'] = [args.stgidir + '/spack-stages/' + args.machine]
     config_data['config']['module_roots']['tcl'] = args.pckgidir + '/modules/' + args.machine
     config_data['config']['extensions'] = [dir_path + '/tools/spack-scripting']
     yaml.safe_dump(config_data, open('./sysconfigs/' + args.machine.replace('admin-', '') + '/config.yaml', 'w'), default_flow_style=False)
