@@ -53,6 +53,7 @@ class Icon(AutotoolsPackage):
     variant('eccodes', default=False, description='Build with grib2 enabled')
     variant('test_name', default='none', description='Launch test: test_name after installation')
     variant('skip-config', default=False, description='Skip configure phase')
+    variant('ham', default=True, description='Build with hammoz and atm_phy_echam enabled.')
 
     conflicts('+openmp', when='%intel')
     conflicts('+openmp', when='%cce')
@@ -84,7 +85,7 @@ class Icon(AutotoolsPackage):
         LIBS=''
 
         # Icon-hammoz:
-        if '@ham' in self.spec:
+        if '+ham' in self.spec:
             args.append('--enable-atm-phy-echam-submodels')
             args.append('--enable-hammoz')
 
@@ -220,15 +221,21 @@ class Icon(AutotoolsPackage):
     @run_after('build')
     def test(self):
         if self.spec.variants['test_name'].value != 'none':
-            try:
-                subprocess.run(['./config.status', '--file=run/set-up.info'], stderr=subprocess.STDOUT, cwd=self.build_directory, check=True)
-            except:
-                raise InstallError('config.status script failed')
+            if '@ham' in self.spec:
+                try:
+                    subprocess.run(['./config.status', '--file=run/set-up.info'], stderr=subprocess.STDOUT, cwd=self.build_directory, check=True)
+                except:
+                    raise InstallError('config.status script failed')
 
-            try:
-                subprocess.run(['indata_hammoz_root=/project/s903/sferrach/icon/ ./make_runscripts -s ' +  self.spec.variants['test_name'].value], shell=True, stderr=subprocess.STDOUT, cwd=self.build_directory, check=True)
-            except:
-                raise InstallError('make runscripts failed')
+                try:
+                    subprocess.run(['indata_hammoz_root=/project/s903/sferrach/icon/ ./make_runscripts -s ' +  self.spec.variants['test_name'].value], shell=True, stderr=subprocess.STDOUT, cwd=self.build_directory, check=True)
+                except:
+                    raise InstallError('make runscripts failed')
+            else:
+                try:
+                    subprocess.run(['./make_runscripts', '-s', self.spec.variants['test_name'].value], stderr=subprocess.STDOUT, cwd=self.build_directory, check=True)
+                except:
+                    raise InstallError('make runscripts failed')
             try:
                 subprocess.run(['sbatch', '-W', '--time=00:15:00', 'exp.' + self.spec.variants['test_name'].value + '.run'], stderr=subprocess.STDOUT, cwd=os.path.join(self.build_directory, 'run') , check=True)
             except:
