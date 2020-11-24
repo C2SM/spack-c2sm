@@ -22,7 +22,7 @@ class Icon(AutotoolsPackage):
     maintainers = ['egermann']
 
     version('master', branch='master', submodules=True)
-    version('ham', git='git@git.iac.ethz.ch:germanne/icon-hammoz.git', branch='fix_gpu', submodules=True)
+    version('ham', git='git@git.iac.ethz.ch:hammoz/icon-hammoz.git', branch='hammoz/gpu/master', submodules=True)
     version('2.6.x-rc', commit='040de650', submodules=True)
     version('2.0.17', commit='39ed04ad', submodules=True)
 
