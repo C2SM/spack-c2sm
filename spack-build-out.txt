@@ -1,0 +1,8 @@
+==> icon: Executing phase: 'autoreconf'
+==> [2020-11-09-10:35:02.193766] Configure script not found: trying to generate it
+==> [2020-11-09-10:35:02.193895] Warning: *********************************************************
+==> [2020-11-09-10:35:02.193958] Warning: * If the default procedure fails, consider implementing *
+==> [2020-11-09-10:35:02.194000] Warning: *        a custom AUTORECONF phase in the package       *
+==> [2020-11-09-10:35:02.194036] Warning: *********************************************************
+==> [2020-11-09-10:35:02.196240] '/usr/bin/autoreconf' '-ivf' '-I' '/usr/share/aclocal' '-I' '/usr/share/aclocal' '-I' '/usr/share/aclocal' '-I' '/usr/share/aclocal' '-I' '/apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.18.1/share/aclocal' '-I' '/apps/daint/UES/jenkins/6.0.UP07/gpu/easybuild/software/libxml2/2.9.7-CrayGNU-18.08/share/aclocal'
+autoreconf: 'configure.ac' or 'configure.in' is required
