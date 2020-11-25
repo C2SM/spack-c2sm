@@ -226,11 +226,10 @@ class Icon(AutotoolsPackage):
                     subprocess.run(['./config.status', '--file=run/set-up.info'], stderr=subprocess.STDOUT, cwd=self.build_directory, check=True)
                 except:
                     raise InstallError('config.status script failed')
-            else:
-                try:
-                    subprocess.run(['./make_runscripts', '-s', self.spec.variants['test_name'].value], stderr=subprocess.STDOUT, cwd=self.build_directory, check=True)
-                except:
-                    raise InstallError('make runscripts failed')
+            try:
+                subprocess.run(['./make_runscripts', '-s', self.spec.variants['test_name'].value], stderr=subprocess.STDOUT, cwd=self.build_directory, check=True)
+            except:
+                raise InstallError('make runscripts failed')
             try:
                 subprocess.run(['sbatch', '-W', '--time=00:15:00', 'exp.' + self.spec.variants['test_name'].value + '.run'], stderr=subprocess.STDOUT, cwd=os.path.join(self.build_directory, 'run') , check=True)
             except:
