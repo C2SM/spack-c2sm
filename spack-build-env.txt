@@ -1,0 +1,545 @@
+ACLOCAL_PATH=/usr/share/aclocal; export ACLOCAL_PATH
+ALLINEA_QUEUE_DLL=/opt/cray/pe/mpt/7.7.15/gni/mpich-pgi/20.1/lib/libtvmpich.so.3.0.1; export ALLINEA_QUEUE_DLL
+ALT_LINKER=/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/bin/ld; export ALT_LINKER
+APP2_STATE=20.08.0; export APP2_STATE
+APPS=/apps/daint; export APPS
+APPS_CSCS=/apps/cscs/daint; export APPS_CSCS
+ATP_CFLAGS=''; export ATP_CFLAGS
+ATP_CFLAGS_GNU_FORTRAN=-fno-backtrace; export ATP_CFLAGS_GNU_FORTRAN
+ATP_HOME=/opt/cray/pe/atp/3.7.4/alps; export ATP_HOME
+ATP_IGNORE_SIGTERM=1; export ATP_IGNORE_SIGTERM
+ATP_INSTALL_DIR=/opt/cray/pe/atp/3.7.4; export ATP_INSTALL_DIR
+ATP_VERSION=3.7.4; export ATP_VERSION
+function BASH_FUNC_module%%() {  eval `/opt/cray/pe/modules/3.2.11.4/bin/modulecmd bash $*`
+}; export -f BASH_FUNC_module%%
+function BASH_FUNC_spack%%() {  for var in LD_LIBRARY_PATH DYLD_LIBRARY_PATH DYLD_FALLBACK_LIBRARY_PATH;
+ do
+ eval "if [ -n \"\${${var}-}\" ]; then export SPACK_$var=\${${var}}; fi";
+ done;
+ if [ -n "${ZSH_VERSION:-}" ]; then
+ emulate -L sh;
+ fi;
+ _sp_flags="";
+ while [ ! -z ${1+x} ] && [ "${1#-}" != "${1}" ]; do
+ _sp_flags="$_sp_flags $1";
+ shift;
+ done;
+ if [ -n "$_sp_flags" ] && [ "${_sp_flags#*h}" != "${_sp_flags}" ] || [ "${_sp_flags#*V}" != "${_sp_flags}" ]; then
+ command spack $_sp_flags "$@";
+ return;
+ fi;
+ _sp_subcommand="";
+ if [ ! -z ${1+x} ]; then
+ _sp_subcommand="$1";
+ shift;
+ fi;
+ case $_sp_subcommand in 
+ "cd")
+ _sp_arg="";
+ if [ -n "$1" ]; then
+ _sp_arg="$1";
+ shift;
+ fi;
+ if [ "$_sp_arg" = "-h" ] || [ "$_sp_arg" = "--help" ]; then
+ command spack cd -h;
+ else
+ LOC="$(spack location $_sp_arg "$@")";
+ if [ -d "$LOC" ]; then
+ cd "$LOC";
+ else
+ return 1;
+ fi;
+ fi;
+ return
+ ;;
+ "env")
+ _sp_arg="";
+ if [ -n "$1" ]; then
+ _sp_arg="$1";
+ shift;
+ fi;
+ if [ "$_sp_arg" = "-h" ] || [ "$_sp_arg" = "--help" ]; then
+ command spack env -h;
+ else
+ case $_sp_arg in 
+ activate)
+ _a=" $@";
+ if [ -z ${1+x} ] || [ "${_a#* --sh}" != "$_a" ] || [ "${_a#* --csh}" != "$_a" ] || [ "${_a#* -h}" != "$_a" ] || [ "${_a#* --help}" != "$_a" ]; then
+ command spack env activate "$@";
+ else
+ eval $(command spack $_sp_flags env activate --sh "$@");
+ fi
+ ;;
+ deactivate)
+ _a=" $@";
+ if [ "${_a#* --sh}" != "$_a" ] || [ "${_a#* --csh}" != "$_a" ]; then
+ command spack env deactivate "$@";
+ else
+ if [ -n "$*" ]; then
+ command spack env deactivate -h;
+ else
+ eval $(command spack $_sp_flags env deactivate --sh);
+ fi;
+ fi
+ ;;
+ *)
+ command spack env $_sp_arg "$@"
+ ;;
+ esac;
+ fi;
+ return
+ ;;
+ "load" | "unload")
+ _a=" $@";
+ if [ "${_a#* --sh}" != "$_a" ] || [ "${_a#* --csh}" != "$_a" ] || [ "${_a#* -h}" != "$_a" ] || [ "${_a#* --help}" != "$_a" ]; then
+ command spack $_sp_flags $_sp_subcommand "$@";
+ else
+ eval $(command spack $_sp_flags $_sp_subcommand --sh "$@" ||                     echo "return 1");
+ fi
+ ;;
+ *)
+ command spack $_sp_flags $_sp_subcommand "$@"
+ ;;
+ esac
+}; export -f BASH_FUNC_spack%%
+CC=/project/g110/spack/user/daint/spack/lib/spack/env/pgi/pgcc; export CC
+CHPL_CG_CPP_LINES=1; export CHPL_CG_CPP_LINES
+CLASSPATH=''; export CLASSPATH
+CMAKE_LIBRARY_PATH=/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/lib64; export CMAKE_LIBRARY_PATH
+CMAKE_PREFIX_PATH=/project/g110/spack-install/daint/jasper/1.900.1/gcc/w5ok3vv7n7xm5eoyxdrhcdwykhr5rxos:/apps/daint/UES/jenkins/6.0.UP07/gpu/easybuild/software/libxml2/2.9.7-CrayGNU-18.08:/opt/nvidia/cudatoolkit10.2/10.2.89_3.28-7.0.2.1_2.17__g52c0314:/opt/cray/pe/mpt/7.7.15/gni/mpich-pgi/20.1:/apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.18.1:/scratch/snx3000/egermann/spack-install/daint/claw/2.0.1/pgi/lwwniodjgiioyalrjv5q5f265xdrg3yk:/project/g110/spack-install/daint/serialbox/2.6.0/pgi/io5yavo6fghenhuamq3deyxnpv5pavvk:/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0:/project/g110/spack-install/daint/boost/1.67.0/gcc/q6yeln2uk6a6uixwnqt63rrqf7zjefm2; export CMAKE_PREFIX_PATH
+COLORTERM=1; export COLORTERM
+COMPILER_PATH=/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/bin; export COMPILER_PATH
+CPU=x86_64; export CPU
+CRAYPAT_ALPS_COMPONENT=/opt/cray/pe/perftools/20.08.0/sbin/pat_alps; export CRAYPAT_ALPS_COMPONENT
+CRAYPAT_LD_LIBRARY_PATH=/opt/cray/pe/gcc-libs:/opt/cray/gcc-libs:/opt/cray/pe/perftools/20.08.0/lib64; export CRAYPAT_LD_LIBRARY_PATH
+CRAYPAT_OPTS_EXECUTABLE=libexec64/opts; export CRAYPAT_OPTS_EXECUTABLE
+CRAYPAT_ROOT=/opt/cray/pe/perftools/20.08.0; export CRAYPAT_ROOT
+CRAYPE_DIR=/opt/cray/pe/craype/2.7.0; export CRAYPE_DIR
+CRAYPE_LINK_TYPE=dynamic; export CRAYPE_LINK_TYPE
+CRAYPE_NETWORK_TARGET=aries; export CRAYPE_NETWORK_TARGET
+CRAYPE_VERSION=2.7.0; export CRAYPE_VERSION
+CRAY_ALPS_INCLUDE_OPTS=-I/opt/cray/alps/6.6.59-7.0.2.1_3.14__g872a8d62.ari/include; export CRAY_ALPS_INCLUDE_OPTS
+CRAY_ALPS_POST_LINK_OPTS=-L/opt/cray/alps/6.6.59-7.0.2.1_3.14__g872a8d62.ari/lib64; export CRAY_ALPS_POST_LINK_OPTS
+CRAY_CPU_TARGET=haswell; export CRAY_CPU_TARGET
+CRAY_CRAYPE_PREFIX=/opt/cray/pe/craype/2.7.0; export CRAY_CRAYPE_PREFIX
+CRAY_CRAYPE_VERSION=2.7.0; export CRAY_CRAYPE_VERSION
+CRAY_CUDATOOLKIT_DIR=/opt/nvidia/cudatoolkit10.2/10.2.89_3.28-7.0.2.1_2.17__g52c0314; export CRAY_CUDATOOLKIT_DIR
+CRAY_CUDATOOLKIT_INCLUDE_OPTS='-I/opt/nvidia/cudatoolkit10.2/10.2.89_3.28-7.0.2.1_2.17__g52c0314/include -I/opt/nvidia/cudatoolkit10.2/10.2.89_3.28-7.0.2.1_2.17__g52c0314/extras/CUPTI/include -I/opt/nvidia/cudatoolkit10.2/10.2.89_3.28-7.0.2.1_2.17__g52c0314/extras/Debugger/include'; export CRAY_CUDATOOLKIT_INCLUDE_OPTS
+CRAY_CUDATOOLKIT_POST_LINK_OPTS='-L/opt/nvidia/cudatoolkit10.2/10.2.89_3.28-7.0.2.1_2.17__g52c0314/lib64 -L/opt/nvidia/cudatoolkit10.2/10.2.89_3.28-7.0.2.1_2.17__g52c0314/extras/CUPTI/lib64 -Wl,--as-needed -Wl,-lcupti -Wl,-lcudart -Wl,--no-as-needed -L/opt/cray/nvidia/default/lib64 -lcuda'; export CRAY_CUDATOOLKIT_POST_LINK_OPTS
+CRAY_CUDATOOLKIT_VERSION=10.2.89_3.28-7.0.2.1_2.17__g52c0314; export CRAY_CUDATOOLKIT_VERSION
+CRAY_DMAPP_INCLUDE_OPTS='-I/opt/cray/dmapp/7.1.1-7.0.2.1_2.26__g38cf134.ari/include -I/opt/cray/gni-headers/5.0.12.0-7.0.2.1_2.5__g3b1768f.ari/include'; export CRAY_DMAPP_INCLUDE_OPTS
+CRAY_DMAPP_POST_LINK_OPTS=-L/opt/cray/dmapp/7.1.1-7.0.2.1_2.26__g38cf134.ari/lib64; export CRAY_DMAPP_POST_LINK_OPTS
+CRAY_GNI_HEADERS_INCLUDE_OPTS=-I/opt/cray/gni-headers/5.0.12.0-7.0.2.1_2.5__g3b1768f.ari/include; export CRAY_GNI_HEADERS_INCLUDE_OPTS
+CRAY_LD_LIBRARY_PATH=/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/PGI/20.1/lib:/opt/cray/pe/mpt/7.7.15/gni/mpich-pgi/20.1/lib:/opt/nvidia/cudatoolkit10.2/10.2.89_3.28-7.0.2.1_2.17__g52c0314/lib64:/opt/nvidia/cudatoolkit10.2/10.2.89_3.28-7.0.2.1_2.17__g52c0314/extras/CUPTI/lib64:/opt/cray/pe/perftools/20.08.0/lib64:/opt/cray/rca/2.2.20-7.0.2.1_2.27__g8e3fb5b.ari/lib64:/opt/cray/alps/6.6.59-7.0.2.1_3.14__g872a8d62.ari/lib64:/opt/cray/xpmem/2.2.20-7.0.2.1_2.21__g87eb960.ari/lib64:/opt/cray/dmapp/7.1.1-7.0.2.1_2.26__g38cf134.ari/lib64:/opt/cray/pe/pmi/5.0.16/lib64:/opt/cray/ugni/6.0.14.0-7.0.2.1_3.21__ge78e5b0.ari/lib64:/opt/cray/udreg/2.3.2-7.0.2.1_2.21__g8175d3d.ari/lib64; export CRAY_LD_LIBRARY_PATH
+CRAY_MPICH2_DIR=/opt/cray/pe/mpt/7.7.15/gni/mpich-pgi/20.1; export CRAY_MPICH2_DIR
+CRAY_MPICH2_VER=7.7.15; export CRAY_MPICH2_VER
+CRAY_MPICH_BASEDIR=/opt/cray/pe/mpt/7.7.15/gni; export CRAY_MPICH_BASEDIR
+CRAY_MPICH_DIR=/opt/cray/pe/mpt/7.7.15/gni/mpich-pgi/20.1; export CRAY_MPICH_DIR
+CRAY_MPICH_PREFIX=/opt/cray/pe/mpt/7.7.15/gni/mpich-pgi/20.1; export CRAY_MPICH_PREFIX
+CRAY_MPICH_ROOTDIR=/opt/cray/pe/mpt/7.7.15; export CRAY_MPICH_ROOTDIR
+CRAY_MPICH_VERSION=7.7.15; export CRAY_MPICH_VERSION
+CRAY_NETCDF_DIR=/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0; export CRAY_NETCDF_DIR
+CRAY_NETCDF_HDF5PARALLEL_PREFIX=/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/PGI/20.1; export CRAY_NETCDF_HDF5PARALLEL_PREFIX
+CRAY_NETCDF_HDF5PARALLEL_VERSION=4.7.4.0; export CRAY_NETCDF_HDF5PARALLEL_VERSION
+CRAY_PERFTOOLS_PREFIX=/opt/cray/pe/perftools/20.08.0; export CRAY_PERFTOOLS_PREFIX
+CRAY_PERFTOOLS_VERSION=20.08.0; export CRAY_PERFTOOLS_VERSION
+CRAY_PE_MODULES=cray-netcdf-hdf5parallel; export CRAY_PE_MODULES
+CRAY_PMI_INCLUDE_OPTS=-I/opt/cray/pe/pmi/5.0.16/include; export CRAY_PMI_INCLUDE_OPTS
+CRAY_PMI_POST_LINK_OPTS=-L/opt/cray/pe/pmi/5.0.16/lib64; export CRAY_PMI_POST_LINK_OPTS
+CRAY_PMI_PREFIX=/opt/cray/pe/pmi/5.0.16; export CRAY_PMI_PREFIX
+CRAY_PMI_VERSION=5.0.16; export CRAY_PMI_VERSION
+CRAY_PRE_COMPILE_OPTS=-hnetwork=aries; export CRAY_PRE_COMPILE_OPTS
+CRAY_PRGENVPGI=loaded; export CRAY_PRGENVPGI
+CRAY_PYTHON_PREFIX=/opt/python/3.8.2.1; export CRAY_PYTHON_PREFIX
+CRAY_PYTHON_VERSION=3.8.2.1; export CRAY_PYTHON_VERSION
+CRAY_RCA_INCLUDE_OPTS='-I/opt/cray/rca/2.2.20-7.0.2.1_2.27__g8e3fb5b.ari/include -I/opt/cray/krca/2.2.7-7.0.2.1_2.22__ge897ee1.ari/include -I/opt/cray-hss-devel/9.0.0/include'; export CRAY_RCA_INCLUDE_OPTS
+CRAY_RCA_POST_LINK_OPTS='-L/opt/cray/rca/2.2.20-7.0.2.1_2.27__g8e3fb5b.ari/lib64 -lrca'; export CRAY_RCA_POST_LINK_OPTS
+CRAY_SITE_LIST_DIR=/etc/opt/cray/pe/modules; export CRAY_SITE_LIST_DIR
+CRAY_UDREG_INCLUDE_OPTS=-I/opt/cray/udreg/2.3.2-7.0.2.1_2.21__g8175d3d.ari/include; export CRAY_UDREG_INCLUDE_OPTS
+CRAY_UDREG_POST_LINK_OPTS=-L/opt/cray/udreg/2.3.2-7.0.2.1_2.21__g8175d3d.ari/lib64; export CRAY_UDREG_POST_LINK_OPTS
+CRAY_UGNI_INCLUDE_OPTS=-I/opt/cray/ugni/6.0.14.0-7.0.2.1_3.21__ge78e5b0.ari/include; export CRAY_UGNI_INCLUDE_OPTS
+CRAY_UGNI_POST_LINK_OPTS=-L/opt/cray/ugni/6.0.14.0-7.0.2.1_3.21__ge78e5b0.ari/lib64; export CRAY_UGNI_POST_LINK_OPTS
+CRAY_XPMEM_INCLUDE_OPTS=-I/opt/cray/xpmem/2.2.20-7.0.2.1_2.21__g87eb960.ari/include; export CRAY_XPMEM_INCLUDE_OPTS
+CRAY_XPMEM_POST_LINK_OPTS=-L/opt/cray/xpmem/2.2.20-7.0.2.1_2.21__g87eb960.ari/lib64; export CRAY_XPMEM_POST_LINK_OPTS
+CSCS_CUSTOM_ENV=true; export CSCS_CUSTOM_ENV
+CSHEDIT=emacs; export CSHEDIT
+CUDAHOSTCXX=CC; export CUDAHOSTCXX
+CUDATOOLKIT_HOME=/opt/nvidia/cudatoolkit10.2/10.2.89_3.28-7.0.2.1_2.17__g52c0314; export CUDATOOLKIT_HOME
+CUDA_CACHE_PATH=/scratch/snx3000/egermann/.nv/ComputeCache; export CUDA_CACHE_PATH
+CUDA_HOME=/opt/nvidia/cudatoolkit10.2/10.2.89_3.28-7.0.2.1_2.17__g52c0314; export CUDA_HOME
+CVS_RSH=ssh; export CVS_RSH
+CXX=/project/g110/spack/user/daint/spack/lib/spack/env/pgi/pgc++; export CXX
+DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/26083/bus; export DBUS_SESSION_BUS_ADDRESS
+DISPLAY=localhost:22.0; export DISPLAY
+DVS_INCLUDE_OPTS=-I/opt/cray/dvs/2.12_2.2.165-7.0.2.1_4.4__g22f4fff6/include; export DVS_INCLUDE_OPTS
+DVS_VERSION=0.9.0; export DVS_VERSION
+EBDEVELXALT=/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/easybuild/xalt-2.8.10-easybuild-devel; export EBDEVELXALT
+EBROOTXALT=/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10; export EBROOTXALT
+EBVERSIONXALT=2.8.10; export EBVERSIONXALT
+EDITOR=vim; export EDITOR
+F77=/project/g110/spack/user/daint/spack/lib/spack/env/pgi/pgfortran; export F77
+FC=/project/g110/spack/user/daint/spack/lib/spack/env/pgi/pgfortran; export FC
+FPATH=:/opt/cray/pe/modules/3.2.11.4/init/sh_funcs/no_redirect:/opt/cray/pe/modules/3.2.11.4/init/sh_funcs/no_redirect; export FPATH
+FROM_HEADER=''; export FROM_HEADER
+GPG_TTY=/dev/pts/47; export GPG_TTY
+G_BROKEN_FILENAMES=1; export G_BROKEN_FILENAMES
+G_FILENAME_ENCODING=@locale,UTF-8,ISO-8859-15,CP1252; export G_FILENAME_ENCODING
+HISTIGNORE='&:[ ]*:l:la:ll:ls:bg:fg:clear'; export HISTIGNORE
+HISTSIZE=500000; export HISTSIZE
+HOME=/users/egermann; export HOME
+HOST=daint104; export HOST
+HOSTNAME=daint104; export HOSTNAME
+HOSTTYPE=x86_64; export HOSTTYPE
+INFOPATH=/opt/cray/cge/3.2.1463_r03f4dfb_fe3.3.0_2019062614/info; export INFOPATH
+JAVA_BINDIR=/usr/lib64/jvm/java/bin; export JAVA_BINDIR
+JAVA_HOME=/usr/lib64/jvm/java-11-openjdk; export JAVA_HOME
+JAVA_ROOT=/usr/lib64/jvm/java; export JAVA_ROOT
+JDK_HOME=/usr/lib64/jvm/java; export JDK_HOME
+JRE_HOME=/usr/lib64/jvm/java/jre; export JRE_HOME
+KSH_AUTOLOAD=1; export KSH_AUTOLOAD
+LANG=en_US.UTF-8; export LANG
+LC_ALL=C; export LC_ALL
+LD_LIBRARY_PATH=/opt/cray/pe/perftools/20.08.0/lib64:/opt/cray/rca/2.2.20-7.0.2.1_2.27__g8e3fb5b.ari/lib64:/opt/cray/alps/6.6.59-7.0.2.1_3.14__g872a8d62.ari/lib64:/opt/cray/xpmem/2.2.20-7.0.2.1_2.21__g87eb960.ari/lib64:/opt/cray/dmapp/7.1.1-7.0.2.1_2.26__g38cf134.ari/lib64:/opt/cray/pe/pmi/5.0.16/lib64:/opt/cray/ugni/6.0.14.0-7.0.2.1_3.21__ge78e5b0.ari/lib64:/opt/cray/udreg/2.3.2-7.0.2.1_2.21__g8175d3d.ari/lib64:/opt/pgi/20.1.1/linux86-64/20.1/lib:/opt/cray/pe/papi/6.0.0.2/lib64:/opt/cray/job/2.2.4-7.0.2.1_2.24__g36b56f4.ari/lib64; export LD_LIBRARY_PATH
+LD_PRELOAD=/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/lib64/libxalt_init.so; export LD_PRELOAD
+LESS='-M -I -R'; export LESS
+LESSCLOSE='lessclose.sh %s %s'; export LESSCLOSE
+LESSKEY=/etc/lesskey.bin; export LESSKEY
+LESSOPEN='lessopen.sh %s'; export LESSOPEN
+LESS_ADVANCED_PREPROCESSOR=no; export LESS_ADVANCED_PREPROCESSOR
+LIBGL_DEBUG=quiet; export LIBGL_DEBUG
+LIBRARYMODULES=acml:alps:cray-dwarf:cray-fftw:cray-ga:cray-hdf5:cray-hdf5-parallel:cray-libsci:cray-libsci_acc:cray-mpich:cray-mpich2:cray-mpich-abi:cray-netcdf:cray-netcdf-hdf5parallel:cray-parallel-netcdf:cray-petsc:cray-petsc-complex:cray-shmem:cray-tpsl:cray-trilinos:cudatoolkit:fftw:ga:hdf5:hdf5-parallel:iobuf:libfast:netcdf:netcdf-hdf5parallel:ntk:onesided:papi:petsc:petsc-complex:pmi:tpsl:trilinos:xt-libsci:xt-mpich2:xt-mpt:xt-papi; export LIBRARYMODULES
+LOADEDMODULES=modules/3.2.11.4:cge/3.2.1463_r03f4dfb_fe3.3.0_2019062614:slurm/20.02.2-1:xalt/2.8.10:cray-python/3.8.2.1:craype-network-aries:craype/2.7.0:udreg/2.3.2-7.0.2.1_2.21__g8175d3d.ari:ugni/6.0.14.0-7.0.2.1_3.21__ge78e5b0.ari:pmi/5.0.16:dmapp/7.1.1-7.0.2.1_2.26__g38cf134.ari:gni-headers/5.0.12.0-7.0.2.1_2.5__g3b1768f.ari:xpmem/2.2.20-7.0.2.1_2.21__g87eb960.ari:job/2.2.4-7.0.2.1_2.24__g36b56f4.ari:dvs/2.12_2.2.165-7.0.2.1_4.4__g22f4fff6:alps/6.6.59-7.0.2.1_3.14__g872a8d62.ari:rca/2.2.20-7.0.2.1_2.27__g8e3fb5b.ari:atp/3.7.4:perftools-base/20.08.0:PrgEnv-pgi/6.0.8:pgi/20.1.1:craype-haswell:cudatoolkit/10.2.89_3.28-7.0.2.1_2.17__g52c0314:cray-mpich/7.7.15:cray-netcdf-hdf5parallel/4.7.4.0; export LOADEDMODULES
+LOGNAME=egermann; export LOGNAME
+LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'; export LS_COLORS
+LS_OPTIONS='-N --color=none -T 0'; export LS_OPTIONS
+MACHTYPE=x86_64-suse-linux; export MACHTYPE
+MAIL=/var/mail/egermann; export MAIL
+MANPATH=/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/share/man:/opt/cray/pe/mpt/7.7.15/gni/man/mpich:/opt/nvidia/cudatoolkit10.2/10.2.89_3.28-7.0.2.1_2.17__g52c0314/doc/man:/opt/pgi/20.1.1/linux86-64/20.1/man:/opt/cray/pe/perftools/20.08.0/man:/opt/cray/pe/papi/6.0.0.2/share/pdoc/man:/opt/cray/pe/atp/3.7.4/share/man:/opt/cray/alps/6.6.59-7.0.2.1_3.14__g872a8d62.ari/man:/opt/cray/job/2.2.4-7.0.2.1_2.24__g36b56f4.ari/man:/opt/cray/pe/pmi/5.0.16/man:/opt/cray/pe/craype/2.7.0/man:/opt/python/3.8.2.1/share/man:/apps/cscs/daint/share/man:/opt/cray/cge/3.2.1463_r03f4dfb_fe3.3.0_2019062614/man:/opt/cray/pe/modules/3.2.11.4/share/man:/usr/local/man:/usr/share/man:/usr/man:/opt/cray/share/man:/opt/cray/pe/man; export MANPATH
+MINICOM='-c on'; export MINICOM
+MODULEPATH=/opt/cray/pe/perftools/20.08.0/modulefiles:/opt/cray/ari/modulefiles:/opt/cray/pe/craype/2.7.0/modulefiles:/scratch/snx3000/egermann/modules/daint/cray-cnl7-haswell:/apps/daint/modulefiles:/apps/daint/system/modulefiles:/apps/daint/UES/easybuild/modulefiles:/apps/daint/UES/reframe:/apps/common/system/modulefiles:/opt/cray/pe/modulefiles:/opt/cray/modulefiles:/opt/modulefiles; export MODULEPATH
+MODULESHOME=/opt/cray/pe/modules/3.2.11.4; export MODULESHOME
+MODULE_VERSION=3.2.11.4; export MODULE_VERSION
+MODULE_VERSION_STACK=3.2.11.4; export MODULE_VERSION_STACK
+MORE=-sl; export MORE
+MPICC=/project/g110/spack/user/daint/spack/lib/spack/env/pgi/pgcc; export MPICC
+MPICH_ABORT_ON_ERROR=1; export MPICH_ABORT_ON_ERROR
+MPICH_CC=/project/g110/spack/user/daint/spack/lib/spack/env/pgi/pgcc; export MPICH_CC
+MPICH_CXX=/project/g110/spack/user/daint/spack/lib/spack/env/pgi/pgc++; export MPICH_CXX
+MPICH_DIR=/opt/cray/pe/mpt/7.7.15/gni/mpich-pgi/20.1; export MPICH_DIR
+MPICH_F77=/project/g110/spack/user/daint/spack/lib/spack/env/pgi/pgfortran; export MPICH_F77
+MPICH_F90=/project/g110/spack/user/daint/spack/lib/spack/env/pgi/pgfortran; export MPICH_F90
+MPICH_FC=/project/g110/spack/user/daint/spack/lib/spack/env/pgi/pgfortran; export MPICH_FC
+MPICXX=/project/g110/spack/user/daint/spack/lib/spack/env/pgi/pgc++; export MPICXX
+MPIF77=/project/g110/spack/user/daint/spack/lib/spack/env/pgi/pgfortran; export MPIF77
+MPIF90=/project/g110/spack/user/daint/spack/lib/spack/env/pgi/pgfortran; export MPIF90
+NETCDF_DIR=/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/PGI/20.1; export NETCDF_DIR
+OFFLOAD_INIT=on_start; export OFFLOAD_INIT
+#OLDPWD=/scratch/snx3000/egermann; export OLDPWD
+OSTYPE=linux; export OSTYPE
+PAGER=less; export PAGER
+PATH=/project/g110/spack/user/daint/spack/lib/spack/env/pgi:/project/g110/spack/user/daint/spack/lib/spack/env/case-insensitive:/project/g110/spack/user/daint/spack/lib/spack/env:/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/bin:/project/g110/spack-install/daint/serialbox/2.6.0/pgi/io5yavo6fghenhuamq3deyxnpv5pavvk/bin:/scratch/snx3000/egermann/spack-install/daint/claw/2.0.1/pgi/lwwniodjgiioyalrjv5q5f265xdrg3yk/bin:/opt/nvidia/cudatoolkit10.2/10.2.89_3.28-7.0.2.1_2.17__g52c0314/bin:/apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.18.1/bin:/apps/daint/UES/jenkins/6.0.UP07/gpu/easybuild/software/libxml2/2.9.7-CrayGNU-18.08/bin:/project/g110/spack-install/daint/jasper/1.900.1/gcc/w5ok3vv7n7xm5eoyxdrhcdwykhr5rxos/bin:/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/bin:/project/g110/spack-install/daint/serialbox/2.6.0/pgi/io5yavo6fghenhuamq3deyxnpv5pavvk/bin:/scratch/snx3000/egermann/spack-install/daint/claw/2.0.1/pgi/lwwniodjgiioyalrjv5q5f265xdrg3yk/bin:/opt/nvidia/cudatoolkit10.2/10.2.89_3.28-7.0.2.1_2.17__g52c0314/bin:/apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.18.1/bin:/apps/daint/UES/jenkins/6.0.UP07/gpu/easybuild/software/libxml2/2.9.7-CrayGNU-18.08/bin:/project/g110/spack-install/daint/jasper/1.900.1/gcc/w5ok3vv7n7xm5eoyxdrhcdwykhr5rxos/bin:/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/bin:/opt/cray/pe/mpt/7.7.15/gni/bin:/opt/nvidia/cudatoolkit10.2/10.2.89_3.28-7.0.2.1_2.17__g52c0314/bin:/opt/nvidia/cudatoolkit10.2/10.2.89_3.28-7.0.2.1_2.17__g52c0314/libnvvp:/opt/pgi/20.1.1/linux86-64/20.1/bin:/opt/cray/pe/perftools/20.08.0/bin:/opt/cray/pe/papi/6.0.0.2/bin:/opt/cray/rca/2.2.20-7.0.2.1_2.27__g8e3fb5b.ari/bin:/opt/cray/alps/6.6.59-7.0.2.1_3.14__g872a8d62.ari/sbin:/opt/cray/alps/default/bin:/opt/cray/job/2.2.4-7.0.2.1_2.24__g36b56f4.ari/bin:/opt/cray/pe/craype/2.7.0/bin:/project/g110/spack/user/daint/spack/bin:/opt/python/3.8.2.1/bin:/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/sbin:/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/bin:/apps/cscs/daint/bin:/apps/daint/system/bin:/apps/common/system/bin:/opt/cray/cge/3.2.1463_r03f4dfb_fe3.3.0_2019062614/bin:/opt/cray/pe/modules/3.2.11.4/bin:/usr/local/bin:/usr/bin:/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/opt/cray/pe/bin; export PATH
+PAT_BUILD_PAPI_LIBDIR=/opt/cray/pe/papi/6.0.0.2/lib64; export PAT_BUILD_PAPI_LIBDIR
+PAT_REPORT_PRUNE_NAME='_cray$mt_execute_,_cray$mt_start_,_cray$mt_kmpc_fork,__cray_hwpc_,f_cray_hwpc_,cstart,hip_impl::,hipLaunchKernelGGL,__pat_,pat_region_,PAT_,OMP.slave_loop,slave_entry,_new_slave_entry,_thread_pool_slave_entry,THREAD_POOL_join,__libc_start_main,_start,__start,start_thread,__wrap_,UPC_ADIO_,_upc_,upc_,__caf_,__pgas_,syscall,__device_stub,__cray_acc_hw,_ZZ,.omp_outlined.'; export PAT_REPORT_PRUNE_NAME
+PELOCAL_PRGENV=true; export PELOCAL_PRGENV
+PERFTOOLS_VERSION=20.08.0; export PERFTOOLS_VERSION
+PE_ATP_MODULE_NAME=atp; export PE_ATP_MODULE_NAME
+PE_ATP_PKGCONFIG_VARIABLES=ATP_CFLAGS_@prgenv@_@language@; export PE_ATP_PKGCONFIG_VARIABLES
+PE_CRAYCLANG_DEFAULT_FIXED_PKGCONFIG_PATH=/opt/cray/pe/parallel-netcdf/1.12.1.0/CRAYCLANG/9.0/lib/pkgconfig:/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/CRAYCLANG/9.0/lib/pkgconfig:/opt/cray/pe/netcdf/4.7.4.0/CRAYCLANG/9.0/lib/pkgconfig:/opt/cray/pe/hdf5-parallel/1.12.0.0/CRAYCLANG/9.0/lib/pkgconfig:/opt/cray/pe/hdf5/1.12.0.0/CRAYCLANG/9.0/lib/pkgconfig; export PE_CRAYCLANG_DEFAULT_FIXED_PKGCONFIG_PATH
+PE_CRAYCLANG_FIXED_PKGCONFIG_PATH=/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/CRAYCLANG/9.0/lib/pkgconfig; export PE_CRAYCLANG_FIXED_PKGCONFIG_PATH
+PE_CRAY_DEFAULT_FIXED_PKGCONFIG_PATH=/opt/cray/pe/ga/5.3.0.10/CRAY/8.6/lib/pkgconfig; export PE_CRAY_DEFAULT_FIXED_PKGCONFIG_PATH
+PE_CXX_PKGCONFIG_LIBS=netcdf-cxx4_parallel:mpichcxx; export PE_CXX_PKGCONFIG_LIBS
+PE_ENV=PGI; export PE_ENV
+PE_FFTW2_DEFAULT_REQUIRED_PRODUCTS=PE_MPICH; export PE_FFTW2_DEFAULT_REQUIRED_PRODUCTS
+PE_FFTW_DEFAULT_TARGET_broadwell=broadwell; export PE_FFTW_DEFAULT_TARGET_broadwell
+PE_FFTW_DEFAULT_TARGET_haswell=haswell; export PE_FFTW_DEFAULT_TARGET_haswell
+PE_FFTW_DEFAULT_TARGET_ivybridge=ivybridge; export PE_FFTW_DEFAULT_TARGET_ivybridge
+PE_FFTW_DEFAULT_TARGET_mic_knl=mic_knl; export PE_FFTW_DEFAULT_TARGET_mic_knl
+PE_FFTW_DEFAULT_TARGET_sandybridge=sandybridge; export PE_FFTW_DEFAULT_TARGET_sandybridge
+PE_FFTW_DEFAULT_TARGET_share=share; export PE_FFTW_DEFAULT_TARGET_share
+PE_FFTW_DEFAULT_TARGET_x86_64=x86_64; export PE_FFTW_DEFAULT_TARGET_x86_64
+PE_FFTW_DEFAULT_TARGET_x86_cascadelake=x86_cascadelake; export PE_FFTW_DEFAULT_TARGET_x86_cascadelake
+PE_FFTW_DEFAULT_TARGET_x86_skylake=x86_skylake; export PE_FFTW_DEFAULT_TARGET_x86_skylake
+PE_FFTW_DEFAULT_VOLATILE_PKGCONFIG_PATH=/opt/cray/pe/fftw/3.3.8.7/@PE_FFTW_DEFAULT_TARGET@/lib/pkgconfig; export PE_FFTW_DEFAULT_VOLATILE_PKGCONFIG_PATH
+PE_FORTRAN_PKGCONFIG_LIBS=netcdf-fortran_parallel:mpichf90; export PE_FORTRAN_PKGCONFIG_LIBS
+PE_GA_DEFAULT_FIXED_PRGENV='CRAY PGI INTEL'; export PE_GA_DEFAULT_FIXED_PRGENV
+PE_GA_DEFAULT_GENCOMPILERS_GNU='8.2 7.3'; export PE_GA_DEFAULT_GENCOMPILERS_GNU
+PE_GA_DEFAULT_GENCOMPS_GNU='82 73'; export PE_GA_DEFAULT_GENCOMPS_GNU
+PE_GA_DEFAULT_VOLATILE_PKGCONFIG_PATH=/opt/cray/pe/ga/5.3.0.10/@PRGENV@/@PE_GA_DEFAULT_GENCOMPS@/lib/pkgconfig; export PE_GA_DEFAULT_VOLATILE_PKGCONFIG_PATH
+PE_GA_DEFAULT_VOLATILE_PRGENV=GNU; export PE_GA_DEFAULT_VOLATILE_PRGENV
+PE_GNU_DEFAULT_FIXED_PKGCONFIG_PATH=/opt/cray/pe/parallel-netcdf/1.12.1.0/GNU/8.2/lib/pkgconfig:/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/GNU/8.2/lib/pkgconfig:/opt/cray/pe/netcdf/4.7.4.0/GNU/8.2/lib/pkgconfig:/opt/cray/pe/hdf5-parallel/1.12.0.0/GNU/8.2/lib/pkgconfig:/opt/cray/pe/hdf5/1.12.0.0/GNU/8.2/lib/pkgconfig; export PE_GNU_DEFAULT_FIXED_PKGCONFIG_PATH
+PE_GNU_FIXED_PKGCONFIG_PATH=/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/GNU/8.2/lib/pkgconfig; export PE_GNU_FIXED_PKGCONFIG_PATH
+PE_HDF5_DEFAULT_FIXED_PRGENV='GNU CRAYCLANG PGI INTEL'; export PE_HDF5_DEFAULT_FIXED_PRGENV
+PE_HDF5_PARALLEL_DEFAULT_FIXED_PRGENV='GNU CRAYCLANG PGI INTEL'; export PE_HDF5_PARALLEL_DEFAULT_FIXED_PRGENV
+PE_HDF5_PARALLEL_DEFAULT_REQUIRED_PRODUCTS=PE_MPICH; export PE_HDF5_PARALLEL_DEFAULT_REQUIRED_PRODUCTS
+PE_INTEL_DEFAULT_FIXED_PKGCONFIG_PATH=/opt/cray/pe/parallel-netcdf/1.12.1.0/INTEL/19.1/lib/pkgconfig:/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/INTEL/19.1/lib/pkgconfig:/opt/cray/pe/netcdf/4.7.4.0/INTEL/19.1/lib/pkgconfig:/opt/cray/pe/mpt/7.7.15/gni/mpich-INTEL/16.0/lib/pkgconfig:/opt/cray/pe/hdf5-parallel/1.12.0.0/INTEL/19.1/lib/pkgconfig:/opt/cray/pe/hdf5/1.12.0.0/INTEL/19.1/lib/pkgconfig:/opt/cray/pe/ga/5.3.0.10/INTEL/18.0/lib/pkgconfig; export PE_INTEL_DEFAULT_FIXED_PKGCONFIG_PATH
+PE_INTEL_FIXED_PKGCONFIG_PATH=/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/INTEL/19.1/lib/pkgconfig:/opt/cray/pe/mpt/7.7.15/gni/mpich-INTEL/16.0/lib/pkgconfig; export PE_INTEL_FIXED_PKGCONFIG_PATH
+PE_LIBSCI_ACC_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_64=9.0; export PE_LIBSCI_ACC_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_64
+PE_LIBSCI_ACC_DEFAULT_GENCOMPILERS_GNU_x86_64=8.1; export PE_LIBSCI_ACC_DEFAULT_GENCOMPILERS_GNU_x86_64
+PE_LIBSCI_ACC_DEFAULT_GENCOMPS_CRAYCLANG_x86_64=90; export PE_LIBSCI_ACC_DEFAULT_GENCOMPS_CRAYCLANG_x86_64
+PE_LIBSCI_ACC_DEFAULT_GENCOMPS_GNU_x86_64=81; export PE_LIBSCI_ACC_DEFAULT_GENCOMPS_GNU_x86_64
+PE_LIBSCI_ACC_DEFAULT_NV_SUFFIX_nvidia20=nv20; export PE_LIBSCI_ACC_DEFAULT_NV_SUFFIX_nvidia20
+PE_LIBSCI_ACC_DEFAULT_NV_SUFFIX_nvidia35=nv35; export PE_LIBSCI_ACC_DEFAULT_NV_SUFFIX_nvidia35
+PE_LIBSCI_ACC_DEFAULT_NV_SUFFIX_nvidia60=nv60; export PE_LIBSCI_ACC_DEFAULT_NV_SUFFIX_nvidia60
+PE_LIBSCI_ACC_DEFAULT_PKGCONFIG_VARIABLES=PE_LIBSCI_ACC_DEFAULT_NV_SUFFIX_@accelerator@; export PE_LIBSCI_ACC_DEFAULT_PKGCONFIG_VARIABLES
+PE_LIBSCI_ACC_DEFAULT_REQUIRED_PRODUCTS=PE_MPICH:PE_LIBSCI; export PE_LIBSCI_ACC_DEFAULT_REQUIRED_PRODUCTS
+PE_LIBSCI_ACC_DEFAULT_VOLATILE_PKGCONFIG_PATH=/opt/cray/pe/libsci_acc/20.06.1/@PRGENV@/@PE_LIBSCI_ACC_DEFAULT_GENCOMPS@/@PE_LIBSCI_ACC_DEFAULT_TARGET@/lib/pkgconfig; export PE_LIBSCI_ACC_DEFAULT_VOLATILE_PKGCONFIG_PATH
+PE_LIBSCI_ACC_DEFAULT_VOLATILE_PRGENV='CRAYCLANG GNU'; export PE_LIBSCI_ACC_DEFAULT_VOLATILE_PRGENV
+PE_LIBSCI_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_64=9.0; export PE_LIBSCI_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_64
+PE_LIBSCI_DEFAULT_GENCOMPILERS_GNU_x86_64=8.1; export PE_LIBSCI_DEFAULT_GENCOMPILERS_GNU_x86_64
+PE_LIBSCI_DEFAULT_GENCOMPILERS_INTEL_x86_64=16.0; export PE_LIBSCI_DEFAULT_GENCOMPILERS_INTEL_x86_64
+PE_LIBSCI_DEFAULT_GENCOMPS_CRAYCLANG_x86_64=90; export PE_LIBSCI_DEFAULT_GENCOMPS_CRAYCLANG_x86_64
+PE_LIBSCI_DEFAULT_GENCOMPS_GNU_x86_64=81; export PE_LIBSCI_DEFAULT_GENCOMPS_GNU_x86_64
+PE_LIBSCI_DEFAULT_GENCOMPS_INTEL_x86_64=160; export PE_LIBSCI_DEFAULT_GENCOMPS_INTEL_x86_64
+PE_LIBSCI_DEFAULT_OMP_REQUIRES=''; export PE_LIBSCI_DEFAULT_OMP_REQUIRES
+PE_LIBSCI_DEFAULT_OMP_REQUIRES_openmp=_mp; export PE_LIBSCI_DEFAULT_OMP_REQUIRES_openmp
+PE_LIBSCI_DEFAULT_PKGCONFIG_VARIABLES=PE_LIBSCI_DEFAULT_OMP_REQUIRES_@openmp@:PE_SCI_EXT_LIBPATH:PE_SCI_EXT_LIBNAME; export PE_LIBSCI_DEFAULT_PKGCONFIG_VARIABLES
+PE_LIBSCI_DEFAULT_REQUIRED_PRODUCTS=PE_MPICH; export PE_LIBSCI_DEFAULT_REQUIRED_PRODUCTS
+PE_LIBSCI_DEFAULT_VOLATILE_PKGCONFIG_PATH=/opt/cray/pe/libsci/20.06.1/@PRGENV@/@PE_LIBSCI_DEFAULT_GENCOMPS@/@PE_LIBSCI_DEFAULT_TARGET@/lib/pkgconfig; export PE_LIBSCI_DEFAULT_VOLATILE_PKGCONFIG_PATH
+PE_LIBSCI_DEFAULT_VOLATILE_PRGENV='CRAYCLANG GNU INTEL'; export PE_LIBSCI_DEFAULT_VOLATILE_PRGENV
+PE_MPICH_ALTERNATE_LIBS_dpm=_dpm; export PE_MPICH_ALTERNATE_LIBS_dpm
+PE_MPICH_ALTERNATE_LIBS_multithreaded=_mt; export PE_MPICH_ALTERNATE_LIBS_multithreaded
+PE_MPICH_CXX_PKGCONFIG_LIBS=mpichcxx; export PE_MPICH_CXX_PKGCONFIG_LIBS
+PE_MPICH_DEFAULT_DIR_CRAYCLANG_DEFAULT64=64; export PE_MPICH_DEFAULT_DIR_CRAYCLANG_DEFAULT64
+PE_MPICH_DEFAULT_DIR_CRAY_DEFAULT64=64; export PE_MPICH_DEFAULT_DIR_CRAY_DEFAULT64
+PE_MPICH_DEFAULT_DIR_PGI_DEFAULT64=64; export PE_MPICH_DEFAULT_DIR_PGI_DEFAULT64
+PE_MPICH_DEFAULT_FIXED_PRGENV=INTEL; export PE_MPICH_DEFAULT_FIXED_PRGENV
+PE_MPICH_DEFAULT_GENCOMPILERS_CRAY=9.0; export PE_MPICH_DEFAULT_GENCOMPILERS_CRAY
+PE_MPICH_DEFAULT_GENCOMPILERS_CRAYCLANG=9.0; export PE_MPICH_DEFAULT_GENCOMPILERS_CRAYCLANG
+PE_MPICH_DEFAULT_GENCOMPILERS_GNU='8.2 8.1 7.1'; export PE_MPICH_DEFAULT_GENCOMPILERS_GNU
+PE_MPICH_DEFAULT_GENCOMPILERS_PGI=20.1; export PE_MPICH_DEFAULT_GENCOMPILERS_PGI
+PE_MPICH_DEFAULT_GENCOMPS_CRAY=90; export PE_MPICH_DEFAULT_GENCOMPS_CRAY
+PE_MPICH_DEFAULT_GENCOMPS_CRAYCLANG=90; export PE_MPICH_DEFAULT_GENCOMPS_CRAYCLANG
+PE_MPICH_DEFAULT_GENCOMPS_GNU='82 81 71'; export PE_MPICH_DEFAULT_GENCOMPS_GNU
+PE_MPICH_DEFAULT_GENCOMPS_PGI=201; export PE_MPICH_DEFAULT_GENCOMPS_PGI
+PE_MPICH_DEFAULT_VOLATILE_PKGCONFIG_PATH=/opt/cray/pe/mpt/7.7.15/gni/mpich-@PRGENV@@PE_MPICH_DEFAULT_DIR_DEFAULT64@/@PE_MPICH_DEFAULT_GENCOMPS@/lib/pkgconfig; export PE_MPICH_DEFAULT_VOLATILE_PKGCONFIG_PATH
+PE_MPICH_DEFAULT_VOLATILE_PRGENV='PGI GNU CRAYCLANG CRAY'; export PE_MPICH_DEFAULT_VOLATILE_PRGENV
+PE_MPICH_DIR_CRAYCLANG_DEFAULT64=64; export PE_MPICH_DIR_CRAYCLANG_DEFAULT64
+PE_MPICH_DIR_CRAY_DEFAULT64=64; export PE_MPICH_DIR_CRAY_DEFAULT64
+PE_MPICH_DIR_PGI_DEFAULT64=64; export PE_MPICH_DIR_PGI_DEFAULT64
+PE_MPICH_FIXED_PRGENV=INTEL; export PE_MPICH_FIXED_PRGENV
+PE_MPICH_FORTRAN_PKGCONFIG_LIBS=mpichf90; export PE_MPICH_FORTRAN_PKGCONFIG_LIBS
+PE_MPICH_GENCOMPILERS_CRAY=9.0; export PE_MPICH_GENCOMPILERS_CRAY
+PE_MPICH_GENCOMPILERS_CRAYCLANG=9.0; export PE_MPICH_GENCOMPILERS_CRAYCLANG
+PE_MPICH_GENCOMPILERS_GNU='8.2 8.1 7.1'; export PE_MPICH_GENCOMPILERS_GNU
+PE_MPICH_GENCOMPILERS_PGI=20.1; export PE_MPICH_GENCOMPILERS_PGI
+PE_MPICH_GENCOMPS_CRAY=90; export PE_MPICH_GENCOMPS_CRAY
+PE_MPICH_GENCOMPS_CRAYCLANG=90; export PE_MPICH_GENCOMPS_CRAYCLANG
+PE_MPICH_GENCOMPS_GNU='82 81 71'; export PE_MPICH_GENCOMPS_GNU
+PE_MPICH_GENCOMPS_PGI=201; export PE_MPICH_GENCOMPS_PGI
+PE_MPICH_MODULE_NAME=cray-mpich; export PE_MPICH_MODULE_NAME
+PE_MPICH_NV_LIBS=''; export PE_MPICH_NV_LIBS
+PE_MPICH_NV_LIBS_nvidia20=-lcudart; export PE_MPICH_NV_LIBS_nvidia20
+PE_MPICH_NV_LIBS_nvidia35=-lcudart; export PE_MPICH_NV_LIBS_nvidia35
+PE_MPICH_NV_LIBS_nvidia60=-lcudart; export PE_MPICH_NV_LIBS_nvidia60
+PE_MPICH_PKGCONFIG_LIBS=mpich; export PE_MPICH_PKGCONFIG_LIBS
+PE_MPICH_PKGCONFIG_VARIABLES=PE_MPICH_NV_LIBS_@accelerator@:PE_MPICH_ALTERNATE_LIBS_@multithreaded@:PE_MPICH_ALTERNATE_LIBS_@dpm@; export PE_MPICH_PKGCONFIG_VARIABLES
+PE_MPICH_TARGET_VAR_nvidia20=-lcudart; export PE_MPICH_TARGET_VAR_nvidia20
+PE_MPICH_TARGET_VAR_nvidia35=-lcudart; export PE_MPICH_TARGET_VAR_nvidia35
+PE_MPICH_VOLATILE_PKGCONFIG_PATH=/opt/cray/pe/mpt/7.7.15/gni/mpich-@PRGENV@@PE_MPICH_DIR_DEFAULT64@/@PE_MPICH_GENCOMPS@/lib/pkgconfig; export PE_MPICH_VOLATILE_PKGCONFIG_PATH
+PE_MPICH_VOLATILE_PRGENV='PGI GNU CRAYCLANG CRAY'; export PE_MPICH_VOLATILE_PRGENV
+PE_NETCDF_DEFAULT_FIXED_PRGENV='GNU CRAYCLANG PGI INTEL'; export PE_NETCDF_DEFAULT_FIXED_PRGENV
+PE_NETCDF_DEFAULT_REQUIRED_PRODUCTS=PE_HDF5; export PE_NETCDF_DEFAULT_REQUIRED_PRODUCTS
+PE_NETCDF_HDF5PARALLEL_CXX_PKGCONFIG_LIBS=netcdf-cxx4_parallel; export PE_NETCDF_HDF5PARALLEL_CXX_PKGCONFIG_LIBS
+PE_NETCDF_HDF5PARALLEL_DEFAULT_FIXED_PRGENV='GNU CRAYCLANG PGI INTEL'; export PE_NETCDF_HDF5PARALLEL_DEFAULT_FIXED_PRGENV
+PE_NETCDF_HDF5PARALLEL_DEFAULT_REQUIRED_PRODUCTS=PE_HDF5_PARALLEL; export PE_NETCDF_HDF5PARALLEL_DEFAULT_REQUIRED_PRODUCTS
+PE_NETCDF_HDF5PARALLEL_FIXED_PRGENV='GNU CRAYCLANG PGI INTEL'; export PE_NETCDF_HDF5PARALLEL_FIXED_PRGENV
+PE_NETCDF_HDF5PARALLEL_FORTRAN_PKGCONFIG_LIBS=netcdf-fortran_parallel; export PE_NETCDF_HDF5PARALLEL_FORTRAN_PKGCONFIG_LIBS
+PE_NETCDF_HDF5PARALLEL_PKGCONFIG_LIBS=netcdf_parallel; export PE_NETCDF_HDF5PARALLEL_PKGCONFIG_LIBS
+PE_NETCDF_HDF5PARALLEL_REQUIRED_PRODUCTS=PE_HDF5_PARALLEL; export PE_NETCDF_HDF5PARALLEL_REQUIRED_PRODUCTS
+PE_NETCDF_MODULE_NAME=cray-netcdf-hdf5parallel; export PE_NETCDF_MODULE_NAME
+PE_PAPI_DEFAULT_ACCELL_FAMILY_LIBS=''; export PE_PAPI_DEFAULT_ACCELL_FAMILY_LIBS
+PE_PAPI_DEFAULT_ACCEL_FAMILY_LIBS_nvidia=,-lcupti,-lcudart,-lcuda; export PE_PAPI_DEFAULT_ACCEL_FAMILY_LIBS_nvidia
+PE_PAPI_DEFAULT_ACCEL_LIBS=''; export PE_PAPI_DEFAULT_ACCEL_LIBS
+PE_PAPI_DEFAULT_ACCEL_LIBS_nvidia35=,-lcupti,-lcudart,-lcuda; export PE_PAPI_DEFAULT_ACCEL_LIBS_nvidia35
+PE_PAPI_DEFAULT_PKGCONFIG_VARIABLES='PE_PAPI_ACCEL_LIBS_@accelerator@ PE_PAPI_ACCEL_FAMILY_LIBS_@accelerator_family@'; export PE_PAPI_DEFAULT_PKGCONFIG_VARIABLES
+PE_PARALLEL_NETCDF_DEFAULT_FIXED_PRGENV='PGI INTEL CRAYCLANG GNU'; export PE_PARALLEL_NETCDF_DEFAULT_FIXED_PRGENV
+PE_PETSC_DEFAULT_GENCOMPILERS_CRAYCLANG_haswell=9.0; export PE_PETSC_DEFAULT_GENCOMPILERS_CRAYCLANG_haswell
+PE_PETSC_DEFAULT_GENCOMPILERS_CRAYCLANG_sandybridge=9.0; export PE_PETSC_DEFAULT_GENCOMPILERS_CRAYCLANG_sandybridge
+PE_PETSC_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_64=9.0; export PE_PETSC_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_64
+PE_PETSC_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_skylake=9.0; export PE_PETSC_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_skylake
+PE_PETSC_DEFAULT_GENCOMPILERS_GNU_haswell=8.2; export PE_PETSC_DEFAULT_GENCOMPILERS_GNU_haswell
+PE_PETSC_DEFAULT_GENCOMPILERS_GNU_sandybridge=8.2; export PE_PETSC_DEFAULT_GENCOMPILERS_GNU_sandybridge
+PE_PETSC_DEFAULT_GENCOMPILERS_GNU_x86_64=8.2; export PE_PETSC_DEFAULT_GENCOMPILERS_GNU_x86_64
+PE_PETSC_DEFAULT_GENCOMPILERS_GNU_x86_skylake=8.2; export PE_PETSC_DEFAULT_GENCOMPILERS_GNU_x86_skylake
+PE_PETSC_DEFAULT_GENCOMPILERS_INTEL_haswell=19.1; export PE_PETSC_DEFAULT_GENCOMPILERS_INTEL_haswell
+PE_PETSC_DEFAULT_GENCOMPILERS_INTEL_sandybridge=19.1; export PE_PETSC_DEFAULT_GENCOMPILERS_INTEL_sandybridge
+PE_PETSC_DEFAULT_GENCOMPILERS_INTEL_x86_64=19.1; export PE_PETSC_DEFAULT_GENCOMPILERS_INTEL_x86_64
+PE_PETSC_DEFAULT_GENCOMPILERS_INTEL_x86_skylake=19.1; export PE_PETSC_DEFAULT_GENCOMPILERS_INTEL_x86_skylake
+PE_PETSC_DEFAULT_GENCOMPS_CRAYCLANG_haswell=90; export PE_PETSC_DEFAULT_GENCOMPS_CRAYCLANG_haswell
+PE_PETSC_DEFAULT_GENCOMPS_CRAYCLANG_sandybridge=90; export PE_PETSC_DEFAULT_GENCOMPS_CRAYCLANG_sandybridge
+PE_PETSC_DEFAULT_GENCOMPS_CRAYCLANG_x86_64=90; export PE_PETSC_DEFAULT_GENCOMPS_CRAYCLANG_x86_64
+PE_PETSC_DEFAULT_GENCOMPS_CRAYCLANG_x86_skylake=90; export PE_PETSC_DEFAULT_GENCOMPS_CRAYCLANG_x86_skylake
+PE_PETSC_DEFAULT_GENCOMPS_GNU_haswell=82; export PE_PETSC_DEFAULT_GENCOMPS_GNU_haswell
+PE_PETSC_DEFAULT_GENCOMPS_GNU_sandybridge=82; export PE_PETSC_DEFAULT_GENCOMPS_GNU_sandybridge
+PE_PETSC_DEFAULT_GENCOMPS_GNU_x86_64=82; export PE_PETSC_DEFAULT_GENCOMPS_GNU_x86_64
+PE_PETSC_DEFAULT_GENCOMPS_GNU_x86_skylake=82; export PE_PETSC_DEFAULT_GENCOMPS_GNU_x86_skylake
+PE_PETSC_DEFAULT_GENCOMPS_INTEL_haswell=191; export PE_PETSC_DEFAULT_GENCOMPS_INTEL_haswell
+PE_PETSC_DEFAULT_GENCOMPS_INTEL_sandybridge=191; export PE_PETSC_DEFAULT_GENCOMPS_INTEL_sandybridge
+PE_PETSC_DEFAULT_GENCOMPS_INTEL_x86_64=191; export PE_PETSC_DEFAULT_GENCOMPS_INTEL_x86_64
+PE_PETSC_DEFAULT_GENCOMPS_INTEL_x86_skylake=191; export PE_PETSC_DEFAULT_GENCOMPS_INTEL_x86_skylake
+PE_PETSC_DEFAULT_REQUIRED_PRODUCTS=PE_MPICH:PE_LIBSCI:PE_HDF5_PARALLEL:PE_TPSL; export PE_PETSC_DEFAULT_REQUIRED_PRODUCTS
+PE_PETSC_DEFAULT_VOLATILE_PKGCONFIG_PATH=/opt/cray/pe/petsc/3.13.3.0/complex/@PRGENV@/@PE_PETSC_DEFAULT_GENCOMPS@/@PE_PETSC_DEFAULT_TARGET@/lib/pkgconfig; export PE_PETSC_DEFAULT_VOLATILE_PKGCONFIG_PATH
+PE_PETSC_DEFAULT_VOLATILE_PRGENV='CRAYCLANG CRAYCLANG64 GNU GNU64 INTEL INTEL64'; export PE_PETSC_DEFAULT_VOLATILE_PRGENV
+PE_PGI_DEFAULT_FIXED_PKGCONFIG_PATH=/opt/cray/pe/parallel-netcdf/1.12.1.0/PGI/20.1/lib/pkgconfig:/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/PGI/20.1/lib/pkgconfig:/opt/cray/pe/netcdf/4.7.4.0/PGI/20.1/lib/pkgconfig:/opt/cray/pe/hdf5-parallel/1.12.0.0/PGI/20.1/lib/pkgconfig:/opt/cray/pe/hdf5/1.12.0.0/PGI/20.1/lib/pkgconfig:/opt/cray/pe/ga/5.3.0.10/PGI/17.10/lib/pkgconfig; export PE_PGI_DEFAULT_FIXED_PKGCONFIG_PATH
+PE_PGI_FIXED_PKGCONFIG_PATH=/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/PGI/20.1/lib/pkgconfig; export PE_PGI_FIXED_PKGCONFIG_PATH
+PE_PKGCONFIG_DEFAULT_PRODUCTS=PE_TRILINOS:PE_TPSL_64:PE_TPSL:PE_PETSC:PE_PARALLEL_NETCDF:PE_NETCDF_HDF5PARALLEL:PE_NETCDF:PE_MPICH:PE_LIBSCI_ACC:PE_LIBSCI:PE_HDF5_PARALLEL:PE_HDF5:PE_GA:PE_FFTW2:PE_FFTW; export PE_PKGCONFIG_DEFAULT_PRODUCTS
+PE_PKGCONFIG_LIBS=netcdf_parallel:mpich:cray-cudatoolkit:libAtpSigHandler:cray-rca; export PE_PKGCONFIG_LIBS
+PE_PKGCONFIG_PRODUCTS=PE_NETCDF_HDF5PARALLEL:PE_MPICH; export PE_PKGCONFIG_PRODUCTS
+PE_PKGCONFIG_PRODUCTS_DEFAULT=PE_PAPI; export PE_PKGCONFIG_PRODUCTS_DEFAULT
+PE_PKGCONFIG__PRODUCTS=PE_ATP; export PE_PKGCONFIG__PRODUCTS
+PE_PKG_CONFIG_PATH=/opt/cray/pe/valgrind4hpc/2.7.2/lib/pkgconfig:/opt/cray/pe/cti/2.7.4/lib/pkgconfig:/opt/cray/pe/atp/3.7.4/lib/pkgconfig; export PE_PKG_CONFIG_PATH
+PE_PRODUCT_LIST=CRAYPE_HASWELL:CRAY_RCA:CRAY_ALPS:DVS:CRAY_XPMEM:CRAY_DMAPP:CRAY_PMI:CRAY_UGNI:CRAY_UDREG:CRAYPE:PGI:PERFTOOLS:CRAYPAT; export PE_PRODUCT_LIST
+PE_SMA_DEFAULT_COMPFLAG=''; export PE_SMA_DEFAULT_COMPFLAG
+PE_SMA_DEFAULT_COMPFLAG_GNU=-fcray-pointer; export PE_SMA_DEFAULT_COMPFLAG_GNU
+PE_SMA_DEFAULT_DIR_CRAYCLANG_DEFAULT64=64; export PE_SMA_DEFAULT_DIR_CRAYCLANG_DEFAULT64
+PE_SMA_DEFAULT_DIR_PGI_DEFAULT64=64; export PE_SMA_DEFAULT_DIR_PGI_DEFAULT64
+PE_SMA_DEFAULT_PKGCONFIG_VARIABLES=PE_SMA_COMPFLAG_@prgenv@; export PE_SMA_DEFAULT_PKGCONFIG_VARIABLES
+PE_SMA_DEFAULT_VOLATILE_PKGCONFIG_PATH=/opt/cray/pe/mpt/7.7.15/gni/sma@PE_SMA_DEFAULT_DIR_DEFAULT64@/lib64/pkgconfig; export PE_SMA_DEFAULT_VOLATILE_PKGCONFIG_PATH
+PE_TPSL_64_DEFAULT_GENCOMPILERS_CRAYCLANG_haswell=9.0; export PE_TPSL_64_DEFAULT_GENCOMPILERS_CRAYCLANG_haswell
+PE_TPSL_64_DEFAULT_GENCOMPILERS_CRAYCLANG_sandybridge=9.0; export PE_TPSL_64_DEFAULT_GENCOMPILERS_CRAYCLANG_sandybridge
+PE_TPSL_64_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_64=9.0; export PE_TPSL_64_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_64
+PE_TPSL_64_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_skylake=9.0; export PE_TPSL_64_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_skylake
+PE_TPSL_64_DEFAULT_GENCOMPILERS_GNU_haswell=8.2; export PE_TPSL_64_DEFAULT_GENCOMPILERS_GNU_haswell
+PE_TPSL_64_DEFAULT_GENCOMPILERS_GNU_sandybridge=8.2; export PE_TPSL_64_DEFAULT_GENCOMPILERS_GNU_sandybridge
+PE_TPSL_64_DEFAULT_GENCOMPILERS_GNU_x86_64=8.2; export PE_TPSL_64_DEFAULT_GENCOMPILERS_GNU_x86_64
+PE_TPSL_64_DEFAULT_GENCOMPILERS_GNU_x86_skylake=8.2; export PE_TPSL_64_DEFAULT_GENCOMPILERS_GNU_x86_skylake
+PE_TPSL_64_DEFAULT_GENCOMPILERS_INTEL_haswell=19.0; export PE_TPSL_64_DEFAULT_GENCOMPILERS_INTEL_haswell
+PE_TPSL_64_DEFAULT_GENCOMPILERS_INTEL_sandybridge=19.0; export PE_TPSL_64_DEFAULT_GENCOMPILERS_INTEL_sandybridge
+PE_TPSL_64_DEFAULT_GENCOMPILERS_INTEL_x86_64=19.0; export PE_TPSL_64_DEFAULT_GENCOMPILERS_INTEL_x86_64
+PE_TPSL_64_DEFAULT_GENCOMPILERS_INTEL_x86_skylake=19.0; export PE_TPSL_64_DEFAULT_GENCOMPILERS_INTEL_x86_skylake
+PE_TPSL_64_DEFAULT_GENCOMPS_CRAYCLANG_haswell=90; export PE_TPSL_64_DEFAULT_GENCOMPS_CRAYCLANG_haswell
+PE_TPSL_64_DEFAULT_GENCOMPS_CRAYCLANG_sandybridge=90; export PE_TPSL_64_DEFAULT_GENCOMPS_CRAYCLANG_sandybridge
+PE_TPSL_64_DEFAULT_GENCOMPS_CRAYCLANG_x86_64=90; export PE_TPSL_64_DEFAULT_GENCOMPS_CRAYCLANG_x86_64
+PE_TPSL_64_DEFAULT_GENCOMPS_CRAYCLANG_x86_skylake=90; export PE_TPSL_64_DEFAULT_GENCOMPS_CRAYCLANG_x86_skylake
+PE_TPSL_64_DEFAULT_GENCOMPS_GNU_haswell=82; export PE_TPSL_64_DEFAULT_GENCOMPS_GNU_haswell
+PE_TPSL_64_DEFAULT_GENCOMPS_GNU_sandybridge=82; export PE_TPSL_64_DEFAULT_GENCOMPS_GNU_sandybridge
+PE_TPSL_64_DEFAULT_GENCOMPS_GNU_x86_64=82; export PE_TPSL_64_DEFAULT_GENCOMPS_GNU_x86_64
+PE_TPSL_64_DEFAULT_GENCOMPS_GNU_x86_skylake=82; export PE_TPSL_64_DEFAULT_GENCOMPS_GNU_x86_skylake
+PE_TPSL_64_DEFAULT_GENCOMPS_INTEL_haswell=190; export PE_TPSL_64_DEFAULT_GENCOMPS_INTEL_haswell
+PE_TPSL_64_DEFAULT_GENCOMPS_INTEL_sandybridge=190; export PE_TPSL_64_DEFAULT_GENCOMPS_INTEL_sandybridge
+PE_TPSL_64_DEFAULT_GENCOMPS_INTEL_x86_64=190; export PE_TPSL_64_DEFAULT_GENCOMPS_INTEL_x86_64
+PE_TPSL_64_DEFAULT_GENCOMPS_INTEL_x86_skylake=190; export PE_TPSL_64_DEFAULT_GENCOMPS_INTEL_x86_skylake
+PE_TPSL_64_DEFAULT_REQUIRED_PRODUCTS=PE_MPICH:PE_LIBSCI; export PE_TPSL_64_DEFAULT_REQUIRED_PRODUCTS
+PE_TPSL_64_DEFAULT_VOLATILE_PKGCONFIG_PATH=/opt/cray/pe/tpsl/20.03.2/@PRGENV@64/@PE_TPSL_64_DEFAULT_GENCOMPS@/@PE_TPSL_64_DEFAULT_TARGET@/lib/pkgconfig; export PE_TPSL_64_DEFAULT_VOLATILE_PKGCONFIG_PATH
+PE_TPSL_64_DEFAULT_VOLATILE_PRGENV='CRAYCLANG CRAYCLANG64 GNU GNU64 INTEL INTEL64'; export PE_TPSL_64_DEFAULT_VOLATILE_PRGENV
+PE_TPSL_DEFAULT_GENCOMPILERS_CRAYCLANG_haswell=9.0; export PE_TPSL_DEFAULT_GENCOMPILERS_CRAYCLANG_haswell
+PE_TPSL_DEFAULT_GENCOMPILERS_CRAYCLANG_sandybridge=9.0; export PE_TPSL_DEFAULT_GENCOMPILERS_CRAYCLANG_sandybridge
+PE_TPSL_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_64=9.0; export PE_TPSL_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_64
+PE_TPSL_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_skylake=9.0; export PE_TPSL_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_skylake
+PE_TPSL_DEFAULT_GENCOMPILERS_GNU_haswell=8.2; export PE_TPSL_DEFAULT_GENCOMPILERS_GNU_haswell
+PE_TPSL_DEFAULT_GENCOMPILERS_GNU_sandybridge=8.2; export PE_TPSL_DEFAULT_GENCOMPILERS_GNU_sandybridge
+PE_TPSL_DEFAULT_GENCOMPILERS_GNU_x86_64=8.2; export PE_TPSL_DEFAULT_GENCOMPILERS_GNU_x86_64
+PE_TPSL_DEFAULT_GENCOMPILERS_GNU_x86_skylake=8.2; export PE_TPSL_DEFAULT_GENCOMPILERS_GNU_x86_skylake
+PE_TPSL_DEFAULT_GENCOMPILERS_INTEL_haswell=19.0; export PE_TPSL_DEFAULT_GENCOMPILERS_INTEL_haswell
+PE_TPSL_DEFAULT_GENCOMPILERS_INTEL_sandybridge=19.0; export PE_TPSL_DEFAULT_GENCOMPILERS_INTEL_sandybridge
+PE_TPSL_DEFAULT_GENCOMPILERS_INTEL_x86_64=19.0; export PE_TPSL_DEFAULT_GENCOMPILERS_INTEL_x86_64
+PE_TPSL_DEFAULT_GENCOMPILERS_INTEL_x86_skylake=19.0; export PE_TPSL_DEFAULT_GENCOMPILERS_INTEL_x86_skylake
+PE_TPSL_DEFAULT_GENCOMPS_CRAYCLANG_haswell=90; export PE_TPSL_DEFAULT_GENCOMPS_CRAYCLANG_haswell
+PE_TPSL_DEFAULT_GENCOMPS_CRAYCLANG_sandybridge=90; export PE_TPSL_DEFAULT_GENCOMPS_CRAYCLANG_sandybridge
+PE_TPSL_DEFAULT_GENCOMPS_CRAYCLANG_x86_64=90; export PE_TPSL_DEFAULT_GENCOMPS_CRAYCLANG_x86_64
+PE_TPSL_DEFAULT_GENCOMPS_CRAYCLANG_x86_skylake=90; export PE_TPSL_DEFAULT_GENCOMPS_CRAYCLANG_x86_skylake
+PE_TPSL_DEFAULT_GENCOMPS_GNU_haswell=82; export PE_TPSL_DEFAULT_GENCOMPS_GNU_haswell
+PE_TPSL_DEFAULT_GENCOMPS_GNU_sandybridge=82; export PE_TPSL_DEFAULT_GENCOMPS_GNU_sandybridge
+PE_TPSL_DEFAULT_GENCOMPS_GNU_x86_64=82; export PE_TPSL_DEFAULT_GENCOMPS_GNU_x86_64
+PE_TPSL_DEFAULT_GENCOMPS_GNU_x86_skylake=82; export PE_TPSL_DEFAULT_GENCOMPS_GNU_x86_skylake
+PE_TPSL_DEFAULT_GENCOMPS_INTEL_haswell=190; export PE_TPSL_DEFAULT_GENCOMPS_INTEL_haswell
+PE_TPSL_DEFAULT_GENCOMPS_INTEL_sandybridge=190; export PE_TPSL_DEFAULT_GENCOMPS_INTEL_sandybridge
+PE_TPSL_DEFAULT_GENCOMPS_INTEL_x86_64=190; export PE_TPSL_DEFAULT_GENCOMPS_INTEL_x86_64
+PE_TPSL_DEFAULT_GENCOMPS_INTEL_x86_skylake=190; export PE_TPSL_DEFAULT_GENCOMPS_INTEL_x86_skylake
+PE_TPSL_DEFAULT_REQUIRED_PRODUCTS=PE_MPICH:PE_LIBSCI; export PE_TPSL_DEFAULT_REQUIRED_PRODUCTS
+PE_TPSL_DEFAULT_VOLATILE_PKGCONFIG_PATH=/opt/cray/pe/tpsl/20.03.2/@PRGENV@/@PE_TPSL_DEFAULT_GENCOMPS@/@PE_TPSL_DEFAULT_TARGET@/lib/pkgconfig; export PE_TPSL_DEFAULT_VOLATILE_PKGCONFIG_PATH
+PE_TPSL_DEFAULT_VOLATILE_PRGENV='CRAYCLANG CRAYCLANG64 GNU GNU64 INTEL INTEL64'; export PE_TPSL_DEFAULT_VOLATILE_PRGENV
+PE_TRILINOS_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_64=9.0; export PE_TRILINOS_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_64
+PE_TRILINOS_DEFAULT_GENCOMPILERS_GNU_x86_64=8.2; export PE_TRILINOS_DEFAULT_GENCOMPILERS_GNU_x86_64
+PE_TRILINOS_DEFAULT_GENCOMPILERS_INTEL_x86_64=19.1; export PE_TRILINOS_DEFAULT_GENCOMPILERS_INTEL_x86_64
+PE_TRILINOS_DEFAULT_GENCOMPS_CRAYCLANG_x86_64=90; export PE_TRILINOS_DEFAULT_GENCOMPS_CRAYCLANG_x86_64
+PE_TRILINOS_DEFAULT_GENCOMPS_GNU_x86_64=82; export PE_TRILINOS_DEFAULT_GENCOMPS_GNU_x86_64
+PE_TRILINOS_DEFAULT_GENCOMPS_INTEL_x86_64=191; export PE_TRILINOS_DEFAULT_GENCOMPS_INTEL_x86_64
+PE_TRILINOS_DEFAULT_REQUIRED_PRODUCTS=PE_MPICH:PE_HDF5_PARALLEL:PE_NETCDF_HDF5PARALLEL:PE_LIBSCI:PE_TPSL; export PE_TRILINOS_DEFAULT_REQUIRED_PRODUCTS
+PE_TRILINOS_DEFAULT_VOLATILE_PKGCONFIG_PATH=/opt/cray/pe/trilinos/12.18.1.1/@PRGENV@/@PE_TRILINOS_DEFAULT_GENCOMPS@/@PE_TRILINOS_DEFAULT_TARGET@/lib/pkgconfig; export PE_TRILINOS_DEFAULT_VOLATILE_PKGCONFIG_PATH
+PE_TRILINOS_DEFAULT_VOLATILE_PRGENV='CRAYCLANG GNU INTEL'; export PE_TRILINOS_DEFAULT_VOLATILE_PRGENV
+PGI=/opt/pgi/20.1.1; export PGI
+PGI_PATH=/opt/pgi/20.1.1; export PGI_PATH
+PGI_VERSION=20.1; export PGI_VERSION
+PGI_VERS_STR=20.1.1; export PGI_VERS_STR
+PGROUPD_LICENSE_FILE=/opt/pgi/license.dat; export PGROUPD_LICENSE_FILE
+PKGCONFIG_ENABLED=1; export PKGCONFIG_ENABLED
+PKG_CONFIG_PATH=/opt/cray/pe/mpt/7.7.15/gni/mpich-pgi/20.1/lib/pkgconfig:/opt/nvidia/cudatoolkit10.2/10.2.89_3.28-7.0.2.1_2.17__g52c0314/lib64/pkgconfig:/apps/daint/UES/jenkins/6.0.UP07/gpu/easybuild/software/libxml2/2.9.7-CrayGNU-18.08/lib/pkgconfig:/opt/nvidia/cudatoolkit10.2/10.2.89_3.28-7.0.2.1_2.17__g52c0314/lib64/pkgconfig:/opt/cray/rca/2.2.20-7.0.2.1_2.27__g8e3fb5b.ari/lib64/pkgconfig:/opt/cray/alps/6.6.59-7.0.2.1_3.14__g872a8d62.ari/lib64/pkgconfig:/opt/cray/xpmem/2.2.20-7.0.2.1_2.21__g87eb960.ari/lib64/pkgconfig:/opt/cray/gni-headers/5.0.12.0-7.0.2.1_2.5__g3b1768f.ari/lib64/pkgconfig:/opt/cray/dmapp/7.1.1-7.0.2.1_2.26__g38cf134.ari/lib64/pkgconfig:/opt/cray/pe/pmi/5.0.16/lib64/pkgconfig:/opt/cray/ugni/6.0.14.0-7.0.2.1_3.21__ge78e5b0.ari/lib64/pkgconfig:/opt/cray/udreg/2.3.2-7.0.2.1_2.21__g8175d3d.ari/lib64/pkgconfig:/opt/cray/pe/craype/2.7.0/pkg-config:/opt/cray/pe/iobuf/2.0.10/lib/pkgconfig:/opt/cray/pe/fftw/2.1.5.9/lib/pkgconfig:/opt/cray/cge/3.2.1463_r03f4dfb_fe3.3.0_2019062614/lib/pkgconfig:/opt/cray/pe/atp/3.7.4/lib/pkgconfig:/usr/lib64/pkgconfig:/usr/local/lib64/pkgconfig; export PKG_CONFIG_PATH
+PKG_CONFIG_PATH_DEFAULT=/opt/cray/pe/papi/6.0.0.2/lib64/pkgconfig; export PKG_CONFIG_PATH_DEFAULT
+PRGENVMODULES=PrgEnv-cray:PrgEnv-gnu:PrgEnv-intel:PrgEnv-pgi; export PRGENVMODULES
+PROFILEREAD=true; export PROFILEREAD
+PROJECT=/project/s83/egermann; export PROJECT
+#PWD=/scratch/snx3000/egermann/spack-mch; export PWD
+PYTHONPATH=/opt/python/3.8.2.1; export PYTHONPATH
+PYTHON_PATH=/opt/python/3.8.2.1; export PYTHON_PATH
+QT_SYSTEM_DIR=/usr/share/desktop-data; export QT_SYSTEM_DIR
+RCLOCAL_PRGENV=true; export RCLOCAL_PRGENV
+SCRATCH=/scratch/snx3000/egermann; export SCRATCH
+SDK_HOME=/usr/lib64/jvm/java; export SDK_HOME
+SHELL=/usr/local/bin/bash; export SHELL
+SHLVL=100; export SHLVL
+SHMEM_ABORT_ON_ERROR=1; export SHMEM_ABORT_ON_ERROR
+SINFO_FORMAT='%9P %5a %8s %.10l %.6c %.6z %.7D %10T %N'; export SINFO_FORMAT
+SLURM_CSCS=yes; export SLURM_CSCS
+SLURM_LOG_ACTIONS=yes; export SLURM_LOG_ACTIONS
+SLURM_TIME_FORMAT=relative; export SLURM_TIME_FORMAT
+SPACK_CC=cc; export SPACK_CC
+SPACK_CC_RPATH_ARG=-Wl,-rpath,; export SPACK_CC_RPATH_ARG
+SPACK_COMPILER_IMPLICIT_RPATHS=/opt/pgi/20.1.1/linux86-64-llvm/20.1/lib; export SPACK_COMPILER_IMPLICIT_RPATHS
+SPACK_COMPILER_SPEC=pgi@20.1.1; export SPACK_COMPILER_SPEC
+SPACK_CXX=CC; export SPACK_CXX
+SPACK_CXX_RPATH_ARG=-Wl,-rpath,; export SPACK_CXX_RPATH_ARG
+SPACK_DEBUG_LOG_DIR=/scratch/snx3000/egermann/spack-mch; export SPACK_DEBUG_LOG_DIR
+SPACK_DEBUG_LOG_ID=icon-hk2ioes; export SPACK_DEBUG_LOG_ID
+SPACK_DTAGS_TO_ADD=--disable-new-dtags; export SPACK_DTAGS_TO_ADD
+SPACK_DTAGS_TO_STRIP=--enable-new-dtags; export SPACK_DTAGS_TO_STRIP
+SPACK_ENV_PATH=/project/g110/spack/user/daint/spack/lib/spack/env:/project/g110/spack/user/daint/spack/lib/spack/env/case-insensitive:/project/g110/spack/user/daint/spack/lib/spack/env/pgi; export SPACK_ENV_PATH
+SPACK_F77=ftn; export SPACK_F77
+SPACK_F77_RPATH_ARG=-Wl,-rpath,; export SPACK_F77_RPATH_ARG
+SPACK_FC=ftn; export SPACK_FC
+SPACK_FC_RPATH_ARG=-Wl,-rpath,; export SPACK_FC_RPATH_ARG
+SPACK_INCLUDE_DIRS=/project/g110/spack-install/daint/jasper/1.900.1/gcc/w5ok3vv7n7xm5eoyxdrhcdwykhr5rxos/include:/apps/daint/UES/jenkins/6.0.UP07/gpu/easybuild/software/libxml2/2.9.7-CrayGNU-18.08/include/libxml2:/opt/nvidia/cudatoolkit10.2/10.2.89_3.28-7.0.2.1_2.17__g52c0314/include:/project/g110/spack-install/daint/serialbox/2.6.0/pgi/io5yavo6fghenhuamq3deyxnpv5pavvk/include:/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/include:/project/g110/spack-install/daint/boost/1.67.0/gcc/q6yeln2uk6a6uixwnqt63rrqf7zjefm2/include:/opt/cray/pe/mpt/7.7.15/gni/mpich-pgi/20.1/include; export SPACK_INCLUDE_DIRS
+SPACK_LD_LIBRARY_PATH=/opt/cray/pe/gcc-libs:/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/lib64:/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/lib:/opt/cray/pe/papi/6.0.0.2/lib64:/opt/cray/job/2.2.4-7.0.2.1_2.24__g36b56f4.ari/lib64; export SPACK_LD_LIBRARY_PATH
+SPACK_LINKER_ARG=-Wl,; export SPACK_LINKER_ARG
+SPACK_LINK_DIRS=/project/g110/spack-install/daint/jasper/1.900.1/gcc/w5ok3vv7n7xm5eoyxdrhcdwykhr5rxos/lib:/apps/daint/UES/jenkins/6.0.UP07/gpu/easybuild/software/libxml2/2.9.7-CrayGNU-18.08/lib:/opt/nvidia/cudatoolkit10.2/10.2.89_3.28-7.0.2.1_2.17__g52c0314/lib64:/project/g110/spack-install/daint/serialbox/2.6.0/pgi/io5yavo6fghenhuamq3deyxnpv5pavvk/lib:/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/crayclang/9.0/lib:/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/gnu/8.2/lib:/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/intel/19.1/lib:/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/pgi/20.1/lib:/project/g110/spack-install/daint/boost/1.67.0/gcc/q6yeln2uk6a6uixwnqt63rrqf7zjefm2/lib:/opt/cray/pe/mpt/7.7.15/gni/mpich-pgi/20.1/lib; export SPACK_LINK_DIRS
+SPACK_NEW_LD_LIBRARY_PATH=/opt/pgi/20.1.1/linux86-64/20.1/lib:/opt/cray/pe/papi/6.0.0.2/lib64:/opt/cray/job/2.2.4-7.0.2.1_2.24__g36b56f4.ari/lib64; export SPACK_NEW_LD_LIBRARY_PATH
+SPACK_ROOT=/project/g110/spack/user/daint/spack; export SPACK_ROOT
+SPACK_RPATH_DIRS=/scratch/snx3000/egermann/spack-install/daint/icon/master/pgi/hk2ioeskuxvhaemgm3ohlktxfn6c6j77/lib:/scratch/snx3000/egermann/spack-install/daint/icon/master/pgi/hk2ioeskuxvhaemgm3ohlktxfn6c6j77/lib64:/project/g110/spack-install/daint/jasper/1.900.1/gcc/w5ok3vv7n7xm5eoyxdrhcdwykhr5rxos/lib:/apps/daint/UES/jenkins/6.0.UP07/gpu/easybuild/software/libxml2/2.9.7-CrayGNU-18.08/lib:/opt/nvidia/cudatoolkit10.2/10.2.89_3.28-7.0.2.1_2.17__g52c0314/lib64:/project/g110/spack-install/daint/serialbox/2.6.0/pgi/io5yavo6fghenhuamq3deyxnpv5pavvk/lib:/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/crayclang/9.0/lib:/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/gnu/8.2/lib:/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/intel/19.1/lib:/opt/cray/pe/netcdf-hdf5parallel/4.7.4.0/pgi/20.1/lib:/project/g110/spack-install/daint/boost/1.67.0/gcc/q6yeln2uk6a6uixwnqt63rrqf7zjefm2/lib:/opt/cray/pe/mpt/7.7.15/gni/mpich-pgi/20.1/lib; export SPACK_RPATH_DIRS
+SPACK_SHORT_SPEC='icon@master%pgi@20.1.1+claw~mpi-checks+rte-rrtmgp cuda_arch=60 host=daint icon_target=gpu arch=cray-cnl7-haswell/hk2ioes'; export SPACK_SHORT_SPEC
+SPACK_SYSTEM_DIRS=/bin:/usr/bin:/usr/local/bin:/bin64:/usr/bin64:/usr/local/bin64:/include:/usr/include:/usr/local/include:/lib:/usr/lib:/usr/local/lib:/lib64:/usr/lib64:/usr/local/lib64:/:/usr:/usr/local; export SPACK_SYSTEM_DIRS
+SPACK_TARGET_ARGS=''; export SPACK_TARGET_ARGS
+SQUEUE_FORMAT='%.8i %.8u %.7a %.14j %.3t %9r %19S %.10M %.10L %.5D %.4C'; export SQUEUE_FORMAT
+SQUEUE_SORT=-t,e,S; export SQUEUE_SORT
+SSH_AUTH_SOCK=/tmp/ssh-tc7upOvivF/agent.10189; export SSH_AUTH_SOCK
+SSH_CLIENT='148.187.1.6 44808 22'; export SSH_CLIENT
+SSH_CONNECTION='148.187.1.6 44808 148.187.26.67 22'; export SSH_CONNECTION
+SSH_SENDS_LOCALE=yes; export SSH_SENDS_LOCALE
+SSH_TTY=/dev/pts/47; export SSH_TTY
+TARGETMODULES=craype-abudhabi:craype-abudhabi-cu:craype-accel-host:craype-accel-nvidia20:craype-accel-nvidia30:craype-accel-nvidia35:craype-barcelona:craype-broadwell:craype-haswell:craype-hugepages128K:craype-hugepages128M:craype-hugepages16M:craype-hugepages256M:craype-hugepages2M:craype-hugepages32M:craype-hugepages4M:craype-hugepages512K:craype-hugepages512M:craype-hugepages64M:craype-hugepages8M:craype-intel-knc:craype-interlagos:craype-interlagos-cu:craype-istanbul:craype-ivybridge:craype-mc12:craype-mc8:craype-mic-knl:craype-network-aries:craype-network-gemini:craype-network-infiniband:craype-network-none:craype-network-seastar:craype-sandybridge:craype-shanghai:craype-target-compute_node:craype-target-local_host:craype-target-native:craype-xeon:xtpe-barcelona:xtpe-interlagos:xtpe-interlagos-cu:xtpe-istanbul:xtpe-mc12:xtpe-mc8:xtpe-network-gemini:xtpe-network-seastar:xtpe-shanghai:xtpe-target-native:xtpe-xeon; export TARGETMODULES
+TERM=xterm-256color; export TERM
+TMOUT=259200; export TMOUT
+TOOLMODULES=apprentice:apprentice2:atp:chapel:cray-lgdb:craypat:craypkg-gen:cray-snplauncher:ddt:gdb:iobuf:papi:perftools:perftools-lite:stat:totalview:xt-craypat:xt-lgdb:xt-papi:xt-totalview; export TOOLMODULES
+TZ=Europe/Zurich; export TZ
+USER=egermann; export USER
+USERMODULES=acml:alps:apprentice:apprentice2:atp:blcr:cce:chapel:cray-ccdb:cray-fftw:cray-ga:cray-hdf5:cray-hdf5-parallel:cray-lgdb:cray-libsci:cray-libsci_acc:cray-mpich:cray-mpich2:cray-mpich-compat:cray-netcdf:cray-netcdf-hdf5parallel:cray-parallel-netcdf:craypat:craype:cray-petsc:cray-petsc-complex:craypkg-gen:cray-shmem:cray-snplauncher:cray-tpsl:cray-trilinos:cudatoolkit:ddt:fftw:ga:gcc:hdf5:hdf5-parallel:intel:iobuf:java:lgdb:libfast:libsci_acc:mpich1:netcdf:netcdf-hdf5parallel:netcdf-nofsync:netcdf-nofsync-hdf5parallel:ntk:onesided:papi:parallel-netcdf:pathscale:perftools:perftools-lite:petsc:petsc-complex:pgi:pmi:PrgEnv-cray:PrgEnv-gnu:PrgEnv-intel:PrgEnv-pathscale:PrgEnv-pgi:stat:totalview:tpsl:trilinos:xt-asyncpe:xt-craypat:xt-lgdb:xt-libsci:xt-mpich2:xt-mpt:xt-papi:xt-shmem:xt-totalview; export USERMODULES
+VISUAL=vim; export VISUAL
+WINDOWMANAGER=xterm; export WINDOWMANAGER
+XALT_BINARYDATA_SIZE=5000; export XALT_BINARYDATA_SIZE
+XALT_DIR=/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10; export XALT_DIR
+XALT_ETC_DIR=/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/etc; export XALT_ETC_DIR
+XALT_EXECUTABLE_TRACKING=yes; export XALT_EXECUTABLE_TRACKING
+XALT_GPU_TRACKING=no; export XALT_GPU_TRACKING
+XALT_SCALAR_SAMPLING=no; export XALT_SCALAR_SAMPLING
+XALT_TRANSMISSION_STYLE=curl; export XALT_TRANSMISSION_STYLE
+XDG_CONFIG_DIRS=/etc/xdg; export XDG_CONFIG_DIRS
+XDG_DATA_DIRS=/usr/share; export XDG_DATA_DIRS
+XDG_RUNTIME_DIR=/run/user/26083; export XDG_RUNTIME_DIR
+XDG_SESSION_ID=686100; export XDG_SESSION_ID
+XKEYSYMDB=/usr/X11R6/lib/X11/XKeysymDB; export XKEYSYMDB
+XNLSPATH=/usr/share/X11/nls; export XNLSPATH
+XTPE_LINK_TYPE=dynamic; export XTPE_LINK_TYPE
+XTPE_NETWORK_TARGET=aries; export XTPE_NETWORK_TARGET
+_=/opt/python/3.8.2.1/bin/python3; export _
+_LMFILES_=/opt/cray/pe/modulefiles/modules/3.2.11.4:/opt/cray/modulefiles/cge/3.2.1463_r03f4dfb_fe3.3.0_2019062614:/opt/modulefiles/slurm/20.02.2-1:/apps/daint/UES/easybuild/modulefiles/xalt/2.8.10:/opt/modulefiles/cray-python/3.8.2.1:/opt/cray/pe/craype/2.7.0/modulefiles/craype-network-aries:/opt/cray/pe/modulefiles/craype/2.7.0:/opt/cray/ari/modulefiles/udreg/2.3.2-7.0.2.1_2.21__g8175d3d.ari:/opt/cray/ari/modulefiles/ugni/6.0.14.0-7.0.2.1_3.21__ge78e5b0.ari:/opt/cray/pe/modulefiles/pmi/5.0.16:/opt/cray/ari/modulefiles/dmapp/7.1.1-7.0.2.1_2.26__g38cf134.ari:/opt/cray/ari/modulefiles/gni-headers/5.0.12.0-7.0.2.1_2.5__g3b1768f.ari:/opt/cray/ari/modulefiles/xpmem/2.2.20-7.0.2.1_2.21__g87eb960.ari:/opt/cray/ari/modulefiles/job/2.2.4-7.0.2.1_2.24__g36b56f4.ari:/opt/cray/ari/modulefiles/dvs/2.12_2.2.165-7.0.2.1_4.4__g22f4fff6:/opt/cray/ari/modulefiles/alps/6.6.59-7.0.2.1_3.14__g872a8d62.ari:/opt/cray/ari/modulefiles/rca/2.2.20-7.0.2.1_2.27__g8e3fb5b.ari:/opt/cray/pe/modulefiles/atp/3.7.4:/opt/cray/pe/modulefiles/perftools-base/20.08.0:/opt/cray/pe/modulefiles/PrgEnv-pgi/6.0.8:/opt/modulefiles/pgi/20.1.1:/opt/cray/pe/craype/2.7.0/modulefiles/craype-haswell:/opt/cray/modulefiles/cudatoolkit/10.2.89_3.28-7.0.2.1_2.17__g52c0314:/opt/cray/pe/modulefiles/cray-mpich/7.7.15:/opt/cray/pe/modulefiles/cray-netcdf-hdf5parallel/4.7.4.0; export _LMFILES_
+craype_already_loaded=0; export craype_already_loaded
+pgi_already_loaded=0; export pgi_already_loaded
