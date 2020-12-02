@@ -112,6 +112,8 @@ packages:
             hdf5@1.12.0.0%pgi+mpi+hl+fortran:   cray-hdf5-parallel/1.12.0.0
     hwloc:
         variants: +cuda
+    icon:
+        variants: cuda_arch=60
     intel-mkl:
         buildable: false
         paths:
