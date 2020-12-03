@@ -236,7 +236,7 @@ class Icon(AutotoolsPackage):
                 except:
                     raise InstallError('make runscripts failed')
             try:
-                subprocess.run(['sbatch', '-W', '--time=00:15:00', 'exp.' + self.spec.variants['test_name'].value + '.run'], stderr=subprocess.STDOUT, cwd=os.path.join(self.build_directory, 'run') , check=True)
+                subprocess.run(['sbatch', '-W', '--time=00:15:00', '-A', 'g110', 'exp.' + self.spec.variants['test_name'].value + '.run'], stderr=subprocess.STDOUT, cwd=os.path.join(self.build_directory, 'run') , check=True)
             except:
                 raise InstallError('Submitting test failed')
 
