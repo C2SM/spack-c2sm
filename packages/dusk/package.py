@@ -18,7 +18,7 @@ class Dusk(PythonPackage):
     
     extends('python@3.8.0:3.8.999')
 
-    depends_on('dawn4py', type='run')
+    depends_on('dawn4py', type=('build', 'run'))
     depends_on('py-setuptools', type='build')
 
     # will test that dusk is importable after the install
