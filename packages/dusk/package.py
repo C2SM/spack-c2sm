@@ -5,7 +5,7 @@
 
 #
 from spack import *
-import sys
+
 
 class Dusk(PythonPackage):
     """A minimal and lightweight front-end for dawn."""
@@ -15,7 +15,7 @@ class Dusk(PythonPackage):
     maintainers = ['BenWeber42']
 
     version('master', branch='master')
-    
+
     extends('python@3.8.0:3.8.999')
 
     depends_on('dawn4py', type=('build', 'run'))
