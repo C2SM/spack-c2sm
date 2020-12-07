@@ -29,7 +29,12 @@ def main():
     if not args.machine:
         print('Error: machine name required!')
         exit()
-      
+
+    if not 'tsa' in args.machine:
+        print('Removing cuda and openmpi mch packages.')
+        shutil.rmtree('./packages/openmpi')
+        shutil.rmtree('./packages/cuda')
+
     if args.idir:
         if not os.path.isdir(args.idir + '/spack'):
             print('Cloning spack instance to: ' + args.idir)
