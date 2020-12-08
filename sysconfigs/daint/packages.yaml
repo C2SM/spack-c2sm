@@ -273,16 +273,16 @@ packages:
   netcdf-fortran:
     buildable: false
     externals:
-    - spec: netcdf-fortran@4.7.4.0%gcc+mpi
+    - spec: netcdf-fortran@4.7.4.0%gcc
       modules:
       - cray-netcdf-hdf5parallel/4.7.4.0
-    - spec: netcdf-fortran@4.7.4.0%intel+mpi
+    - spec: netcdf-fortran@4.7.4.0%intel
       modules:
       - cray-netcdf-hdf5parallel/4.7.4.0
-    - spec: netcdf-fortran@4.7.4.0%cce+mpi
+    - spec: netcdf-fortran@4.7.4.0%cce
       modules:
       - cray-netcdf-hdf5parallel/4.7.4.0
-    - spec: netcdf-fortran@4.7.4.0%pgi+mpi
+    - spec: netcdf-fortran@4.7.4.0%pgi
       modules:
       - cray-netcdf-hdf5parallel/4.7.4.0
   netcdf-cxx4:
