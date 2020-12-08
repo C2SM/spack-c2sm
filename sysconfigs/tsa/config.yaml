@@ -1,12 +1,14 @@
 config:
-  install_tree:
-  template_dirs:
-    - $spack/templates
-  module_roots:
-    tcl:
-  build_stage:
-  extensions:
-  install_path_scheme: '{name}/{version}/{compiler.name}/{hash}'
-  source_cache: ~/.spack/source_cache
   build_jobs: 6
+  build_stage:
   db_lock_timeout: 10
+  extensions:
+  install_tree:
+    projections:
+      all: '{name}/{version}/{compiler.name}/{hash}'
+    root: 
+  module_roots:
+    tcl: 
+  source_cache: ~/.spack/source_cache    
+  template_dirs:
+  - $spack/templates
