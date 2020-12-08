@@ -5,7 +5,7 @@
 
 #
 from spack import *
-import sys
+
 
 class Dawn4py(PythonPackage):
     """A library for numerical weather prediction and climate modelling"""
@@ -17,11 +17,13 @@ class Dawn4py(PythonPackage):
 
     version('master', branch='master')
 
-    depends_on('cmake')
-    extends('python@3.8.0', type=('build','run'))
-
     build_directory = 'dawn'
-    phases = ['build', 'install']
 
+    extends('python@3.8.0:3.8.999')
+
+    depends_on('cmake', type='build')
     depends_on('py-setuptools', type='build')
     depends_on('py-protobuf', type=('build','run'))
+
+    # will test that dawn4py is importable after the install
+    import_modules = ['dawn4py']
