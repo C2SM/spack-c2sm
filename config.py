@@ -63,7 +63,7 @@ def main():
     if not args.stgidir:
         args.stgidir = '$SCRATCH'
 
-    config_data['config']['install_tree'] = args.pckgidir + '/spack-install/' + args.machine.replace('admin-', '')
+    config_data['config']['install_tree']['root'] = args.pckgidir + '/spack-install/' + args.machine.replace('admin-', '')
     config_data['config']['build_stage'] = [args.stgidir + '/spack-stages/' + args.machine]
     config_data['config']['module_roots']['tcl'] = args.pckgidir + '/modules/' + args.machine
     config_data['config']['extensions'] = [dir_path + '/tools/spack-scripting']
