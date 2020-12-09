@@ -4,7 +4,7 @@ packages:
     all:
         # default compilers defined by the system
         # these reflect the current installed PE
-        compiler: [pgi@20.1.1, pgi@20.1.0, gcc@9.3.0, gcc@8.1.0, cce@10.0.2, intel@19.1.1.217, intel@19.0.1.144]
+        compiler: [pgi@20.1.1, pgi@20.1.0, gcc@9.3.0, gcc@8.3.0, gcc@8.1.0, cce@10.0.2, intel@19.1.1.217, intel@19.0.1.144]
         providers:
             mpi: [mpich]
             # if the mpich package support +cuda in the future it needs to be put there
@@ -35,7 +35,7 @@ packages:
       compiler: [pgi]
     gridtools:
       variants: +cuda cuda_arch=60
-      compiler: [gcc]
+      compiler: [gcc@8.3.0]
     cosmo-dycore:
       variants: slave=daint +cuda cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/ slurm_args= "'-C gpu -p normal -A g110 -N {0}'"
       compiler: [gcc]
