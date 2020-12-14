@@ -35,7 +35,7 @@ packages:
       compiler: [pgi]
     gridtools:
       variants: +cuda cuda_arch=60
-      compiler: [gcc]
+      compiler: [gcc@8.3.0]
     cosmo-dycore:
       variants: slave=daint +cuda cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/ slurm_args= "'-C gpu -p normal -A g110 -N {0}'"
       compiler: [gcc@8.3.0]
