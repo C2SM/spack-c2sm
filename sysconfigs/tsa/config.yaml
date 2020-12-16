@@ -10,4 +10,4 @@ config:
   source_cache:
   misc_cache:
   build_jobs: 6
-  db_lock_timeout: 10
+  db_lock_timeout: 20
