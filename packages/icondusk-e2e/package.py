@@ -18,6 +18,7 @@ class IconduskE2e(CMakePackage):
     maintainers = ['cosunae']
 
     version('master', branch='master')
+    version('0.1-dev', tag='0.1-dev')
 
     depends_on('cmake@3.17.0:')
     depends_on('boost@1.73.0%gcc')
@@ -26,6 +27,7 @@ class IconduskE2e(CMakePackage):
     depends_on('atlas_utilities', type=('build', 'run'))
     depends_on('dawn4py',  type=('build'))
     depends_on('dusk',  type=('build'))
+    depends_on('dusk@icondusk-e2e',  type=('build'), when='@0.1-dev')
     depends_on('python@3.8.0')
     depends_on('atlas@0.22.0')
     depends_on('cuda', type=('build', 'run'))
