@@ -18,7 +18,7 @@ class IconduskE2e(CMakePackage):
     maintainers = ['cosunae']
 
     version('master', branch='master')
-    version('0.1-dev', branch='master')
+    version('0.1-dev', tag='0.1-dev')
 
     depends_on('cmake@3.17.0:')
     depends_on('boost@1.73.0%gcc')
