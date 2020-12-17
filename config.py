@@ -20,8 +20,9 @@ def main():
     parser.add_argument('-r', '--reposdir', type=str, help='repos.yaml install directory')
     parser.add_argument('-p', '--pckgidir', type=str, help='Define spack package, modules installation directory. Default: tsa; /scratch/$USER/spack, daint; /scratch/snx3000/$USER/spack')
     parser.add_argument('-s', '--stgidir', type=str, help='Define spack stages directory. Default: tsa; /scratch/$USER/spack, daint; /scratch/snx3000/$USER/spack')
+    parser.add_argument('-c', '--cacheidir', type=str, help='Define spack caches (source and misc)  directories. Default:  ~/.spack/machine/source_cache and ~/.spack/machine/cache')
     args=parser.parse_args()
-    
+
     if args.upstreams != 'OFF' and args.upstreams != 'ON':
         print('Upstreams must be set to ON or OFF!')
         exit()
@@ -29,7 +30,7 @@ def main():
     if not args.machine:
         print('Error: machine name required!')
         exit()
-      
+
     if args.idir:
         if not os.path.isdir(args.idir + '/spack'):
             print('Cloning spack instance to: ' + args.idir)
@@ -42,7 +43,7 @@ def main():
 
     if not args.reposdir:
         args.reposdir = args.idir + '/spack/etc/spack'
-    
+
     # installing repos.yaml
     if os.path.isdir(args.reposdir) and not os.path.isfile(args.reposdir + '/repos.yaml'):
         repos_data = yaml.safe_load(open('./sysconfigs/repos.yaml', 'r'))
@@ -63,7 +64,11 @@ def main():
     if not args.stgidir:
         args.stgidir = '$SCRATCH'
 
+    if not args.cacheidir:
+        args.cacheidir = '~/.spack'
     config_data['config']['install_tree'] = args.pckgidir + '/spack-install/' + args.machine.replace('admin-', '')
+    config_data['config']['source_cache'] = args.cacheidir + '/' + args.machine.replace('admin-', '') + '/source_cache'
+    config_data['config']['misc_cache'] = args.cacheidir + '/' + args.machine.replace('admin-', '') + '/cache'
     config_data['config']['build_stage'] = [args.stgidir + '/spack-stages/' + args.machine]
     config_data['config']['module_roots']['tcl'] = args.pckgidir + '/modules/' + args.machine
     config_data['config']['extensions'] = [dir_path + '/tools/spack-scripting']
