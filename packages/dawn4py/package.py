@@ -24,7 +24,7 @@ class Dawn4py(PythonPackage):
     depends_on('cmake', type='build')
     depends_on('py-setuptools', type='build')
     depends_on('py-protobuf', type=('build','run'))
-    depends_on('py-attr', type=('build','run'))
+    depends_on('py-attrs', type=('build','run'))
     depends_on('py-pytest', type=('build','run'))
     depends_on('py-black', type=('build','run'))
 
