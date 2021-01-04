@@ -8,7 +8,7 @@ import subprocess
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-spack_version='v0.15.4'
+spack_version='v0.16.0'
 spack_repo='git@github.com:spack/spack.git'
 
 def main():
@@ -66,12 +66,14 @@ def main():
 
     if not args.cacheidir:
         args.cacheidir = '~/.spack'
-    config_data['config']['install_tree'] = args.pckgidir + '/spack-install/' + args.machine.replace('admin-', '')
+        
+    config_data['config']['install_tree']['root'] = args.pckgidir + '/spack-install/' + args.machine.replace('admin-', '')
     config_data['config']['source_cache'] = args.cacheidir + '/' + args.machine.replace('admin-', '') + '/source_cache'
     config_data['config']['misc_cache'] = args.cacheidir + '/' + args.machine.replace('admin-', '') + '/cache'
     config_data['config']['build_stage'] = [args.stgidir + '/spack-stages/' + args.machine]
     config_data['config']['module_roots']['tcl'] = args.pckgidir + '/modules/' + args.machine
     config_data['config']['extensions'] = [dir_path + '/tools/spack-scripting']
+    
     yaml.safe_dump(config_data, open('./sysconfigs/' + args.machine.replace('admin-', '') + '/config.yaml', 'w'), default_flow_style=False)
 
     # copy modified config.yaml file in site scope of spack instance
