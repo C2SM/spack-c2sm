@@ -16,7 +16,7 @@ class Icon(AutotoolsPackage):
     operational forecast system in January 2015."""
 
     homepage = 'https://gitlab.dkrz.de/icon/icon'
-    url = 'https://gitlab.dkrz.de/icon/icon-cscs/-/archive/mc10_for_icon-2.6.x-rc/icon-cscs-mc10_for_icon-2.6.x-rc.tar.gz'
+    url = 'https://gitlab.dkrz.de/icon/icon/-/archive/icon-2.6.2.2/icon-icon-2.6.2.2.tar.gz'
     git = 'git@gitlab.dkrz.de:icon/icon-cscs.git'
 
     maintainers = ['egermann']
