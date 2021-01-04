@@ -15,9 +15,9 @@ class Icon(AutotoolsPackage):
     climate modelling system. The ICON model has been introduced into DWD's
     operational forecast system in January 2015."""
 
-    homepage = 'https://software.ecmwf.int/wiki/display/GRIB/Home'
-    url = 'https://gitlab.dkrz.de/icon/icon-cscs/-/archive/mc10_for_icon-2.6.x-rc/icon-cscs-mc10_for_icon-2.6.x-rc.tar.gz'
-    git = 'git@gitlab.dkrz.de:icon/icon-cscs.git'
+    homepage = 'https://gitlab.dkrz.de/icon/icon'
+    url = 'https://gitlab.dkrz.de/icon/icon/-/archive/icon-2.6.2.2/icon-icon-2.6.2.2.tar.gz'
+    git = 'git@gitlab.dkrz.de:icon/icon.git'
 
     maintainers = ['egermann']
 
