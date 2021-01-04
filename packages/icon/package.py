@@ -223,10 +223,6 @@ class Icon(AutotoolsPackage):
         if self.spec.variants['test_name'].value != 'none':
             if '@ham' in self.spec:
                 try:
-                    subprocess.run(['./config.status', '--file=run/set-up.info'], stderr=subprocess.STDOUT, cwd=self.build_directory, check=True)
-                except:
-                    raise InstallError('config.status script failed')
-                try:
                     subprocess.run(['indata_hammoz_root=/store/c2sm/c2sme/input_gcm/icon/input_hammoz/ ./make_runscripts -s ' +  self.spec.variants['test_name'].value], shell=True, stderr=subprocess.STDOUT, cwd=self.build_directory, check=True)
                 except:
                     raise InstallError('make runscripts failed')
