@@ -17,7 +17,7 @@ class Icon(AutotoolsPackage):
 
     homepage = 'https://gitlab.dkrz.de/icon/icon'
     url = 'https://gitlab.dkrz.de/icon/icon/-/archive/icon-2.6.2.2/icon-icon-2.6.2.2.tar.gz'
-    git = 'git@gitlab.dkrz.de:icon/icon-cscs.git'
+    git = 'git@gitlab.dkrz.de:icon/icon.git'
 
     maintainers = ['egermann']
 
