@@ -1,15 +1,13 @@
 config:
-  build_jobs: 6
-  build_stage:
-  db_lock_timeout: 20
-  extensions:
   install_tree:
-    projections:
-      all: '{name}/{version}/{compiler.name}/{hash}'
-    root: 
+  template_dirs:
+    - $spack/templates
   module_roots:
-    tcl: 
+    tcl:
+  build_stage:
+  extensions:
+  install_path_scheme: '{name}/{version}/{compiler.name}/{hash}'
   source_cache:
   misc_cache:
-  template_dirs:
-  - $spack/templates
+  build_jobs: 6
+  db_lock_timeout: 20
