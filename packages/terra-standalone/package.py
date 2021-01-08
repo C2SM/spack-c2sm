@@ -32,7 +32,7 @@ class TerraStandalone(MakefilePackage):
 
     maintainers = ['vsharma-sonen']
 
-    version('master', branch='master', prefered=True)
+    version('master', branch='master', preferred=True)
     version('5.03', commit='72ec4dc03194b6160bf1987f545cc646db604706')
 
     depends_on('eccodes')
@@ -48,9 +48,6 @@ class TerraStandalone(MakefilePackage):
         makefile.filter('LAECDIR      = .*', 'LAECDIR      =' + self.spec['libaec'].prefix)
         makefile = FileFilter('Makefile')
         makefile.filter('STDROOT      = .*', 'STDROOT      = ' + self.build_directory)  
-
-    def build(self, spec, prefix):
-        make()
 
     def install(self, spec, prefix):
         mkdir(prefix.bin)
