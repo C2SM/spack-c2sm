@@ -127,7 +127,7 @@ class Icon(Package):
             except:
                 raise InstallError('Submitting test failed')
 
-            test_status=subprocess.check_output(['cat', 'finish.status'], cwd=os.path.join(self.config_dir + 'experiments', self.spec.variants['test_name'].value))
+            test_status=subprocess.check_output(['cat', 'finish.status'], cwd=os.path.join(self.config_dir + '/experiments', self.spec.variants['test_name'].value))
             if not 'OK' in str(test_status):
                 raise InstallError('Test failed')
             elif 'OK' in str(test_status):
