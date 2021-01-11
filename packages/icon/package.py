@@ -123,7 +123,10 @@ class Icon(Package):
                 except:
                     raise InstallError('make runscripts failed')
             try:
-                subprocess.run(['sbatch', '-W', '--time=00:15:00', '-A', 'g110', '-C', 'gpu', '-p', 'debug', 'exp.' + self.spec.variants['test_name'].value + '.run'], stderr=subprocess.STDOUT, cwd= self.config_dir + '/run', check=True)
+                if self.spec.variants['host'].value == 'daint':
+                    subprocess.run(['sbatch', '-W', '--time=00:15:00', '-A', 'g110', '-C', 'gpu', '-p', 'debug', 'exp.' + self.spec.variants['test_name'].value + '.run'], stderr=subprocess.STDOUT, cwd= self.config_dir + '/run', check=True) 
+                if self.spec.variants['host'].value == 'tsa':
+                    subprocess.run(['sbatch', '-W', '--time=00:15:00', '-p', 'debug', 'exp.' + self.spec.variants['test_name'].value + '.run'], stderr=subprocess.STDOUT, cwd= self.config_dir + '/run', check=True)
             except:
                 raise InstallError('Submitting test failed')
 
