@@ -32,7 +32,8 @@ class TerraStandalone(MakefilePackage):
 
     maintainers = ['vsharma-sonen']
 
-    version('master', branch='master', preferred=True)
+    version('mch-snow-scheme', branch='mch_snow_scheme', preferred=True)
+    version('master', branch='master')
     version('5.03', commit='72ec4dc03194b6160bf1987f545cc646db604706')
 
     depends_on('eccodes')
@@ -43,7 +44,10 @@ class TerraStandalone(MakefilePackage):
         mkdirp('obj')
         mkdirp('work')
         makefile = FileFilter('Fopts')
-        makefile.filter('/uwork1/uschaett/lib_gfortran/libgrib1.a', self.spec['libgrib1'].prefix + '/lib/libgrib1_gnu.a')
+        if '@master' in self.spec:
+            makefile.filter('/uwork1/uschaett/lib_gfortran/libgrib1.a', self.spec['libgrib1'].prefix + '/lib/libgrib1_gnu.a')
+        else:
+            makefile.filter('LIBGRIB1     = .*', 'LIBGRIB1     =' + self.spec['libgrib1'].prefix + '/lib/libgrib1_gnu.a')
         makefile.filter('GRIBDIR      = .*', 'GRIBDIR      =' + self.spec['eccodes'].prefix)
         makefile.filter('LAECDIR      = .*', 'LAECDIR      =' + self.spec['libaec'].prefix)
         makefile = FileFilter('Makefile')
