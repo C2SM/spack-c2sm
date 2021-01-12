@@ -69,10 +69,10 @@ class Icon(Package):
         elif self.compiler.name == 'cce':
             _config_file_name += '.cray'
         else:
-           _config_file_name += '.' + self.compiler.name 
-        
-        self._config_file_name = _config_file_name 
-        
+           _config_file_name += '.' + self.compiler.name
+
+        self._config_file_name = _config_file_name
+
         if '~skip-config' in spec:
             config_file_filter = FileFilter(self.config_dir + '/config/' + self.spec.variants['site'].value + '/' + self._config_file_name)
             config_file_filter.filter('XML2_ROOT=.*',  'XML2_ROOT=\'' + self.spec['libxml2'].prefix + '\'')
@@ -81,7 +81,7 @@ class Icon(Package):
             if '+claw' in spec:
                 config_file_filter.filter('CLAW=\'.*',  'CLAW=\'' + self.spec['claw'].prefix + '/bin/clawfc\'')
                 
-    def configure_args(self):        
+    def configure_args(self):
 
         args = []
 
@@ -125,13 +125,13 @@ class Icon(Package):
                     raise InstallError('make runscripts failed')
             try:
                 if self.spec.variants['host'].value == 'daint':
-                    subprocess.run(['sbatch', '-W', '--time=00:15:00', '-A', 'g110', '-C', 'gpu', '-p', 'debug', 'exp.' + self.spec.variants['test_name'].value + '.run'], stderr=subprocess.STDOUT, cwd= self.config_dir + '/run', check=True) 
+                    subprocess.run(['sbatch', '-W', '--time=00:15:00', '-A', 'g110', '-C', 'gpu', '-p', 'debug', 'exp.' + self.spec.variants['test_name'].value + '.run'], stderr=subprocess.STDOUT, cwd='run', check=True)
                 if self.spec.variants['host'].value == 'tsa':
-                    subprocess.run(['sbatch', '-W', '--time=00:15:00', '-p', 'debug', 'exp.' + self.spec.variants['test_name'].value + '.run'], stderr=subprocess.STDOUT, cwd= self.config_dir + '/run', check=True)
+                    subprocess.run(['sbatch', '-W', '--time=00:15:00', '-p', 'debug', 'exp.' + self.spec.variants['test_name'].value + '.run'], stderr=subprocess.STDOUT, cwd='run', check=True)
             except:
                 raise InstallError('Submitting test failed')
 
-            test_status=subprocess.check_output(['cat', 'finish.status'], cwd=os.path.join(self.config_dir + '/experiments', self.spec.variants['test_name'].value))
+            test_status=subprocess.check_output(['cat', 'finish.status'], cwd=os.path.join('experiments', self.spec.variants['test_name'].value))
             if not 'OK' in str(test_status):
                 raise InstallError('Test failed')
             elif 'OK' in str(test_status):
