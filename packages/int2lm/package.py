@@ -33,7 +33,7 @@ class Int2lm(MakefilePackage):
     url      = "https://github.com/MeteoSwiss-APN/int2lm/archive/v2.7.2.tar.gz"
     git      = 'git@github.com:MeteoSwiss-APN/int2lm.git'
 
-    maintainers = ['egermann']
+    maintainers = ['morsier']
 
     version('master', branch='master')
     version('dev-build', branch='master')
@@ -67,7 +67,12 @@ class Int2lm(MakefilePackage):
         else:
             grib_prefix = self.spec['eccodes'].prefix
             grib_lib_names = '-leccodes_f90 -leccodes'
-        env.set('GRIBAPIL', '-L' + grib_prefix + '/lib ' + grib_lib_names + ' -L' + self.spec['jasper'].prefix + '/lib64 -ljasper')
+            # Default installation lib path changed to from lib to lib64 after 2.19.0
+            if self.spec['eccodes'].version >= Version('2.19.0'):
+                eccodes_lib_dir='/lib64'
+            else:
+                eccodes_lib_dir='/lib'
+        env.set('GRIBAPIL', '-L' + grib_prefix + eccodes_lib_dir + grib_lib_names + ' -L' + self.spec['jasper'].prefix + '/lib64 -ljasper')
         env.set('GRIBAPII', '-I' + grib_prefix + '/include')
 
         # Netcdf library
