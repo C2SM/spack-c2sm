@@ -49,11 +49,11 @@ class Int2lmOrg(MakefilePackage):
         # Grib-api. Eccodes libraries
         if '~eccodes' in self.spec:
             grib_prefix = self.spec['cosmo-grib-api'].prefix
-            grib_lib_names = '-lgrib_api_f90 -lgrib_api'
+            grib_lib_names = ' -lgrib_api_f90 -lgrib_api'
             lib_dir='/lib'
         else:
             grib_prefix = self.spec['eccodes'].prefix
-            grib_lib_names = '-leccodes_f90 -leccodes'
+            grib_lib_names = ' -leccodes_f90 -leccodes'
             # Default installation lib path changed to from lib to lib64 after 2.19.0
             if self.spec['eccodes'].version >= Version('2.19.0'):
                 lib_dir='/lib64'
