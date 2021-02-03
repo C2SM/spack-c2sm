@@ -76,6 +76,11 @@ modules:
         set:
           UCX_MEMTYPE_CACHE: 'n'
           UCX_TLS: 'rc_x,ud_x,mm,shm,cma'
+    cosmoc2sm cosmo_target=cpu:
+      environment:
+        set:
+          UCX_MEMTYPE_CACHE: 'n'
+          UCX_TLS: 'rc_x,ud_x,mm,shm,cma'
     mpi:
       environment:
         set:
