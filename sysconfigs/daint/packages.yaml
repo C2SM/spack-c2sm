@@ -33,10 +33,6 @@ packages:
       variants: cuda_arch=60 cosmo_target=gpu slave=daint
       version: [master]
       compiler: [pgi]
-    cosmo-c2sm:
-      variants: cuda_arch=60 cosmo_target=gpu slave=daint
-      version: [master]
-      compiler: [pgi]
     gridtools:
       variants: +cuda cuda_arch=60
       compiler: [gcc]
