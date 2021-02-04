@@ -44,6 +44,7 @@ class CosmoDycore(CMakePackage):
     version('master', branch='master')
     version('dev-build', branch='master')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
+    version('c2sm', git='git@github.com:C2SM-RCM/cosmo-1.git', branch='master')
 
     dycore_tags("git@github.com:MeteoSwiss-APN/cosmo.git")
 
