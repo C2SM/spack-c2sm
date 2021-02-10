@@ -99,6 +99,6 @@ packages:
     variants: cuda_arch=70 cosmo_target=gpu slave=tsa
     version: [master] 
   icon:
-    variants: cuda_arch=70
+    variants: host=tsa
 
 
