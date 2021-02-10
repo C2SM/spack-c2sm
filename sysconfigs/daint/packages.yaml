@@ -113,7 +113,7 @@ packages:
     hwloc:
         variants: +cuda
     icon:
-        variants: cuda_arch=60
+        variants: host=daint
     intel-mkl:
         buildable: false
         paths:
