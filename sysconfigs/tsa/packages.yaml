@@ -70,6 +70,7 @@ packages:
   libxml2:
     paths:
       libxml2@2.9.9%gcc: /usr
+      libxml2@2.9.9%pgi: /usr
   libtool:
     paths:
       libtool@2.4.2%gcc: /usr
@@ -98,4 +99,5 @@ packages:
   cosmo:
     variants: cuda_arch=70 cosmo_target=gpu slave=tsa
     version: [master]
-
+  icon:     
+    variants: host=tsa
