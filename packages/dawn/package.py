@@ -18,6 +18,7 @@ class Dawn(CMakePackage):
     version('master', branch='master')
 
     depends_on('cmake')
+    depends_on('llvm@10.0.1:')
     depends_on('python@3.8.0:3.8.999')
     depends_on('py-setuptools', type='build')
     depends_on('py-protobuf', type=('build','run'))
