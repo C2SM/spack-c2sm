@@ -44,7 +44,7 @@ class Icon(Package):
     variant('test_name', default='none', description='Launch test: test_name after installation')
     variant('skip-config', default=False, description='Skip configure phase')
     variant('config_dir', default='.', description='Enable out-of-source build by describing config_dir')
-    variant('ham', default=True, description='Build with hammoz and atm_phy_echam enabled.')
+    variant('ham', default=False, description='Build with hammoz and atm_phy_echam enabled.')
 
     conflicts('+claw', when='%intel')
     conflicts('+claw', when='%cce')
