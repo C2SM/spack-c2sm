@@ -35,7 +35,7 @@ class Icontools(AutotoolsPackage):
     # maintainers = ['github_user1', 'github_user2']
 
     # FIXME: Add proper versions here.
-    version('master', branch='master')
+    version('master', branch='remove_omp')
 
     depends_on('autoconf', type='build')
     depends_on('automake', type='build')
@@ -79,17 +79,16 @@ class Icontools(AutotoolsPackage):
         #cray_libs +=' -L{}/lib  -lgrib_api_f90 -lgrib_api'.format(self.spec['cosmo-grib-api-definitions'].prefix)
 
         flags = ' -O2 -g -Wunused  -DHAVE_LIBNETCDF -DHAVE_NETCDF4 -DHAVE_CF_INTERFACE -DHAVE_LIBGRIB -DHAVE_LIBGRIB_API -D__ICON__ -DNOMPI'
-        #flags = ' -O2 -g -Wunused  -DHAVE_LIBNETCDF -DHAVE_NETCDF4 -DHAVE_CF_INTERFACE -DHAVE_LIBGRIB -D__ICON__ -DNOMPI'
 
         cflags = cray_include + cray_libs
         cflags += flags
         env.set('CFLAGS', cflags)
 
-        cxxflags = cray_include + cray_libs
+        cxxflags = cray_include 
         cxxflags += '-Wunused -DNOMPI'
         env.set('CXXLAGS', cxxflags)
 
-        fcflags = cray_include + cray_libs
+        fcflags = cray_include 
         fcflags += ' -O2 -g -cpp -Wunused -DNOMPI'
         env.set('FCFLAGS', fcflags)
 
