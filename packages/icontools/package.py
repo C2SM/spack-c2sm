@@ -45,17 +45,18 @@ class Icontools(AutotoolsPackage):
     depends_on('netcdf-fortran +mpi', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))
     depends_on('mpi', type=('build', 'link', 'run'),)
-    depends_on('eccodes', type=('build', 'link', 'run'))
-    depends_on('cosmo-grib-api-definitions', type=('build','run'))
-    depends_on('hdf5')
+    depends_on('eccodes ~aec', type=('build', 'link', 'run'))
+    #depends_on('cosmo-grib-api-definitions', type=('build','link','run'))
+    depends_on('hdf5', type=('build','link'))
+    depends_on('jasper@1.900.1%gcc ~shared', type=('build','link'))
 
     def configure_args(self):
         args =['--disable-silent-rules',
                '--disable-shared',
                '--with-netcdf={0}'.format(self.spec['netcdf-fortran'].prefix),
+               '--enable-iso-c-interface',
                '--with-eccodes={0}'.format(self.spec['eccodes'].prefix),
                '--enable-grib2',
-               '--enable-iso-c-interface',
                 ]
         return args
 
@@ -63,40 +64,36 @@ class Icontools(AutotoolsPackage):
         self.setup_run_environment(env)
 
         cray_include =' -I{}/include'.format(self.spec['netcdf-fortran'].prefix)
-        cray_include +=' -I{}/include'.format(self.spec['hdf5'].prefix)
-        cray_include +=' -I{}/include'.format(self.spec['cosmo-grib-api-definitions'].prefix)
+        cray_include +=' -I{}/include'.format(self.spec['netcdf-c'].prefix)
+        #cray_include +=' -I{}/include'.format(self.spec['cosmo-grib-api-definitions'].prefix)
         cray_include +=' -I{}/include'.format(self.spec['eccodes'].prefix)
         cray_include +=' -I{}/include'.format(self.spec['mpi'].prefix)
+        cray_include +=' -I{}/include'.format(self.spec['jasper'].prefix)
 
-        cray_libs =' -L{}/lib '.format(self.spec['netcdf-fortran'].prefix)
-        cray_libs +=' -L{}/lib64 '.format(self.spec['eccodes'].prefix)
-        cray_libs +=' -L{}/lib '.format(self.spec['hdf5'].prefix)
+        cray_libs =' -L{}/lib -lnetcdff'.format(self.spec['netcdf-fortran'].prefix)
+        cray_libs +=' -L{}/lib -lnetcdf '.format(self.spec['netcdf-c'].prefix)
+        cray_libs +=' -L{}/lib64 -leccodes -leccodes_f90'.format(self.spec['eccodes'].prefix)
+        cray_libs +=' -L{}/lib64 -ljasper'.format(self.spec['jasper'].prefix)
         cray_libs +=' -L{}/lib '.format(self.spec['mpi'].prefix)
-        cray_libs +=' -L{}/lib '.format(self.spec['cosmo-grib-api-definitions'].prefix)
+        cray_libs +=' -L{}/lib '.format(self.spec['hdf5'].prefix)
+        #cray_libs +=' -L{}/lib  -lgrib_api_f90 -lgrib_api'.format(self.spec['cosmo-grib-api-definitions'].prefix)
 
         flags = ' -O2 -g -Wunused  -DHAVE_LIBNETCDF -DHAVE_NETCDF4 -DHAVE_CF_INTERFACE -DHAVE_LIBGRIB -DHAVE_LIBGRIB_API -D__ICON__ -DNOMPI'
+        #flags = ' -O2 -g -Wunused  -DHAVE_LIBNETCDF -DHAVE_NETCDF4 -DHAVE_CF_INTERFACE -DHAVE_LIBGRIB -D__ICON__ -DNOMPI'
 
-        env.set('CC', 'cc')
-        env.set('F77', 'ftn')
-        env.set('FC', 'ftn')
-        
-        cxx = cray_include
-        cxx += ' -fopenmp'
-        env.set('CXX', cxx)
-
-        cflags = cray_include
+        cflags = cray_include + cray_libs
         cflags += flags
         env.set('CFLAGS', cflags)
 
-        cxxflags = cray_include
+        cxxflags = cray_include + cray_libs
         cxxflags += '-Wunused -DNOMPI'
         env.set('CXXLAGS', cxxflags)
 
-        fcflags = cray_include
-        fcflags += '-O2 -g -cpp -Wunused -DNOMPI'
+        fcflags = cray_include + cray_libs
+        fcflags += ' -O2 -g -cpp -Wunused -DNOMPI'
         env.set('FCFLAGS', fcflags)
 
-        libs = '-lnetcdf -leccodes -leccodes_f90'
+        libs = '-lnetcdf -leccodes -leccodes_f90 -ljasper -lhdf5'
         env.set('LIBS', libs)
 
         ldflags = cray_libs
