@@ -97,7 +97,9 @@ packages:
     compiler: [gcc]
   cosmo:
     variants: cuda_arch=70 cosmo_target=gpu slave=tsa
-    version: [master]
+    version: [master] 
+  icon:
+    variants: host=tsa
   llvm:
     paths:
       llvm@10.0.0: /project/g110/install/tsa/llvm-10
