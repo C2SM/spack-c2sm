@@ -33,4 +33,4 @@ class Dawn4py(PythonPackage):
     import_modules = ['dawn4py']
 
     def setup_environment(self, spack_env, run_env):
-        spack_env.set('CMAKE_ARGS', '-DLLVM_ROOT=' + self.spec['llvm'].prefix)
+        spack_env.set('LLVM_ROOT', self.spec['llvm'].prefix)
