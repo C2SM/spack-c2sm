@@ -24,17 +24,18 @@ from spack import *
 
 
 class Icontools(AutotoolsPackage):
-    """FIXME: Put a proper description of your package here."""
+    """
+    DWD ICON Tools for C2SM members. 
+    Set of tools to prepare the input files 
+    (for example the boundary condition, initial condition file,...) for ICON.
+    """
 
     # FIXME: Add a proper url for your package's homepage here.
-    homepage = "https://www.example.com"
+    homepage= 'https://wiki.c2sm.ethz.ch/MODELS/ICONDwdIconTools'
     git = 'git@github.com:C2SM-ICON/dwd_icon_tools.git'
 
-    # FIXME: Add a list of GitHub accounts to
-    # notify when the package is updated.
-    # maintainers = ['github_user1', 'github_user2']
+    maintainers = ['jonasjucker']
 
-    # FIXME: Add proper versions here.
     version('master', branch='remove_omp')
 
     depends_on('autoconf', type='build')
@@ -46,57 +47,97 @@ class Icontools(AutotoolsPackage):
     depends_on('netcdf-c +mpi', type=('build', 'link'))
     depends_on('mpi', type=('build', 'link', 'run'),)
     depends_on('eccodes ~aec', type=('build', 'link', 'run'))
-    #depends_on('cosmo-grib-api-definitions', type=('build','link','run'))
+    depends_on('cosmo-grib-api', type=('build','link','run'), when='~eccodes')
     depends_on('hdf5', type=('build','link'))
     depends_on('jasper@1.900.1%gcc ~shared', type=('build','link'))
+
+    variant('eccodes', default=True, description='Build with eccodes instead of grib-api')
 
     def configure_args(self):
         args =['--disable-silent-rules',
                '--disable-shared',
                '--with-netcdf={0}'.format(self.spec['netcdf-fortran'].prefix),
                '--enable-iso-c-interface',
-               '--with-eccodes={0}'.format(self.spec['eccodes'].prefix),
-               '--enable-grib2',
                 ]
+
+        if '~eccodes' in self.spec:
+            args.append('--with-grib_api={0}'.format(self.spec['cosmo-grib-api'].prefix))
+        else:
+            args.append('--enable-grib2')
+            args.append('--with-eccodes={0}'.format(self.spec['eccodes'].prefix))
+        
         return args
 
     def setup_build_environment(self, env):
         self.setup_run_environment(env)
 
-        cray_include =' -I{}/include'.format(self.spec['netcdf-fortran'].prefix)
-        cray_include +=' -I{}/include'.format(self.spec['netcdf-c'].prefix)
-        #cray_include +=' -I{}/include'.format(self.spec['cosmo-grib-api-definitions'].prefix)
-        cray_include +=' -I{}/include'.format(self.spec['eccodes'].prefix)
-        cray_include +=' -I{}/include'.format(self.spec['mpi'].prefix)
-        cray_include +=' -I{}/include'.format(self.spec['jasper'].prefix)
+        # construct all includes/libraries for **FLAGS
+        include = ''
+        libs = ''
 
-        cray_libs =' -L{}/lib -lnetcdff'.format(self.spec['netcdf-fortran'].prefix)
-        cray_libs +=' -L{}/lib -lnetcdf '.format(self.spec['netcdf-c'].prefix)
-        cray_libs +=' -L{}/lib64 -leccodes -leccodes_f90'.format(self.spec['eccodes'].prefix)
-        cray_libs +=' -L{}/lib64 -ljasper'.format(self.spec['jasper'].prefix)
-        cray_libs +=' -L{}/lib '.format(self.spec['mpi'].prefix)
-        cray_libs +=' -L{}/lib '.format(self.spec['hdf5'].prefix)
-        #cray_libs +=' -L{}/lib  -lgrib_api_f90 -lgrib_api'.format(self.spec['cosmo-grib-api-definitions'].prefix)
+        # NetCDF
+        include +=' -I{}/include'.format(self.spec['netcdf-fortran'].prefix)
+        libs =' -L{}/lib -lnetcdff'.format(self.spec['netcdf-fortran'].prefix)
+
+        include +=' -I{}/include'.format(self.spec['netcdf-c'].prefix)
+        libs +=' -L{}/lib -lnetcdf '.format(self.spec['netcdf-c'].prefix)
+        
+        # MPI
+        include +=' -I{}/include'.format(self.spec['mpi'].prefix)
+        libs +=' -L{}/lib '.format(self.spec['mpi'].prefix)
+
+        # Jasper
+        include +=' -I{}/include'.format(self.spec['jasper'].prefix)
+        libs +=' -L{}/lib -ljasper'.format(self.spec['jasper'].prefix)
+
+        #HDF5
+        libs +=' -L{}/lib '.format(self.spec['hdf5'].prefix)
+
+        # Grib-Api/Eccodes
+        if '~eccodes' in self.spec:
+            include +=' -I{}/include'.format(self.spec['cosmo-grib-api'].prefix)
+            libs +=' -L{}/lib  -lgrib_api_f90 -lgrib_api'.format(self.spec['cosmo-grib-api'].prefix)
+        else:
+            include +=' -I{}/include'.format(self.spec['eccodes'].prefix)
+
+            if self.spec['eccodes'].version >= Version('2.19.0'):
+                eccodes_lib_dir='lib64'
+            else:
+                eccodes_lib_dir='lib'
+
+            libs +=' -L{}/{} -leccodes -leccodes_f90'.format(self.spec['eccodes'].prefix, eccodes_lib_dir)
+
 
         flags = ' -O2 -g -Wunused  -DHAVE_LIBNETCDF -DHAVE_NETCDF4 -DHAVE_CF_INTERFACE -DHAVE_LIBGRIB -DHAVE_LIBGRIB_API -D__ICON__ -DNOMPI'
 
-        cflags = cray_include + cray_libs
-        cflags += flags
+        cflags = include + ' ' + libs + ' ' + flags
         env.set('CFLAGS', cflags)
 
-        cxxflags = cray_include 
+        cxxflags = include 
         cxxflags += '-Wunused -DNOMPI'
         env.set('CXXLAGS', cxxflags)
 
-        fcflags = cray_include 
+        fcflags = include 
         fcflags += ' -O2 -g -cpp -Wunused -DNOMPI'
         env.set('FCFLAGS', fcflags)
 
-        libs = '-lnetcdf -leccodes -leccodes_f90 -ljasper -lhdf5'
-        env.set('LIBS', libs)
-
-        ldflags = cray_libs
+        ldflags = libs
         env.set('LDFLAGS', ldflags)
 
+        libs_env = ''
+
+        libs_env += ' -lnetcdf'
+
+        if '~eccodes' in self.spec:
+            libs_env += ' -lgrib_api  -lgrib_api_f90'
+        else:
+            libs_env += ' -leccodes -leccodes_f90'
+        
+        # needs to be after griblibs, otherwise linking error during configure
+        libs_env += ' -ljasper'
+
+        env.set('LIBS', libs_env)
+
+        # Daint specific flags to cache
         env.set('acx_cv_fc_ftn_include_flag', '-I')
         env.set('acx_cv_fc_pp_include_flag', '-I')
