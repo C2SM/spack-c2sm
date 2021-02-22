@@ -32,6 +32,7 @@ class CosmoEccodesDefinitions(Package):
 
     maintainers = ['egermann']
 
+    version('2.19.0.5', tag='v2.19.0.5')
     version('2.19.0.4', commit='6907d3e70cff08b17e66db15f717e4bf914be5ea')
     version('2.19.0.3', commit='35640b15d5cab1b088982ca5f322a7de366cb240')
     version('2.19.0.2', commit='66e262f2e242d72504f5f850a0232a016f7f3ba9')
