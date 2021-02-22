@@ -32,5 +32,5 @@ class Dawn4py(PythonPackage):
     # will test that dawn4py is importable after the install
     import_modules = ['dawn4py']
 
-    def setup_build_environment(self, spack_env, run_env):
-        spack_env.set('LLVM_ROOT', self.spec['llvm'].prefix)
+    def setup_build_environment(self, env):
+        env.set('LLVM_ROOT', self.spec['llvm'].prefix)
