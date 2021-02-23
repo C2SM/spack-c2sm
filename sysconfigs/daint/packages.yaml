@@ -164,10 +164,10 @@ packages:
     netcdf-fortran:
         buildable: false
         modules:
-            netcdf-fortran@4.7.4.0%gcc+mpi:   cray-netcdf-hdf5parallel/4.7.4.0
-            netcdf-fortran@4.7.4.0%intel+mpi: cray-netcdf-hdf5parallel/4.7.4.0
-            netcdf-fortran@4.7.4.0%cce+mpi:   cray-netcdf-hdf5parallel/4.7.4.0
-            netcdf-fortran@4.7.4.0%pgi+mpi:   cray-netcdf-hdf5parallel/4.7.4.0
+            netcdf-fortran@4.7.4.0%gcc+mpi:   cray-netcdf/4.7.4.0
+            netcdf-fortran@4.7.4.0%intel+mpi: cray-netcdf/4.7.4.0
+            netcdf-fortran@4.7.4.0%cce+mpi:   cray-netcdf/4.7.4.0
+            netcdf-fortran@4.7.4.0%pgi+mpi:   cray-netcdf/4.7.4.0
     netcdf-cxx4:
         buildable: false
         modules:

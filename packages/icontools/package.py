@@ -21,6 +21,7 @@
 # ----------------------------------------------------------------------------
 
 from spack import *
+import os
 
 
 class Icontools(AutotoolsPackage):
@@ -43,8 +44,8 @@ class Icontools(AutotoolsPackage):
     depends_on('libtool',  type='build')
     depends_on('m4', type='build')
 
-    depends_on('netcdf-fortran +mpi', type=('build', 'link'))
-    depends_on('netcdf-c +mpi', type=('build', 'link'))
+    depends_on('netcdf-fortran', type=('build', 'link'))
+    depends_on('netcdf-c', type=('build', 'link'))
     depends_on('mpi', type=('build', 'link', 'run'),)
     depends_on('eccodes ~aec', type=('build', 'link', 'run'))
     depends_on('cosmo-grib-api', type=('build','link','run'), when='~eccodes')
@@ -56,7 +57,7 @@ class Icontools(AutotoolsPackage):
     def configure_args(self):
         args =['--disable-silent-rules',
                '--disable-shared',
-               '--with-netcdf={0}'.format(self.spec['netcdf-fortran'].prefix),
+               '--with-netcdf={0}/CRAYCLANG/9.0'.format(self.spec['netcdf-fortran'].prefix),
                '--enable-iso-c-interface',
                 ]
 
@@ -76,11 +77,21 @@ class Icontools(AutotoolsPackage):
         libs = ''
 
         # NetCDF
-        include +=' -I{}/include'.format(self.spec['netcdf-fortran'].prefix)
-        libs =' -L{}/lib -lnetcdff'.format(self.spec['netcdf-fortran'].prefix)
+        #netcdf_root = os.getenv('NETCDF_DIR')
+        #include +=' -I{}/include'.format(netcdf_root)
+        #libs +=' -L{}/lib -lnetcdff'.format(netcdf_root)
+        include += ' -L{}/CRAYCLANG/9.0/include'.format(self.spec['netcdf-fortran'].prefix)
+        #include +=' -I{}/include'.format(self.spec['netcdf-fortran'].prefix)
 
-        include +=' -I{}/include'.format(self.spec['netcdf-c'].prefix)
-        libs +=' -L{}/lib -lnetcdf '.format(self.spec['netcdf-c'].prefix)
+        #libs =' -L{}/lib -lnetcdff'.format(self.spec['netcdf-fortran'].prefix)
+        libs += ' -L{}/CRAYCLANG/9.0/lib -lnetcdff'.format(self.spec['netcdf-fortran'].prefix)
+
+
+        include += ' -L{}/CRAYCLANG/9.0/include'.format(self.spec['netcdf-c'].prefix)
+        #include +=' -I{}/include'.format(self.spec['netcdf-c'].prefix)
+
+        #libs +=' -L{}/lib -lnetcdf '.format(self.spec['netcdf-c'].prefix)
+        libs += ' -L{}/CRAYCLANG/9.0/lib -lnetcdf '.format(self.spec['netcdf-c'].prefix)
         
         # MPI
         include +=' -I{}/include'.format(self.spec['mpi'].prefix)
@@ -126,7 +137,11 @@ class Icontools(AutotoolsPackage):
 
         libs_env = ''
 
-        libs_env += ' -lnetcdf'
+        #libs_env += ' -L{}/lib -lnetcdf '.format(self.spec['netcdf-c'].prefix)
+        #libs_env += ' -L{}/lib -lnetcdff'.format(self.spec['netcdf-fortran'].prefix)
+
+        libs_env += ' -L{}/CRAYCLANG/9.0/lib -lnetcdf '.format(self.spec['netcdf-c'].prefix)
+        libs_env += ' -L{}/CRAYCLANG/9.0/lib -lnetcdff'.format(self.spec['netcdf-fortran'].prefix)
 
         if '~eccodes' in self.spec:
             libs_env += ' -lgrib_api  -lgrib_api_f90'
