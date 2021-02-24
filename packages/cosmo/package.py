@@ -8,9 +8,10 @@ import subprocess, re, itertools
 from spack import *
 
 def get_releases(repo):
-        git_obj = subprocess.run(["git","ls-remote",repo], stdout=subprocess.PIPE)
+        git_obj = subprocess.run(["git","ls-remote","--refs",repo], stdout=subprocess.PIPE)
         git_tags = [re.match('refs/tags/(.*)', x.decode('utf-8')).group(1) for x in git_obj.stdout.split() if re.match('refs/tags/(.*)', x.decode('utf-8'))]
         return git_tags
+
 def dycore_deps(repo):
     tags = get_releases(repo)
     for tag in tags:
@@ -48,6 +49,7 @@ class Cosmo(MakefilePackage):
     url      = "https://github.com/MeteoSwiss-APN/cosmo/archive/5.07.mch1.0.p5.tar.gz"
     git      = 'git@github.com:COSMO-ORG/cosmo.git'
     apngit   = 'git@github.com:MeteoSwiss-APN/cosmo.git'
+    c2smgit  = 'git@github.com:C2SM-RCM/cosmo-1.git'
     maintainers = ['elsagermann']
 
     version('master', branch='master', get_full_repo=True)
@@ -59,6 +61,7 @@ class Cosmo(MakefilePackage):
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
 
     dycore_deps(apngit)
+    dycore_deps(c2smgit)
 
     depends_on('netcdf-fortran +mpi', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))
