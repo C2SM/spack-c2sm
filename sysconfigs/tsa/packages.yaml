@@ -100,5 +100,8 @@ packages:
     version: [master] 
   icon:
     variants: host=tsa
-
+  llvm:
+    paths:
+      llvm@10.0.0: /project/g110/install/tsa/llvm-10
+    buildable: False
 
