@@ -18,7 +18,7 @@ class Dawn(CMakePackage):
     version('master', branch='master')
 
     depends_on('cmake')
-    depends_on('llvm@10.0.0')
+    depends_on('llvm@10.0.0 +clang')
     depends_on('python@3.8.0:3.8.999')
     depends_on('py-setuptools', type='build')
     depends_on('py-protobuf', type=('build','run'))
@@ -35,4 +35,3 @@ class Dawn(CMakePackage):
         args.append('-DLLVM_ROOT=' + spec['llvm'].prefix)
         args.append('-DDAWN_REQUIRE_PYTHON=ON')
         return args
-
