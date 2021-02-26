@@ -61,7 +61,7 @@ class Cosmo(MakefilePackage):
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
 
     dycore_deps(apngit)
-    dycore_deps(c2smgit)
+#    dycore_deps(c2smgit)
 
     depends_on('netcdf-fortran +mpi', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))
