@@ -21,7 +21,7 @@
 # ----------------------------------------------------------------------------
 
 from spack import *
-
+import subprocess
 
 class Icontools(AutotoolsPackage):
     """
@@ -159,3 +159,10 @@ class Icontools(AutotoolsPackage):
         # Daint specific flags to cache
         env.set('acx_cv_fc_ftn_include_flag', '-I')
         env.set('acx_cv_fc_pp_include_flag', '-I')
+
+    @run_after('build')
+    def test(self):
+            try:
+                subprocess.run(['/bin/bash', 'C2SM-scripts/test/jenkins/test.sh'], stderr=subprocess.STDOUT, check=True)
+            except:
+                raise InstallError('Tests for Icontools failed')
