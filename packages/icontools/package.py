@@ -140,7 +140,6 @@ class Icontools(AutotoolsPackage):
         env.set('acx_cv_fc_pp_include_flag', '-I')
 
     @run_after('build')
-    @on_package_attributes(run_tests=True)
     def test(self):
             try:
                 subprocess.run(['/bin/bash', 'C2SM-scripts/test/jenkins/test.sh'], stderr=subprocess.STDOUT, check=True)
