@@ -30,13 +30,12 @@ class Icontools(AutotoolsPackage):
     (for example the boundary condition, initial condition file,...) for ICON.
     """
 
-    # FIXME: Add a proper url for your package's homepage here.
     homepage= 'https://wiki.c2sm.ethz.ch/MODELS/ICONDwdIconTools'
     git = 'git@github.com:C2SM-ICON/dwd_icon_tools.git'
 
     maintainers = ['jonasjucker']
 
-    version('master', branch='remove_omp')
+    version('master', branch='master')
 
     depends_on('autoconf', type='build')
     depends_on('automake', type='build')
@@ -71,19 +70,11 @@ class Icontools(AutotoolsPackage):
 
     def setup_build_environment(self, env):
         self.setup_run_environment(env)
-        #env.set('NETCDF_DIR','{}'.format(self.spec['netcdf-c'].prefix))
-        #env.set('HDF5_ROOT','{}'.format(self.spec['hdf5'].prefix))
 
         # construct all includes/libraries for **FLAGS
         include = ''
         libs = ''
 
-        # NetCDF
-        ###MKr include +=' -I{}/include'.format(self.spec['netcdf-fortran'].prefix)
-        ###MKr libs =' -L{}/lib -lnetcdff'.format(self.spec['netcdf-fortran'].prefix)
-
-        ###MKr include +=' -I{}/include'.format(self.spec['netcdf-c'].prefix)
-        ###MKr libs +=' -L{}/lib -lnetcdf '.format(self.spec['netcdf-c'].prefix)
         include +=' -I{}/include'.format(self.spec['netcdf-c'].prefix)
         libs +=' -L{}/lib '.format(self.spec['netcdf-c'].prefix)
         env.set('NETCDF_DIR','{}'.format(self.spec['netcdf-c'].prefix))
@@ -93,8 +84,6 @@ class Icontools(AutotoolsPackage):
         libs +=' -L{}/lib '.format(self.spec['mpi'].prefix)
 
         # Jasper
-        ###MKr include +=' -I{}/include'.format(self.spec['jasper'].prefix)
-        ###MKr libs +=' -L{}/lib -ljasper'.format(self.spec['jasper'].prefix)
         include +=' -I{}/include'.format(self.spec['jasper'].prefix)
         libs +=' -L{}/lib '.format(self.spec['jasper'].prefix)
 
@@ -103,8 +92,6 @@ class Icontools(AutotoolsPackage):
 
         # Grib-Api/Eccodes
         if '~eccodes' in self.spec:
-            ###MKr include +=' -I{}/include'.format(self.spec['cosmo-grib-api'].prefix)
-            ###MKr libs +=' -L{}/lib -lgrib_api_f90 -lgrib_api'.format(self.spec['cosmo-grib-api'].prefix)
             include +=' -I{}/include'.format(self.spec['cosmo-grib-api'].prefix)
             libs +=' -L{}/lib '.format(self.spec['cosmo-grib-api'].prefix)
         else:
@@ -115,7 +102,6 @@ class Icontools(AutotoolsPackage):
             else:
                 eccodes_lib_dir='lib'
 
-            ###MKr libs +=' -L{}/{} -leccodes -leccodes_f90'.format(self.spec['eccodes'].prefix, eccodes_lib_dir)
             libs +=' -L{}/{} '.format(self.spec['eccodes'].prefix, eccodes_lib_dir)
 
         # Cray Libsci
