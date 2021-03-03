@@ -56,9 +56,6 @@ packages:
             cray-libsci@20.06.1%intel: cray-libsci
             cray-libsci@20.06.1%cce:   cray-libsci
             cray-libsci@20.06.1%pgi:   cray-libsci
-        paths:
-            cray-libsci@20.06.1%cce: /opt/cray/pe/libsci/20.06.1/CRAYCLANG/9.0/x86_64
-
     cray-libsci_acc:
         buildable: false
         modules:
@@ -113,11 +110,10 @@ packages:
             hdf5@1.12.0.0%gcc+mpi+hl+fortran:   cray-hdf5-parallel/1.12.0.0
             hdf5@1.12.0.0%cce+mpi+hl+fortran:   cray-hdf5-parallel/1.12.0.0
             hdf5@1.12.0.0%pgi+mpi+hl+fortran:   cray-hdf5-parallel/1.12.0.0
-        paths:
-            hdf5@1.12.0.0%cce~mpi+hl: /opt/cray/pe/hdf5/1.12.0.0/CRAYCLANG/9.0
-            hdf5@1.12.0.0%cce~mpi+hl+fortran: /opt/cray/pe/hdf5/1.12.0.0/CRAYCLANG/9.0
     hwloc:
         variants: +cuda
+    icon:
+        variants: host=daint
     intel-mkl:
         buildable: false
         paths:
@@ -167,17 +163,13 @@ packages:
             netcdf-c@4.7.4.0%intel~parallel-netcdf~mpi: cray-netcdf/4.7.4.0
             netcdf-c@4.7.4.0%cce~parallel-netcdf~mpi:   cray-netcdf/4.7.4.0
             netcdf-c@4.7.4.0%pgi~parallel-netcdf~mpi:   cray-netcdf/4.7.4.0
-        paths: 
-            netcdf-c@4.7.4.0%cce~parallel-netcdf~mpi: /opt/cray/pe/netcdf/4.7.4.0/CRAYCLANG/9.0
     netcdf-fortran:
         buildable: false
         modules:
-            netcdf-fortran@4.7.4.0%gcc+mpi:   cray-netcdf/4.7.4.0
-            netcdf-fortran@4.7.4.0%intel+mpi: cray-netcdf/4.7.4.0
-            netcdf-fortran@4.7.4.0%cce+mpi:   cray-netcdf/4.7.4.0
-            netcdf-fortran@4.7.4.0%pgi+mpi:   cray-netcdf/4.7.4.0
-        paths:
-            netcdf-fortran@4.7.4.0%cce+mpi: /opt/cray/pe/netcdf/4.7.4.0/CRAYCLANG/9.0  
+            netcdf-fortran@4.7.4.0%gcc+mpi:   cray-netcdf-hdf5parallel/4.7.4.0
+            netcdf-fortran@4.7.4.0%intel+mpi: cray-netcdf-hdf5parallel/4.7.4.0
+            netcdf-fortran@4.7.4.0%cce+mpi:   cray-netcdf-hdf5parallel/4.7.4.0
+            netcdf-fortran@4.7.4.0%pgi+mpi:   cray-netcdf-hdf5parallel/4.7.4.0
     netcdf-cxx4:
         buildable: false
         modules:
@@ -188,6 +180,9 @@ packages:
         variants: build_type=Release
     netlib-lapack:
         variants: build_type=Release +external-blas+lapacke
+    ompt-openmp:
+        paths:
+            ompt-openmp%pgi: /opt/pgi/20.1.1/linux86-64-llvm/20.1/lib/libomp
     openblas:
         variants: +pic +shared threads=openmp ~virtual_machine
     openssl:
@@ -252,4 +247,8 @@ packages:
     zlib:
         paths:
              zlib@1.2.11: /usr
+    llvm:
+        paths:
+            llvm@10.0.0: /project/g110/install/daint/llvm-10
+        buildable: False
 
