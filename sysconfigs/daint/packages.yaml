@@ -118,6 +118,10 @@ packages:
             hdf5@1.12.0.0%cce~mpi+hl+fortran: /opt/cray/pe/hdf5/1.12.0.0/CRAYCLANG/9.0
     hwloc:
         variants: +cuda
+    icontools:
+        variants: slave=daint
+        compiler: [cce]  
+
     intel-mkl:
         buildable: false
         paths:
