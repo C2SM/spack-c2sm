@@ -35,9 +35,9 @@ class Icontools(AutotoolsPackage):
     depends_on('libtool',  type='build')
     depends_on('m4', type='build')
 
-    depends_on('cray-libsci %cce', type=('build', 'link'))
-    depends_on('netcdf-fortran %cce ~mpi', type=('build', 'link'))
-    depends_on('netcdf-c %cce ~mpi', type=('build', 'link'))
+    depends_on('cray-libsci ', type=('build', 'link'), when='slave=daint')
+    depends_on('netcdf-fortran ~mpi', type=('build', 'link'))
+    depends_on('netcdf-c ~mpi', type=('build', 'link'))
     depends_on('mpi', type=('build', 'link', 'run'),)
     depends_on('eccodes ~aec', type=('build', 'link', 'run'))
     depends_on('cosmo-grib-api', type=('build','link','run'), when='~eccodes')
@@ -45,6 +45,7 @@ class Icontools(AutotoolsPackage):
     depends_on('jasper@1.900.1%gcc ~shared', type=('build','link'))
 
     variant('eccodes', default=True, description='Build with eccodes instead of grib-api')
+    variant('slave', default='daint', description='Build on described slave (e.g daint)', multi=False, values=('tsa', 'daint'))
 
     def configure_args(self):
         args =[]
@@ -68,7 +69,8 @@ class Icontools(AutotoolsPackage):
 
     def setup_build_environment(self, env):
         # Daint specific flags since cray-modules setting not recognized
-        env.set('NETCDF_DIR', '{}'.format(self.spec['netcdf-c'].prefix))
+        if self.spec.variants['slave'].value == 'daint':
+            env.set('NETCDF_DIR', '{}'.format(self.spec['netcdf-c'].prefix))
 
         #Setting CFLAGS
         env.append_flags('CFLAGS', '-O2')
@@ -94,18 +96,28 @@ class Icontools(AutotoolsPackage):
         env.append_flags('FCFLAGS', '-DNOMPI')
         #Setting LIBS
         env.append_flags('LIBS', '-lhdf5')
-        env.append_flags('LIBS', '-ljasper')
-        env.append_flags('LIBS', '-lsci_cray')
+        if self.spec.variants['slave'].value == 'daint':
+            env.append_flags('LIBS', '-lsci_cray')
+
         if '~eccodes' in self.spec:
             env.append_flags('LIBS', '-lgrib_api')
             env.append_flags('LIBS', '-lgrib_api_f90')
         else:
             env.append_flags('LIBS', '-leccodes')
             env.append_flags('LIBS', '-leccodes_f90')
+        env.append_flags('LIBS', '-ljasper')
+
+        if self.spec.variants['slave'].value == 'tsa':
+            env.append_flags('LIBS', '-lgfortran')
 
     @run_after('build')
     def test(self):
-            try:
-                subprocess.run(['/bin/bash', 'C2SM-scripts/test/jenkins/test.sh'], stderr=subprocess.STDOUT, check=True)
-            except:
+            if self.spec.variants['slave'].value == 'daint':
+                test_process = subprocess.run(['sbatch', '-W', '--time=00:15:00', '-A', 'g110', '-C', 'gpu', '-p', 'debug', './C2SM-scripts/test/jenkins/test.sh'], stderr=subprocess.STDOUT)
+            if self.spec.variants['slave'].value == 'tsa':
+                test_process = subprocess.run(['sbatch', '-W', '--time=00:15:00', '-p', 'debug', './C2SM-scripts/test/jenkins/test.sh'], stderr=subprocess.STDOUT)
+            if test_process.returncode != 0:
+                cat_submit_process = subprocess.run(['cat', 'job.out'], stderr=subprocess.STDOUT, check=True)
                 raise InstallError('Tests for Icontools failed')
+            else:
+                cat_submit_process = subprocess.run(['cat', 'job.out'], stderr=subprocess.STDOUT, check=True)
