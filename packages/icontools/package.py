@@ -37,37 +37,26 @@ class Icontools(AutotoolsPackage):
 
     depends_on('cray-libsci %cce ', type=('build', 'link'),when='slave=daint')
 
-    depends_on('netcdf-fortran  ~mpi', type=('build', 'link'))
+    depends_on('netcdf-fortran ~mpi', type=('build', 'link'))
     depends_on('netcdf-c ~mpi', type=('build', 'link'))
-    depends_on('hdf5  ~mpi +hl', type=('build','link'))
+    depends_on('hdf5 ~mpi +hl', type=('build','link'))
     depends_on('mpi', type=('build', 'link', 'run'),)
     depends_on('eccodes ~aec', type=('build', 'link', 'run'))
     depends_on('cosmo-grib-api', type=('build','link','run'), when='~eccodes')
     depends_on('jasper@1.900.1%gcc ~shared', type=('build','link'))
 
-    variant('eccodes', default=True, description='Build with eccodes instead of grib-api')
     variant('slave', default='daint', description='Build on described slave (e.g daint)', multi=False, values=('tsa', 'daint'))
-    
-    conflicts('%gcc', when='slave=daint')
-    conflicts('%pgi', when='slave=daint')
 
     def configure_args(self):
         args =[]
-        args.append('CC={0}'.format(self.compiler.cc))
-        args.append('CXX={0}'.format(self.compiler.cxx))
-        args.append('FC={0}'.format(self.compiler.fc))
-        args.append('F77={0}'.format(self.compiler.f77))
         args.append('acx_cv_fc_ftn_include_flag=-I')
         args.append('acx_cv_fc_pp_include_flag=-I')
         args.append('--disable-silent-rules')
         args.append('--disable-shared')
         args.append('--with-netcdf={0}'.format(self.spec['netcdf-fortran'].prefix))
         args.append('--enable-iso-c-interface')
-        if '~eccodes' in self.spec:
-            args.append('--with-grib_api={0}'.format(self.spec['cosmo-grib-api'].prefix))
-        else:
-            args.append('--enable-grib2')
-            args.append('--with-eccodes={0}'.format(self.spec['eccodes'].prefix))
+        args.append('--enable-grib2')
+        args.append('--with-eccodes={0}'.format(self.spec['eccodes'].prefix))
 
         return args
 
@@ -103,12 +92,10 @@ class Icontools(AutotoolsPackage):
         if self.spec.variants['slave'].value == 'daint':
             env.append_flags('LIBS', '-lsci_cray')
 
-        if '~eccodes' in self.spec:
-            env.append_flags('LIBS', '-lgrib_api')
-            env.append_flags('LIBS', '-lgrib_api_f90')
-        else:
-            env.append_flags('LIBS', '-leccodes')
-            env.append_flags('LIBS', '-leccodes_f90')
+        env.append_flags('LIBS', '-leccodes')
+        env.append_flags('LIBS', '-leccodes_f90')
+
+        # jasper needs to be after eccodes, otherwise linking error
         env.append_flags('LIBS', '-ljasper')
 
         if self.spec.variants['slave'].value == 'tsa':
