@@ -37,6 +37,7 @@ class Int2lm(MakefilePackage):
 
     version('master', branch='master')
     version('dev-build', branch='master')
+    version('v2.8.3', commit='43796aa0a2c56071efc3277397abbbf78dab1247')
     version('v2.8.2', commit='7f8bf2e3f5e77489cfdb4443578a43431408e2bd')
     version('v2.8.1', commit='844d239cfa83bc9980696cae56f47da3d08ce4ec')
     version('v2.7.2', commit='7a460906e826142be1fb9338d2210ccf7566d5a2')
@@ -46,10 +47,10 @@ class Int2lm(MakefilePackage):
 
     depends_on('cosmo-grib-api-definitions', type=('build','run'), when='~eccodes')
     depends_on('cosmo-eccodes-definitions ~aec', type=('build','run'), when='+eccodes')
-    depends_on('libgrib1@master')
+    depends_on('libgrib1@master', type='build')
     depends_on('mpi', type=('build', 'link', 'run'), when='+parallel')
-    depends_on('netcdf-c')
-    depends_on('netcdf-fortran +mpi')
+    depends_on('netcdf-c',type=('build', 'link'))
+    depends_on('netcdf-fortran +mpi', type=('build', 'link'))
 
     variant('debug', default=False, description='Build debug INT2LM')
     variant('eccodes', default=True, description='Build with eccodes instead of grib-api')

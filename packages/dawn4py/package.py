@@ -22,6 +22,7 @@ class Dawn4py(PythonPackage):
     extends('python@3.8.0:3.8.999')
 
     depends_on('cmake', type='build')
+    depends_on('llvm@10.0.0')
     depends_on('py-setuptools', type='build')
     depends_on('py-protobuf', type=('build','run'))
     depends_on('py-attrs', type=('build','run'))
@@ -30,3 +31,6 @@ class Dawn4py(PythonPackage):
 
     # will test that dawn4py is importable after the install
     import_modules = ['dawn4py']
+
+    def setup_build_environment(self, env):
+        env.set('LLVM_ROOT', self.spec['llvm'].prefix)

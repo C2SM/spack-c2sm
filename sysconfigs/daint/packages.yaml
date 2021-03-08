@@ -121,7 +121,8 @@ packages:
     icontools:
         variants: slave=daint
         compiler: [cce]  
-
+    icon:
+        variants: host=daint
     intel-mkl:
         buildable: false
         paths:
@@ -193,6 +194,9 @@ packages:
         variants: build_type=Release
     netlib-lapack:
         variants: build_type=Release +external-blas+lapacke
+    ompt-openmp:
+        paths:
+            ompt-openmp%pgi: /opt/pgi/20.1.1/linux86-64-llvm/20.1/lib/libomp
     openblas:
         variants: +pic +shared threads=openmp ~virtual_machine
     openssl:
@@ -257,4 +261,8 @@ packages:
     zlib:
         paths:
              zlib@1.2.11: /usr
+    llvm:
+        paths:
+            llvm@10.0.0: /project/g110/install/daint/llvm-10
+        buildable: False
 
