@@ -39,7 +39,7 @@ def set_dycore_dep():
         test_dep = '+dycoretest' if it[3] else '~dycoretest'
         gt1_dep = '+gt1' if it[4] else '~gt1'
 
-        orig='cosmo-dycore'+' real_type='+real_type+' '+ prod_opt + ' ' + cuda_opt+' ' +test_opt + ' ' + gt1_dep
+        orig='cosmo-dycore%gcc@8.1.0:8.4.0'+' real_type='+real_type+' '+ prod_opt + ' ' + cuda_opt+' ' +test_opt + ' ' + gt1_dep
         #orig='cosmo-dycore'+' real_type='+real_type+' '+ prod_opt + ' ' + cuda_opt+' ' +test_opt + ' ' + gt1_dep
         dep='real_type='+real_type+' '+ prod_opt + ' '+ cuda_dep + ' +cppdycore'+' '+test_dep + ' ' + gt1_dep
         depends_on(orig, when=dep, type='build')
