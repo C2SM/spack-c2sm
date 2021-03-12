@@ -262,6 +262,9 @@ class Cosmo(MakefilePackage):
                 OptionsFile.filter('PFLAGS   = -Mpreprocess.*', 'PFLAGS   = -Mpreprocess -DNO_ACC_FINALIZE')
 
     def install(self, spec, prefix):
+        package = spack.repo.get(spec)
+        install(package.env_path, prefix)
+
         with working_dir(self.build_directory):
             mkdir(prefix.bin)
             if '+serialize' in spec:
