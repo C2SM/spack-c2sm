@@ -116,10 +116,13 @@ def main():
             upstreamfile, 'w'), default_flow_style=False)
 
     # copy modules.yaml, packages.yaml and compiles.yaml files in site scope of spack instance
-    os.popen('cp -rf sysconfigs/' + args.machine.replace('admin-',
-                                                         '') + '/* ' + args.idir + '/spack/etc/spack')
+    config_files = ["compilers.yaml", "modules.yaml", "packages.yaml"]
+    for afile in config_files:
+        subprocess.run('cp sysconfigs/' + args.machine.replace('admin-',
+                                                               '') + '/' + afile+' ' + args.idir + '/spack/etc/spack', check=True)
 
-    print('MCH Spack installed.')
+    print('Spack successfully installed. \n source '+args.idir +
+          '/spack/share/spack/setup-env.sh for setting up the instance')
 
 
 if __name__ == "__main__":
