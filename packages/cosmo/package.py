@@ -12,35 +12,40 @@ def get_releases(repo):
         git_tags = [re.match('refs/tags/(.*)', x.decode('utf-8')).group(1) for x in git_obj.stdout.split() if re.match('refs/tags/(.*)', x.decode('utf-8'))]
         return git_tags
 
-def dycore_deps(repo):
+def set_versions(repo, reg_filter=None):
+    def filterfn(repo_tag):
+        return re.match(reg_filter, repo_tag) != None
+
     tags = get_releases(repo)
+    if reg_filter:
+        tags = list(filter(filterfn, tags))
+
     for tag in tags:
         version(tag, git=repo, tag=tag, get_full_repo=True)
 
-    tags.append('master')
-    tags.append('dev-build')
-    tags.append('mch')
-    tags.append('c2sm')
+def set_dycore_dep():
+    types = ['float','double']
+    prod = [True,False]
+    cuda = [True, False]
+    testing = [True, False]
+    gt1 = [True, False]
+    comb=list(itertools.product(*[types, prod, cuda, testing, gt1]))
+    for it in comb:
+        real_type=it[0]
+        prod_opt = '+production' if it[1] else '~production'
+        cuda_opt = '+cuda' if it[2] else '~cuda cuda_arch=none'
+        cuda_dep = 'cosmo_target=gpu' if it[2] else ' cosmo_target=cpu'
+        test_opt = '+build_tests' if it[3] else '~build_tests'
+        test_dep = '+dycoretest' if it[3] else '~dycoretest'
+        gt1_dep = '+gt1' if it[4] else '~gt1'
 
-    for tag in tags:    
-        types = ['float','double']
-        prod = [True,False]
-        cuda = [True, False]
-        testing = [True, False]
-        gt1 = [True, False]
-        comb=list(itertools.product(*[types, prod, cuda, testing, gt1]))
-        for it in comb:
-            real_type=it[0]
-            prod_opt = '+production' if it[1] else '~production'
-            cuda_opt = '+cuda' if it[2] else '~cuda cuda_arch=none'
-            cuda_dep = 'cosmo_target=gpu' if it[2] else ' cosmo_target=cpu'
-            test_opt = '+build_tests' if it[3] else '~build_tests'
-            test_dep = '+dycoretest' if it[3] else '~dycoretest'
-            gt1_dep = '+gt1' if it[4] else '~gt1'
+        orig='cosmo-dycore%gcc@8.1.0:8.4.0'+' real_type='+real_type+' '+ prod_opt + ' ' + cuda_opt+' ' +test_opt + ' ' + gt1_dep
+        #orig='cosmo-dycore'+' real_type='+real_type+' '+ prod_opt + ' ' + cuda_opt+' ' +test_opt + ' ' + gt1_dep
+        dep='real_type='+real_type+' '+ prod_opt + ' '+ cuda_dep + ' +cppdycore'+' '+test_dep + ' ' + gt1_dep
+        depends_on(orig, when=dep, type='build')
 
-            orig='cosmo-dycore@'+tag+'%gcc@8.1.0:8.4.0 real_type='+real_type+' '+ prod_opt + ' ' + cuda_opt+' ' +test_opt + ' ' + gt1_dep
-            dep='@'+tag+' real_type='+real_type+' '+ prod_opt + ' '+ cuda_dep + ' +cppdycore'+' '+test_dep + ' ' + gt1_dep
-            depends_on(orig, when=dep, type='build')
+
+
 
 class Cosmo(MakefilePackage):
     """COSMO: Numerical Weather Prediction Model. Needs access to private GitHub."""
@@ -61,9 +66,10 @@ class Cosmo(MakefilePackage):
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
 
-    dycore_deps(apngit)
-    # Uncomment to build c2sm release 
-    # dycore_deps(c2smgit)
+    set_versions(apngit, reg_filter='.*mch.*')
+    set_versions(c2smgit)
+
+    set_dycore_dep()
 
     depends_on('netcdf-fortran +mpi', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))
