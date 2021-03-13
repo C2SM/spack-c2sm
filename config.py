@@ -72,7 +72,7 @@ def main():
 
     # copy config.yaml file in site scope of spack instance
     configfile = args.idir + '/spack/etc/spack' + '/config.yaml'
- 
+
     shutil.copy('sysconfigs/' + args.machine.replace('admin-', '') +
                 '/config.yaml', configfile)
 
@@ -100,12 +100,13 @@ def main():
     config_data['config']['module_roots']['tcl'] = args.pckgidir + \
         '/modules/' + args.machine
     config_data['config']['extensions'] = [dir_path + '/tools/spack-scripting']
-    yaml.safe_dump(config_data, open(configfile, 'w'), default_flow_style=False)
+    yaml.safe_dump(config_data, open(configfile, 'w'),
+                   default_flow_style=False)
 
     # copy modified upstreams.yaml if not admin
     if args.upstreams == 'ON':
         upstreamfile = args.idir + '/spack/etc/spack' + '/upstreams.yaml'
-        shutil.copy('sysconfigs/upstreams.yaml',upstreamfile)
+        shutil.copy('sysconfigs/upstreams.yaml', upstreamfile)
 
         upstreams_data = yaml.safe_load(
             open(upstreamfile, 'r'))
