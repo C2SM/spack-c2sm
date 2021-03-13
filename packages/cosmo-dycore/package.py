@@ -41,6 +41,7 @@ class CosmoDycore(CMakePackage):
     git      = "git@github.com:COSMO-ORG/cosmo.git"
     maintainers = ['elsagermann']
     
+    version('ci_release', git='git@github.com:cosunae/cosmo.git', branch='ci_release')
     version('master', branch='master')
     version('dev-build', branch='master')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
