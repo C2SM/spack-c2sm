@@ -57,7 +57,7 @@ class Cosmo(MakefilePackage):
     c2smgit  = 'git@github.com:C2SM-RCM/cosmo-1.git'
     maintainers = ['elsagermann']
 
-    version('coconut', git='git@github.com:cosunae/cosmo.git', branch='ci_release')
+    version('ci_release', git='git@github.com:cosunae/cosmo.git', branch='ci_release')
     version('master', branch='master', get_full_repo=True)
     version('dev-build', branch='master', get_full_repo=True)
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch', get_full_repo=True)
