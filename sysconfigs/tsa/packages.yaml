@@ -85,6 +85,8 @@ packages:
   slurm:
     modules:
       slurm@19.05.05%gcc: slurm/19.05.05
+  icontools: 
+    variants: slave=tsa
   int2lm:
     variants: slave=tsa
   libgrib1:
