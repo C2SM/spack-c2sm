@@ -20,7 +20,7 @@ from spack.spec import Spec
 from spack.cmd.dev_build import dev_build
 from spack.main import SpackCommand
 
-from buildconf import BuildConf
+from buildyamlconf import DepsYamlConf
 
 description = "Dev-build cosmo and dycore with or without testing."
 section = "scripting"
@@ -49,15 +49,28 @@ def devbuildcosmo(self, args):
     if not args.spec:
         tty.die("spack dev-build requires a package spec argument.")
 
-    buildcfg = BuildConf()
+    specs = spack.cmd.parse_specs(args.spec)
+ 
+    if len(specs) > 1:
+        tty.die("spack dev-build only takes one spec.")
+
+    cosmo_spec = specs[0]
+    cosmo_spec.concretize()
+
+
+    # Setting source_path to current working directory
+    source_path = os.getcwd()
+    source_path = os.path.abspath(source_path)
+
+    depsconf = DepsYamlConf(source_path)
     spec_str = ''.join(args.spec)
-    for dep in buildcfg.depsconf_.parameters_.keys():
+    for dep in depsconf.parameters_.keys():
         print(dep, args.spec)
         if re.search('\^'+dep, spec_str):
             print("Error: found in spec a dependency key:", dep, " that is already specified in dependencies.yaml " )
             sys.exit(1)
 
-    dep_spec = buildcfg.dependency_spec
+    dep_spec = depsconf.dependency_spec(cosmo_spec)
     # Remove the reference the dycore in the spec, since it will be devbuild
     dep_spec = re.sub(r'\^cosmo-dycore@[^ ]*','',dep_spec)
     for aspec in dep_spec.split():
@@ -70,7 +83,6 @@ def devbuildcosmo(self, args):
         tty.die("spack dev-build only takes one spec.")
 
     cosmo_spec = specs[0]
-
     cosmo_spec.concretize()
 
     # Setting source_path to current working directory

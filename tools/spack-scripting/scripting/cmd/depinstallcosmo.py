@@ -59,7 +59,7 @@ def depinstallcosmo(self, args):
 
     depsconf = DepsYamlConf(package.stage.source_path)
 
-    for aspec in depsconf.dependency_spec.split():
+    for aspec in depsconf.dependency_spec(cosmo_spec).split():
         args.spec.append(aspec)
 
     specs = spack.cmd.parse_specs(args.spec)
