@@ -68,7 +68,7 @@ packages:
             cray-libsci_acc@20.06.1%pgi:   cray-libsci_acc/20.06.1
     cuda:
         modules:
-          cuda@10.2%gcc: cudatoolkit/10.2.89_3.28-7.0.2.1_2.17__g52c0314
+          cuda@10.2%gcc: cudatoolkit/10.2.89_3.29-7.0.2.1_3.5__g67354b4
         version: ['10.2']
     curl:
         paths:
