@@ -53,8 +53,8 @@ class DepsYamlConf(YamlConf):
         if concretized_spec.satisfies('+cppdycore'):
             spack_spec = spack_spec+' '+dycoredep
         if concretized_spec.satisfies('+eccodes'):
-            spack_spec = spack_spec+' '+" ^cosmo-eccodes-definitions@" + \
-            eccodes_def_v
+            spack_spec = spack_spec+' '+"^cosmo-eccodes-definitions@" + \
+                eccodes_def_v + ' '+"^eccodes@"+eccodes_v
         if concretized_spec.satisfies('+claw'):
             spack_spec = spack_spec+' '+" ^claw@"+claw_v
         if concretized_spec.satisfies('+serialize'):
