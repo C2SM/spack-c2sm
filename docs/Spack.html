@@ -1,0 +1,152 @@
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MeteoSwiss Spack Instance &#8212; MeteoSwiss DevOps v0.0.1 documentation</title>
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="static/p_sphinx_theme.css" type="text/css" />
+    <link rel="stylesheet" href="static/local_fonts.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="static/documentation_options.js"></script>
+    <script src="static/jquery.js"></script>
+    <script src="static/underscore.js"></script>
+    <script src="static/doctools.js"></script>
+    <script src="static/jquery.cookie.js"></script>
+    <script src="static/p_sphinx_theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Deployment of COSMO to OSM" href="Deployment.html" />
+    <link rel="prev" title="Releases" href="Releases.html" /> 
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+      <div class="relbar-top">
+            
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Deployment.html" title="Deployment of COSMO to OSM"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="Releases.html" title="Releases"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+      <li><a href="index.html">MeteoSwiss DevOps v0.0.1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">MeteoSwiss Spack Instance</a></li> 
+      </ul>
+    </div>
+      </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="meteoswiss-spack-instance">
+<h1>MeteoSwiss Spack Instance<a class="headerlink" href="#meteoswiss-spack-instance" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="how-to-re-create-the-spack-instance">
+<h2>How to re-create the spack instance<a class="headerlink" href="#how-to-re-create-the-spack-instance" title="Permalink to this headline">¶</a></h2>
+<p>First, you might want to delete the old spack instances if you want to refresh them.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rm -rf /project/g110/spack/user/admin-<span class="nv">$slave</span> /project/g110/spack/user/<span class="nv">$slave</span>
+</pre></div>
+</div>
+<p>If you want to recreate them from scratch, don’t forget to remove their associated installations directories (modules, stages &amp; installations)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rm -rf /project/g110/modules/admin-<span class="nv">$slave</span>/ /project/g110/spack-stages/<span class="nv">$slave</span> /project/g110/spack-install/<span class="nv">$slave</span>
+</pre></div>
+</div>
+<p>Once this is done, you can use the config.py of the spack-mch instance to create the two mch instances (admin for the official installation under /project/g110/spack-install, users installation under /scratch/$user/spack/spack-install)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/MeteoSwiss-APN/spack-mch/
+<span class="nb">cd</span> spack-mch
+./config.py -m admin-<span class="nv">$slave</span> -i /project/g110/spack/user/admin-<span class="nv">$slave</span>
+./config.py -m <span class="nv">$slave</span> -i /project/g110/spack/user/<span class="nv">$slave</span>
+</pre></div>
+</div>
+<p>Finally install something with both instances to create a database file for the admin-instance respectively a junit-report file for the users instance, both files being needed to be able to source and install as a non-jenkins user. In order to do that first source the corresponding instances and then install something (Ex: the grib-api definitions).</p>
+<p>Admin instance:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>. /project/g110/spack/user/admin-<span class="nv">$slave</span>/spack/share/spack/setup-env.sh
+spack install cosmo-grib-api-definition
+</pre></div>
+</div>
+<p>Users instance:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>. /project/g110/spack/user/admin-<span class="nv">$slave</span>/spack/share/spack/setup-env.sh
+spack install cosmo-grib-api-definition
+</pre></div>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="sphinxlocaltoc">
+    <h3><a href="index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">MeteoSwiss Spack Instance</a><ul>
+<li><a class="reference internal" href="#how-to-re-create-the-spack-instance">How to re-create the spack instance</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Spack.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+      <div class="relbar-bottom">
+            
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Deployment.html" title="Deployment of COSMO to OSM"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="Releases.html" title="Releases"
+             >previous</a> &nbsp; &nbsp;</li>
+      <li><a href="index.html">MeteoSwiss DevOps v0.0.1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">MeteoSwiss Spack Instance</a></li> 
+      </ul>
+    </div>
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Carlos Osuna.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.1.
+    </div>
+      <!-- PSphinxTheme -->
+  </body>
+</html>

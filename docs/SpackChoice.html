@@ -1,0 +1,175 @@
+
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Why was spack chosen by MeteoSwiss? &#8212; MeteoSwiss DevOps v0.0.1 documentation</title>
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="static/p_sphinx_theme.css" type="text/css" />
+    <link rel="stylesheet" href="static/local_fonts.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="static/documentation_options.js"></script>
+    <script src="static/jquery.js"></script>
+    <script src="static/underscore.js"></script>
+    <script src="static/doctools.js"></script>
+    <script src="static/jquery.cookie.js"></script>
+    <script src="static/p_sphinx_theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Performance benchmarks of COSMO" href="Performance.html" /> 
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+      <div class="relbar-top">
+            
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Performance.html" title="Performance benchmarks of COSMO"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+      <li><a href="index.html">MeteoSwiss DevOps v0.0.1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Why was spack chosen by MeteoSwiss?</a></li> 
+      </ul>
+    </div>
+      </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="why-was-spack-chosen-by-meteoswiss">
+<h1>Why was spack chosen by MeteoSwiss?<a class="headerlink" href="#why-was-spack-chosen-by-meteoswiss" title="Permalink to this headline">¶</a></h1>
+<p>So the question came up why spack was chosen as the package manager for MeteoSwiss
+and I wanted to try to answer this here so that others can see this as well
+(my account may be incomplete, but should hopefully give a decent view on the whole topic):</p>
+<p>The main issue is that MCH has some hefty requirements when it comes to building software.</p>
+<p>To just name a few:</p>
+<ul class="simple">
+<li><p>We need to be able to build multiple versions and configurations of the same software
+(most linux distributions will provide one officially supported version and for others
+you’re mostly on your own)</p></li>
+<li><p>Hardware matters for our software due to performance reasons. E.g., the MPI implementation
+or specific GPU models are important (this is a problem for package managers that try
+to create very isolated build environments)</p></li>
+<li><p>Build Systems of some of our software can be quite tricky to deal with (as part of
+its build process COSMO requires one to edit the Makefile which we usually automate
+with something like regex I believe)</p></li>
+<li><p>We often have to build a lot of HPC dependencies/libraries that aren’t part of a
+usual system’s installation (which means we don’t really want to just use some bash
+scripts, we tried that and it became very difficult to maintain)</p></li>
+<li><p>We want to also create development builds and possibly hack the build of a package
+(clean building of packages isn’t enough, we also need hackability)</p></li>
+<li><p>We have multiple relevant machines all with different hardware, MPI implementations
+and Accelerators/GPUs  (MCH alone needs tsa &amp; daint, but we used to also have kesch
+and our collaborators have a whole lot of other machines as well)</p></li>
+</ul>
+<p>These requirements are very common in HPC and they rule out a lot of popular solutions
+(e.g., <cite>apt-get</cite>, <cite>pacman</cite>, <cite>rpm</cite>, etc). There are still quite a few package managers left
+that could fullfill all the requirements. But of all of those spack has by far the
+biggest adoption within HPC (just google “HPC package manager” and the first few pages
+are dominated by spack).</p>
+<p>Spack is adopted by:</p>
+<ul class="simple">
+<li><p>The US Department of Energy (which includes Aurora (1 exaFLOPS), Frontier
+(1.5 exaFLOPS) and El Capitan (2 exaFLOPS))</p></li>
+<li><p>Riken (this includes Fugaku (~2 exaFLOPS))</p></li>
+<li><p>CERN</p></li>
+<li><p>EPFL</p></li>
+<li><p>Fermilab</p></li>
+<li><p>CSCS provides some support for spack
+( <a class="reference external" href="https://user.cscs.ch/computing/compilation/spack/">https://user.cscs.ch/computing/compilation/spack/</a> )</p></li>
+</ul>
+<p>This strong dominance sets it apart from all other viable options. It only makes
+sense for MCH to follow the rest of the industry.</p>
+<p>A comparison of various tools (including spack) can be found
+<a class="reference external" href="https://easybuilders.github.io/easybuild-tutorial/comparison_other_tools/">here</a>
+and
+<a class="reference external" href="https://archive.fosdem.org/2018/schedule/event/installing_software_for_scientists/attachments/slides/2437/export/events/attachments/installing_software_for_scientists/slides/2437/20180204_installing_software_for_scientists.pdf">here</a>.</p>
+<p>I believe the timeline of spack at MCH was roughly:</p>
+<ul class="simple">
+<li><p>Sometime 2018 Valentin and Hannes gave a presentation about spack at MCH</p></li>
+<li><p>Summer 2019 an evaluation of possible solutions was done and it was determined
+that spack was the best option (probably same or similar reasons as above)</p></li>
+<li><p>November 2019 Elsa started her build &amp; devops internship and until November 2020
+most software builds at MCH were ported to spack</p></li>
+<li><p>September/October/November 2020 was when most of the migration happened</p></li>
+</ul>
+<p>Of course we regularly have issues with spack and these issues are time consuming
+and frustrating. However, building, package management &amp; dependencies is a very very
+hard problem. While we regularly encounter bugs in spack and spack is still far away
+from an optimal solution, there are also unavoidable issues when it comes to building
+HPC software. You can’t expect spack to solve unsolvable issues. Spack is only a tool.
+If you misuse your tool, it’s not fair to blame the tool for issues. Because spack
+is trying to solve a complex problem, it also contains quite a bit of complexity
+itself. If you’re not willing to learn spack and ensure you’re using it right,
+you will have a bad time. But you will also have a bad time with any other solution
+in this case. The idea that there is a magical tool that will automatically make
+all our build requirements work is unfortunately not realistic at this point.
+There are good reasons why there are so many package managers and users still
+regularly encounter issues with them.</p>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/SpackChoice.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+      <div class="relbar-bottom">
+            
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Performance.html" title="Performance benchmarks of COSMO"
+             >previous</a> &nbsp; &nbsp;</li>
+      <li><a href="index.html">MeteoSwiss DevOps v0.0.1 documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Why was spack chosen by MeteoSwiss?</a></li> 
+      </ul>
+    </div>
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Carlos Osuna.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.1.
+    </div>
+      <!-- PSphinxTheme -->
+  </body>
+</html>
