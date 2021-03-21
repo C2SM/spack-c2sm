@@ -48,9 +48,9 @@ This strong dominance sets it apart from all other viable options. It only makes
 sense for MCH to follow the rest of the industry.
 
 A comparison of various tools (including spack) can be found
-`here <https://easybuilders.github.io/easybuild-tutorial/comparison_other_tools/>`_
+`here <https://easybuilders.github.io/easybuild-tutorial/comparison_other_tools/>`__
 and
-`here <https://archive.fosdem.org/2018/schedule/event/installing_software_for_scientists/attachments/slides/2437/export/events/attachments/installing_software_for_scientists/slides/2437/20180204_installing_software_for_scientists.pdf>`_.
+`here <https://archive.fosdem.org/2018/schedule/event/installing_software_for_scientists/attachments/slides/2437/export/events/attachments/installing_software_for_scientists/slides/2437/20180204_installing_software_for_scientists.pdf>`__.
 
 I believe the timeline of spack at MCH was roughly:
 

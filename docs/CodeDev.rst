@@ -165,6 +165,7 @@ Load the correct run environment
 Launch the dycore test script
 
 .. code-block:: bash
+
   ./dycore/test/tools/test_dycore.py -s ${DYCORE_SPEC} -b spack-build -d ${SERIALIZE_DATA}
 
 
