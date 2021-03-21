@@ -10,14 +10,10 @@ Welcome to MeteoSwiss DevOps's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   SpackChoice
    CI
    CodeDev
-   TestSuite
-   Releases
    Spack
-   Deployment
-   Performance
-   SpackChoice
 
 Indices and tables
 ==================

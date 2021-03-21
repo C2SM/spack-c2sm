@@ -1,4 +1,4 @@
-MeteoSwiss Spack Instance
+Spack Instance Management
 ============================
 
 How to re-create the spack instance
