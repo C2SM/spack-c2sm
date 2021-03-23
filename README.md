@@ -49,16 +49,22 @@ rm -rf ~/.spack/cray ~/.spack/cache
 
 Then try again.
 
-### General
+### Install your Own Spack Instance
 
-**As said before a general installation is only needed if you wish to develop the mch packages/machines config files or if you are not a cscs user.**
+** Installing your own spack instance is only needed if you wish to develop the mch packages/machines config files or if you are not a cscs user.**
 
 First step is to clone this repository and use the available config.sh script to install your own spack instance with the corresponding mch packages and configuration files.
 
 Tell the script the machine you are working on using -m \<machine> and where you want the instance to be installed using -i <spack-installation-directory>. You can also precise the spack version you want, or take the default value (last stable release).
 
+Notice the requirements.txt will install all python dependencies required by spack.
+
 ```bash
 git clone git@github.com:MeteoSwiss-APN/spack-mch.git
+virtualenv .venv
+source  .venv/bin/activate
+pip3 install -r requirements.txt
+
 cd spack-mch
 ./config.py -m <machine> -i <spack-installation-directory> -v <version> -r <repos.yaml-installation-directory> -p <spack packages, modules & stages installation-directory> -u <ON or OFF, install upstreams.yaml>
 ```
