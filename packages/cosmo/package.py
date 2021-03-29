@@ -263,7 +263,12 @@ class Cosmo(MakefilePackage):
 
     def install(self, spec, prefix):
         package = spack.repo.get(spec)
-        install(package.env_path, prefix)
+        #Package.env_path is incorrect in case of a devbuild, as it looks for the file in stage
+        #Current workaround do not install env file in case of devbuild
+        #todo: devbuild is identified by the version, this is not general and should be improved
+        #better solution would be to correctly localise the env file
+        if spec.format('{version}') != 'dev-build':                                                                                             
+            install(package.env_path, prefix)
 
         with working_dir(self.build_directory):
             mkdir(prefix.bin)
