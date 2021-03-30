@@ -262,14 +262,7 @@ class Cosmo(MakefilePackage):
                 OptionsFile.filter('PFLAGS   = -Mpreprocess.*', 'PFLAGS   = -Mpreprocess -DNO_ACC_FINALIZE')
 
     def install(self, spec, prefix):
-        package = spack.repo.get(spec)
-        #Package.env_path is incorrect in case of a devbuild, as it looks for the file in stage
-        #Current workaround do not install env file in case of devbuild
-        #todo: devbuild is identified by the version, this is not general and should be improved
-        #better solution would be to correctly localise the env file
-        if spec.format('{version}') != 'dev-build':                                                                                             
-            install(package.env_path, prefix)
-
+        
         with working_dir(self.build_directory):
             mkdir(prefix.bin)
             if '+serialize' in spec:
