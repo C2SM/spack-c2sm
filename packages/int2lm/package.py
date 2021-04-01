@@ -30,8 +30,10 @@ class Int2lm(MakefilePackage):
     and/or boundary data for the COSMO-Model."""
 
     homepage = "http://www.cosmo-model.org/content/model/"
-    url      = "https://github.com/MeteoSwiss-APN/int2lm/archive/v2.7.2.tar.gz"
-    git      = 'git@github.com:MeteoSwiss-APN/int2lm.git'
+    url      = "https://github.com/MeteoSwiss-APN/int2lm/archive/v2.8.3.tar.gz"
+    git-apn  = 'git@github.com:MeteoSwiss-APN/int2lm.git'
+    git-c2sm = 'git@github.com:C2SM-RCM/int2lm.git'
+    git-org  = 'git@github.com:COSMO-ORG/int2lm.git'
 
     maintainers = ['morsier']
 
