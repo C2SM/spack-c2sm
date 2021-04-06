@@ -5,21 +5,6 @@
 
 # ----------------------------------------------------------------------------
 # If you submit this package back to Spack as a pull request,
-# please first remove this boilerplate and all FIXME comments.
-#
-# This is a template package file for Spack.  We've put "FIXME"
-# next to all the things you'll want to change. Once you've handled
-# them, you can save this file and test your package like this:
-#
-#     spack install int2lm
-#
-# You can edit this file again by typing:
-#
-#     spack edit int2lm
-#
-# See the Spack documentation for more information on packaging.
-# ----------------------------------------------------------------------------
-
 from spack import *
 
 import os
@@ -31,9 +16,10 @@ class Int2lm(MakefilePackage):
 
     homepage = "http://www.cosmo-model.org/content/model/"
     url      = "https://github.com/MeteoSwiss-APN/int2lm/archive/v2.8.3.tar.gz"
-    git-apn  = 'git@github.com:MeteoSwiss-APN/int2lm.git'
-    git-c2sm = 'git@github.com:C2SM-RCM/int2lm.git'
-    git-org  = 'git@github.com:COSMO-ORG/int2lm.git'
+    git      = 'git@github.com:MeteoSwiss-APN/int2lm.git'
+# for the other repos:
+#   use variant +c2sm => git = 'git@github.com:C2SM-RCM/int2lm.git'
+#   use variant +org  => git = 'git@github.com:COSMO-ORG/int2lm.git'
 
     maintainers = ['morsier']
 
@@ -54,12 +40,23 @@ class Int2lm(MakefilePackage):
     depends_on('netcdf-c',type=('build', 'link'))
     depends_on('netcdf-fortran +mpi', type=('build', 'link'))
 
+    variant('org', default=False, description='Build INT2LM-ORG')
+    variant('c2sm', default=False, description='Build INT2LM-ORG')
     variant('debug', default=False, description='Build debug INT2LM')
     variant('eccodes', default=True, description='Build with eccodes instead of grib-api')
     variant('parallel', default=True, description='Build parallel INT2LM')
     variant('pollen', default=True, description='Build with pollen enabled')
     variant('slave', default='tsa', description='Build on slave tsa, daint or kesch', multi=False)
     variant('verbose', default=False, description='Build with verbose enabled')
+
+    build_directory='./'
+
+    if '+c2sm' in self.spec:
+        git      = 'git@github.com:C2SM-RCM/int2lm.git'
+
+    if '+org' in self.spec:
+        git      = 'git@github.com:COSMO-ORG/int2lm.git'
+        build_directory='TESTSUITE'
 
     def setup_build_environment(self, env):
         self.setup_run_environment(env)
@@ -137,21 +134,24 @@ class Int2lm(MakefilePackage):
         return build
 
     def edit(self, spec, prefix):
-        makefile = FileFilter('Makefile')
-        OptionsFileName= 'Options'
-        if self.compiler.name == 'gcc':
-            OptionsFileName += '.gnu'
-        elif self.compiler.name == 'pgi':
-            OptionsFileName += '.pgi'
-        elif self.compiler.name == 'cce':
-            OptionsFileName += '.cray'
-        makefile.filter('/Options.*', '/' + OptionsFileName)
+        with working_dir(self.build_directory):
+            makefile = FileFilter('Makefile')
+            OptionsFileName= 'Options'
+            if self.compiler.name == 'gcc':
+                OptionsFileName += '.gnu'
+            elif self.compiler.name == 'pgi':
+                OptionsFileName += '.pgi'
+            elif self.compiler.name == 'cce':
+                OptionsFileName += '.cray'
+            makefile.filter('/Options.*', '/' + OptionsFileName)
 
     def install(self, spec, prefix):
         mkdir(prefix.bin)
         mkdir(prefix.test)
         install('int2lm', prefix.bin)
         install('int2lm', 'test/testsuite')
+        if '+org' in self.spec:
+            install('int2lm', '../test/testsuite')
 
     @run_after('install')
     @on_package_attributes(run_tests=True)
