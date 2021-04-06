@@ -40,8 +40,8 @@ class Int2lm(MakefilePackage):
     depends_on('netcdf-c',type=('build', 'link'))
     depends_on('netcdf-fortran +mpi', type=('build', 'link'))
 
-    variant('org', default=False, description='Build INT2LM-ORG')
-    variant('c2sm', default=False, description='Build INT2LM-ORG')
+    variant('org', default=False, description='Build INT2LM from COSMO-ORG')
+    variant('c2sm', default=False, description='Build INT2LM from C2SM-RCM')
     variant('debug', default=False, description='Build debug INT2LM')
     variant('eccodes', default=True, description='Build with eccodes instead of grib-api')
     variant('parallel', default=True, description='Build parallel INT2LM')
@@ -51,15 +51,23 @@ class Int2lm(MakefilePackage):
 
     build_directory='./'
 
-    if '+c2sm' in self.spec:
-        git      = 'git@github.com:C2SM-RCM/int2lm.git'
-
-    if '+org' in self.spec:
-        git      = 'git@github.com:COSMO-ORG/int2lm.git'
-        build_directory='TESTSUITE'
-
     def setup_build_environment(self, env):
         self.setup_run_environment(env)
+
+        # Define the repo
+        if '+c2sm' in self.spec:
+            git = 'git@github.com:C2SM-RCM/int2lm.git'
+
+        if '+org' in self.spec:
+            git = 'git@github.com:COSMO-ORG/int2lm.git'
+            url = "https://github.com/COSMO-ORG/int2lm/archive/int2lm-2.08.tar.gz"
+            version('2.08', commit='9e0d0bfe50f8e29676c7d1f0f4205597be8e86e1')
+            version('2.07', commit='65ddb3af9b7d63fa2019d8bcee41e8d4a99baedd')
+            version('2.06a', commit='eb067a01446f55e1b55f6341681e97a95f856865')
+            version('2.06', commit='11065ff1b304129ae19e774ebde02dcd743d2005')
+            version('2.05', commit='ef16f54f53401e99aef083c447b4909b8230a4a0')
+            variant('pollen', default=False, description='Build with pollen enabled')
+            build_directory='TESTSUITE'
 
         # Grib-api. Eccodes libraries
         if '~eccodes' in self.spec:
