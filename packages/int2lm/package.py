@@ -4,7 +4,6 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 # ----------------------------------------------------------------------------
-# If you submit this package back to Spack as a pull request,
 from spack import *
 
 import os
@@ -17,21 +16,38 @@ class Int2lm(MakefilePackage):
     homepage = "http://www.cosmo-model.org/content/model/"
     url      = "https://github.com/MeteoSwiss-APN/int2lm/archive/v2.8.3.tar.gz"
     git      = 'git@github.com:MeteoSwiss-APN/int2lm.git'
-# for the other repos:
-#   use variant +c2sm => git = 'git@github.com:C2SM-RCM/int2lm.git'
-#   use variant +org  => git = 'git@github.com:COSMO-ORG/int2lm.git'
+    c2smgit  = 'git@github.com:C2SM-RCM/int2lm.git'
+    orggit  = 'git@github.com:COSMO-ORG/int2lm.git'
+
 
     maintainers = ['morsier']
 
-    version('master', branch='master')
     version('dev-build', branch='master')
-    version('v2.8.3', commit='43796aa0a2c56071efc3277397abbbf78dab1247')
-    version('v2.8.2', commit='7f8bf2e3f5e77489cfdb4443578a43431408e2bd')
-    version('v2.8.1', commit='844d239cfa83bc9980696cae56f47da3d08ce4ec')
-    version('v2.7.2', commit='7a460906e826142be1fb9338d2210ccf7566d5a2')
-    version('v2.7.1_p2', commit='05e2a405a66f62706df17f01bbc463d0c365e168')
-    version('v2.7.1', commit='ee0780f86ecc676a9650170f361b92ff93379071')
-    version('v2.6.2', commit='07690dab05c931ba02c947ec32c988eea65898f8')
+
+    # APN tags
+    version('apn_master', git=git, branch='master')
+    version('apn_v2.8.3', git=git, commit='43796aa0a2c56071efc3277397abbbf78dab1247')
+    version('apn_v2.8.2', git=git, commit='7f8bf2e3f5e77489cfdb4443578a43431408e2bd')
+    version('apn_v2.8.1', git=git, commit='844d239cfa83bc9980696cae56f47da3d08ce4ec')
+    version('apn_v2.7.2', git=git, commit='7a460906e826142be1fb9338d2210ccf7566d5a2')
+    version('apn_v2.7.1_p2', git=git, commit='05e2a405a66f62706df17f01bbc463d0c365e168')
+    version('apn_v2.7.1', git=git, commit='ee0780f86ecc676a9650170f361b92ff93379071')
+    version('apn_v2.6.2', git=git, commit='07690dab05c931ba02c947ec32c988eea65898f8')
+
+
+    # C2SM tags
+    version('c2sm_master', git=c2smgit, branch='master')
+    version('c2sm_v2.8.3', git=c2smgit, commit='da56842f2222d241ecc129f95ef097a6773dfe90')
+    version('c2sm_v2.8.2', git=c2smgit, commit='7f8bf2e3f5e77489cfdb4443578a43431408e2bd')
+
+    # ORG tags
+    version('org_master', git=orggit, branch='master')
+    version('org_2.08', git=orggit, commit='9e0d0bfe50f8e29676c7d1f0f4205597be8e86e1')
+    version('org_2.08', git=orggit, commit='9e0d0bfe50f8e29676c7d1f0f4205597be8e86e1')
+    version('org_2.07', git=orggit, commit='65ddb3af9b7d63fa2019d8bcee41e8d4a99baedd')
+    version('org_2.06a', git=orggit, commit='eb067a01446f55e1b55f6341681e97a95f856865')
+    version('org_2.06', git=orggit, commit='11065ff1b304129ae19e774ebde02dcd743d2005')
+    version('org_2.05', git=orggit, commit='ef16f54f53401e99aef083c447b4909b8230a4a0')
 
     depends_on('cosmo-grib-api-definitions', type=('build','run'), when='~eccodes')
     depends_on('cosmo-eccodes-definitions ~aec', type=('build','run'), when='+eccodes')
@@ -40,34 +56,17 @@ class Int2lm(MakefilePackage):
     depends_on('netcdf-c',type=('build', 'link'))
     depends_on('netcdf-fortran +mpi', type=('build', 'link'))
 
-    variant('org', default=False, description='Build INT2LM from COSMO-ORG')
-    variant('c2sm', default=False, description='Build INT2LM from C2SM-RCM')
     variant('debug', default=False, description='Build debug INT2LM')
     variant('eccodes', default=True, description='Build with eccodes instead of grib-api')
     variant('parallel', default=True, description='Build parallel INT2LM')
     variant('pollen', default=True, description='Build with pollen enabled')
-    variant('slave', default='tsa', description='Build on slave tsa, daint or kesch', multi=False)
+    variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
     variant('verbose', default=False, description='Build with verbose enabled')
 
     build_directory='./'
 
     def setup_build_environment(self, env):
         self.setup_run_environment(env)
-
-        # Define the repo
-        if '+c2sm' in self.spec:
-            git = 'git@github.com:C2SM-RCM/int2lm.git'
-
-        if '+org' in self.spec:
-            git = 'git@github.com:COSMO-ORG/int2lm.git'
-            url = "https://github.com/COSMO-ORG/int2lm/archive/int2lm-2.08.tar.gz"
-            version('2.08', commit='9e0d0bfe50f8e29676c7d1f0f4205597be8e86e1')
-            version('2.07', commit='65ddb3af9b7d63fa2019d8bcee41e8d4a99baedd')
-            version('2.06a', commit='eb067a01446f55e1b55f6341681e97a95f856865')
-            version('2.06', commit='11065ff1b304129ae19e774ebde02dcd743d2005')
-            version('2.05', commit='ef16f54f53401e99aef083c447b4909b8230a4a0')
-            variant('pollen', default=False, description='Build with pollen enabled')
-            build_directory='TESTSUITE'
 
         # Grib-api. Eccodes libraries
         if '~eccodes' in self.spec:
@@ -158,8 +157,6 @@ class Int2lm(MakefilePackage):
         mkdir(prefix.test)
         install('int2lm', prefix.bin)
         install('int2lm', 'test/testsuite')
-        if '+org' in self.spec:
-            install('int2lm', '../test/testsuite')
 
     @run_after('install')
     @on_package_attributes(run_tests=True)
