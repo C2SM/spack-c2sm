@@ -34,7 +34,6 @@ class Int2lm(MakefilePackage):
     version('apn_v2.7.1', git=git, commit='ee0780f86ecc676a9650170f361b92ff93379071')
     version('apn_v2.6.2', git=git, commit='07690dab05c931ba02c947ec32c988eea65898f8')
 
-
     # C2SM tags
     version('c2sm_master', git=c2smgit, branch='master')
     version('c2sm_v2.8.3', git=c2smgit, commit='da56842f2222d241ecc129f95ef097a6773dfe90')
@@ -57,7 +56,6 @@ class Int2lm(MakefilePackage):
     depends_on('netcdf-fortran +mpi', type=('build', 'link'))
 
     variant('debug', default=False, description='Build debug INT2LM')
-    variant('eccodes', default=True, description='Build with eccodes instead of grib-api')
     variant('parallel', default=True, description='Build parallel INT2LM')
     variant('pollen', default=True, description='Build with pollen enabled')
     variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
