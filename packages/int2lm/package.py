@@ -56,6 +56,7 @@ class Int2lm(MakefilePackage):
     depends_on('netcdf-fortran +mpi', type=('build', 'link'))
 
     variant('debug', default=False, description='Build debug INT2LM')
+    variant('eccodes', default=True, description='Build with eccodes instead of grib-api')
     variant('parallel', default=True, description='Build parallel INT2LM')
     variant('pollen', default=True, description='Build with pollen enabled')
     variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
