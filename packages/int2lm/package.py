@@ -42,7 +42,6 @@ class Int2lm(MakefilePackage):
     # ORG tags
     version('org_master', git=orggit, branch='master')
     version('org_2.08', git=orggit, commit='9e0d0bfe50f8e29676c7d1f0f4205597be8e86e1')
-    version('org_2.08', git=orggit, commit='9e0d0bfe50f8e29676c7d1f0f4205597be8e86e1')
     version('org_2.07', git=orggit, commit='65ddb3af9b7d63fa2019d8bcee41e8d4a99baedd')
     version('org_2.06a', git=orggit, commit='eb067a01446f55e1b55f6341681e97a95f856865')
     version('org_2.06', git=orggit, commit='11065ff1b304129ae19e774ebde02dcd743d2005')
