@@ -10,28 +10,50 @@ from spack import *
 import os
 import subprocess
 
+def get_releases(repo):
+        git_obj = subprocess.run(["git","ls-remote","--refs",repo], stdout=subprocess.PIPE)
+        git_tags = [re.match('refs/tags/(.*)', x.decode('utf-8')).group(1) for x in git_obj.stdout.split() if re.match('refs/tags/(.*)', x.decode('utf-8'))]
+        return git_tags
+
+def int2lm_deps(repo):
+    tags = get_releases(repo)
+    for tag in tags:
+        version(tag, git=repo, tag=tag, get_full_repo=True)
+
+    tags.append('master')
+    tags.append('dev-build')
+    tags.append('mch')
+    tags.append('c2sm')
+
+    for tag in tags:    
+        prod = [True,False]
+        testing = [True, False]
+        comb=list(itertools.product(*[prod, testing]))
+        for it in comb:
+            prod_opt=it[0]
+            prod_opt = '+production' if it[0] else '~production'
+            test_opt = '+build_tests' if it[1] else '~build_tests'
+
 class Int2lm(MakefilePackage):
     """INT2LM performs the interpolation from coarse grid model data to initial
     and/or boundary data for the COSMO-Model."""
 
     homepage = "http://www.cosmo-model.org/content/model/"
-    url      = "https://github.com/MeteoSwiss-APN/int2lm/archive/v2.8.3.tar.gz"
-    git      = 'git@github.com:MeteoSwiss-APN/int2lm.git'
-# for the other repos:
-#   use variant +c2sm => git = 'git@github.com:C2SM-RCM/int2lm.git'
-#   use variant +org  => git = 'git@github.com:COSMO-ORG/int2lm.git'
+    git      = 'git@github.com:COSMO-ORG/int2lm.git'
+    apngit   = 'git@github.com:MeteoSwiss-APN/int2lm.git'
+    c2smgit  = 'git@github.com:C2SM-RCM/int2lm.git'
 
     maintainers = ['morsier']
 
     version('master', branch='master')
     version('dev-build', branch='master')
-    version('v2.8.3', commit='43796aa0a2c56071efc3277397abbbf78dab1247')
-    version('v2.8.2', commit='7f8bf2e3f5e77489cfdb4443578a43431408e2bd')
-    version('v2.8.1', commit='844d239cfa83bc9980696cae56f47da3d08ce4ec')
-    version('v2.7.2', commit='7a460906e826142be1fb9338d2210ccf7566d5a2')
-    version('v2.7.1_p2', commit='05e2a405a66f62706df17f01bbc463d0c365e168')
-    version('v2.7.1', commit='ee0780f86ecc676a9650170f361b92ff93379071')
-    version('v2.6.2', commit='07690dab05c931ba02c947ec32c988eea65898f8')
+    version('2.08', commit='9e0d0bfe50f8e29676c7d1f0f4205597be8e86e1')
+    version('2.07', commit='65ddb3af9b7d63fa2019d8bcee41e8d4a99baedd')
+    version('2.06a', commit='eb067a01446f55e1b55f6341681e97a95f856865')
+    version('2.06', commit='11065ff1b304129ae19e774ebde02dcd743d2005')
+    version('2.05', commit='ef16f54f53401e99aef083c447b4909b8230a4a0')
+    version('mch', git='git@github.com:MeteoSwiss-APN/int2lm.git', branch='master', get_full_repo=True)
+    version('c2sm', git='git@github.com:C2SM-RCM/int2lm.git', branch='master', get_full_repo=True)
 
     depends_on('cosmo-grib-api-definitions', type=('build','run'), when='~eccodes')
     depends_on('cosmo-eccodes-definitions ~aec', type=('build','run'), when='+eccodes')
@@ -43,31 +65,34 @@ class Int2lm(MakefilePackage):
     variant('org', default=False, description='Build INT2LM from COSMO-ORG')
     variant('c2sm', default=False, description='Build INT2LM from C2SM-RCM')
     variant('debug', default=False, description='Build debug INT2LM')
-    variant('eccodes', default=True, description='Build with eccodes instead of grib-api')
     variant('parallel', default=True, description='Build parallel INT2LM')
-    variant('pollen', default=True, description='Build with pollen enabled')
-    variant('slave', default='tsa', description='Build on slave tsa, daint or kesch', multi=False)
+    variant('eccodes', default=True, description='Build with eccodes instead of grib-api')
+    variant('pollen', default=False, description='Build with pollen enabled')
+
+    variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
     variant('verbose', default=False, description='Build with verbose enabled')
 
-    build_directory='./'
+    int2lm_deps(git)
+
+    build_directory='TESTSUITE'
 
     def setup_build_environment(self, env):
         self.setup_run_environment(env)
 
         # Define the repo
         if '+c2sm' in self.spec:
-            git = 'git@github.com:C2SM-RCM/int2lm.git'
+            int2lm_deps(c2smgit)
+            build_directory='./'
 
-        if '+org' in self.spec:
-            git = 'git@github.com:COSMO-ORG/int2lm.git'
-            url = "https://github.com/COSMO-ORG/int2lm/archive/int2lm-2.08.tar.gz"
-            version('2.08', commit='9e0d0bfe50f8e29676c7d1f0f4205597be8e86e1')
-            version('2.07', commit='65ddb3af9b7d63fa2019d8bcee41e8d4a99baedd')
-            version('2.06a', commit='eb067a01446f55e1b55f6341681e97a95f856865')
-            version('2.06', commit='11065ff1b304129ae19e774ebde02dcd743d2005')
-            version('2.05', commit='ef16f54f53401e99aef083c447b4909b8230a4a0')
-            variant('pollen', default=False, description='Build with pollen enabled')
-            build_directory='TESTSUITE'
+        if '+mch' in self.spec:
+            int2lm_deps(apngit)
+            build_directory='./'
+            url = "https://github.com/MeteoSwiss-APN/int2lm/archive/v2.8.3.tar.gz"
+            version('v2.8.3', commit='43796aa0a2c56071efc3277397abbbf78dab1247')
+            version('v2.8.2', commit='7f8bf2e3f5e77489cfdb4443578a43431408e2bd')
+            version('v2.8.1', commit='844d239cfa83bc9980696cae56f47da3d08ce4ec')
+            version('v2.7.2', commit='7a460906e826142be1fb9338d2210ccf7566d5a2')
+            variant('pollen', default=True, description='Build with pollen enabled')
 
         # Grib-api. Eccodes libraries
         if '~eccodes' in self.spec:
