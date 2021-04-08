@@ -61,6 +61,9 @@ class Int2lm(MakefilePackage):
     variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
     variant('verbose', default=False, description='Build with verbose enabled')
 
+    conflicts('pollen=True' , when='@org_master,org_2.05:org_2.08', 
+              msg='int2lm-org is currently broken with pollen, set variant pollen=False')
+
     build_directory='TESTSUITE'
 
     def setup_build_environment(self, env):
