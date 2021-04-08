@@ -57,11 +57,11 @@ class Int2lm(MakefilePackage):
     variant('debug', default=False, description='Build debug INT2LM')
     variant('eccodes', default=True, description='Build with eccodes instead of grib-api')
     variant('parallel', default=True, description='Build parallel INT2LM')
-    variant('pollen', default=True, description='Build with pollen enabled')
+    variant('pollen', default=False, description='Build with pollen enabled')
     variant('slave', default='tsa', description='Build on slave tsa or daint', multi=False)
     variant('verbose', default=False, description='Build with verbose enabled')
 
-    build_directory='./'
+    build_directory='TESTSUITE'
 
     def setup_build_environment(self, env):
         self.setup_run_environment(env)
@@ -139,6 +139,7 @@ class Int2lm(MakefilePackage):
         return build
 
     def edit(self, spec, prefix):
+        print(os.getcwd())
         with working_dir(self.build_directory):
             makefile = FileFilter('Makefile')
             OptionsFileName= 'Options'
@@ -151,10 +152,22 @@ class Int2lm(MakefilePackage):
             makefile.filter('/Options.*', '/' + OptionsFileName)
 
     def install(self, spec, prefix):
-        mkdir(prefix.bin)
-        mkdir(prefix.test)
-        install('int2lm', prefix.bin)
-        install('int2lm', 'test/testsuite')
+            with working_dir(self.build_directory):
+                install('int2lm', prefix.bin)
+                install('int2lm', '../test/testsuite')
+
+    @run_before('edit')
+    def create_build_directory(self):
+        os.makedirs(self.build_directory,exist_ok=True)
+
+        # link all files for APN and C2SM version of int2lm
+        if not os.path.isfile(self.build_directory + '/Options.tsa.pgi'):
+            os.chdir(self.build_directory)
+
+            for item in os.listdir('../'):
+                os.symlink('../' + item, item)
+
+            os.chdir('..')
 
     @run_after('install')
     @on_package_attributes(run_tests=True)
