@@ -1,5 +1,5 @@
 # The MeteoSwiss Spack Deployment
-[![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](https://meteoswiss-apn.github.io/spack-mch/)
+[![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](https://meteoswiss-apn.github.io/spack-mchtt/)
 
 Official Spack documentation [Here](https://spack.readthedocs.io/en/latest/).
 
