@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     # Example of using a custom build-command.
-    - uses: ammaraskar/sphinx-action@master
+    - uses: ammaraskar/sphinx-action@0.4
       with:
         build-command: "sphinx-build -b html . _build"
         docs-folder: "docs/"
