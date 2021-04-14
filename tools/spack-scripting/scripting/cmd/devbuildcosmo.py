@@ -11,6 +11,7 @@ import shutil
 import llnl.util.tty as tty
 import re
 
+# same used by spack, comes with it
 import ruamel.yaml as yaml
 
 import spack.config
@@ -50,7 +51,7 @@ def custom_devbuild(source_path, spec, jobs):
     package.do_install(verbose=True, make_jobs=jobs)
 
 
-def devbuildcosmo(self, args, **kwargs):
+def devbuildcosmo(self, args):
     # Extract and concretize cosmo_spec
     if not args.spec:
         tty.die("spack dev-build requires a package spec argument.")
@@ -61,7 +62,7 @@ def devbuildcosmo(self, args, **kwargs):
     if len(specs) > 1:
         tty.die("spack dev-build only takes one spec.")
 
-    # inject dycore wanted in spec
+    # inject cosmo-dycore@dev-build in spec (dev-build only)
     args.spec.append("^cosmo-dycore@dev-build")
     cosmo_spec = spack.cmd.parse_specs(args.spec)[0]
     cosmo_spec.concretize()
