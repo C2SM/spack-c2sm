@@ -138,8 +138,8 @@ Set the path to the serialized data (later it will be used in this guide)
 
   SERIALIZE_DATA=</path/to/cosmo>/cosmo/ACC/test/serialize/data/
 
-Compile and Test a Local C++ dycore
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+COSMO C++ Dycore
+------------------
 
 This section describes how to compile and test a version of the COSMO C++ dycore from your working directory. 
 
