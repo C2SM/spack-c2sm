@@ -7,14 +7,14 @@ The command `spack install` fetches the package from the specified source in `pa
 It then builds the code in `spack-stages` folder  with a subsequent installation in `spack-install` 
 folder.
 
-Usage
-^^^^^^^
+Usage (spack install)
+^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: bash
 
   spack install <package>@<version>%<compiler>
 
-Options
-^^^^^^^^^
+Options for spack install
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 * -v: print output of configuration and compilation for all dependencies to terminal
 * --test=root: run built-in tests (e.g COSMO testsuite) of a packages as part of the spack installation command
 
@@ -35,15 +35,15 @@ That problem is circumvented for COSMO, C++ dycore and other C2SM-hosted softwar
 which will not be used by jenkins. Therefore, `spack dev-build int2lm@dev-build` will find that version among the installed in the default spack instance.
 For any other package that does not contain this `dev-build` version, you need to install our own spack instance. 
 
-Usage
-^^^^^^^
+Usage (spack dev-build)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: bash
 
   cd </path/to/package> 
   spack dev-build <package>@<version>%<compiler>
 
-Options
-^^^^^^^^^
+Options (spack dev-build)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 * --test=root: run built-in tests (e.g COSMO testsuite) of a packages as part of the spack dev-build command
 
 Spack build-env

@@ -17,7 +17,7 @@ spack packages and config files you can directly source those instances:
   ## Spack Installation
 
 Automatically source preinstalled Spack instance
-^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you want to automatically source the correct spack instance depending on the machine you are working on, you can add the following lines to your .bashrc file:
 
@@ -30,7 +30,7 @@ If you want to automatically source the correct spack instance depending on the 
     source $SPACK_ROOT/share/spack/setup-env.sh
 
 Error: Initialization hangs
-"""""""""""""""""""""""
+"""""""""""""""""""""""""""""""
 If `source $SPACK_ROOT/share/spack/setup-env.sh` hangs, clean your cache:
 
 .. code-block:: bash
@@ -40,7 +40,7 @@ If `source $SPACK_ROOT/share/spack/setup-env.sh` hangs, clean your cache:
 Then try again.
 
 Error: Could not determine host
-"""""""""""""""""""
+""""""""""""""""""""""""""""""""
 In case you have anything printing the hostname to the terminal in your .bashrc like
 
 .. code-block:: bash
@@ -55,7 +55,7 @@ A possible workaround is to direct the "echo" to the stderr:
     echo $(hostname) >&2
 
 Your own Spack instance
---------------------
+-------------------------
 
 **Installing your own spack instance is only needed if you wish to 
 develop the mch packages/machines config files or if you are not a cscs user.**
