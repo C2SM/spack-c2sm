@@ -43,8 +43,6 @@ packages:
         paths:
           cmake@3.14.5%gcc: /apps/dom/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5
           cmake@3.14.5%pgi: /apps/dom/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5
-          cmake@3.18.1%gcc: /apps/dom/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.18.1
-          cmake@3.18.1%pgi: /apps/dom/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.18.1
         buildable: false
         variants: ~doc+ncurses+openssl~ownlibs~qt
     cp2k:
@@ -68,7 +66,8 @@ packages:
             cray-libsci_acc@20.06.1%pgi:   cray-libsci_acc/20.06.1
     cuda:
         modules:
-          cuda@10.2%gcc: cudatoolkit/10.2.89_3.29-7.0.2.1_3.5__g67354b4
+            
+          cuda@10.2%gcc: cudatoolkit/10.2.89_3.29-7.0.2.1_3.27__g67354b4
         version: ['10.2']
     curl:
         paths:
