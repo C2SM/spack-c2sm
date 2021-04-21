@@ -14,6 +14,7 @@ class Dusk(PythonPackage):
     git      = 'https://github.com/dawn-ico/dusk'
     maintainers = ['BenWeber42']
 
+    version('horizon', branch='horizon', preferred=True)
     version('master', branch='master')
     version('icondusk-e2e', tag='icondusk-e2e')
 
