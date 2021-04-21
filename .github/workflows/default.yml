@@ -39,7 +39,8 @@ jobs:
         # The above command will fail if no changes were present, so we ignore
         # that.
     - name: Push changes
-      uses: ad-m/github-push-action@v0.6.0
+      # this commit SHA corresponds to tag `v0.6.0`
+      uses: ad-m/github-push-action@40bf560936a8022e68a3c00e7d2abefaf01305a6
       with:
         branch: gh-pages
         directory: gh-pages
