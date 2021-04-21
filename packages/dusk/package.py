@@ -15,7 +15,7 @@ class Dusk(PythonPackage):
     maintainers = ['BenWeber42']
 
     version('master', branch='master')
-    version('horizon', branch='horizon', preferred=True))
+    version('horizon', branch='horizon', preferred=True)
 
     extends('python@3.8.0:3.8.999')
 
