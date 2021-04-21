@@ -77,7 +77,7 @@ Options (spack install)
 * --keep-stage: keep all source needed to build the package
 
 Spack build-env
---------------
+---------------
 Run a command in a specs install environment, or dump its environment to screen or file
 This command can either be used to run a command in a specs install environment or to dump
 a sourceable file with the install environment. In case you want to run test of packages manually this
@@ -122,6 +122,7 @@ Options (spack dev-build)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 * --test=root: run package tests during installation for top-level packages (but skip tests for dependencies)
 * --until <stage>: only run installation until certain stage, like *build* or *install*
+
 .. code-block:: bash
 
   spack dev-build --until build <package>@<version>%<compiler> +<variants>
@@ -137,9 +138,6 @@ Usage (spack edit)
 .. code-block:: bash
 
   spack edit <package>
-
-Spack build-env
-------------------
 
 Spack devbuildcosmo
 ---------------------
