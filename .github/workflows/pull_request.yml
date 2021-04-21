@@ -10,7 +10,8 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     # Example of using a custom build-command.
-    - uses: ammaraskar/sphinx-action@0.4
+    # this commit SHA corresponds to tag `0.4`
+    - uses: ammaraskar/sphinx-action@8b4f60114d7fd1faeba1a712269168508d4750d2
       with:
         build-command: "sphinx-build -b html . _build"
         docs-folder: "docs/"
