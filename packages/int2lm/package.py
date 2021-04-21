@@ -14,11 +14,10 @@ class Int2lm(MakefilePackage):
     and/or boundary data for the COSMO-Model."""
 
     homepage = "http://www.cosmo-model.org/content/model/"
-    url      = "https://github.com/MeteoSwiss-APN/int2lm/archive/v2.8.3.tar.gz"
+    url      = "https://github.com/MeteoSwiss-APN/int2lm/archive/refs/tags/v2.8.4.tar.gz"
     git      = 'git@github.com:MeteoSwiss-APN/int2lm.git'
     c2smgit  = 'git@github.com:C2SM-RCM/int2lm.git'
     orggit  = 'git@github.com:COSMO-ORG/int2lm.git'
-
 
     maintainers = ['morsier']
 
@@ -26,6 +25,7 @@ class Int2lm(MakefilePackage):
 
     # APN tags
     version('apn_master', git=git, branch='master')
+    version('apn_v2.8.4', git=git, commit='c4541c7c9f87d2912b66acc41bb1be598dcdf433')
     version('apn_v2.8.3', git=git, commit='43796aa0a2c56071efc3277397abbbf78dab1247')
     version('apn_v2.8.2', git=git, commit='7f8bf2e3f5e77489cfdb4443578a43431408e2bd')
     version('apn_v2.8.1', git=git, commit='844d239cfa83bc9980696cae56f47da3d08ce4ec')
