@@ -49,13 +49,13 @@ class Cosmo(MakefilePackage):
     url      = "https://github.com/MeteoSwiss-APN/cosmo/archive/5.07.mch1.0.p5.tar.gz"
     git      = 'git@github.com:COSMO-ORG/cosmo.git'
     apngit   = 'git@github.com:MeteoSwiss-APN/cosmo.git'
-    c2smgit  = 'git@github.com:C2SM-RCM/cosmo-1.git'
+    c2smgit  = 'git@github.com:C2SM-RCM/cosmo.git'
     maintainers = ['elsagermann']
 
     version('master', branch='master', get_full_repo=True)
     version('dev-build', branch='master', get_full_repo=True)
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch', get_full_repo=True)
-    version('c2sm', git='git@github.com:C2SM-RCM/cosmo-1.git', branch='master', get_full_repo=True)
+    version('c2sm', git='git@github.com:C2SM-RCM/cosmo.git', branch='master', get_full_repo=True)
 
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
