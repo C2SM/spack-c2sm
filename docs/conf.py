@@ -18,7 +18,7 @@ from PSphinxTheme.utils import set_psphinxtheme
 
 # -- Project information -----------------------------------------------------
 
-project = 'MeteoSwiss DevOps'
+project = 'C2SM Spack documentation'
 copyright = '2020, Carlos Osuna'
 author = 'Carlos Osuna'
 

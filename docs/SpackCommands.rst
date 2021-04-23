@@ -59,7 +59,7 @@ An attempt to build your working copy with the command
 will not perform any compilation if spack identifies that the requested version of the software was already installed by a jenkins plan. 
 
 That problem is circumvented for COSMO, C++ dycore and other C2SM-hosted software by reserving an specific version (`dev-build`) of the spack recipe of the package 
-(see `int2lm package  https://github.com/MeteoSwiss-APN/spack-mch/blob/37908c7ac7171c4d886fe5ccf84051056e12ec0e/packages/int2lm/package.py#L25`), 
+(see `int2lm package  <https://github.com/MeteoSwiss-APN/spack-mch/blob/37908c7ac7171c4d886fe5ccf84051056e12ec0e/packages/int2lm/package.py#L25>`__), 
 which will not be used by jenkins. Therefore, *spack install int2lm@dev-build* will find that version among the installed in the default spack instance.
 For any other package that does not contain this *dev-build* version, you need to install our own spack instance. 
 
