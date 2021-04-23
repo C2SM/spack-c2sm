@@ -97,7 +97,6 @@ def devbuildcosmo(self, args):
             if dep.name != "cosmo-dycore":  # dev-build only
                 if dep.name in deps_serialized_dict:
                     dep.versions = deps_serialized_dict[dep.name].versions.copy()
-    # TODO: should we also take the cosmo version from the serialized yaml?
 
     # Clean if needed
     if args.clean_build:
@@ -133,7 +132,7 @@ def devbuildcosmo(self, args):
 
         dycore_spec = Spec(dycore_spec).concretized()
 
-        print("Dycore full spec", dycore_spec)  # debug?
+        print("[DEBUG] Dycore full spec", dycore_spec)  # TODO: debug, remove
         custom_devbuild(source_path, dycore_spec, args.jobs)
 
         # Launch dycore tests
@@ -148,6 +147,8 @@ def devbuildcosmo(self, args):
                     source_path + "/spack-build",
                 ]
             )
+
+    print("[DEBUG] Cosmo full spec", cosmo_spec)  # TODO: debug, remove
 
     # Dev-build cosmo
     custom_devbuild(source_path, cosmo_spec, args.jobs)

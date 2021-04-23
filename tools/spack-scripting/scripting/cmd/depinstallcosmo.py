@@ -11,6 +11,9 @@ import shutil
 import llnl.util.tty as tty
 import re
 
+# same used by spack, comes with it
+import ruamel.yaml as yaml
+
 import spack.config
 import spack.cmd
 import spack.cmd.common.arguments as arguments
@@ -20,18 +23,19 @@ from spack.spec import Spec
 from spack.cmd.dev_build import dev_build
 from spack.main import SpackCommand
 
-from buildyamlconf import DepsYamlConf
-
 description = "Dev-build cosmo and dycore with or without testing."
 section = "scripting"
 level = "long"
 
+
 def setup_parser(subparser):
-    arguments.add_common_arguments(subparser, ['jobs'])
+    arguments.add_common_arguments(subparser, ["jobs"])
 
     subparser.add_argument(
-        '-t', '--test', action='store_true', help="Dev-build with testing")
-    arguments.add_common_arguments(subparser, ['spec'])
+        "-t", "--test", action="store_true", help="Dev-build with testing"
+    )
+    arguments.add_common_arguments(subparser, ["spec"])
+
 
 def custom_devbuild(spec, jobs):
     package = spack.repo.get(spec)
@@ -40,6 +44,7 @@ def custom_devbuild(spec, jobs):
         package.do_uninstall(force=True)
 
     package.do_install(verbose=True, make_jobs=jobs)
+
 
 def depinstallcosmo(self, args):
     # Extract and concretize cosmo_spec
@@ -55,23 +60,37 @@ def depinstallcosmo(self, args):
 
     package = spack.repo.get(cosmo_spec)
     package.do_fetch()
-    package.do_stage() 
+    package.do_stage()
 
-    depsconf = DepsYamlConf(package.stage.source_path)
+    # Load serialized yaml from inside cloned repo
+    with open(package.stage.source_path + "/cosmo/ACC/spec.yaml", "r") as f:
+        try:
+            data = yaml.load(f)
+        except yaml.error.MarkedYAMLError as e:
+            raise syaml.SpackYAMLError("error parsing YAML spec:", str(e))
 
-    for aspec in depsconf.dependency_spec(cosmo_spec).split():
-        args.spec.append(aspec)
+    # Read nodes out of list.  Root spec (cosmo) is the first element;
+    # dependencies are the following elements.
+    spec_list = [Spec.from_node_dict(node) for node in data["spec"]]
+    if not spec_list:
+        raise spack.error.SpecError("YAML spec contains no nodes.")
 
-    specs = spack.cmd.parse_specs(args.spec)
-    if len(specs) > 1:
-        tty.die("spack dev-build only takes one spec.")
+    # Take only the dependencies
+    deps_serialized_dict = dict((spec.name, spec) for spec in spec_list[1:])
 
-    cosmo_spec = specs[0]
+    # Selectively substitute the dependencies' versions with those found in the deserialized list of specs
+    # The order of precedence in the choice of a dependency's version becomes:
+    # 1. the one specified in spec.yaml,
+    # 2. the one provided by the user in the command,
+    # 3. the default prescribed by the spack package.
+    for dep in cosmo_spec.traverse():
+        if dep.name != "cosmo":  # skip root
+            if dep.name in deps_serialized_dict:
+                dep.versions = deps_serialized_dict[dep.name].versions.copy()
+    # Also substitute the version of cosmo with the one found in the spec.yaml
+    cosmo_spec.versions = spec_list[0].versions.copy()
 
-    print("Full spec: ",cosmo_spec)
-    cosmo_spec.concretize()
+    print("[DEBUG] Full spec: ", cosmo_spec)  # TODO: debug, remove
 
-
-     # Dev-build cosmo
+    # Dev-build cosmo
     custom_devbuild(cosmo_spec, args.jobs)
-
