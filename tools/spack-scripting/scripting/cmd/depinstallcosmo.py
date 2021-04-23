@@ -76,7 +76,7 @@ def depinstallcosmo(self, args):
         raise spack.error.SpecError("YAML spec contains no nodes.")
 
     # Take only the dependencies
-    deps_serialized_dict = dict((spec.name, spec) for spec in spec_list[1:])
+    deps_serialized_dict = dict((spec.name, spec) for spec in spec_list)
 
     # Selectively substitute the dependencies' versions with those found in the deserialized list of specs
     # The order of precedence in the choice of a dependency's version becomes:
@@ -84,11 +84,10 @@ def depinstallcosmo(self, args):
     # 2. the one provided by the user in the command,
     # 3. the default prescribed by the spack package.
     for dep in cosmo_spec.traverse():
-        if dep.name != "cosmo":  # skip root
-            if dep.name in deps_serialized_dict:
-                dep.versions = deps_serialized_dict[dep.name].versions.copy()
-    # Also substitute the version of cosmo with the one found in the spec.yaml
-    cosmo_spec.versions = spec_list[0].versions.copy()
+        if dep.name in deps_serialized_dict:
+            dep.versions = deps_serialized_dict[dep.name].versions.copy()
+        if dep.name == "cosmo-dycore":
+            dep.versions = cosmo_spec.versions.copy()
 
     print("[DEBUG] Full spec: ", cosmo_spec)  # TODO: debug, remove
 

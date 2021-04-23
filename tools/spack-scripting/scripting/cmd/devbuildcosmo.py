@@ -62,8 +62,6 @@ def devbuildcosmo(self, args):
     if len(specs) > 1:
         tty.die("spack dev-build only takes one spec.")
 
-    # inject cosmo-dycore@dev-build in spec (dev-build only)
-    args.spec.append("^cosmo-dycore@dev-build")
     cosmo_spec = spack.cmd.parse_specs(args.spec)[0]
     cosmo_spec.concretize()
 
@@ -72,7 +70,7 @@ def devbuildcosmo(self, args):
     source_path = os.path.abspath(source_path)
 
     # Load serialized yaml from inside cloned repo
-    with open(source_path + "/cosmo/ACC/spec.yaml", "r") as f:
+    with open(source_path + "/cosmo/ACC/spack/spec.yaml", "r") as f:
         try:
             data = yaml.load(f)
         except yaml.error.MarkedYAMLError as e:
@@ -85,7 +83,7 @@ def devbuildcosmo(self, args):
         raise spack.error.SpecError("YAML spec contains no nodes.")
 
     # Take only the dependencies
-    deps_serialized_dict = dict((spec.name, spec) for spec in spec_list[1:])
+    deps_serialized_dict = dict((spec.name, spec) for spec in spec_list)
 
     # Selectively substitute the dependencies' versions with those found in the deserialized list of specs
     # The order of precedence in the choice of a dependency's version becomes:
@@ -93,10 +91,12 @@ def devbuildcosmo(self, args):
     # 2. the one provided by the user in the command,
     # 3. the default prescribed by the spack package.
     for dep in cosmo_spec.traverse():
-        if dep.name != "cosmo":  # skip root
-            if dep.name != "cosmo-dycore":  # dev-build only
-                if dep.name in deps_serialized_dict:
-                    dep.versions = deps_serialized_dict[dep.name].versions.copy()
+        if dep.name in deps_serialized_dict:
+            dep.versions = deps_serialized_dict[dep.name].versions.copy()
+        if dep.name == "cosmo-dycore":
+            dep.versions = cosmo_spec.versions.copy()
+
+    print("[DEBUG] Cosmo full spec", cosmo_spec)  # TODO: debug, remove
 
     # Clean if needed
     if args.clean_build:
@@ -147,8 +147,6 @@ def devbuildcosmo(self, args):
                     source_path + "/spack-build",
                 ]
             )
-
-    print("[DEBUG] Cosmo full spec", cosmo_spec)  # TODO: debug, remove
 
     # Dev-build cosmo
     custom_devbuild(source_path, cosmo_spec, args.jobs)
