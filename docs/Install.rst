@@ -14,8 +14,6 @@ spack packages and config files you can directly source those instances:
   # module load python >= 3.6
   source /project/g110/spack/user/<machine>/spack/share/spack/setup-env.sh
 
-  ## Spack Installation
-
 Automatically source preinstalled Spack instance
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
