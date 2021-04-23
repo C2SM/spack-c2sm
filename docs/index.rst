@@ -12,10 +12,10 @@ Welcome to C2SM Spack Documentation!
 
    Install
    SpackCommands
-   SpackChoice
-   CI
    CodeDev
-   Spack
+   SpackManagement
+   CI
+   SpackChoice
 
 Indices and tables
 ==================
