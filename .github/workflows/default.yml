@@ -42,7 +42,6 @@ jobs:
       # this commit SHA corresponds to tag `v0.6.0`
       uses: ad-m/github-push-action@40bf560936a8022e68a3c00e7d2abefaf01305a6
       with:
-        force: true
         branch: gh-pages
         directory: gh-pages
         github_token: ${{ secrets.GITHUB_TOKEN }}
