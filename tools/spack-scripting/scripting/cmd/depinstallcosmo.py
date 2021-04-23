@@ -63,7 +63,7 @@ def depinstallcosmo(self, args):
     package.do_stage()
 
     # Load serialized yaml from inside cloned repo
-    with open(package.stage.source_path + "/cosmo/ACC/spec.yaml", "r") as f:
+    with open(package.stage.source_path + "/cosmo/ACC/spack/spec.yaml", "r") as f:
         try:
             data = yaml.load(f)
         except yaml.error.MarkedYAMLError as e:
