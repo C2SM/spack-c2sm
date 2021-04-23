@@ -34,16 +34,15 @@ jobs:
         touch .nojekyll
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git config pull.rebase false
         git add .
         git commit -m "Update documentation" -a || true
-        git pull origin gh-pages
         # The above command will fail if no changes were present, so we ignore
         # that.
     - name: Push changes
       # this commit SHA corresponds to tag `v0.6.0`
       uses: ad-m/github-push-action@40bf560936a8022e68a3c00e7d2abefaf01305a6
       with:
+        force: true
         branch: gh-pages
         directory: gh-pages
         github_token: ${{ secrets.GITHUB_TOKEN }}
