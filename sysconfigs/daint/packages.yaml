@@ -4,7 +4,7 @@ packages:
     all:
         # default compilers defined by the system
         # these reflect the current installed PE
-        compiler: [pgi@20.1.1, pgi@20.1.0, gcc@9.3.0, gcc@8.3.0, gcc@8.1.0, cce@10.0.2, intel@19.1.1.217, intel@19.0.1.144]
+        compiler: [pgi@20.1.1, pgi@20.1.0, gcc@9.3.0, gcc@8.3.0, gcc@8.1.0, cce@10.0.2, cce@11.0.0, intel@19.1.1.217, intel@19.0.1.144]
         providers:
             mpi: [mpich]
             # if the mpich package support +cuda in the future it needs to be put there
@@ -52,10 +52,10 @@ packages:
     cray-libsci:
         buildable: false
         modules:
-            cray-libsci@20.06.1%gcc:   cray-libsci
-            cray-libsci@20.06.1%intel: cray-libsci
-            cray-libsci@20.06.1%cce:   cray-libsci
-            cray-libsci@20.06.1%pgi:   cray-libsci
+            cray-libsci@20.06.1%gcc:   cray-libsci/20.06.1
+            cray-libsci@20.06.1%intel: cray-libsci/20.06.1
+            cray-libsci@20.06.1%cce:   cray-libsci/20.06.1
+            cray-libsci@20.06.1%pgi:   cray-libsci/20.06.1
         paths:
             cray-libsci@20.06.1%cce: /opt/cray/pe/libsci/20.06.1/CRAYCLANG/9.0/x86_64
 

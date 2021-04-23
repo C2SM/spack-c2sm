@@ -1,5 +1,22 @@
 compilers:
 - compiler:
+    spec: cce@11.0.0
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-cray
+    - cce/11.0.0
+    - cdt/20.11
+    - cce/11.0.0
+    operating_system: cnl7
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    target: any
+- compiler:
     spec: cce@10.0.2
     paths:
       cc: cc
@@ -11,6 +28,8 @@ compilers:
     target: any
     modules:
     - PrgEnv-cray
+    - cce/10.0.2
+    - cdt/20.08
     - cce/10.0.2
     environment: {}
     extra_rpaths: []
@@ -27,6 +46,8 @@ compilers:
     modules:
     - PrgEnv-gnu
     - gcc/8.1.0
+    - cdt/20.11
+    - gcc/8.1.0
     environment: {}
     extra_rpaths: []
 - compiler:
@@ -41,6 +62,8 @@ compilers:
     target: any
     modules:
     - PrgEnv-gnu
+    - gcc/8.3.0
+    - cdt/20.11
     - gcc/8.3.0
     environment: {}
     extra_rpaths: []
@@ -57,6 +80,8 @@ compilers:
     modules:
     - PrgEnv-gnu
     - gcc/9.3.0
+    - cdt/20.11
+    - gcc/9.3.0
     environment: {}
     extra_rpaths: []
 - compiler:
@@ -71,6 +96,8 @@ compilers:
     target: any
     modules:
     - PrgEnv-intel
+    - intel/19.0.1.144
+    - cdt/20.11
     - intel/19.0.1.144
     environment: {}
     extra_rpaths: []
@@ -87,6 +114,8 @@ compilers:
     modules:
     - PrgEnv-intel
     - intel/19.1.1.217
+    - cdt/20.11
+    - intel/19.1.1.217
     environment: {}
     extra_rpaths: []
 - compiler:
@@ -102,6 +131,8 @@ compilers:
     modules:
     - PrgEnv-pgi
     - pgi/20.1.0
+    - cdt/20.11
+    - pgi/20.1.0
     environment: {}
     extra_rpaths: []
 - compiler:
@@ -116,6 +147,8 @@ compilers:
     target: any
     modules:
     - PrgEnv-pgi
+    - pgi/20.1.1
+    - cdt/20.11
     - pgi/20.1.1
     environment: {}
     extra_rpaths: []
