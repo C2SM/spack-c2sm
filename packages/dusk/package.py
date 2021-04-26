@@ -24,6 +24,8 @@ class Dusk(PythonPackage):
     # development version for phase _dusk horizon_
     version('horizon', branch='horizon', preferred=True)
 
+    version('dev-build', branch='master')
+
     extends('python@3.8.0:3.8.999')
 
     depends_on('dawn4py', type=('build', 'run'))
