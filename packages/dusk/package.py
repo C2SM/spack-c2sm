@@ -15,6 +15,11 @@ class Dusk(PythonPackage):
     maintainers = ['BenWeber42']
 
     version('master', branch='master')
+    # correct version for the `icondusk-e2e` component
+    # dusk's `icondusk-e2e` branch must always be at or behind `horizon`
+    # they must not ever diverge!
+    version('icondusk-e2e', branch='icondusk-e2e')
+
     version('horizon', branch='horizon', preferred=True)
 
     extends('python@3.8.0:3.8.999')
