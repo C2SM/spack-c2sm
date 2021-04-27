@@ -25,7 +25,7 @@ class IconduskE2e(CMakePackage):
     depends_on('netcdf-c')
     depends_on('atlas_utilities', type=('build', 'run'))
     depends_on('dawn4py',  type=('build'))
-    depends_on('dusk@icondusk-e2e',  type=('build'), when='@master')
+    depends_on('dusk', type=('build'))
     depends_on('python@3.8.0:3.8.999')
     depends_on('atlas@0.22.0')
     depends_on('cuda', type=('build', 'run'))
