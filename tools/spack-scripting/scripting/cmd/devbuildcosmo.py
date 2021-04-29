@@ -96,6 +96,10 @@ def devbuildcosmo(self, args):
         if dep.name == "cosmo-dycore":
             dep.versions = cosmo_spec.versions.copy()
 
+    # re-concretize
+    cosmo_spec = spack.cmd.parse_specs(cosmo_spec.__str__())[0]
+    cosmo_spec.concretize()
+
     print("[DEBUG] Cosmo full spec", cosmo_spec)  # TODO: debug, remove
 
     # Clean if needed
