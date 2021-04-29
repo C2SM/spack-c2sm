@@ -56,6 +56,13 @@ def depinstallcosmo(self, args):
         tty.die("spack dev-build only takes one spec.")
 
     cosmo_spec = specs[0]
+
+    # Collect user-specified versions of dependencies before first concretization
+    user_versioned_deps = set()
+    for dep in cosmo_spec.traverse():
+        if dep.name != "cosmo" and dep.versions and len(dep.versions) != 0:
+            user_versioned_deps.add(dep.name)
+
     cosmo_spec.concretize()
 
     package = spack.repo.get(cosmo_spec)
@@ -84,7 +91,7 @@ def depinstallcosmo(self, args):
     # 2. the one provided by the user in the command,
     # 3. the default prescribed by the spack package.
     for dep in cosmo_spec.traverse():
-        if dep.name in deps_serialized_dict:
+        if dep.name in deps_serialized_dict and not dep.name in user_versioned_deps:
             dep.versions = deps_serialized_dict[dep.name].versions.copy()
         if dep.name == "cosmo-dycore":
             dep.versions = cosmo_spec.versions.copy()
