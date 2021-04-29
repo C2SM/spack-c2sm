@@ -23,6 +23,7 @@ class Dusk(PythonPackage):
     version('icondusk-e2e', branch='icondusk-e2e')
     # development version for phase _dusk horizon_
     version('horizon', branch='horizon', preferred=True)
+    version('dev-build', branch='master')
 
     extends('python@3.8.0:3.8.999')
 
