@@ -33,6 +33,9 @@ def setup_parser(subparser):
     arguments.add_common_arguments(subparser, ["jobs"])
 
     subparser.add_argument(
+        "--no_specyaml", action="store_true", help="Ignore spec.yaml"
+    )
+    subparser.add_argument(
         "-t", "--test", action="store_true", help="Dev-build with testing"
     )
     subparser.add_argument(
@@ -76,36 +79,40 @@ def devbuildcosmo(self, args):
     source_path = os.getcwd()
     source_path = os.path.abspath(source_path)
 
-    # Load serialized yaml from inside cloned repo
-    with open(source_path + "/cosmo/ACC/spack/spec.yaml", "r") as f:
-        try:
-            data = yaml.load(f)
-        except yaml.error.MarkedYAMLError as e:
-            raise syaml.SpackYAMLError("error parsing YAML spec:", str(e))
+    if not args.no_specyaml:
+        # Load serialized yaml from inside cloned repo
+        with open(source_path + "/cosmo/ACC/spack/spec.yaml", "r") as f:
+            try:
+                data = yaml.load(f)
+            except yaml.error.MarkedYAMLError as e:
+                raise syaml.SpackYAMLError("error parsing YAML spec:", str(e))
 
-    # Read nodes out of list.  Root spec (cosmo) is the first element;
-    # dependencies are the following elements.
-    spec_list = [Spec.from_node_dict(node) for node in data["spec"]]
-    if not spec_list:
-        raise spack.error.SpecError("YAML spec contains no nodes.")
+        # Read nodes out of list.  Root spec (cosmo) is the first element;
+        # dependencies are the following elements.
+        spec_list = [Spec.from_node_dict(node) for node in data["spec"]]
+        if not spec_list:
+            raise spack.error.SpecError("YAML spec contains no nodes.")
 
-    # Take only the dependencies
-    deps_serialized_dict = dict((spec.name, spec) for spec in spec_list)
+        # Take only the dependencies
+        deps_serialized_dict = dict((spec.name, spec) for spec in spec_list)
 
-    # Selectively substitute the dependencies' versions with those found in the deserialized list of specs
-    # The order of precedence in the choice of a dependency's version becomes:
-    # 1. the one specified in spec.yaml,
-    # 2. the one provided by the user in the command,
-    # 3. the default prescribed by the spack package.
-    for dep in cosmo_spec.traverse():
-        if dep.name in deps_serialized_dict and not dep.name in user_versioned_deps:
-            dep.versions = deps_serialized_dict[dep.name].versions.copy()
-        if dep.name == "cosmo-dycore":
-            dep.versions = cosmo_spec.versions.copy()
+        # Selectively substitute the dependencies' versions with those found in the deserialized list of specs
+        # The order of precedence in the choice of a dependency's version becomes:
+        # 1. the one specified in spec.yaml,
+        # 2. the one provided by the user in the command,
+        # 3. the default prescribed by the spack package.
+        for dep in cosmo_spec.traverse():
+            if dep.name in deps_serialized_dict and not dep.name in user_versioned_deps:
+                dep.versions = deps_serialized_dict[dep.name].versions.copy()
+            if dep.name == "cosmo-dycore":
+                dep.versions = cosmo_spec.versions.copy()
 
-    # re-concretize
-    cosmo_spec = spack.cmd.parse_specs(cosmo_spec.__str__())[0]
-    cosmo_spec.concretize()
+        # Re-concretize Spec: to enforce checking of constraints after update of versions.
+        # Note: unfortunately there is no better way to re-concretize a Spec (e.g. via API).
+        #       The only solution seems to be going via string representation and then back
+        #       into a Spec object. It's not elegant but it seems to work very well.
+        cosmo_spec = spack.cmd.parse_specs(cosmo_spec.__str__())[0]
+        cosmo_spec.concretize()
 
     print("[DEBUG] Cosmo full spec", cosmo_spec)  # TODO: debug, remove
 
@@ -119,29 +126,6 @@ def devbuildcosmo(self, args):
             shutil.rmtree(source_path + "/spack-build")
 
     if cosmo_spec.satisfies("+cppdycore"):
-        # # Extracting dycore variants
-        # dycore_spec = (
-        #     cosmo_spec.format("{^cosmo-dycore.name}")
-        #     + cosmo_spec.format("{^cosmo-dycore.@version}")
-        #     + cosmo_spec.format("{^cosmo-dycore.%compiler}")
-        #     + cosmo_spec.format("{^cosmo-dycore.variants}")
-        # )
-
-        # # Extracting correct mpi variant
-        # dycore_spec += (
-        #     " ^"
-        #     + cosmo_spec.format("{^mpi.name}")
-        #     + cosmo_spec.format("{^mpi.@version}")
-        #     + cosmo_spec.format("{^mpi.%compiler}")
-        #     + cosmo_spec.format("{^mpi.variants}")
-        # )
-
-        # # Remove the slurm_args variant causing troubles to the concretizer
-        # dycore_spec = dycore_spec.replace(
-        #     cosmo_spec.format("{^cosmo-dycore.variants.slurm_args}"), " "
-        # )
-
-        # dycore_spec = Spec(dycore_spec).concretized()
 
         dycore_spec = cosmo_spec.get_dependency("cosmo-dycore").spec
 
