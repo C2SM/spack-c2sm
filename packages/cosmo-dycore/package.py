@@ -44,10 +44,10 @@ class CosmoDycore(CMakePackage):
     version('master', branch='master')
     version('dev-build', branch='master')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
-    version('c2sm', git='git@github.com:C2SM-RCM/cosmo-1.git', branch='master')
+    version('c2sm', git='git@github.com:C2SM-RCM/cosmo.git', branch='master')
 
     dycore_tags("git@github.com:MeteoSwiss-APN/cosmo.git")
-    dycore_tags("git@github.com:C2SM-RCM/cosmo-1.git")
+    dycore_tags("git@github.com:C2SM-RCM/cosmo.git")
 
     variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'DebugRelease'))
     variant('build_tests', default=True, description="Compile Dycore unittests & regressiontests")
