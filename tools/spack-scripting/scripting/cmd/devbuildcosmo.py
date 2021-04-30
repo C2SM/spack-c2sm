@@ -119,29 +119,31 @@ def devbuildcosmo(self, args):
             shutil.rmtree(source_path + "/spack-build")
 
     if cosmo_spec.satisfies("+cppdycore"):
-        # Extracting dycore variants
-        dycore_spec = (
-            cosmo_spec.format("{^cosmo-dycore.name}")
-            + cosmo_spec.format("{^cosmo-dycore.@version}")
-            + cosmo_spec.format("{^cosmo-dycore.%compiler}")
-            + cosmo_spec.format("{^cosmo-dycore.variants}")
-        )
+        # # Extracting dycore variants
+        # dycore_spec = (
+        #     cosmo_spec.format("{^cosmo-dycore.name}")
+        #     + cosmo_spec.format("{^cosmo-dycore.@version}")
+        #     + cosmo_spec.format("{^cosmo-dycore.%compiler}")
+        #     + cosmo_spec.format("{^cosmo-dycore.variants}")
+        # )
 
-        # Extracting correct mpi variant
-        dycore_spec += (
-            " ^"
-            + cosmo_spec.format("{^mpi.name}")
-            + cosmo_spec.format("{^mpi.@version}")
-            + cosmo_spec.format("{^mpi.%compiler}")
-            + cosmo_spec.format("{^mpi.variants}")
-        )
+        # # Extracting correct mpi variant
+        # dycore_spec += (
+        #     " ^"
+        #     + cosmo_spec.format("{^mpi.name}")
+        #     + cosmo_spec.format("{^mpi.@version}")
+        #     + cosmo_spec.format("{^mpi.%compiler}")
+        #     + cosmo_spec.format("{^mpi.variants}")
+        # )
 
-        # Remove the slurm_args variant causing troubles to the concretizer
-        dycore_spec = dycore_spec.replace(
-            cosmo_spec.format("{^cosmo-dycore.variants.slurm_args}"), " "
-        )
+        # # Remove the slurm_args variant causing troubles to the concretizer
+        # dycore_spec = dycore_spec.replace(
+        #     cosmo_spec.format("{^cosmo-dycore.variants.slurm_args}"), " "
+        # )
 
-        dycore_spec = Spec(dycore_spec).concretized()
+        # dycore_spec = Spec(dycore_spec).concretized()
+
+        dycore_spec = cosmo_spec.get_dependency("cosmo-dycore").spec
 
         print("[DEBUG] Dycore full spec", dycore_spec)  # TODO: debug, remove
         custom_devbuild(source_path, dycore_spec, args.jobs)
