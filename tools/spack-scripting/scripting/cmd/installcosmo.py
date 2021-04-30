@@ -46,7 +46,7 @@ def custom_devbuild(spec, jobs):
     package.do_install(verbose=True, make_jobs=jobs)
 
 
-def depinstallcosmo(self, args):
+def installcosmo(self, args):
     # Extract and concretize cosmo_spec
     if not args.spec:
         tty.die("spack dev-build requires a package spec argument.")
