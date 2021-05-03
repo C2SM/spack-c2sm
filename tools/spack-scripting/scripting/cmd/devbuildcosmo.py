@@ -7,6 +7,7 @@ import sys
 import os
 import subprocess
 import shutil
+import glob
 
 import llnl.util.tty as tty
 import re
@@ -119,9 +120,13 @@ def devbuildcosmo(self, args):
     # Clean if needed
     if args.clean_build:
         print("\033[92m" + "==> " + "\033[0m" + "cosmo: Cleaning build directory")
-        subprocess.run(["make", "clean"], cwd=source_path + "/cosmo/ACC")
 
-        if os.path.exists(base_directory + "/spack-build"):
+        # set F90 to prevent abort defined in Makefile
+        os.environ["F90"] = "NOTSET"
+        subprocess.run(["make", "clean"], cwd=source_path + "/cosmo/ACC")
+        os.environ.pop("F90")
+
+        if os.path.exists(source_path + "/spack-build"):
             print("\033[92m" + "==> " + "\033[0m" + "dycore: Cleaning build directory")
             shutil.rmtree(source_path + "/spack-build")
 
