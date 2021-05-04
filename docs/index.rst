@@ -5,6 +5,9 @@
 
 Welcome to C2SM Spack Documentation!
 =============================================
+Spack is the package manager used by C2SM and MeteoSwiss to install 
+and deploy our software on supercomputer 
+mostly at the Swiss Super Computing Center (CSCS).
 
 .. toctree::
    :maxdepth: 2
