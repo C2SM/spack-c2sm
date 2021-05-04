@@ -76,25 +76,30 @@ Options (spack install)
 * --test=root: run package tests during installation for top-level packages (but skip tests for dependencies)
 * --keep-stage: keep all source needed to build the package
 
-Spack build-env
----------------
-Run a command in a specs install environment, or dump its environment to screen or file
-This command can either be used to run a command in a specs install environment or to dump
-a sourceable file with the install environment. In case you want to run test of packages manually this
-is what you need.
+Spack installcosmo
+-----------------
+Installcosmo can only be used to build COSMO. This command will clone, 
+build and install COSMO as you would expect using *spack install*. 
+Due to the complex dependency structure of COSMO an additional file called *spec.yaml* was introduced.
+*Spec.yaml* contains the version of key dependencies like *eccodes* or *cosmo-eccodes-definition*. 
+This file fetched from the code prior to the build.
+The version of the C++ Dycore is always set
+equal to the COSMO-version.
+Versions of dependencies can be overwritten with user input. The precedence is the following:
+* user-input
+* version defined in spec.yaml
+* package default
 
-Usage (spack build-env)
-^^^^^^^^^^^^^^^^^^^^^^^
+Usage (spack installcosmo)
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
 
-  spack build-env <spec> -- <command>
+  spack installcosmo cosmo@<version>%<compiler> +<variants>
 
-Replacing *<command>* with *bash* allows to interactively execute programmes in the install environment.
-
-Options (spack build-env)
-^^^^^^^^^^^^^^^^^^^^^^^^^
-* --dump <filename>: dump environment to <filename> to be sourced at some point
+Options (spack installcosmo)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+* -t --test: run COSMO testsuite before installing
 
 Spack dev-build
 ---------------
@@ -127,6 +132,54 @@ Options (spack dev-build)
 
   spack dev-build --until build <package>@<version>%<compiler> +<variants>
 
+Spack devbuildcosmo
+-------------------
+Devbuildcosmo can only be used to build COSMO using a local source.
+Similar to *spack installcosmo* it uses the file *spec.yaml* to determine the version
+of key dependencies. The version of the C++ Dycore is alway set equal to the COSMO-version.
+Versions of dependencies can be overwritten with user input. The precedence is the following:
+* user-input
+* version defined in spec.yaml
+* package default
+
+There is an option the completely ignore all version specified in *spec.yaml* to allow builds of older 
+COSMO version.
+
+Usage (spack devbuildcosmo)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: bash
+
+  cd </path/to/package> 
+  spack devbuildcosmo <cosmo>@<version>%<compiler> +<variants>
+
+Options (spack devbuildcosmo)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+* --no_specyaml: ignore *spec.yaml*
+* -t --test: run COSMO testsuite before installing
+* -c --clean_build: Clean build
+
+Spack build-env
+---------------
+Run a command in a specs install environment, or dump its environment to screen or file
+This command can either be used to run a command in a specs install environment or to dump
+a sourceable file with the install environment. In case you want to run test of packages manually this
+is what you need.
+
+
+Usage (spack build-env)
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: bash
+
+  spack build-env <spec> -- <command>
+
+Replacing *<command>* with *bash* allows to interactively execute programmes in the install environment.
+
+Options (spack build-env)
+^^^^^^^^^^^^^^^^^^^^^^^^^
+* --dump <filename>: dump environment to <filename> to be sourced at some point
+
 Spack edit
 ----------
 Spack edit opens package files in $EDITOR. Use this command
@@ -139,8 +192,3 @@ Usage (spack edit)
 
   spack edit <package>
 
-Spack devbuildcosmo
----------------------
-
-Spack depinstallcosmo
----------------------

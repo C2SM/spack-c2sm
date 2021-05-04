@@ -22,10 +22,6 @@ project = 'C2SM Spack documentation'
 copyright = '2020, Carlos Osuna'
 author = 'Carlos Osuna'
 
-# The full version, including alpha/beta/rc tags
-release = 'v0.0.1'
-
-
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
