@@ -77,7 +77,7 @@ Options (spack install)
 * --keep-stage: keep all source needed to build the package
 
 Spack installcosmo
------------------
+------------------
 Installcosmo can only be used to build COSMO. This command will clone, 
 build and install COSMO as you would expect using *spack install*. 
 Due to the complex dependency structure of COSMO an additional file called *spec.yaml* was introduced.
