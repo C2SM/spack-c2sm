@@ -45,7 +45,6 @@ class Cosmo(MakefilePackage):
     set_versions(apngit, reg_filter='.*mch.*')
     set_versions(c2smgit)
 
-    depends_on('cosmo-dycore', when='+cppdycore', type='build')
     depends_on('netcdf-fortran +mpi', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))
     depends_on('slurm%gcc', type='run')
@@ -62,6 +61,27 @@ class Cosmo(MakefilePackage):
     depends_on('claw@2.0.1', when='+claw', type='build')
     depends_on('boost%gcc', when='cosmo_target=gpu ~cppdycore', type='build')
     depends_on('cmake%gcc', type='build')
+
+
+    # cosmo-dycore dependency
+    types = ['float','double']
+    prod = [True,False]
+    cuda = [True, False]
+    testing = [True, False]
+    gt1 = [True, False]
+    comb=list(itertools.product(*[types, prod, cuda, testing, gt1]))
+    for it in comb:
+        real_type=it[0]
+        prod_opt = '+production' if it[1] else '~production'
+        cuda_opt = '+cuda' if it[2] else '~cuda cuda_arch=none'
+        cuda_dep = 'cosmo_target=gpu' if it[2] else ' cosmo_target=cpu'
+        test_opt = '+build_tests' if it[3] else '~build_tests'
+        test_dep = '+dycoretest' if it[3] else '~dycoretest'
+        gt1_dep = '+gt1' if it[4] else '~gt1'
+
+        orig='cosmo-dycore'+'%gcc@8.1.0:8.4.0 real_type='+real_type+' '+ prod_opt + ' ' + cuda_opt+' ' +test_opt + ' ' + gt1_dep
+        dep='real_type='+real_type+' '+ prod_opt + ' '+ cuda_dep + ' +cppdycore'+' '+test_dep + ' ' + gt1_dep
+        depends_on(orig, when=dep, type='build')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('dycoretest', default=True, description='Build C++ dycore with testing')
