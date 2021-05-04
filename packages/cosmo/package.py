@@ -45,6 +45,7 @@ class Cosmo(MakefilePackage):
     set_versions(apngit, reg_filter='.*mch.*')
     set_versions(c2smgit)
 
+    depends_on('cosmo-dycore', when='+cppdycore', type='build')
     depends_on('netcdf-fortran +mpi', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))
     depends_on('slurm%gcc', type='run')
