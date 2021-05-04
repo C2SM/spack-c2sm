@@ -100,7 +100,5 @@ def installcosmo(self, args):
     cosmo_spec = spack.cmd.parse_specs(cosmo_spec.__str__())[0]
     cosmo_spec.concretize()
 
-    print("[DEBUG] Full spec: ", cosmo_spec)  # TODO: debug, remove
-
     # Dev-build cosmo
     custom_devbuild(cosmo_spec, args.jobs)

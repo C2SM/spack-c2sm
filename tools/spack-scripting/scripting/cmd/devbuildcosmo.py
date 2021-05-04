@@ -115,8 +115,6 @@ def devbuildcosmo(self, args):
         cosmo_spec = spack.cmd.parse_specs(cosmo_spec.__str__())[0]
         cosmo_spec.concretize()
 
-    print("[DEBUG] Cosmo full spec", cosmo_spec)  # TODO: debug, remove
-
     # Clean if needed
     if args.clean_build:
         print("\033[92m" + "==> " + "\033[0m" + "cosmo: Cleaning build directory")
@@ -134,7 +132,6 @@ def devbuildcosmo(self, args):
 
         dycore_spec = cosmo_spec.get_dependency("cosmo-dycore").spec
 
-        print("[DEBUG] Dycore full spec", dycore_spec)  # TODO: debug, remove
         custom_devbuild(source_path, dycore_spec, args.jobs)
 
         # Launch dycore tests
