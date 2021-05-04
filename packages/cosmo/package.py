@@ -23,29 +23,6 @@ def set_versions(repo, reg_filter=None):
     for tag in tags:
         version(tag, git=repo, tag=tag, get_full_repo=True)
 
-def set_dycore_dep():
-    types = ['float','double']
-    prod = [True,False]
-    cuda = [True, False]
-    testing = [True, False]
-    gt1 = [True, False]
-    comb=list(itertools.product(*[types, prod, cuda, testing, gt1]))
-    for it in comb:
-        real_type=it[0]
-        prod_opt = '+production' if it[1] else '~production'
-        cuda_opt = '+cuda' if it[2] else '~cuda cuda_arch=none'
-        cuda_dep = 'cosmo_target=gpu' if it[2] else ' cosmo_target=cpu'
-        test_opt = '+build_tests' if it[3] else '~build_tests'
-        test_dep = '+dycoretest' if it[3] else '~dycoretest'
-        gt1_dep = '+gt1' if it[4] else '~gt1'
-
-        orig='cosmo-dycore%gcc@8.1.0:8.4.0'+' real_type='+real_type+' '+ prod_opt + ' ' + cuda_opt+' ' +test_opt + ' ' + gt1_dep
-        #orig='cosmo-dycore'+' real_type='+real_type+' '+ prod_opt + ' ' + cuda_opt+' ' +test_opt + ' ' + gt1_dep
-        dep='real_type='+real_type+' '+ prod_opt + ' '+ cuda_dep + ' +cppdycore'+' '+test_dep + ' ' + gt1_dep
-        depends_on(orig, when=dep, type='build')
-
-
-
 
 class Cosmo(MakefilePackage):
     """COSMO: Numerical Weather Prediction Model. Needs access to private GitHub."""
@@ -57,7 +34,6 @@ class Cosmo(MakefilePackage):
     c2smgit  = 'git@github.com:C2SM-RCM/cosmo.git'
     maintainers = ['elsagermann']
 
-    version('ci_release', git='git@github.com:cosunae/cosmo.git', branch='ci_release')
     version('master', branch='master', get_full_repo=True)
     version('dev-build', branch='master', get_full_repo=True)
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch', get_full_repo=True)
@@ -68,8 +44,6 @@ class Cosmo(MakefilePackage):
 
     set_versions(apngit, reg_filter='.*mch.*')
     set_versions(c2smgit)
-
-    set_dycore_dep()
 
     depends_on('netcdf-fortran +mpi', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))
