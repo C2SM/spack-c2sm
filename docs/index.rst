@@ -13,6 +13,7 @@ mostly at the Swiss Super Computing Center (CSCS).
    :maxdepth: 2
    :caption: Contents:
 
+   QuickStart
    Install
    SpackCommands
    CodeDev
