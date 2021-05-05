@@ -14,7 +14,7 @@ Source Spack instance on Piz Daint
 
 COSMO-Model
 -----------
-In order install COSMO fetched from a GitHub repository, use *spack depinstallcosmo*:
+In order install COSMO fetched from a GitHub repository, use *spack installcosmo*:
 
 .. code-block:: bash
 
