@@ -3,8 +3,17 @@ Quick Start for Spack
 It is recommended to read the entire documentation to get familiar with Spack.
 For those of you with lack of time or interest the following short manuals do the job as well.
 
-COSMO
------
+Source Spack instance on Piz Daint
+----------------------------------
+
+.. code-block:: bash
+
+  module load cray-python
+  source /project/g110/spack/user/daint/spack/share/spack/setup-env.sh
+
+
+COSMO-Model
+-----------
 In order install COSMO fetched from a GitHub repository, use *spack depinstallcosmo*:
 
 .. code-block:: bash
