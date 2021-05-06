@@ -87,9 +87,9 @@ The version of the C++ Dycore is always set
 equal to the COSMO-version.
 Versions of dependencies can be overwritten with user input. The precedence is the following:
 
-1.  user-input
-2.  version defined in spec.yaml
-3.  package default
+#. user-input
+#. version defined in spec.yaml
+#. package default
 
 Usage (spack installcosmo)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -140,9 +140,9 @@ Similar to *spack installcosmo* it uses the file *spec.yaml* to determine the ve
 of key dependencies. The version of the C++ Dycore is alway set equal to the COSMO-version.
 Versions of dependencies can be overwritten with user input. The precedence is the following:
 
-1.  user-input
-2.  version defined in spec.yaml
-3.  package default
+#. user-input
+#. version defined in spec.yaml
+#. package default
 
 There is an option the completely ignore all version specified in *spec.yaml* to allow builds of older 
 COSMO version.
