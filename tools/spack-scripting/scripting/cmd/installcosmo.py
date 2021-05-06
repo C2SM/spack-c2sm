@@ -23,7 +23,7 @@ from spack.spec import Spec
 from spack.cmd.dev_build import dev_build
 from spack.main import SpackCommand
 
-description = "Dev-build cosmo and dycore with or without testing."
+description = "Install cosmo and dycore with or without testing using spec.yaml for key dependencies"
 section = "scripting"
 level = "long"
 
