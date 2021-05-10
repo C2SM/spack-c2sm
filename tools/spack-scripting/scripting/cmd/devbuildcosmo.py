@@ -7,7 +7,6 @@ import sys
 import os
 import subprocess
 import shutil
-import glob
 
 import llnl.util.tty as tty
 import re
