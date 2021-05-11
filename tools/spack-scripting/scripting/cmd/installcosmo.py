@@ -87,7 +87,7 @@ def installcosmo(self, args):
 
     # Selectively substitute the dependencies' versions with those found in the deserialized list of specs
     # The order of precedence in the choice of a dependency's version becomes:
-    # 1. the one specified in spec.yaml,
+    # 1. the one provided by the user in the command,
     # 2. the one provided by the user in the command,
     # 3. the default prescribed by the spack package.
     for dep in cosmo_spec.traverse():
