@@ -4,22 +4,6 @@ Code Development
 COSMO
 -------------
 
-Before we can start, we need to load the spack instance
-
-On Tsa:
-
-.. code-block:: bash
-
-  module load python/3.7.4
-  . /project/g110/spack/user/tsa/spack/share/spack/setup-env.sh
-
-On Daint:
-  
-.. code-block:: bash
-  
-  module load cray-python
-  . /project/g110/spack/user/daint/spack/share/spack/setup-env.sh
-
 Compile a local version of COSMO using devbuildcosmo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -30,7 +14,7 @@ c++ dycore.
 Here we assume the user has clone cosmo, is in the required branch/release and
 in the root folder of the cosmo repository. 
 
-The recommanded method to build with spack is to use the devbuildcosmo command. This takes the
+The recommended method to build with spack is to use the devbuildcosmo command. This takes the
 cosmo specification as input and will automatically compile and install the
 local dycore with the correct configuration and then compile and install
 cosmo. Here is an example for gpu in double:
@@ -138,8 +122,8 @@ Set the path to the serialized data (later it will be used in this guide)
 
   SERIALIZE_DATA=</path/to/cosmo>/cosmo/ACC/test/serialize/data/
 
-Compile and Test a Local C++ dycore
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+COSMO C++ Dycore
+------------------
 
 This section describes how to compile and test a version of the COSMO C++ dycore from your working directory. 
 
