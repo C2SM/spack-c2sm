@@ -47,7 +47,7 @@ the dependencies"""
         help="don't remove the build stage if installation succeeds")
 
 
-def custom_devbuild(spec, jobs):
+def custom_devbuild(spec, args):
     package = spack.repo.get(spec)
 
     if package.installed:
