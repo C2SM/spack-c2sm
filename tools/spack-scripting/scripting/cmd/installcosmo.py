@@ -117,8 +117,4 @@ def installcosmo(self, args):
     cosmo_spec.concretize()
 
     # Dev-build cosmo
-<<<<<<< HEAD
     custom_devbuild(cosmo_spec, args)
-=======
-    custom_devbuild(cosmo_spec, args.jobs)
->>>>>>> origin/master
