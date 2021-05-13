@@ -29,21 +29,37 @@ level = "long"
 
 
 def setup_parser(subparser):
-    arguments.add_common_arguments(subparser, ["jobs"])
+    arguments.add_common_arguments(subparser, ["jobs", "spec"])
 
     subparser.add_argument(
-        "-t", "--test", action="store_true", help="Dev-build with testing"
+        '--only',
+        default='package,dependencies',
+        dest='things_to_install',
+        choices=['package', 'dependencies'],
+        help="""select the mode of installation.
+the default is to install the package along with all its dependencies.
+alternatively one can decide to install only the package or only
+the dependencies"""
     )
-    arguments.add_common_arguments(subparser, ["spec"])
 
+    subparser.add_argument(
+        '--keep-stage', action='store_true',
+        help="don't remove the build stage if installation succeeds")
 
-def custom_devbuild(spec, jobs):
+def custom_devbuild(spec, args):
     package = spack.repo.get(spec)
 
     if package.installed:
         package.do_uninstall(force=True)
 
-    package.do_install(verbose=True, make_jobs=jobs)
+    kwargs= {
+      'make_jobs': args.jobs,
+      'install_deps': ('dependencies' in args.things_to_install),
+      'install_package': ('package' in args.things_to_install),
+      'keep_stage': args.keep_stage
+    }
+
+    package.do_install(verbose=True, **kwargs)
 
 
 def installcosmo(self, args):
@@ -101,4 +117,4 @@ def installcosmo(self, args):
     cosmo_spec.concretize()
 
     # Dev-build cosmo
-    custom_devbuild(cosmo_spec, args.jobs)
+    custom_devbuild(cosmo_spec, args)
