@@ -3,17 +3,23 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to MeteoSwiss DevOps's documentation!
+Welcome to C2SM Spack Documentation!
 =============================================
+Spack is the package manager used by C2SM and MeteoSwiss to install 
+and deploy our software on supercomputer 
+mostly at the Swiss Super Computing Center (CSCS).
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   SpackChoice
-   CI
+   QuickStart
+   Install
+   SpackCommands
    CodeDev
-   Spack
+   SpackManagement
+   CI
+   SpackChoice
 
 Indices and tables
 ==================

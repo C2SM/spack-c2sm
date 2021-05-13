@@ -46,7 +46,8 @@ the dependencies"""
         '--keep-stage', action='store_true',
         help="don't remove the build stage if installation succeeds")
 
-def custom_devbuild(spec, args):
+
+def custom_devbuild(spec, jobs):
     package = spack.repo.get(spec)
 
     if package.installed:
@@ -60,7 +61,6 @@ def custom_devbuild(spec, args):
     }
 
     package.do_install(verbose=True, **kwargs)
-
 
 def installcosmo(self, args):
     # Extract and concretize cosmo_spec
@@ -117,4 +117,8 @@ def installcosmo(self, args):
     cosmo_spec.concretize()
 
     # Dev-build cosmo
+<<<<<<< HEAD
     custom_devbuild(cosmo_spec, args)
+=======
+    custom_devbuild(cosmo_spec, args.jobs)
+>>>>>>> origin/master

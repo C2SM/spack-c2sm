@@ -95,6 +95,7 @@ class Cosmo(MakefilePackage):
     variant('pollen', default=False, description='Build with pollen enabled')
     variant('cosmo_target', default='gpu', description='Build with target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('verbose', default=False, description='Build cosmo with verbose enabled')
+    variant('set_version', default=False, description='Pass cosmo tag version to Makefile')
     variant('gt1', default=False, description='Build dycore with gridtools 1.1.3')
     variant('cuda_arch', default='none', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
 
@@ -221,6 +222,8 @@ class Cosmo(MakefilePackage):
             build.append('SERIALIZE=1')
         if self.spec.variants['verbose'].value:
             build.append('VERBOSE=1')
+        if '+set_version' in self.spec:
+            build.append('COSMO_VERSION='+self.spec.format('{version}'))
         MakeFileTarget = ''
         if '+parallel' in self.spec:
             MakeFileTarget += 'par'
