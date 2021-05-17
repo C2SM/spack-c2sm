@@ -46,6 +46,13 @@ the dependencies"""
         '--keep-stage', action='store_true',
         help="don't remove the build stage if installation succeeds")
 
+    subparser.add_argument(
+        "-t", "--test", 
+        action="store_true", 
+        help="Run COSMO testsuite after compilation"
+    )
+ 
+
 
 def custom_devbuild(spec, args):
     package = spack.repo.get(spec)
@@ -57,7 +64,8 @@ def custom_devbuild(spec, args):
       'make_jobs': args.jobs,
       'install_deps': ('dependencies' in args.things_to_install),
       'install_package': ('package' in args.things_to_install),
-      'keep_stage': args.keep_stage
+      'keep_stage': args.keep_stage,
+      'tests': args.test
     }
 
     package.do_install(verbose=True, **kwargs)
