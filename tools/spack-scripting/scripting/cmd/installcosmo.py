@@ -46,6 +46,16 @@ the dependencies"""
         '--keep-stage', action='store_true',
         help="don't remove the build stage if installation succeeds")
 
+    subparser.add_argument(
+        "--test", 
+        choices=['root', 'all'],
+        dest="things_to_test", 
+        help="""If root is chosen, run COSMO testsuite before installation 
+        (but skip tests for dependencies). If all is chosen, 
+        run package tests during installation for all packages."""
+    )
+ 
+
 
 def custom_devbuild(spec, args):
     package = spack.repo.get(spec)
@@ -53,11 +63,19 @@ def custom_devbuild(spec, args):
     if package.installed:
         package.do_uninstall(force=True)
 
+    if args.things_to_test == 'root':
+        args.things_to_test = ['cosmo']
+    elif args.things_to_test == 'all':
+        args.things_to_test = True
+    else:
+        args.things_to_test = False
+
     kwargs= {
       'make_jobs': args.jobs,
       'install_deps': ('dependencies' in args.things_to_install),
       'install_package': ('package' in args.things_to_install),
-      'keep_stage': args.keep_stage
+      'keep_stage': args.keep_stage,
+      'tests': args.things_to_test 
     }
 
     package.do_install(verbose=True, **kwargs)
