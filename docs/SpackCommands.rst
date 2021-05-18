@@ -100,7 +100,15 @@ Usage (spack installcosmo)
 
 Options (spack installcosmo)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* -t --test: run COSMO testsuite before installing
+* --test {root,all}: If root is chosen, run COSMO testsuite before installation 
+                     (but skip tests for dependencies). If all is chosen, 
+                     run package tests during installation for all packages.
+* -j --jobs: explicitly set number of parallel jobs
+* --only {package,dependencies}: select the mode of installation.
+                                 the default is to install the package along with all its dependencies.
+                                 alternatively one can decide to install only the package or only
+                                 the dependencies.
+* --keep-stage: don't remove the build after compilation
 
 Spack dev-build
 ---------------

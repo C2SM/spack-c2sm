@@ -29,22 +29,56 @@ level = "long"
 
 
 def setup_parser(subparser):
-    arguments.add_common_arguments(subparser, ["jobs"])
+    arguments.add_common_arguments(subparser, ["jobs", "spec"])
 
     subparser.add_argument(
-        "-t", "--test", action="store_true", help="Dev-build with testing"
+        '--only',
+        default='package,dependencies',
+        dest='things_to_install',
+        choices=['package', 'dependencies'],
+        help="""select the mode of installation.
+the default is to install the package along with all its dependencies.
+alternatively one can decide to install only the package or only
+the dependencies"""
     )
-    arguments.add_common_arguments(subparser, ["spec"])
+
+    subparser.add_argument(
+        '--keep-stage', action='store_true',
+        help="don't remove the build stage if installation succeeds")
+
+    subparser.add_argument(
+        "--test", 
+        choices=['root', 'all'],
+        dest="things_to_test", 
+        help="""If root is chosen, run COSMO testsuite before installation 
+        (but skip tests for dependencies). If all is chosen, 
+        run package tests during installation for all packages."""
+    )
+ 
 
 
-def custom_devbuild(spec, jobs):
+def custom_devbuild(spec, args):
     package = spack.repo.get(spec)
 
     if package.installed:
         package.do_uninstall(force=True)
 
-    package.do_install(verbose=True, make_jobs=jobs)
+    if args.things_to_test == 'root':
+        args.things_to_test = ['cosmo']
+    elif args.things_to_test == 'all':
+        args.things_to_test = True
+    else:
+        args.things_to_test = False
 
+    kwargs= {
+      'make_jobs': args.jobs,
+      'install_deps': ('dependencies' in args.things_to_install),
+      'install_package': ('package' in args.things_to_install),
+      'keep_stage': args.keep_stage,
+      'tests': args.things_to_test 
+    }
+
+    package.do_install(verbose=True, **kwargs)
 
 def installcosmo(self, args):
     # Extract and concretize cosmo_spec
@@ -101,4 +135,4 @@ def installcosmo(self, args):
     cosmo_spec.concretize()
 
     # Dev-build cosmo
-    custom_devbuild(cosmo_spec, args.jobs)
+    custom_devbuild(cosmo_spec, args)
