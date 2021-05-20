@@ -36,9 +36,6 @@ class Icon(Package):
     variant('host', default='daint', description='Build on described host (e.g daint)', multi=False, values=('tsa', 'daint'))
     variant('site', default='cscs', description='Build on described site (e.g cscs)', multi=False)
     variant('claw', default=True, description='Build with claw directories enabled')
-    variant('rte-rrtmgp', default=True, description='Build with rte-rrtmgp enabled')
-    variant('mpi-checks', default=False, description='Build with mpi-check enabled')
-    variant('openmp', default=True, description='Build with openmp enabled')
     variant('serialize_mode', default='none', description='Build with serialization, with serialze_mode enabled', values=('none','create', 'read'))
     variant('eccodes', default=False, description='Build with grib2 enabled')
     variant('test_name', default='none', description='Launch test: test_name after installation')
@@ -89,10 +86,6 @@ class Icon(Package):
         if '+ham' in self.spec:
             args.append('--enable-atm-phy-echam-submodels')
             args.append('--enable-hammoz')
-        
-        # OpenMP library
-        if '~openmp' in self.spec:
-            args.append('--disable-openmp')        
 
         # Serialization
         if self.spec.variants['serialize_mode'].value != 'none':
