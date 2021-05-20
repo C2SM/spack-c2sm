@@ -43,7 +43,6 @@ def main():
 
     if args.idir:
         sys.path.insert(1, os.path.join(args.idir, 'spack/lib/spack/external'))
-        import ruamel.yaml
         if not os.path.isdir(args.idir + '/spack'):
             print('Cloning spack instance to: ' + args.idir)
             if args.version is None:
@@ -54,6 +53,7 @@ def main():
             print('Installing custom dev-build command')
             shutil.copy('./tools/spack-scripting/scripting/cmd/dev_build.py',
                         args.idir + '/spack/lib/spack/spack/cmd/')
+        import ruamel.yaml
     else:
         print('Error: a Spack installation is required!')
         exit()
