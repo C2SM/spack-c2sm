@@ -69,7 +69,9 @@ packages:
     cuda:
         modules:
           cuda@10.2%gcc: cudatoolkit/10.2.89_3.29-7.0.2.1_3.5__g67354b4
-        version: ['10.2']
+          cuda@11.0.2%gcc: cudatoolkit/11.0.2_3.34-7.0.2.1_4.6__g017096a
+          cuda@11.1.0%gcc: cudatoolkit/11.1.0_3.35-7.0.2.1_3.6__g62b8859
+          cuda@11.2.0%gcc: cudatoolkit/11.2.0_3.36-7.0.2.1_2.2__g3ff9ab1
     curl:
         paths:
              curl@7.60.0: /usr
