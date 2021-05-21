@@ -76,7 +76,10 @@ class Icon(Package):
             
             if '+claw' in self.spec:
                 env.set('CLAW', self.spec['claw'].prefix + '/bin/clawfc')
-                
+
+            if '+eccodes' in self.spec:
+                env.set('ECCODES_ROOT', self.spec['eccodes'].prefix)
+
     def configure_args(self):
 
         args = []
@@ -89,6 +92,15 @@ class Icon(Package):
         # Serialization
         if self.spec.variants['serialize_mode'].value != 'none':
             args.append('--enable-serialization=' + self.spec.variants['serialize_mode'].value)
+
+        # Claw
+        if '+claw' in self.spec:
+            args.append('--enable-claw')
+
+        # Eccodes
+        if '+eccodes' in self.spec:
+            args.append('--enable-eccodes')
+
         return args
 
     def configure(self, spec, prefix):
