@@ -2,7 +2,7 @@
 
 import argparse
 import os
-import yaml
+import sys
 import shutil
 import subprocess
 
@@ -15,11 +15,11 @@ spack_repo = 'git@github.com:spack/spack.git'
 def main():
     parser = argparse.ArgumentParser(
         description='Small config script which can be used to install a spack instance with the correct configuration files and mch spack packages.')
-    parser.add_argument('-i', '--idir', type=str, default=dir_path,
+    parser.add_argument('-i', '--idir', type=str, default=dir_path, required=True,
                         help='Where the Spack instance is installed or you want it to be installed')
-    parser.add_argument('-m', '--machine', type=str,
+    parser.add_argument('-m', '--machine', type=str, required=True,
                         help='Required: machine name')
-    parser.add_argument('-u', '--upstreams', type=str, default='ON',
+    parser.add_argument('-u', '--upstreams', type=str, default='ON', choices=('ON', 'OFF'),
                         help='ON or OFF, install upstreams.yaml file')
     parser.add_argument('-v', '--version', type=str, default=spack_version,
                         help='Spack version, Default: ' + spack_version)
@@ -33,26 +33,22 @@ def main():
                         help='Define spack caches (source and misc)  directories. Default:  ~/.spack/machine/source_cache and ~/.spack/machine/cache')
     args = parser.parse_args()
 
-    if args.upstreams != 'OFF' and args.upstreams != 'ON':
-        print('Upstreams must be set to ON or OFF!')
-        exit()
 
-    if not args.machine:
-        print('Error: machine name required!')
-        exit()
+    if not os.path.isdir(args.idir + '/spack'):
+        print('Cloning spack instance to: ' + args.idir)
+        if args.version is None:
+            args.version = spack_version
+        cmd = 'git clone {repo} -b {branch} {dest_dir}'.format(
+            repo=spack_repo, branch=args.version, dest_dir=os.path.join(args.idir, 'spack'))
+        subprocess.run(cmd.split(), check=True)
+        print('Installing custom dev-build command')
+        shutil.copy('./tools/spack-scripting/scripting/cmd/dev_build.py',
+                    args.idir + '/spack/lib/spack/spack/cmd/')
 
-    if args.idir:
-        if not os.path.isdir(args.idir + '/spack'):
-            print('Cloning spack instance to: ' + args.idir)
-            if args.version is None:
-                args.version = spack_version
-            cmd = 'git clone {repo} -b {branch} {dest_dir}'.format(
-                repo=spack_repo, branch=args.version, dest_dir=os.path.join(args.idir, 'spack'))
-            subprocess.run(cmd.split(), check=True)
-            print('Installing custom dev-build command')
-            shutil.copy('./tools/spack-scripting/scripting/cmd/dev_build.py',
-                        args.idir + '/spack/lib/spack/spack/cmd/')
-    print('Installing mch packages & ' + args.machine + ' config files')
+    sys.path.insert(1, os.path.join(args.idir, 'spack/lib/spack/external'))
+    from ruamel import yaml
+
+    print('Installing mch packages & ' + args.machine + ' config files.')
 
     if not args.reposdir:
         args.reposdir = args.idir + '/spack/etc/spack'
@@ -123,8 +119,8 @@ def main():
                                                                    '') + '/' + afile+' ' + args.idir + '/spack/etc/spack/'
         subprocess.run(cmd.split(), check=True)
 
-    print('Spack successfully installed. \n source '+args.idir +
-          '/spack/share/spack/setup-env.sh for setting up the instance')
+    print('Spack successfully installed. \nSource '+args.idir +
+          '/spack/share/spack/setup-env.sh for setting up the instance.')
 
 
 if __name__ == "__main__":
