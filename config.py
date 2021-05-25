@@ -15,11 +15,11 @@ spack_repo = 'git@github.com:spack/spack.git'
 def main():
     parser = argparse.ArgumentParser(
         description='Small config script which can be used to install a spack instance with the correct configuration files and mch spack packages.')
-    parser.add_argument('-i', '--idir', type=str, default=dir_path,
+    parser.add_argument('-i', '--idir', type=str, default=dir_path, required=True,
                         help='Where the Spack instance is installed or you want it to be installed')
-    parser.add_argument('-m', '--machine', type=str,
+    parser.add_argument('-m', '--machine', type=str, required=True,
                         help='Required: machine name')
-    parser.add_argument('-u', '--upstreams', type=str, default='ON',
+    parser.add_argument('-u', '--upstreams', type=str, default='ON', choices=('ON', 'OFF'),
                         help='ON or OFF, install upstreams.yaml file')
     parser.add_argument('-v', '--version', type=str, default=spack_version,
                         help='Spack version, Default: ' + spack_version)
@@ -33,30 +33,20 @@ def main():
                         help='Define spack caches (source and misc)  directories. Default:  ~/.spack/machine/source_cache and ~/.spack/machine/cache')
     args = parser.parse_args()
 
-    if args.upstreams != 'OFF' and args.upstreams != 'ON':
-        print('Upstreams must be set to ON or OFF!')
-        exit()
 
-    if not args.machine:
-        print('Error: machine name required!')
-        exit()
+    if not os.path.isdir(args.idir + '/spack'):
+        print('Cloning spack instance to: ' + args.idir)
+        if args.version is None:
+            args.version = spack_version
+        cmd = 'git clone {repo} -b {branch} {dest_dir}'.format(
+            repo=spack_repo, branch=args.version, dest_dir=os.path.join(args.idir, 'spack'))
+        subprocess.run(cmd.split(), check=True)
+        print('Installing custom dev-build command')
+        shutil.copy('./tools/spack-scripting/scripting/cmd/dev_build.py',
+                    args.idir + '/spack/lib/spack/spack/cmd/')
 
-    if args.idir:
-        sys.path.insert(1, os.path.join(args.idir, 'spack/lib/spack/external'))
-        if not os.path.isdir(args.idir + '/spack'):
-            print('Cloning spack instance to: ' + args.idir)
-            if args.version is None:
-                args.version = spack_version
-            cmd = 'git clone {repo} -b {branch} {dest_dir}'.format(
-                repo=spack_repo, branch=args.version, dest_dir=os.path.join(args.idir, 'spack'))
-            subprocess.run(cmd.split(), check=True)
-            print('Installing custom dev-build command')
-            shutil.copy('./tools/spack-scripting/scripting/cmd/dev_build.py',
-                        args.idir + '/spack/lib/spack/spack/cmd/')
-        import ruamel.yaml
-    else:
-        print('Error: a Spack installation is required!')
-        exit()
+    sys.path.insert(1, os.path.join(args.idir, 'spack/lib/spack/external'))
+    from ruamel import yaml
 
     print('Installing mch packages & ' + args.machine + ' config files.')
 
@@ -71,9 +61,9 @@ def main():
     print('Installing repos.yaml on ' + args.reposdir)
     shutil.copy(dir_path + '/sysconfigs/repos.yaml', args.reposdir)
     reposfile = os.path.join(args.reposdir, 'repos.yaml')
-    repos_data = ruamel.yaml.safe_load(open(reposfile, 'r'))
+    repos_data = yaml.safe_load(open(reposfile, 'r'))
     repos_data['repos'] = [dir_path]
-    ruamel.yaml.safe_dump(repos_data, open(reposfile, 'w'), default_flow_style=False)
+    yaml.safe_dump(repos_data, open(reposfile, 'w'), default_flow_style=False)
 
     # configure config.yaml
 
@@ -83,7 +73,7 @@ def main():
     shutil.copy('sysconfigs/' + args.machine.replace('admin-', '') +
                 '/config.yaml', configfile)
 
-    config_data = ruamel.yaml.safe_load(open(configfile, 'r'))
+    config_data = yaml.safe_load(open(configfile, 'r'))
 
     if not args.pckgidir:
         if 'admin' in args.machine:
@@ -107,7 +97,7 @@ def main():
     config_data['config']['module_roots']['tcl'] = args.pckgidir + \
         '/modules/' + args.machine
     config_data['config']['extensions'] = [dir_path + '/tools/spack-scripting']
-    ruamel.yaml.safe_dump(config_data, open(configfile, 'w'),
+    yaml.safe_dump(config_data, open(configfile, 'w'),
                    default_flow_style=False)
 
     # copy modified upstreams.yaml if not admin
@@ -115,11 +105,11 @@ def main():
         upstreamfile = args.idir + '/spack/etc/spack' + '/upstreams.yaml'
         shutil.copy('sysconfigs/upstreams.yaml', upstreamfile)
 
-        upstreams_data = ruamel.yaml.safe_load(
+        upstreams_data = yaml.safe_load(
             open(upstreamfile, 'r'))
         upstreams_data['upstreams']['spack-instance-1']['install_tree'] = '/project/g110/spack-install/' + \
             args.machine.replace('admin-', '')
-        ruamel.yaml.safe_dump(upstreams_data, open(
+        yaml.safe_dump(upstreams_data, open(
             upstreamfile, 'w'), default_flow_style=False)
 
     # copy modules.yaml, packages.yaml and compiles.yaml files in site scope of spack instance
