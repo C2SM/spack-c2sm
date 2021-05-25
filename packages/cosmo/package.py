@@ -101,6 +101,8 @@ class Cosmo(MakefilePackage):
 
     conflicts('+claw', when='cosmo_target=cpu')
     conflicts('+pollen', when='@5.05:5.06,master')
+    conflicts('cosmo_target=gpu', when='%gcc')
+
     # previous versions contain a bug affecting serialization
     conflicts('+serialize', when='@5.07.mch1.0.p2:5.07.mch1.0.p3')
     variant('production', default=False, description='Force all variants to be the ones used in production')
