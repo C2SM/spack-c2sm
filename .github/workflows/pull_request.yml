@@ -1,0 +1,23 @@
+name: Pull Request Docs Check
+
+on: [pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    # Example of using a custom build-command.
+    # this commit SHA corresponds to tag `0.4`
+    - uses: ammaraskar/sphinx-action@8b4f60114d7fd1faeba1a712269168508d4750d2
+      with:
+        build-command: "sphinx-build -b html . _build"
+        docs-folder: "docs/"
+    # Great extra actions to compose with:
+    # Create an artifact of the html output.
+    - uses: actions/upload-artifact@v1
+      with:
+        name: DocumentationHTML
+        path: docs/_build/

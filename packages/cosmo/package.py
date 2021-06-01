@@ -8,37 +8,21 @@ import subprocess, re, itertools
 from spack import *
 
 def get_releases(repo):
-        git_obj = subprocess.run(["git","ls-remote",repo], stdout=subprocess.PIPE)
+        git_obj = subprocess.run(["git","ls-remote","--refs",repo], stdout=subprocess.PIPE)
         git_tags = [re.match('refs/tags/(.*)', x.decode('utf-8')).group(1) for x in git_obj.stdout.split() if re.match('refs/tags/(.*)', x.decode('utf-8'))]
         return git_tags
-def dycore_deps(repo):
+
+def set_versions(repo, reg_filter=None):
+    def filterfn(repo_tag):
+        return re.match(reg_filter, repo_tag) != None
+
     tags = get_releases(repo)
+    if reg_filter:
+        tags = list(filter(filterfn, tags))
+
     for tag in tags:
         version(tag, git=repo, tag=tag, get_full_repo=True)
 
-    tags.append('master')
-    tags.append('dev-build')
-    tags.append('mch')
-
-    for tag in tags:    
-        types = ['float','double']
-        prod = [True,False]
-        cuda = [True, False]
-        testing = [True, False]
-        gt1 = [True, False]
-        comb=list(itertools.product(*[types, prod, cuda, testing, gt1]))
-        for it in comb:
-            real_type=it[0]
-            prod_opt = '+production' if it[1] else '~production'
-            cuda_opt = '+cuda' if it[2] else '~cuda cuda_arch=none'
-            cuda_dep = 'cosmo_target=gpu' if it[2] else ' cosmo_target=cpu'
-            test_opt = '+build_tests' if it[3] else '~build_tests'
-            test_dep = '+dycoretest' if it[3] else '~dycoretest'
-            gt1_dep = '+gt1' if it[4] else '~gt1'
-
-            orig='cosmo-dycore@'+tag+'%gcc@8.1.0:8.4.0 real_type='+real_type+' '+ prod_opt + ' ' + cuda_opt+' ' +test_opt + ' ' + gt1_dep
-            dep='@'+tag+' real_type='+real_type+' '+ prod_opt + ' '+ cuda_dep + ' +cppdycore'+' '+test_dep + ' ' + gt1_dep
-            depends_on(orig, when=dep, type='build')
 
 class Cosmo(MakefilePackage):
     """COSMO: Numerical Weather Prediction Model. Needs access to private GitHub."""
@@ -47,16 +31,19 @@ class Cosmo(MakefilePackage):
     url      = "https://github.com/MeteoSwiss-APN/cosmo/archive/5.07.mch1.0.p5.tar.gz"
     git      = 'git@github.com:COSMO-ORG/cosmo.git'
     apngit   = 'git@github.com:MeteoSwiss-APN/cosmo.git'
+    c2smgit  = 'git@github.com:C2SM-RCM/cosmo.git'
     maintainers = ['elsagermann']
 
     version('master', branch='master', get_full_repo=True)
     version('dev-build', branch='master', get_full_repo=True)
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch', get_full_repo=True)
+    version('c2sm', git='git@github.com:C2SM-RCM/cosmo.git', branch='master', get_full_repo=True)
 
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
 
-    dycore_deps(apngit)
+    set_versions(apngit, reg_filter='.*mch.*')
+    set_versions(c2smgit)
 
     depends_on('netcdf-fortran +mpi', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))
@@ -75,6 +62,27 @@ class Cosmo(MakefilePackage):
     depends_on('boost%gcc', when='cosmo_target=gpu ~cppdycore', type='build')
     depends_on('cmake%gcc', type='build')
 
+
+    # cosmo-dycore dependency
+    types = ['float','double']
+    prod = [True,False]
+    cuda = [True, False]
+    testing = [True, False]
+    gt1 = [True, False]
+    comb=list(itertools.product(*[types, prod, cuda, testing, gt1]))
+    for it in comb:
+        real_type=it[0]
+        prod_opt = '+production' if it[1] else '~production'
+        cuda_opt = '+cuda' if it[2] else '~cuda cuda_arch=none'
+        cuda_dep = 'cosmo_target=gpu' if it[2] else ' cosmo_target=cpu'
+        test_opt = '+build_tests' if it[3] else '~build_tests'
+        test_dep = '+dycoretest' if it[3] else '~dycoretest'
+        gt1_dep = '+gt1' if it[4] else '~gt1'
+
+        orig='cosmo-dycore'+'%gcc@8.1.0:8.4.0 real_type='+real_type+' '+ prod_opt + ' ' + cuda_opt+' ' +test_opt + ' ' + gt1_dep
+        dep='real_type='+real_type+' '+ prod_opt + ' '+ cuda_dep + ' +cppdycore'+' '+test_dep + ' ' + gt1_dep
+        depends_on(orig, when=dep, type='build')
+
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('dycoretest', default=True, description='Build C++ dycore with testing')
     variant('serialize', default=False, description='Build with serialization enabled')
@@ -87,11 +95,14 @@ class Cosmo(MakefilePackage):
     variant('pollen', default=False, description='Build with pollen enabled')
     variant('cosmo_target', default='gpu', description='Build with target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('verbose', default=False, description='Build cosmo with verbose enabled')
+    variant('set_version', default=False, description='Pass cosmo tag version to Makefile')
     variant('gt1', default=False, description='Build dycore with gridtools 1.1.3')
     variant('cuda_arch', default='none', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
 
     conflicts('+claw', when='cosmo_target=cpu')
     conflicts('+pollen', when='@5.05:5.06,master')
+    conflicts('cosmo_target=gpu', when='%gcc')
+
     # previous versions contain a bug affecting serialization
     conflicts('+serialize', when='@5.07.mch1.0.p2:5.07.mch1.0.p3')
     variant('production', default=False, description='Force all variants to be the ones used in production')
@@ -213,6 +224,8 @@ class Cosmo(MakefilePackage):
             build.append('SERIALIZE=1')
         if self.spec.variants['verbose'].value:
             build.append('VERBOSE=1')
+        if '+set_version' in self.spec:
+            build.append('COSMO_VERSION='+self.spec.format('{version}'))
         MakeFileTarget = ''
         if '+parallel' in self.spec:
             MakeFileTarget += 'par'
@@ -256,6 +269,7 @@ class Cosmo(MakefilePackage):
                 OptionsFile.filter('PFLAGS   = -Mpreprocess.*', 'PFLAGS   = -Mpreprocess -DNO_ACC_FINALIZE')
 
     def install(self, spec, prefix):
+        
         with working_dir(self.build_directory):
             mkdir(prefix.bin)
             if '+serialize' in spec:

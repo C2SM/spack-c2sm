@@ -85,6 +85,8 @@ packages:
   slurm:
     modules:
       slurm@19.05.05%gcc: slurm/19.05.05
+  icontools: 
+    variants: slave=tsa
   int2lm:
     variants: slave=tsa
   libgrib1:
@@ -97,5 +99,11 @@ packages:
     compiler: [gcc]
   cosmo:
     variants: cuda_arch=70 cosmo_target=gpu slave=tsa
-    version: [master]
+    version: [master] 
+  icon:
+    variants: host=tsa
+  llvm:
+    paths:
+      llvm@10.0.0: /project/g110/install/tsa/llvm-10
+    buildable: False
 

@@ -26,7 +26,7 @@ from spack import *
 import subprocess, re
 
 def get_releases(repo):
-        git_obj = subprocess.run(["git","ls-remote",repo], stdout=subprocess.PIPE)
+        git_obj = subprocess.run(["git","ls-remote","--refs",repo], stdout=subprocess.PIPE)
         git_tags = [re.match('refs/tags/(.*)', x.decode('utf-8')).group(1) for x in git_obj.stdout.split() if re.match('refs/tags/(.*)', x.decode('utf-8'))]
         return git_tags
 def dycore_tags(repo):
@@ -44,8 +44,10 @@ class CosmoDycore(CMakePackage):
     version('master', branch='master')
     version('dev-build', branch='master')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
+    version('c2sm', git='git@github.com:C2SM-RCM/cosmo.git', branch='master')
 
     dycore_tags("git@github.com:MeteoSwiss-APN/cosmo.git")
+    dycore_tags("git@github.com:C2SM-RCM/cosmo.git")
 
     variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'DebugRelease'))
     variant('build_tests', default=True, description="Compile Dycore unittests & regressiontests")

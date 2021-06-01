@@ -16,8 +16,10 @@ class Dawn(CMakePackage):
     maintainers = ['cosunae']
 
     version('master', branch='master')
+    version('dev-build', branch='master')
 
     depends_on('cmake')
+    depends_on('llvm@10.0.0 +clang')
     depends_on('python@3.8.0:3.8.999')
     depends_on('py-setuptools', type='build')
     depends_on('py-protobuf', type=('build','run'))
@@ -31,6 +33,6 @@ class Dawn(CMakePackage):
 
         args.append('-DCMAKE_BUILD_TYPE={0}'.format(self.spec.variants['build_type'].value))
         args.append('-DPython3_EXECUTABLE=' + spec['python'].prefix +'/bin/python3.8')
+        args.append('-DLLVM_ROOT=' + spec['llvm'].prefix)
         args.append('-DDAWN_REQUIRE_PYTHON=ON')
         return args
-
