@@ -57,7 +57,7 @@ or
 .. code-block:: bash
 
   cd </path/to/package> 
-  spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore
+  spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore
 
 Int2lm
 ------
