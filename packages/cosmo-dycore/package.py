@@ -141,6 +141,6 @@ class CosmoDycore(CMakePackage):
     def test(self):
       if '+build_tests' in self.spec:
           try:
-              subprocess.run(['./test_dycore.py', '-s', str(self.spec), '-b', str(self.build_directory)], cwd = self.root_cmakelists_dir + '/test/tools', check=True, stderr=subprocess.STDOUT)
+              subprocess.run(['./test_dycore.py', '-s', self.spec.__str__(), '-b', str(self.build_directory)], cwd = self.root_cmakelists_dir + '/test/tools', check=True, stderr=subprocess.STDOUT)
           except:
               raise InstallError('Dycore tests failed')
