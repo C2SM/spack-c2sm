@@ -60,6 +60,7 @@ class CosmoDycore(CMakePackage):
     variant('cuda', default=True, description='Build with cuda or target gpu')
     variant('gt1', default=False, description='Build with gridtools 1.1.3')
 
+    variant('slurm_bin', default='srun', description='Slurm binary on CSCS machines')
     variant('slurm_opt_partition', default='-p', description='Slurm option to specify partition for testing')
     variant('slurm_partition', default='normal', description='Slurm partition for testing')
 
