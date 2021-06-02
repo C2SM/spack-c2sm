@@ -61,7 +61,7 @@ def custom_devbuild(source_path, spec, args):
         args.things_to_test = ['cosmo']
 
     elif args.things_to_test == 'dycore':
-        args.things_to_test = ['cosmo','dycore']
+        args.things_to_test = ['cosmo','cosmo-dycore']
 
     elif args.things_to_test == 'all':
         args.things_to_test = True
