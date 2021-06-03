@@ -58,7 +58,7 @@ class Cosmo(MakefilePackage):
     depends_on('cosmo-eccodes-definitions ~aec', type=('build','run'), when='+eccodes')
     depends_on('perl@5.16.3:', type='build')
     depends_on('omni-xmod-pool', when='+claw', type='build')
-    depends_on('claw@2.0.1', when='+claw', type='build')
+    depends_on('claw@2.1%gcc', when='+claw', type='build')
     depends_on('boost%gcc', when='cosmo_target=gpu ~cppdycore', type='build')
     depends_on('cmake%gcc', type='build')
 
@@ -138,7 +138,6 @@ class Cosmo(MakefilePackage):
             grib_prefix = self.spec['cosmo-grib-api'].prefix
             grib_definition_prefix = self.spec['cosmo-grib-api-definitions'].prefix
             env.set('GRIBAPIL', '-L' + grib_prefix + '/lib -lgrib_api_f90 -lgrib_api -L' + self.spec['jasper'].prefix + '/lib64 -ljasper')
-            env.set('GRIBAPII', '-I' + grib_prefix + '/include')
         else:
             grib_prefix = self.spec['eccodes'].prefix
             grib_definition_prefix = self.spec['cosmo-eccodes-definitions'].prefix
@@ -148,7 +147,11 @@ class Cosmo(MakefilePackage):
             else:
                 eccodes_lib_dir='/lib'
             env.set('GRIBAPIL', '-L' + grib_prefix + eccodes_lib_dir + ' -leccodes_f90 -leccodes -L' + self.spec['jasper'].prefix + '/lib64 -ljasper')
+        grib_inc_dir_path = os.path.join(grib_prefix, 'include')
+        if os.path.exists(grib_inc_dir_path):
             env.set('GRIBAPII', '-I' + grib_prefix + '/include')
+        else:
+            env.set('GRIBAPII', '')
 
         # Netcdf library
         if self.spec.variants['slave'].value == 'daint':
@@ -189,13 +192,19 @@ class Cosmo(MakefilePackage):
 
         # Claw library
         if '+claw' in self.spec:
+            claw_flags = ''
+            if self.compiler.name == 'pgi':
+                claw_flags += ' --fc-vendor=portland --fc-cmd=${FC}'
             if 'cosmo_target=gpu' in self.spec:
-                env.append_flags('CLAWFC_FLAGS', '--directive=openacc -v')
+                claw_flags += ' --directive=openacc'            
+            if self.spec.variants['verbose'].value:
+                claw_flags += ' -v'
             env.set('CLAWDIR', self.spec['claw'].prefix)
             env.set('CLAWFC', self.spec['claw'].prefix + '/bin/clawfc')
             env.set('CLAWXMODSPOOL', self.spec['omni-xmod-pool'].prefix + '/omniXmodPool/')
             if self.mpi_spec.name == 'mpich':
-                env.set('CLAWFC_FLAGS', '-U__CRAYXC')
+                claw_flags += ' -D__CRAYXC'
+            env.set('CLAWFC_FLAGS', claw_flags)
 
         # Linker flags
         if self.compiler.name == 'pgi' and '~cppdycore' in self.spec:
