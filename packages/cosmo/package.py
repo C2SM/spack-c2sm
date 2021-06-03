@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-import subprocess, re, itertools
+import subprocess, re, itertools, os
 from spack import *
 
 def get_releases(repo):
