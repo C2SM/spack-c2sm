@@ -14,11 +14,11 @@ compilers::
     spec: pgi@20.4
     target: any
 - compiler:
+    modules: 
+    - /scratch/cosuna/gccmeta/8.3.0
     environment: {}
     extra_rpaths: []
     flags: {}
-    modules: 
-    - gcc/8.3.0
     operating_system: rhel7
     paths:
       cc: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2/easybuild/software/GCCcore/8.3.0/bin/gcc
