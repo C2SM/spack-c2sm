@@ -5,6 +5,7 @@
 
 from spack import *
 import subprocess
+import socket
 
 class Ant(Package):
     """Apache Ant is a Java library and command-line tool whose mission is to
@@ -36,6 +37,7 @@ class Ant(Package):
         ret = subprocess.run(['/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.292.b10-1.el7_9.x86_64/bin/java'], stdout=subprocess.PIPE, 
               stderr=subprocess.PIPE)
         print("HERE JAVA ", env['JAVA_HOME'], ret.stderr, ret.stdout)
+        print(socket.gethostname())
         bash = which('bash')
         bash('./build.sh', 'install-lite')
 
