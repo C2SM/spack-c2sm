@@ -169,6 +169,31 @@ Options (spack devbuildcosmo)
 * -t --test: run COSMO testsuite before installing
 * -c --clean_build: Clean build
 
+Spack location
+--------------
+Locate paths related to some spec. This command is mainly usefull to
+get the path where a package was installed (a long path with hashes)
+and access the coresponding binary (somewhere under that location).
+
+`As stated in the official spack documentation
+<https://spack.readthedocs.io/en/latest/workflows.html#find-and-run>`_,
+"The simplest way to run a Spack binary is to find it and run it" as
+it is build with `RPATH`. In most cases there is no need to adjust the
+environment.
+
+Other options can be used to retrieve other paths like the build
+directory or the path to the package definition (`see official spack
+documentation
+<https://spack.readthedocs.io/en/latest/command_index.html#spack-location>`_
+or ``spack location -h``)
+
+Usage (spack location)
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: bash
+
+  spack location -i <spec>
+
 Spack build-env
 ---------------
 Run a command in a specs install environment, or dump its environment to screen or file
