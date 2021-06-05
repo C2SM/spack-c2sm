@@ -15,7 +15,7 @@ compilers::
     target: any
 - compiler:
     modules: 
-    - /scratch/cosuna/gccmeta/8.3.0
+    - /project/g110/modules/gcchack/8.3.0
     environment: {}
     extra_rpaths: []
     flags: {}
