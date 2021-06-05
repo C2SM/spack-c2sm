@@ -41,6 +41,7 @@ class Cosmo(MakefilePackage):
 
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
+    patch('patches/5.08.mch.1.0.p3/patch.submit_rh79', when='@5.08.mch.1.0.p3')
 
     set_versions(apngit, reg_filter='.*mch.*')
     set_versions(c2smgit)

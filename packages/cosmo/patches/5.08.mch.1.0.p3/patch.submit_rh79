@@ -1,0 +1,13 @@
+[1mdiff --git a/cosmo/test/testsuite/submit.tsa.slurm b/cosmo/test/testsuite/submit.tsa.slurm[m
+[1mindex 46f3892..179c4fa 100644[m
+[1m--- a/cosmo/test/testsuite/submit.tsa.slurm[m
+[1m+++ b/cosmo/test/testsuite/submit.tsa.slurm[m
+[36m@@ -9,7 +9,7 @@[m
+ #SBATCH --time=00:30:00[m
+ #SBATCH --output=job.out[m
+ [m
+[31m-[m
+[32m+[m[32m#SBATCH --reservation=redhat79[m
+ [m
+ [m
+ # Export env variables[m
