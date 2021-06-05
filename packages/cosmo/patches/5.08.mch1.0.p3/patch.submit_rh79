@@ -1,0 +1,14 @@
+diff --git a/cosmo/test/testsuite/submit.tsa.slurm b/cosmo/test/testsuite/submit.tsa.slurm
+index 46f3892c..b7b6813d 100644
+--- a/cosmo/test/testsuite/submit.tsa.slurm
++++ b/cosmo/test/testsuite/submit.tsa.slurm
+@@ -9,8 +9,7 @@
+ #SBATCH --time=00:30:00
+ #SBATCH --output=job.out
+ 
+-
+-
++#SBATCH --reservation=redhat79
+ 
+ # Export env variables
+ export OMP_NUM_THREADS=1
