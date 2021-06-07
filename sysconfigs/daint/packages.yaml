@@ -37,7 +37,7 @@ packages:
       variants: +cuda cuda_arch=60
       compiler: [gcc]
     cosmo-dycore:
-        variants: slave=daint +cuda cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/ slurm_args= "-p normal,-N {0},-A g110,-C gpu" 
+      variants: slave=daint +cuda cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/ slurm_args= "-p normal,-N {0},-A g110,-C gpu" 
       compiler: [gcc@8.3.0]
     cmake:
         paths:
