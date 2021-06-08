@@ -29,6 +29,7 @@ class Icontools(AutotoolsPackage):
     maintainers = ['jonasjucker']
 
     version('master', branch='master')
+    version('dev-build', branch='master')
 
     depends_on('autoconf', type='build')
     depends_on('automake', type='build')
