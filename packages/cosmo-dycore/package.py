@@ -58,8 +58,10 @@ class CosmoDycore(CMakePackage):
     variant('production', default=False, description='Force all variants to be the ones used in production')
     variant('cuda_arch', default='none', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
     variant('cuda', default=True, description='Build with cuda or target gpu')
-    variant('slurm_args', default='"-p debug -n {0} --gres=gpu:{0}"', description='Slurm arguments for testing')
     variant('gt1', default=False, description='Build with gridtools 1.1.3')
+
+    variant('slurm_bin', default='srun', description='Slurm binary on CSCS machines')
+    variant('slurm_args', default='None', multi=True, description='Additional arguments to submit tests')
 
     depends_on('gridtools@1.1.3 ~cuda cuda_arch=none', when='~cuda+gt1')
     depends_on('gridtools@1.1.3 +cuda', when='+cuda+gt1')
@@ -141,6 +143,6 @@ class CosmoDycore(CMakePackage):
     def test(self):
       if '+build_tests' in self.spec:
           try:
-              subprocess.run(['./test_dycore.py', '-s', str(self.spec), '-b', str(self.build_directory)], cwd = self.root_cmakelists_dir + '/test/tools', check=True, stderr=subprocess.STDOUT)
+              subprocess.run(['./test_dycore.py', '-s', self.spec.__str__(), '-b', str(self.build_directory)], cwd = self.root_cmakelists_dir + '/test/tools', check=True, stderr=subprocess.STDOUT)
           except:
               raise InstallError('Dycore tests failed')
