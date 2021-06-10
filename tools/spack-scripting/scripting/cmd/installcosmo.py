@@ -54,14 +54,21 @@ the dependencies"""
         (but skip tests for dependencies). If all is chosen, 
         run package tests during installation for all packages."""
     )
- 
+
+    subparser.add_argument(
+       "-v","--verbose",
+       dest="lverbose",
+       action="store_true",
+       help="""Verbose installation"""
+    )
+
+    subparser.add_argument(
+        '--force_uninstall', action='store_true',
+        help="force uninstall if package already installed")
 
 
-def custom_devbuild(spec, args):
+def custom_install(spec, args):
     package = spack.repo.get(spec)
-
-    if package.installed:
-        package.do_uninstall(force=True)
 
     if args.things_to_test == 'root':
         args.things_to_test = ['cosmo']
@@ -75,10 +82,14 @@ def custom_devbuild(spec, args):
       'install_deps': ('dependencies' in args.things_to_install),
       'install_package': ('package' in args.things_to_install),
       'keep_stage': args.keep_stage,
-      'tests': args.things_to_test 
+      'tests': args.things_to_test,
+      'verbose': args.lverbose
     }
 
-    package.do_install(verbose=True, **kwargs)
+    if args.force_uninstall:
+        if package.installed:
+            package.do_uninstall(force=True)
+    package.do_install(**kwargs)
 
 def installcosmo(self, args):
     # Extract and concretize cosmo_spec
@@ -135,4 +146,4 @@ def installcosmo(self, args):
     cosmo_spec.concretize()
 
     # Dev-build cosmo
-    custom_devbuild(cosmo_spec, args)
+    custom_install(cosmo_spec, args)

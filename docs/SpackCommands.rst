@@ -109,6 +109,8 @@ Options (spack installcosmo)
                                  alternatively one can decide to install only the package or only
                                  the dependencies.
 * --keep-stage: don't remove the build after compilation
+* -v, --verbose: Verbose installation
+* --force_uninstall: Force uninstall if COSMO-package is already installed
 
 Spack dev-build
 ---------------
@@ -165,9 +167,15 @@ Usage (spack devbuildcosmo)
 
 Options (spack devbuildcosmo)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* --no_specyaml: ignore *spec.yaml*
-* -t --test: run COSMO testsuite before installing
+* --no_specyaml: Ignore *spec.yaml*
 * -c --clean_build: Clean build
+* -j <JOBS>, --jobs <JOBS>: Explicitly set number of parallel jobs
+* --test {root,dycore,all}: If root is chosen, run COSMO testsuite before installation
+                            (but skip tests for dependencies). If dycore is chosen,
+                            run test for Dycore and COSMO testsuite.
+                            If all is chosen,
+                            run package tests during installation for all packages.
+* -c, --clean_build: Clean dev-build
 
 Spack build-env
 ---------------
