@@ -57,7 +57,7 @@ or
 .. code-block:: bash
 
   cd </path/to/package> 
-  spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore
+  spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore
 
 Int2lm
 ------
@@ -90,3 +90,26 @@ In order to build int2lm from the COSMO-ORG GitHub organization use the followin
 
   spack install int2lm@org_master%pgi pollen=False
 
+Accessing executables
+---------------------
+`As stated in the official spack documentation
+<https://spack.readthedocs.io/en/latest/workflows.html#find-and-run>`_,
+"The simplest way to run a Spack binary is to find it and run it" as
+it is build with `RPATH`. In most cases there is no need to adjust the
+environment. In order to find the directory where a package was
+installed, use the ``spack location`` command like this:
+
+.. code-block:: bash
+
+  spack location -i cosmo@dev-build%pgi cosmo_target=gpu +cppdycore
+
+or
+
+.. code-block:: bash
+
+  spack location -i int2lm@c2sm_master%pgi
+
+Note that the package location is also given on the last log line of
+the install process. For cosmo you'll find the executable, either
+``cosmo_cpu`` or ``cosmo_gpu``, under the ``bin`` subdirectory whereas the
+int2lm executable will be the ``bin`` *file* itself.
