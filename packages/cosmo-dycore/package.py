@@ -61,7 +61,20 @@ class CosmoDycore(CMakePackage):
     variant('gt1', default=False, description='Build with gridtools 1.1.3')
 
     variant('slurm_bin', default='srun', description='Slurm binary on CSCS machines')
-    variant('slurm_args', default='None', multi=True, description='Additional arguments to submit tests')
+    variant('slurm_opt_partition', default='-p', description='Slurm option to specify partition for testing')
+    variant('slurm_partition', default='normal', description='Slurm partition for testing')
+
+    variant('slurm_gpu', default='-', description='Slurm GPU reservation for testing')
+
+    variant('slurm_opt_nodes', default='-n', description='Slurm option to specify number of nodes for testing')
+    variant('slurm_nodes', default='{0}', description='Pattern to specify number of nodes for testing')
+
+    variant('slurm_opt_account', default='-A', description='Slurm option to specify account for testing')
+    variant('slurm_account', default='g110', description='Slurm option to specify account for testing')
+
+    variant('slurm_opt_constraint', default='-C', description='Slurm option to specify constraints for nodes requested')
+    variant('slurm_constraint', default='gpu', description='Slurm constraints for nodes requested')
+
 
     depends_on('gridtools@1.1.3 ~cuda cuda_arch=none', when='~cuda+gt1')
     depends_on('gridtools@1.1.3 +cuda', when='+cuda+gt1')
