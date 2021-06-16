@@ -7,7 +7,7 @@ mostly at the Swiss Super Computing Center (CSCS)
 
 [Detailed C2SM/MeteoSwiss spack documentation](https://meteoswiss-apn.github.io/spack-mch/)
 
-More about spack in general : [Official Spack documentation](https://spack.readthedocs.io/en/latest/).
+More about spack in general : [Official Spack documentation](https://spack.readthedocs.io/en/v0.15.4/).
 
 ## Quickly build your local cosmo with spack:
 
