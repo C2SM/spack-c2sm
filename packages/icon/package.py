@@ -39,7 +39,7 @@ class Icon(Package):
     variant('rte-rrtmgp', default=True, description='Build with rte-rrtmgp enabled')
     variant('mpi-checks', default=False, description='Build with mpi-check enabled')
     variant('openmp', default=True, description='Build with openmp enabled')
-    variant('serialize_mode', default='none', description='Build with serialization, with serialze_mode enabled', values=('none','create', 'read'))
+    variant('serialize_mode', default='none', description='Build with serialization, with serialze_mode enabled', values=('none','create', 'read','perturb'))
     variant('eccodes', default=False, description='Build with grib2 enabled')
     variant('test_name', default='none', description='Launch test: test_name after installation')
     variant('skip-config', default=False, description='Skip configure phase')
