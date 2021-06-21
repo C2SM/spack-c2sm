@@ -30,7 +30,7 @@ packages:
         paths:
              bzip2@1.0.6: /usr
     cosmo:
-      variants: cuda_arch=60 cosmo_target=gpu slave=daint
+      variants: cuda_arch=60 cosmo_target=gpu slave=daint slurm_partition= "normal" slurm_bin= "srun" slurm_opt_nodes= "-n" slurm_nodes= "1"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint= "-C" slurm_constraint= "gpu"
       version: [master]
       compiler: [pgi]
     gridtools:
