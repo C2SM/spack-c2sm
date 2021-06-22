@@ -3,7 +3,7 @@ Spack is the package manager used by C2SM and MeteoSwiss to install
 and deploy our software on supercomputers 
 mostly at the Swiss Super Computing Center (CSCS)
 
-[![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](https://MeteoSwiss-APN.github.io/spack-mch/)
+[![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](https://C2SM.github.io/spack-c2sm/)
 
 [Detailed C2SM/MeteoSwiss spack documentation](https://c2sm.github.io/spack-c2sm/)
 
