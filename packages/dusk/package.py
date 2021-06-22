@@ -17,10 +17,6 @@ class Dusk(PythonPackage):
     # old version before _dusk horizon_
     # (put on hold until _dusk horizon_ is over)
     version('master', branch='master')
-    # correct version for the `icondusk-e2e` component
-    # dusk's `icondusk-e2e` branch must always be at or behind `horizon`
-    # they must not ever diverge!
-    version('icondusk-e2e', branch='icondusk-e2e')
     # development version for phase _dusk horizon_
     version('horizon', branch='horizon', preferred=True)
     version('dev-build', branch='master')
