@@ -86,16 +86,36 @@ def main():
 
     if not args.cacheidir:
         args.cacheidir = '~/.spack'
-    config_data['config']['install_tree'] = args.pckgidir + \
-        '/spack-install/' + args.machine.replace('admin-', '')
-    config_data['config']['source_cache'] = args.cacheidir + \
-        '/' + args.machine.replace('admin-', '') + '/source_cache'
-    config_data['config']['misc_cache'] = args.cacheidir + \
-        '/' + args.machine.replace('admin-', '') + '/cache'
+
+    def to_spack_abs_path(path: str) -> str:
+        # Spack paths support environment variables and `~` in paths, so we need to handle them separately.
+        # (see: https://spack.readthedocs.io/en/latest/configuration.html#config-file-variables )
+
+        # It's enough to check only the start
+        # (environment variables in the middle of a path are fine):
+        if path.startswith(("$", "~")):
+            # We assume environment variables to be absolute.
+            # (we can't really fix them anyways, since they could change)
+            return path
+
+        # convert to absolute path
+        return os.path.realpath(path)
+
+    config_data['config']['install_tree'] = (
+        to_spack_abs_path(args.pckgidir) + '/spack-install/' + args.machine.replace('admin-', '')
+    )
+    config_data['config']['source_cache'] = (
+        to_spack_abs_path(args.cacheidir) + '/' + args.machine.replace('admin-', '') + '/source_cache'
+    )
+    config_data['config']['misc_cache'] = (
+        to_spack_abs_path(args.cacheidir) + '/' + args.machine.replace('admin-', '') + '/cache'
+    )
     config_data['config']['build_stage'] = [
-        args.stgidir + '/spack-stages/' + args.machine]
-    config_data['config']['module_roots']['tcl'] = args.pckgidir + \
-        '/modules/' + args.machine
+        to_spack_abs_path(args.stgidir) + '/spack-stages/' + args.machine
+    ]
+    config_data['config']['module_roots']['tcl'] = (
+        to_spack_abs_path(args.pckgidir) + '/modules/' + args.machine
+    )
     config_data['config']['extensions'] = [dir_path + '/tools/spack-scripting']
     yaml.safe_dump(config_data, open(configfile, 'w'),
                    default_flow_style=False)
