@@ -32,7 +32,7 @@ class Icon(Package):
     depends_on('cmake%gcc')
     depends_on('libxml2%gcc', type=('build', 'link', 'run'))
     depends_on('serialbox@2.4.3', type=('build', 'link', 'run'))
-    depends_on('eccodes@2.18.0 +build_shared_libs', when='+eccodes', type=('build', 'link', 'run'))
+    depends_on('eccodes@2.19.0 +build_shared_libs', when='+eccodes', type=('build', 'link', 'run'))
     depends_on('claw@2.0.1', when='+claw', type=('build', 'link', 'run'))
 
     variant('icon_target', default='gpu', description='Build with target gpu or cpu', values=('gpu', 'cpu'), multi=False)
@@ -76,12 +76,8 @@ class Icon(Package):
         if '~skip-config' in self.spec:
             env.set('XML2_ROOT', self.spec['libxml2'].prefix)
             env.set('SERIALBOX2_ROOT',  self.spec['serialbox'].prefix)
-            
-            if '+claw' in self.spec:
-                env.set('CLAW', self.spec['claw'].prefix + '/bin/clawfc')
-
-            if '+eccodes' in self.spec:
-                env.set('ECCODES_ROOT', self.spec['eccodes'].prefix)
+            env.set('CLAW', self.spec['claw'].prefix + '/bin/clawfc')
+            env.set('ECCODES_ROOT', self.spec['eccodes'].prefix)
 
     def configure_args(self):
 
