@@ -46,7 +46,7 @@ This will clone the package, build it and install the chosen package
 plus all its dependencies under */scratch/$USER/spack-install/<your_machine>* 
 (see config.yaml in the maching specific config file section for details). 
 The build-stage of your package and its dependencies are not kept 
-(add --keep-stage after the install command in order to keep it). 
+(add `--keep-stage` after the install command in order to keep it). 
 Module files are also created during this process and installed under */scratch/$USER/modules/*
 
 However being able to compile any other package might require installing your spack instance, if that package is installed by a jenkins plan.
@@ -72,9 +72,9 @@ Usage (spack install)
 
 Options (spack install)
 ^^^^^^^^^^^^^^^^^^^^^^^
-* -v: print output of configuration and compilation for all dependencies to terminal
-* --test=root: run package tests during installation for top-level packages (but skip tests for dependencies)
-* --keep-stage: keep all source needed to build the package
+* `-v`: print output of configuration and compilation for all dependencies to terminal
+* `--test=root`: run package tests during installation for top-level packages (but skip tests for dependencies)
+* `--keep-stage`: keep all source needed to build the package
 
 Spack installcosmo
 ------------------
@@ -100,17 +100,17 @@ Usage (spack installcosmo)
 
 Options (spack installcosmo)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* --test {root,all}: If root is chosen, run COSMO testsuite before installation 
+* `--test {root,all}`: If root is chosen, run COSMO testsuite before installation 
                      (but skip tests for dependencies). If all is chosen, 
                      run package tests during installation for all packages.
-* -j --jobs: explicitly set number of parallel jobs
-* --only {package,dependencies}: select the mode of installation.
+* `-j --jobs`: explicitly set number of parallel jobs
+* `--only {package,dependencies}`: select the mode of installation.
                                  the default is to install the package along with all its dependencies.
                                  alternatively one can decide to install only the package or only
                                  the dependencies.
-* --keep-stage: don't remove the build after compilation
-* -v, --verbose: Verbose installation
-* --force_uninstall: Force uninstall if COSMO-package is already installed
+* `--keep-stage`: don't remove the build after compilation
+* `-v, --verbose`: Verbose installation
+* `--force_uninstall`: Force uninstall if COSMO-package is already installed
 
 Spack dev-build
 ---------------
@@ -124,7 +124,7 @@ However being able to compile any other package might require installing your sp
 Notice that once installed, the package will not be rebuilt at the next attempt to spack dev-build, 
 even if the sources of the local directory have changed. 
 In order to force spack to build the local developments anytime, 
-you need to avoid the installation phase (see option *--until* below).
+you need to avoid the installation phase (see option `--until` below).
 
 Usage (spack dev-build)
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -136,8 +136,8 @@ Usage (spack dev-build)
 
 Options (spack dev-build)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-* --test=root: run package tests during installation for top-level packages (but skip tests for dependencies)
-* --until <stage>: only run installation until certain stage, like *build* or *install*
+* `--test=root`: run package tests during installation for top-level packages (but skip tests for dependencies)
+* `--until <stage>`: only run installation until certain stage, like *build* or *install*
 
 .. code-block:: bash
 
@@ -167,15 +167,15 @@ Usage (spack devbuildcosmo)
 
 Options (spack devbuildcosmo)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* --no_specyaml: Ignore *spec.yaml*
-* -c --clean_build: Clean build
-* -j <JOBS>, --jobs <JOBS>: Explicitly set number of parallel jobs
-* --test {root,dycore,all}: If root is chosen, run COSMO testsuite before installation
+* `--no_specyaml`: Ignore *spec.yaml*
+* `-c --clean_build`: Clean build
+* `-j <JOBS>, --jobs <JOBS>`: Explicitly set number of parallel jobs
+* `--test {root,dycore,all}`: If root is chosen, run COSMO testsuite before installation
                             (but skip tests for dependencies). If dycore is chosen,
                             run test for Dycore and COSMO testsuite.
                             If all is chosen,
                             run package tests during installation for all packages.
-* -c, --clean_build: Clean dev-build
+* `-c, --clean_build`: Clean dev-build
 
 Spack location
 --------------
@@ -221,7 +221,7 @@ Replacing *<command>* with *bash* allows to interactively execute programmes in 
 
 Options (spack build-env)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-* --dump <filename>: dump environment to <filename> to be sourced at some point
+* `--dump <filename>`: dump environment to `<filename>` to be sourced at some point
 
 Spack edit
 ----------
