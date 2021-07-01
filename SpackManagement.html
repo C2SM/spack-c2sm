@@ -1,0 +1,163 @@
+
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Spack Instance Management &#8212; C2SM Spack  documentation</title>
+    <link rel="stylesheet" href="_static/p_sphinx_theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/local_fonts.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/p_sphinx_theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Using the Jenkins Continuous Integration Executables" href="CI.html" />
+    <link rel="prev" title="Code Development" href="CodeDev.html" /> 
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+      <div class="relbar-top">
+            
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="CI.html" title="Using the Jenkins Continuous Integration Executables"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="CodeDev.html" title="Code Development"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+      <li><a href="index.html">C2SM Spack  documentation</a> &#187;</li>
+ 
+      </ul>
+    </div>
+      </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="spack-instance-management">
+<h1>Spack Instance Management<a class="headerlink" href="#spack-instance-management" title="Permalink to this headline">¶</a></h1>
+<section id="how-to-re-create-the-spack-instance">
+<h2>How to re-create the spack instance<a class="headerlink" href="#how-to-re-create-the-spack-instance" title="Permalink to this headline">¶</a></h2>
+<p>First, you might want to delete the old spack instances if you want to refresh them.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rm -rf /project/g110/spack/user/admin-<span class="nv">$slave</span> /project/g110/spack/user/<span class="nv">$slave</span>
+</pre></div>
+</div>
+<p>If you want to recreate them from scratch, don’t forget to remove their associated installations directories (modules, stages &amp; installations)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rm -rf /project/g110/modules/admin-<span class="nv">$slave</span>/ /project/g110/spack-stages/<span class="nv">$slave</span> /project/g110/spack-install/<span class="nv">$slave</span>
+</pre></div>
+</div>
+<p>Once this is done, you can use the config.py of the spack-mch instance to create the two mch instances (admin for the official installation under /project/g110/spack-install, users installation under /scratch/$user/spack/spack-install)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/MeteoSwiss-APN/spack-mch/
+<span class="nb">cd</span> spack-mch
+./config.py -m admin-<span class="nv">$slave</span> -i /project/g110/spack/user/admin-<span class="nv">$slave</span>
+./config.py -m <span class="nv">$slave</span> -i /project/g110/spack/user/<span class="nv">$slave</span>
+</pre></div>
+</div>
+<p>Finally install something with both instances to create a database file for the admin-instance respectively a junit-report file for the users instance, both files being needed to be able to source and install as a non-jenkins user. In order to do that first source the corresponding instances and then install something (Ex: the grib-api definitions).</p>
+<p>Admin instance:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>. /project/g110/spack/user/admin-<span class="nv">$slave</span>/spack/share/spack/setup-env.sh
+spack install cosmo-grib-api-definition
+</pre></div>
+</div>
+<p>Users instance:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>. /project/g110/spack/user/admin-<span class="nv">$slave</span>/spack/share/spack/setup-env.sh
+spack install cosmo-grib-api-definition
+</pre></div>
+</div>
+</section>
+<section id="change-location-for-package-installations">
+<h2>Change location for package installations<a class="headerlink" href="#change-location-for-package-installations" title="Permalink to this headline">¶</a></h2>
+<p>Spack offers the possibility to overwrite the default installation
+directory in <em>/scratch/$USER/spack-install</em>. This is recommended on <strong>Piz Daint</strong>
+due to the regular clean-up on scratch.
+To do so create the file <strong>config.yaml</strong> in <em>~/.spack</em> with a directory that is not deleted regularly like <em>/project</em>
+or <em>/store</em>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">config</span><span class="p">:</span>
+   <span class="nt">install_tree</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">/project/s903/juckerj/spack-install/</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="sphinxlocaltoc">
+    <h3><a href="index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Spack Instance Management</a><ul>
+<li><a class="reference internal" href="#how-to-re-create-the-spack-instance">How to re-create the spack instance</a></li>
+<li><a class="reference internal" href="#change-location-for-package-installations">Change location for package installations</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/SpackManagement.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+      <div class="relbar-bottom">
+            
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="CI.html" title="Using the Jenkins Continuous Integration Executables"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="CodeDev.html" title="Code Development"
+             >previous</a> &nbsp; &nbsp;</li>
+      <li><a href="index.html">C2SM Spack  documentation</a> &#187;</li>
+ 
+      </ul>
+    </div>
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Carlos Osuna.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+    </div>
+      <!-- PSphinxTheme -->
+  </body>
+</html>

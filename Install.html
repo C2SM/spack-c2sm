@@ -1,0 +1,222 @@
+
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Spack Installation &#8212; C2SM Spack  documentation</title>
+    <link rel="stylesheet" href="_static/p_sphinx_theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/local_fonts.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/p_sphinx_theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Important Spack Commands" href="SpackCommands.html" />
+    <link rel="prev" title="Quick Start for Spack" href="QuickStart.html" /> 
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+      <div class="relbar-top">
+            
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="SpackCommands.html" title="Important Spack Commands"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="QuickStart.html" title="Quick Start for Spack"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+      <li><a href="index.html">C2SM Spack  documentation</a> &#187;</li>
+ 
+      </ul>
+    </div>
+      </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="spack-installation">
+<h1>Spack Installation<a class="headerlink" href="#spack-installation" title="Permalink to this headline">¶</a></h1>
+<section id="preinstalled-instance">
+<h2>Preinstalled Instance<a class="headerlink" href="#preinstalled-instance" title="Permalink to this headline">¶</a></h2>
+<p>For the CSCS users a spack instance including the mch packages and the mch machine
+configuration files will be maintained for both tsa and daint
+under <em>/project/g110/spack/user/&lt;machine&gt;/spack</em>.
+Therefore, if you are not interested in the developement of our
+spack packages and config files you can directly source those instances:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># module load python &gt;= 3.6</span>
+<span class="nb">source</span> /project/g110/spack/user/&lt;machine&gt;/spack/share/spack/setup-env.sh
+</pre></div>
+</div>
+<section id="automatically-source-preinstalled-spack-instance">
+<h3>Automatically source preinstalled Spack instance<a class="headerlink" href="#automatically-source-preinstalled-spack-instance" title="Permalink to this headline">¶</a></h3>
+<p>If you want to automatically source the correct spack instance depending on the machine you are working on, you can add the following lines to your .bashrc file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="k">case</span> <span class="k">$(</span>hostname -s<span class="k">)</span> <span class="k">in</span>
+      tsa*<span class="p">|</span>arolla*<span class="o">)</span> module load python/3.7.4<span class="p">;</span> <span class="nb">export</span> <span class="nv">SPACK_ROOT</span><span class="o">=</span>/project/g110/spack/user/tsa/spack <span class="p">;;</span>
+      daint*<span class="o">)</span> module load cray-python<span class="p">;</span> <span class="nb">export</span> <span class="nv">SPACK_ROOT</span><span class="o">=</span>/project/g110/spack/user/daint/spack <span class="p">;;</span>
+<span class="k">esac</span>
+<span class="nb">source</span> <span class="nv">$SPACK_ROOT</span>/share/spack/setup-env.sh
+</pre></div>
+</div>
+<section id="error-initialization-hangs">
+<h4>Error: Initialization hangs<a class="headerlink" href="#error-initialization-hangs" title="Permalink to this headline">¶</a></h4>
+<p>If <cite>source $SPACK_ROOT/share/spack/setup-env.sh</cite> hangs, clean your cache:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rm -rf ~/.spack/cray ~/.spack/cache
+</pre></div>
+</div>
+<p>Then try again.</p>
+</section>
+<section id="error-could-not-determine-host">
+<h4>Error: Could not determine host<a class="headerlink" href="#error-could-not-determine-host" title="Permalink to this headline">¶</a></h4>
+<p>In case you have anything printing the hostname to the terminal in your .bashrc like</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="k">$(</span>hostname<span class="k">)</span>
+</pre></div>
+</div>
+<p>the setup-env.sh script for Spack does not work.
+A possible workaround is to direct the “echo” to the stderr:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="k">$(</span>hostname<span class="k">)</span> &gt;<span class="p">&amp;</span><span class="m">2</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="your-own-spack-instance">
+<h2>Your own Spack instance<a class="headerlink" href="#your-own-spack-instance" title="Permalink to this headline">¶</a></h2>
+<p><strong>Installing your own spack instance is only needed if you wish to
+develop the mch packages/machines config files or if you are not a cscs user.</strong></p>
+<p>First step is to clone this repository and use the available config.sh script to install your own spack instance with the corresponding mch packages and configuration files.</p>
+<p>Tell the script the machine you are working on using -m &lt;machine&gt; and where you want the instance to be installed using -i &lt;spack-installation-directory&gt;. You can also precise the spack version you want, or take the default value (last stable release).</p>
+<p>Notice the requirements.txt will install all python dependencies required by spack.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone git@github.com:MeteoSwiss-APN/spack-mch.git
+virtualenv .venv
+<span class="nb">source</span>  .venv/bin/activate
+pip3 install -r requirements.txt
+
+<span class="nb">cd</span> spack-mch
+./config.py -m &lt;machine&gt; -i &lt;spack-installation-directory&gt; -v &lt;version&gt; -r &lt;repos.yaml-installation-directory&gt; -p &lt;spack packages, modules <span class="p">&amp;</span> stages installation-directory&gt; -u &lt;ON or OFF, install upstreams.yaml&gt;
+</pre></div>
+</div>
+<p>Note the config will append <em>spack/</em> directory to &lt;spack-installation-directory&gt;.
+The -r option usually needs to point to the <strong>site scope</strong> of your spack-instance installation, that is, <em>&lt;spack-installation-directory&gt;/spack/etc/spack</em>.
+It can however also be used if you are a CSCS user and do not want to have your own spack instance
+<em>but still want to develop the mch-packages</em>. In that case, you can clone the
+spack-mch repo, let the -i, -m options void, BUT overwrite the <em>site scoped</em> repos.yaml
+files of the maintained spack instances by installing a new
+repos.yaml in your <strong>user scope</strong> <em>~/.spack</em>.</p>
+<p>Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">SPACK_DIR</span><span class="o">=</span><span class="nv">$SCRATCH</span>
+./config.py -m tsa -i <span class="nv">$SPACK_DIR</span> -r <span class="nv">$SPACK_DIR</span>/spack/etc/spack -u ON
+</pre></div>
+</div>
+<p><strong>Careful: the repos.yaml file is always modified in a way that it points to the spack-mch package repositories from which you call the config.sh script.</strong></p>
+<p>Next and final step is to source your newly installed instance under <em>$SPACK_DIR/share/spack</em>
+in order to activate it.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span> &lt;spack-installation-directory&gt;/share/spack/setup-env.sh
+</pre></div>
+</div>
+</section>
+<section id="machine-specific-config-files">
+<h2>Machine specific config files<a class="headerlink" href="#machine-specific-config-files" title="Permalink to this headline">¶</a></h2>
+<p>There is a set of .yaml files that define machine specific things like compilers, modules, preinstalled packages
+and more.</p>
+<p>They are available under spack/etc/spack. Their structure is:</p>
+<ul class="simple">
+<li><p>compilers.yaml: all info about available compilers, machine specific compiler flags, module to load (PrgEnv) before compiling</p></li>
+<li><p>packages.yaml: all info about the already installed dependencies, i.e their module names or paths</p></li>
+<li><p>modules.yaml: all info about the created modules, i.e which env variable or modules should be set once loaded</p></li>
+<li><p>config.yaml: specifies the main installation path and the main module installation path, where to find thebinaries etc.</p></li>
+<li><p>upstreams.yaml: specifies where to find the pre-installed software, that are under /project/g110/spack-install/</p></li>
+<li><p>repos.yaml: specifies where to find the only mch packages that are stored in spack-mch repository</p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="sphinxlocaltoc">
+    <h3><a href="index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Spack Installation</a><ul>
+<li><a class="reference internal" href="#preinstalled-instance">Preinstalled Instance</a><ul>
+<li><a class="reference internal" href="#automatically-source-preinstalled-spack-instance">Automatically source preinstalled Spack instance</a><ul>
+<li><a class="reference internal" href="#error-initialization-hangs">Error: Initialization hangs</a></li>
+<li><a class="reference internal" href="#error-could-not-determine-host">Error: Could not determine host</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#your-own-spack-instance">Your own Spack instance</a></li>
+<li><a class="reference internal" href="#machine-specific-config-files">Machine specific config files</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Install.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+      <div class="relbar-bottom">
+            
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="SpackCommands.html" title="Important Spack Commands"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="QuickStart.html" title="Quick Start for Spack"
+             >previous</a> &nbsp; &nbsp;</li>
+      <li><a href="index.html">C2SM Spack  documentation</a> &#187;</li>
+ 
+      </ul>
+    </div>
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Carlos Osuna.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+    </div>
+      <!-- PSphinxTheme -->
+  </body>
+</html>

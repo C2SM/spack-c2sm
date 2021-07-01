@@ -1,0 +1,222 @@
+
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Quick Start for Spack &#8212; C2SM Spack  documentation</title>
+    <link rel="stylesheet" href="_static/p_sphinx_theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/local_fonts.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/p_sphinx_theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Spack Installation" href="Install.html" />
+    <link rel="prev" title="Welcome to C2SM Spack Documentation!" href="index.html" /> 
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+      <div class="relbar-top">
+            
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Install.html" title="Spack Installation"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to C2SM Spack Documentation!"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+      <li><a href="index.html">C2SM Spack  documentation</a> &#187;</li>
+ 
+      </ul>
+    </div>
+      </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="quick-start-for-spack">
+<h1>Quick Start for Spack<a class="headerlink" href="#quick-start-for-spack" title="Permalink to this headline">¶</a></h1>
+<p>It is recommended to read the entire documentation to get familiar with Spack.
+For those of you with lack of time or interest the following short manuals do the job as well.</p>
+<section id="source-spack-instance-on-piz-daint">
+<h2>Source Spack instance on Piz Daint<a class="headerlink" href="#source-spack-instance-on-piz-daint" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>module load cray-python
+<span class="nb">source</span> /project/g110/spack/user/daint/spack/share/spack/setup-env.sh
+</pre></div>
+</div>
+</section>
+<section id="cosmo-model">
+<h2>COSMO-Model<a class="headerlink" href="#cosmo-model" title="Permalink to this headline">¶</a></h2>
+<p>In order install COSMO fetched from a GitHub repository, use <em>spack installcosmo</em>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack installcosmo cosmo@&lt;version&gt;%&lt;compiler&gt; +&lt;variants&gt;
+</pre></div>
+</div>
+<p>The second option <em>spack devbuildcosmo</em> allows to build COSMO with a local source:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;/path/to/package&gt;
+spack devbuildcosmo cosmo@&lt;version&gt;%&lt;compiler&gt; +&lt;variants&gt;
+</pre></div>
+</div>
+<section id="cosmo-gpu-build">
+<h3>COSMO GPU build<a class="headerlink" href="#cosmo-gpu-build" title="Permalink to this headline">¶</a></h3>
+<p>The commands below build COSMO with the C++ Dycore for the target GPU.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack installcosmo cosmo@master%pgi <span class="nv">cosmo_target</span><span class="o">=</span>gpu +cppdycore
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;/path/to/package&gt;
+spack devbuildcosmo cosmo@dev-build%pgi <span class="nv">cosmo_target</span><span class="o">=</span>gpu +cppdycore
+</pre></div>
+</div>
+</section>
+<section id="cosmo-cpu-build">
+<h3>COSMO CPU build<a class="headerlink" href="#cosmo-cpu-build" title="Permalink to this headline">¶</a></h3>
+<p>The commands below build COSMO without the C++ Dycore  for the target CPU.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack installcosmo cosmo@master%pgi <span class="nv">cosmo_target</span><span class="o">=</span>cpu ~cppdycore
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;/path/to/package&gt;
+spack devbuildcosmo cosmo@dev-build%pgi <span class="nv">cosmo_target</span><span class="o">=</span>cpu ~cppdycore
+</pre></div>
+</div>
+</section>
+</section>
+<section id="int2lm">
+<h2>Int2lm<a class="headerlink" href="#int2lm" title="Permalink to this headline">¶</a></h2>
+<p>In order to install int2lm fetched from a GitHub repository, use <em>spack install</em>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack install int2lm@&lt;version&gt;%&lt;compiler&gt; +&lt;variants&gt;
+</pre></div>
+</div>
+<p>The second option <em>spack dev-build</em> allows to build int2lm with a local source:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;/path/to/package&gt;
+spack dev-build int2lm@&lt;version&gt;%&lt;compiler&gt; +&lt;variants&gt;
+</pre></div>
+</div>
+<section id="int2lm-from-c2sm-rcm">
+<h3>Int2lm from C2SM-RCM<a class="headerlink" href="#int2lm-from-c2sm-rcm" title="Permalink to this headline">¶</a></h3>
+<p>In order to build int2lm from the C2SM-RCM GitHub organization use the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack install int2lm@c2sm_master%pgi
+</pre></div>
+</div>
+</section>
+<section id="int2lm-from-cosmo-org">
+<h3>Int2lm from COSMO-ORG<a class="headerlink" href="#int2lm-from-cosmo-org" title="Permalink to this headline">¶</a></h3>
+<p>In order to build int2lm from the COSMO-ORG GitHub organization use the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack install int2lm@org_master%pgi <span class="nv">pollen</span><span class="o">=</span>False
+</pre></div>
+</div>
+</section>
+</section>
+<section id="accessing-executables">
+<h2>Accessing executables<a class="headerlink" href="#accessing-executables" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://spack.readthedocs.io/en/latest/workflows.html#find-and-run">As stated in the official spack documentation</a>,
+“The simplest way to run a Spack binary is to find it and run it” as
+it is build with <cite>RPATH</cite>. In most cases there is no need to adjust the
+environment. In order to find the directory where a package was
+installed, use the <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">location</span></code> command like this:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack location -i cosmo@dev-build%pgi <span class="nv">cosmo_target</span><span class="o">=</span>gpu +cppdycore
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack location -i int2lm@c2sm_master%pgi
+</pre></div>
+</div>
+<p>Note that the package location is also given on the last log line of
+the install process. For cosmo you’ll find the executable, either
+<code class="docutils literal notranslate"><span class="pre">cosmo_cpu</span></code> or <code class="docutils literal notranslate"><span class="pre">cosmo_gpu</span></code>, under the <code class="docutils literal notranslate"><span class="pre">bin</span></code> subdirectory whereas the
+int2lm executable will be the <code class="docutils literal notranslate"><span class="pre">bin</span></code> <em>file</em> itself.</p>
+</section>
+</section>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="sphinxlocaltoc">
+    <h3><a href="index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Quick Start for Spack</a><ul>
+<li><a class="reference internal" href="#source-spack-instance-on-piz-daint">Source Spack instance on Piz Daint</a></li>
+<li><a class="reference internal" href="#cosmo-model">COSMO-Model</a><ul>
+<li><a class="reference internal" href="#cosmo-gpu-build">COSMO GPU build</a></li>
+<li><a class="reference internal" href="#cosmo-cpu-build">COSMO CPU build</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#int2lm">Int2lm</a><ul>
+<li><a class="reference internal" href="#int2lm-from-c2sm-rcm">Int2lm from C2SM-RCM</a></li>
+<li><a class="reference internal" href="#int2lm-from-cosmo-org">Int2lm from COSMO-ORG</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#accessing-executables">Accessing executables</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/QuickStart.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+      <div class="relbar-bottom">
+            
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Install.html" title="Spack Installation"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to C2SM Spack Documentation!"
+             >previous</a> &nbsp; &nbsp;</li>
+      <li><a href="index.html">C2SM Spack  documentation</a> &#187;</li>
+ 
+      </ul>
+    </div>
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Carlos Osuna.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
+    </div>
+      <!-- PSphinxTheme -->
+  </body>
+</html>
