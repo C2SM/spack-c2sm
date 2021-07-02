@@ -49,7 +49,7 @@ class Cosmo(MakefilePackage):
     depends_on('netcdf-c +mpi', type=('build', 'link'))
     depends_on('slurm%gcc', type='run')
     depends_on('cuda%gcc', when='cosmo_target=gpu', type=('build', 'link', 'run'))
-    depends_on('serialbox@2.6.0', when='+serialize', type='build')
+    depends_on('serialbox', when='+serialize', type='build')
     depends_on('mpicuda', type=('build', 'link', 'run'), when='cosmo_target=gpu')
     depends_on('mpi', type=('build', 'link', 'run'), when='cosmo_target=cpu')
     depends_on('libgrib1', type='build')
@@ -58,7 +58,7 @@ class Cosmo(MakefilePackage):
     depends_on('cosmo-eccodes-definitions ~aec', type=('build','run'), when='+eccodes')
     depends_on('perl@5.16.3:', type='build')
     depends_on('omni-xmod-pool', when='+claw', type='build')
-    depends_on('claw@2.1%gcc', when='+claw', type='build')
+    depends_on('claw%gcc', when='+claw', type='build')
     depends_on('boost%gcc', when='cosmo_target=gpu ~cppdycore', type='build')
     depends_on('cmake%gcc', type='build')
 
