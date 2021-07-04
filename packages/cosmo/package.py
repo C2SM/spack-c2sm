@@ -193,7 +193,8 @@ class Cosmo(MakefilePackage):
         # Claw library
         if '+claw' in self.spec:
             claw_flags = ''
-            if self.compiler.name == 'pgi':
+            # Set special flags after CLAW release 2.1
+            if self.compiler.name == 'pgi' and self.spec['claw'].version>=Version(2.1) :
                 claw_flags += ' --fc-vendor=portland --fc-cmd=${FC}'
             if 'cosmo_target=gpu' in self.spec:
                 claw_flags += ' --directive=openacc'            
