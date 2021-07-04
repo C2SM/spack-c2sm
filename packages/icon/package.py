@@ -22,14 +22,18 @@ class Icon(Package):
     maintainers = ['egermann']
 
     version('master', branch='master', submodules=True)
+    version('dev-build', branch='master', submodules=True)
+    version('nwp', git='git@gitlab.dkrz.de:icon/icon-nwp.git', submodules= True)
+    version('cscs', git='git@gitlab.dkrz.de:icon/icon-cscs.git', submodules=True )
+    version('aes', git='git@gitlab.dkrz.de:icon/icon-aes.git', submodules=True )
     version('ham', git='git@git.iac.ethz.ch:hammoz/icon-hammoz.git', branch='hammoz/gpu/master', submodules=True)
     version('2.6.x-rc', commit='040de650', submodules=True)
     version('2.0.17', commit='39ed04ad', submodules=True)
     
     depends_on('cmake%gcc')
-    depends_on('libxml2@2.9.7%gcc', type=('build', 'link', 'run'))
+    depends_on('libxml2%gcc', type=('build', 'link', 'run'))
     depends_on('serialbox@2.4.3', type=('build', 'link', 'run'))
-    depends_on('eccodes@2.18.0 +build_shared_libs', when='+eccodes', type=('build', 'link', 'run'))
+    depends_on('eccodes@2.19.0 +build_shared_libs', type=('build', 'link', 'run'))
     depends_on('claw@2.0.1', when='+claw', type=('build', 'link', 'run'))
 
     variant('icon_target', default='gpu', description='Build with target gpu or cpu', values=('gpu', 'cpu'), multi=False)
@@ -53,15 +57,15 @@ class Icon(Package):
 
     atm_phy_echam_submodels_namelists_dir = 'externals/atm_phy_echam_submodels/namelists'
     config_dir = '.'
-    phases = ['edit', 'configure', 'build', 'install']
-    
+    phases = ['configure', 'build', 'install']
+
     @run_before('configure')
     def generate_hammoz_nml(self):
         if '@ham' in self.spec:
             with working_dir(self.config_dir + '/' + self.atm_phy_echam_submodels_namelists_dir):
                 make()
 
-    def edit(self, spec, prefix):
+    def setup_build_environment(self, env):
         self.config_dir = self.spec.variants['config_dir'].value
         _config_file_name =  self.spec.variants['host'].value + '.' + self.spec.variants['icon_target'].value
         if self.compiler.name == 'gcc':
@@ -73,14 +77,12 @@ class Icon(Package):
 
         self._config_file_name = _config_file_name
 
-        if '~skip-config' in spec:
-            config_file_filter = FileFilter(self.config_dir + '/config/' + self.spec.variants['site'].value + '/' + self._config_file_name)
-            config_file_filter.filter('XML2_ROOT=.*',  'XML2_ROOT=\'' + self.spec['libxml2'].prefix + '\'')
-            config_file_filter.filter('SERIALBOX2_ROOT=.*',  'SERIALBOX2_ROOT=\'' + self.spec['serialbox'].prefix + '\'')
-            config_file_filter.filter('SB2PP=.*',  'SB2PP="python2 ' + self.spec['serialbox'].prefix + '/python/pp_ser/pp_ser.py" \\')
-            if '+claw' in spec:
-                config_file_filter.filter('CLAW=\'.*',  'CLAW=\'' + self.spec['claw'].prefix + '/bin/clawfc\'')
-                
+        if '~skip-config' in self.spec:
+            env.set('XML2_ROOT', self.spec['libxml2'].prefix)
+            env.set('SERIALBOX2_ROOT',  self.spec['serialbox'].prefix)
+            env.set('CLAW', self.spec['claw'].prefix + '/bin/clawfc')
+            env.set('ECCODES_ROOT', self.spec['eccodes'].prefix)
+
     def configure_args(self):
 
         args = []
@@ -89,14 +91,19 @@ class Icon(Package):
         if '+ham' in self.spec:
             args.append('--enable-atm-phy-echam-submodels')
             args.append('--enable-hammoz')
-        
-        # OpenMP library
-        if '~openmp' in self.spec:
-            args.append('--disable-openmp')        
 
         # Serialization
         if self.spec.variants['serialize_mode'].value != 'none':
             args.append('--enable-serialization=' + self.spec.variants['serialize_mode'].value)
+
+        # Claw
+        if '+claw' in self.spec:
+            args.append('--enable-claw')
+
+        # Eccodes
+        if '+eccodes' in self.spec:
+            args.append('--enable-eccodes')
+
         return args
 
     def configure(self, spec, prefix):
@@ -127,7 +134,7 @@ class Icon(Package):
                 if self.spec.variants['host'].value == 'daint':
                     subprocess.run(['sbatch', '-W', '--time=00:15:00', '-A', 'g110', '-C', 'gpu', '-p', 'debug', 'exp.' + self.spec.variants['test_name'].value + '.run'], stderr=subprocess.STDOUT, cwd='run', check=True)
                 if self.spec.variants['host'].value == 'tsa':
-                    subprocess.run(['sbatch', '-W', '--time=00:15:00', '-p', 'debug', 'exp.' + self.spec.variants['test_name'].value + '.run'], stderr=subprocess.STDOUT, cwd='run', check=True)
+                    subprocess.run(['sbatch', '-W', '--time=00:15:00', '-p', 'dev', 'exp.' + self.spec.variants['test_name'].value + '.run'], stderr=subprocess.STDOUT, cwd='run', check=True)
             except:
                 raise InstallError('Submitting test failed')
 
