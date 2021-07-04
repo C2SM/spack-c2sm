@@ -22,6 +22,7 @@ class Icon(Package):
     maintainers = ['egermann']
 
     version('master', branch='master', submodules=True)
+    version('dev-build', branch='master', submodules=True)
     version('nwp', git='git@gitlab.dkrz.de:icon/icon-nwp.git', submodules= True)
     version('cscs', git='git@gitlab.dkrz.de:icon/icon-cscs.git', submodules=True )
     version('aes', git='git@gitlab.dkrz.de:icon/icon-aes.git', submodules=True )
