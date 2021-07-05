@@ -31,10 +31,12 @@ packages:
   netcdf-fortran:
     modules:
       netcdf-fortran@4.4.5%pgi@20.4 +mpi: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/pgi/20.4/easybuild/modules/all/netcdf-fortran/4.4.5-pgi-20.4-gcc-8.3.0
+    paths:
       netcdf-fortran@4.4.5%gcc@8.3.0 +mpi: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2/easybuild/software/netCDF-Fortran/4.4.5-fosscuda-2019b
   netcdf-c:
     modules:
       netcdf-c@4.7.0%pgi@20.4 +mpi: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/pgi/20.4/easybuild/modules/all/netcdf/4.7.0-pgi-20.4-gcc-8.3.0
+    paths:
       netcdf-c@4.7.0%gcc@8.3.0 +mpi: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2/easybuild/software/netCDF/4.7.0-fosscuda-2019b
   netcdf-cxx4:
     paths:
