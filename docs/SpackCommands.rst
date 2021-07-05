@@ -109,6 +109,8 @@ Options (spack installcosmo)
                                  alternatively one can decide to install only the package or only
                                  the dependencies.
 * --keep-stage: don't remove the build after compilation
+* -v, --verbose: Verbose installation
+* --force_uninstall: Force uninstall if COSMO-package is already installed
 
 Spack dev-build
 ---------------
@@ -165,9 +167,40 @@ Usage (spack devbuildcosmo)
 
 Options (spack devbuildcosmo)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* --no_specyaml: ignore *spec.yaml*
-* -t --test: run COSMO testsuite before installing
+* --no_specyaml: Ignore *spec.yaml*
 * -c --clean_build: Clean build
+* -j <JOBS>, --jobs <JOBS>: Explicitly set number of parallel jobs
+* --test {root,dycore,all}: If root is chosen, run COSMO testsuite before installation
+                            (but skip tests for dependencies). If dycore is chosen,
+                            run test for Dycore and COSMO testsuite.
+                            If all is chosen,
+                            run package tests during installation for all packages.
+* -c, --clean_build: Clean dev-build
+
+Spack location
+--------------
+Locate paths related to some spec. This command is mainly usefull to
+get the path where a package was installed (a long path with hashes)
+and access the coresponding binary (somewhere under that location).
+
+`As stated in the official spack documentation
+<https://spack.readthedocs.io/en/latest/workflows.html#find-and-run>`_,
+"The simplest way to run a Spack binary is to find it and run it" as
+it is build with `RPATH`. In most cases there is no need to adjust the
+environment.
+
+Other options can be used to retrieve other paths like the build
+directory or the path to the package definition (`see official spack
+documentation
+<https://spack.readthedocs.io/en/latest/command_index.html#spack-location>`_
+or ``spack location -h``)
+
+Usage (spack location)
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: bash
+
+  spack location -i <spec>
 
 Spack build-env
 ---------------

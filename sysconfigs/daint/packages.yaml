@@ -37,7 +37,7 @@ packages:
       variants: +cuda cuda_arch=60
       compiler: [gcc]
     cosmo-dycore:
-      variants: slave=daint +cuda cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/ slurm_args= "'-C gpu -p normal -A g110 -N {0}'"
+      variants: slave=daint +cuda cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/ slurm_partition= "normal" slurm_bin= "srun" slurm_gpu= "-" slurm_opt_nodes= "-N" slurm_nodes= "{0}"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint= "-C" slurm_constraint= "gpu" 
       compiler: [gcc@8.3.0]
     cmake:
         paths:
@@ -68,7 +68,7 @@ packages:
             cray-libsci_acc@20.06.1%pgi:   cray-libsci_acc/20.06.1
     cuda:
         modules:
-          cuda@10.2%gcc: cudatoolkit/10.2.89_3.29-7.0.2.1_3.5__g67354b4
+          cuda@10.2%gcc: cudatoolkit/10.2.89_3.29-7.0.2.1_3.27__g67354b4 
         version: ['10.2']
     curl:
         paths:
