@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler: [pgi@20.4, pgi@19.9, gcc@8.3.0]
+    compiler: [pgi@20.4, gcc@8.3.0]
     providers:
       mpicuda: [openmpi+cuda, mpich]
       mpi: [openmpi~cuda]
@@ -23,26 +23,22 @@ packages:
     providers: {}
   openmpi:
     modules:
-      openmpi@4.0.2%pgi@20.4 +cuda: /apps/arolla/UES/jenkins/RH7.7/MCH-PE20.08-dev0/pgi/20.4/easybuild/modules/all/openmpi/4.0.2-pgi-20.4-gcc-8.3.0-cuda-10.1
-      openmpi@4.0.2%pgi@20.4 ~cuda: /apps/arolla/UES/jenkins/RH7.7/MCH-PE20.08-dev0/pgi/20.4-nocuda/easybuild/modules/all/openmpi/4.0.2-pgi-20.4-gcc-8.3.0-nocuda
-      openmpi@4.0.2%pgi@19.9 +cuda: /apps/arolla/UES/jenkins/RH7.7/MCH-PE20.06/pgi/19.9/easybuild/modules/all/openmpi/4.0.2-pgi-19.9-gcc-8.3.0-cuda-10.1-rh7.7
-      openmpi@4.0.2%pgi@19.9 ~cuda: /apps/arolla/UES/jenkins/RH7.7/MCH-PE20.06/pgi/19.9-nocuda/easybuild/modules/all/openmpi/4.0.2-pgi-19.9-gcc-8.3.0-nocuda
-      openmpi@4.0.2%gcc@8.3.0 +cuda: /apps/arolla/UES/jenkins/RH7.7/MCH-PE20.06/gnu/19.2/easybuild/modules/all/openmpi/4.0.2-gcccuda-2019b-cuda-10.1
-      openmpi@4.0.2%gcc@8.3.0 ~cuda: /apps/arolla/UES/jenkins/RH7.7/MCH-PE20.06/gnu/19.2-nocuda/easybuild/modules/all/openmpi/4.0.2-gcc-8.3.0
+      openmpi@4.0.2%pgi@20.4 +cuda: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/pgi/20.4/easybuild/modules/all/openmpi/4.0.2-pgi-20.4-gcc-8.3.0-cuda-10.1
+      openmpi@4.0.2%pgi@20.4 ~cuda: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/pgi/20.4-nocuda/easybuild/modules/all/openmpi/4.0.2-pgi-20.4-gcc-8.3.0-nocuda
+      openmpi@4.0.2%gcc@8.3.0 +cuda: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2/easybuild/modules/all/openmpi/4.0.2-gcccuda-2019b-cuda-10.1
+      openmpi@4.0.2%gcc@8.3.0 ~cuda: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2-nocuda/easybuild/modules/all/openmpi/4.0.2-gcc-8.3.0
     variants: +cuda
   netcdf-fortran:
     modules:
-      netcdf-fortran@4.4.5%pgi@20.4 +mpi: /apps/arolla/UES/jenkins/RH7.7/MCH-PE20.08-dev0/pgi/20.4/easybuild/modules/all/netcdf-fortran/4.4.5-pgi-20.4-gcc-8.3.0
-      netcdf-fortran@4.4.5%pgi@19.9 +mpi: /apps/arolla/UES/jenkins/RH7.7/pgi/19.9/easybuild/modules/all/netcdf-fortran/4.4.5-pgi-19.9-gcc-8.3.0
-      netcdf-fortran@4.4.5%gcc@8.3.0 +mpi: /apps/arolla/UES/jenkins/RH7.7/gnu/19.2/easybuild/modules/all/netcdf-fortran/4.4.5-fosscuda-2019b   
+      netcdf-fortran@4.4.5%pgi@20.4 +mpi: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/pgi/20.4/easybuild/modules/all/netcdf-fortran/4.4.5-pgi-20.4-gcc-8.3.0
+      netcdf-fortran@4.4.5%gcc@8.3.0 +mpi: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2/easybuild/software/netCDF-Fortran/4.4.5-fosscuda-2019b
   netcdf-c:
     modules:
-      netcdf-c@4.7.0%pgi@20.4 +mpi: /apps/arolla/UES/jenkins/RH7.7/MCH-PE20.08-dev0/pgi/20.4/easybuild/modules/all/netcdf/4.7.0-pgi-20.4-gcc-8.3.0
-      netcdf-c@4.7.0%pgi@19.9 +mpi: /apps/arolla/UES/jenkins/RH7.7/pgi/19.9/easybuild/modules/all/netcdf/4.7.0-pgi-19.9-gcc-8.3.0
-      netcdf-c@4.7.0%gcc@8.3.0 +mpi: /apps/arolla/UES/jenkins/RH7.7/gnu/19.2/easybuild/modules/all/netcdf/4.7.0-fosscuda-2019b
+      netcdf-c@4.7.0%pgi@20.4 +mpi: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/pgi/20.4/easybuild/modules/all/netcdf/4.7.0-pgi-20.4-gcc-8.3.0
+      netcdf-c@4.7.0%gcc@8.3.0 +mpi: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2/easybuild/software/netCDF/4.7.0-fosscuda-2019b
   netcdf-cxx4:
     paths:
-      netcdf-cxx4@4.3.0%gcc@8.3.0: /apps/arolla/UES/jenkins/RH7.7/gnu/19.2/easybuild/software/netCDF-C++/4.3.0-fosscuda-2019b/
+      netcdf-cxx4@4.3.0%gcc@8.3.0: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2/easybuild/software/netCDF-C++/4.3.0-fosscuda-2019b
   perl:
     paths: 
       perl@5.16.3: /usr
@@ -75,7 +71,7 @@ packages:
       libtool@2.4.2%gcc: /usr
   openjdk:
     paths:
-      openjdk@1.8.0%gcc: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.242.b08-0.el7_7.x86_64/
+      openjdk@1.8.0%gcc: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.292.b10-1.el7_9.x86_64/
   jasper:
     paths:
       jasper@1.900.1%gcc +shared: /usr
