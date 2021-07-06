@@ -59,6 +59,37 @@ or
   cd </path/to/package> 
   spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore
 
+Int2lm
+------
+In order to install int2lm fetched from a GitHub repository, use *spack install*:
+
+.. code-block:: bash
+
+  spack install int2lm@<version>%<compiler> +<variants>
+
+The second option *spack dev-build* allows to build int2lm with a local source:
+
+.. code-block:: bash
+
+  cd </path/to/package> 
+  spack dev-build int2lm@<version>%<compiler> +<variants>
+
+Int2lm from C2SM-RCM
+^^^^^^^^^^^^^^^^^^^^
+In order to build int2lm from the C2SM-RCM GitHub organization use the following command:
+
+.. code-block:: bash
+
+  spack install int2lm@c2sm_master%pgi
+
+Int2lm from COSMO-ORG
+^^^^^^^^^^^^^^^^^^^^^
+In order to build int2lm from the COSMO-ORG GitHub organization use the following command:
+
+.. code-block:: bash
+
+  spack install int2lm@org_master%pgi pollen=False
+
 ICON
 ------
 In order to install icon fetched from a GitHub repository, use *spack install*:
@@ -95,37 +126,6 @@ In order to build a GPU icon binary from a local source
   mkdir pgi_gpu
   cd pgi_gpu
   spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu # don't forget +eccodes if you want eccodes, add +skip-config to only do make
-
-Int2lm
-------
-In order to install int2lm fetched from a GitHub repository, use *spack install*:
-
-.. code-block:: bash
-
-  spack install int2lm@<version>%<compiler> +<variants>
-
-The second option *spack dev-build* allows to build int2lm with a local source:
-
-.. code-block:: bash
-
-  cd </path/to/package> 
-  spack dev-build int2lm@<version>%<compiler> +<variants>
-
-Int2lm from C2SM-RCM
-^^^^^^^^^^^^^^^^^^^^
-In order to build int2lm from the C2SM-RCM GitHub organization use the following command:
-
-.. code-block:: bash
-
-  spack install int2lm@c2sm_master%pgi
-
-Int2lm from COSMO-ORG
-^^^^^^^^^^^^^^^^^^^^^
-In order to build int2lm from the COSMO-ORG GitHub organization use the following command:
-
-.. code-block:: bash
-
-  spack install int2lm@org_master%pgi pollen=False
 
 Accessing executables
 ---------------------
