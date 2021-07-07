@@ -51,7 +51,11 @@ class CosmoEccodesDefinitions(Package):
     depends_on('eccodes@2.14.1 +aec', when='@2.14.1.2+aec')
     depends_on('eccodes@2.18.0 +aec', when='@2.18.0.1+aec')
     depends_on('eccodes@2.19.0 +aec', when='@2.19.0.1:+aec')
-   
+    depends_on('eccodes@2.19.0 +aec', when='@2.19.0.2:+aec')
+    depends_on('eccodes@2.19.0 +aec', when='@2.19.0.3:+aec')
+    depends_on('eccodes@2.19.0 +aec', when='@2.19.0.4:+aec')
+    depends_on('eccodes@2.19.0 +aec', when='@2.19.0.5:+aec')
+
     def setup_run_environment(self, env):
         eccodes_definition_path = self.spec['cosmo-eccodes-definitions'].prefix + '/cosmoDefinitions/definitions/:' + self.spec['eccodes'].prefix + '/share/eccodes/definitions/'
         env.prepend_path('GRIB_DEFINITION_PATH', eccodes_definition_path)
