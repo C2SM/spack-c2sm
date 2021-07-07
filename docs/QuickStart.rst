@@ -90,6 +90,43 @@ In order to build int2lm from the COSMO-ORG GitHub organization use the followin
 
   spack install int2lm@org_master%pgi pollen=False
 
+ICON
+------
+In order to install icon fetched from a GitHub repository, use *spack install*:
+
+.. code-block:: bash
+
+  spack install icon@<version>%<compiler> +<variants> #@nwp, @cscs, ...
+
+The second option *spack dev-build* allows to build int2lm with a local source:
+
+.. code-block:: bash
+
+  cd </path/to/package> 
+  spack dev-build icon@dev-build%<compiler> +<variants>
+
+ICON CPU BUILD
+^^^^^^^^^^^^^^^^^^^^
+In order to build a CPU icon binary from a local source
+
+.. code-block:: bash
+
+  cd </path/to/package> 
+  mkdir pgi_cpu
+  cd pgi_cpu
+  spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu # don't forget +eccodes if you want eccodes, add +skip-config to only do make
+
+ICON GPU BUILD
+^^^^^^^^^^^^^^^^^^^^
+In order to build a GPU icon binary from a local source
+
+.. code-block:: bash
+
+  cd </path/to/package> 
+  mkdir pgi_gpu
+  cd pgi_gpu
+  spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu # don't forget +eccodes if you want eccodes, add +skip-config to only do make
+
 Accessing executables
 ---------------------
 `As stated in the official spack documentation
