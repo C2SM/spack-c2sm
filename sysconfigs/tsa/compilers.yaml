@@ -1,6 +1,8 @@
 compilers::
 - compiler:
-    environment: {}
+    environment:
+      set:
+        CSCS_APPS_PATH: '/apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01'
     extra_rpaths: []
     flags: {}
     modules:
