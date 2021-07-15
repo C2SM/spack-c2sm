@@ -61,6 +61,7 @@ class Cosmo(MakefilePackage):
     depends_on('claw%gcc', when='+claw', type='build')
     depends_on('boost%gcc', when='cosmo_target=gpu ~cppdycore', type='build')
     depends_on('cmake%gcc', type='build')
+    depends_on('zlib_ng +compat', when='+zlib_ng', type='run')
 
 
     # cosmo-dycore dependency
@@ -98,6 +99,7 @@ class Cosmo(MakefilePackage):
     variant('set_version', default=False, description='Pass cosmo tag version to Makefile')
     variant('gt1', default=False, description='Build dycore with gridtools 1.1.3')
     variant('cuda_arch', default='none', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
+    variant('zlib_ng', default=False, description='Run with faster zlib-implemention for compression of NetCDF output')
 
     conflicts('+claw', when='cosmo_target=cpu')
     conflicts('+pollen', when='@5.05:5.06,master')
@@ -206,6 +208,10 @@ class Cosmo(MakefilePackage):
             if self.mpi_spec.name == 'mpich':
                 claw_flags += ' -D__CRAYXC'
             env.set('CLAWFC_FLAGS', claw_flags)
+
+        # Zlib_ng
+        if '+zlib_ng' in self.spec:
+            env.prepend_path('LD_LIBRARY_PATH',self.spec['zlib_ng'].prefix + '/lib')
 
         # Linker flags
         if self.compiler.name == 'pgi' and '~cppdycore' in self.spec:
