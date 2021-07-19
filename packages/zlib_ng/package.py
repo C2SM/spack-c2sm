@@ -26,3 +26,7 @@ class ZlibNg(CMakePackage):
         ]
 
         return args
+
+    # modify path to replace zlib used in all dependent libraries in any package
+    def setup_run_environment(self,env):
+        env.prepend_path('LD_LIBRARY_PATH',self.spec['zlib_ng'].prefix + '/lib')

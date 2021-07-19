@@ -61,7 +61,7 @@ class Cosmo(MakefilePackage):
     depends_on('claw%gcc', when='+claw', type='build')
     depends_on('boost%gcc', when='cosmo_target=gpu ~cppdycore', type='build')
     depends_on('cmake%gcc', type='build')
-    depends_on('zlib_ng +compat', when='+zlib_ng', type='run')
+    depends_on('zlib_ng +compat', when='+zlib_ng', type=('link','run'))
 
 
     # cosmo-dycore dependency
@@ -208,10 +208,6 @@ class Cosmo(MakefilePackage):
             if self.mpi_spec.name == 'mpich':
                 claw_flags += ' -D__CRAYXC'
             env.set('CLAWFC_FLAGS', claw_flags)
-
-        # Zlib_ng
-        if '+zlib_ng' in self.spec:
-            env.prepend_path('LD_LIBRARY_PATH',self.spec['zlib_ng'].prefix + '/lib')
 
         # Linker flags
         if self.compiler.name == 'pgi' and '~cppdycore' in self.spec:
