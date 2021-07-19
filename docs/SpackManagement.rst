@@ -20,7 +20,7 @@ Once this is done, you can use the config.py of the spack-mch instance to create
 
 .. code-block:: bash
 
-  git clone https://github.com/MeteoSwiss-APN/spack-mch/
+  git clone https://github.com/C2SM/spack-c2sm/
   cd spack-mch
   ./config.py -m admin-$slave -i /project/g110/spack/user/admin-$slave
   ./config.py -m $slave -i /project/g110/spack/user/$slave
@@ -29,12 +29,16 @@ Finally install something with both instances to create a database file for the 
 
 Admin instance:
 
+This instance is for the jenkins-user only. It installs to /project.
+
 .. code-block:: bash
 
   . /project/g110/spack/user/admin-$slave/spack/share/spack/setup-env.sh
   spack install cosmo-grib-api-definition
 
 Users instance:
+
+This instance is for all users. It installs to $SCRATCH
 
 .. code-block:: bash
 
