@@ -85,23 +85,6 @@ compilers:
     environment: {}
     extra_rpaths: []
 - compiler:
-    spec: intel@19.0.1.144
-    paths:
-      cc: cc
-      cxx: CC
-      f77: ftn
-      fc: ftn
-    flags: {}
-    operating_system: cnl7
-    target: any
-    modules:
-    - PrgEnv-intel
-    - intel/19.0.1.144
-    - cdt/20.11
-    - intel/19.0.1.144
-    environment: {}
-    extra_rpaths: []
-- compiler:
     spec: gcc@10.1.0
     paths:
       cc: cc
@@ -116,23 +99,6 @@ compilers:
     - gcc/10.1.0
     - cdt/20.11
     - gcc/10.1.0
-    environment: {}
-    extra_rpaths: []
-- compiler:
-    spec: intel@19.1.1.217
-    paths:
-      cc: cc
-      cxx: CC
-      f77: ftn
-      fc: ftn
-    flags: {}
-    operating_system: cnl7
-    target: any
-    modules:
-    - PrgEnv-intel
-    - intel/19.1.1.217
-    - cdt/20.11
-    - intel/19.1.1.217
     environment: {}
     extra_rpaths: []
 - compiler:
@@ -185,66 +151,69 @@ compilers:
 - compiler:
     spec: gcc@8.1.0
     paths:
-      cc: /opt/gcc/8.1.0/bin/gcc
-      cxx: /opt/gcc/8.1.0/bin/g++
-      f77: /opt/gcc/8.1.0/bin/gfortran
-      fc: /opt/gcc/8.1.0/bin/gfortran
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
     flags: {}
-    operating_system: sles15
+    operating_system: cnl7
     target: x86_64
-    modules: []
+    modules:
+    - PrgEnv-gnu
+    - gcc/8.1.0
+    - cdt/20.11
+    - gcc/8.1.0
     environment: {}
     extra_rpaths: []
 - compiler:
     spec: gcc@8.3.0
     paths:
-      cc: /opt/gcc/8.3.0/bin/gcc
-      cxx: /opt/gcc/8.3.0/bin/g++
-      f77: /opt/gcc/8.3.0/bin/gfortran
-      fc: /opt/gcc/8.3.0/bin/gfortran
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
     flags: {}
-    operating_system: sles15
+    operating_system: cnl7
     target: x86_64
-    modules: []
+    modules:
+    - PrgEnv-gnu
+    - gcc/8.3.0
+    - cdt/20.11
+    - gcc/8.3.0
     environment: {}
     extra_rpaths: []
 - compiler:
     spec: gcc@9.3.0
     paths:
-      cc: /opt/gcc/9.3.0/bin/gcc
-      cxx: /opt/gcc/9.3.0/bin/g++
-      f77: /opt/gcc/9.3.0/bin/gfortran
-      fc: /opt/gcc/9.3.0/bin/gfortran
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
     flags: {}
-    operating_system: sles15
+    operating_system: cnl7
     target: x86_64
-    modules: []
+    modules:
+    - PrgEnv-gnu
+    - gcc/9.3.0
+    - cdt/20.11
+    - gcc/9.3.0
     environment: {}
     extra_rpaths: []
 - compiler:
     spec: intel@19.0.1.144
     paths:
-      cc: /opt/intel/compilers_and_libraries_2019.1.144/linux/bin/intel64/icc
-      cxx: /opt/intel/compilers_and_libraries_2019.1.144/linux/bin/intel64/icpc
-      f77: /opt/intel/compilers_and_libraries_2019.1.144/linux/bin/intel64/ifort
-      fc: /opt/intel/compilers_and_libraries_2019.1.144/linux/bin/intel64/ifort
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
     flags: {}
-    operating_system: sles15
+    operating_system: cnl7
     target: x86_64
-    modules: []
-    environment: {}
-    extra_rpaths: []
-- compiler:
-    spec: intel@19.1.1.217
-    paths:
-      cc: /opt/intel/compilers_and_libraries_2020.1.217/linux/bin/intel64/icc
-      cxx: /opt/intel/compilers_and_libraries_2020.1.217/linux/bin/intel64/icpc
-      f77: /opt/intel/compilers_and_libraries_2020.1.217/linux/bin/intel64/ifort
-      fc: /opt/intel/compilers_and_libraries_2020.1.217/linux/bin/intel64/ifort
-    flags: {}
-    operating_system: sles15
-    target: x86_64
-    modules: []
+    modules:
+    - PrgEnv-intel
+    - intel/19.0.1.144
+    - cdt/20.11
+    - intel/19.0.1.144
     environment: {}
     extra_rpaths: []
 - compiler:
