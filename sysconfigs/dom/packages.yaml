@@ -4,7 +4,7 @@ packages:
     all:
         # default compilers defined by the system
         # these reflect the current installed PE
-        compiler: [pgi@20.1.1, pgi@20.1.0, gcc@10.1.0, gcc@9.3.0, gcc@8.3.0, gcc@8.1.0, cce@10.0.2, cce@11.0.0, intel@19.1.1.217, intel@19.0.1.144]
+        compiler: [pgi@20.1.1, pgi@20.1.0, gcc@10.1.0, gcc@9.3.0, gcc@8.3.0, cce@11.0.0, cce@10.0.2, intel@19.0.1.144]
         providers:
             mpi: [mpich]
             # if the mpich package support +cuda in the future it needs to be put there
@@ -160,14 +160,14 @@ packages:
     mpich:
         buildable: false
         modules:
-            mpich@3.2%gcc:   cray-mpich/7.7.15
-            mpich@3.2%intel: cray-mpich/7.7.15
-            mpich@3.2%cce:   cray-mpich/7.7.15
-            mpich@3.2%pgi:   cray-mpich/7.7.15
-            mpich@3.2.1%gcc:    cray-mpich/3.2.1
-            mpich@3.2.1%intel:  cray-mpich/3.2.1
-            mpich@3.2.1%cce:    cray-mpich/3.2.1
-            mpich@3.2.1%pgi:    cray-mpich/3.2.1
+            mpich@7.7.15%gcc:   cray-mpich/7.7.15
+            mpich@7.7.15%intel: cray-mpich/7.7.15
+            mpich@7.7.15%cce:   cray-mpich/7.7.15
+            mpich@7.7.15%pgi:   cray-mpich/7.7.15
+            mpich@7.7.17%gcc:   cray-mpich/7.7.17
+            mpich@7.7.17%intel: cray-mpich/7.7.17
+            mpich@7.7.17%cce:   cray-mpich/7.7.17
+            mpich@7.7.17%pgi:   cray-mpich/7.7.17
     netcdf-c:
         buildable: false
         modules:
