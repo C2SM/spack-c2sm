@@ -31,12 +31,12 @@ class Icontools(AutotoolsPackage):
     version('master', branch='master')
     version('dev-build', branch='master')
 
-    depends_on('autoconf', type='build')
-    depends_on('automake', type='build')
-    depends_on('libtool',  type='build')
-    depends_on('m4', type='build')
+    depends_on('autoconf%gcc', type='build')
+    depends_on('automake%gcc', type='build')
+    depends_on('libtool%gcc',  type='build')
+    depends_on('m4%gcc', type='build')
 
-    depends_on('cray-libsci %cce ', type=('build', 'link'),when='slave=daint')
+    depends_on('cray-libsci%cce ', type=('build', 'link'),when='slave=daint')
 
     depends_on('netcdf-fortran ~mpi', type=('build', 'link'))
     depends_on('netcdf-c ~mpi', type=('build', 'link'))
