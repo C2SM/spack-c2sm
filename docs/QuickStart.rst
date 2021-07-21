@@ -98,7 +98,7 @@ In order to install icon fetched from a GitHub repository, use *spack install*:
 
   spack install icon@<version>%<compiler> +<variants> #@nwp, @cscs, ...
 
-The second option *spack dev-build* allows to build int2lm with a local source:
+The second option *spack dev-build* allows to build icon with a local source:
 
 .. code-block:: bash
 
