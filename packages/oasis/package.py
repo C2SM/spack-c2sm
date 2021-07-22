@@ -5,6 +5,7 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+import os
 
 class Oasis(MakefilePackage):
 
@@ -18,10 +19,17 @@ class Oasis(MakefilePackage):
     depends_on('mpi', type=('build', 'link', 'run'))
     depends_on('netcdf-fortran', type=('build','link','run'))
 
-    build_directory = '/scratch/snx3000/juckerj/oasis/util/make_dir'
-    arch_dir = build_directory + '/spack'
+    build_directory = 'util/make_dir'
 
     makefile_file = 'TopMakefileOasis3'
+
+    def set_absolute_makefile_paths(self):
+
+        package_dir = os.getcwd()
+        arch_dir = os.path.join(package_dir,self.build_directory,'arch')
+
+        os.environ['COUPLE'] = package_dir
+        os.environ['ARCHDIR'] = arch_dir
 
     def setup_build_environment(self, env):
 
@@ -29,17 +37,19 @@ class Oasis(MakefilePackage):
         env.set('f90', self.spec['mpi'].mpifc)
         env.set('F', self.spec['mpi'].mpifc)
         env.set('f', self.spec['mpi'].mpifc)
-        env.set('COUPLE', '/scratch/snx3000/juckerj/oasis')
-        env.set('ARCHDIR', self.arch_dir)
         env.set('MAKE', 'gmake')
 
     def edit(self,spec,prefix):
-        with working_dir(self.build_directory):
 
+        # Makefile of OASIS requires absolute paths
+        # that cannot be set in setup_build_environment
+        self.set_absolute_makefile_paths()
+
+        with working_dir(self.build_directory):
             makefile = FileFilter(self.makefile_file)
 
             makefile.filter('include make.inc', '')
-            makefile.filter('$(modifmakefile) ; $(MAKE) all 1>> $(LOG) 2>> $(ERR)' , '$(MAKE) all 1>> $(LOG) 2>> $(ERR)')
+            makefile.filter('\$\(modifmakefile\)\s\;' , '')
 
     def build(self,spec,prefix):
         with working_dir(self.build_directory):
