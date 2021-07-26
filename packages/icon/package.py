@@ -80,7 +80,8 @@ class Icon(Package):
         if '~skip-config' in self.spec:
             env.set('XML2_ROOT', self.spec['libxml2'].prefix)
             env.set('SERIALBOX2_ROOT',  self.spec['serialbox'].prefix)
-            env.set('CLAW', self.spec['claw'].prefix + '/bin/clawfc')
+            if '+claw' in self.spec:
+                env.set('CLAW', self.spec['claw'].prefix + '/bin/clawfc')
             env.set('ECCODES_ROOT', self.spec['eccodes'].prefix)
 
     def configure_args(self):
