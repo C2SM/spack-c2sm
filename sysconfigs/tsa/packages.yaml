@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler: [pgi@20.4, gcc@8.3.0]
+    compiler: [gcc@8.3.0, pgi@20.4]
     providers:
       mpicuda: [openmpi+cuda, mpich]
       mpi: [openmpi~cuda]
