@@ -13,6 +13,25 @@ packages:
             blas: [cray-libsci_acc, cray-libsci, intel-mkl]
             scalapack: [cray-libsci_acc, cray-libsci, intel-mkl]
             pkgconfig: [pkg-config]
+    # packages installed by c2sm-spack instance
+    cosmo:
+      variants: cuda_arch=60 cosmo_target=gpu slave=daint
+      version: [master]
+      compiler: [pgi]
+    cosmo-dycore:
+      variants: slave=daint +cuda cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/ slurm_partition= "normal" slurm_bin= "srun" slurm_gpu= "-" slurm_opt_nodes= "-N" slurm_nodes= "{0}"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint= "-C" slurm_constraint= "gpu" 
+      compiler: [gcc@8.3.0]
+    gridtools:
+      variants: +cuda cuda_arch=60
+      compiler: [gcc]
+    icontools:
+        variants: slave=daint
+        compiler: [cce]  
+    icon:
+        variants: host=daint
+    int2lm:
+        variants: slave=daint
+    # packages preinstalled on Piz Daint
     autoconf:
         paths:
              autoconf@2.69%gcc: /usr
@@ -29,16 +48,6 @@ packages:
     bzip2:
         paths:
              bzip2@1.0.6: /usr
-    cosmo:
-      variants: cuda_arch=60 cosmo_target=gpu slave=daint
-      version: [master]
-      compiler: [pgi]
-    gridtools:
-      variants: +cuda cuda_arch=60
-      compiler: [gcc]
-    cosmo-dycore:
-      variants: slave=daint +cuda cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/ slurm_partition= "normal" slurm_bin= "srun" slurm_gpu= "-" slurm_opt_nodes= "-N" slurm_nodes= "{0}"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint= "-C" slurm_constraint= "gpu" 
-      compiler: [gcc@8.3.0]
     cmake:
         paths:
           cmake@3.14.5%gcc: /apps/dom/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5
@@ -121,11 +130,6 @@ packages:
             hdf5@1.12.0.0%cce~mpi+hl+fortran: /opt/cray/pe/hdf5/1.12.0.0/CRAYCLANG/9.0
     hwloc:
         variants: +cuda
-    icontools:
-        variants: slave=daint
-        compiler: [cce]  
-    icon:
-        variants: host=daint
     intel-mkl:
         buildable: false
         paths:
@@ -138,10 +142,6 @@ packages:
             intel-mkl@2019.1.144%intel~ilp64 threads=none: /opt/intel
             intel-mkl@2019.1.144%gcc~ilp64 threads=none:   /opt/intel
             intel-mkl@2019.1.144%cce~ilp64 threads=none:   /opt/intel
-    int2lm:
-        variants: slave=daint
-    int2lm-org:
-        variants: slave=daint
     libjpeg:
         paths:
             libjpeg%gcc: /usr

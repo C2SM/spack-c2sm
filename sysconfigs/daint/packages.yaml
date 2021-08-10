@@ -13,6 +13,29 @@ packages:
             blas: [cray-libsci_acc, cray-libsci, intel-mkl]
             scalapack: [cray-libsci_acc, cray-libsci, intel-mkl]
             pkgconfig: [pkg-config]
+    # packages installed by c2sm-spack instance
+    cosmo:
+      variants: cuda_arch=60 cosmo_target=gpu slave=daint slurm_partition= "normal" slurm_bin= "srun" slurm_opt_nodes= "-n" slurm_nodes= "1"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint= "-C" slurm_constraint= "gpu"
+      version: [master]
+      compiler: [pgi]
+    cosmo-dycore:
+      variants: slave=daint +cuda cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/ slurm_partition= "normal" slurm_bin= "srun" slurm_gpu= "-" slurm_opt_nodes= "-N" slurm_nodes= "{0}"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint= "-C" slurm_constraint= "gpu" 
+      compiler: [gcc@8.3.0]
+    gridtools:
+      variants: +cuda cuda_arch=60
+      compiler: [gcc]
+    icontools:
+        variants: slave=daint
+        compiler: [cce]  
+    icon:
+        variants: host=daint
+    int2lm:
+        variants: slave=daint
+    llvm:
+        paths:
+            llvm@10.0.0: /project/g110/install/daint/llvm-10
+        buildable: False
+    # packages preinstalled on Piz Daint
     autoconf:
         paths:
              autoconf@2.69%gcc: /usr
@@ -29,16 +52,6 @@ packages:
     bzip2:
         paths:
              bzip2@1.0.6: /usr
-    cosmo:
-      variants: cuda_arch=60 cosmo_target=gpu slave=daint slurm_partition= "normal" slurm_bin= "srun" slurm_opt_nodes= "-n" slurm_nodes= "1"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint= "-C" slurm_constraint= "gpu"
-      version: [master]
-      compiler: [pgi]
-    gridtools:
-      variants: +cuda cuda_arch=60
-      compiler: [gcc]
-    cosmo-dycore:
-      variants: slave=daint +cuda cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/ slurm_partition= "normal" slurm_bin= "srun" slurm_gpu= "-" slurm_opt_nodes= "-N" slurm_nodes= "{0}"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint= "-C" slurm_constraint= "gpu" 
-      compiler: [gcc@8.3.0]
     cmake:
         paths:
           cmake@3.14.5%gcc: /apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5
@@ -78,22 +91,12 @@ packages:
              diffutils@3.6: /usr
     elpa:
         variants: +openmp +optflags
-
-    fftw:
-        buildable: false
-        modules:
-            fftw@3.3.8.7%gcc+openmp:   cray-fftw/3.3.8.7
-            fftw@3.3.8.7%intel+openmp: cray-fftw/3.3.8.7
-            fftw@3.3.8.7%cce+openmp:   cray-fftw/3.3.8.7
-            fftw@3.3.8.7%pgi+openmp:   cray-fftw/3.3.8.7
     gawk:
         paths:
              gawk@4.2.1: /usr
     gettext:
         paths:
              gettext@0.19.8.1: /usr
-    gromacs:
-        variants: build_type=Release +mpi +cuda
     hdf5:
         buildable: false
         modules:
@@ -118,11 +121,6 @@ packages:
             hdf5@1.12.0.0%cce~mpi+hl+fortran: /opt/cray/pe/hdf5/1.12.0.0/CRAYCLANG/9.0
     hwloc:
         variants: +cuda
-    icontools:
-        variants: slave=daint
-        compiler: [cce]  
-    icon:
-        variants: host=daint
     intel-mkl:
         buildable: false
         paths:
@@ -135,10 +133,6 @@ packages:
             intel-mkl@2019.1.144%intel~ilp64 threads=none: /opt/intel
             intel-mkl@2019.1.144%gcc~ilp64 threads=none:   /opt/intel
             intel-mkl@2019.1.144%cce~ilp64 threads=none:   /opt/intel
-    int2lm:
-        variants: slave=daint
-    int2lm-org:
-        variants: slave=daint
     libjpeg:
         paths:
             libjpeg%gcc: /usr
@@ -205,40 +199,12 @@ packages:
     openjdk:
         paths:
             openjdk@11.0.7%gcc: /usr/lib64/jvm/java-11-openjdk
-    papi:
-        buildable: false
-        modules:
-            papi@6.0.0.2%gcc:   papi/6.0.0.2
-            papi@6.0.0.2%intel: papi/6.0.0.2
-            papi@6.0.0.2%cce:   papi/6.0.0.2
-            papi@6.0.0.2%pgi:   papi/6.0.0.2
     perl:
         paths:
              perl@5.26.1: /usr
     pkg-config:
       paths:
              pkg-config@0.29.2: /usr
-    petsc:
-         buildable: false
-         modules:
-            petsc@3.13.3.0%gcc~complex~int64:    cray-petsc/3.13.3.0
-            petsc@3.13.3.0%intel~complex~int64:  cray-petsc/3.13.3.0
-            petsc@3.13.3.0%cce~complex~int64:    cray-petsc/3.13.3.0
-            petsc@3.13.3.0%pgi~complex~int64:    cray-petsc/3.13.3.0
-            petsc@3.13.3.0%gcc+complex~int64:    cray-petsc-complex/3.13.3.0
-            petsc@3.13.3.0%intel+complex~int64:  cray-petsc-complex/3.13.3.0
-            petsc@3.13.3.0%cce+complex~int64:    cray-petsc-complex/3.13.3.0
-            petsc@3.13.3.0%pgi+complex~int64:    cray-petsc-complex/3.13.3.0
-            petsc@3.13.3.0%gcc~complex+int64:    cray-petsc-64/3.13.3.0
-            petsc@3.13.3.0%intel~complex+int64:  cray-petsc-64/3.13.3.0
-            petsc@3.13.3.0%cce~complex+int64:    cray-petsc-64/3.13.3.0
-            petsc@3.13.3.0%pgi~complex+int64:    cray-petsc-64/3.13.3.0
-            petsc@3.13.3.0%gcc+complex+int64:    cray-petsc-complex-64/3.13.3.0
-            petsc@3.13.3.0%intel+complex+int64:  cray-petsc-complex-64/3.13.3.0
-            petsc@3.13.3.0%cce+complex+int64:    cray-petsc-complex-64/3.13.3.0
-            petsc@3.13.3.0%pgi+complex+int64:    cray-petsc-complex-64/3.13.3.0
-    quantum-espresso:
-        variants: ~elpa +mpi +openmp
     readline:
         paths:
             readline@7.0: /usr
@@ -248,21 +214,9 @@ packages:
     tar:
         paths:
              tar@1.30.0: /bin
-    trilinos:
-        buildable: false
-        modules:
-            trilinos@12.18.1.1%gcc:   cray-trilinos/12.18.1.1
-            trilinos@12.18.1.1%intel: cray-trilinos/12.18.1.1
-            trilinos@12.18.1.1%cce:   cray-trilinos/12.18.1.1
-            trilinos@12.18.1.1%pgi:   cray-trilinos/12.18.1.1
     xz:
         paths:
              xz@5.2.3: /usr
     zlib:
         paths:
              zlib@1.2.11: /usr
-    llvm:
-        paths:
-            llvm@10.0.0: /project/g110/install/daint/llvm-10
-        buildable: False
-
