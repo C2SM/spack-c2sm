@@ -6,8 +6,13 @@
 
 from spack import *
 import os
+from shutil import copytree, rmtree
+
 
 class Oasis(MakefilePackage):
+    """The OASIS coupler is a software allowing synchronized exchanges
+    of coupling information between numerical codes representing
+    different components of the climate system."""
 
     homepage = "https://portal.enes.org/oasis"
     git      = 'https://gitlab.com/cerfacs/oasis3-mct.git'
@@ -23,37 +28,66 @@ class Oasis(MakefilePackage):
 
     makefile_file = 'TopMakefileOasis3'
 
-    def set_absolute_makefile_paths(self):
+    # Relative path where the built libraries are stored (corresponds
+    # to the absolute path called ARCHDIR in the Makefile)
+    rel_ARCHDIR='spack-build'
 
-        package_dir = os.getcwd()
-        arch_dir = os.path.join(package_dir,self.build_directory,'arch')
-
-        os.environ['COUPLE'] = package_dir
-        os.environ['ARCHDIR'] = arch_dir
-
+    
     def setup_build_environment(self, env):
 
+        CHAN = 'MPI1'
+        env.set('CHAN', CHAN)
         env.set('F90', self.spec['mpi'].mpifc)
         env.set('f90', self.spec['mpi'].mpifc)
         env.set('F', self.spec['mpi'].mpifc)
         env.set('f', self.spec['mpi'].mpifc)
         env.set('MAKE', 'gmake')
 
-    def edit(self,spec,prefix):
+        LIBBUILD = os.path.join('../..', self.rel_ARCHDIR, 'build/lib')
+        INCPSMILE = '-I{LIBBUILD}/psmile.{CHAN} -I{LIBBUILD}/mct -I{LIBBUILD}/scrip'.format(LIBBUILD=LIBBUILD, CHAN=CHAN)
 
-        # Makefile of OASIS requires absolute paths
-        # that cannot be set in setup_build_environment
-        self.set_absolute_makefile_paths()
+        
+        CPPDEF = '-Duse_comm_{CHAN} -D__VERBOSE -DTREAT_OVERLAY -D__NO_16BYTE_REALS'.format(CHAN=CHAN)
+        env.set('CPPDEF', CPPDEF)
 
+        FFLAGS = '-O2 {INCPSMILE} {CPPDEF}'.format(CPPDEF=CPPDEF, INCPSMILE=INCPSMILE)
+        env.set('F90FLAGS', FFLAGS)
+        env.set('f90FLAGS', FFLAGS)
+        env.set('FFLAGS', FFLAGS)
+        env.set('fFLAGS', FFLAGS)
+        env.set('CCFLAGS', FFLAGS)
+
+
+    def edit(self, spec, prefix):
+
+        COUPLE = os.getcwd()
+        ARCHDIR = os.path.join(COUPLE, self.rel_ARCHDIR)
         with working_dir(self.build_directory):
             makefile = FileFilter(self.makefile_file)
+            makefile.filter('include make.inc', 'export COUPLE = {}\nexport ARCHDIR = {}'.format(COUPLE, ARCHDIR))
+            makefile.filter('\$\(modifmakefile\)\s\;\s' , '')
 
-            makefile.filter('include make.inc', '')
-            makefile.filter('\$\(modifmakefile\)\s\;' , '')
 
-    def build(self,spec,prefix):
+    def patch(self):
+
+        # Remove old directives for Fujitsu comilers. Already fixed in MCT [1] but not merged in OASIS yet
+        # [1] https://github.com/MCSclimate/MCT/commit/dcb4fa4527bbc51729fb67fbc2e0179bfcb4baa2
+        with working_dir('lib/mct/mct'):
+            m_AttrVect = FileFilter('m_AttrVect.F90')
+            m_AttrVect.filter('\s*\!DIR\$ COLLAPSE', '')
+        
+
+    def build(self, spec, prefix):
+        
         with working_dir(self.build_directory):
             make('-f', self.makefile_file)
 
-    def setup_run_environment(self, env):
-        print('void')
+
+    def install(self, spec, prefix):
+        
+        with working_dir(os.path.join(self.rel_ARCHDIR, 'lib')):
+            os.symlink('libmct.a', 'libmct_oasis.a')
+            os.symlink('libmpeu.a', 'libmpeu_oasis.a')
+            
+        copytree(self.rel_ARCHDIR, prefix, dirs_exist_ok=True, symlinks=True)
+        rmtree(self.rel_ARCHDIR)
