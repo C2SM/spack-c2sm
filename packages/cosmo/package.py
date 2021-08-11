@@ -61,6 +61,7 @@ class Cosmo(MakefilePackage):
     depends_on('claw%gcc', when='+claw', type='build')
     depends_on('boost%gcc', when='cosmo_target=gpu ~cppdycore', type='build')
     depends_on('cmake%gcc', type='build')
+    depends_on('zlib_ng +compat', when='+zlib_ng', type=('link','run'))
 
 
     # cosmo-dycore dependency
@@ -98,6 +99,7 @@ class Cosmo(MakefilePackage):
     variant('set_version', default=False, description='Pass cosmo tag version to Makefile')
     variant('gt1', default=False, description='Build dycore with gridtools 1.1.3')
     variant('cuda_arch', default='none', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
+    variant('zlib_ng', default=False, description='Run with faster zlib-implemention for compression of NetCDF output')
 
     variant('slurm_bin', default='srun', description='Slurm binary on CSCS machines')
     variant('slurm_opt_partition', default='-p', description='Slurm option to specify partition for testing')

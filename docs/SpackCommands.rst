@@ -235,3 +235,19 @@ Usage (spack edit)
 
   spack edit <package>
 
+Spack load
+----------
+Add package to the user environment. It can be used i. e. to set all runtime paths 
+like `LD_LIBRARY_PATH` as defined in the respective package.
+`More information in the official Spack documentation <https://spack.readthedocs.io/en/latest/command_index.html?highlight=spack%20load#spack-load>`_
+
+Usage (spack load)
+^^^^^^^^^^^^^^^^^^
+
+.. code-block:: bash
+  
+  spack load <spec>
+
+Options (spack load)
+^^^^^^^^^^^^^^^^^^^^
+* ---first: load the first match if multiple packages match the spec
