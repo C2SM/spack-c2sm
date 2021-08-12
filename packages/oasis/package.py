@@ -17,7 +17,7 @@ class Oasis(MakefilePackage):
 
     homepage = "https://portal.enes.org/oasis"
     git = 'https://gitlab.com/cerfacs/oasis3-mct.git'
-    maintainers = ['pheidippides']
+    maintainers = ['leclairm']
 
     version('master', branch='OASIS3-MCT_4.0')
     version('dev-build', branch='OASIS3-MCT_4.0')
