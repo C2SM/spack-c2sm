@@ -4,9 +4,10 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-from spack import *
+from spack.build_systems.makefile import MakefilePackage
+from spack.directives import depends_on, version
+from llnl.util.filesystem import working_dir, FileFilter, install_tree
 import os
-from shutil import copytree, rmtree
 
 
 class Oasis(MakefilePackage):
@@ -15,7 +16,7 @@ class Oasis(MakefilePackage):
     different components of the climate system."""
 
     homepage = "https://portal.enes.org/oasis"
-    git      = 'https://gitlab.com/cerfacs/oasis3-mct.git'
+    git = 'https://gitlab.com/cerfacs/oasis3-mct.git'
     maintainers = ['pheidippides']
 
     version('master', branch='OASIS3-MCT_4.0')
@@ -88,6 +89,5 @@ class Oasis(MakefilePackage):
         with working_dir(os.path.join(self.rel_ARCHDIR, 'lib')):
             os.symlink('libmct.a', 'libmct_oasis.a')
             os.symlink('libmpeu.a', 'libmpeu_oasis.a')
-            
-        copytree(self.rel_ARCHDIR, prefix, dirs_exist_ok=True, symlinks=True)
-        rmtree(self.rel_ARCHDIR)
+
+        install_tree(self.rel_ARCHDIR, prefix)
