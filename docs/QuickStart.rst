@@ -129,6 +129,16 @@ In order to build a GPU icon binary from a local source
   touch a_fake_file.f90 #spack doesn't want to build in empty folder...
   spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu # don't forget +eccodes if you want eccodes, add +skip-config to only do make
 
+Running ICON
+^^^^^^^^^^^^
+Once built, experiments need to be configured for the current machine. Take the following steps
+
+.. code-block:: bash
+
+  ./make_runscripts
+  cd run
+  sbatch exp.mch_opr_r04b07_lhn_12.run
+
 Accessing executables
 ---------------------
 `As stated in the official spack documentation
