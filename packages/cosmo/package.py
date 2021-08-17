@@ -64,7 +64,7 @@ class Cosmo(MakefilePackage):
     depends_on('boost%gcc', when='cosmo_target=gpu ~cppdycore', type='build')
     depends_on('cmake%gcc', type='build')
     depends_on('zlib_ng +compat', when='+zlib_ng', type=('link','run'))
-    depends_on('oasis%pgi', when='+oasis', type=('build','link','run'))
+    depends_on('oasis', when='+oasis', type=('build','link','run'))
 
 
     # cosmo-dycore dependency
