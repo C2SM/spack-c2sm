@@ -102,7 +102,7 @@ class Icon(Package):
 
         # Eccodes
         if '+eccodes' in self.spec:
-            args.append('--enable-eccodes')
+            args.append('--enable-grib2')
 
         return args
 
