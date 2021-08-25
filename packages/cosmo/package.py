@@ -10,7 +10,7 @@ from spack import *
 def get_releases(repo):
         git_obj = subprocess.run(["git","ls-remote","--refs",repo], capture_output=True)
         if git_obj.return_code != 0:
-            print("Warning: no access to {:s} => not fetching versions".format(repo)
+            print("Warning: no access to {:s} => not fetching versions".format(repo))
             return []
         else:
             git_tags = [re.match('refs/tags/(.*)', x.decode('utf-8')).group(1) for x in git_obj.stdout.split() if re.match('refs/tags/(.*)', x.decode('utf-8'))]
