@@ -241,7 +241,6 @@ class Cosmo(MakefilePackage):
             env.set('PSMILEL', '-L{:s}/lib -lpsmile.MPI1 -lscrip -lmct -lmpeu'.format(oasis_prefix))
             env.set('PSMILEI', '-I{0:s}/build/lib/psmile.MPI1 -I{0:s}/build/lib/mct'.format(oasis_prefix))
             env.set('MPPIOI', '-I{:s}/build/lib/mct'.format(oasis_prefix))
-            print(oasis_prefix)
 
         # Linker flags
         if self.compiler.name == 'pgi' and '~cppdycore' in self.spec:
