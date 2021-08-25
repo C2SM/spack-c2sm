@@ -8,9 +8,9 @@ import subprocess, re, itertools, os
 from spack import *
 
 def get_releases(repo):
-        git_obj = subprocess.run(["git","ls-remote","--refs",repo], stdout=subprocess.PIPE)
-        git_tags = [re.match('refs/tags/(.*)', x.decode('utf-8')).group(1) for x in git_obj.stdout.split() if re.match('refs/tags/(.*)', x.decode('utf-8'))]
-        return git_tags
+    git_obj = subprocess.run(["git","ls-remote","--refs",repo], stdout=subprocess.PIPE)
+    git_tags = [re.match('refs/tags/(.*)', x.decode('utf-8')).group(1) for x in git_obj.stdout.split() if re.match('refs/tags/(.*)', x.decode('utf-8'))]
+    return git_tags
 
 def set_versions(repo, reg_filter=None):
     def filterfn(repo_tag):
