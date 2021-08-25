@@ -9,8 +9,8 @@ from spack import *
 
 def get_releases(repo):
         git_obj = subprocess.run(["git","ls-remote","--refs",repo], capture_output=True)
-        if git_obj.return_code != 0:
-            print("Warning: no access to {:s} => not fetching versions".format(repo))
+        if git_obj.returncode != 0:
+            print("\nWarning: no access to {:s} => not fetching versions\n".format(repo))
             return []
         else:
             git_tags = [re.match('refs/tags/(.*)', x.decode('utf-8')).group(1) for x in git_obj.stdout.split() if re.match('refs/tags/(.*)', x.decode('utf-8'))]
@@ -37,7 +37,6 @@ class Cosmo(MakefilePackage):
     git      = 'git@github.com:COSMO-ORG/cosmo.git'
     apngit   = 'git@github.com:MeteoSwiss-APN/cosmo.git'
     c2smgit  = 'git@github.com:C2SM-RCM/cosmo.git'
-    testgit  = 'git@github.com:SOME_DUMMY_REPO/cosmo.git'
     maintainers = ['elsagermann']
 
     version('master', branch='master', get_full_repo=True)
@@ -51,7 +50,6 @@ class Cosmo(MakefilePackage):
 
     set_versions(apngit, reg_filter='.*mch.*')
     set_versions(c2smgit)
-    set_versions(testgit)
 
     depends_on('netcdf-fortran +mpi', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))
