@@ -155,8 +155,8 @@ class Cosmo(MakefilePackage):
     def setup_build_environment(self, env):
 
         # - ML - Dirty conflict check (see above)
-        if self.spec.variants['oasis'].value and self.spec.version != Version('uoi'):
-            raise InstallError('+oasis variant only compatible with the @uoi version')
+        if self.spec.variants['oasis'].value and self.spec.version not in (Version('uoi'), Version('dev-build')):
+            raise InstallError('+oasis variant only compatible with the @uoi and @dev-build versions')
 
         self.setup_run_environment(env)
 
