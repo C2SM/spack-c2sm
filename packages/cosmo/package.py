@@ -44,7 +44,6 @@ class Cosmo(MakefilePackage):
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch', get_full_repo=True)
     version('c2sm', git='git@github.com:C2SM-RCM/cosmo.git', branch='master', get_full_repo=True)
     version('c2sm-features', git='git@github.com:C2SM-RCM/cosmo.git', branch='c2sm-features', get_full_repo=True)
-    version('uoi', git=c2smgit, branch='cosmo_uoi', get_full_repo=True)
 
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
@@ -146,17 +145,18 @@ class Cosmo(MakefilePackage):
     conflicts('~gt1', when='@5.07.mch1.0.p10')
     conflicts('+cppdycore', when='%pgi cosmo_target=cpu')
     # - ML - A conflict should be added there if the oasis variant is
-    # chosen and the version is NOT uoi. The problem is that this
-    # doesn't seem possible in a native spack way. Hence the dirty
-    # check at the beginning of setup_build_environment method
+    # chosen and the version is neither c2sm-features nor
+    # dev-build. The problem is that this doesn't seem possible in a
+    # native spack way. Hence the dirty check at the beginning of
+    # setup_build_environment method
 
     build_directory = 'cosmo/ACC'
 
     def setup_build_environment(self, env):
 
         # - ML - Dirty conflict check (see above)
-        if self.spec.variants['oasis'].value and self.spec.version not in (Version('uoi'), Version('dev-build')):
-            raise InstallError('+oasis variant only compatible with the @uoi and @dev-build versions')
+        if self.spec.variants['oasis'].value and self.spec.version not in (Version('c2sm-features'), Version('dev-build')):
+            raise InstallError('+oasis variant only compatible with the @c2sm-features and @dev-build versions')
 
         self.setup_run_environment(env)
 
