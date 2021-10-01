@@ -32,14 +32,14 @@ class Icon(Package):
     
     depends_on('cmake%gcc')
     depends_on('libxml2%gcc', type=('build', 'link', 'run'))
-    depends_on('serialbox@2.4.3', type=('build', 'link', 'run'))
-    depends_on('eccodes@2.19.0 +build_shared_libs', type=('build', 'link', 'run'))
-    depends_on('claw@2.0.1', when='+claw', type=('build', 'link', 'run'))
+    depends_on('serialbox@2.6.0', type=('build', 'link', 'run'))
+    depends_on('eccodes@2.19.0 +build_shared_libs', when='+eccodes', type=('build', 'link', 'run'))
+    depends_on('claw@2.1%gcc', when='+claw', type=('build', 'link', 'run'))
 
     variant('icon_target', default='gpu', description='Build with target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('host', default='daint', description='Build on described host (e.g daint)', multi=False, values=('tsa', 'daint'))
     variant('site', default='cscs', description='Build on described site (e.g cscs)', multi=False)
-    variant('claw', default=True, description='Build with claw directories enabled')
+    variant('claw', default=False, description='Build with claw directories enabled')
     variant('rte-rrtmgp', default=True, description='Build with rte-rrtmgp enabled')
     variant('mpi-checks', default=False, description='Build with mpi-check enabled')
     variant('openmp', default=True, description='Build with openmp enabled')
@@ -50,8 +50,7 @@ class Icon(Package):
     variant('config_dir', default='.', description='Enable out-of-source build by describing config_dir')
     variant('ham', default=False, description='Build with hammoz and atm_phy_echam enabled.')
 
-    conflicts('+claw', when='%intel')
-    conflicts('+claw', when='%cce')
+    conflicts('icon_target=cpu', when='+claw')
     conflicts('icon_target=gpu', when='%intel')
     conflicts('icon_target=gpu', when='%cce')
 
@@ -80,8 +79,10 @@ class Icon(Package):
         if '~skip-config' in self.spec:
             env.set('XML2_ROOT', self.spec['libxml2'].prefix)
             env.set('SERIALBOX2_ROOT',  self.spec['serialbox'].prefix)
-            env.set('CLAW', self.spec['claw'].prefix + '/bin/clawfc')
-            env.set('ECCODES_ROOT', self.spec['eccodes'].prefix)
+            if '+claw' in self.spec:
+                env.set('CLAW', self.spec['claw'].prefix + '/bin/clawfc')
+            if '+eccodes' in self.spec:
+                env.set('ECCODES_ROOT', self.spec['eccodes'].prefix)
 
     def configure_args(self):
 
