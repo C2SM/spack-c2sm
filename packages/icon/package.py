@@ -32,7 +32,10 @@ class Icon(Package):
     
     depends_on('cmake%gcc')
     depends_on('libxml2%gcc', type=('build', 'link', 'run'))
-    depends_on('serialbox@2.6.0', type=('build', 'link', 'run'))
+    depends_on('serialbox@2.6.0',  type=('build', 'link', 'run'))
+    depends_on('serialbox@2.6.0', when='serialize_mode=create', type=('build', 'link', 'run'))
+    depends_on('serialbox@2.6.0', when='serialize_mode=read', type=('build', 'link', 'run'))
+    depends_on('serialbox@2.6.0', when='serialize_mode=perturb', type=('build', 'link', 'run'))
     depends_on('eccodes@2.19.0 +build_shared_libs', when='+eccodes', type=('build', 'link', 'run'))
     depends_on('claw@2.1%gcc', when='+claw', type=('build', 'link', 'run'))
 
@@ -78,7 +81,9 @@ class Icon(Package):
 
         if '~skip-config' in self.spec:
             env.set('XML2_ROOT', self.spec['libxml2'].prefix)
-            env.set('SERIALBOX2_ROOT',  self.spec['serialbox'].prefix)
+
+            if self.spec.variants['serialize_mode'].value != 'none':
+                env.set('SERIALBOX2_ROOT',  self.spec['serialbox'].prefix)
             if '+claw' in self.spec:
                 env.set('CLAW', self.spec['claw'].prefix + '/bin/clawfc')
             if '+eccodes' in self.spec:
