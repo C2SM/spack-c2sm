@@ -80,7 +80,6 @@ class Icon(Package):
 
         if '~skip-config' in self.spec:
             env.set('XML2_ROOT', self.spec['libxml2'].prefix)
-
             if self.spec.variants['serialize_mode'].value != 'none':
                 env.set('SERIALBOX2_ROOT',  self.spec['serialbox'].prefix)
             if '+claw' in self.spec:
