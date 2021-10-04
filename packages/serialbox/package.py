@@ -52,6 +52,8 @@ class Serialbox(CMakePackage):
     variant('netcdf', default=False, description='Build using netcdf')
     variant('boost_sys_paths', default=True, description='Build boost with no system paths')
     variant('boost_cmake', default=True, description='Build boost without using CMake')
+    variant('python', default=True, description='Build Python3 interface of SerialboxBuild')
+    variant('sdb', default=True, description='Build stencil debugger sdb')
 
     def cmake_args(self):
         args = []
@@ -105,5 +107,9 @@ class Serialbox(CMakePackage):
             args.append('-DSERIALBOX_BUILD_SHARED=ON')
         else:
             args.append('-DSERIALBOX_BUILD_SHARED=OFF')
+        if '~python' in self.spec:
+            args.append('-DSERIALBOX_ENABLE_PYTHON=OFF')
+        if '~sdb' in self.spec:
+            args.append('-DSERIALBOX_ENABLE_SDB=OFF')
 
         return args

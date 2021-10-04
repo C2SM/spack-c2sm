@@ -32,9 +32,9 @@ class Icon(Package):
     
     depends_on('cmake%gcc')
     depends_on('libxml2%gcc', type=('build', 'link', 'run'))
-    depends_on('serialbox@2.4.3', when='serialize_mode=create', type=('build', 'link', 'run'))
-    depends_on('serialbox@2.4.3', when='serialize_mode=read', type=('build', 'link', 'run'))
-    depends_on('serialbox@2.4.3', when='serialize_mode=perturb', type=('build', 'link', 'run'))
+    depends_on('serialbox@2.6.0 ~python ~sdb ~shared', when='serialize_mode=create', type=('build', 'link', 'run'))
+    depends_on('serialbox@2.6.0 ~python ~sdb ~shared', when='serialize_mode=read', type=('build', 'link', 'run'))
+    depends_on('serialbox@2.6.0 ~python ~sdb ~shared', when='serialize_mode=perturb', type=('build', 'link', 'run'))
     depends_on('eccodes@2.19.0 +build_shared_libs', when='+eccodes', type=('build', 'link', 'run'))
     depends_on('claw@2.1%gcc', when='+claw', type=('build', 'link', 'run'))
 
@@ -69,9 +69,7 @@ class Icon(Package):
     def setup_build_environment(self, env):
         self.config_dir = self.spec.variants['config_dir'].value
         _config_file_name =  self.spec.variants['host'].value + '.' + self.spec.variants['icon_target'].value
-        if self.compiler.name == 'gcc':
-          _config_file_name += '.gnu'
-        elif self.compiler.name == 'cce':
+        if self.compiler.name == 'cce':
             _config_file_name += '.cray'
         else:
            _config_file_name += '.' + self.compiler.name
