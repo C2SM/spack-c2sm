@@ -32,10 +32,9 @@ class Icon(Package):
     
     depends_on('cmake%gcc')
     depends_on('libxml2%gcc', type=('build', 'link', 'run'))
-    depends_on('serialbox@2.6.0',  type=('build', 'link', 'run'))
-    depends_on('serialbox@2.6.0', when='serialize_mode=create', type=('build', 'link', 'run'))
-    depends_on('serialbox@2.6.0', when='serialize_mode=read', type=('build', 'link', 'run'))
-    depends_on('serialbox@2.6.0', when='serialize_mode=perturb', type=('build', 'link', 'run'))
+    depends_on('serialbox@2.4.3', when='serialize_mode=create', type=('build', 'link', 'run'))
+    depends_on('serialbox@2.4.3', when='serialize_mode=read', type=('build', 'link', 'run'))
+    depends_on('serialbox@2.4.3', when='serialize_mode=perturb', type=('build', 'link', 'run'))
     depends_on('eccodes@2.19.0 +build_shared_libs', when='+eccodes', type=('build', 'link', 'run'))
     depends_on('claw@2.1%gcc', when='+claw', type=('build', 'link', 'run'))
 
