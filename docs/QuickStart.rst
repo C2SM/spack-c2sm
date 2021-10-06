@@ -11,7 +11,14 @@ Source Spack instance on Piz Daint
   module load cray-python
   source /project/g110/spack/user/daint/spack/share/spack/setup-env.sh
 
+Source Spack instance on Tsa
+----------------------------------
 
+.. code-block:: bash
+
+  module load python
+  source /project/g110/spack/user/tsa/spack/share/spack/setup-env.sh
+  
 COSMO-Model
 -----------
 In order install COSMO fetched from a GitHub repository, use *spack installcosmo*:
@@ -111,7 +118,9 @@ In order to build a CPU icon binary from a local source
 
 .. code-block:: bash
 
-  cd </path/to/package> 
+  git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git #icon-nwp, icon-aes, etc...
+  # alternatively just clone and use here 'git submodule update --init --recursive'
+  cd icon-cscs #icon-nwp, icon-aes, etc...
   mkdir pgi_cpu
   cd pgi_cpu
   touch a_fake_file.f90 #spack doesn't want to build in empty folder...
@@ -123,7 +132,9 @@ In order to build a GPU icon binary from a local source
 
 .. code-block:: bash
 
-  cd </path/to/package> 
+  git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git #icon-nwp, icon-aes, etc...
+  # alternatively just clone and use here 'git submodule update --init --recursive'
+  cd icon-cscs #icon-nwp, icon-aes, etc...
   mkdir pgi_gpu
   cd pgi_gpu
   touch a_fake_file.f90 #spack doesn't want to build in empty folder...
