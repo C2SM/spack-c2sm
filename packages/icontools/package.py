@@ -31,12 +31,12 @@ class Icontools(AutotoolsPackage):
     version('master', branch='master')
     version('dev-build', branch='master')
 
-    depends_on('autoconf', type='build')
-    depends_on('automake', type='build')
-    depends_on('libtool',  type='build')
-    depends_on('m4', type='build')
+    depends_on('autoconf%gcc', type='build')
+    depends_on('automake%gcc', type='build')
+    depends_on('libtool%gcc',  type='build')
+    depends_on('m4%gcc', type='build')
 
-    depends_on('cray-libsci %cce ', type=('build', 'link'),when='slave=daint')
+    depends_on('cray-libsci%cce ', type=('build', 'link'),when='slave=daint')
 
     depends_on('netcdf-fortran ~mpi', type=('build', 'link'))
     depends_on('netcdf-c ~mpi', type=('build', 'link'))
@@ -47,6 +47,7 @@ class Icontools(AutotoolsPackage):
     depends_on('jasper@1.900.1%gcc ~shared', type=('build','link'))
 
     variant('slave', default='daint', description='Build on described slave (e.g daint)', multi=False, values=('tsa', 'daint'))
+    variant('slurm_account', default='g110', description='Slurm account used for mandatory testing during installation')
 
     def configure_args(self):
         args =[]
@@ -105,7 +106,7 @@ class Icontools(AutotoolsPackage):
     @run_after('build')
     def test(self):
             if self.spec.variants['slave'].value == 'daint':
-                test_process = subprocess.run(['sbatch', '-W', '--time=00:15:00', '-A', 'g110', '-C', 'gpu', '-p', 'debug', './C2SM-scripts/test/jenkins/test.sh'], stderr=subprocess.STDOUT)
+                test_process = subprocess.run(['sbatch', '-W', '--time=00:15:00', '-A', self.spec.variants['slurm_account'].value, '-C', 'gpu', '-p', 'debug', './C2SM-scripts/test/jenkins/test.sh'], stderr=subprocess.STDOUT)
             if self.spec.variants['slave'].value == 'tsa':
                 test_process = subprocess.run(['sbatch', '-W', '--time=00:15:00', '-p', 'debug', './C2SM-scripts/test/jenkins/test.sh'], stderr=subprocess.STDOUT)
             if test_process.returncode != 0:
