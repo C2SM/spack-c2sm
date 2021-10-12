@@ -86,6 +86,12 @@ def custom_install(spec, args):
       'verbose': args.lverbose
     }
 
+    if args.things_to_install == 'dependencies':
+        # If we want to only install dependencies and one of them fails,
+        # spack doesn't return a failure exit code.
+        # This fixes this issue:
+        kwargs['fail_fast'] = True
+
     if args.force_uninstall:
         if package.installed:
             package.do_uninstall(force=True)
