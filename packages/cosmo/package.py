@@ -41,9 +41,9 @@ class Cosmo(MakefilePackage):
 
     version('master', branch='master', get_full_repo=True)
     version('dev-build', branch='master', get_full_repo=True)
-    version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch', get_full_repo=True)
-    version('c2sm', git='git@github.com:C2SM-RCM/cosmo.git', branch='master', get_full_repo=True)
-    version('c2sm-features', git='git@github.com:C2SM-RCM/cosmo.git', branch='c2sm-features', get_full_repo=True)
+    version('mch', git=apngit, branch='mch', get_full_repo=True)
+    version('c2sm-master', git=c2smgit, branch='master', get_full_repo=True)
+    version('c2sm-features', git=c2smgit, branch='c2sm-features', get_full_repo=True)
 
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
