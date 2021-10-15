@@ -193,7 +193,8 @@ class Spack(unittest.TestCase):
 
 if __name__ == '__main__':
     Spack.commands = sys.argv[1:]
-    if 'launch' in Spack.commands: Spack.commands.remove('launch')
-    if 'jenkins' in Spack.commands: Spack.commands.remove('jenkins')
+    Spack.commands.remove('launch')
+    Spack.commands.remove('jenkins')
     sys.argv = [sys.argv[0]]
+    
     unittest.main()
