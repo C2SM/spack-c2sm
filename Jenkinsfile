@@ -14,7 +14,7 @@ pipeline {
         stage('test') {
             steps {
                 sh """
-                srun -c 14 -t 02:00:00 python test_spack.py
+                srun -c 14 -t 02:00:00 python3 test_spack.py
                 """
             }
         }
