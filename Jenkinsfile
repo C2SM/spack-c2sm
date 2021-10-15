@@ -14,9 +14,7 @@ pipeline {
         stage('test on tsa') {
             agent { label 'tsa' } 
             steps {
-                sh """
-                srun -c 14 -t 02:00:00 python3 test_spack.py ${ghprbCommentBody#"launch jenkins "}
-                """
+                sh "srun -c 14 -t 02:00:00 python3 test_spack.py " + env.ghprbCommentBody
             }
         }
         stage('setup on daint') {
@@ -32,9 +30,7 @@ pipeline {
         stage('test on daint') {
             agent { label 'daint' } 
             steps {
-                sh """
-                python3 test_spack.py ${ghprbCommentBody#"launch jenkins "}
-                """
+                sh "python3 test_spack.py " + env.ghprbCommentBody
             }
         }
     }
