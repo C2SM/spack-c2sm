@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python
 
 import unittest
 import sys
@@ -160,16 +160,15 @@ class SelfTest(unittest.TestCase):
 
 
 class Spack(unittest.TestCase):
+    commands = ''
 
-    def test_spack(self):
-        commands = sys.argv[1:]
-        
+    def test_spack(self):        
         ntasks = 16
 
         upstream = 'ON'
-        if '--no_upstream' in commands:
+        if '--no_upstream' in self.commands:
             upstream = 'OFF'
-            commands.remove('--no_upstream')
+            self.commands.remove('--no_upstream')
 
         # with open('test_job', 'w') as f:
         #     f.writelines('#!/bin/sh')
@@ -183,14 +182,16 @@ class Spack(unittest.TestCase):
         #         f.writelines(f'srun {case}')
 
         # input sanity check
-        for c in commands:
+        for c in self.commands:
             with self.subTest():
                 self.assertTrue(c in commands_to_packages)
 
-        for case in CommandsToUseCases(commands):
+        for case in CommandsToUseCases(self.commands):
             with self.subTest():
                 subprocess.run(case, check=True)
 
 
 if __name__ == '__main__':
+    Spack.commands = sys.argv[1:]
+    sys.argv = [sys.argv[0]]
     unittest.main()
