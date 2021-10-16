@@ -206,7 +206,7 @@ compilers:
     target: any
     modules:
     - PrgEnv-nvidia
-    - nvidia/21.3.0
+    - nvidia/21.3
     environment: {}
     extra_rpaths: []
 - compiler:
