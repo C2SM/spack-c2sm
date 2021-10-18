@@ -161,6 +161,7 @@ packages:
     libxml2:
         paths:
              libxml2@2.9.7%gcc: /usr
+             libxml2@2.9.8%gcc: /apps/daint/UES/jenkins/7.0.UP02-20.11/gpu/easybuild/tools/software/libxml2/2.9.8/
     lz4:
         paths:
              lz4@1.8.0: /usr
