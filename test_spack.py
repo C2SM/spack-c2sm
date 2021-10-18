@@ -199,7 +199,7 @@ class Spack(unittest.TestCase):
 
         for case in CommandsToUseCases(self.commands):
             with self.subTest():
-                subprocess.run(case, check=True)
+                subprocess.run(case, check=True, shell=True)
 
 
 if __name__ == '__main__':
