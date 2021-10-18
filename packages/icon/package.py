@@ -71,6 +71,8 @@ class Icon(Package):
         _config_file_name =  self.spec.variants['host'].value + '.' + self.spec.variants['icon_target'].value
         if self.compiler.name == 'cce':
             _config_file_name += '.cray'
+        elif self.compiler.name == 'pgi' and self.compiler.version >= Version('21.3.0'):
+           _config_file_name += '.nvidia'
         else:
            _config_file_name += '.' + self.compiler.name
 
