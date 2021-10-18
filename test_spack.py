@@ -164,11 +164,26 @@ class Spack(unittest.TestCase):
 
     def test_spack(self):        
         ntasks = 16
+        
+        upstream = 'OFF'
+        if '--upstream' in self.commands:
+            upstream = 'ON'
+            self.commands.remove('--upstream')
 
-        upstream = 'ON'
-        if '--no_upstream' in self.commands:
-            upstream = 'OFF'
-            self.commands.remove('--no_upstream')
+        if '--daint' in self.commands:
+            machine = 'daint'
+            self.commands.remove('--daint')
+        if '--tsa' in self.commands:
+            machine = 'tsa'
+            self.commands.remove('--tsa')
+
+        # input sanity check
+        for c in self.commands:
+            with self.subTest():
+                self.assertTrue(c in commands_to_packages)
+
+        subprocess.run(f'python ./config.py -m {machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache', check=True, shell=True)
+        subprocess.run('source spack/share/spack/setup-env.sh', check=True, shell=True)
 
         # with open('test_job', 'w') as f:
         #     f.writelines('#!/bin/sh')
@@ -181,10 +196,6 @@ class Spack(unittest.TestCase):
         #     for case in CommandsToUseCases(commands):
         #         f.writelines(f'srun {case}')
 
-        # input sanity check
-        for c in self.commands:
-            with self.subTest():
-                self.assertTrue(c in commands_to_packages)
 
         for case in CommandsToUseCases(self.commands):
             with self.subTest():
@@ -196,5 +207,5 @@ if __name__ == '__main__':
     Spack.commands.remove('launch')
     Spack.commands.remove('jenkins')
     sys.argv = [sys.argv[0]]
-    
+
     unittest.main()
