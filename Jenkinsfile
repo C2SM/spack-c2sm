@@ -6,7 +6,7 @@ pipeline {
             steps {
                 sh """
                 module load python/3.7.4
-                python test_spack.py """ + env.ghprbCommentBody
+                python test_spack.py --tsa """ + env.ghprbCommentBody
             }
         }
         stage('test on daint') {
@@ -14,7 +14,7 @@ pipeline {
             steps {
                 sh """
                 module load cray-python
-                python test_spack.py """ + env.ghprbCommentBody
+                python test_spack.py --daint """ + env.ghprbCommentBody
             }
         }
     }
