@@ -7,7 +7,7 @@ pipeline {
                 sh """
                 module load python/3.7.4
                 python ./config.py -m tsa -i . -r ./spack/etc/spack -p ./spack -s ./spack -u OFF -c ./spack-cache
-                source ./spack/share/spack/setup-env.sh
+                . spack/share/spack/setup-env.sh
                 """
             }
         }
@@ -17,7 +17,7 @@ pipeline {
                 sh """
                 module load python/3.7.4
                 python ./config.py -m tsa -i . -r ./spack/etc/spack -p ./spack -s ./spack -u OFF -c ./spack-cache
-                source ./spack/share/spack/setup-env.sh
+                . spack/share/spack/setup-env.sh
                 srun -c 14 -t 02:00:00 python3 test_spack.py """ + env.ghprbCommentBody
             }
         }
@@ -27,7 +27,7 @@ pipeline {
                 sh """
                 module load cray-python
                 python ./config.py -m daint -i . -r ./spack/etc/spack -p ./spack -s ./spack -u OFF -c ./spack-cache
-                source ./spack/share/spack/setup-env.sh
+                . spack/share/spack/setup-env.sh
                 """
             }
         }
@@ -37,7 +37,7 @@ pipeline {
                 sh """
                 module load cray-python
                 python ./config.py -m daint -i . -r ./spack/etc/spack -p ./spack -s ./spack -u OFF -c ./spack-cache
-                source ./spack/share/spack/setup-env.sh
+                . spack/share/spack/setup-env.sh
                 python3 test_spack.py """ + env.ghprbCommentBody
             }
         }
