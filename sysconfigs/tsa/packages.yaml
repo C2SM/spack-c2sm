@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler: [pgi@20.4, gcc@8.3.0]
+    compiler: [gcc@8.3.0, pgi@20.4]
     providers:
       mpicuda: [openmpi+cuda, mpich]
       mpi: [openmpi~cuda]
@@ -73,7 +73,7 @@ packages:
       libtool@2.4.2%gcc: /usr
   openjdk:
     paths:
-      openjdk@1.8.0%gcc: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.292.b10-1.el7_9.x86_64/
+      openjdk@1.8.0%gcc: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.302.b08-0.el7_9.x86_64
   jasper:
     paths:
       jasper@1.900.1%gcc +shared: /usr

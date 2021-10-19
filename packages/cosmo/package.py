@@ -8,7 +8,11 @@ import subprocess, re, itertools, os
 from spack import *
 
 def get_releases(repo):
-        git_obj = subprocess.run(["git","ls-remote","--refs",repo], stdout=subprocess.PIPE)
+    git_obj = subprocess.run(["git","ls-remote","--refs",repo], capture_output=True)
+    if git_obj.returncode != 0:
+        print("\nWarning: no access to {:s} => not fetching versions\n".format(repo))
+        return []
+    else:
         git_tags = [re.match('refs/tags/(.*)', x.decode('utf-8')).group(1) for x in git_obj.stdout.split() if re.match('refs/tags/(.*)', x.decode('utf-8'))]
         return git_tags
 
@@ -17,11 +21,12 @@ def set_versions(repo, reg_filter=None):
         return re.match(reg_filter, repo_tag) != None
 
     tags = get_releases(repo)
-    if reg_filter:
-        tags = list(filter(filterfn, tags))
+    if tags:
+        if reg_filter:
+            tags = list(filter(filterfn, tags))
 
-    for tag in tags:
-        version(tag, git=repo, tag=tag, get_full_repo=True)
+        for tag in tags:
+            version(tag, git=repo, tag=tag, get_full_repo=True)
 
 
 class Cosmo(MakefilePackage):
@@ -36,8 +41,9 @@ class Cosmo(MakefilePackage):
 
     version('master', branch='master', get_full_repo=True)
     version('dev-build', branch='master', get_full_repo=True)
-    version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch', get_full_repo=True)
-    version('c2sm', git='git@github.com:C2SM-RCM/cosmo.git', branch='master', get_full_repo=True)
+    version('mch', git=apngit, branch='mch', get_full_repo=True)
+    version('c2sm-master', git=c2smgit, branch='master', get_full_repo=True)
+    version('c2sm-features', git=c2smgit, branch='c2sm-features', get_full_repo=True)
 
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
