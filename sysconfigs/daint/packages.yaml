@@ -32,7 +32,7 @@ packages:
     cosmo:
       variants: cuda_arch=60 cosmo_target=gpu slave=daint slurm_partition= "normal" slurm_bin= "srun" slurm_opt_nodes= "-n" slurm_nodes= "1"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint= "-C" slurm_constraint= "gpu"
       version: [master]
-      compiler: [pgi]
+      compiler: [pgi@20.1.1]
     gridtools:
       variants: +cuda cuda_arch=60
       compiler: [gcc]
