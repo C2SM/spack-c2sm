@@ -182,8 +182,7 @@ class Spack(unittest.TestCase):
             with self.subTest():
                 self.assertTrue(c in commands_to_packages)
 
-        subprocess.run(f'python ./config.py -m {machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache', check=True, shell=True)
-        subprocess.run('source spack/share/spack/setup-env.sh', check=True, shell=True)
+        cmd = f'python ./config.py -m {machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache && source spack/share/spack/setup-env.sh && '
 
         # with open('test_job', 'w') as f:
         #     f.writelines('#!/bin/sh')
@@ -199,7 +198,7 @@ class Spack(unittest.TestCase):
 
         for case in CommandsToUseCases(self.commands):
             with self.subTest():
-                subprocess.run(case, check=True, shell=True)
+                subprocess.run(cmd + case, check=True, shell=True)
 
 
 if __name__ == '__main__':
