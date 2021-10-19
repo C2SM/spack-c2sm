@@ -179,25 +179,13 @@ class Spack(unittest.TestCase):
 
         # input sanity check
         for c in self.commands:
-            with self.subTest():
+            with self.subTest(command=c):
                 self.assertTrue(c in commands_to_packages)
 
         cmd = f'python ./config.py -m {machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache && source spack/share/spack/setup-env.sh && '
 
-        # with open('test_job', 'w') as f:
-        #     f.writelines('#!/bin/sh')
-        #     f.writelines('#SBATCH --time=02:00:00')
-
-        #     f.writelines(f'module load python/3.7.4')
-        #     f.writelines(f'python3 ./config.py -m {machine} -i . -r ./spack/etc/spack -p $PWD/spack -s $PWD/spack -u {upstream} -c ./spack-cache')
-        #     f.writelines(f'. spack/share/spack/setup-env.sh')
-
-        #     for case in CommandsToUseCases(commands):
-        #         f.writelines(f'srun {case}')
-
-
         for case in CommandsToUseCases(self.commands):
-            with self.subTest():
+            with self.subTest(case=case):
                 subprocess.run(cmd + case, check=True, shell=True)
 
 
