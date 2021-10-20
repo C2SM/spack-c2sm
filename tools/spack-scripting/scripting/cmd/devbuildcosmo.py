@@ -23,7 +23,6 @@ from spack.spec import Spec
 from spack.cmd.dev_build import dev_build
 from spack.main import SpackCommand
 
-
 description = "Dev-build cosmo and dycore with or without testing."
 section = "scripting"
 level = "long"
@@ -32,22 +31,22 @@ level = "long"
 def setup_parser(subparser):
     arguments.add_common_arguments(subparser, ["jobs", "spec"])
 
+    subparser.add_argument("--no_specyaml",
+                           action="store_true",
+                           help="Ignore spec.yaml")
     subparser.add_argument(
-        "--no_specyaml", action="store_true", help="Ignore spec.yaml"
-    )
-    subparser.add_argument(
-        "--test", 
-        choices=['root','dycore','all'],
-        dest="things_to_test", 
+        "--test",
+        choices=['root', 'dycore', 'all'],
+        dest="things_to_test",
         help="""If root is chosen, run COSMO testsuite before installation 
         (but skip tests for dependencies). If dycore is chosen, 
         run test for Dycore and COSMO testsuite.
         If all is chosen, 
-        run package tests during installation for all packages."""
-    )
-    subparser.add_argument(
-        "-c", "--clean_build", action="store_true", help="Clean dev-build"
-    )
+        run package tests during installation for all packages.""")
+    subparser.add_argument("-c",
+                           "--clean_build",
+                           action="store_true",
+                           help="Clean dev-build")
 
 
 def custom_devbuild(source_path, spec, args):
@@ -61,7 +60,7 @@ def custom_devbuild(source_path, spec, args):
         args.things_to_test = ['cosmo']
 
     elif args.things_to_test == 'dycore':
-        args.things_to_test = ['cosmo','cosmo-dycore']
+        args.things_to_test = ['cosmo', 'cosmo-dycore']
 
     elif args.things_to_test == 'all':
         args.things_to_test = True
@@ -69,10 +68,7 @@ def custom_devbuild(source_path, spec, args):
     else:
         args.things_to_test = False
 
-    kwargs= {
-      'make_jobs': args.jobs,
-      'tests': args.things_to_test 
-    }
+    kwargs = {'make_jobs': args.jobs, 'tests': args.things_to_test}
 
     package.do_install(verbose=True, **kwargs)
 
@@ -139,7 +135,8 @@ def devbuildcosmo(self, args):
 
     # Clean if needed
     if args.clean_build:
-        print("\033[92m" + "==> " + "\033[0m" + "cosmo: Cleaning build directory")
+        print("\033[92m" + "==> " + "\033[0m" +
+              "cosmo: Cleaning build directory")
 
         # set F90 to prevent abort defined in Makefile
         os.environ["F90"] = "NOTSET"
@@ -147,7 +144,8 @@ def devbuildcosmo(self, args):
         os.environ.pop("F90")
 
         if os.path.exists(source_path + "/spack-build"):
-            print("\033[92m" + "==> " + "\033[0m" + "dycore: Cleaning build directory")
+            print("\033[92m" + "==> " + "\033[0m" +
+                  "dycore: Cleaning build directory")
             shutil.rmtree(source_path + "/spack-build")
 
     if cosmo_spec.satisfies("+cppdycore"):
@@ -163,10 +161,11 @@ def devbuildcosmo(self, args):
     if "+serialize" in cosmo_spec:
         print("\033[92m" + "==> " + "\033[0m" + "cosmo: Serializing data")
         try:
-            subprocess.run(
-                [source_path + '/cosmo/ACC/test/tools/serialize_cosmo.py', self.spec__str__(), 
-                 '-b',source_path],
-                check=True,
-                stderr=subprocess.STDOUT)
+            subprocess.run([
+                source_path + '/cosmo/ACC/test/tools/serialize_cosmo.py',
+                self.spec__str__(), '-b', source_path
+            ],
+                           check=True,
+                           stderr=subprocess.STDOUT)
         except:
             tty.die('Serialization failed')

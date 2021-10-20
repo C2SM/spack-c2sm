@@ -1,4 +1,3 @@
-
 # Copyright 2013-2018 Lawrence Livermore National Security, LLC and other
 # Spack Project Developers. See the top-level COPYRIGHT file for details.
 #
@@ -23,7 +22,7 @@ class Oasis(MakefilePackage):
     version('dev-build', branch='OASIS3-MCT_4.0')
 
     depends_on('mpi', type=('build', 'link', 'run'))
-    depends_on('netcdf-fortran', type=('build','link','run'))
+    depends_on('netcdf-fortran', type=('build', 'link', 'run'))
 
     build_directory = 'util/make_dir'
 
@@ -31,9 +30,8 @@ class Oasis(MakefilePackage):
 
     # Relative path where the built libraries are stored (corresponds
     # to the absolute path called ARCHDIR in the Makefile)
-    rel_ARCHDIR='spack-build'
+    rel_ARCHDIR = 'spack-build'
 
-    
     def setup_build_environment(self, env):
 
         CHAN = 'MPI1'
@@ -45,19 +43,20 @@ class Oasis(MakefilePackage):
         env.set('MAKE', 'gmake')
 
         LIBBUILD = os.path.join('../..', self.rel_ARCHDIR, 'build/lib')
-        INCPSMILE = '-I{LIBBUILD}/psmile.{CHAN} -I{LIBBUILD}/mct -I{LIBBUILD}/scrip'.format(LIBBUILD=LIBBUILD, CHAN=CHAN)
+        INCPSMILE = '-I{LIBBUILD}/psmile.{CHAN} -I{LIBBUILD}/mct -I{LIBBUILD}/scrip'.format(
+            LIBBUILD=LIBBUILD, CHAN=CHAN)
 
-        
-        CPPDEF = '-Duse_comm_{CHAN} -D__VERBOSE -DTREAT_OVERLAY -D__NO_16BYTE_REALS'.format(CHAN=CHAN)
+        CPPDEF = '-Duse_comm_{CHAN} -D__VERBOSE -DTREAT_OVERLAY -D__NO_16BYTE_REALS'.format(
+            CHAN=CHAN)
         env.set('CPPDEF', CPPDEF)
 
-        FFLAGS = '-O2 {INCPSMILE} {CPPDEF}'.format(CPPDEF=CPPDEF, INCPSMILE=INCPSMILE)
+        FFLAGS = '-O2 {INCPSMILE} {CPPDEF}'.format(CPPDEF=CPPDEF,
+                                                   INCPSMILE=INCPSMILE)
         env.set('F90FLAGS', FFLAGS)
         env.set('f90FLAGS', FFLAGS)
         env.set('FFLAGS', FFLAGS)
         env.set('fFLAGS', FFLAGS)
         env.set('CCFLAGS', FFLAGS)
-
 
     def edit(self, spec, prefix):
 
@@ -65,9 +64,11 @@ class Oasis(MakefilePackage):
         ARCHDIR = os.path.join(COUPLE, self.rel_ARCHDIR)
         with working_dir(self.build_directory):
             makefile = FileFilter(self.makefile_file)
-            makefile.filter('include make.inc', 'export COUPLE = {}\nexport ARCHDIR = {}'.format(COUPLE, ARCHDIR))
-            makefile.filter('\$\(modifmakefile\)\s\;\s' , '')
-
+            makefile.filter(
+                'include make.inc',
+                'export COUPLE = {}\nexport ARCHDIR = {}'.format(
+                    COUPLE, ARCHDIR))
+            makefile.filter('\$\(modifmakefile\)\s\;\s', '')
 
     def patch(self):
 
@@ -76,16 +77,14 @@ class Oasis(MakefilePackage):
         with working_dir('lib/mct/mct'):
             m_AttrVect = FileFilter('m_AttrVect.F90')
             m_AttrVect.filter('\s*\!DIR\$ COLLAPSE', '')
-        
 
     def build(self, spec, prefix):
-        
+
         with working_dir(self.build_directory):
             make('-f', self.makefile_file)
 
-
     def install(self, spec, prefix):
-        
+
         with working_dir(os.path.join(self.rel_ARCHDIR, 'lib')):
             os.symlink('libmct.a', 'libmct_oasis.a')
             os.symlink('libmpeu.a', 'libmpeu_oasis.a')
