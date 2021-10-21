@@ -61,7 +61,7 @@ class Cosmo(MakefilePackage):
     depends_on('libgrib1', type='build')
     depends_on('jasper@1.900.1%gcc ~shared', type='build')
     depends_on('cosmo-grib-api-definitions', type=('build','run'), when='~eccodes')
-    depends_on('cosmo-eccodes-definitions ~aec', type=('build','run'), when='+eccodes')
+    depends_on('cosmo-eccodes-definitions', type=('build','run'), when='+eccodes')
     depends_on('perl@5.16.3:', type='build')
     depends_on('omni-xmod-pool', when='+claw', type='build')
     depends_on('claw%gcc', when='+claw', type='build')
@@ -90,6 +90,7 @@ class Cosmo(MakefilePackage):
         dep='real_type='+real_type+' '+ prod_opt + ' '+ cuda_dep + ' +cppdycore'+' '+test_dep + ' ' + gt1_dep
         depends_on(orig, when=dep, type='build')
 
+    variant('aec', default=False, description='Enable Adaptive Entropy Coding for decoding/encoding')
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('dycoretest', default=True, description='Build C++ dycore with testing')
     variant('serialize', default=False, description='Build with serialization enabled')
