@@ -90,7 +90,6 @@ class Cosmo(MakefilePackage):
         dep='real_type='+real_type+' '+ prod_opt + ' '+ cuda_dep + ' +cppdycore'+' '+test_dep + ' ' + gt1_dep
         depends_on(orig, when=dep, type='build')
 
-    variant('aec', default=False, description='Enable Adaptive Entropy Coding for decoding/encoding')
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('dycoretest', default=True, description='Build C++ dycore with testing')
     variant('serialize', default=False, description='Build with serialization enabled')
