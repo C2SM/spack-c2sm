@@ -31,15 +31,17 @@ class Icon(Package):
     version('2.0.17', commit='39ed04ad', submodules=True)
     
     depends_on('cmake%gcc')
-    depends_on('libxml2%gcc', type=('build', 'link', 'run'))
-    depends_on('serialbox@2.4.3', type=('build', 'link', 'run'))
-    depends_on('eccodes@2.19.0 +build_shared_libs', type=('build', 'link', 'run'))
-    depends_on('claw@2.0.1', when='+claw', type=('build', 'link', 'run'))
+    depends_on('libxml2@2.9.8:%gcc', type=('build', 'link', 'run'))
+    depends_on('serialbox@2.6.0 ~python ~sdb ~shared', when='serialize_mode=create', type=('build', 'link', 'run'))
+    depends_on('serialbox@2.6.0 ~python ~sdb ~shared', when='serialize_mode=read', type=('build', 'link', 'run'))
+    depends_on('serialbox@2.6.0 ~python ~sdb ~shared', when='serialize_mode=perturb', type=('build', 'link', 'run'))
+    depends_on('eccodes@2.19.0 +build_shared_libs', when='+eccodes', type=('build', 'link', 'run'))
+    depends_on('claw@2.1%gcc', when='+claw', type=('build', 'link', 'run'))
 
     variant('icon_target', default='gpu', description='Build with target gpu or cpu', values=('gpu', 'cpu'), multi=False)
     variant('host', default='daint', description='Build on described host (e.g daint)', multi=False, values=('tsa', 'daint'))
     variant('site', default='cscs', description='Build on described site (e.g cscs)', multi=False)
-    variant('claw', default=True, description='Build with claw directories enabled')
+    variant('claw', default=False, description='Build with claw directories enabled')
     variant('rte-rrtmgp', default=True, description='Build with rte-rrtmgp enabled')
     variant('mpi-checks', default=False, description='Build with mpi-check enabled')
     variant('openmp', default=True, description='Build with openmp enabled')
@@ -50,8 +52,7 @@ class Icon(Package):
     variant('config_dir', default='.', description='Enable out-of-source build by describing config_dir')
     variant('ham', default=False, description='Build with hammoz and atm_phy_echam enabled.')
 
-    conflicts('+claw', when='%intel')
-    conflicts('+claw', when='%cce')
+    conflicts('icon_target=cpu', when='+claw')
     conflicts('icon_target=gpu', when='%intel')
     conflicts('icon_target=gpu', when='%cce')
 
@@ -68,10 +69,10 @@ class Icon(Package):
     def setup_build_environment(self, env):
         self.config_dir = self.spec.variants['config_dir'].value
         _config_file_name =  self.spec.variants['host'].value + '.' + self.spec.variants['icon_target'].value
-        if self.compiler.name == 'gcc':
-          _config_file_name += '.gnu'
-        elif self.compiler.name == 'cce':
+        if self.compiler.name == 'cce':
             _config_file_name += '.cray'
+        elif self.compiler.name == 'pgi':
+           _config_file_name += '.nvidia'
         else:
            _config_file_name += '.' + self.compiler.name
 
@@ -79,9 +80,12 @@ class Icon(Package):
 
         if '~skip-config' in self.spec:
             env.set('XML2_ROOT', self.spec['libxml2'].prefix)
-            env.set('SERIALBOX2_ROOT',  self.spec['serialbox'].prefix)
-            env.set('CLAW', self.spec['claw'].prefix + '/bin/clawfc')
-            env.set('ECCODES_ROOT', self.spec['eccodes'].prefix)
+            if self.spec.variants['serialize_mode'].value != 'none':            
+                env.set('SERIALBOX2_ROOT',  self.spec['serialbox'].prefix)
+            if '+claw' in self.spec:
+                env.set('CLAW', self.spec['claw'].prefix + '/bin/clawfc')
+            if '+eccodes' in self.spec:
+                env.set('ECCODES_ROOT', self.spec['eccodes'].prefix)
 
     def configure_args(self):
 
