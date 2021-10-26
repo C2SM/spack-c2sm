@@ -111,6 +111,8 @@ class Icon(Package):
 
         if '~ocean' in self.spec:
             args.append('--disable-ocean')
+        else
+            args.append('--enable-ocean')
 
         return args
 
