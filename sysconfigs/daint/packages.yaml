@@ -18,9 +18,6 @@ packages:
       variants: cuda_arch=60 cosmo_target=gpu slave=daint slurm_partition= "normal" slurm_bin= "srun" slurm_opt_nodes= "-n" slurm_nodes= "1"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint= "-C" slurm_constraint= "gpu"
       version: [master]
       compiler: [pgi@20.1.1]
-    gridtools:
-      variants: +cuda cuda_arch=60
-      compiler: [gcc]
     cosmo-dycore:
       variants: slave=daint +cuda cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/ slurm_partition= "normal" slurm_bin= "srun" slurm_gpu= "-" slurm_opt_nodes= "-N" slurm_nodes= "{0}"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint= "-C" slurm_constraint= "gpu" 
       compiler: [gcc@8.3.0]
@@ -34,6 +31,7 @@ packages:
         variants: host=daint
     int2lm:
         variants: slave=daint
+        compiler: [pgi@20.1.1]
     llvm:
         paths:
             llvm@10.0.0: /project/g110/install/daint/llvm-10
