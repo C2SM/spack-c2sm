@@ -190,16 +190,13 @@ class Spack(unittest.TestCase):
             machine = 'tsa'
             self.commands.remove('--tsa')
 
-        # input sanity check
-        for c in self.commands:
-            with self.subTest(command=c):
-                self.assertTrue(c in commands_to_packages)
-
-        cmd = f'python ./config.py -m {machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache && source spack/share/spack/setup-env.sh && '
-
-        for case in CommandsToUseCases(self.commands):
-            with self.subTest(case=case):
-                subprocess.run(cmd + case, check=True, shell=True)
+        if all(c in commands_to_packages for c in self.commands):
+            cmd = f'python ./config.py -m {machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache && source spack/share/spack/setup-env.sh && '
+            for case in CommandsToUseCases(self.commands):
+                with self.subTest(case=case):
+                    subprocess.run(cmd + case, check=True, shell=True)
+        else:
+            subprocess.run(self.commands, check=True)
 
 
 if __name__ == '__main__':
