@@ -51,7 +51,7 @@ class Icon(Package):
     variant('skip-config', default=False, description='Skip configure phase')
     variant('config_dir', default='.', description='Enable out-of-source build by describing config_dir')
     variant('ham', default=False, description='Build with hammoz and atm_phy_echam enabled.')
-    variant('ocean', default=False, description='Build with ocean enabled')
+    variant('ocean', default=True, description='Build with ocean enabled')
 
     conflicts('icon_target=cpu', when='+claw')
     conflicts('icon_target=gpu', when='%intel')
