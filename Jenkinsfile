@@ -8,6 +8,12 @@ pipeline {
                 module load python/3.7.4
                 python test_spack.py --tsa """ + env.ghprbCommentBody
             }
+            post {
+                always {
+                    echo 'Cleaning up workspace'
+                    deleteDir() 
+                }
+            }
         }
         stage('test on daint') {
             agent { label 'daint' } 
@@ -16,12 +22,12 @@ pipeline {
                 module load cray-python
                 python test_spack.py --daint """ + env.ghprbCommentBody
             }
-        }
-    }
-    post {
-        always {
-            echo 'Cleaning up workspace'
-            deleteDir() 
+            post {
+                always {
+                    echo 'Cleaning up workspace'
+                    deleteDir() 
+                }
+            }
         }
     }
 }
