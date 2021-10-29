@@ -13,6 +13,7 @@ use_cases = {
     'cosmo' : {
         'spack installcosmo cosmo@master%pgi cosmo_target=gpu +cppdycore', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html
         'spack installcosmo cosmo@master%pgi cosmo_target=cpu ~cppdycore', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html
+        'spack installcosmo cosmo@master%pgi cosmo_target=gpu +cppdycore ^eccodes +aec +build_shared_libs',
         # 'git clone git@github.com:MeteoSwiss-APN/cosmo.git \
         #     && spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html 
         # 'git clone git@github.com:MeteoSwiss-APN/cosmo.git \
