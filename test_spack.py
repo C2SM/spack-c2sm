@@ -75,7 +75,7 @@ dependencies = {
     'atlas' : {'ecbuild', 'eckit'},
     'atlas_utilities' : {'atlas', 'eckit'},
     'claw' : {},
-    'cosmo' : {'cuda', 'serialbox', 'libgrib1', 'cosmo-grib-api-definitions', 'cosmo-eccodes-definitions', 'omni-xmod-pool', 'claw', 'zlib_ng'},
+    'cosmo' : {'cuda', 'serialbox', 'libgrib1', 'cosmo-grib-api-definitions', 'cosmo-eccodes-definitions', 'omni-xmod-pool', 'claw', 'zlib_ng', 'cosmo-dycore'},
     'cosmo-dycore' : {'gridtools', 'serialbox', 'cuda'},
     'cosmo-eccodes-definitions' : {'eccodes'},
     'cosmo-grib-api' : {},
@@ -108,46 +108,18 @@ dependencies = {
 def Dependents(packages : set):
     return {parent for parent, children in dependencies.items() if not packages.isdisjoint(children)}
 
-# Maps commands to Set[packages]
-commands_to_packages = {
-    'all' : {
-        'atlas', 'atlas_utilities', 'claw', 'cosmo', 'cosmo-dycore', 'cosmo-eccodes-definitions',
-        'cosmo-grib-api', 'cosmo-grib-api-definitions', 'cuda', 'dawn', 'dawn4py', 'dusk',
-        'dyicon_benchmarks', 'ecbuild', 'eccodes', 'eckit', 'gridtools', 'icon', 'icondusk-e2e',
-        'icontools', 'int2lm', 'libgrib1', 'mpich', 'oasis', 'omnicompiler', 'omni-xmod-pool',
-        'openmpi', 'serialbox', 'xcodeml-tools', 'zlib_ng'
-    },
-    'atlas' : {'atlas'},
-    'atlas_utilities' : {'atlas_utilities'},
-    'claw' : {'claw'},
-    'cosmo' : {'cosmo'},
-    'cosmo-dycore' : {'cosmo-dycore'},
-    'cosmo-eccodes-definitions' : {'cosmo-eccodes-definitions'},
-    'cosmo-grib-api' : {'cosmo-grib-api'},
-    'cosmo-grib-api-definitions' : {'cosmo-grib-api-definitions'},
-    'cuda' : {'cuda'},
-    'dawn' : {'dawn'},
-    'dawn4py' : {'dawn4py'},
-    'dusk' : {'dusk'},
-    'dyicon_benchmarks' : {'dyicon_benchmarks'},
-    'ecbuild' : {'ecbuild'},
-    'eccodes' : {'eccodes'},
-    'eckit' : {'eckit'},
-    'gridtools' : {'gridtools'},
-    'icon' : {'icon'},
-    'icondusk-e2e' : {'icondusk-e2e'},
-    'icontools' : {'icontools'},
-    'int2lm' : {'int2lm'},
-    'libgrib1' : {'libgrib1'},
-    'mpich' : {'mpich'},
-    'oasis' : {'oasis'},
-    'omnicompiler' : {'omnicompiler'},
-    'omni-xmod-pool' : {'omni-xmod-pool'},
-    'openmpi' : {'openmpi'},
-    'serialbox' : {'serialbox'},
-    'xcodeml-tools' : {'xcodeml-tools'},
-    'zlib_ng' : {'zlib_ng'},
+# All packages that are configured by this repo
+packages = {
+    'atlas', 'atlas_utilities', 'claw', 'cosmo', 'cosmo-dycore', 'cosmo-eccodes-definitions',
+    'cosmo-grib-api', 'cosmo-grib-api-definitions', 'cuda', 'dawn', 'dawn4py', 'dusk',
+    'dyicon_benchmarks', 'ecbuild', 'eccodes', 'eckit', 'gridtools', 'icon', 'icondusk-e2e',
+    'icontools', 'int2lm', 'libgrib1', 'mpich', 'oasis', 'omnicompiler', 'omni-xmod-pool',
+    'openmpi', 'serialbox', 'xcodeml-tools', 'zlib_ng'
 }
+
+# Maps commands to Set[packages]
+commands_to_packages = {p:p for p in packages}
+commands_to_packages.update({'all': packages})
 
 def Packages(commands : set):
     return {package for c in commands for package in commands_to_packages[c]}
