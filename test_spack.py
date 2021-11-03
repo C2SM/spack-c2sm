@@ -166,15 +166,16 @@ class Spack(unittest.TestCase):
             self.commands.remove('--tsa')
 
         # config spack
-        subprocess.run(f'python ./config.py -m {machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache', check=True, shell=True)
+        subprocess.run(f'python ./config.py -m {machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache',
+            check=True, shell=True, capture_output=True)
 
         setup = 'source spack/share/spack/setup-env.sh && '
         if all(c in commands_to_packages for c in self.commands): # if commands are all in list of known commands
             for case in CommandsToUseCases(self.commands):
                 with self.subTest(case=case):
-                    subprocess.run(setup + case, check=True, shell=True)
+                    subprocess.run(setup + case, check=True, shell=True, capture_output=True)
         else: # if arbitrary commands
-            subprocess.run(setup + ' '.join(self.commands), check=True, shell=True)
+            subprocess.run(setup + ' '.join(self.commands), check=True, shell=True, capture_output=True)
 
 
 if __name__ == '__main__':
