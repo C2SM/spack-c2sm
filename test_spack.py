@@ -149,7 +149,7 @@ class SelfTest(unittest.TestCase):
         self.assertEqual(cases, every_case)
 
 
-class Spack(unittest.TestCase):
+class SpackTest(unittest.TestCase):
     commands = ''
 
     def test_spack(self):
@@ -178,9 +178,12 @@ class Spack(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    Spack.commands = sys.argv[1:]
-    Spack.commands.remove('launch')
-    Spack.commands.remove('jenkins')
+    SpackTest.commands = sys.argv[1:]
+    SpackTest.commands.remove('launch')
+    SpackTest.commands.remove('jenkins')
     sys.argv = [sys.argv[0]] # unittest needs this
 
-    unittest.main()
+    suite1 = unittest.TestLoader().loadTestsFromTestCase(SelfTest)
+    suite2 = unittest.TestLoader().loadTestsFromTestCase(SpackTest)
+    suite = unittest.TestSuite([suite1, suite2])
+    unittest.TextTestRunner(verbosity=2).run(suite)
