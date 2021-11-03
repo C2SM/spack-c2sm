@@ -118,7 +118,7 @@ packages = {
 }
 
 # Maps commands to Set[packages]
-commands_to_packages = {p:p for p in packages}
+commands_to_packages = {p:{p} for p in packages}
 commands_to_packages.update({'all': packages})
 
 def Packages(commands : set):
