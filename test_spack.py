@@ -188,4 +188,5 @@ if __name__ == '__main__':
     suite1 = unittest.TestLoader().loadTestsFromTestCase(SelfTest)
     suite2 = unittest.TestLoader().loadTestsFromTestCase(SpackTest)
     suite = unittest.TestSuite([suite1, suite2])
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    result = unittest.TextTestRunner(verbosity=2).run(suite)
+    sys.exit(not result.wasSuccessful())
