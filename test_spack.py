@@ -11,15 +11,15 @@ use_cases = {
     'atlas_utilities' : {},
     'claw' : {},
     'cosmo' : {
-        '{executor} spack installcosmo cosmo@master%pgi cosmo_target=gpu +cppdycore', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html
-        '{executor} spack installcosmo cosmo@master%pgi cosmo_target=cpu ~cppdycore', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html
+        'spack installcosmo cosmo@master%pgi cosmo_target=gpu +cppdycore', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html
+        'spack installcosmo cosmo@master%pgi cosmo_target=cpu ~cppdycore', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html
         'git clone git@github.com:MeteoSwiss-APN/cosmo.git \
             && cd cosmo \
-            && {executor} spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore \
+            && spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore \
             && cd .. && rm -rf cosmo', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html 
         'git clone git@github.com:MeteoSwiss-APN/cosmo.git \
             && cd cosmo \
-            && {executor} spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore \
+            && spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore \
             && cd .. && rm -rf cosmo', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html
         # 'spack installcosmo cosmo@master%pgi cosmo_target=gpu +cppdycore ^eccodes +aec +build_shared_libs',
     },
@@ -55,8 +55,8 @@ use_cases = {
     'icondusk-e2e' : {},
     'icontools' : {},
     'int2lm' : {
-        '{executor} spack install int2lm@c2sm_master%pgi', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html
-        '{executor} spack install int2lm@org_master%pgi pollen=False', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html
+        'spack install int2lm@c2sm_master%pgi', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html
+        'spack install int2lm@org_master%pgi pollen=False', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html
     },
     'libgrib1' : {},
     'mpich' : {},
@@ -171,11 +171,10 @@ class SpackTest(unittest.TestCase):
         subprocess.run(f'python ./config.py -m {machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache', check=True, shell=True)
 
         setup = 'source spack/share/spack/setup-env.sh && '
-        executor = 'srun -c 16 t 02:00:00'
         if all(c in commands_to_packages for c in self.commands): # if commands are all in list of known commands
             for case in CommandsToUseCases(self.commands):
                 with self.subTest(case=case):
-                    subprocess.run(setup + case.format(executor=executor), check=True, shell=True)
+                    subprocess.run(setup + case, check=True, shell=True)
         else: # if arbitrary commands
             subprocess.run(setup + ' '.join(self.commands), check=True, shell=True)
 
