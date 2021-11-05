@@ -41,9 +41,16 @@ class CosmoEccodesDefinitions(Package):
     version('2.14.1.2', commit='15f3a862d0349f4fc332e383c69acbed71b7804d')
     version('2.14.1.1', commit='708d7a4590964c094b6df7fec4a9ccb2981de9fa')
 
-    depends_on('eccodes@2.19.0', when='@2.19.0.1:')
-    depends_on('eccodes@2.18.0', when='@2.18.0.1')
-    depends_on('eccodes@2.14.1', when='@2.14.1.1-2')
+    variant('aec', default=True, description='Enable Adaptive Entropy Coding for decoding/encoding')
+
+    depends_on('eccodes@2.14.1 ~aec', when='@2.14.1.1~aec')
+    depends_on('eccodes@2.14.1 ~aec', when='@2.14.1.2~aec')
+    depends_on('eccodes@2.18.0 ~aec', when='@2.18.0.1~aec')
+    depends_on('eccodes@2.19.0 ~aec', when='@2.19.0.1:~aec') 
+    depends_on('eccodes@2.14.1 +aec', when='@2.14.1.1+aec')
+    depends_on('eccodes@2.14.1 +aec', when='@2.14.1.2+aec')
+    depends_on('eccodes@2.18.0 +aec', when='@2.18.0.1+aec')
+    depends_on('eccodes@2.19.0 +aec', when='@2.19.0.1:+aec')
    
     def setup_run_environment(self, env):
         eccodes_definition_path = self.spec['cosmo-eccodes-definitions'].prefix + '/cosmoDefinitions/definitions/:' + self.spec['eccodes'].prefix + '/share/eccodes/definitions/'
