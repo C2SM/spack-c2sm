@@ -74,7 +74,7 @@ compilers:
     - gcc/10.2.0
     environment: {}
     extra_rpaths: []
-  - compiler:
+- compiler:
     spec: gcc@10.3.0
     paths:
       cc: cc
