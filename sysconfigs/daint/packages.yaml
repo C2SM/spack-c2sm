@@ -2,7 +2,7 @@ packages:
   all:
         # default compilers defined by the system
         # these reflect the current installed PE
-    compiler: [gcc@9.3.0, gcc@8.3.0, pgi@21.3.0, pgi@20.1.1, pgi@20.1.0, cce@11.0.0,
+    compiler: [gcc@9.3.0, gcc@8.3.0, nvhpc@21.3.0, pgi@20.1.1, pgi@20.1.0, cce@11.0.0,
       cce@10.0.2, intel@19.0.1.144]
     providers:
       mpi: [mpich]

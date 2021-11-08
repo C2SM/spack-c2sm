@@ -135,7 +135,7 @@ compilers:
     environment: {}
     extra_rpaths: []
 - compiler:
-    spec: pgi@21.3.0
+    spec: nvhpc@21.3.0
     paths:
       cc: cc
       cxx: CC
