@@ -57,7 +57,7 @@ class CosmoDycore(CMakePackage):
     variant('pmeters', default=False, description="Enable the performance meters for the dycore stencils")
     variant('data_path', default='.', description='Serialization data path', multi=False)
     variant('production', default=False, description='Force all variants to be the ones used in production')
-    variant('cuda_arch', default='none', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
+    variant('cuda_arch', default='none', when='+cuda', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
     variant('cuda', default=True, description='Build with cuda or target gpu')
     variant('gt1', default=False, description='Build with gridtools 1.1.3')
 
@@ -77,7 +77,7 @@ class CosmoDycore(CMakePackage):
     variant('slurm_constraint', default='gpu', description='Slurm constraints for nodes requested')
 
 
-    depends_on('gridtools@1.1.3 ~cuda cuda_arch=none', when='~cuda+gt1')
+    depends_on('gridtools@1.1.3 ~cuda', when='~cuda+gt1')
     depends_on('gridtools@1.1.3 +cuda', when='+cuda+gt1')
     depends_on('boost@1.67.0')
     depends_on('serialbox@2.6.0', when='+build_tests')
@@ -88,7 +88,6 @@ class CosmoDycore(CMakePackage):
     depends_on('cuda%gcc', when='+cuda', type=('build', 'link', 'run'))
 
     conflicts('+production', when='build_type=Debug')
-    conflicts('+production', when='cosmo_target=cpu')
     conflicts('+production', when='+pmeters')
 
     root_cmakelists_dir='dycore'
