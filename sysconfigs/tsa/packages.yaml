@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler: [gcc@8.3.0, pgi@20.4]
+    compiler: [gcc@8.3.0, nvhpc@21.2, pgi@20.4]
     providers:
       mpicuda: [openmpi+cuda, mpich]
       mpi: [openmpi~cuda]
@@ -50,9 +50,9 @@ packages:
       - /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/pgi/20.4/easybuild/modules/all/netcdf-fortran/4.4.5-pgi-20.4-gcc-8.3.0
   netcdf-c:
     externals:
-    - spec: netcdf-c@4.7.0%gcc@8.3.0
+    - spec: netcdf-c@4.7.0%gcc@8.3.0 +mpi
       prefix: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2/easybuild/software/netCDF/4.7.0-fosscuda-2019b
-    - spec: netcdf-c@4.7.0%pgi@20.4
+    - spec: netcdf-c@4.7.0%pgi@20.4 +mpi
       modules:
       - /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/pgi/20.4/easybuild/modules/all/netcdf/4.7.0-pgi-20.4-gcc-8.3.0
   netcdf-cxx4:

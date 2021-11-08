@@ -52,7 +52,7 @@ class Int2lm(MakefilePackage):
     depends_on('libgrib1@master', type='build')
     depends_on('mpi', type=('build', 'link', 'run'), when='+parallel')
     depends_on('netcdf-c',type=('build', 'link'))
-    depends_on('netcdf-fortran +mpi', type=('build', 'link'))
+    depends_on('netcdf-fortran', type=('build', 'link'))
 
     variant('debug', default=False, description='Build debug INT2LM')
     variant('eccodes', default=True, description='Build with eccodes instead of grib-api')

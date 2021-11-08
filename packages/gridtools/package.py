@@ -31,7 +31,7 @@ class Gridtools(CMakePackage):
     variant('no_boost_cmake', default=True, description="Build with no boost for CMake")
     variant('export_no_package_registery', default=True, description="Build with export no package registery")
     variant('enable_bindings_gerneration', default=True, description="Build with bindings generation")
-    variant('cuda_arch', default='none', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
+    variant('cuda_arch', default='none', when='+cuda', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
     variant('cuda', default=True, description='Build with cuda or target gpu')
 
     depends_on('ncurses')
