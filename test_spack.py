@@ -37,20 +37,20 @@ use_cases = {
     'eckit' : {},
     'gridtools' : {},
     'icon' : {
-        'git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git \
-            && cd icon-cscs \
-            && mkdir pgi_cpu \
-            && cd pgi_cpu \
-            && touch a_fake_file.f90 \
-            && spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu \
-            && cd ../.. && rm -rf icon-cscs', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html
-        'git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git \
-            && cd icon-cscs \
-            && mkdir pgi_gpu \
-            && cd pgi_gpu \
-            && touch a_fake_file.f90 \
-            && spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu \
-            && cd ../.. && rm -rf icon-cscs', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html
+        # 'git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git \
+        #     && cd icon-cscs \
+        #     && mkdir pgi_cpu \
+        #     && cd pgi_cpu \
+        #     && touch a_fake_file.f90 \
+        #     && spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu \
+        #     && cd ../.. && rm -rf icon-cscs', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html
+        # 'git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git \
+        #     && cd icon-cscs \
+        #     && mkdir pgi_gpu \
+        #     && cd pgi_gpu \
+        #     && touch a_fake_file.f90 \
+        #     && spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu \
+        #     && cd ../.. && rm -rf icon-cscs', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html
     },
     'icondusk-e2e' : {},
     'icontools' : {},
