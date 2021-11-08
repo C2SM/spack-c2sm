@@ -115,7 +115,7 @@ class Icon(Package):
             'host'].value + '.' + self.spec.variants['icon_target'].value
         if self.compiler.name == 'cce':
             _config_file_name += '.cray'
-        elif self.compiler.name == 'pgi':
+        elif self.compiler.name == 'nvhpc':
             _config_file_name += '.nvidia'
         else:
             _config_file_name += '.' + self.compiler.name
