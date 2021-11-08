@@ -5,104 +5,143 @@ packages:
       mpicuda: [openmpi+cuda, mpich]
       mpi: [openmpi~cuda]
   cmake:
-    modules:
-      cmake@3.14.5%gcc: cmake/3.14.5
-      cmake@3.14.5%pgi: cmake/3.14.5
     buildable: true
     version: [3.14.5]
     target: []
     providers: {}
     compiler: []
-    paths: {}
+    externals:
+    - spec: cmake@3.14.5%gcc
+      modules:
+      - cmake/3.14.5
+    - spec: cmake@3.14.5%pgi
+      modules:
+      - cmake/3.14.5
   cuda:
-    modules:
-      cuda@10.1.243%gcc: cuda/10.1.243
     buildable: true
     version: []
     target: []
     providers: {}
+    externals:
+    - spec: cuda@10.1.243%gcc
+      modules:
+      - cuda/10.1.243
   openmpi:
-    modules:
-      openmpi@4.0.2%pgi@20.4 +cuda: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/pgi/20.4/easybuild/modules/all/openmpi/4.0.2-pgi-20.4-gcc-8.3.0-cuda-10.1
-      openmpi@4.0.2%pgi@20.4 ~cuda: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/pgi/20.4-nocuda/easybuild/modules/all/openmpi/4.0.2-pgi-20.4-gcc-8.3.0-nocuda
-      openmpi@4.0.2%gcc@8.3.0 +cuda: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2/easybuild/modules/all/openmpi/4.0.2-gcccuda-2019b-cuda-10.1
-      openmpi@4.0.2%gcc@8.3.0 ~cuda: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2-nocuda/easybuild/modules/all/openmpi/4.0.2-gcc-8.3.0
     variants: +cuda
+    externals:
+    - spec: openmpi@4.0.2%pgi@20.4 +cuda
+      modules:
+      - /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/pgi/20.4/easybuild/modules/all/openmpi/4.0.2-pgi-20.4-gcc-8.3.0-cuda-10.1
+    - spec: openmpi@4.0.2%pgi@20.4 ~cuda
+      modules:
+      - /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/pgi/20.4-nocuda/easybuild/modules/all/openmpi/4.0.2-pgi-20.4-gcc-8.3.0-nocuda
+    - spec: openmpi@4.0.2%gcc@8.3.0 +cuda
+      modules:
+      - /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2/easybuild/modules/all/openmpi/4.0.2-gcccuda-2019b-cuda-10.1
+    - spec: openmpi@4.0.2%gcc@8.3.0 ~cuda
+      modules:
+      - /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2-nocuda/easybuild/modules/all/openmpi/4.0.2-gcc-8.3.0
   netcdf-fortran:
-    modules:
-      netcdf-fortran@4.4.5%pgi@20.4 +mpi: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/pgi/20.4/easybuild/modules/all/netcdf-fortran/4.4.5-pgi-20.4-gcc-8.3.0
-    paths:
-      netcdf-fortran@4.4.5%gcc@8.3.0 +mpi: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2/easybuild/software/netCDF-Fortran/4.4.5-fosscuda-2019b
+    externals:
+    - spec: netcdf-fortran@4.4.5%gcc@8.3.0 +mpi
+      prefix: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2/easybuild/software/netCDF-Fortran/4.4.5-fosscuda-2019b
+    - spec: netcdf-fortran@4.4.5%pgi@20.4 +mpi
+      modules:
+      - /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/pgi/20.4/easybuild/modules/all/netcdf-fortran/4.4.5-pgi-20.4-gcc-8.3.0
   netcdf-c:
-    modules:
-      netcdf-c@4.7.0%pgi@20.4 +mpi: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/pgi/20.4/easybuild/modules/all/netcdf/4.7.0-pgi-20.4-gcc-8.3.0
-    paths:
-      netcdf-c@4.7.0%gcc@8.3.0 +mpi: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2/easybuild/software/netCDF/4.7.0-fosscuda-2019b
+    externals:
+    - spec: netcdf-c@4.7.0%gcc@8.3.0 +mpi
+      prefix: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2/easybuild/software/netCDF/4.7.0-fosscuda-2019b
+    - spec: netcdf-c@4.7.0%pgi@20.4 +mpi
+      modules:
+      - /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/pgi/20.4/easybuild/modules/all/netcdf/4.7.0-pgi-20.4-gcc-8.3.0
   netcdf-cxx4:
-    paths:
-      netcdf-cxx4@4.3.0%gcc@8.3.0: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2/easybuild/software/netCDF-C++/4.3.0-fosscuda-2019b
+    externals:
+    - spec: netcdf-cxx4@4.3.0%gcc@8.3.0
+      prefix: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2/easybuild/software/netCDF-C++/4.3.0-fosscuda-2019b
   perl:
-    paths: 
-      perl@5.16.3: /usr
+    externals:
+    - spec: perl@5.16.3
+      prefix: /usr
   m4:
-    paths: 
-      m4@1.4.16%gcc: /usr
+    externals:
+    - spec: m4@1.4.16%gcc
+      prefix: /usr
   automake:
-    paths:
-      automake@1.13.4%gcc: /usr
+    externals:
+    - spec: automake@1.13.4%gcc
+      prefix: /usr
   autoconf:
-    paths:
-      autoconf@2.69%gcc: /usr
+    externals:
+    - spec: autoconf@2.69%gcc
+      prefix: /usr
   bison:
-    paths:
-      bison@3.0.4%gcc: /usr
+    externals:
+    - spec: bison@3.0.4%gcc
+      prefix: /usr
   gettext:
-    paths:
-      gettext@0.19.8.1%gcc: /usr
+    externals:
+    - spec: gettext@0.19.8.1%gcc
+      prefix: /usr
   flex:
-    paths:
-      flex@2.5.37%gcc: /usr
+    externals:
+    - spec: flex@2.5.37%gcc
+      prefix: /usr
   ncurses:
-    paths:
-      ncurses@6.1: /usr
+    externals:
+    - spec: ncurses@6.1
+      prefix: /usr
   libxml2:
-    paths:
-      libxml2@2.9.9%gcc: /usr
+    externals:
+    - spec: libxml2@2.9.9%gcc
+      prefix: /usr
   libtool:
-    paths:
-      libtool@2.4.2%gcc: /usr
+    externals:
+    - spec: libtool@2.4.2%gcc
+      prefix: /usr
   openjdk:
-    paths:
-      openjdk@1.8.0%gcc: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.302.b08-0.el7_9.x86_64
+    externals:
+    - spec: openjdk@1.8.0%gcc
+      prefix: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.302.b08-0.el7_9.x86_64
   jasper:
-    paths:
-      jasper@1.900.1%gcc +shared: /usr
+    externals:
+    - spec: jasper@1.900.1%gcc +shared
+      prefix: /usr
   bzip2:
-    paths:
-      bzip2@1.0.6: /usr
+    externals:
+    - spec: bzip2@1.0.6
+      prefix: /usr
   slurm:
-    modules:
-      slurm@19.05.05%gcc: slurm/19.05.05
-  icontools: 
+    externals:
+    - spec: slurm@19.05.05%gcc
+      modules:
+      - slurm/19.05.05
+  icontools:
     variants: slave=tsa
   int2lm:
     variants: slave=tsa
   libgrib1:
     variants: slave=tsa
   cosmo-dycore:
-    variants: +cuda cuda_arch=70 data_path=/scratch/jenkins/data/cosmo/ slave=tsa slurm_bin= "srun" slurm_partition= "debug" slurm_gpu= "--gres=gpu:{0}" slurm_opt_nodes= "-n" slurm_nodes= "{0}" slurm_opt_account= "-" slurm_account= "-" slurm_opt_constraint= "-" slurm_constraint= "-"
+    variants: +cuda cuda_arch=70 data_path=/scratch/jenkins/data/cosmo/ slave=tsa
+      slurm_bin= "srun" slurm_partition= "debug" slurm_gpu= "--gres=gpu:{0}" slurm_opt_nodes=
+      "-n" slurm_nodes= "{0}" slurm_opt_account= "-" slurm_account= "-" slurm_opt_constraint=
+      "-" slurm_constraint= "-"
     compiler: [gcc]
   gridtools:
     variants: +cuda cuda_arch=70
     compiler: [gcc]
   cosmo:
-    variants: cuda_arch=70 cosmo_target=gpu slave=tsa slurm_bin= "srun" slurm_partition= "debug" slurm_opt_nodes= "-n" slurm_nodes= "1" slurm_opt_account= "-" slurm_account= "-" slurm_opt_constraint= "-" slurm_constraint= "-"
+    variants: cuda_arch=70 cosmo_target=gpu slave=tsa slurm_bin= "srun" slurm_partition=
+      "debug" slurm_opt_nodes= "-n" slurm_nodes= "1" slurm_opt_account= "-" slurm_account=
+      "-" slurm_opt_constraint= "-" slurm_constraint= "-"
 
-    version: [master] 
+    version: [master]
   icon:
     variants: host=tsa ~ocean
   llvm:
-    paths:
-      llvm@10.0.0: /project/g110/install/tsa/llvm-10
-    buildable: False
+    buildable: false
 
+    externals:
+    - spec: llvm@10.0.0
+      prefix: /project/g110/install/tsa/llvm-10
