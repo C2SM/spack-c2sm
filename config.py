@@ -8,7 +8,7 @@ import subprocess
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-spack_version = 'v0.15.4'
+spack_version = 'v0.17.0'
 spack_repo = 'https://github.com/spack/spack.git'
 
 
