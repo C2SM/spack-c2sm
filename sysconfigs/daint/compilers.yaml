@@ -45,6 +45,21 @@ compilers:
     environment: {}
     extra_rpaths: []
 - compiler:
+    spec: gcc@10.1.0
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: cnl7
+    target: any
+    modules:
+    - PrgEnv-gnu
+    - gcc/10.1.0
+    environment: {}
+    extra_rpaths: []
+- compiler:
     spec: gcc@10.2.0
     paths:
       cc: cc
@@ -59,8 +74,8 @@ compilers:
     - gcc/10.2.0
     environment: {}
     extra_rpaths: []
-- compiler:
-    spec: gcc@8.3.0
+  - compiler:
+    spec: gcc@10.3.0
     paths:
       cc: cc
       cxx: CC
@@ -71,7 +86,7 @@ compilers:
     target: any
     modules:
     - PrgEnv-gnu
-    - gcc/8.3.0
+    - gcc/10.3.0
     environment: {}
     extra_rpaths: []
 - compiler:
