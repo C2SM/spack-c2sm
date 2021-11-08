@@ -48,7 +48,7 @@ class Int2lm(MakefilePackage):
     version('org_2.05', git=orggit, commit='ef16f54f53401e99aef083c447b4909b8230a4a0')
 
     depends_on('cosmo-grib-api-definitions', type=('build','run'), when='~eccodes')
-    depends_on('cosmo-eccodes-definitions ~aec', type=('build','run'), when='+eccodes')
+    depends_on('cosmo-eccodes-definitions', type=('build','run'), when='+eccodes')
     depends_on('libgrib1@master', type='build')
     depends_on('mpi', type=('build', 'link', 'run'), when='+parallel')
     depends_on('netcdf-c',type=('build', 'link'))
