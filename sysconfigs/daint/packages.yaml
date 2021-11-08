@@ -12,7 +12,9 @@ packages:
       blas: [cray-libsci_acc, cray-libsci, intel-mkl]
       scalapack: [cray-libsci_acc, cray-libsci, intel-mkl]
       pkgconfig: [pkg-config]
-    # packages installed by c2sm-spack instance
+    # force the right arch for every packages to avoid wrong recompilation of dependencies
+    variants: arch=cray-cnl7-broadwell
+  # packages installed by c2sm-spack instance
   cosmo:
     variants: cuda_arch=60 cosmo_target=gpu slave=daint slurm_partition= "normal"
       slurm_bin= "srun" slurm_opt_nodes= "-n" slurm_nodes= "1"  slurm_opt_account=
@@ -250,7 +252,7 @@ packages:
       prefix: /opt/intel
   libjpeg:
     externals:
-    - spec: libjpeg%gcc
+    - spec: libjpeg@8.1.2%gcc
       prefix: /usr
   libtool:
     externals:
@@ -355,7 +357,7 @@ packages:
     variants: build_type=Release +external-blas+lapacke
   ompt-openmp:
     externals:
-    - spec: ompt-openmp%pgi
+    - spec: ompt-openmp@0.1%pgi
       prefix: /opt/pgi/20.1.1/linux86-64-llvm/20.1/lib/libomp
   openblas:
     variants: +pic +shared threads=openmp ~virtual_machine
