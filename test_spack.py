@@ -8,7 +8,7 @@ import unittest
 
 def run(command: str):
     setup = ''
-    if command.begins_with('spack'):
+    if command.startswith('spack'):
         setup = 'source spack/share/spack/setup-env.sh && '
     
     subprocess.run(setup + command, check=True, shell=True)
@@ -168,8 +168,6 @@ class Int2lmTest(unittest.TestCase):
     def test_install_no_pollen(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         run('spack install int2lm@org_master%pgi pollen=False')
-
-
 
 
 class IconDuskE2ETest(unittest.TestCase):
@@ -366,6 +364,7 @@ if __name__ == '__main__':
         for c in commands:
             if c in expansions:
                 commands |= expansions[c]
+                commands.remove(c)
                 break
 
     # all commands are packages now!
