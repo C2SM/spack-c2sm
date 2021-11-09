@@ -359,6 +359,8 @@ if __name__ == '__main__':
         run(' '.join(commands))
         sys.exit()
 
+    commands = set(commands)
+
     # expand expandable commands
     while any(c in expansions for c in commands):
         for c in commands:
