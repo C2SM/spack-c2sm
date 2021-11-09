@@ -1,192 +1,381 @@
 #!/usr/bin/python
 
-import unittest
+import copy
+import inspect
 import sys
 import subprocess
+import unittest
 
-# Maps packages to Set[use cases].
-# The comment after each use case states why this use case exists or where it appears.
-use_cases = {
-    'atlas' : {},
-    'atlas_utilities' : {},
-    'claw' : {},
-    'cosmo' : {
-        'spack installcosmo cosmo@master%pgi cosmo_target=gpu +cppdycore', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html
-        'spack installcosmo cosmo@master%pgi cosmo_target=cpu ~cppdycore', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html
-        'git clone git@github.com:MeteoSwiss-APN/cosmo.git \
-            && cd cosmo \
-            && spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore \
-            && cd .. && rm -rf cosmo', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html 
-        'git clone git@github.com:MeteoSwiss-APN/cosmo.git \
-            && cd cosmo \
-            && spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore \
-            && cd .. && rm -rf cosmo', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html
-        # 'spack installcosmo cosmo@master%pgi cosmo_target=gpu +cppdycore ^eccodes +aec +build_shared_libs',
-    },
-    'cosmo-dycore' : {},
-    'cosmo-eccodes-definitions' : {},
-    'cosmo-grib-api' : {},
-    'cosmo-grib-api-definitions' : {},
-    'cuda' : {},
-    'dawn' : {},
-    'dawn4py' : {},
-    'dusk' : {},
-    'dyicon_benchmarks' : {},
-    'ecbuild' : {},
-    'eccodes' : {},
-    'eckit' : {},
-    'gridtools' : {},
-    'icon' : {
-        # 'git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git \
-        #     && cd icon-cscs \
-        #     && mkdir pgi_cpu \
-        #     && cd pgi_cpu \
-        #     && touch a_fake_file.f90 \
-        #     && spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu \
-        #     && cd ../.. && rm -rf icon-cscs', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html
-        # 'git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git \
-        #     && cd icon-cscs \
-        #     && mkdir pgi_gpu \
-        #     && cd pgi_gpu \
-        #     && touch a_fake_file.f90 \
-        #     && spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu \
-        #     && cd ../.. && rm -rf icon-cscs', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html
-    },
-    'icondusk-e2e' : {},
-    'icontools' : {},
-    'int2lm' : {
-        'spack install int2lm@c2sm_master%pgi', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html
-        'spack install int2lm@org_master%pgi pollen=False', # Listed in https://c2sm.github.io/spack-c2sm/QuickStart.html
-    },
-    'libgrib1' : {},
-    'mpich' : {},
-    'oasis' : {},
-    'omnicompiler' : {},
-    'omni-xmod-pool' : {},
-    'openmpi' : {},
-    'serialbox' : {},
-    'xcodeml-tools' : {},
-    'zlib_ng' : {},
+def run(command: str):
+    setup = ''
+    if command.begins_with('spack'):
+        setup = 'source spack/share/spack/setup-env.sh && '
+    
+    subprocess.run(setup + command, check=True, shell=True)
+
+# For each spack test there should be at least one line of comment stating
+# why this spack command is tested and/or where this spack command is used.
+# Otherwise this may apply:
+# “All Your Tests are Terrible..." - Titus Winters & Hyrum Wright
+# https://www.youtube.com/watch?v=u5senBJUkPc&ab_channel=CppCon
+
+
+class AtlasTest(unittest.TestCase):
+    package_name = 'atlas'
+    depends_on = {'ecbuild', 'eckit'}
+
+
+class AtlasUtilityTest(unittest.TestCase):
+    package_name = 'atlas_utilities'
+    depends_on = {'atlas', 'eckit'}
+
+
+class ClawTest(unittest.TestCase):
+    package_name = 'claw'
+    depends_on = {}
+
+
+class CosmoTest(unittest.TestCase):
+    package_name = 'cosmo'
+    depends_on = {'cuda', 'serialbox', 'libgrib1', 'cosmo-grib-api-definitions', 'cosmo-eccodes-definitions', 'omni-xmod-pool', 'claw', 'zlib_ng', 'cosmo-dycore'}
+
+    def test_install_master_gpu(self):
+        # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
+        run('spack installcosmo cosmo@master%pgi cosmo_target=gpu +cppdycore')
+
+    def test_install_master_cpu(self):
+        # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
+        run('spack installcosmo cosmo@master%pgi cosmo_target=cpu ~cppdycore')
+
+    def test_devbuild(self):
+        # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
+        run('git clone git@github.com:MeteoSwiss-APN/cosmo.git')
+        run('cd cosmo')
+
+        with self.subTest(case='gpu'):
+            run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore')
+        with self.subTest(case='gpu'):
+            run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore')
+
+        run('cd ..')
+        run('rm -rf cosmo')
+
+
+class CosmoDycoreTest(unittest.TestCase):
+    package_name = 'cosmo-dycore'
+    depends_on = {'gridtools', 'serialbox', 'cuda'}
+
+
+class CosmoEccodesDefinitionsTest(unittest.TestCase):
+    package_name = 'cosmo-eccodes-definitions'
+    depends_on = {'eccodes'}
+
+
+class CosmoGribApiTest(unittest.TestCase):
+    package_name = 'cosmo-grib-api'
+    depends_on = {}
+
+
+class CosmoGribApiDefinitionsTest(unittest.TestCase):
+    package_name = 'cosmo-grib-api-definitions'
+    depends_on = {'cosmo-grib-api'}
+
+
+class CudaTest(unittest.TestCase):
+    package_name = 'cuda'
+    depends_on = {}
+
+
+class DawnTest(unittest.TestCase):
+    package_name = 'dawn'
+    depends_on = {}
+
+
+class Dawn4PyTest(unittest.TestCase):
+    package_name = 'dawn4py'
+    depends_on = {}
+
+
+class DuskTest(unittest.TestCase):
+    package_name = 'dusk'
+    depends_on = {'dawn4py'}
+
+
+class DyiconBenchmarksTest(unittest.TestCase):
+    package_name = 'dyicon_benchmarks'
+    depends_on = {'atlas_utilities', 'atlas', 'cuda'}
+
+
+class EcbuildTest(unittest.TestCase):
+    package_name = 'ecbuild'
+    depends_on = {}
+
+
+class EccodesTest(unittest.TestCase):
+    package_name = 'eccodes'
+    depends_on = {}
+
+
+class EckitTest(unittest.TestCase):
+    package_name = 'eckit'
+    depends_on = {'ecbuild'}
+
+
+class GridToolsTest(unittest.TestCase):
+    package_name = 'gridtools'
+    depends_on = {'cuda'}
+
+
+class IconTest(unittest.TestCase):
+    package_name = 'icon'
+    depends_on = {'serialbox', 'eccodes', 'claw'}
+
+    def test_devbuild_cpu(self):
+        # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
+        run('git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git')
+        run('cd icon-cscs')
+        run('mkdir -p pgi_cpu')
+        run('cd pgi_cpu')
+        run('touch a_fake_file.f90')
+
+        run('spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu')
+
+        run('cd ../..')
+        run('rm -rf icon-cscs')
+
+    def test_devbuild_gpu(self):
+        # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
+        run('git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git')
+        run('cd icon-cscs')
+        run('mkdir -p pgi_gpu')
+        run('cd pgi_gpu')
+        run('touch a_fake_file.f90')
+
+        run('spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu')
+
+        run('cd ../..')
+        run('rm -rf icon-cscs')
+
+
+class Int2lmTest(unittest.TestCase):
+    package_name = 'int2lm'
+    depends_on = {'cosmo-grib-api-definitions', 'cosmo-eccodes-definitions', 'libgrib1'}
+
+    def test_install(self):
+        # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
+        run('spack install int2lm@c2sm_master%pgi')
+
+    def test_install_no_pollen(self):
+        # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
+        run('spack install int2lm@org_master%pgi pollen=False')
+
+
+
+
+class IconDuskE2ETest(unittest.TestCase):
+    package_name = 'icondusk-e2e'
+    depends_on = {'atlas_utilities', 'dawn4py', 'dusk', 'atlas', 'cuda'}
+
+
+class IconToolsTest(unittest.TestCase):
+    package_name = 'icontools'
+    depends_on = {'eccodes', 'cosmo-grib-api'}
+
+
+class LibGrib1Test(unittest.TestCase):
+    package_name = 'libgrib1'
+    depends_on = {}
+
+
+class LogTest(unittest.TestCase):
+    package_name = 'log'
+    depends_on = {}
+
+
+class MpichTest(unittest.TestCase):
+    package_name = 'mpich'
+    depends_on = {}
+
+
+class OasisTest(unittest.TestCase):
+    package_name = 'oasis'
+    depends_on = {}
+
+
+class OmniCompilerTest(unittest.TestCase):
+    package_name = 'omnicompiler'
+    depends_on = {}
+
+
+class OmniXmodPoolest(unittest.TestCase):
+    package_name = 'omni-xmod-pool'
+    depends_on = {}
+
+
+class OpenMPITest(unittest.TestCase):
+    package_name = 'openmpi'
+    depends_on = {}
+
+
+class SerialBoxTest(unittest.TestCase):
+    package_name = 'serialbox'
+    depends_on = {}
+
+
+class XcodeMLToolsTest(unittest.TestCase):
+    package_name = 'xcodeml-tools'
+    depends_on = {}
+
+
+class ZLibNGTest(unittest.TestCase):
+    package_name = 'zlib_ng'
+    depends_on = {}
+
+
+# A set of all test case classes
+all_test_cases = {c for _,c in inspect.getmembers(sys.modules[__name__], lambda member: inspect.isclass(member) and issubclass(member, unittest.TestCase))}
+
+# Maps all packages in this repo to the set of packages they depend on. Must form a DAG.
+dependencies = {case.package_name: case.depends_on for case in all_test_cases}
+
+# Maps commands to a set of commands or packages. Must form a DAG.
+# The keys can't be package names.
+expansions = {
+    'all': {case.package_name for case in all_test_cases}
 }
 
-def UseCases(packages : set):
-    return {case for p in packages for case in use_cases[p]}
+def Self_and_up(origin: set, DAG: map) -> set:
+    reachers = copy.deepcopy(origin)
+    while True:
+        old_size = len(reachers)
+        # add elements up the DAG
+        reachers |= {parent for parent, children in DAG.items() if any(child in reachers for child in children)}
+        new_size = len(reachers)
+        if old_size == new_size:
+            return reachers
 
-# Maps packages to Set[packages it depends on].
-dependencies = {
-    'atlas' : {'ecbuild', 'eckit'},
-    'atlas_utilities' : {'atlas', 'eckit'},
-    'claw' : {},
-    'cosmo' : {'cuda', 'serialbox', 'libgrib1', 'cosmo-grib-api-definitions', 'cosmo-eccodes-definitions', 'omni-xmod-pool', 'claw', 'zlib_ng', 'cosmo-dycore'},
-    'cosmo-dycore' : {'gridtools', 'serialbox', 'cuda'},
-    'cosmo-eccodes-definitions' : {'eccodes'},
-    'cosmo-grib-api' : {},
-    'cosmo-grib-api-definitions' : {'cosmo-grib-api'},
-    'cuda' : {},
-    'dawn' : {},
-    'dawn4py' : {},
-    'dusk' : {'dawn4py'},
-    'dyicon_benchmarks' : {'atlas_utilities', 'atlas', 'cuda'},
-    'ecbuild' : {},
-    'eccodes' : {},
-    'eckit' : {'ecbuild'},
-    'gridtools' : {'cuda'},
-    'icon' : {'serialbox', 'eccodes', 'claw'},
-    'icondusk-e2e' : {'atlas_utilities', 'dawn4py', 'dusk', 'atlas', 'cuda'},
-    'icontools' : {'eccodes', 'cosmo-grib-api'},
-    'int2lm' : {'cosmo-grib-api-definitions', 'cosmo-eccodes-definitions', 'libgrib1'},
-    'libgrib1' : {},
-    'log' : {},
-    'mpich' : {},
-    'oasis' : {},
-    'omnicompiler' : {},
-    'omni-xmod-pool' : {},
-    'openmpi' : {},
-    'serialbox' : {},
-    'xcodeml-tools' : {},
-    'zlib_ng' : {},
-}
+def Has_cycle(directed_graph: map) -> bool:
+    return False # TODO!
 
-def Dependents(packages : set):
-    return {parent for parent, children in dependencies.items() if not packages.isdisjoint(children)}
 
-# All packages that are configured by this repo
-packages = {
-    'atlas', 'atlas_utilities', 'claw', 'cosmo', 'cosmo-dycore', 'cosmo-eccodes-definitions',
-    'cosmo-grib-api', 'cosmo-grib-api-definitions', 'cuda', 'dawn', 'dawn4py', 'dusk',
-    'dyicon_benchmarks', 'ecbuild', 'eccodes', 'eckit', 'gridtools', 'icon', 'icondusk-e2e',
-    'icontools', 'int2lm', 'libgrib1', 'mpich', 'oasis', 'omnicompiler', 'omni-xmod-pool',
-    'openmpi', 'serialbox', 'xcodeml-tools', 'zlib_ng'
-}
+class DAG_Algorithm_Test(unittest.TestCase):
 
-# Maps commands to Set[packages]
-commands_to_packages = {p:{p} for p in packages}
-commands_to_packages.update({'all': packages})
+    def test_direction(self):
+        # a -> b -> c
+        DAG = {'a': {'b'}, 'b': {'c'}}
+        reachers = Self_and_up({'b'}, DAG)
+        self.assertTrue('a' in reachers)
 
-def Packages(commands : set):
-    return {package for c in commands for package in commands_to_packages[c]}
+    def test_transitivity(self):
+        # a -> b -> c -> d
+        DAG = {'a': {'b'}, 'b': {'c'}, 'c': {'d'}}
+        reachers = Self_and_up({'c'}, DAG)
+        self.assertEqual(reachers, {'a','b','c'})
 
-def CommandsToUseCases(commands : set):
-    p = Packages(commands)
-    return UseCases(p | Dependents(p))
+    def test_diamon(self):
+        # a -> b+c -> d
+        DAG = {'a': {'b','c'}, 'b': {'d'}, 'c': {'d'}}
+        b_reachers = Self_and_up({'b'}, DAG)
+        c_reachers = Self_and_up({'c'}, DAG)
+        d_reachers = Self_and_up({'d'}, DAG)
+        self.assertEqual(b_reachers, {'a','b'})
+        self.assertEqual(c_reachers, {'a','c'})
+        self.assertEqual(d_reachers, {'a','b','c','d'})
+
+    # def test_cycle(self): TODO!
+    #     # a <-> b
+    #     graph = {'a': {'b'}, 'b': {'a'}}
+    #     self.assertTrue(Has_cycle(graph))
+
+    def test_no_cycle(self):
+        # a -> b
+        graph = {'a': {'b'}}
+        self.assertFalse(Has_cycle(graph))
+
+    def test_diamon_is_acyclic(self):
+        # a -> b+c -> d
+        DAG = {'a': {'b','c'}, 'b': {'d'}, 'c': {'d'}}
+        self.assertFalse(Has_cycle(DAG))
 
 
 class SelfTest(unittest.TestCase):
 
-    def test_empty_command(self):
-        no_commands = set()
-        cases = CommandsToUseCases(no_commands)
-        self.assertFalse(cases)
+    def test_expansions(self):
+        """Tests that expandable commands are not package names"""
+        for exp in expansions.keys():
+            self.assertTrue(exp not in dependencies)
 
-    def test_command_all(self):
-        cases = CommandsToUseCases({'all'})
-        self.assertTrue(cases)
+    def test_dependencies_is_acyclic(self):
+        self.assertFalse(Has_cycle(dependencies))
 
-    def test_data_integrity(self):
-        every_command = commands_to_packages.keys()
-        every_case = {c for cases in use_cases.values() for c in cases}
+    def test_expansions_is_acyclic(self):
+        self.assertFalse(Has_cycle(expansions))
 
-        cases = CommandsToUseCases(every_command)
-
-        self.assertEqual(cases, every_case)
-
-
-class SpackTest(unittest.TestCase):
-    commands = ''
-
-    def test_spack(self):
-        upstream = 'OFF'
-        if '--upstream' in self.commands:
-            upstream = 'ON'
-            self.commands.remove('--upstream')
-
-        if '--daint' in self.commands:
-            machine = 'daint'
-            self.commands.remove('--daint')
-        if '--tsa' in self.commands:
-            machine = 'tsa'
-            self.commands.remove('--tsa')
-
-        # config spack
-        subprocess.run(f'python ./config.py -m {machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache', check=True, shell=True)
-
-        setup = 'source spack/share/spack/setup-env.sh && '
-        if all(c in commands_to_packages for c in self.commands): # if commands are all in list of known commands
-            for case in CommandsToUseCases(self.commands):
-                with self.subTest(case=case):
-                    subprocess.run(setup + case, check=True, shell=True)
-        else: # if arbitrary commands
-            subprocess.run(setup + ' '.join(self.commands), check=True, shell=True)
+    def test_all_dependencies_are_packages(self):
+        all_package_names = {case.package_name for case in all_test_cases}
+        for _, deps in dependencies.items():
+            for dep in deps:
+                self.assertTrue(dep in all_package_names)
 
 
 if __name__ == '__main__':
-    SpackTest.commands = sys.argv[1:]
-    SpackTest.commands.remove('launch')
-    SpackTest.commands.remove('jenkins')
+    test_loader = unittest.TestLoader()
+
+    # Do self test first to fail fast
+    suite = unittest.TestSuite([
+        test_loader.loadTestsFromTestCase(DAG_Algorithm_Test),
+        test_loader.loadTestsFromTestCase(SelfTest)
+    ])
+    result = unittest.TextTestRunner(verbosity=2).run(suite)
+    if not result.wasSuccessful():
+        sys.exit(False)
+
+    commands = sys.argv[1:]
     sys.argv = [sys.argv[0]] # unittest needs this
 
-    suite1 = unittest.TestLoader().loadTestsFromTestCase(SelfTest)
-    suite2 = unittest.TestLoader().loadTestsFromTestCase(SpackTest)
-    suite = unittest.TestSuite([suite1, suite2])
+    commands.remove('launch')
+    commands.remove('jenkins')
+
+    upstream = 'OFF'
+    if '--upstream' in commands:
+        upstream = 'ON'
+        commands.remove('--upstream')
+
+    if '--daint' in commands:
+        machine = 'daint'
+        commands.remove('--daint')
+    if '--tsa' in commands:
+        machine = 'tsa'
+        commands.remove('--tsa')
+
+    # configure spack
+    subprocess.run(f'python ./config.py -m {machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache', check=True, shell=True)
+
+    known_commands = dependencies.keys() | expansions.keys()
+
+    # handles backward compatibility to run any command
+    if any(c not in known_commands for c in commands):
+        print('Input contains unknown command.')
+        run(' '.join(commands))
+        sys.exit()
+
+    # expand expandable commands
+    while any(c in expansions for c in commands):
+        for c in commands:
+            if c in expansions:
+                commands |= expansions[c]
+                break
+
+    # all commands are packages now!
+
+    packages_to_test = Self_and_up(commands, dependencies)
+
+    # collect tests from all packages to test
+    suite = unittest.TestSuite([
+        test_loader.loadTestsFromTestCase(case)
+        for case in all_test_cases if case.package_name in packages_to_test
+    ])
+    
+    # run tests
     result = unittest.TextTestRunner(verbosity=2).run(suite)
     sys.exit(not result.wasSuccessful())
