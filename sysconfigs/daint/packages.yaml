@@ -2,46 +2,41 @@ packages:
   all:
         # default compilers defined by the system
         # these reflect the current installed PE
-    compiler: [gcc@8.3.0, gcc@9.3.0, gcc@10.3.0, nvhpc@21.3.0, pgi@20.1.1, pgi@20.1.0, cce@11.0.0,
-      cce@10.0.2, intel@19.0.1.144]
-    providers:
+  compiler: [gcc@10.3.0, gcc@9.3.0, gcc@8.3.0, pgi@20.1.1, pgi@20.1.0, pgi@21.3.0, cce@11.0.0, cce@10.0.2, intel@19.0.1.144]
+  providers:
       mpi: [mpich]
-            # if the mpich package support +cuda in the future it needs to be put there
+      # if the mpich package support +cuda in the future it needs to be put there
       mpicuda: [mpich]
       mkl: [intel-mkl]
       blas: [cray-libsci_acc, cray-libsci, intel-mkl]
       scalapack: [cray-libsci_acc, cray-libsci, intel-mkl]
       pkgconfig: [pkg-config]
-    # force the right arch for every packages to avoid wrong recompilation of dependencies
-    variants: arch=cray-cnl7-broadwell
-  # packages installed by c2sm-spack instance
+    # packages installed by c2sm-spack instance
   cosmo:
-    variants: cuda_arch=60 cosmo_target=gpu slave=daint slurm_partition= "normal"
-      slurm_bin= "srun" slurm_opt_nodes= "-n" slurm_nodes= "1"  slurm_opt_account=
-      "-A" slurm_account= "g110" slurm_opt_constraint= "-C" slurm_constraint= "gpu"
+    variants: cuda_arch=60 cosmo_target=gpu slave=daint slurm_partition= "normal" slurm_bin= "srun" slurm_opt_nodes= "-n" slurm_nodes= "1"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint= "-C" slurm_constraint= "gpu"
     version: [master]
     compiler: [pgi@20.1.1]
   gridtools:
     variants: +cuda cuda_arch=60
     compiler: [gcc]
   cosmo-dycore:
-    variants: slave=daint +cuda cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/
-      slurm_partition= "normal" slurm_bin= "srun" slurm_gpu= "-" slurm_opt_nodes=
-      "-N" slurm_nodes= "{0}"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint=
-      "-C" slurm_constraint= "gpu"
+    variants: slave=daint +cuda cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/ slurm_partition= "normal" slurm_bin= "srun" slurm_gpu= "-" slurm_opt_nodes= "-N" slurm_nodes= "{0}"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint= "-C" slurm_constraint= "gpu" 
     compiler: [gcc@8.3.0]
+  gridtools:
+    variants: +cuda cuda_arch=60
+    compiler: [gcc]
   icontools:
-    variants: slave=daint
-    compiler: [cce]
+      variants: slave=daint
+      compiler: [cce]  
   icon:
-    variants: host=daint
+      variants: host=daint
   int2lm:
-    variants: slave=daint
+      variants: slave=daint
+      compiler: [pgi@20.1.1,gcc@9.3.0]
   llvm:
-    buildable: false
-    externals:
-    - spec: llvm@10.0.0
-      prefix: /project/g110/install/daint/llvm-10
+      paths:
+          llvm@10.0.0: /project/g110/install/daint/llvm-10
+      buildable: False
     # packages preinstalled on Piz Daint
   autoconf:
     externals:

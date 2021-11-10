@@ -68,6 +68,7 @@ class Cosmo(MakefilePackage):
     depends_on('boost%gcc', when='cosmo_target=gpu ~cppdycore', type='build')
     depends_on('cmake%gcc', type='build')
     depends_on('zlib_ng +compat', when='+zlib_ng', type=('link','run'))
+    depends_on('oasis', when='+oasis', type=('build','link','run'))
 
 
     # cosmo-dycore dependency
@@ -106,6 +107,7 @@ class Cosmo(MakefilePackage):
     variant('gt1', default=False, description='Build dycore with gridtools 1.1.3')
     variant('cuda_arch', default='none', description='Build with cuda_arch', values=('70', '60', '37'), multi=False)
     variant('zlib_ng', default=False, description='Run with faster zlib-implemention for compression of NetCDF output')
+    variant('oasis', default=False, description='Build with the unified oasis interface')
 
     variant('slurm_bin', default='srun', description='Slurm binary on CSCS machines')
     variant('slurm_opt_partition', default='-p', description='Slurm option to specify partition for testing')
@@ -142,10 +144,20 @@ class Cosmo(MakefilePackage):
     conflicts('~gt1', when='@5.07a.mch1.0.base')
     conflicts('~gt1', when='@5.07.mch1.0.p10')
     conflicts('+cppdycore', when='%pgi cosmo_target=cpu')
+    # - ML - A conflict should be added there if the oasis variant is
+    # chosen and the version is neither c2sm-features nor
+    # dev-build. The problem is that this doesn't seem possible in a
+    # native spack way. Hence the dirty check at the beginning of
+    # setup_build_environment method
 
     build_directory = 'cosmo/ACC'
 
     def setup_build_environment(self, env):
+
+        # - ML - Dirty conflict check (see above)
+        if self.spec.variants['oasis'].value and self.spec.version not in (Version('c2sm-features'), Version('dev-build')):
+            raise InstallError('+oasis variant only compatible with the @c2sm-features and @dev-build versions')
+
         self.setup_run_environment(env)
 
         # Check mpi provider (mpicuda or mpi)
@@ -228,6 +240,13 @@ class Cosmo(MakefilePackage):
                 claw_flags += ' -D__CRAYXC'
             env.set('CLAWFC_FLAGS', claw_flags)
 
+        # OASIS library
+        if '+oasis' in self.spec:
+            oasis_prefix = self.spec['oasis'].prefix
+            env.set('PSMILEL', '-L{:s}/lib -lpsmile.MPI1 -lscrip -lmct -lmpeu'.format(oasis_prefix))
+            env.set('PSMILEI', '-I{0:s}/build/lib/psmile.MPI1 -I{0:s}/build/lib/mct'.format(oasis_prefix))
+            env.set('MPPIOI', '-I{:s}/build/lib/mct'.format(oasis_prefix))
+
         # Linker flags
         if self.compiler.name == 'pgi' and '~cppdycore' in self.spec:
             env.set('LFLAGS', '-lstdc++')
@@ -245,6 +264,8 @@ class Cosmo(MakefilePackage):
         build = []
         if self.spec.variants['pollen'].value:
             build.append('POLLEN=1')
+        if self.spec.variants['oasis'].value:
+            build.append('COUP_OAS=1')
         if self.spec.variants['real_type'].value == 'float':
             build.append('SINGLEPRECISION=1')
         if '+cppdycore' in self.spec:
