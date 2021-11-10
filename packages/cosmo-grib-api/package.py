@@ -24,7 +24,7 @@ class CosmoGribApi(AutotoolsPackage):
     depends_on('autoconf%gcc')
     depends_on('automake%gcc')
     depends_on('libtool%gcc')
-    depends_on('jasper@1.900.1%gcc ~shared')
+    depends_on('jasper@1.900.1%gcc')
     
     force_autoreconf = True
 

@@ -59,7 +59,7 @@ class Cosmo(MakefilePackage):
     depends_on('mpicuda', type=('build', 'link', 'run'), when='cosmo_target=gpu')
     depends_on('mpi', type=('build', 'link', 'run'), when='cosmo_target=cpu')
     depends_on('libgrib1', type='build')
-    depends_on('jasper@1.900.1%gcc ~shared', type='build')
+    depends_on('jasper@1.900.1%gcc', type='build')
     depends_on('cosmo-grib-api-definitions', type=('build','run'), when='~eccodes')
     depends_on('cosmo-eccodes-definitions ~aec', type=('build','run'), when='+eccodes')
     depends_on('perl@5.16.3:', type='build')
