@@ -6,12 +6,12 @@ import sys
 import subprocess
 import unittest
 
-def run(command: str):
+def run(command: str, cwd = None):
     setup = ''
     if command.startswith('spack'):
         setup = 'source spack/share/spack/setup-env.sh && '
     
-    subprocess.run(setup + command, check=True, shell=True)
+    subprocess.run(setup + command, cwd=cwd, check=True, shell=True)
 
 # For each spack test there should be at least one line of comment stating
 # why this spack command is tested and/or where this spack command is used.
@@ -58,15 +58,14 @@ class CosmoTest(unittest.TestCase):
     def test_devbuild(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         run('git clone git@github.com:MeteoSwiss-APN/cosmo.git')
-        run('cd cosmo')
 
-        with self.subTest(case='gpu'):
-            run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore')
-        with self.subTest(case='gpu'):
-            run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore')
-
-        # run('cd ..')
-        # run('rm -rf cosmo')
+        try:
+            with self.subTest(case='gpu'):
+                run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore', cwd='cosmo')
+            with self.subTest(case='cpu'):
+                run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore', cwd='cosmo')
+        finally:
+            run('rm -rf cosmo')
 
 
 class CosmoDycoreTest(unittest.TestCase):
@@ -146,30 +145,24 @@ class IconTest(unittest.TestCase):
     # def test_devbuild_cpu(self):
     #     # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
     #     run('git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git')
-    #     run('cd icon-cscs')
-    #     run('mkdir -p pgi_cpu')
-    #     run('cd pgi_cpu')
-    #     run('touch a_fake_file.f90')
+    #     run('mkdir -p icon-cscs/pgi_cpu')
+    #     run('touch a_fake_file.f90', cwd='icon-cscs/pgi_cpu')
         
     #     try:
-    #         run('spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu')
+    #         run('spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu', cwd='icon-cscs/pgi_cpu')
     #     finally:
-    #         run('cd ../..')
     #         run('rm -rf icon-cscs')
 
     # TODO: Reactivate once the test works!
     # def test_devbuild_gpu(self):
     #     # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
     #     run('git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git')
-    #     run('cd icon-cscs')
-    #     run('mkdir -p pgi_gpu')
-    #     run('cd pgi_gpu')
-    #     run('touch a_fake_file.f90')
+    #     run('mkdir -p icon-cscs/pgi_gpu')
+    #     run('touch a_fake_file.f90', cwd='icon-cscs/pgi_gpu')
 
     #     try:
-    #         run('spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu')
+    #         run('spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu', cwd='icon-cscs/pgi_gpu')
     #     finally:
-    #         run('cd ../..')
     #         run('rm -rf icon-cscs')
 
 
