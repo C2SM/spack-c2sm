@@ -11,7 +11,7 @@ jobs:
     - uses: actions/checkout@v1
     # Example of using a custom build-command.
     # this commit SHA corresponds to tag `0.4`
-    - uses: cosunae/sphinx-action@686bdec455803962d3d8eb324ea52449f2c343d1
+    - uses: C2SM/sphinx-action@sphinx-latest
       with:
         build-command: "sphinx-build -b html . _build"
         docs-folder: "docs/"
