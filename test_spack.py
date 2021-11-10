@@ -6,12 +6,12 @@ import sys
 import subprocess
 import unittest
 
-def run(command: str, cwd = None):
+def run(command: str, cwd = '.'):
     setup = ''
     if command.startswith('spack'):
-        setup = 'source spack/share/spack/setup-env.sh && '
+        setup = f'source spack/share/spack/setup-env.sh &&'
     
-    subprocess.run(setup + command, cwd=cwd, check=True, shell=True)
+    subprocess.run(setup + f'{setup} cd {cwd} && {command}', check=True, shell=True)
 
 # For each spack test there should be at least one line of comment stating
 # why this spack command is tested and/or where this spack command is used.
