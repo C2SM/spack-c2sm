@@ -75,21 +75,6 @@ compilers:
     environment: {}
     extra_rpaths: []
 - compiler:
-    spec: gcc@10.1.0
-    paths:
-      cc: cc
-      cxx: CC
-      f77: ftn
-      fc: ftn
-    flags: {}
-    operating_system: cnl7
-    target: any
-    modules:
-    - PrgEnv-gnu
-    - gcc/10.1.0
-    environment: {}
-    extra_rpaths: []
-- compiler:
     spec: intel@19.0.1.144
     paths:
       cc: cc
