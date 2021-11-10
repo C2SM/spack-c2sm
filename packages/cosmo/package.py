@@ -179,7 +179,11 @@ class Cosmo(MakefilePackage):
                 eccodes_lib_dir='/lib64'
             else:
                 eccodes_lib_dir='/lib'
-            env.set('GRIBAPIL', '-L' + grib_prefix + eccodes_lib_dir + ' -leccodes_f90 -leccodes -L' + self.spec['jasper'].prefix + '/lib64 -ljasper')
+            rpath=''
+            if '+build_shared_libs' in self.spec['eccodes']:
+                rpath='-Wl,-rpath '+grib_prefix + eccodes_lib_dir+' '
+
+            env.set('GRIBAPIL', rpath + '-L' + grib_prefix + eccodes_lib_dir + ' -leccodes_f90 -leccodes -L' + self.spec['jasper'].prefix + '/lib64 -ljasper')
         grib_inc_dir_path = os.path.join(grib_prefix, 'include')
         if os.path.exists(grib_inc_dir_path):
             env.set('GRIBAPII', '-I' + grib_prefix + '/include')
