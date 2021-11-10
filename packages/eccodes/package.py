@@ -24,7 +24,7 @@ class Eccodes(CMakePackage):
     version('2.5.0', sha256='18ab44bc444168fd324d07f7dea94f89e056f5c5cd973e818c8783f952702e4e')
     version('2.2.0', sha256='1a4112196497b8421480e2a0a1164071221e467853486577c4f07627a702f4c3')
 
-    variant('build_shared_libs', default=False, description="Select the type of library built")
+    variant('build_shared_libs', default=True, description="Select the type of library built")
     variant('netcdf', default=False, 
             description='Enable GRIB to NetCDF conversion tool')
     variant('jp2k', default='jasper', values=('openjpeg', 'jasper', 'none'), description='Specify JPEG2000 decoding/encoding backend')
