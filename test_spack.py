@@ -65,8 +65,8 @@ class CosmoTest(unittest.TestCase):
         with self.subTest(case='gpu'):
             run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore')
 
-        run('cd ..')
-        run('rm -rf cosmo')
+        # run('cd ..')
+        # run('rm -rf cosmo')
 
 
 class CosmoDycoreTest(unittest.TestCase):
