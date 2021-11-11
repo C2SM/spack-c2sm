@@ -11,7 +11,7 @@ def run(command: str, cwd = '.'):
     if command.startswith('spack'):
         setup = f'source spack/share/spack/setup-env.sh &&'
     
-    subprocess.run(setup + f'{setup} cd {cwd} && {command}', check=True, shell=True)
+    subprocess.run(f'{setup} cd {cwd} && {command}', check=True, shell=True)
 
 # For each spack test there should be at least one line of comment stating
 # why this spack command is tested and/or where this spack command is used.
@@ -48,22 +48,26 @@ class CosmoTest(unittest.TestCase):
         run('spack installcosmo cosmo@master%pgi cosmo_target=cpu ~cppdycore')
 
     # def test_install_test(self):
-    #     # TODO! From https://github.com/C2SM/spack-c2sm/pull/289
+    #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/289
     #     run('spack installcosmo --test=root cosmo@master%pgi')
 
     # def test_install_test_claw(self):
-    #     # TODO! From https://github.com/C2SM/spack-c2sm/pull/289
+    #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/289
     #     run('spack installcosmo --test=root cosmo@master%pgi +claw')
 
-    def test_devbuild(self):
+    def test_devbuild_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         run('git clone git@github.com:MeteoSwiss-APN/cosmo.git')
-
         try:
-            with self.subTest(case='gpu'):
-                run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore', cwd='cosmo')
-            with self.subTest(case='cpu'):
-                run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore', cwd='cosmo')
+            run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore', cwd='cosmo')
+        finally:
+            run('rm -rf cosmo')
+
+    def test_devbuild_gpu(self):
+        # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
+        run('git clone git@github.com:MeteoSwiss-APN/cosmo.git')
+        try:
+            run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore', cwd='cosmo')
         finally:
             run('rm -rf cosmo')
 
@@ -138,7 +142,7 @@ class IconTest(unittest.TestCase):
     depends_on = {'serialbox', 'eccodes', 'claw'}
 
     # def test_install(self):
-    #     # TODO! From https://github.com/C2SM/spack-c2sm/pull/289
+    #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/289
     #     run('spack install icon@nwp%pgi icon_target=gpu +claw')
 
     # TODO: Reactivate once the test works!
@@ -175,7 +179,7 @@ class Int2lmTest(unittest.TestCase):
         run('spack install int2lm@c2sm_master%pgi')
 
     # def test_install_test(self):
-    #     # TODO! From https://github.com/C2SM/spack-c2sm/pull/319
+    #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/319
     #     run('spack install --test=root int2lm@c2sm_master%gcc')
 
     def test_install_no_pollen(self):
@@ -218,7 +222,7 @@ class OmniCompilerTest(unittest.TestCase):
     depends_on = {}
 
 
-class OmniXmodPoolest(unittest.TestCase):
+class OmniXmodPoolTest(unittest.TestCase):
     package_name = 'omni-xmod-pool'
     depends_on = {}
 
@@ -266,7 +270,7 @@ def Self_and_up(origin: set, DAG: map) -> set:
             return reachers
 
 def Has_cycle(directed_graph: map) -> bool:
-    return False # TODO!
+    return False # TODO: Implement!
 
 
 class DAG_Algorithm_Test(unittest.TestCase):
@@ -293,7 +297,7 @@ class DAG_Algorithm_Test(unittest.TestCase):
         self.assertEqual(c_reachers, {'a','c'})
         self.assertEqual(d_reachers, {'a','b','c','d'})
 
-    # def test_cycle(self): TODO!
+    # def test_cycle(self): TODO: Uncomment once Has_cycle is implemented!
     #     # a <-> b
     #     graph = {'a': {'b'}, 'b': {'a'}}
     #     self.assertTrue(Has_cycle(graph))
