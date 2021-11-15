@@ -1,6 +1,38 @@
 Important Spack Commands
 ========================
 
+Spack find
+----------
+List and search installed packages
+
+Usage (spack find)
+^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: bash
+  
+  spack find <package>@<version>%<compiler> +<variants>
+
+An example output for spack find of a spec could look as follows:
+
+.. code-block:: bash
+
+  spack find -v cosmo
+  
+  ==> 8 installed packages
+  -- linux-rhel7-skylake_avx512 / gcc@8.3.0 -----------------------
+  cosmo@master~claw cosmo_target=cpu ~cppdycore~debug+dycoretest+eccodes+parallel~pollen~production real_type=double ~serialize slave=tsa ~verbose
+  cosmo@master~claw cosmo_target=cpu ~cppdycore~debug+dycoretest+eccodes+parallel~pollen~production real_type=float ~serialize slave=tsa ~verbose
+
+  -- linux-rhel7-skylake_avx512 / pgi@19.9 ------------------------
+  cosmo@dev-build~claw cosmo_target=cpu ~cppdycore~debug+dycoretest~eccodes+parallel~pollen~production real_type=float +serialize slave=tsa ~verbose
+  cosmo@5.07.mch1.0.p6+claw cosmo_target=gpu +cppdycore~debug+eccodes+parallel+pollen+production real_type=double ~serialize slave=tsa ~verbose
+  cosmo@5.07.mch1.0.p6+claw cosmo_target=gpu +cppdycore~debug+eccodes+parallel+pollen+production real_type=float ~serialize slave=tsa ~verbose
+
+Options (spack find)
+^^^^^^^^^^^^^^^^^^^^^
+* \--paths, -p: show paths to package install directories
+* \--variants, -v: show variants in output (can be long)
+
 Spack list
 ----------
 List and search available packages
