@@ -167,6 +167,7 @@ Usage (spack devbuildcosmo)
 
 Options (spack devbuildcosmo)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 * --no_specyaml: Ignore *spec.yaml*
 * -c --clean_build: Clean build
 * -j <JOBS>, --jobs <JOBS>: Explicitly set number of parallel jobs
@@ -241,6 +242,8 @@ Add package to the user environment. It can be used i. e. to set all runtime pat
 like `LD_LIBRARY_PATH` as defined in the respective package.
 `More information in the official Spack documentation <https://spack.readthedocs.io/en/latest/command_index.html?highlight=spack%20load#spack-load>`_
 
+It is recommended to load the corresponding environment prior to any execution of an executable
+compiled by Spack.
 Usage (spack load)
 ^^^^^^^^^^^^^^^^^^
 
@@ -250,4 +253,4 @@ Usage (spack load)
 
 Options (spack load)
 ^^^^^^^^^^^^^^^^^^^^
-* ---first: load the first match if multiple packages match the spec
+* \--first: load the first match if multiple packages match the spec
