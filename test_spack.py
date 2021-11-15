@@ -43,6 +43,7 @@ class ClawTest(unittest.TestCase):
 class CosmoTest(unittest.TestCase):
     package_name = 'cosmo'
     depends_on = {'cuda', 'serialbox', 'libgrib1', 'cosmo-grib-api-definitions', 'cosmo-eccodes-definitions', 'omni-xmod-pool', 'claw', 'zlib_ng', 'cosmo-dycore'}
+    machines = all_machines
 
     def test_install_master_gpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
