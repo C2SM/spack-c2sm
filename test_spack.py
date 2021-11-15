@@ -6,6 +6,8 @@ import sys
 import subprocess
 import unittest
 
+all_machines = {'daint', 'tsa'}
+
 def run(command: str, cwd = '.'):
     setup = ''
     if command.startswith('spack'):
@@ -23,16 +25,19 @@ def run(command: str, cwd = '.'):
 class AtlasTest(unittest.TestCase):
     package_name = 'atlas'
     depends_on = {'ecbuild', 'eckit'}
+    machines = all_machines
 
 
 class AtlasUtilityTest(unittest.TestCase):
     package_name = 'atlas_utilities'
     depends_on = {'atlas', 'eckit'}
+    machines = all_machines
 
 
 class ClawTest(unittest.TestCase):
     package_name = 'claw'
     depends_on = {}
+    machines = all_machines
 
 
 class CosmoTest(unittest.TestCase):
@@ -75,71 +80,85 @@ class CosmoTest(unittest.TestCase):
 class CosmoDycoreTest(unittest.TestCase):
     package_name = 'cosmo-dycore'
     depends_on = {'gridtools', 'serialbox', 'cuda'}
+    machines = all_machines
 
 
 class CosmoEccodesDefinitionsTest(unittest.TestCase):
     package_name = 'cosmo-eccodes-definitions'
     depends_on = {'eccodes'}
+    machines = all_machines
 
 
 class CosmoGribApiTest(unittest.TestCase):
     package_name = 'cosmo-grib-api'
     depends_on = {}
+    machines = all_machines
 
 
 class CosmoGribApiDefinitionsTest(unittest.TestCase):
     package_name = 'cosmo-grib-api-definitions'
     depends_on = {'cosmo-grib-api'}
+    machines = all_machines
 
 
 class CudaTest(unittest.TestCase):
     package_name = 'cuda'
     depends_on = {}
+    machines = all_machines
 
 
 class DawnTest(unittest.TestCase):
     package_name = 'dawn'
     depends_on = {}
+    machines = all_machines
 
 
 class Dawn4PyTest(unittest.TestCase):
     package_name = 'dawn4py'
     depends_on = {}
+    machines = all_machines
 
 
 class DuskTest(unittest.TestCase):
     package_name = 'dusk'
     depends_on = {'dawn4py'}
+    machines = all_machines
 
 
 class DyiconBenchmarksTest(unittest.TestCase):
     package_name = 'dyicon_benchmarks'
     depends_on = {'atlas_utilities', 'atlas', 'cuda'}
+    machines = all_machines
 
 
 class EcbuildTest(unittest.TestCase):
     package_name = 'ecbuild'
     depends_on = {}
+    machines = all_machines
 
 
 class EccodesTest(unittest.TestCase):
     package_name = 'eccodes'
     depends_on = {}
+    machines = all_machines
 
 
 class EckitTest(unittest.TestCase):
     package_name = 'eckit'
     depends_on = {'ecbuild'}
+    machines = all_machines
 
 
 class GridToolsTest(unittest.TestCase):
     package_name = 'gridtools'
     depends_on = {'cuda'}
+    machines = all_machines
 
 
 class IconTest(unittest.TestCase):
     package_name = 'icon'
     depends_on = {'serialbox', 'eccodes', 'claw'}
+    machines = all_machines
 
     # def test_install(self):
     #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/289
@@ -173,11 +192,11 @@ class IconTest(unittest.TestCase):
 class Int2lmTest(unittest.TestCase):
     package_name = 'int2lm'
     depends_on = {'cosmo-grib-api-definitions', 'cosmo-eccodes-definitions', 'libgrib1'}
+    machines = {'tsa'}
 
     def test_install(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        if machine == 'tsa':
-            run('spack install int2lm@c2sm_master%pgi')
+        run('spack install int2lm@c2sm_master%pgi')
 
     # def test_install_test(self):
     #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/319
@@ -185,68 +204,79 @@ class Int2lmTest(unittest.TestCase):
 
     def test_install_no_pollen(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        if machine == 'tsa':
-            run('spack install int2lm@org_master%pgi pollen=False')
+        run('spack install int2lm@org_master%pgi pollen=False')
 
 
 class IconDuskE2ETest(unittest.TestCase):
     package_name = 'icondusk-e2e'
     depends_on = {'atlas_utilities', 'dawn4py', 'dusk', 'atlas', 'cuda'}
+    machines = all_machines
 
 
 class IconToolsTest(unittest.TestCase):
     package_name = 'icontools'
     depends_on = {'eccodes', 'cosmo-grib-api'}
+    machines = all_machines
 
 
 class LibGrib1Test(unittest.TestCase):
     package_name = 'libgrib1'
     depends_on = {}
+    machines = all_machines
 
 
 class LogTest(unittest.TestCase):
     package_name = 'log'
     depends_on = {}
+    machines = all_machines
 
 
 class MpichTest(unittest.TestCase):
     package_name = 'mpich'
     depends_on = {}
+    machines = all_machines
 
 
 class OasisTest(unittest.TestCase):
     package_name = 'oasis'
     depends_on = {}
+    machines = all_machines
 
 
 class OmniCompilerTest(unittest.TestCase):
     package_name = 'omnicompiler'
     depends_on = {}
+    machines = all_machines
 
 
 class OmniXmodPoolTest(unittest.TestCase):
     package_name = 'omni-xmod-pool'
     depends_on = {}
+    machines = all_machines
 
 
 class OpenMPITest(unittest.TestCase):
     package_name = 'openmpi'
     depends_on = {}
+    machines = all_machines
 
 
 class SerialBoxTest(unittest.TestCase):
     package_name = 'serialbox'
     depends_on = {}
+    machines = all_machines
 
 
 class XcodeMLToolsTest(unittest.TestCase):
     package_name = 'xcodeml-tools'
     depends_on = {}
+    machines = all_machines
 
 
 class ZLibNGTest(unittest.TestCase):
     package_name = 'zlib_ng'
     depends_on = {}
+    machines = all_machines
 
 
 # A set of all test case classes
@@ -393,7 +423,7 @@ if __name__ == '__main__':
     # collect tests from all packages to test
     suite = unittest.TestSuite([
         test_loader.loadTestsFromTestCase(case)
-        for case in all_test_cases if case.package_name in packages_to_test
+        for case in all_test_cases if case.package_name in packages_to_test and machine in case.machines
     ])
     
     # run tests
