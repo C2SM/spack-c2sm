@@ -51,7 +51,7 @@ There are three different git repositories available for the cosmo-package:
 * C2SM-RCM/cosmo.git: version-suffix *c2sm-features* 
 
 It is clear that only using *spack install <package>@5.09* will always result in the
-same code, all other version only point to a `HEAD` of a git branch.
+same code, all other version only point to a *HEAD* of a git branch.
 
 So long story short:
 
@@ -73,4 +73,4 @@ Otherwise the conncection between a specific version-suffix and the correspondin
 
 So long story short:
 
-**Always store the local source and the corresponding executables in the same location**
+**Always store the local source and the corresponding executables in the same location!**
