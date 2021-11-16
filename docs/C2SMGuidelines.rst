@@ -58,7 +58,7 @@ So long story short:
 **Always use a valid git tag as a version-suffix when building software for production!**
 
 Spack dev-build (C2SM Guidelines)
---------------------------------
+----------------------------------
 In order to install software with *spack dev-build* one needs a local source code.
 Spack will compile the code as it is locally present. Contrary to *spack install*, version-suffix
 does not have any affect on the code version compiled. Of course the version-suffix will appear
