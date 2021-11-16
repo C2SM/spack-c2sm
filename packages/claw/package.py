@@ -11,20 +11,36 @@ class Claw(CMakePackage):
        weather application written in Fortran. From a single source code, it
        generates architecture specific code decorated with OpenMP or OpenACC"""
 
-    homepage ='https://claw-project.github.io/'
+    homepage = 'https://claw-project.github.io/'
     git = 'https://github.com/claw-project/claw-compiler.git'
     maintainers = ['FrostyMike']
 
     version('master', branch='master', submodules=True)
     version('2.1', tag='v2.1', submodules=True)
-    version('2.0.2', commit='8c012d58484d8caf79a4fe45597dc74b4367421c', submodules=True)
-    version('2.0.1', commit='f5acc929df74ce66a328aa4eda9cc9664f699b91', submodules=True)
-    version('2.0', commit='53e705b8bfce40a5c5636e8194a7622e337cf4f5', submodules=True)
-    version('1.2.3', commit='eaf5e5fb39150090e51bec1763170ce5c5355198', submodules=True)
-    version('1.2.2', commit='fc27a267eef9f412dd6353dc0b358a05b3fb3e16', submodules=True)
-    version('1.2.1', commit='939989ab52edb5c292476e729608725654d0a59a', submodules=True)
-    version('1.2.0', commit='fc9c50fe02be97b910ff9c7015064f89be88a3a2', submodules=True)
-    version('1.1.0', commit='16b165a443b11b025a77cad830b1280b8c9bcf01', submodules=True)
+    version('2.0.2',
+            commit='8c012d58484d8caf79a4fe45597dc74b4367421c',
+            submodules=True)
+    version('2.0.1',
+            commit='f5acc929df74ce66a328aa4eda9cc9664f699b91',
+            submodules=True)
+    version('2.0',
+            commit='53e705b8bfce40a5c5636e8194a7622e337cf4f5',
+            submodules=True)
+    version('1.2.3',
+            commit='eaf5e5fb39150090e51bec1763170ce5c5355198',
+            submodules=True)
+    version('1.2.2',
+            commit='fc27a267eef9f412dd6353dc0b358a05b3fb3e16',
+            submodules=True)
+    version('1.2.1',
+            commit='939989ab52edb5c292476e729608725654d0a59a',
+            submodules=True)
+    version('1.2.0',
+            commit='fc9c50fe02be97b910ff9c7015064f89be88a3a2',
+            submodules=True)
+    version('1.1.0',
+            commit='16b165a443b11b025a77cad830b1280b8c9bcf01',
+            submodules=True)
 
     depends_on('cmake@3.12:%gcc', type='build')
     depends_on('java@8:', when="@2.0:")
@@ -42,12 +58,10 @@ class Claw(CMakePackage):
         spec = self.spec
 
         if self.version < Version('2.1'):
-            args.append('-DOMNI_CONF_OPTION=--with-libxml2={0}'.
-                        format(spec['libxml2'].prefix))
+            args.append('-DOMNI_CONF_OPTION=--with-libxml2={0}'.format(
+                spec['libxml2'].prefix))
         else:
             args.append('-DJAVA_HOME=' + self.spec['java'].prefix)
             args.append('-DOMNI_LINK_STATIC_GNU_LIBSTDCXX=ON')
 
         return args
-
-

@@ -26,20 +26,20 @@ from spack import *
 class Libgrib1(MakefilePackage):
     """To code / decode the meteorological data to GRIB, special software is needed. While a DWD-written software, the GRIB1-library is used to work with GRIB 1 data, the new application programmers interface grib_api from ECMWF is used for dealing with GRIB 2. But grib_api can also deal with GRIB 1 data. The approach, how data is coded to / decoded from GRIB messages is rather different in these software packages. While the GRIB1-library provides interfaces to code / decode the full GRIB message in one step, the grib_api uses the so-called key/value approach, where the single meta data could be set"""
 
-    homepage="https://github.com/C2SM-RCM/libgrib1"
+    homepage = "https://github.com/C2SM-RCM/libgrib1"
     git = "git@github.com:C2SM-RCM/libgrib1.git"
 
     # notify when the package is updated.
     maintainers = ['elsagermann']
-    build_directory='libgrib1_cosmo/source'
+    build_directory = 'libgrib1_cosmo/source'
 
     version('master', branch='master')
     version('22-01-2020', commit='3d3db9a9a090f6798c2fd4290c271dd58ff694e0')
-   
+
     def edit(self, spec, prefix):
         _makefile_name = 'Makefile.linux'
         if self.compiler.name == 'gcc':
-          _makefile_name += '.gnu'
+            _makefile_name += '.gnu'
         elif self.compiler.name == 'pgi':
             _makefile_name += '.pgi'
         elif self.compiler.name == 'cce':
@@ -50,8 +50,10 @@ class Libgrib1(MakefilePackage):
         with working_dir(self.build_directory):
             MakeFileFilter = FileFilter(self._makefile_name)
             stage_path = self.stage.source_path + '/libgrib1_cosmo'
-            MakeFileFilter.filter('INCDIR   =.*',  'INCDIR   = {0}/include'.format(stage_path))
-            MakeFileFilter.filter('LIBDIR   =.*',  'LIBDIR   = {0}/lib'.format(stage_path))
+            MakeFileFilter.filter('INCDIR   =.*',
+                                  'INCDIR   = {0}/include'.format(stage_path))
+            MakeFileFilter.filter('LIBDIR   =.*',
+                                  'LIBDIR   = {0}/lib'.format(stage_path))
             options = ['-f', self._makefile_name]
             make(*options)
 
