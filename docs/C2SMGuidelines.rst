@@ -56,3 +56,21 @@ same code, all other version only point to a `HEAD` of a git branch.
 So long story short:
 
 **Always use a valid git tag as a version-suffix when building software for production!**
+
+Spack dev-build (C2SM Guidelines)
+--------------------------------
+In order to install software with *spack dev-build* one needs a local source code.
+Spack will compile the code as it is locally present. Contrary to *spack install*, version-suffix
+does not have any affect on the code version compiled. Of course the version-suffix will appear
+in the installation path and the Spack database later on.
+
+Using *dev-build* may limit your version-suffix to *dev-build* because of the version already installed
+by Jenkins. Therefore you may run into trouble of not being able to install two different
+executables from different sources at one time.
+
+In this case it is recommended to store the executables in the source folder they were initially built.
+Otherwise the conncection between a specific version-suffix and the corresponding local source is lost.
+
+So long story short:
+
+**Always store the local source and the corresponding executables in the same location**
