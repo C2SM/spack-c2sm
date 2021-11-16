@@ -20,6 +20,7 @@ mostly at the Swiss Super Computing Center (CSCS).
    SpackManagement
    CI
    SpackChoice
+   C2SMGuidelines
 
 Indices and tables
 ==================
