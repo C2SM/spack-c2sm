@@ -11,7 +11,7 @@ class Claw(CMakePackage):
        weather application written in Fortran. From a single source code, it
        generates architecture specific code decorated with OpenMP or OpenACC"""
 
-    homepage = 'https://claw-project.github.io/'
+    homepage ='https://claw-project.github.io/'
     git = 'https://github.com/claw-project/claw-compiler.git'
     maintainers = ['FrostyMike']
 
