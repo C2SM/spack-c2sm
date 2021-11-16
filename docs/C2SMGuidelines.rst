@@ -51,14 +51,14 @@ There are three different git repositories available for the cosmo-package:
 * C2SM-RCM/cosmo.git: version-suffix *c2sm-features* 
 
 It is clear that only using *spack install <package>@5.09* will always result in the
-same code, all other version only point to a `HEAD` of a git branch.
+same code, all other version only point to a *HEAD* of a git branch.
 
 So long story short:
 
 **Always use a valid git tag as a version-suffix when building software for production!**
 
 Spack dev-build (C2SM Guidelines)
---------------------------------
+----------------------------------
 In order to install software with *spack dev-build* one needs a local source code.
 Spack will compile the code as it is locally present. Contrary to *spack install*, version-suffix
 does not have any affect on the code version compiled. Of course the version-suffix will appear
@@ -73,4 +73,4 @@ Otherwise the conncection between a specific version-suffix and the correspondin
 
 So long story short:
 
-**Always store the local source and the corresponding executables in the same location**
+**Always store the local source and the corresponding executables in the same location!**
