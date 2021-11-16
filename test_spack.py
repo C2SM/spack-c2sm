@@ -173,7 +173,7 @@ class IconTest(unittest.TestCase):
     #     run('touch a_fake_file.f90', cwd='icon-cscs/pgi_cpu')
         
     #     try:
-    #         run('spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu', cwd='icon-cscs/pgi_cpu')
+    #         run('spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu', cwd='icon-cscs/pgi_cpu')
     #     finally:
     #         run('rm -rf icon-cscs')
 
@@ -185,7 +185,7 @@ class IconTest(unittest.TestCase):
     #     run('touch a_fake_file.f90', cwd='icon-cscs/pgi_gpu')
 
     #     try:
-    #         run('spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu', cwd='icon-cscs/pgi_gpu')
+    #         run('spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu', cwd='icon-cscs/pgi_gpu')
     #     finally:
     #         run('rm -rf icon-cscs')
 
