@@ -14,8 +14,8 @@ There are two possible ways of building software with Spack.
 Both of them are fine, but have some specialties one needs to take
 into account.
 
-Spack install
---------------
+Spack install (C2SM Guidelines)
+--------------------------------
 Every *spack install* needs a version suffix, i.e *spack install <package>@<version-suffix>*.
 This version-suffix can have different meanings:
 
