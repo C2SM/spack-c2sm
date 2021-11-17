@@ -50,7 +50,7 @@ class Icontools(AutotoolsPackage):
     depends_on('cosmo-grib-api',
                type=('build', 'link', 'run'),
                when='~eccodes')
-    depends_on('jasper@1.900.1%gcc ~shared', type=('build', 'link'))
+    depends_on('jasper@1.900.1%gcc', type=('build', 'link'))
 
     variant('slave',
             default='daint',
