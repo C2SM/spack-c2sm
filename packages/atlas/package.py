@@ -10,7 +10,7 @@ from spack import *
 class Atlas(CMakePackage):
     """A library for numerical weather prediction and climate modelling"""
 
-    homepage = 'https://confluence.ecmwf.int/display/atlas'
+    homepage ='https://confluence.ecmwf.int/display/atlas'
     url = "https://github.com/ecmwf/atlas/archive/0.22.0.tar.gz"
     git = 'https://github.com/ecmwf/atlas.git'
     maintainers = ['cosunae']
