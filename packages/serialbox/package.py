@@ -26,8 +26,8 @@ from spack import *
 class Serialbox(CMakePackage):
     """Serialbox is part of the GridTools Framework. Serialbox is a serialization library and tools for C/C++, Python3 and Fortran."""
     homepage = "https://github.com/GridTools/serialbox"
-    url      = "https://github.com/GridTools/serialbox/archive/v2.6.0.tar.gz"
-    git      = "https://github.com/GridTools/serialbox.git"
+    url = "https://github.com/GridTools/serialbox/archive/v2.6.0.tar.gz"
+    git = "https://github.com/GridTools/serialbox.git"
 
     maintainers = ['elsagermann']
 
@@ -40,27 +40,52 @@ class Serialbox(CMakePackage):
     depends_on('netcdf-c', when='+netcdf')
     depends_on('netcdf-cxx4', when='+netcdf')
 
-    variant('build_type', default='Release', description='Build type', values=('Debug', 'Release', 'DebugRelease'))
-    variant('fortran', default=True, description='Build the C interface of Serialbox (libSerialboxFortran)')
-    variant('shared', default=True, description='Build shared libraries of Serialbox')
-    variant('exp_filesystem', default=True, description='Build with experimental filesystem')
+    variant('build_type',
+            default='Release',
+            description='Build type',
+            values=('Debug', 'Release', 'DebugRelease'))
+    variant(
+        'fortran',
+        default=True,
+        description='Build the C interface of Serialbox (libSerialboxFortran)')
+    variant('shared',
+            default=True,
+            description='Build shared libraries of Serialbox')
+    variant('exp_filesystem',
+            default=True,
+            description='Build with experimental filesystem')
     variant('ftg', default=True, description='Build with ftg')
-    variant('no_pckg_registery', default=True, description='Build with Cmake export no package registey')
-    variant('testing_gridtools', default=False, description='Build with testing gridtools')
-    variant('testing_fortran', default=False, description='Build with testing fortran')
-    variant('testing_stella', default=False, description='Build with testing stella')
+    variant('no_pckg_registery',
+            default=True,
+            description='Build with Cmake export no package registey')
+    variant('testing_gridtools',
+            default=False,
+            description='Build with testing gridtools')
+    variant('testing_fortran',
+            default=False,
+            description='Build with testing fortran')
+    variant('testing_stella',
+            default=False,
+            description='Build with testing stella')
     variant('netcdf', default=False, description='Build using netcdf')
-    variant('boost_sys_paths', default=True, description='Build boost with no system paths')
-    variant('boost_cmake', default=True, description='Build boost without using CMake')
-    variant('python', default=True, description='Build Python3 interface of SerialboxBuild')
+    variant('boost_sys_paths',
+            default=True,
+            description='Build boost with no system paths')
+    variant('boost_cmake',
+            default=True,
+            description='Build boost without using CMake')
+    variant('python',
+            default=True,
+            description='Build Python3 interface of SerialboxBuild')
     variant('sdb', default=True, description='Build stencil debugger sdb')
 
     def cmake_args(self):
         args = []
-        
+
         args.append('-DCMAKE_C_COMPILER=gcc')
         args.append('-DCMAKE_CXX_COMPILER=g++')
-        args.append('-DCMAKE_BUILD_TYPE={0}'.format(self.spec.variants['build_type'].value))
+        args.append('-DCMAKE_BUILD_TYPE={0}'.format(
+            self.spec.variants['build_type'].value))
         args.append('-DBOOST_ROOT={0}'.format(self.spec['boost'].prefix))
 
         if '+boost_sys_paths' in self.spec:

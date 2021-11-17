@@ -10,9 +10,11 @@ class ZlibNg(CMakePackage):
     """zlib replacement with optimizations for next generation systems."""
 
     homepage = "https://github.com/zlib-ng/zlib-ng"
-    url      = "https://github.com/zlib-ng/zlib-ng/archive/2.0.0.tar.gz"
+    url = "https://github.com/zlib-ng/zlib-ng/archive/2.0.0.tar.gz"
 
-    version('2.0.0', sha256='86993903527d9b12fc543335c19c1d33a93797b3d4d37648b5addae83679ecd8')
+    version('2.0.0',
+            sha256=
+            '86993903527d9b12fc543335c19c1d33a93797b3d4d37648b5addae83679ecd8')
 
     variant('compat', default=False, description='Enable compatibility API')
     variant('opt', default=True, description='Enable optimizations')
@@ -28,5 +30,6 @@ class ZlibNg(CMakePackage):
         return args
 
     # modify path to replace zlib used in all dependent libraries in any package
-    def setup_run_environment(self,env):
-        env.prepend_path('LD_LIBRARY_PATH',self.spec['zlib_ng'].prefix + '/lib')
+    def setup_run_environment(self, env):
+        env.prepend_path('LD_LIBRARY_PATH',
+                         self.spec['zlib_ng'].prefix + '/lib')

@@ -25,13 +25,15 @@ class IconduskE2e(CMakePackage):
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
     depends_on('atlas_utilities', type=('build', 'run'))
-    depends_on('dawn4py',  type=('build'))
+    depends_on('dawn4py', type=('build'))
     depends_on('dusk', type=('build'))
     depends_on('python@3.8.0:3.8.999')
     depends_on('atlas@0.22.0')
     depends_on('cuda', type=('build', 'run'))
 
-    variant('build_type', default='Release', description='Build type',
+    variant('build_type',
+            default='Release',
+            description='Build type',
             values=('Debug', 'Release', 'DebugRelease'))
     variant('precision', default='double', values=('double', 'float'))
 
@@ -39,19 +41,21 @@ class IconduskE2e(CMakePackage):
         args = []
         spec = self.spec
 
-        gcclibdir = os.path.dirname(subprocess.run(
-            [self.compiler.cxx, "-print-file-name=libstdc++.so"], capture_output=True).stdout.decode("utf-8"))
-        args.append(
-            '-DCMAKE_BUILD_TYPE={0}'.format(self.spec.variants['build_type'].value))
-        args.append('-DPython3_EXECUTABLE=' +
-                    spec['python'].prefix + '/bin/python3.8')
-        args.append('-Datlas_utils_DIR=' +
-                    spec['atlas_utilities'].prefix+'/lib/cmake/atlas_utils')
-        args.append('-Ddawn4py_DIR='+spec['dawn4py'].prefix)
-        args.append('-Datlas_DIR='+spec['atlas'].prefix)
-        args.append('-DPRECISION='+spec.variants['precision'].value)
+        gcclibdir = os.path.dirname(
+            subprocess.run(
+                [self.compiler.cxx, "-print-file-name=libstdc++.so"],
+                capture_output=True).stdout.decode("utf-8"))
+        args.append('-DCMAKE_BUILD_TYPE={0}'.format(
+            self.spec.variants['build_type'].value))
+        args.append('-DPython3_EXECUTABLE=' + spec['python'].prefix +
+                    '/bin/python3.8')
+        args.append('-Datlas_utils_DIR=' + spec['atlas_utilities'].prefix +
+                    '/lib/cmake/atlas_utils')
+        args.append('-Ddawn4py_DIR=' + spec['dawn4py'].prefix)
+        args.append('-Datlas_DIR=' + spec['atlas'].prefix)
+        args.append('-DPRECISION=' + spec.variants['precision'].value)
         # Hack in order to fix this spack issue with RPATH
         # https://github.com/spack/spack/issues/4261#issuecomment-466005631
-        args.append('-DCMAKE_INSTALL_RPATH='+gcclibdir)
+        args.append('-DCMAKE_INSTALL_RPATH=' + gcclibdir)
 
         return args
