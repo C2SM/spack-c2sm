@@ -4,7 +4,7 @@ packages:
     all:
         # default compilers defined by the system
         # these reflect the current installed PE
-        compiler: [gcc@9.3.0, gcc@8.3.0, pgi@20.1.1, pgi@20.1.0, pgi@21.3.0, cce@11.0.0, cce@10.0.2, intel@19.0.1.144]
+        compiler: [gcc@10.2.0, gcc@9.3.0, gcc@8.3.0, pgi@20.1.1, pgi@20.1.0, pgi@21.3.0, cce@11.0.0, cce@10.0.2, intel@19.0.1.144]
         providers:
             mpi: [mpich]
             # if the mpich package support +cuda in the future it needs to be put there
@@ -13,6 +13,7 @@ packages:
             blas: [cray-libsci_acc, cray-libsci, intel-mkl]
             scalapack: [cray-libsci_acc, cray-libsci, intel-mkl]
             pkgconfig: [pkg-config]
+        variants: arch=cray-cnl7-haswell
     # packages installed by c2sm-spack instance
     cosmo:
       variants: cuda_arch=60 cosmo_target=gpu slave=daint slurm_partition= "normal" slurm_bin= "srun" slurm_opt_nodes= "-n" slurm_nodes= "1"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint= "-C" slurm_constraint= "gpu"
@@ -34,7 +35,7 @@ packages:
         variants: host=daint
     int2lm:
         variants: slave=daint
-        compiler: [pgi@20.1.1]
+        compiler: [pgi@20.1.1,gcc@9.3.0]
     llvm:
         paths:
             llvm@10.0.0: /project/g110/install/daint/llvm-10
