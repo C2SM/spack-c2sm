@@ -28,16 +28,27 @@ class Omnicompiler(AutotoolsPackage):
 
     # FIXME: Add a proper url for your package's homepage here.
     homepage = "https://www.example.com"
-    url      = "https://omni-compiler.org/download/stable/omnicompiler-1.3.2.tar.bz2"
+    url = "https://omni-compiler.org/download/stable/omnicompiler-1.3.2.tar.bz2"
 
     maintainers = ['elsagermann']
 
-    version('1.3.2', sha256='62e965edaf0217aeaf471664cb7af7ecbdd84239b98f962a6ce6a4d77668247d')
-    version('1.3.1', sha256='9fee60855a2c25a63168923be468fc9598e200897dfffec61494de6d38f001bd')
-    version('1.3.0', sha256='bbea9eb10277d4658edd4ea80ad727a299e9117bb470c7e637b36627a24b742d')
-    version('1.2.3', sha256='c211c9919579c6c0d7b13f22d3d46fa638c6158c06bee67880a34868f4dc3b95')
-    
-    variant('mod2xmod', default=False, description="Build T_Module which can transform .mod files to .xmod files.")
+    version('1.3.2',
+            sha256=
+            '62e965edaf0217aeaf471664cb7af7ecbdd84239b98f962a6ce6a4d77668247d')
+    version('1.3.1',
+            sha256=
+            '9fee60855a2c25a63168923be468fc9598e200897dfffec61494de6d38f001bd')
+    version('1.3.0',
+            sha256=
+            'bbea9eb10277d4658edd4ea80ad727a299e9117bb470c7e637b36627a24b742d')
+    version('1.2.3',
+            sha256=
+            'c211c9919579c6c0d7b13f22d3d46fa638c6158c06bee67880a34868f4dc3b95')
+
+    variant('mod2xmod',
+            default=False,
+            description=
+            "Build T_Module which can transform .mod files to .xmod files.")
     # FIXME: Add dependencies if required.
     depends_on('libxml2')
     depends_on('m4%gcc')
@@ -53,11 +64,14 @@ class Omnicompiler(AutotoolsPackage):
     def configure_args(self):
         args = []
         if '+mod2xmod' in self.spec:
-          args = ['--enable-mod2xmod',
-            '--with-gmp=/usr/..',
-            '--with-mpfr-include={0}'.format(self.spec['mpfr'].prefix + '/include'),
-            '--with-mpfr-lib={0}'.format(self.spec['mpfr'].prefix + '/lib'),
-            '--with-libxml2={0}'.format(spec['libxml2'].prefix),
+            args = [
+                '--enable-mod2xmod',
+                '--with-gmp=/usr/..',
+                '--with-mpfr-include={0}'.format(self.spec['mpfr'].prefix +
+                                                 '/include'),
+                '--with-mpfr-lib={0}'.format(self.spec['mpfr'].prefix +
+                                             '/lib'),
+                '--with-libxml2={0}'.format(spec['libxml2'].prefix),
             ]
 
         return args

@@ -17,41 +17,61 @@ class Eccodes(CMakePackage):
 
     maintainers = ['skosukhin']
 
-    version('2.19.0', sha256='a1d080aed1b17a9d4e3aecccc5a328c057830cd4d54f451f5498b80b24c46404')
-    version('2.18.0', sha256='d88943df0f246843a1a062796edbf709ef911de7269648eef864be259e9704e3')
-    version('2.14.1', sha256='16da742691c0ac81ccc378ae3f97311ef0dfdc82505aa4c652eb773e911cc9d6')
-    version('2.13.0', sha256='c5ce1183b5257929fc1f1c8496239e52650707cfab24f4e0e1f1a471135b8272')
-    version('2.5.0', sha256='18ab44bc444168fd324d07f7dea94f89e056f5c5cd973e818c8783f952702e4e')
-    version('2.2.0', sha256='1a4112196497b8421480e2a0a1164071221e467853486577c4f07627a702f4c3')
+    version('2.19.0',
+            sha256=
+            'a1d080aed1b17a9d4e3aecccc5a328c057830cd4d54f451f5498b80b24c46404')
+    version('2.18.0',
+            sha256=
+            'd88943df0f246843a1a062796edbf709ef911de7269648eef864be259e9704e3')
+    version('2.14.1',
+            sha256=
+            '16da742691c0ac81ccc378ae3f97311ef0dfdc82505aa4c652eb773e911cc9d6')
+    version('2.13.0',
+            sha256=
+            'c5ce1183b5257929fc1f1c8496239e52650707cfab24f4e0e1f1a471135b8272')
+    version('2.5.0',
+            sha256=
+            '18ab44bc444168fd324d07f7dea94f89e056f5c5cd973e818c8783f952702e4e')
+    version('2.2.0',
+            sha256=
+            '1a4112196497b8421480e2a0a1164071221e467853486577c4f07627a702f4c3')
 
-    variant('build_shared_libs', default=True, description="Select the type of library built")
-    variant('netcdf', default=False, 
+    variant('build_shared_libs',
+            default=True,
+            description="Select the type of library built")
+    variant('netcdf',
+            default=False,
             description='Enable GRIB to NetCDF conversion tool')
-    variant('jp2k', default='jasper', values=('openjpeg', 'jasper', 'none'), description='Specify JPEG2000 decoding/encoding backend')
-    variant('png', default=False,
+    variant('jp2k',
+            default='jasper',
+            values=('openjpeg', 'jasper', 'none'),
+            description='Specify JPEG2000 decoding/encoding backend')
+    variant('png',
+            default=False,
             description='Enable PNG support for decoding/encoding')
-    variant('aec', default=True,
+    variant('aec',
+            default=True,
             description='Enable Adaptive Entropy Coding for decoding/encoding')
-    variant('pthreads', default=False,
-            description='Enable POSIX threads')
-    variant('openmp', default=False,
-            description='Enable OpenMP threads')
-    variant('memfs', default=False,
+    variant('pthreads', default=False, description='Enable POSIX threads')
+    variant('openmp', default=False, description='Enable OpenMP threads')
+    variant('memfs',
+            default=False,
             description='Enable memory based access to definitions/samples')
-    variant('python', default=False,
-            description='Enable the Python interface')
+    variant('python', default=False, description='Enable the Python interface')
     variant('fortran', default=True, description='Enable the Fortran support')
-    variant('examples', default=True,
+    variant('examples',
+            default=True,
             description='Build the examples (part of the full test suite)')
     variant('test', default=True, description='Enable the tests')
-    variant('build_type', default='RelWithDebInfo',
+    variant('build_type',
+            default='RelWithDebInfo',
             description='The build type to build',
             values=('Debug', 'Release', 'RelWithDebInfo', 'Production'))
 
     # The building script tries to find an optional package valgrind when
     # tests are enabled but the testing scripts don't use it.
     # depends_on('valgrind', type='test', when='+test')
-    
+
     depends_on('cmake@3.14.5:%gcc')
     depends_on('netcdf-c', when='+netcdf')
     depends_on('openjpeg@1.5.0:1.5.999,2.1.0:2.1.999', when='jp2k=openjpeg')
@@ -63,12 +83,14 @@ class Eccodes(CMakePackage):
     # The interface works only for Python2.
     # Python 3 support was added in 2.13.0:
     # https://confluence.ecmwf.int/display/ECC/Python+3+interface+for+ecCodes
-    depends_on('python@2.6:2.999', when='@:2.12+python',
+    depends_on('python@2.6:2.999',
+               when='@:2.12+python',
                type=('build', 'link', 'run'))
     depends_on('py-numpy', when='+python', type=('build', 'run'))
     extends('python', when='+python')
 
-    conflicts('+openmp', when='+pthreads',
+    conflicts('+openmp',
+              when='+pthreads',
               msg='Cannot enable both POSIX threads and OMP')
 
     @run_before('cmake')
@@ -80,24 +102,25 @@ class Eccodes(CMakePackage):
     def cmake_args(self):
         var_opt_list = [('+pthreads', 'ECCODES_THREADS'),
                         ('+openmp', 'ECCODES_OMP_THREADS'),
-                        ('+memfs', 'MEMFS'),
-                        ('+python', 'PYTHON'),
-                        ('+fortran', 'FORTRAN'),
-                        ('+examples', 'EXAMPLES'),
-                        ('+test', 'TESTS'),
-                        ('+test', 'EXTRA_TESTS')]
+                        ('+memfs', 'MEMFS'), ('+python', 'PYTHON'),
+                        ('+fortran', 'FORTRAN'), ('+examples', 'EXAMPLES'),
+                        ('+test', 'TESTS'), ('+test', 'EXTRA_TESTS')]
 
-        args = ['-DENABLE_%s=%s' % (opt, 'ON' if var in self.spec else 'OFF')
-                for var, opt in var_opt_list]
+        args = [
+            '-DENABLE_%s=%s' % (opt, 'ON' if var in self.spec else 'OFF')
+            for var, opt in var_opt_list
+        ]
 
         if '+netcdf' in self.spec:
-            args.extend(['-DENABLE_NETCDF=ON',
-                         # Prevent overriding by environment variable
-                         # HDF5_ROOT.
-                         '-DHDF5_ROOT=' + self.spec['hdf5'].prefix,
-                         # Prevent possible overriding by environment variables
-                         # NETCDF_ROOT, NETCDF_DIR, and NETCDF_PATH.
-                         '-DNETCDF_PATH=' + self.spec['netcdf-c'].prefix])
+            args.extend([
+                '-DENABLE_NETCDF=ON',
+                # Prevent overriding by environment variable
+                # HDF5_ROOT.
+                '-DHDF5_ROOT=' + self.spec['hdf5'].prefix,
+                # Prevent possible overriding by environment variables
+                # NETCDF_ROOT, NETCDF_DIR, and NETCDF_PATH.
+                '-DNETCDF_PATH=' + self.spec['netcdf-c'].prefix
+            ])
         else:
             args.append('-DENABLE_NETCDF=OFF')
 
@@ -110,16 +133,18 @@ class Eccodes(CMakePackage):
             args.append('-DOPENJPEG_PATH=' + self.spec['openjpeg'].prefix)
 
         if '+png' in self.spec:
-            args.extend(['-DENABLE_PNG=ON',
-                         '-DZLIB_ROOT=' + self.spec['zlib'].prefix])
+            args.extend(
+                ['-DENABLE_PNG=ON', '-DZLIB_ROOT=' + self.spec['zlib'].prefix])
         else:
             args.append('-DENABLE_PNG=OFF')
 
         if '+aec' in self.spec:
-            args.extend(['-DENABLE_AEC=ON',
-                         # Prevent overriding by environment variables
-                         # AEC_DIR and AEC_PATH.
-                         '-DAEC_DIR=' + self.spec['libaec'].prefix])
+            args.extend([
+                '-DENABLE_AEC=ON',
+                # Prevent overriding by environment variables
+                # AEC_DIR and AEC_PATH.
+                '-DAEC_DIR=' + self.spec['libaec'].prefix
+            ])
         else:
             args.append('-DENABLE_AEC=OFF')
 

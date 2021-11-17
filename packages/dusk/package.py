@@ -11,7 +11,7 @@ class Dusk(PythonPackage):
     """A minimal and lightweight front-end for dawn."""
 
     homepage = 'https://github.com/dawn-ico/dusk'
-    git      = 'https://github.com/dawn-ico/dusk'
+    git = 'https://github.com/dawn-ico/dusk'
     maintainers = ['BenWeber42']
 
     # old version before _dusk horizon_
