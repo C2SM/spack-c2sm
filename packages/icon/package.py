@@ -49,7 +49,9 @@ class Icon(Package):
     depends_on('eccodes@2.19.0 +build_shared_libs',
                when='+eccodes',
                type=('build', 'link', 'run'))
-    depends_on('claw@2.1%gcc', when='+claw', type=('build', 'link', 'run'))
+    depends_on('claw@2.1%gcc', when='+claw~ham', type=('build', 'link', 'run'))
+    # Workaround for Hammoz since the new claw driver doesn't work with its old build system. To be removed when new release of icon is merged!!
+    depends_on('claw@2.0.1', when='+claw+ham', type=('build', 'link', 'run'))
 
     variant('icon_target',
             default='gpu',
