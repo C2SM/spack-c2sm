@@ -30,9 +30,9 @@ class Icontools(AutotoolsPackage):
 
     maintainers = ['jonasjucker']
 
-    version('c2sm-master', git=c2sm,branch='master',submodules=True)
-    version('dev-build', git=c2sm,branch='master',submodules=True)
-    version('dkrz-master', git=dkrz,branch='master',submodules=True)
+    version('c2sm-master', git=c2sm, branch='master', submodules=True)
+    version('dev-build', git=c2sm, branch='master', submodules=True)
+    version('dkrz-master', git=dkrz, branch='master', submodules=True)
 
     depends_on('autoconf%gcc', type='build')
     depends_on('automake%gcc', type='build')
@@ -125,8 +125,8 @@ class Icontools(AutotoolsPackage):
             if self.spec.variants['slave'].value == 'daint':
                 test_process = subprocess.run([
                     'sbatch', '-W', '--time=00:15:00', '-A',
-                    self.spec.variants['slurm_account'].value, '-C', 'gpu', '-p',
-                    'debug', './C2SM/test/jenkins/test.sh'
+                    self.spec.variants['slurm_account'].value, '-C', 'gpu',
+                    '-p', 'debug', './C2SM/test/jenkins/test.sh'
                 ],
                                               stderr=subprocess.STDOUT)
             if self.spec.variants['slave'].value == 'tsa':
@@ -145,5 +145,6 @@ class Icontools(AutotoolsPackage):
                                                     stderr=subprocess.STDOUT,
                                                     check=True)
         else:
-             print("\033[92m" + "==> " + "\033[0m" +
-                     "icontools: No tests available for version {}".format(self.spec.version))
+            print("\033[92m" + "==> " + "\033[0m" +
+                  "icontools: No tests available for version {}".format(
+                      self.spec.version))
