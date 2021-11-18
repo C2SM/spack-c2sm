@@ -13,7 +13,7 @@ packages:
             blas: [cray-libsci_acc, cray-libsci, intel-mkl]
             scalapack: [cray-libsci_acc, cray-libsci, intel-mkl]
             pkgconfig: [pkg-config]
-        variants: arch=cray-cnl7-haswell
+        target: [haswell]
     # packages installed by c2sm-spack instance
     cosmo:
       variants: cuda_arch=60 cosmo_target=gpu slave=daint slurm_partition= "normal" slurm_bin= "srun" slurm_opt_nodes= "-n" slurm_nodes= "1"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint= "-C" slurm_constraint= "gpu"
