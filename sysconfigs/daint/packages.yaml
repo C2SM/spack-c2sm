@@ -81,6 +81,8 @@ packages:
         paths:
             cray-libsci@20.06.1%cce: /opt/cray/pe/libsci/20.06.1/CRAYCLANG/9.0/x86_64
             cray-libsci@20.09.1%cce: /opt/cray/pe/libsci/20.09.1/CRAYCLANG/9.0/x86_64
+            cray-libsci@20.06.1%gcc: /opt/cray/pe/libsci/20.06.1/GNU/8.1/x86_64
+            cray-libsci@20.09.1%gcc: /opt/cray/pe/libsci/20.09.1/GNU/8.1/x86_64
 
     cray-libsci_acc:
         buildable: false
@@ -199,8 +201,10 @@ packages:
             netcdf-fortran@4.7.4.0%cce+mpi:   cray-netcdf-hdf5parallel/4.7.4.0
             netcdf-fortran@4.7.4.0%pgi+mpi:   cray-netcdf-hdf5parallel/4.7.4.0
             netcdf-fortran@4.7.4.0%cce~mpi:   cray-netcdf/4.7.4.0
+            netcdf-fortran@4.7.4.0%gcc~mpi:   cray-netcdf/4.7.4.0
         paths:
             netcdf-fortran@4.7.4.0%cce~mpi: /opt/cray/pe/netcdf/4.7.4.0/CRAYCLANG/9.0  
+            netcdf-fortran@4.7.4.0%gcc~mpi: /opt/cray/pe/netcdf/4.7.4.0/gnu/8.2
     netcdf-cxx4:
         buildable: false
         modules:

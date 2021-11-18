@@ -39,7 +39,7 @@ class Icontools(AutotoolsPackage):
     depends_on('libtool%gcc', type='build')
     depends_on('m4%gcc', type='build')
 
-    depends_on('cray-libsci%cce ', type=('build', 'link'), when='slave=daint')
+    depends_on('cray-libsci%cce', type=('build', 'link'), when='slave=daint')
 
     depends_on('netcdf-fortran ~mpi', type=('build', 'link'))
     depends_on('netcdf-c ~mpi', type=('build', 'link'))
