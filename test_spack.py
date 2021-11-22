@@ -8,14 +8,12 @@ import unittest
 
 all_machines = {'daint', 'tsa'}
 
-
-def run(command: str, cwd='.'):
+def run(command: str, cwd = '.'):
     setup = ''
     if command.startswith('spack'):
         setup = f'source spack/share/spack/setup-env.sh &&'
-
+    
     subprocess.run(f'{setup} cd {cwd} && {command}', check=True, shell=True)
-
 
 # For each spack test there should be at least one line of comment stating
 # why this spack command is tested and/or where this spack command is used.
@@ -44,11 +42,7 @@ class ClawTest(unittest.TestCase):
 
 class CosmoTest(unittest.TestCase):
     package_name = 'cosmo'
-    depends_on = {
-        'cuda', 'serialbox', 'libgrib1', 'cosmo-grib-api-definitions',
-        'cosmo-eccodes-definitions', 'omni-xmod-pool', 'claw', 'zlib_ng',
-        'cosmo-dycore'
-    }
+    depends_on = {'cuda', 'serialbox', 'libgrib1', 'cosmo-grib-api-definitions', 'cosmo-eccodes-definitions', 'omni-xmod-pool', 'claw', 'zlib_ng', 'cosmo-dycore'}
     machines = all_machines
 
     def test_install_master_gpu(self):
@@ -71,8 +65,7 @@ class CosmoTest(unittest.TestCase):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         run('git clone git@github.com:MeteoSwiss-APN/cosmo.git')
         try:
-            run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore',
-                cwd='cosmo')
+            run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore', cwd='cosmo')
         finally:
             run('rm -rf cosmo')
 
@@ -80,8 +73,7 @@ class CosmoTest(unittest.TestCase):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         run('git clone git@github.com:MeteoSwiss-APN/cosmo.git')
         try:
-            run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
-                cwd='cosmo')
+            run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore', cwd='cosmo')
         finally:
             run('rm -rf cosmo')
 
@@ -179,7 +171,7 @@ class IconTest(unittest.TestCase):
     #     run('git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git')
     #     run('mkdir -p icon-cscs/pgi_cpu')
     #     run('touch a_fake_file.f90', cwd='icon-cscs/pgi_cpu')
-
+        
     #     try:
     #         run('spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu', cwd='icon-cscs/pgi_cpu')
     #     finally:
@@ -200,18 +192,16 @@ class IconTest(unittest.TestCase):
 
 class Int2lmTest(unittest.TestCase):
     package_name = 'int2lm'
-    depends_on = {
-        'cosmo-grib-api-definitions', 'cosmo-eccodes-definitions', 'libgrib1'
-    }
+    depends_on = {'cosmo-grib-api-definitions', 'cosmo-eccodes-definitions', 'libgrib1'}
     machines = {'tsa'}
 
     def test_install(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('spack install int2lm@c2sm-master%pgi')
+        run('spack install int2lm@c2sm_master%pgi')
 
     # def test_install_test(self):
     #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/319
-    #     run('spack install --test=root int2lm@c2sm-master%gcc')
+    #     run('spack install --test=root int2lm@c2sm_master%gcc')
 
     def test_install_no_pollen(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
@@ -291,41 +281,33 @@ class ZLibNGTest(unittest.TestCase):
 
 
 # A set of all test case classes
-all_test_cases = {
-    c
-    for _, c in inspect.getmembers(
-        sys.modules[__name__], lambda member: inspect.isclass(member) and
-        issubclass(member, unittest.TestCase))
-}
+all_test_cases = {c for _,c in inspect.getmembers(sys.modules[__name__], lambda member: inspect.isclass(member) and issubclass(member, unittest.TestCase))}
 
 # Maps all packages in this repo to the set of packages they depend on. Must form a DAG.
 dependencies = {case.package_name: case.depends_on for case in all_test_cases}
 
 # Maps commands to a set of commands or packages. Must form a DAG.
 # The keys can't be package names.
-expansions = {'all': {case.package_name for case in all_test_cases}}
-
+expansions = {
+    'all': {case.package_name for case in all_test_cases}
+}
 
 def Self_and_up(origin: set, DAG: map) -> set:
     reachers = copy.deepcopy(origin)
     while True:
         old_size = len(reachers)
         # add elements up the DAG
-        reachers |= {
-            parent
-            for parent, children in DAG.items()
-            if any(child in reachers for child in children)
-        }
+        reachers |= {parent for parent, children in DAG.items() if any(child in reachers for child in children)}
         new_size = len(reachers)
         if old_size == new_size:
             return reachers
 
-
 def Has_cycle(directed_graph: map) -> bool:
-    return False  # TODO: Implement!
+    return False # TODO: Implement!
 
 
 class DAG_Algorithm_Test(unittest.TestCase):
+
     def test_direction(self):
         # a -> b -> c
         DAG = {'a': {'b'}, 'b': {'c'}}
@@ -336,17 +318,17 @@ class DAG_Algorithm_Test(unittest.TestCase):
         # a -> b -> c -> d
         DAG = {'a': {'b'}, 'b': {'c'}, 'c': {'d'}}
         reachers = Self_and_up({'c'}, DAG)
-        self.assertEqual(reachers, {'a', 'b', 'c'})
+        self.assertEqual(reachers, {'a','b','c'})
 
     def test_diamon(self):
         # a -> b+c -> d
-        DAG = {'a': {'b', 'c'}, 'b': {'d'}, 'c': {'d'}}
+        DAG = {'a': {'b','c'}, 'b': {'d'}, 'c': {'d'}}
         b_reachers = Self_and_up({'b'}, DAG)
         c_reachers = Self_and_up({'c'}, DAG)
         d_reachers = Self_and_up({'d'}, DAG)
-        self.assertEqual(b_reachers, {'a', 'b'})
-        self.assertEqual(c_reachers, {'a', 'c'})
-        self.assertEqual(d_reachers, {'a', 'b', 'c', 'd'})
+        self.assertEqual(b_reachers, {'a','b'})
+        self.assertEqual(c_reachers, {'a','c'})
+        self.assertEqual(d_reachers, {'a','b','c','d'})
 
     # def test_cycle(self): TODO: Uncomment once Has_cycle is implemented!
     #     # a <-> b
@@ -360,11 +342,12 @@ class DAG_Algorithm_Test(unittest.TestCase):
 
     def test_diamon_is_acyclic(self):
         # a -> b+c -> d
-        DAG = {'a': {'b', 'c'}, 'b': {'d'}, 'c': {'d'}}
+        DAG = {'a': {'b','c'}, 'b': {'d'}, 'c': {'d'}}
         self.assertFalse(Has_cycle(DAG))
 
 
 class SelfTest(unittest.TestCase):
+
     def test_expansions(self):
         """Tests that expandable commands are not package names"""
         for exp in expansions.keys():
@@ -396,7 +379,7 @@ if __name__ == '__main__':
         sys.exit(False)
 
     commands = sys.argv[1:]
-    sys.argv = [sys.argv[0]]  # unittest needs this
+    sys.argv = [sys.argv[0]] # unittest needs this
 
     commands.remove('launch')
     commands.remove('jenkins')
@@ -414,10 +397,7 @@ if __name__ == '__main__':
         commands.remove('--tsa')
 
     # configure spack
-    subprocess.run(
-        f'python ./config.py -m {machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache',
-        check=True,
-        shell=True)
+    subprocess.run(f'python ./config.py -m {machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache', check=True, shell=True)
 
     known_commands = dependencies.keys() | expansions.keys()
 
@@ -443,10 +423,10 @@ if __name__ == '__main__':
 
     # collect tests from all packages to test
     suite = unittest.TestSuite([
-        test_loader.loadTestsFromTestCase(case) for case in all_test_cases
-        if case.package_name in packages_to_test and machine in case.machines
+        test_loader.loadTestsFromTestCase(case)
+        for case in all_test_cases if case.package_name in packages_to_test and machine in case.machines
     ])
-
+    
     # run tests
     result = unittest.TextTestRunner(verbosity=2).run(suite)
     sys.exit(not result.wasSuccessful())
