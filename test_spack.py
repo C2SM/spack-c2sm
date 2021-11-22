@@ -332,7 +332,9 @@ def Self_and_up(origin: set, DAG: map) -> set:
 
 def Has_cycle(directed_graph: map, visited=None, vertex=None) -> bool:
     if visited is None and vertex is None:
-        return any(Has_cycle(directed_graph, set(), element) for element in directed_graph)
+        return any(
+            Has_cycle(directed_graph, set(), element)
+            for element in directed_graph)
 
     if vertex not in directed_graph:
         return False
