@@ -87,7 +87,8 @@ class CosmoTest(unittest.TestCase):
 
     def test_install_old_version(self):
         # So we can reproduce results from old versions.
-        run('spack installcosmo cosmo@5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore')
+        run('spack installcosmo cosmo@5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore'
+            )
 
 
 class CosmoDycoreTest(unittest.TestCase):
@@ -235,7 +236,7 @@ class IconToolsTest(unittest.TestCase):
 
     def test_install(self):
         # So C2SM can use icontools.
-        if machine == 'daint': # TODO: Remove this when possible so the test runs on all machines
+        if machine == 'daint':  # TODO: Remove this when possible so the test runs on all machines
             run('spack install --test=root icontools@c2sm-master%cce')
 
 
