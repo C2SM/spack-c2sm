@@ -207,12 +207,11 @@ class Int2lmTest(unittest.TestCase):
 
     def test_install(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('spack install int2lm@c2sm-master%pgi')
+        run('spack install int2lm@c2sm_master%pgi')
 
     # def test_install_test(self):
     #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/319
-    #     run('spack install --test=root int2lm@c2sm-master%gcc')
-
+    #     run('spack install --test=root int2lm@c2sm_master%gcc')
     def test_install_no_pollen(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         run('spack install int2lm@org_master%pgi pollen=False')
