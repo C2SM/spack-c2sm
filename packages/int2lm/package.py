@@ -52,7 +52,7 @@ class Int2lm(MakefilePackage):
             commit='07690dab05c931ba02c947ec32c988eea65898f8')
 
     # C2SM tags
-    version('c2sm_master', git=c2smgit, branch='master')
+    version('c2sm-master', git=c2smgit, branch='master')
     version('c2sm_v2.8.3',
             git=c2smgit,
             commit='da56842f2222d241ecc129f95ef097a6773dfe90')
