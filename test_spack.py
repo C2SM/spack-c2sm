@@ -85,6 +85,10 @@ class CosmoTest(unittest.TestCase):
         finally:
             run('rm -rf cosmo')
 
+    def test_install_old_version(self):
+        # So we can reproduce results from old versions.
+        run('spack installcosmo cosmo@5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore')
+
 
 class CosmoDycoreTest(unittest.TestCase):
     package_name = 'cosmo-dycore'
