@@ -260,7 +260,7 @@ class Cosmo(MakefilePackage):
                 eccodes_lib_dir = '/lib'
             rpath = ''
             if '+build_shared_libs' in self.spec['eccodes']:
-                rpath = '-Wl,-rpath ' + grib_prefix + eccodes_lib_dir + ' '
+                rpath = '-Wl,-rpath -Wl,' + grib_prefix + eccodes_lib_dir + ' '
 
             env.set(
                 'GRIBAPIL', rpath + '-L' + grib_prefix + eccodes_lib_dir +
