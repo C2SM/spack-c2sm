@@ -95,7 +95,7 @@ In order to build int2lm from the COSMO-ORG GitHub organization use the followin
 
 .. code-block:: bash
 
-  spack install int2lm@org_master%pgi pollen=False
+  spack install int2lm@org-master%pgi pollen=False
 
 ICON
 ------

@@ -214,7 +214,7 @@ class Int2lmTest(unittest.TestCase):
     #     run('spack install --test=root int2lm@c2sm-master%gcc')
     def test_install_no_pollen(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('spack install int2lm@org_master%pgi pollen=False')
+        run('spack install int2lm@org-master%pgi pollen=False')
 
 
 class IconDuskE2ETest(unittest.TestCase):
