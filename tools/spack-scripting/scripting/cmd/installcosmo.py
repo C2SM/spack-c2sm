@@ -31,40 +31,37 @@ level = "long"
 def setup_parser(subparser):
     arguments.add_common_arguments(subparser, ["jobs", "spec"])
 
-    subparser.add_argument(
-        '--only',
-        default='package,dependencies',
-        dest='things_to_install',
-        choices=['package', 'dependencies'],
-        help="""select the mode of installation.
+    subparser.add_argument('--only',
+                           default='package,dependencies',
+                           dest='things_to_install',
+                           choices=['package', 'dependencies'],
+                           help="""select the mode of installation.
 the default is to install the package along with all its dependencies.
 alternatively one can decide to install only the package or only
-the dependencies"""
-    )
+the dependencies""")
 
     subparser.add_argument(
-        '--keep-stage', action='store_true',
+        '--keep-stage',
+        action='store_true',
         help="don't remove the build stage if installation succeeds")
 
     subparser.add_argument(
-        "--test", 
+        "--test",
         choices=['root', 'all'],
-        dest="things_to_test", 
+        dest="things_to_test",
         help="""If root is chosen, run COSMO testsuite before installation 
         (but skip tests for dependencies). If all is chosen, 
-        run package tests during installation for all packages."""
-    )
+        run package tests during installation for all packages.""")
 
-    subparser.add_argument(
-       "-v","--verbose",
-       dest="lverbose",
-       action="store_true",
-       help="""Verbose installation"""
-    )
+    subparser.add_argument("-v",
+                           "--verbose",
+                           dest="lverbose",
+                           action="store_true",
+                           help="""Verbose installation""")
 
-    subparser.add_argument(
-        '--force_uninstall', action='store_true',
-        help="force uninstall if package already installed")
+    subparser.add_argument('--force_uninstall',
+                           action='store_true',
+                           help="force uninstall if package already installed")
 
 
 def custom_install(spec, args):
@@ -77,13 +74,13 @@ def custom_install(spec, args):
     else:
         args.things_to_test = False
 
-    kwargs= {
-      'make_jobs': args.jobs,
-      'install_deps': ('dependencies' in args.things_to_install),
-      'install_package': ('package' in args.things_to_install),
-      'keep_stage': args.keep_stage,
-      'tests': args.things_to_test,
-      'verbose': args.lverbose
+    kwargs = {
+        'make_jobs': args.jobs,
+        'install_deps': ('dependencies' in args.things_to_install),
+        'install_package': ('package' in args.things_to_install),
+        'keep_stage': args.keep_stage,
+        'tests': args.things_to_test,
+        'verbose': args.lverbose
     }
 
     if args.things_to_install == 'dependencies':
@@ -96,6 +93,7 @@ def custom_install(spec, args):
         if package.installed:
             package.do_uninstall(force=True)
     package.do_install(**kwargs)
+
 
 def installcosmo(self, args):
     # Extract and concretize cosmo_spec
@@ -121,7 +119,8 @@ def installcosmo(self, args):
     package.do_stage()
 
     # Load serialized yaml from inside cloned repo
-    with open(package.stage.source_path + "/cosmo/ACC/spack/spec.yaml", "r") as f:
+    with open(package.stage.source_path + "/cosmo/ACC/spack/spec.yaml",
+              "r") as f:
         try:
             data = yaml.load(f)
         except yaml.error.MarkedYAMLError as e:

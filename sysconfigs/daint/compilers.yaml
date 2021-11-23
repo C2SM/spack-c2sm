@@ -1,6 +1,6 @@
 compilers:
 - compiler:
-    spec: cce@10.0.2
+    spec: cce@12.0.2
     paths:
       cc: cc
       cxx: CC
@@ -11,7 +11,7 @@ compilers:
     target: any
     modules:
     - PrgEnv-cray
-    - cce/10.0.2
+    - cce/12.0.2
     environment: {}
     extra_rpaths: []
 - compiler:
