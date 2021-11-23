@@ -228,6 +228,9 @@ class IconToolsTest(unittest.TestCase):
     depends_on = {'eccodes', 'cosmo-grib-api'}
     machines = all_machines
 
+    def test_install(self):
+        run('spack install --test=root icontools@c2sm-master%gcc')
+
 
 class LibGrib1Test(unittest.TestCase):
     package_name = 'libgrib1'
