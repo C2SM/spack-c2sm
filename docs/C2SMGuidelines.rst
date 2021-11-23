@@ -4,7 +4,7 @@ With Spack it is easy to mess up different versions of the same code
 as well as handling Spack executables and Spack specs needs to be done
 in a Spack way.
 In this section C2SM proposes a safe and sustainable way of using Spack
-for building, running and storing your libraries and executables.
+for building, running and installing your libraries and executables.
 
 
 Building 
@@ -74,3 +74,22 @@ Otherwise the conncection between a specific version-suffix and the correspondin
 So long story short:
 
 **Always store the local source and the corresponding executables in the same location!**
+
+Installation
+^^^^^^^^^^^^^^
+Spack installs software per default under */$SCRATCH/spack-install*. 
+On Piz Daint *$SCRATCH* undergoes regular cleanup with deletion of files older than 30 days. This may corrupt the internal Spack database and lead to unexpected behaviour of Spack.
+
+Change location for package installations
+--------------------------------------------
+Spack offers the possibility to overwrite the default installation
+directory in */$SCRATCH/spack-install*.
+To do so create the file **config.yaml** in *~/.spack* with a directory 
+that is not deleted regularly like */project* or */store*:
+
+.. code-block:: yaml
+
+  config:                                                                                                                     
+     install_tree: /project/s903/juckerj/spack-install/          
+
+**Always change the installation directory to a location that is not wiped-out regularly!**
