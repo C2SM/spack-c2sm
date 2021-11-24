@@ -82,7 +82,7 @@ class Int2lm(MakefilePackage):
                type=('build', 'run'),
                when='~eccodes')
     depends_on('cosmo-eccodes-definitions',
-               type=('build', 'run'),
+               type=('build', 'link' 'run'),
                when='+eccodes')
     depends_on('libgrib1@master', type='build')
     depends_on('mpi', type=('build', 'link', 'run'), when='+parallel')
