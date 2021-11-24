@@ -228,6 +228,7 @@ class IconToolsTest(unittest.TestCase):
     depends_on = {'eccodes', 'cosmo-grib-api'}
     machines = all_machines
 
+    # C2SM supported version
     def test_install(self):
         run('spack install --test=root icontools@c2sm-master%gcc')
 
