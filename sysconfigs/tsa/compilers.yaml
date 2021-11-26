@@ -16,23 +16,7 @@ compilers::
     spec: pgi@20.4
     target: any
 - compiler:
-    environment:
-      set:
-        CSCS_APPS_PATH: /apps/common/UES/sandbox/kraushm/tsa-nvhpc
-    extra_rpaths: []
-    flags: {}
-    modules:
-    - /apps/common/UES/sandbox/kraushm/tsa-nvhpc/easybuild/modules/all/nvhpc/21.2-cuda-11.2
-    operating_system: rhel7
-    paths:
-      cc: /apps/common/UES/sandbox/kraushm/tsa-nvhpc/easybuild/software/NVHPC/21.2-cuda-11.2/Linux_x86_64/21.2/compilers/bin/nvcc
-      cxx: /apps/common/UES/sandbox/kraushm/tsa-nvhpc/easybuild/software/NVHPC/21.2-cuda-11.2/Linux_x86_64/21.2/compilers/bin/mvc++
-      f77: /apps/common/UES/sandbox/kraushm/tsa-nvhpc/easybuild/software/NVHPC/21.2-cuda-11.2/Linux_x86_64/21.2/compilers/bin/nvfortran
-      fc: /apps/common/UES/sandbox/kraushm/tsa-nvhpc/easybuild/software/NVHPC/21.2-cuda-11.2/Linux_x86_64/21.2/compilers/bin/nvfortran
-    spec: nvhpc@21.2
-    target: any
-- compiler:
-    modules:
+    modules: 
     - /project/g110/modules/gcchack/8.3.0
     environment: {}
     extra_rpaths: []
