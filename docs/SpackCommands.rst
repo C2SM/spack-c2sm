@@ -76,6 +76,22 @@ Options (spack install)
 * --test=root: run package tests during installation for top-level packages (but skip tests for dependencies)
 * --keep-stage: keep all source needed to build the package
 
+Error: Broken cache
+""""""""""""""""""""
+If `spack install <package>@<version>%<compiler>` prints an error message like:
+
+.. code-block:: bash
+
+   ==> Error: 'str' object has no attribute 'get'
+
+you should remove your spack installation:
+
+.. code-block:: bash
+
+    rm -rf ~/.spack
+
+Then try again.
+
 Spack installcosmo
 ------------------
 Installcosmo can only be used to build COSMO. This command will clone, 
