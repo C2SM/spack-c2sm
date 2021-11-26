@@ -391,7 +391,7 @@ class SelfTest(unittest.TestCase):
         self.assertFalse(Has_cycle(dependencies))
 
     def test_expansions_is_acyclic(self):
-        self.assertFalse(Has_cycle(dependencies | expansions))
+        self.assertFalse(Has_cycle({**dependencies, **expansions}))
 
     def test_all_dependencies_are_packages(self):
         all_package_names = {case.package_name for case in all_test_cases}
@@ -411,7 +411,7 @@ if __name__ == '__main__':
     ])
     result = unittest.TextTestRunner(verbosity=2).run(suite)
     if not result.wasSuccessful():
-        sys.exit(False)
+        sys.exit(1)
 
     commands = sys.argv[1:]
     sys.argv = [sys.argv[0]]  # unittest needs this
