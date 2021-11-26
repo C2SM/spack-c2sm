@@ -177,6 +177,7 @@ packages:
             mpich@7.7.15%intel: cray-mpich/7.7.15
             mpich@7.7.15%cce:   cray-mpich/7.7.15
             mpich@7.7.15%pgi:   cray-mpich/7.7.15
+            mpich@7.7.16%nvhpc: cray-mpich/7.7.16
             mpich@7.7.17%gcc:   cray-mpich/7.7.17
             mpich@7.7.17%intel: cray-mpich/7.7.17
             mpich@7.7.17%cce:   cray-mpich/7.7.17
