@@ -77,8 +77,8 @@ Options (spack install)
 * --keep-stage: keep all source needed to build the package
 
 Error: Broken cache
-""""""""""""""""""""
-If `spack install <package>@<version>%<compiler>` prints an error message like:
+^^^^^^^^^^^^^^^^^^^^
+If ``spack install <package>@<version>%<compiler>`` prints an error message like:
 
 .. code-block:: bash
 
