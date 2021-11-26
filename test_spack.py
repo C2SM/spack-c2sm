@@ -404,7 +404,7 @@ if __name__ == '__main__':
     test_loader = unittest.TestLoader()
 
     # Do self-test first to fail fast
-    print('Self-tests:')
+    print('Self-tests:', flush=True)
     suite = unittest.TestSuite([
         test_loader.loadTestsFromTestCase(DAG_Algorithm_Test),
         test_loader.loadTestsFromTestCase(SelfTest)
@@ -432,7 +432,7 @@ if __name__ == '__main__':
         commands.remove('--tsa')
 
     # configure spack
-    print(f'Configuring spack with upstream {upstream} on machine {machine}.')
+    print(f'Configuring spack with upstream {upstream} on machine {machine}.', flush=True)
     subprocess.run(
         f'python ./config.py -m {machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache',
         check=True,
@@ -443,7 +443,7 @@ if __name__ == '__main__':
     # handles backward compatibility to run any command
     if any(c not in known_commands for c in commands):
         joined_command = ' '.join(commands)
-        print(f'Input contains unknown command. Executing: {joined_command}')
+        print(f'Input contains unknown command. Executing: {joined_command}', flush=True)
         run(joined_command)
         sys.exit()
 
@@ -468,6 +468,6 @@ if __name__ == '__main__':
     ])
 
     # run tests
-    print(f'Testing packages: {packages_to_test}')
+    print(f'Testing packages: {packages_to_test}', flush=True)
     result = unittest.TextTestRunner(verbosity=2).run(suite)
     sys.exit(not result.wasSuccessful())
