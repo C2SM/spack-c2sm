@@ -2,19 +2,18 @@
 # These package should be upgraded whenever there is a CDT or PE upgrade
 packages:
     all:
-          # default compilers defined by the system
-          # these reflect the current installed PE
-      compiler: [gcc@9.3.0, gcc@8.3.0, nvhpc@21.3.0, pgi@20.1.1, pgi@20.1.0, cce@11.0.0,
-        cce@10.0.2, intel@19.0.1.144]
-      providers:
-        mpi: [mpich]
-              # if the mpich package support +cuda in the future it needs to be put there
-              mpicuda: [mpich]
-              mkl: [intel-mkl]
-              blas: [cray-libsci_acc, cray-libsci, intel-mkl]
-              scalapack: [cray-libsci_acc, cray-libsci, intel-mkl]
-              pkgconfig: [pkg-config]
-          target: [haswell]
+        # default compilers defined by the system
+        # these reflect the current installed PE
+        compiler: [gcc@10.2.0, gcc@9.3.0, gcc@8.3.0, pgi@20.1.1, pgi@20.1.0, nvhpc@21.3.0, cce@12.0.2, cce@11.0.0, intel@19.0.1.144]
+        providers:
+            mpi: [mpich]
+            # if the mpich package support +cuda in the future it needs to be put there
+            mpicuda: [mpich]
+            mkl: [intel-mkl]
+            blas: [cray-libsci_acc, cray-libsci, intel-mkl]
+            scalapack: [cray-libsci_acc, cray-libsci, intel-mkl]
+            pkgconfig: [pkg-config]
+        target: [haswell]
     # packages installed by c2sm-spack instance
     cosmo:
       variants: cuda_arch=60 cosmo_target=gpu slave=daint slurm_partition= "normal" slurm_bin= "srun" slurm_opt_nodes= "-n" slurm_nodes= "1"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint= "-C" slurm_constraint= "gpu"
