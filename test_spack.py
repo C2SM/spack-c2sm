@@ -432,7 +432,8 @@ if __name__ == '__main__':
         commands.remove('--tsa')
 
     # configure spack
-    print(f'Configuring spack with upstream {upstream} on machine {machine}.', flush=True)
+    print(f'Configuring spack with upstream {upstream} on machine {machine}.',
+          flush=True)
     subprocess.run(
         f'python ./config.py -m {machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache',
         check=True,
@@ -443,7 +444,8 @@ if __name__ == '__main__':
     # handles backward compatibility to run any command
     if any(c not in known_commands for c in commands):
         joined_command = ' '.join(commands)
-        print(f'Input contains unknown command. Executing: {joined_command}', flush=True)
+        print(f'Input contains unknown command. Executing: {joined_command}',
+              flush=True)
         run(joined_command)
         sys.exit()
 
