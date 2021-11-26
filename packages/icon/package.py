@@ -116,7 +116,7 @@ class Icon(Package):
         if self.compiler.name == 'cce':
             _config_file_name += '.cray'
         elif self.compiler.name == 'pgi':
-           _config_file_name += '.nvidia'
+            _config_file_name += '.nvidia'
         else:
             _config_file_name += '.' + self.compiler.name
 
