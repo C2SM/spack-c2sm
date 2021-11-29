@@ -391,7 +391,7 @@ class SelfTest(unittest.TestCase):
         self.assertFalse(Has_cycle(dependencies))
 
     def test_expansions_is_acyclic(self):
-        self.assertFalse(Has_cycle(dependencies | expansions))
+        self.assertFalse(Has_cycle({**dependencies, **expansions}))
 
     def test_all_dependencies_are_packages(self):
         all_package_names = {case.package_name for case in all_test_cases}
@@ -404,14 +404,14 @@ if __name__ == '__main__':
     test_loader = unittest.TestLoader()
 
     # Do self-test first to fail fast
-    print('Self-tests:')
+    print('Self-tests:', flush=True)
     suite = unittest.TestSuite([
         test_loader.loadTestsFromTestCase(DAG_Algorithm_Test),
         test_loader.loadTestsFromTestCase(SelfTest)
     ])
     result = unittest.TextTestRunner(verbosity=2).run(suite)
     if not result.wasSuccessful():
-        sys.exit(False)
+        sys.exit(1)
 
     commands = sys.argv[1:]
     sys.argv = [sys.argv[0]]  # unittest needs this
@@ -432,7 +432,8 @@ if __name__ == '__main__':
         commands.remove('--tsa')
 
     # configure spack
-    print(f'Configuring spack with upstream {upstream} on machine {machine}.')
+    print(f'Configuring spack with upstream {upstream} on machine {machine}.',
+          flush=True)
     subprocess.run(
         f'python ./config.py -m {machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache',
         check=True,
@@ -443,7 +444,8 @@ if __name__ == '__main__':
     # handles backward compatibility to run any command
     if any(c not in known_commands for c in commands):
         joined_command = ' '.join(commands)
-        print(f'Input contains unknown command. Executing: {joined_command}')
+        print(f'Input contains unknown command. Executing: {joined_command}',
+              flush=True)
         run(joined_command)
         sys.exit()
 
@@ -468,6 +470,6 @@ if __name__ == '__main__':
     ])
 
     # run tests
-    print(f'Testing packages: {packages_to_test}')
+    print(f'Testing packages: {packages_to_test}', flush=True)
     result = unittest.TextTestRunner(verbosity=2).run(suite)
     sys.exit(not result.wasSuccessful())
