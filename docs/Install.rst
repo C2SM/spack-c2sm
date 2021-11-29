@@ -95,7 +95,7 @@ in order to activate it.
     source <spack-installation-directory>/share/spack/setup-env.sh
 
 Error: Broken cache
-""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^
 (Happening when mixing spack installations and caches)
 
 If ``spack install <package>@<version>%<compiler>`` prints an error message like:
