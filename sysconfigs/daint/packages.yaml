@@ -29,8 +29,8 @@ packages:
       variants: +cuda cuda_arch=60
       compiler: [gcc]
     icontools:
+        compiler: [gcc]
         variants: slave=daint
-        compiler: [cce]  
     icon:
         variants: host=daint
     int2lm:
