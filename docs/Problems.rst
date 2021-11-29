@@ -45,3 +45,31 @@ you should remove your spack user config scope which is containing the broken ca
     rm -rf ~/.spack
 
 Then try again.
+
+Delete entire Spack
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+As a last option it sometimes helps to delete all directories used by Spack.
+These are:
+
+* spack-install
+* spack-stages
+* modules
+* cache
+
+It is important to completely whipe out the folders listed above using the following commands:
+
+**Beware you loose all your installed packages installed by Spack**
+
+.. code-block:: bash
+    
+    # delete spack-install folder
+    rm -rf your_path_to/spack-install
+
+    # delete spack-stages folder
+    rm -rf your_path_to/spack-stages
+
+    # delete modules folder
+    rm -rf your_path_to/modules
+
+    # delete cache folder
+    rm -rf ~/.spack/cache
