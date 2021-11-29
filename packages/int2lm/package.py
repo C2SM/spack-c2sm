@@ -81,8 +81,8 @@ class Int2lm(MakefilePackage):
     depends_on('cosmo-grib-api-definitions',
                type=('build', 'run'),
                when='~eccodes')
-    depends_on('cosmo-eccodes-definitions ~aec',
-               type=('build', 'run'),
+    depends_on('cosmo-eccodes-definitions',
+               type=('build', 'link', 'run'),
                when='+eccodes')
     depends_on('libgrib1@master', type='build')
     depends_on('mpi', type=('build', 'link', 'run'), when='+parallel')
