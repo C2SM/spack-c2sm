@@ -69,6 +69,24 @@ in order to activate it.
 
     source <spack-installation-directory>/share/spack/setup-env.sh
 
+Error: Broken cache
+^^^^^^^^^^^^^^^^^^^^^
+(Happening when mixing spack installations and caches)
+
+If ``spack install <package>@<version>%<compiler>`` prints an error message like:
+
+.. code-block:: bash
+
+   ==> Error: 'str' object has no attribute 'get'
+
+you should remove your spack user config scope which is containing the broken cache:
+
+.. code-block:: bash
+
+    rm -rf ~/.spack
+
+Then try again.
+
 Machine specific config files
 ------------------------------
 There is a set of .yaml files that define machine specific things like compilers, modules, preinstalled packages

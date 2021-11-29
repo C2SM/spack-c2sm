@@ -4,7 +4,7 @@ packages:
     all:
         # default compilers defined by the system
         # these reflect the current installed PE
-        compiler: [gcc@10.2.0, gcc@9.3.0, gcc@8.3.0, pgi@20.1.1, pgi@20.1.0, pgi@21.3.0, cce@11.0.0, cce@10.0.2, intel@19.0.1.144]
+        compiler: [gcc@10.2.0, gcc@9.3.0, gcc@8.3.0, pgi@20.1.1, pgi@20.1.0, pgi@21.3.0, cce@12.0.2, cce@11.0.0, intel@19.0.1.144]
         providers:
             mpi: [mpich]
             # if the mpich package support +cuda in the future it needs to be put there
@@ -13,7 +13,7 @@ packages:
             blas: [cray-libsci_acc, cray-libsci, intel-mkl]
             scalapack: [cray-libsci_acc, cray-libsci, intel-mkl]
             pkgconfig: [pkg-config]
-        variants: arch=cray-cnl7-haswell
+        target: [haswell]
     # packages installed by c2sm-spack instance
     cosmo:
       variants: cuda_arch=60 cosmo_target=gpu slave=daint slurm_partition= "normal" slurm_bin= "srun" slurm_opt_nodes= "-n" slurm_nodes= "1"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint= "-C" slurm_constraint= "gpu"
@@ -29,8 +29,8 @@ packages:
       variants: +cuda cuda_arch=60
       compiler: [gcc]
     icontools:
+        compiler: [gcc]
         variants: slave=daint
-        compiler: [cce]  
     icon:
         variants: host=daint
     int2lm:
@@ -81,6 +81,8 @@ packages:
         paths:
             cray-libsci@20.06.1%cce: /opt/cray/pe/libsci/20.06.1/CRAYCLANG/9.0/x86_64
             cray-libsci@20.09.1%cce: /opt/cray/pe/libsci/20.09.1/CRAYCLANG/9.0/x86_64
+            cray-libsci@20.06.1%gcc: /opt/cray/pe/libsci/20.06.1/GNU/8.1/x86_64
+            cray-libsci@20.09.1%gcc: /opt/cray/pe/libsci/20.09.1/GNU/8.1/x86_64
 
     cray-libsci_acc:
         buildable: false
@@ -199,8 +201,10 @@ packages:
             netcdf-fortran@4.7.4.0%cce+mpi:   cray-netcdf-hdf5parallel/4.7.4.0
             netcdf-fortran@4.7.4.0%pgi+mpi:   cray-netcdf-hdf5parallel/4.7.4.0
             netcdf-fortran@4.7.4.0%cce~mpi:   cray-netcdf/4.7.4.0
+            netcdf-fortran@4.7.4.0%gcc~mpi:   cray-netcdf/4.7.4.0
         paths:
             netcdf-fortran@4.7.4.0%cce~mpi: /opt/cray/pe/netcdf/4.7.4.0/CRAYCLANG/9.0  
+            netcdf-fortran@4.7.4.0%gcc~mpi: /opt/cray/pe/netcdf/4.7.4.0/gnu/8.2
     netcdf-cxx4:
         buildable: false
         modules:

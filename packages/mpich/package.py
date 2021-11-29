@@ -7,6 +7,7 @@ import os
 import sys
 from spack.pkg.builtin.mpich import Mpich as SpackMpich
 
+
 class Mpich(SpackMpich):
 
     provides('mpicuda')
