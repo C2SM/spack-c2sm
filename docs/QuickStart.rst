@@ -41,7 +41,7 @@ The commands below build COSMO with the C++ Dycore for the target GPU.
 
 .. code-block:: bash
 
-  spack installcosmo cosmo@master%pgi cosmo_target=gpu +cppdycore 
+  spack installcosmo cosmo@org-master%pgi cosmo_target=gpu +cppdycore 
 
 or
 
@@ -57,7 +57,7 @@ The commands below build COSMO without the C++ Dycore  for the target CPU.
 
 .. code-block:: bash
 
-  spack installcosmo cosmo@master%pgi cosmo_target=cpu ~cppdycore 
+  spack installcosmo cosmo@org-master%pgi cosmo_target=cpu ~cppdycore 
 
 or
 
