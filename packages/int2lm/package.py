@@ -78,6 +78,12 @@ class Int2lm(MakefilePackage):
             git=orggit,
             commit='ef16f54f53401e99aef083c447b4909b8230a4a0')
 
+    # deprecated versions
+    version('apn_master', git=git, branch='master')
+    version('c2sm_master', git=c2smgit, branch='master')
+    version('org_master', git=orggit, branch='master')
+
+
     depends_on('cosmo-grib-api-definitions',
                type=('build', 'run'),
                when='~eccodes')
@@ -103,7 +109,7 @@ class Int2lm(MakefilePackage):
 
     conflicts(
         'pollen=True',
-        when='@org-master,org_2.05:org_2.08',
+        when='@org-master,@org_master,org_2.05:org_2.08',
         msg=
         'int2lm-org is currently broken with pollen, set variant pollen=False')
 
