@@ -37,7 +37,7 @@ class Eccodes(CMakePackage):
             '1a4112196497b8421480e2a0a1164071221e467853486577c4f07627a702f4c3')
 
     variant('build_shared_libs',
-            default=False,
+            default=True,
             description="Select the type of library built")
     variant('netcdf',
             default=False,
