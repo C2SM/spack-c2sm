@@ -108,7 +108,7 @@ class Int2lm(MakefilePackage):
 
     conflicts(
         'pollen=True',
-        when='@org-master,@org_master,org_2.05:org_2.08',
+        when='@org-master,org_master,org_2.05:org_2.08',
         msg=
         'int2lm-org is currently broken with pollen, set variant pollen=False')
 
