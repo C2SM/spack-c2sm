@@ -41,7 +41,7 @@ The commands below build COSMO with the C++ Dycore for the target GPU.
 
 .. code-block:: bash
 
-  spack installcosmo cosmo@master%pgi cosmo_target=gpu +cppdycore 
+  spack installcosmo cosmo@org-master%pgi cosmo_target=gpu +cppdycore 
 
 or
 
@@ -57,7 +57,7 @@ The commands below build COSMO without the C++ Dycore  for the target CPU.
 
 .. code-block:: bash
 
-  spack installcosmo cosmo@master%pgi cosmo_target=cpu ~cppdycore 
+  spack installcosmo cosmo@org-master%pgi cosmo_target=cpu ~cppdycore 
 
 or
 
@@ -87,7 +87,7 @@ In order to build int2lm from the C2SM-RCM GitHub organization use the following
 
 .. code-block:: bash
 
-  spack install int2lm@c2sm_master%pgi
+  spack install int2lm@c2sm-master%pgi
 
 Int2lm from COSMO-ORG
 ^^^^^^^^^^^^^^^^^^^^^
@@ -95,7 +95,7 @@ In order to build int2lm from the COSMO-ORG GitHub organization use the followin
 
 .. code-block:: bash
 
-  spack install int2lm@org_master%pgi pollen=False
+  spack install int2lm@org-master%pgi pollen=False
 
 ICON
 ------
@@ -167,7 +167,7 @@ or
 
 .. code-block:: bash
 
-  spack location -i int2lm@c2sm_master%pgi
+  spack location -i int2lm@c2sm-master%pgi
 
 Note that the package location is also given on the last log line of
 the install process. For cosmo you'll find the executable, either

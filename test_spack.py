@@ -53,11 +53,13 @@ class CosmoTest(unittest.TestCase):
 
     def test_install_master_gpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('spack installcosmo cosmo@master%pgi cosmo_target=gpu +cppdycore')
+        run('spack installcosmo cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
+            )
 
     def test_install_master_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('spack installcosmo cosmo@master%pgi cosmo_target=cpu ~cppdycore')
+        run('spack installcosmo cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
+            )
 
     # def test_install_test(self):
     #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/289
@@ -208,19 +210,19 @@ class Int2lmTest(unittest.TestCase):
     depends_on = {
         'cosmo-grib-api-definitions', 'cosmo-eccodes-definitions', 'libgrib1'
     }
-    machines = {'tsa'}
+    machines = all_machines
 
-    def test_install(self):
+    def test_install_pgi(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('spack install int2lm@c2sm_master%pgi')
+        run('spack install --test=root int2lm@c2sm-master%pgi')
 
-    # def test_install_test(self):
-    #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/319
-    #     run('spack install --test=root int2lm@c2sm_master%gcc')
+    def test_install_gcc(self):
+        # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
+        run('spack install --test=root int2lm@c2sm-master%gcc')
 
     def test_install_no_pollen(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('spack install int2lm@org_master%pgi pollen=False')
+        run('spack install --test=root int2lm@org-master%pgi pollen=False')
 
 
 class IconDuskE2ETest(unittest.TestCase):
