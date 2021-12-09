@@ -56,6 +56,11 @@ It is clear that only using ``spack install <package>@5.09`` will
 always result in the same code, all other version only point to a
 ``HEAD`` of a git branch.
 
+Note that tagged versions for COSMO on the ``c2sm-master`` and
+``c2sm-features`` branches are not yet provided but will be offered
+soon. We thus recommend using the ``spack devbuildcosmo`` command for
+now.
+
 So long story short:
 
 **Always use a valid git tag as a version-suffix when building
