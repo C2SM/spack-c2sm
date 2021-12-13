@@ -102,7 +102,7 @@ class Icon(Package):
 
     @run_before('configure')
     def generate_hammoz_nml(self):
-        if '@ham' in self.spec:
+        if '+ham' in self.spec:
             with working_dir(self.config_dir + '/' +
                              self.atm_phy_echam_submodels_namelists_dir):
                 make()
@@ -175,7 +175,7 @@ class Icon(Package):
     @run_after('build')
     def test(self):
         if self.spec.variants['test_name'].value != 'none':
-            if '@ham' in self.spec:
+            if '+ham' in self.spec:
                 try:
                     subprocess.run([
                         'indata_hammoz_root=/store/c2sm/c2sme/input_gcm/icon/input_hammoz/ ./make_runscripts -s '
