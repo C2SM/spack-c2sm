@@ -140,7 +140,7 @@ class CosmoDycore(CMakePackage):
             default='gpu',
             description='Slurm constraints for nodes requested')
 
-    depends_on('gridtools@1.1.3 ~cuda cuda_arch=none', when='~cuda+gt1')
+    depends_on('gridtools@1.1.3 ~cuda', when='~cuda+gt1')
     depends_on('gridtools@1.1.3 +cuda', when='+cuda+gt1')
     depends_on('boost@1.67.0')
     depends_on('serialbox@2.6.0', when='+build_tests')
@@ -151,7 +151,6 @@ class CosmoDycore(CMakePackage):
     depends_on('cuda%gcc', when='+cuda', type=('build', 'link', 'run'))
 
     conflicts('+production', when='build_type=Debug')
-    conflicts('+production', when='cosmo_target=cpu')
     conflicts('+production', when='+pmeters')
 
     root_cmakelists_dir = 'dycore'
