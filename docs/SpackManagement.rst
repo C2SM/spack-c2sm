@@ -1,8 +1,8 @@
-Spack Instance Management
-============================
+Spack Instance Management [admin]
+=================================
 
 How to re-create the spack instance
-------------------------------------
+-----------------------------------
 
 First, you might want to delete the old spack instances if you want to refresh them.
 
