@@ -139,7 +139,7 @@ def main():
         # convert to absolute path
         return os.path.realpath(path)
 
-    config_data['config']['install_tree'] = (
+    config_data['config']['install_tree']['root'] = (
         to_spack_abs_path(args.pckgidir) + '/spack-install/' +
         args.machine.replace('admin-', ''))
     config_data['config']['source_cache'] = (
