@@ -13,7 +13,7 @@ libraries and executables.
 Building 
 ^^^^^^^^
 There are two possible ways of building software with Spack.
-``spack-install`` and  ``spack dev-build``.
+``spack install`` and  ``spack dev-build``.
 Both of them are fine, but have some specialties one needs to take
 into account.
 
@@ -66,7 +66,7 @@ now.
 So long story short:
 
 **Always use a valid git tag as a version-suffix when building
- software with ``spack install`` for production!**
+ software with** ``spack install`` **for production!**
 
 Spack dev-build (C2SM Guidelines)
 ---------------------------------
