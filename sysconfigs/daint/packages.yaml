@@ -330,8 +330,6 @@ packages:
     externals:
     - spec: netcdf-fortran@4.7.4.0%gcc
       prefix: /opt/cray/pe/netcdf/4.7.4.0/gnu/8.2
-      modules:
-      - cray-netcdf-hdf5parallel/4.7.4.0
     - spec: netcdf-fortran@4.7.4.0%intel
       modules:
       - cray-netcdf-hdf5parallel/4.7.4.0
