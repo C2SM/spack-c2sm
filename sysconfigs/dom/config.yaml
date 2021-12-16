@@ -1,5 +1,4 @@
 config:
-  install_tree:
   template_dirs:
     - $spack/templates
   module_roots:
