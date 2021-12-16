@@ -106,7 +106,7 @@ files older than 30 days. This may corrupt the internal Spack database
 and lead to unexpected behaviour of Spack.
 
 Change location for package installations
---------------------------------------------
+-----------------------------------------
 
 Spack offers the possibility to overwrite the default installation
 directory. To do so create the file *~/.spack/config.yaml* and

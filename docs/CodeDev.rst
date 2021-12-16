@@ -2,10 +2,10 @@ Code Development [MCH]
 ======================
 
 COSMO
--------------
+-----
 
 Testing COSMO with the Testsuite
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The following commands demonstrates how to launch the testsuite for a COSMO
 executable compiled using spack. Assuming the user starts from the root folder
@@ -25,7 +25,7 @@ of cosmo.
   
 
 Serialized unittest data
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 In order to run test the C++ dycore, the regression tests require a set of serialized data files from COSMO. 
 Jenkins runs periodically the serialization (`<https://jenkins-mch.cscs.ch/job/cosmo_serialize/>`_), which installs all the serialized data set corresponding to the latest master in the g110 project space. In order to find the location of the jenkins serialized data follow the steps described in :ref:`Locate jenkins serialized data`.
@@ -34,7 +34,7 @@ In a different development situation where you are modifying the FORTRAN COSMO d
 In that case you need to serialize your own data (see :ref:`Serialize your own data`).
 
 Locate jenkins serialized data
-""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""
 This section describes how to find the location of the serialized data by jenkins for the master version of COSMO. 
 
 Set the spack spec of COSMO for serialization mode: 
@@ -51,7 +51,7 @@ Find the spack install location of the serialized data
 
 
 Serialize your own data
-""""""""""""""""""""""""""
+"""""""""""""""""""""""
 
 Set the spack spec (for dev-build version) of COSMO for serialization mode: 
 
@@ -85,7 +85,7 @@ Set the path to the serialized data (later it will be used in this guide)
   SERIALIZE_DATA=</path/to/cosmo>/cosmo/ACC/test/serialize/data/
 
 COSMO C++ Dycore
-------------------
+----------------
 
 This section describes how to compile and test a version of the COSMO C++ dycore from your working directory. 
 
