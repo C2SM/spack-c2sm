@@ -1,12 +1,14 @@
 C2SM Guidelines for Spack
 =========================
 
-Spack enables the users to install pieces of software without having
-to "manually" build the source files. This user-freindliness comes at
-the expense of potentially losing control over the exact version being
-installed. That's why C2SM came up with the following guidelines for
-building, running and installing your libraries and executables with
-the main concern being to avoid using moving targets.
+Spack enables the users to install pieces of software in a very
+user-friendly way, allowing e.g. different versions or specificatins
+of the same package to be installed simultaneously or installing
+without having to "manually" download the source code. This comes at
+the expense of potentially losing control over the exact
+version/specification being installed. That's why C2SM came up with
+the following guidelines for building, running and installing your
+libraries and executables.
 
 Building 
 ^^^^^^^^
