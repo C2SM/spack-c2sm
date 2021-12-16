@@ -66,7 +66,7 @@ now.
 So long story short:
 
 **Always use a valid git tag as a version-suffix when building
- software with** *spack install* **for production!**
+software with *spack install* for production!**
 
 Spack dev-build (C2SM Guidelines)
 ---------------------------------
@@ -94,7 +94,7 @@ were used to produce which executable (or library).
 So long story short:
 
 **Always store the local sources and the corresponding executable in
- the same location!**
+the same location!**
 
 Installation
 ^^^^^^^^^^^^
@@ -118,7 +118,7 @@ specify there an install directory that is not deleted regularly like
      install_tree: /project/s903/juckerj/spack-install/          
 
 **Always change the installation directory to a location that is not
- wiped-out regularly!**
+wiped-out regularly!**
 
 Running
 ^^^^^^^
@@ -157,7 +157,8 @@ An example output of *spack load -sh* for COSMO could look as follows:
     export GRIB_SAMPLES_PATH=/project/s903/juckerj/spack-install/daint/cosmo-eccodes-definitions/2.19.0.5/pgi/egf6fp466u2cl3ckkmhpemzf4hz7loqr/cosmoDefinitions/samples;
     export GRIB_DEFINITION_PATH=/project/s903/juckerj/spack-install/daint/cosmo-eccodes-definitions/2.19.0.5/pgi/egf6fp466u2cl3ckkmhpemzf4hz7loqr/cosmoDefinitions/definitions/:/project/s903/juckerj/spack-install/daint/eccodes/2.19.0/pgi/ccigv3uvkdl5h3d2jtb6blxvvv4qsdpc/share/eccodes/definitions;
 
-**Always load the run-environment provided by Spack prior to any executions of an executable installed by Spack!**
+**Always load the run-environment provided by Spack prior to any
+executions of an executable installed by Spack!**
 
 Spack in scripts
 ^^^^^^^^^^^^^^^^
