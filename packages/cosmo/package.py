@@ -65,7 +65,7 @@ class Cosmo(MakefilePackage):
     set_versions(apngit, reg_filter='.*mch.*')
     set_versions(c2smgit)
 
-    depends_on('netcdf-fortran +mpi', type=('build', 'link'))
+    depends_on('netcdf-fortran', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))
     depends_on('slurm%gcc', type='run')
     depends_on('cuda%gcc',
@@ -102,7 +102,7 @@ class Cosmo(MakefilePackage):
     for it in comb:
         real_type = it[0]
         prod_opt = '+production' if it[1] else '~production'
-        cuda_opt = '+cuda' if it[2] else '~cuda cuda_arch=none'
+        cuda_opt = '+cuda' if it[2] else '~cuda'
         cuda_dep = 'cosmo_target=gpu' if it[2] else ' cosmo_target=cpu'
         test_opt = '+build_tests' if it[3] else '~build_tests'
         test_dep = '+dycoretest' if it[3] else '~dycoretest'
