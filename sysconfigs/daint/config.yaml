@@ -6,7 +6,10 @@ config:
     tcl:
   build_stage:
   extensions:
-  install_path_scheme: '{name}/{version}/{compiler.name}/{hash}'
+  install_tree:
+    projections:
+      all: '{name}/{version}/{compiler.name}/{hash}'
+    root:
   source_cache:
   misc_cache:
   build_jobs: 4
