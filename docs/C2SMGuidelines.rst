@@ -166,7 +166,7 @@ The Spack commands are rather tailored for interacive use. It is for
 instance very possible that commands like ``spack find`` or ``spack
 location`` complain about several potential installed *SPECS* meeting
 the command line input. For this reason it's rather recommended to
-avoid spack commands in scripts. This shouldn't be an issue for
+avoid spack commands in scripts. This shouldn't be too problematic for
 ``spack find`` and ``spack location``. For ``spack load`` we rather
 advise to use it from the login nodes before submitting jobs, the
 environment of the running job being inherited from the environment at
