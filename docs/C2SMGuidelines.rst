@@ -66,7 +66,7 @@ now.
 So long story short:
 
 **Always use a valid git tag as a version-suffix when building
-software with *spack install* for production!**
+software with** *spack install* **for production!**
 
 Spack dev-build (C2SM Guidelines)
 ---------------------------------
