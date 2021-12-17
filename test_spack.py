@@ -53,21 +53,18 @@ class CosmoTest(unittest.TestCase):
 
     def test_install_master_gpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('spack installcosmo cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
+        run('spack installcosmo --test=root cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
             )
 
-    def test_install_master_cpu(self):
+    def test_install_master_cpu_pgi(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('spack installcosmo cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
+        run('spack installcosmo --test=root cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
             )
 
-    # def test_install_test(self):
-    #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/289
-    #     run('spack installcosmo --test=root cosmo@master%pgi')
-
-    # def test_install_test_claw(self):
-    #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/289
-    #     run('spack installcosmo --test=root cosmo@master%pgi +claw')
+    def test_install_master_cpu_gnu(self):
+        # So cpu version doesn't rely solely on pgi.
+        run('spack installcosmo --test=root cosmo@org-master%gnu cosmo_target=cpu ~cppdycore'
+            )
 
     def test_devbuild_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
