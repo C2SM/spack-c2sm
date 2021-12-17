@@ -61,9 +61,9 @@ class CosmoTest(unittest.TestCase):
         run('spack installcosmo --test=root cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
             )
 
-    def test_install_master_cpu_gnu(self):
+    def test_install_master_cpu_gcc(self):
         # So cpu version doesn't rely solely on pgi.
-        run('spack installcosmo --test=root cosmo@org-master%gnu cosmo_target=cpu ~cppdycore'
+        run('spack installcosmo --test=root cosmo@org-master%gcc cosmo_target=cpu ~cppdycore'
             )
 
     def test_devbuild_cpu(self):
