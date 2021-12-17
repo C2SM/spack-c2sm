@@ -97,19 +97,23 @@ class CosmoDycoreTest(unittest.TestCase):
 
     def test_install_float_cpu(self):
         # The dycore team's testing relies on this.
-        run('spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda')
+        run('spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda'
+            )
 
     def test_install_float_gpu(self):
         # The dycore team's testing relies on this.
-        run('spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release +cuda')
+        run('spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release +cuda'
+            )
 
     def test_install_double_cpu(self):
         # The dycore team's testing relies on this.
-        run('spack install --test=root cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda')
+        run('spack install --test=root cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda'
+            )
 
     def test_install_double_gpu(self):
         # The dycore team's testing relies on this.
-        run('spack install --test=root cosmo-dycore@master%gcc real_type=double build_type=Release +cuda')
+        run('spack install --test=root cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
+            )
 
 
 class CosmoEccodesDefinitionsTest(unittest.TestCase):
@@ -506,7 +510,8 @@ if __name__ == '__main__':
         # collect and run tests from all packages selected
         suite = unittest.TestSuite([
             test_loader.loadTestsFromTestCase(case) for case in all_test_cases
-            if case.package_name in packages_to_test and machine in case.machines
+            if case.package_name in packages_to_test
+            and machine in case.machines
         ])
         result = unittest.TextTestRunner(verbosity=2).run(suite)
         sys.exit(not result.wasSuccessful())
