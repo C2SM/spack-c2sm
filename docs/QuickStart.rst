@@ -41,7 +41,7 @@ The commands below build COSMO with the C++ Dycore for the target GPU.
 
 .. code-block:: bash
 
-  spack installcosmo cosmo@master%pgi cosmo_target=gpu +cppdycore 
+  spack installcosmo cosmo@org-master%pgi cosmo_target=gpu +cppdycore 
 
 or
 
@@ -57,7 +57,7 @@ The commands below build COSMO without the C++ Dycore  for the target CPU.
 
 .. code-block:: bash
 
-  spack installcosmo cosmo@master%pgi cosmo_target=cpu ~cppdycore 
+  spack installcosmo cosmo@org-master%pgi cosmo_target=cpu ~cppdycore 
 
 or
 
@@ -87,7 +87,7 @@ In order to build int2lm from the C2SM-RCM GitHub organization use the following
 
 .. code-block:: bash
 
-  spack install int2lm@c2sm_master%pgi
+  spack install int2lm@c2sm-master%pgi
 
 Int2lm from COSMO-ORG
 ^^^^^^^^^^^^^^^^^^^^^
@@ -95,7 +95,7 @@ In order to build int2lm from the COSMO-ORG GitHub organization use the followin
 
 .. code-block:: bash
 
-  spack install int2lm@org_master%pgi pollen=False
+  spack install int2lm@org-master%pgi pollen=False
 
 ICON
 ------
@@ -110,7 +110,7 @@ The second option *spack dev-build* allows to build icon with a local source:
 .. code-block:: bash
 
   cd </path/to/package> 
-  spack dev-build icon@dev-build%<compiler> +<variants>
+  spack dev-build -i icon@dev-build%<compiler> +<variants>
 
 ICON CPU BUILD
 ^^^^^^^^^^^^^^^^^^^^
@@ -124,7 +124,7 @@ In order to build a CPU icon binary from a local source
   mkdir pgi_cpu
   cd pgi_cpu
   touch a_fake_file.f90 #spack doesn't want to build in empty folder...
-  spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu # don't forget +eccodes if you want eccodes, add +skip-config to only do make
+  spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu # don't forget +eccodes if you want eccodes, add +skip-config to only do make
 
 ICON GPU BUILD
 ^^^^^^^^^^^^^^^^^^^^
@@ -138,7 +138,7 @@ In order to build a GPU icon binary from a local source
   mkdir pgi_gpu
   cd pgi_gpu
   touch a_fake_file.f90 #spack doesn't want to build in empty folder...
-  spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu # don't forget +eccodes if you want eccodes, add +skip-config to only do make
+  spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu # don't forget +eccodes if you want eccodes, add +skip-config to only do make
 
 Running ICON
 ^^^^^^^^^^^^
@@ -167,7 +167,7 @@ or
 
 .. code-block:: bash
 
-  spack location -i int2lm@c2sm_master%pgi
+  spack location -i int2lm@c2sm-master%pgi
 
 Note that the package location is also given on the last log line of
 the install process. For cosmo you'll find the executable, either

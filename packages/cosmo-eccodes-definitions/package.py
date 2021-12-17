@@ -27,11 +27,13 @@ class CosmoEccodesDefinitions(Package):
     """To simplify the usage of the GRIB 2 format within the COSMO Consortium, a COSMO GRIB 2 Policy has been defined. One element of this policy is to define a unified ecCodes system for the COSMO community, which is compatible with all COSMO software. This unified system is split into two parts, the vendor distribution of the ecCodes, available from ECMWF and the modified samples and definitions used by the COSMO consortium, available in the current repository."""
 
     homepage = "https://github.com/COSMO-ORG/eccodes-cosmo-resources.git"
-    url      = "git@github.com:COSMO-ORG/eccodes-cosmo-resources.git"
-    git      = 'git@github.com:COSMO-ORG/eccodes-cosmo-resources.git'
+    url = "git@github.com:COSMO-ORG/eccodes-cosmo-resources.git"
+    git = 'git@github.com:COSMO-ORG/eccodes-cosmo-resources.git'
 
     maintainers = ['egermann']
 
+    version('2.19.0.7', tag='v2.19.0.7')
+    version('2.19.0.6', tag='v2.19.0.6')
     version('2.19.0.5', tag='v2.19.0.5')
     version('2.19.0.4', commit='6907d3e70cff08b17e66db15f717e4bf914be5ea')
     version('2.19.0.3', commit='35640b15d5cab1b088982ca5f322a7de366cb240')
@@ -41,21 +43,23 @@ class CosmoEccodesDefinitions(Package):
     version('2.14.1.2', commit='15f3a862d0349f4fc332e383c69acbed71b7804d')
     version('2.14.1.1', commit='708d7a4590964c094b6df7fec4a9ccb2981de9fa')
 
-    variant('aec', default=True, description='Enable Adaptive Entropy Coding for decoding/encoding')
+    depends_on('eccodes@2.19.0',
+               type=('build', 'link', 'run'),
+               when='@2.19.0.1:')
+    depends_on('eccodes@2.18.0',
+               type=('build', 'link', 'run'),
+               when='@2.18.0.1')
+    depends_on('eccodes@2.14.1',
+               type=('build', 'link', 'run'),
+               when='@2.14.1.1-2')
 
-    depends_on('eccodes@2.14.1 ~aec', when='@2.14.1.1~aec')
-    depends_on('eccodes@2.14.1 ~aec', when='@2.14.1.2~aec')
-    depends_on('eccodes@2.18.0 ~aec', when='@2.18.0.1~aec')
-    depends_on('eccodes@2.19.0 ~aec', when='@2.19.0.1:~aec') 
-    depends_on('eccodes@2.14.1 +aec', when='@2.14.1.1+aec')
-    depends_on('eccodes@2.14.1 +aec', when='@2.14.1.2+aec')
-    depends_on('eccodes@2.18.0 +aec', when='@2.18.0.1+aec')
-    depends_on('eccodes@2.19.0 +aec', when='@2.19.0.1:+aec')
-   
     def setup_run_environment(self, env):
-        eccodes_definition_path = self.spec['cosmo-eccodes-definitions'].prefix + '/cosmoDefinitions/definitions/:' + self.spec['eccodes'].prefix + '/share/eccodes/definitions/'
+        eccodes_definition_path = self.spec[
+            'cosmo-eccodes-definitions'].prefix + '/cosmoDefinitions/definitions/:' + self.spec[
+                'eccodes'].prefix + '/share/eccodes/definitions/'
         env.prepend_path('GRIB_DEFINITION_PATH', eccodes_definition_path)
-        eccodes_samples_path = self.spec['cosmo-eccodes-definitions'].prefix + '/cosmoDefinitions/samples/'
+        eccodes_samples_path = self.spec[
+            'cosmo-eccodes-definitions'].prefix + '/cosmoDefinitions/samples/'
         env.prepend_path('GRIB_SAMPLES_PATH', eccodes_samples_path)
 
     def setup_dependent_build_environment(self, env, dependent_spec):

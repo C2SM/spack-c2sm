@@ -28,9 +28,9 @@ class OmniXmodPool(Package):
 
     # FIXME: Add a proper url for your package's homepage here.
     homepage = "https://www.example.com"
-    url      = "omni-xmod-pool"
-      
-    git      = 'git@github.com:claw-project/omni-xmod-pool.git'
+    url = "omni-xmod-pool"
+
+    git = 'git@github.com:claw-project/omni-xmod-pool.git'
 
     maintainers = ['elsagermann']
 
@@ -40,7 +40,5 @@ class OmniXmodPool(Package):
         mkdir(prefix.omniXmodPool)
         pool_list = ['grib_api', 'mpi', 'netcdf', 'serialbox']
         for pckg in pool_list:
-          mkdir(prefix.omniXmodPool + '/' + pckg)
-          install_tree(pckg , prefix.omniXmodPool + '/' + pckg)
-
-
+            mkdir(prefix.omniXmodPool + '/' + pckg)
+            install_tree(pckg, prefix.omniXmodPool + '/' + pckg)

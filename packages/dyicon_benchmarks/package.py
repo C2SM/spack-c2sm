@@ -11,8 +11,8 @@ class DyiconBenchmarks(CMakePackage):
     """benchmarks for dynamical core of ICON"""
 
     homepage = 'https://github.com/cosunae/cuda_stencil'
-    url      = "https://github.com/cosunae/cuda_stencil"
-    git      = 'https://github.com/cosunae/cuda_stencil'
+    url = "https://github.com/cosunae/cuda_stencil"
+    git = 'https://github.com/cosunae/cuda_stencil'
     maintainers = ['cosunae']
 
     version('master', branch='master')
@@ -23,10 +23,14 @@ class DyiconBenchmarks(CMakePackage):
 
     def cmake_args(self):
         args = []
-        print("===========", self.spec['atlas_utilities'], self.spec['atlas_utilities'].prefix)
+        print("===========", self.spec['atlas_utilities'],
+              self.spec['atlas_utilities'].prefix)
         spec = self.spec
         args.append('-Datlas_DIR={0}'.format(spec['atlas'].prefix))
-        args.append('-Datlas_utils_DIR={0}'.format(spec['atlas_utilities'].prefix+'/lib/cmake'))
-        args.append('-DCMAKE_CUDA_FLAGS=-L/apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/CUDA/10.1.243/lib64')
+        args.append(
+            '-Datlas_utils_DIR={0}'.format(spec['atlas_utilities'].prefix +
+                                           '/lib/cmake'))
+        args.append(
+            '-DCMAKE_CUDA_FLAGS=-L/apps/arolla/UES/jenkins/RH7.6/generic/easybuild/software/CUDA/10.1.243/lib64'
+        )
         return args
-
