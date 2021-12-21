@@ -1,6 +1,6 @@
-
 import subprocess, re
 from spack import *
+
 
 def get_releases(repo):
     git_obj = subprocess.run(["git", "ls-remote", "--refs", repo],
@@ -29,4 +29,3 @@ def set_versions(repo, reg_filter=None):
 
         for tag in tags:
             version(tag, git=repo, tag=tag, get_full_repo=True)
-

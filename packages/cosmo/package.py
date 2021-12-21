@@ -7,6 +7,7 @@ import subprocess, re, itertools, os
 from spack import *
 from release_det import *
 
+
 class Cosmo(MakefilePackage):
     """COSMO: Numerical Weather Prediction Model. Needs access to private GitHub."""
 
