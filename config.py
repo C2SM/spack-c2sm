@@ -178,7 +178,7 @@ def main():
             'admin-', '') + '/' + afile + ' ' + args.idir + '/spack/etc/spack/'
         subprocess.run(cmd.split(), check=True)
 
-    print('Spack successfully installed. \nSource ' + args.idir +
+    print('Spack successfully installed. \nsource ' + args.idir +
           '/spack/share/spack/setup-env.sh for setting up the instance.')
 
 
