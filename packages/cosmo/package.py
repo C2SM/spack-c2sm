@@ -7,7 +7,8 @@ import subprocess, re, itertools, os
 from spack import *
 import sys
 import os.path as path
-sys.path.insert(1, path.abspath(path.join(__file__,"../../..")))
+
+sys.path.insert(1, path.abspath(path.join(__file__, "../../..")))
 from release_det import *
 
 
@@ -37,8 +38,8 @@ class Cosmo(MakefilePackage):
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
 
-    version = set_versions(version,apngit, reg_filter='.*mch.*')
-    version = set_versions(version,c2smgit)
+    version = set_versions(version, apngit, reg_filter='.*mch.*')
+    version = set_versions(version, c2smgit)
 
     depends_on('netcdf-fortran', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))
