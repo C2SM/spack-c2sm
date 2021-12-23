@@ -80,7 +80,9 @@ def main():
         print('Installing custom dev-build command')
         shutil.copy('./tools/spack-scripting/scripting/cmd/dev_build.py',
                     args.idir + '/spack/lib/spack/spack/cmd/')
-
+    
+    shutil.copy(args.idir + '/tools/spack-scripting/scripting/cmd/release_det.py',
+                args.idir + '/spack/lib/spack/release_det.py')
     sys.path.insert(1, os.path.join(args.idir, 'spack/lib/spack/external'))
     from ruamel import yaml
 

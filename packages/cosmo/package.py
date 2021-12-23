@@ -7,8 +7,6 @@ import subprocess, re, itertools, os
 from spack import *
 import sys
 import os.path as path
-
-sys.path.insert(1, path.abspath(path.join(__file__, "../../..")))
 from release_det import *
 
 
