@@ -173,3 +173,12 @@ Note that the package location is also given on the last log line of
 the install process. For cosmo you'll find the executable, either
 ``cosmo_cpu`` or ``cosmo_gpu``, under the ``bin`` subdirectory whereas the
 int2lm executable will be the ``bin`` *file* itself.
+
+Running executables from Spack
+------------------------------
+In order to obtain a correct run-environment for any executable compiled by Spack,
+load the environment provided by Spack:
+
+.. code-block:: bash
+
+  spack load package@<version>%<compiler> +<variants>

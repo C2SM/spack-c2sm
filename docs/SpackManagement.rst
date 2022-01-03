@@ -1,8 +1,8 @@
-Spack Instance Management
-============================
+Spack Instance Management [admin]
+=================================
 
 How to re-create the spack instance
-------------------------------------
+-----------------------------------
 
 First, you might want to delete the old spack instances if you want to refresh them.
 
@@ -44,17 +44,3 @@ This instance is for all users. It installs to $SCRATCH
 
   . /project/g110/spack/user/admin-$slave/spack/share/spack/setup-env.sh
   spack install cosmo-grib-api-definition
-
-Change location for package installations
------------------------------------------
-Spack offers the possibility to overwrite the default installation
-directory in */scratch/$USER/spack-install*. This is recommended on **Piz Daint**
-due to the regular clean-up on scratch. 
-To do so create the file **config.yaml** in *~/.spack* with a directory that is not deleted regularly like */project*
-or */store*:
-
-.. code-block:: yaml
-
-  config:                                                                                                                     
-     install_tree: /project/s903/juckerj/spack-install/          
-
