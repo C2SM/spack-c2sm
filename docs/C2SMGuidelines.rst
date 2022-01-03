@@ -74,20 +74,20 @@ Spack dev-build (C2SM Guidelines)
 
 In order to install software with *spack dev-build* one needs a
 local source code.  Spack will compile the code as it is locally
-present. Contrary to *spack install*, version-suffix does not have
+present. Contrary to *spack install*, version-suffix (@master, @v2.7.9, etc,) does not have
 any effect on the code version compiled. Of course the version-suffix
 will appear in the installation path and the Spack database later on
 and will need to be present in so-called *SPEC*.
 
 One could therefore in principle use whatever version name with
-*spack dev-build package@version*. However because of depency
+*spack dev-build package@version*. However because of dependency
 checking and because it's an untested usage, we recommend to rather
 stick to the *@dev-build* version. This would prevent to
 simultaneously build several local sources of the same package. If
 this an issue, and because Spack only copies the result of the build
 in its own database, we recommend to first do *spack uninstall
 package@dev-build ...* in order to be able to compile other sources
-and then keep the exutable (or the library) where it was originally
+and then keep the executable (or the library) where it was originally
 compiled, so that the same *SPEC* can be used with any of these
 builds. This has the added benefit of keeping track of which sources
 were used to produce which executable (or library).
