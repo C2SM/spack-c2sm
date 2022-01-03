@@ -76,18 +76,8 @@ In order to install software with *spack dev-build* one needs a
 local source code.  Spack will compile the code as it is locally
 present. Contrary to *spack install*, version-suffix (@master, @v2.7.9, etc,) does not have
 any effect on the code version compiled.
-One could therefore in principle use whatever version name with
-*spack dev-build package@version*. However because of dependency
-checking and because it's an untested usage, we recommend to rather
-stick to the *@dev-build* version. This would prevent to
-simultaneously build several local sources of the same package. If
-this an issue, and because Spack only copies the result of the build
-in its own database, we recommend to first do *spack uninstall
-package@dev-build ...* in order to be able to compile other sources
-and then keep the executable where it was originally
-compiled, so that the same *SPEC* can be used with any of these
-builds. This has the added benefit of keeping track of which sources
-were used to produce which executable.
+To be safe always use *@mdev-build* and copy the executable after installation
+into the source-folder.
 
 So long story short:
 
