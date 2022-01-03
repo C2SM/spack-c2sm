@@ -87,10 +87,10 @@ simultaneously build several local sources of the same package. If
 this an issue, and because Spack only copies the result of the build
 in its own database, we recommend to first do *spack uninstall
 package@dev-build ...* in order to be able to compile other sources
-and then keep the executable (or the library) where it was originally
+and then keep the executable where it was originally
 compiled, so that the same *SPEC* can be used with any of these
 builds. This has the added benefit of keeping track of which sources
-were used to produce which executable (or library).
+were used to produce which executable.
 
 So long story short:
 
