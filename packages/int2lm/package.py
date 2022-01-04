@@ -27,7 +27,7 @@ class Int2lm(MakefilePackage):
 
     # APN tags
     version('apn-master', git=git, branch='master')
-    set_versions(version,'apn', git)
+    set_versions(version, 'apn', git)
 
     # C2SM tags
     version('c2sm-master', git=c2smgit, branch='master')

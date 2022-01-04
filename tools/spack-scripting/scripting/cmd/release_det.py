@@ -19,6 +19,7 @@ def get_releases(repo):
 
 
 def set_versions(version, tag_name, repo, reg_filter=None):
+
     def filterfn(repo_tag):
         return re.match(reg_filter, repo_tag) != None
 
@@ -28,4 +29,7 @@ def set_versions(version, tag_name, repo, reg_filter=None):
             tags = list(filter(filterfn, tags))
 
         for tag in tags:
-            version(tag_name + '_' + tag, git=repo, tag=tag, get_full_repo=True)
+            version(tag_name + '_' + tag,
+                    git=repo,
+                    tag=tag,
+                    get_full_repo=True)

@@ -37,7 +37,7 @@ class Cosmo(MakefilePackage):
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
 
     set_versions(version, 'apn', apngit, reg_filter='.*mch.*')
-    set_versions(version,'c2sm', c2smgit)
+    set_versions(version, 'c2sm', c2smgit)
 
     depends_on('netcdf-fortran', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))
