@@ -28,7 +28,8 @@ import subprocess, re
 
 def get_releases(repo):
     git_obj = subprocess.run(["git", "ls-remote", "--refs", repo],
-                             stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+                             stdout=subprocess.PIPE,
+                             stderr=subprocess.DEVNULL)
     git_tags = [
         re.match('refs/tags/(.*)', x.decode('utf-8')).group(1)
         for x in git_obj.stdout.split()
