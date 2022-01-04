@@ -8,6 +8,7 @@ from spack import *
 
 import os
 import subprocess
+from release_det import *
 
 
 class Int2lm(MakefilePackage):
@@ -26,57 +27,15 @@ class Int2lm(MakefilePackage):
 
     # APN tags
     version('apn-master', git=git, branch='master')
-    version('apn_v2.8.4',
-            git=git,
-            commit='c4541c7c9f87d2912b66acc41bb1be598dcdf433')
-    version('apn_v2.8.3',
-            git=git,
-            commit='43796aa0a2c56071efc3277397abbbf78dab1247')
-    version('apn_v2.8.2',
-            git=git,
-            commit='7f8bf2e3f5e77489cfdb4443578a43431408e2bd')
-    version('apn_v2.8.1',
-            git=git,
-            commit='844d239cfa83bc9980696cae56f47da3d08ce4ec')
-    version('apn_v2.7.2',
-            git=git,
-            commit='7a460906e826142be1fb9338d2210ccf7566d5a2')
-    version('apn_v2.7.1_p2',
-            git=git,
-            commit='05e2a405a66f62706df17f01bbc463d0c365e168')
-    version('apn_v2.7.1',
-            git=git,
-            commit='ee0780f86ecc676a9650170f361b92ff93379071')
-    version('apn_v2.6.2',
-            git=git,
-            commit='07690dab05c931ba02c947ec32c988eea65898f8')
+    set_versions(version,'apn', git)
 
     # C2SM tags
     version('c2sm-master', git=c2smgit, branch='master')
-    version('c2sm_v2.8.3',
-            git=c2smgit,
-            commit='da56842f2222d241ecc129f95ef097a6773dfe90')
-    version('c2sm_v2.8.2',
-            git=c2smgit,
-            commit='7f8bf2e3f5e77489cfdb4443578a43431408e2bd')
+    set_versions(version, 'c2sm', c2smgit)
 
     # ORG tags
     version('org-master', git=orggit, branch='master')
-    version('org_2.08',
-            git=orggit,
-            commit='9e0d0bfe50f8e29676c7d1f0f4205597be8e86e1')
-    version('org_2.07',
-            git=orggit,
-            commit='65ddb3af9b7d63fa2019d8bcee41e8d4a99baedd')
-    version('org_2.06a',
-            git=orggit,
-            commit='eb067a01446f55e1b55f6341681e97a95f856865')
-    version('org_2.06',
-            git=orggit,
-            commit='11065ff1b304129ae19e774ebde02dcd743d2005')
-    version('org_2.05',
-            git=orggit,
-            commit='ef16f54f53401e99aef083c447b4909b8230a4a0')
+    set_versions(version, 'org', orggit)
 
     # deprecated versions
     version('apn_master', git=git, branch='master')
