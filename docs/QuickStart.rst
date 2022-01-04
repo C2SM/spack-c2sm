@@ -124,6 +124,7 @@ In order to build a CPU icon binary from a local source
   mkdir pgi_cpu
   cd pgi_cpu
   touch a_fake_file.f90 #spack doesn't want to build in empty folder...
+  chmod +x ./../config/cscs/tsa.cpu.nvidia
   spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu # don't forget +eccodes if you want eccodes, add +skip-config to only do make
 
 ICON GPU BUILD
@@ -138,6 +139,7 @@ In order to build a GPU icon binary from a local source
   mkdir pgi_gpu
   cd pgi_gpu
   touch a_fake_file.f90 #spack doesn't want to build in empty folder...
+  chmod +x ./../config/cscs/tsa.gpu.nvidia
   spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu # don't forget +eccodes if you want eccodes, add +skip-config to only do make
 
 Running ICON
