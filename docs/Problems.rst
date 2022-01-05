@@ -3,6 +3,16 @@ Known Problems with Spack
 
 Known problems with Spack and how to resolve them.
 
+Error: __init__() got an unexpected keyword argument 'capture_output'
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Spack uses a Python version < 3.6. To fix this issue start again with a **clean shell**
+and execute the following (code below is for Daint):
+
+.. code-block:: bash
+   module load cray-python # on daint
+   source $SPACK_ROOT/share/spack/setup-env.sh
+   
+
 Error: Initialization hangs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 If `source $SPACK_ROOT/share/spack/setup-env.sh` hangs, clean your cache:
