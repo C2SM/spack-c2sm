@@ -9,6 +9,7 @@ Spack uses a Python version < 3.6. To fix this issue start again with a **clean 
 and execute the following (code below is for Daint):
 
 .. code-block:: bash
+
    module load cray-python # on daint
    source $SPACK_ROOT/share/spack/setup-env.sh
    
