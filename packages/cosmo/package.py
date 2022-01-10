@@ -3,8 +3,9 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-import itertools, os
+import itertools, os, sys
 from spack import *
+sys.path.append('../packages')
 from version_detection import set_versions
 
 

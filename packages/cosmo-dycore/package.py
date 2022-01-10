@@ -23,7 +23,9 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##############################################################################
 from spack import *
-
+import sys
+sys.path.append('../packages')
+from version_detection import set_versions
 
 class CosmoDycore(CMakePackage):
     """C++ dycore of cosmo based on GridTools library"""
