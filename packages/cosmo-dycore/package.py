@@ -24,6 +24,7 @@
 ##############################################################################
 from spack import *
 
+
 class CosmoDycore(CMakePackage):
     """C++ dycore of cosmo based on GridTools library"""
 

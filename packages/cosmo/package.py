@@ -7,6 +7,7 @@ import itertools, os
 from spack import *
 from version_detection import set_versions
 
+
 class Cosmo(MakefilePackage):
     """COSMO: Numerical Weather Prediction Model. Needs access to private GitHub."""
 

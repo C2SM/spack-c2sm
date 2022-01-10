@@ -1,5 +1,6 @@
 import subprocess, re
 
+
 def get_tags(repo):
     git_obj = subprocess.run(["git", "ls-remote", "--refs", repo],
                              capture_output=True)
