@@ -24,8 +24,10 @@
 ##############################################################################
 from spack import *
 import sys
+
 sys.path.append('../packages')
 from version_detection import set_versions
+
 
 class CosmoDycore(CMakePackage):
     """C++ dycore of cosmo based on GridTools library"""
