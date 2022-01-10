@@ -23,26 +23,6 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##############################################################################
 from spack import *
-import subprocess, re
-
-
-def get_releases(repo):
-    git_obj = subprocess.run(["git", "ls-remote", "--refs", repo],
-                             stdout=subprocess.PIPE,
-                             stderr=subprocess.DEVNULL)
-    git_tags = [
-        re.match('refs/tags/(.*)', x.decode('utf-8')).group(1)
-        for x in git_obj.stdout.split()
-        if re.match('refs/tags/(.*)', x.decode('utf-8'))
-    ]
-    return git_tags
-
-
-def dycore_tags(repo):
-    tags = get_releases(repo)
-    for tag in tags:
-        version(tag, git=repo, tag=tag)
-
 
 class CosmoDycore(CMakePackage):
     """C++ dycore of cosmo based on GridTools library"""
@@ -67,8 +47,8 @@ class CosmoDycore(CMakePackage):
     version('master', branch='master')
     version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
 
-    dycore_tags("git@github.com:MeteoSwiss-APN/cosmo.git")
-    dycore_tags("git@github.com:C2SM-RCM/cosmo.git")
+    set_versions("git@github.com:MeteoSwiss-APN/cosmo.git")
+    set_versions("git@github.com:C2SM-RCM/cosmo.git")
 
     variant('build_type',
             default='Release',
