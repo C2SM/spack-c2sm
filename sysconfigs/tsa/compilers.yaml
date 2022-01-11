@@ -26,7 +26,7 @@ compilers::
     operating_system: rhel7
     paths:
       cc: /apps/common/UES/sandbox/kraushm/tsa-nvhpc/easybuild/software/NVHPC/21.2-cuda-11.2/Linux_x86_64/21.2/compilers/bin/nvcc
-      cxx: /apps/common/UES/sandbox/kraushm/tsa-nvhpc/easybuild/software/NVHPC/21.2-cuda-11.2/Linux_x86_64/21.2/compilers/bin/mvc++
+      cxx: /apps/common/UES/sandbox/kraushm/tsa-nvhpc/easybuild/software/NVHPC/21.2-cuda-11.2/Linux_x86_64/21.2/compilers/bin/nvc++
       f77: /apps/common/UES/sandbox/kraushm/tsa-nvhpc/easybuild/software/NVHPC/21.2-cuda-11.2/Linux_x86_64/21.2/compilers/bin/nvfortran
       fc: /apps/common/UES/sandbox/kraushm/tsa-nvhpc/easybuild/software/NVHPC/21.2-cuda-11.2/Linux_x86_64/21.2/compilers/bin/nvfortran
     spec: nvhpc@21.2

@@ -297,7 +297,8 @@ packages:
       modules:
       - cray-mpich/7.7.17
     - spec: mpich@7.7.16%nvhpc
-      modules: cray-mpich/7.7.16
+      modules:
+      - cray-mpich/7.7.16
   netcdf-c:
     buildable: false
     externals:
