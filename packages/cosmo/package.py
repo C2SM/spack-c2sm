@@ -7,7 +7,7 @@ import subprocess, re, itertools, os
 from spack import *
 import sys
 import os.path as path
-from release_det import *
+from version_detection import set_versions
 
 
 class Cosmo(MakefilePackage):
@@ -36,8 +36,8 @@ class Cosmo(MakefilePackage):
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
 
-    set_versions(version, 'apn', apngit, reg_filter='.*mch.*')
-    set_versions(version, 'c2sm', c2smgit)
+    set_versions(version, apngit, 'apn', regex_filter='.*mch.*')
+    set_versions(version, c2smgit, 'c2sm')
 
     depends_on('netcdf-fortran', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))

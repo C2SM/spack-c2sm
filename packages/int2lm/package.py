@@ -8,7 +8,7 @@ from spack import *
 
 import os
 import subprocess
-from release_det import *
+from version_detection import set_versions
 
 
 class Int2lm(MakefilePackage):
@@ -27,15 +27,15 @@ class Int2lm(MakefilePackage):
 
     # APN tags
     version('apn-master', git=git, branch='master')
-    set_versions(version, 'apn', git)
+    set_versions(version, git, 'apn')
 
     # C2SM tags
     version('c2sm-master', git=c2smgit, branch='master')
-    set_versions(version, 'c2sm', c2smgit)
+    set_versions(version, c2smgit, 'c2sm')
 
     # ORG tags
     version('org-master', git=orggit, branch='master')
-    set_versions(version, 'org', orggit)
+    set_versions(version, orggit, 'org')
 
     # deprecated versions
     version('apn_master', git=git, branch='master')
