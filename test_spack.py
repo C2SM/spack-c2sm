@@ -89,7 +89,7 @@ class CosmoTest(unittest.TestCase):
 
     def test_install_old_version(self):
         # So we can reproduce results from old versions.
-        run('spack installcosmo cosmo@5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore'
+        run('spack installcosmo cosmo@apn_5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore'
             )
 
 
