@@ -12,7 +12,7 @@ class Eccodes(CMakePackage):
     data in GRIB (1/2), BUFR (3/4) and GTS header formats."""
 
     homepage = 'https://software.ecmwf.int/wiki/display/ECC/ecCodes+Home'
-    url = 'https://software.ecmwf.int/wiki/download/attachments/45757960/eccodes-2.2.0-Source.tar.gz?api=v2'
+    url = 'https://confluence.ecmwf.int/download/attachments/45757960/eccodes-2.2.0-Source.tar.gz?api=v2'
     list_url = 'https://software.ecmwf.int/wiki/display/ECC/Releases'
 
     maintainers = ['skosukhin']
@@ -37,7 +37,7 @@ class Eccodes(CMakePackage):
             '1a4112196497b8421480e2a0a1164071221e467853486577c4f07627a702f4c3')
 
     variant('build_shared_libs',
-            default=True,
+            default=False,
             description="Select the type of library built")
     variant('netcdf',
             default=False,
@@ -50,7 +50,7 @@ class Eccodes(CMakePackage):
             default=False,
             description='Enable PNG support for decoding/encoding')
     variant('aec',
-            default=True,
+            default=False,
             description='Enable Adaptive Entropy Coding for decoding/encoding')
     variant('pthreads', default=False, description='Enable POSIX threads')
     variant('openmp', default=False, description='Enable OpenMP threads')

@@ -46,14 +46,18 @@ class Cosmo(MakefilePackage):
     c2smgit = 'git@github.com:C2SM-RCM/cosmo.git'
     maintainers = ['elsagermann']
 
-    version('master', branch='master', get_full_repo=True)
+    version('org-master', branch='master', get_full_repo=True)
     version('dev-build', branch='master', get_full_repo=True)
-    version('mch', git=apngit, branch='mch', get_full_repo=True)
+    version('apn-mch', git=apngit, branch='mch', get_full_repo=True)
     version('c2sm-master', git=c2smgit, branch='master', get_full_repo=True)
     version('c2sm-features',
             git=c2smgit,
             branch='c2sm-features',
             get_full_repo=True)
+
+    #deprecated
+    version('master', branch='master', get_full_repo=True)
+    version('mch', git=apngit, branch='mch', get_full_repo=True)
 
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
@@ -61,7 +65,7 @@ class Cosmo(MakefilePackage):
     set_versions(apngit, reg_filter='.*mch.*')
     set_versions(c2smgit)
 
-    depends_on('netcdf-fortran +mpi', type=('build', 'link'))
+    depends_on('netcdf-fortran', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))
     depends_on('slurm%gcc', type='run')
     depends_on('cuda%gcc',
@@ -98,7 +102,7 @@ class Cosmo(MakefilePackage):
     for it in comb:
         real_type = it[0]
         prod_opt = '+production' if it[1] else '~production'
-        cuda_opt = '+cuda' if it[2] else '~cuda cuda_arch=none'
+        cuda_opt = '+cuda' if it[2] else '~cuda'
         cuda_dep = 'cosmo_target=gpu' if it[2] else ' cosmo_target=cpu'
         test_opt = '+build_tests' if it[3] else '~build_tests'
         test_dep = '+dycoretest' if it[3] else '~dycoretest'
@@ -192,7 +196,7 @@ class Cosmo(MakefilePackage):
             description='Slurm constraints for nodes requested')
 
     conflicts('+claw', when='cosmo_target=cpu')
-    conflicts('+pollen', when='@5.05:5.06,master')
+    conflicts('+pollen', when='@5.05:5.06,org-master,master')
     conflicts('cosmo_target=gpu', when='%gcc')
 
     # previous versions contain a bug affecting serialization

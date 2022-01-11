@@ -25,7 +25,7 @@ class Int2lm(MakefilePackage):
     version('dev-build', branch='master')
 
     # APN tags
-    version('apn_master', git=git, branch='master')
+    version('apn-master', git=git, branch='master')
     version('apn_v2.8.4',
             git=git,
             commit='c4541c7c9f87d2912b66acc41bb1be598dcdf433')
@@ -52,7 +52,7 @@ class Int2lm(MakefilePackage):
             commit='07690dab05c931ba02c947ec32c988eea65898f8')
 
     # C2SM tags
-    version('c2sm_master', git=c2smgit, branch='master')
+    version('c2sm-master', git=c2smgit, branch='master')
     version('c2sm_v2.8.3',
             git=c2smgit,
             commit='da56842f2222d241ecc129f95ef097a6773dfe90')
@@ -61,7 +61,7 @@ class Int2lm(MakefilePackage):
             commit='7f8bf2e3f5e77489cfdb4443578a43431408e2bd')
 
     # ORG tags
-    version('org_master', git=orggit, branch='master')
+    version('org-master', git=orggit, branch='master')
     version('org_2.08',
             git=orggit,
             commit='9e0d0bfe50f8e29676c7d1f0f4205597be8e86e1')
@@ -78,6 +78,11 @@ class Int2lm(MakefilePackage):
             git=orggit,
             commit='ef16f54f53401e99aef083c447b4909b8230a4a0')
 
+    # deprecated versions
+    version('apn_master', git=git, branch='master')
+    version('c2sm_master', git=c2smgit, branch='master')
+    version('org_master', git=orggit, branch='master')
+
     depends_on('cosmo-grib-api-definitions',
                type=('build', 'run'),
                when='~eccodes')
@@ -87,7 +92,7 @@ class Int2lm(MakefilePackage):
     depends_on('libgrib1@master', type='build')
     depends_on('mpi', type=('build', 'link', 'run'), when='+parallel')
     depends_on('netcdf-c', type=('build', 'link'))
-    depends_on('netcdf-fortran +mpi', type=('build', 'link'))
+    depends_on('netcdf-fortran', type=('build', 'link'))
 
     variant('debug', default=False, description='Build debug INT2LM')
     variant('eccodes',
@@ -103,7 +108,7 @@ class Int2lm(MakefilePackage):
 
     conflicts(
         'pollen=True',
-        when='@org_master,org_2.05:org_2.08',
+        when='@org-master,org_master,org_2.05:org_2.08',
         msg=
         'int2lm-org is currently broken with pollen, set variant pollen=False')
 

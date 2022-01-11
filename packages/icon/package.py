@@ -49,9 +49,7 @@ class Icon(Package):
     depends_on('eccodes@2.19.0 +build_shared_libs',
                when='+eccodes',
                type=('build', 'link', 'run'))
-    depends_on('claw@2.1%gcc', when='+claw~ham', type=('build', 'link', 'run'))
-    # Workaround for Hammoz since the new claw driver doesn't work with its old build system. TODO: remove when new release of icon is merged!!
-    depends_on('claw@2.0.1', when='+claw+ham', type=('build', 'link', 'run'))
+    depends_on('claw@2.0.2', when='+claw', type=('build', 'link', 'run'))
 
     variant('icon_target',
             default='gpu',
@@ -104,7 +102,7 @@ class Icon(Package):
 
     @run_before('configure')
     def generate_hammoz_nml(self):
-        if '@ham' in self.spec:
+        if '+ham' in self.spec:
             with working_dir(self.config_dir + '/' +
                              self.atm_phy_echam_submodels_namelists_dir):
                 make()
@@ -177,7 +175,7 @@ class Icon(Package):
     @run_after('build')
     def test(self):
         if self.spec.variants['test_name'].value != 'none':
-            if '@ham' in self.spec:
+            if '+ham' in self.spec:
                 try:
                     subprocess.run([
                         'indata_hammoz_root=/store/c2sm/c2sme/input_gcm/icon/input_hammoz/ ./make_runscripts -s '

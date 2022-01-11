@@ -53,11 +53,13 @@ class CosmoTest(unittest.TestCase):
 
     def test_install_master_gpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('spack installcosmo cosmo@master%pgi cosmo_target=gpu +cppdycore')
+        run('spack installcosmo cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
+            )
 
     def test_install_master_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('spack installcosmo cosmo@master%pgi cosmo_target=cpu ~cppdycore')
+        run('spack installcosmo cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
+            )
 
     # def test_install_test(self):
     #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/289
@@ -208,19 +210,19 @@ class Int2lmTest(unittest.TestCase):
     depends_on = {
         'cosmo-grib-api-definitions', 'cosmo-eccodes-definitions', 'libgrib1'
     }
-    machines = {'tsa'}
+    machines = all_machines
 
-    def test_install(self):
+    def test_install_pgi(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('spack install int2lm@c2sm_master%pgi')
+        run('spack install --test=root int2lm@c2sm-master%pgi')
 
-    # def test_install_test(self):
-    #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/319
-    #     run('spack install --test=root int2lm@c2sm_master%gcc')
+    def test_install_gcc(self):
+        # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
+        run('spack install --test=root int2lm@c2sm-master%gcc')
 
     def test_install_no_pollen(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('spack install int2lm@org_master%pgi pollen=False')
+        run('spack install --test=root int2lm@org-master%pgi pollen=False')
 
 
 class IconDuskE2ETest(unittest.TestCase):
@@ -233,6 +235,10 @@ class IconToolsTest(unittest.TestCase):
     package_name = 'icontools'
     depends_on = {'eccodes', 'cosmo-grib-api'}
     machines = all_machines
+
+    # C2SM supported version
+    def test_install(self):
+        run('spack install --test=root icontools@c2sm-master%gcc')
 
 
 class LibGrib1Test(unittest.TestCase):
@@ -391,7 +397,7 @@ class SelfTest(unittest.TestCase):
         self.assertFalse(Has_cycle(dependencies))
 
     def test_expansions_is_acyclic(self):
-        self.assertFalse(Has_cycle(dependencies | expansions))
+        self.assertFalse(Has_cycle({**dependencies, **expansions}))
 
     def test_all_dependencies_are_packages(self):
         all_package_names = {case.package_name for case in all_test_cases}
@@ -404,14 +410,14 @@ if __name__ == '__main__':
     test_loader = unittest.TestLoader()
 
     # Do self-test first to fail fast
-    print('Self-tests:')
+    print('Self-tests:', flush=True)
     suite = unittest.TestSuite([
         test_loader.loadTestsFromTestCase(DAG_Algorithm_Test),
         test_loader.loadTestsFromTestCase(SelfTest)
     ])
     result = unittest.TextTestRunner(verbosity=2).run(suite)
     if not result.wasSuccessful():
-        sys.exit(False)
+        sys.exit(1)
 
     commands = sys.argv[1:]
     sys.argv = [sys.argv[0]]  # unittest needs this
@@ -432,7 +438,8 @@ if __name__ == '__main__':
         commands.remove('--tsa')
 
     # configure spack
-    print(f'Configuring spack with upstream {upstream} on machine {machine}.')
+    print(f'Configuring spack with upstream {upstream} on machine {machine}.',
+          flush=True)
     subprocess.run(
         f'python ./config.py -m {machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache',
         check=True,
@@ -443,7 +450,8 @@ if __name__ == '__main__':
     # handles backward compatibility to run any command
     if any(c not in known_commands for c in commands):
         joined_command = ' '.join(commands)
-        print(f'Input contains unknown command. Executing: {joined_command}')
+        print(f'Input contains unknown command. Executing: {joined_command}',
+              flush=True)
         run(joined_command)
         sys.exit()
 
@@ -468,6 +476,6 @@ if __name__ == '__main__':
     ])
 
     # run tests
-    print(f'Testing packages: {packages_to_test}')
+    print(f'Testing packages: {packages_to_test}', flush=True)
     result = unittest.TextTestRunner(verbosity=2).run(suite)
     sys.exit(not result.wasSuccessful())

@@ -15,7 +15,9 @@ mostly at the Swiss Super Computing Center (CSCS).
 
    QuickStart
    Install
+   C2SMGuidelines
    SpackCommands
+   Problems
    CodeDev
    SpackManagement
    CI

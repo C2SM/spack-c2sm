@@ -1,5 +1,5 @@
-Using the Jenkins Continuous Integration Executables
-====================================================
+Using the Jenkins Continuous Integration Executables [outdated]
+===============================================================
 
 This section describes how to find executables installed by jenkins and how to load the environment to run the application. 
 
@@ -8,14 +8,7 @@ For example
 
 .. code-block:: bash
 
-  COSMO_SPEC="cosmo@master%pgi real_type=float cosmo_target=gpu +cppdycore +claw"
-
-Before we can use spack commands, we need to load the spack instance
-
-.. code-block:: bash
-  
-  module load python/3.7.4
-  . /project/g110/spack/user/tsa/spack/share/spack/setup-env.sh
+  COSMO_SPEC="cosmo@org-master%pgi real_type=float cosmo_target=gpu +cppdycore +claw"
 
 In order to find the location of that build,
 
@@ -31,8 +24,8 @@ The spec has to be complete and match all variants that were use to build the ex
   
   ==> 8 installed packages
   -- linux-rhel7-skylake_avx512 / gcc@8.3.0 -----------------------
-  cosmo@master~claw cosmo_target=cpu ~cppdycore~debug+dycoretest+eccodes+parallel~pollen~production real_type=double ~serialize slave=tsa ~verbose
-  cosmo@master~claw cosmo_target=cpu ~cppdycore~debug+dycoretest+eccodes+parallel~pollen~production real_type=float ~serialize slave=tsa ~verbose
+  cosmo@org-master~claw cosmo_target=cpu ~cppdycore~debug+dycoretest+eccodes+parallel~pollen~production real_type=double ~serialize slave=tsa ~verbose
+  cosmo@org-master~claw cosmo_target=cpu ~cppdycore~debug+dycoretest+eccodes+parallel~pollen~production real_type=float ~serialize slave=tsa ~verbose
 
   -- linux-rhel7-skylake_avx512 / pgi@19.9 ------------------------
   cosmo@dev-build~claw cosmo_target=cpu ~cppdycore~debug+dycoretest~eccodes+parallel~pollen~production real_type=float +serialize slave=tsa ~verbose

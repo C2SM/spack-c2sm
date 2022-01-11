@@ -39,9 +39,7 @@ class Icontools(AutotoolsPackage):
     depends_on('libtool%gcc', type='build')
     depends_on('m4%gcc', type='build')
 
-    depends_on('cray-libsci%cce', type=('build', 'link'), when='slave=daint')
-
-    depends_on('netcdf-fortran ~mpi', type=('build', 'link'))
+    depends_on('netcdf-fortran', type=('build', 'link'))
     depends_on('netcdf-c ~mpi', type=('build', 'link'))
     depends_on('hdf5 ~mpi +hl', type=('build', 'link'))
     depends_on(
@@ -107,9 +105,6 @@ class Icontools(AutotoolsPackage):
         env.append_flags('FCFLAGS', '-DNOMPI')
         #Setting LIBS
         env.append_flags('LIBS', '-lhdf5')
-        if self.spec.variants['slave'].value == 'daint':
-            env.append_flags('LIBS', '-lsci_cray')
-
         env.append_flags('LIBS', '-leccodes')
         env.append_flags('LIBS', '-leccodes_f90')
 
@@ -120,8 +115,10 @@ class Icontools(AutotoolsPackage):
             env.append_flags('LIBS', '-lgfortran')
 
     def check(self):
+
         # only c2sm-versions have script for CSCS
         if self.spec.version in (Version('c2sm-master'), Version('dev-build')):
+
             if self.spec.variants['slave'].value == 'daint':
                 test_process = subprocess.run([
                     'sbatch', '-W', '--time=00:15:00', '-A',
@@ -129,6 +126,7 @@ class Icontools(AutotoolsPackage):
                     '-p', 'debug', './C2SM/test/jenkins/test.sh'
                 ],
                                               stderr=subprocess.STDOUT)
+
             if self.spec.variants['slave'].value == 'tsa':
                 test_process = subprocess.run([
                     'sbatch', '-W', '--time=00:15:00', '-p', 'debug',
