@@ -349,6 +349,7 @@ def Has_cycle(directed_graph: map, visited=None, vertex=None) -> bool:
 
 
 class DAG_Algorithm_Test(unittest.TestCase):
+
     def test_direction(self):
         # a -> b -> c
         DAG = {'a': {'b'}, 'b': {'c'}}
@@ -388,6 +389,7 @@ class DAG_Algorithm_Test(unittest.TestCase):
 
 
 class SelfTest(unittest.TestCase):
+
     def test_expansions(self):
         """Tests that expandable commands are not package names"""
         for exp in expansions.keys():
