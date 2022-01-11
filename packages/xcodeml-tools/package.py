@@ -26,6 +26,7 @@ _LAST_COMMIT = _get_latest_commit_id()
 
 class XcodemlTools(AutotoolsPackage):
     """Set of tools for translating C and Fortran code to XCodeML and back """
+
     @property
     def latest_commit(self):
         return _LAST_COMMIT
