@@ -24,6 +24,7 @@ def get_releases(repo):
 
 
 def set_versions(repo, reg_filter=None):
+
     def filterfn(repo_tag):
         return re.match(reg_filter, repo_tag) != None
 
