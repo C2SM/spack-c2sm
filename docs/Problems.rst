@@ -84,3 +84,27 @@ It is important to completely whipe out the folders listed above using the follo
 
     # delete cache folder
     rm -rf ~/.spack/cache
+
+Known Problems with Spack & ICON
+====================================
+
+Error: FetchError: Archive was empty for icon
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Usually happens when trying to do an out-of-source build of ICON, inside of an **empty** directory.
+Spack unfortunately does not allow to build in a empty directory, you should therefore create a fake file:
+
+.. code-block:: bash
+
+    touch fake.file
+    spack dev-build ...
+
+Error: ProcessError: ./config/cscs/<machine>.<target>.<compiler>: No such file or directory
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Usually happens when trying to do an out-of-source build of ICON. Either you are in a branch of icon, which indeed
+do not contrain <machine>.<target>.<compiler>, or you did give a wrong config_dir argument which should point to icon base directory.
+
+Check your config_dir argument and its given relative path again:
+
+.. code-block:: bash
+
+   spack dev-build -u build icon@dev-build%nvhpc config_dir=./.. icon_target=gpu
