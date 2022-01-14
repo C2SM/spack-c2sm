@@ -93,7 +93,6 @@ Error: FetchError: Archive was empty for icon
 Usually happens when trying to do an out-of-source build of ICON, inside of an **empty** directory.
 Spack unfortunately does not allow to build in a empty directory, you should therefore create a fake file:
 
-
 .. code-block:: bash
 
     touch fake.file
@@ -109,8 +108,3 @@ Check your config_dir argument and its given relative path again:
 .. code-block:: bash
 
    spack dev-build -u build icon@dev-build%nvhpc config_dir=./.. icon_target=gpu
-
-
-
-
-
