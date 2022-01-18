@@ -81,7 +81,7 @@ def main():
         shutil.copy('./tools/spack-scripting/scripting/cmd/dev_build.py',
                     args.idir + '/spack/lib/spack/spack/cmd/')
 
-    shutil.copy('./tools/spack-scripting/scripting/cmd/version_detection.py',
+    shutil.copy('./tools/version_detection.py',
                 args.idir + '/spack/lib/spack/version_detection.py')
     sys.path.insert(1, os.path.join(args.idir, 'spack/lib/spack/external'))
     from ruamel import yaml
