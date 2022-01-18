@@ -8,7 +8,7 @@ pipeline {
                     steps {
                         sh """
                         module load python/3.7.4
-                        srun -c 16 -t 02:00:00 python test_spack.py --tsa """ + env.ghprbCommentBody
+                        srun -c 16 -t 04:00:00 python test_spack.py --tsa """ + env.ghprbCommentBody
                     }
                     post {
                         always {

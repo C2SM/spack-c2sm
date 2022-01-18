@@ -1,5 +1,5 @@
-Using the Jenkins Continuous Integration Executables
-====================================================
+Using the Jenkins Continuous Integration Executables [outdated]
+===============================================================
 
 This section describes how to find executables installed by jenkins and how to load the environment to run the application. 
 
@@ -9,13 +9,6 @@ For example
 .. code-block:: bash
 
   COSMO_SPEC="cosmo@org-master%pgi real_type=float cosmo_target=gpu +cppdycore +claw"
-
-Before we can use spack commands, we need to load the spack instance
-
-.. code-block:: bash
-  
-  module load python/3.7.4
-  . /project/g110/spack/user/tsa/spack/share/spack/setup-env.sh
 
 In order to find the location of that build,
 
