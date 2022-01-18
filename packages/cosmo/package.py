@@ -5,8 +5,6 @@
 
 import subprocess, re, itertools, os
 from spack import *
-import sys
-import os.path as path
 from version_detection import set_versions
 
 
