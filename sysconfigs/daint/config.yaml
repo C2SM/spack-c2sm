@@ -13,4 +13,4 @@ config:
   misc_cache:
   build_jobs: 4
   db_lock_timeout: 20
-  concretizer: original
+  concretizer: clingo
