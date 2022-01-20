@@ -151,10 +151,15 @@ class Icon(Package):
         if '+eccodes' in self.spec:
             args.append('--enable-grib2')
 
+        # Ocean
         if '~ocean' in self.spec:
             args.append('--disable-ocean')
         else:
             args.append('--enable-ocean')
+
+        # Rte-rrtmgp
+        if '~rte-rrtmgp' in self.spec:
+            args.append('--disable-rte-rrtmgp')
 
         return args
 
