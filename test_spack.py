@@ -177,12 +177,10 @@ class IconTest(unittest.TestCase):
     machines = {'daint'}
 
     def test_install_nwp_gpu_nvidia(self):
-        try:
-            run('spack install icon@nwp%nvhpc icon_target=gpu +claw +eccodes +ocean')
+        run('spack install icon@nwp%nvhpc icon_target=gpu +claw +eccodes +ocean')
 
     def test_install_nwp_cpu_nvidia(self):
-        try:
-            run('spack install icon@nwp%nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean')
+        run('spack install icon@nwp%nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean')
 
     # TODO: Reactivate once the test works!
     # def test_devbuild_cpu(self):
