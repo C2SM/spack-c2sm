@@ -174,11 +174,17 @@ class GridToolsTest(unittest.TestCase):
 class IconTest(unittest.TestCase):
     package_name = 'icon'
     depends_on = {'serialbox', 'eccodes', 'claw'}
-    machines = all_machines
+    machines = {'daint'}
 
-    # def test_install(self):
-    #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/289
-    #     run('spack install icon@nwp%pgi icon_target=gpu +claw')
+    def test_install_nwp_gpu_nvidia(self):
+        # So we can make sure ICON-NWP (OpenACC) devs can compile (mimick Buildbot for Tsa)
+        run('spack install icon@nwp%nvhpc icon_target=gpu +claw +eccodes +ocean'
+            )
+
+    def test_install_nwp_cpu_nvidia(self):
+        # So we can make sure ICON-NWP (OpenACC) devs can compile (mimick Buildbot for Tsa)
+        run('spack install icon@nwp%nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean'
+            )
 
     # TODO: Reactivate once the test works!
     # def test_devbuild_cpu(self):
