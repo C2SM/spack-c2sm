@@ -176,7 +176,6 @@ class IconTest(unittest.TestCase):
     depends_on = {'serialbox', 'eccodes', 'claw'}
     machines = {'daint'}
 
-
     def test_install_nwp_gpu_nvidia(self):
         # So we can make sure ICON-NWP (OpenACC) devs can compile (mimick Buildbot for Tsa)
         run('spack install icon@nwp%nvhpc icon_target=gpu +claw +eccodes +ocean'
