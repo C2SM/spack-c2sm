@@ -87,8 +87,8 @@ the same location!**
 Installation
 ^^^^^^^^^^^^
 
-Per default, Spack installs software under */$SCRATCH/spack-install*.
-On Piz Daint *$SCRATCH* undergoes regular cleanup with deletion of
+Per default, Spack installs software under ``/$SCRATCH/spack-install``.
+On Piz Daint ``$SCRATCH`` undergoes regular cleanup with deletion of
 files older than 30 days. This may corrupt the internal Spack database
 and lead to unexpected behaviour of Spack.
 
