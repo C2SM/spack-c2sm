@@ -203,6 +203,7 @@ Options (spack devbuildcosmo)
 * \--no_specyaml: Ignore *spec.yaml*
 * -c --clean_build: Clean build
 * -j <JOBS>, \--jobs <JOBS>: Explicitly set number of parallel jobs
+
 * \--test {root,dycore,all}: If root is chosen, run COSMO testsuite before installation
                             (but skip tests for dependencies). If dycore is chosen,
                             run test for Dycore and COSMO testsuite.
