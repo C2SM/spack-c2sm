@@ -105,8 +105,8 @@ Usage (spack install)
 Options (spack install)
 ^^^^^^^^^^^^^^^^^^^^^^^
 * -v: print output of configuration and compilation for all dependencies to terminal
-* --test=root: run package tests during installation for top-level packages (but skip tests for dependencies)
-* --keep-stage: keep all source needed to build the package
+* \--test=root: run package tests during installation for top-level packages (but skip tests for dependencies)
+* \--keep-stage: keep all source needed to build the package
 
 Spack installcosmo
 ------------------
@@ -132,17 +132,17 @@ Usage (spack installcosmo)
 
 Options (spack installcosmo)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* --test {root,all}: If root is chosen, run COSMO testsuite before installation 
+* \--test {root,all}: If root is chosen, run COSMO testsuite before installation 
                      (but skip tests for dependencies). If all is chosen, 
                      run package tests during installation for all packages.
 * -j --jobs: explicitly set number of parallel jobs
-* --only {package,dependencies}: select the mode of installation.
+* \--only {package,dependencies}: select the mode of installation.
                                  the default is to install the package along with all its dependencies.
                                  alternatively one can decide to install only the package or only
                                  the dependencies.
-* --keep-stage: don't remove the build after compilation
+* \--keep-stage: don't remove the build after compilation
 * -v, --verbose: Verbose installation
-* --force_uninstall: Force uninstall if COSMO-package is already installed
+* \--force_uninstall: Force uninstall if COSMO-package is already installed
 
 Spack dev-build
 ---------------
@@ -168,8 +168,8 @@ Usage (spack dev-build)
 
 Options (spack dev-build)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-* --test=root: run package tests during installation for top-level packages (but skip tests for dependencies)
-* --until <stage>: only run installation until certain stage, like *build* or *install*
+* \--test=root: run package tests during installation for top-level packages (but skip tests for dependencies)
+* \--until <stage>: only run installation until certain stage, like *build* or *install*
 
 .. code-block:: bash
 
@@ -200,10 +200,10 @@ Usage (spack devbuildcosmo)
 Options (spack devbuildcosmo)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-* --no_specyaml: Ignore *spec.yaml*
+* \--no_specyaml: Ignore *spec.yaml*
 * -c --clean_build: Clean build
 * -j <JOBS>, --jobs <JOBS>: Explicitly set number of parallel jobs
-* --test {root,dycore,all}: If root is chosen, run COSMO testsuite before installation
+* \--test {root,dycore,all}: If root is chosen, run COSMO testsuite before installation
                             (but skip tests for dependencies). If dycore is chosen,
                             run test for Dycore and COSMO testsuite.
                             If all is chosen,
@@ -254,7 +254,7 @@ Replacing *<command>* with *bash* allows to interactively execute programmes in 
 
 Options (spack build-env)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-* --dump <filename>: dump environment to <filename> to be sourced at some point
+* \--dump <filename>: dump environment to <filename> to be sourced at some point
 
 Spack edit
 ----------
@@ -276,6 +276,7 @@ like `LD_LIBRARY_PATH` as defined in the respective package.
 
 It is recommended to load the corresponding environment prior to any execution of an executable
 compiled by Spack.
+
 Usage (spack load)
 ^^^^^^^^^^^^^^^^^^
 
