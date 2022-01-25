@@ -46,7 +46,8 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # a list of builtin themes.
 #
 #html_theme = 'groundwork'
-html_theme_path, html_theme, needs_sphinx = set_psphinxtheme('p-green')
+#html_theme_path, html_theme, needs_sphinx = set_psphinxtheme('p-green')
+html_theme = 'karma_sphinx_theme'
 #html_theme = 'p-main_theme'
 
 # Add any paths that contain custom static files (such as style sheets) here,
