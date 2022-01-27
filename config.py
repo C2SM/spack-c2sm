@@ -57,10 +57,6 @@ def main():
                         type=str,
                         default=spack_version,
                         help='Spack version, Default: ' + spack_version)
-    parser.add_argument('-r',
-                        '--reposdir',
-                        type=str,
-                        help='repos.yaml install directory')
     parser.add_argument(
         '-p',
         '--pckgidir',
@@ -90,7 +86,6 @@ def main():
     admin = ('admin' in admin_and_machine)
     machine = admin_and_machine.replace('admin-', '')
     spack_dir = args.idir + '/spack'
-    repos_dir = args.reposdir or (spack_dir + '/etc/spack')
     package_install_dir = to_spack_abs_path(args.pckgidir or ('/project/g110' if admin else '$SCRATCH'))
     build_stage_dir = to_spack_abs_path(args.stgidir) + '/spack-stages/' + admin_and_machine
     cache_dir = to_spack_abs_path(args.cacheidir)
@@ -105,13 +100,9 @@ def main():
 
     print('Installing mch packages & ' + admin_and_machine + ' config files.')
 
-    # installing repos.yaml
-    if not os.path.isdir(args.reposdir):
-        raise OSError("repository directory requested with -r does not exists: " + args.reposdir)
-
-    print('Installing repos.yaml on ' + repos_dir)
-    shutil.copy(dir_path + '/sysconfigs/repos.yaml', repos_dir)
-    reposfile = os.path.join(repos_dir, 'repos.yaml')
+    print('Installing repos.yaml on ' + spack_dir + '/etc/spack')
+    shutil.copy(dir_path + '/sysconfigs/repos.yaml', spack_dir + '/etc/spack')
+    reposfile = os.path.join(spack_dir + '/etc/spack', 'repos.yaml')
     repos_data = yaml.safe_load(open(reposfile, 'r'))
     repos_data['repos'] = [dir_path]
     yaml.safe_dump(repos_data, open(reposfile, 'w'), default_flow_style=False)
