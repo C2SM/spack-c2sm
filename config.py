@@ -86,11 +86,13 @@ def main():
     )
     args = parser.parse_args()
 
-    admin = ('admin' in args.machine)
-    machine = args.machine.replace('admin-', '')
+    admin_and_machine = args.machine
+    admin = ('admin' in admin_and_machine)
+    machine = admin_and_machine.replace('admin-', '')
     spack_dir = args.idir + '/spack'
+    repos_dir = args.reposdir or (spack_dir + '/etc/spack')
     package_install_dir = to_spack_abs_path(args.pckgidir or ('/project/g110' if admin else '$SCRATCH'))
-    build_stage_dir = to_spack_abs_path(args.stgidir) + '/spack-stages/' + args.machine
+    build_stage_dir = to_spack_abs_path(args.stgidir) + '/spack-stages/' + admin_and_machine
     cache_dir = to_spack_abs_path(args.cacheidir)
 
     if not os.path.isdir(spack_dir):
@@ -102,20 +104,17 @@ def main():
                 spack_dir + '/lib/spack/version_detection.py')
     sys.path.insert(1, os.path.join(spack_dir, '/lib/spack/external'))
 
-    print('Installing mch packages & ' + args.machine + ' config files.')
-
-    if not args.reposdir:
-        args.reposdir = spack_dir + '/etc/spack'
+    print('Installing mch packages & ' + admin_and_machine + ' config files.')
 
     # installing repos.yaml
-    if not os.path.isdir(args.reposdir):
+    if not os.path.isdir(repos_dir):
         raise OSError(
             "repository directory requested with -r does not exists: " +
-            args.reposdir)
+            repos_dir)
 
-    print('Installing repos.yaml on ' + args.reposdir)
-    shutil.copy(dir_path + '/sysconfigs/repos.yaml', args.reposdir)
-    reposfile = os.path.join(args.reposdir, 'repos.yaml')
+    print('Installing repos.yaml on ' + repos_dir)
+    shutil.copy(dir_path + '/sysconfigs/repos.yaml', repos_dir)
+    reposfile = os.path.join(repos_dir, 'repos.yaml')
     repos_data = yaml.safe_load(open(reposfile, 'r'))
     repos_data['repos'] = [dir_path]
     yaml.safe_dump(repos_data, open(reposfile, 'w'), default_flow_style=False)
@@ -145,7 +144,7 @@ def main():
         build_stage_dir
     ]
     config_data['config']['module_roots']['tcl'] = (
-        package_install_dir + '/modules/' + args.machine)
+        package_install_dir + '/modules/' + admin_and_machine)
     config_data['config']['extensions'] = [dir_path + '/tools/spack-scripting']
     yaml.safe_dump(config_data,
                    open(configfile, 'w'),
