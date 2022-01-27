@@ -5,11 +5,27 @@ import os
 import sys
 import shutil
 import subprocess
+from ruamel import yaml
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 spack_version = 'v0.17.0'
 spack_repo = 'https://github.com/spack/spack.git'
+
+
+def to_spack_abs_path(path: str) -> str:
+    # Spack paths support environment variables and `~` in paths, so we need to handle them separately.
+    # (see: https://spack.readthedocs.io/en/latest/configuration.html#config-file-variables )
+
+    # It's enough to check only the start
+    # (environment variables in the middle of a path are fine):
+    if path.startswith(("$", "~")):
+        # We assume environment variables to be absolute.
+        # (we can't really fix them anyways, since they could change)
+        return path
+
+    # convert to absolute path
+    return os.path.realpath(path)
 
 
 def main():
@@ -84,7 +100,6 @@ def main():
     shutil.copy('./tools/version_detection.py',
                 args.idir + '/spack/lib/spack/version_detection.py')
     sys.path.insert(1, os.path.join(args.idir, 'spack/lib/spack/external'))
-    from ruamel import yaml
 
     print('Installing mch packages & ' + args.machine + ' config files.')
 
@@ -126,20 +141,6 @@ def main():
 
     if not args.cacheidir:
         args.cacheidir = '~/.spack'
-
-    def to_spack_abs_path(path: str) -> str:
-        # Spack paths support environment variables and `~` in paths, so we need to handle them separately.
-        # (see: https://spack.readthedocs.io/en/latest/configuration.html#config-file-variables )
-
-        # It's enough to check only the start
-        # (environment variables in the middle of a path are fine):
-        if path.startswith(("$", "~")):
-            # We assume environment variables to be absolute.
-            # (we can't really fix them anyways, since they could change)
-            return path
-
-        # convert to absolute path
-        return os.path.realpath(path)
 
     config_data['config']['install_tree']['root'] = (
         to_spack_abs_path(args.pckgidir) + '/spack-install/' +
