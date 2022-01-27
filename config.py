@@ -86,8 +86,12 @@ def main():
     )
     args = parser.parse_args()
 
+    admin = ('admin' in args.machine)
     machine = args.machine.replace('admin-', '')
     spack_dir = args.idir + '/spack'
+    package_install_dir = to_spack_abs_path(args.pckgidir or ('/project/g110' if admin else '$SCRATCH'))
+    build_stage_dir = to_spack_abs_path(args.stgidir) + '/spack-stages/' + args.machine
+    cache_dir = to_spack_abs_path(args.cacheidir)
 
     if not os.path.isdir(spack_dir):
         print('Cloning spack instance to: ' + spack_dir)
@@ -133,27 +137,21 @@ def main():
 
     config_data = yaml.safe_load(open(configfile, 'r'))
 
-    if not args.pckgidir:
-        if 'admin' in args.machine:
-            args.pckgidir = '/project/g110'
-        else:
-            args.pckgidir = '$SCRATCH'
-
     config_data['config']['install_tree']['root'] = (
-        to_spack_abs_path(args.pckgidir) + '/spack-install/' +
+        package_install_dir + '/spack-install/' +
         machine)
     config_data['config']['source_cache'] = (
-        to_spack_abs_path(args.cacheidir) + '/' +
+        cache_dir + '/' +
         machine + '/source_cache')
-    config_data['config']['misc_cache'] = (to_spack_abs_path(args.cacheidir) +
+    config_data['config']['misc_cache'] = (cache_dir +
                                            '/' +
                                            machine +
                                            '/cache')
     config_data['config']['build_stage'] = [
-        to_spack_abs_path(args.stgidir) + '/spack-stages/' + args.machine
+        build_stage_dir
     ]
     config_data['config']['module_roots']['tcl'] = (
-        to_spack_abs_path(args.pckgidir) + '/modules/' + args.machine)
+        package_install_dir + '/modules/' + args.machine)
     config_data['config']['extensions'] = [dir_path + '/tools/spack-scripting']
     yaml.safe_dump(config_data,
                    open(configfile, 'w'),
