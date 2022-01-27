@@ -86,53 +86,79 @@ def main():
     admin = ('admin' in admin_and_machine)
     machine = admin_and_machine.replace('admin-', '')
     spack_dir = args.idir + '/spack'
+    spack_etc = args.idir + '/spack/etc/spack/'
     package_install_dir = to_spack_abs_path(args.pckgidir or ('/project/g110' if admin else '$SCRATCH'))
     build_stage_dir = to_spack_abs_path(args.stgidir) + '/spack-stages/' + admin_and_machine
     cache_dir = to_spack_abs_path(args.cacheidir)
 
+    # clone spack
     if not os.path.isdir(spack_dir):
         print('Cloning spack instance to: ' + spack_dir)
         cmd = f'git clone {spack_repo} -b {args.version} {spack_dir}'
         subprocess.run(cmd.split(), check=True)
 
-    shutil.copy('./tools/version_detection.py', spack_dir + '/lib/spack/version_detection.py')
+    print('Installing mch packages & ' + admin_and_machine + ' config files.')
+
+    # install config files to spack_etc
+    config_files = [
+        'repos.yaml',
+        'config.yml',
+        machine + '/compilers.yaml',
+        machine + '/modules.yaml',
+        machine + '/packages.yaml',
+        ]
+    if args.upstreams == 'ON':
+        config_files.append('upstreams.yaml')
+    for cfile in config_files:
+        shutil.copy(dir_path + '/sysconfigs/' + cfile, spack_etc)
+
+    # install version_detection.py
+    shutil.copy(dir_path + '/tools/version_detection.py', spack_dir + '/lib/spack/version_detection.py')
     sys.path.insert(1, os.path.join(spack_dir, '/lib/spack/external'))
 
     print('Installing mch packages & ' + admin_and_machine + ' config files.')
 
-    print('Installing repos.yaml on ' + spack_dir + '/etc/spack')
-    shutil.copy(dir_path + '/sysconfigs/repos.yaml', spack_dir + '/etc/spack')
-    reposfile = os.path.join(spack_dir + '/etc/spack', 'repos.yaml')
-    repos_data = yaml.safe_load(open(reposfile, 'r'))
-    repos_data['repos'] = [dir_path]
-    yaml.safe_dump(repos_data, open(reposfile, 'w'), default_flow_style=False)
+    # Config overview:
+    #   repos.yaml
+    #     repos: $dir_path
+    #   config.yaml
+    #     config:
+    #         install_tree:
+    #             root: $package_install_dir/spack-install/$machine
+    #         module_roots:
+    #             tcl: $package_install_dir/modules/admin-$machine
+    #         source_cache: $cache_dir/$machine/source_cache
+    #         misc_cache: $cache_dir/$machine/cache
+    #         build_stage: $build_stage_dir
+    #         extensions: $dir_path/tools/spack-scripting
+    #   upstream.yaml
+    #     upstreams:
+    #       spack-instance-1:
+    #         install_tree: /project/g110/spack-install/$machine
+
+    # configure repos.yaml
+    file = spack_etc + 'repos.yaml'
+    data = yaml.safe_load(open(file, 'r'))
+    data['repos'] = [dir_path]
+    yaml.safe_dump(data, open(file, 'w'), default_flow_style=False)
 
     # configure config.yaml
+    file = spack_etc + 'config.yaml'
+    data = yaml.safe_load(open(file, 'r'))
+    data['config']['install_tree']['root'] = (package_install_dir + '/spack-install/' + machine)
+    data['config']['module_roots']['tcl'] = (package_install_dir + '/modules/' + admin_and_machine)
+    data['config']['source_cache'] = (cache_dir + '/' + machine + '/source_cache')
+    data['config']['misc_cache'] = (cache_dir + '/' + machine + '/cache')
+    data['config']['build_stage'] = [build_stage_dir]
+    data['config']['extensions'] = [dir_path + '/tools/spack-scripting']
+    yaml.safe_dump(data, open(file, 'w'), default_flow_style=False)
 
-    # copy config.yaml file in site scope of spack instance
-    configfile = spack_dir + '/etc/spack/config.yaml'
-    shutil.copy('sysconfigs/' + machine + '/config.yaml', configfile)
-    config_data = yaml.safe_load(open(configfile, 'r'))
-    config_data['config']['install_tree']['root'] = (package_install_dir + '/spack-install/' + machine)
-    config_data['config']['source_cache'] = (cache_dir + '/' + machine + '/source_cache')
-    config_data['config']['misc_cache'] = (cache_dir + '/' + machine + '/cache')
-    config_data['config']['build_stage'] = [build_stage_dir]
-    config_data['config']['module_roots']['tcl'] = (package_install_dir + '/modules/' + args.machine)
-    config_data['config']['extensions'] = [dir_path + '/tools/spack-scripting']
-    yaml.safe_dump(config_data, open(configfile, 'w'), default_flow_style=False)
-
-    # copy modified upstreams.yaml if not admin
+    # configure upstreams.yaml
     if args.upstreams == 'ON':
-        upstreamfile = spack_dir + '/etc/spack/upstreams.yaml'
-        shutil.copy('sysconfigs/upstreams.yaml', upstreamfile)
-        upstreams_data = yaml.safe_load(open(upstreamfile, 'r'))
-        upstreams_data['upstreams']['spack-instance-1']['install_tree'] = '/project/g110/spack-install/' + machine
-        yaml.safe_dump(upstreams_data, open(upstreamfile, 'w'), default_flow_style=False)
-
-    # copy modules.yaml, packages.yaml and compiles.yaml files in site scope of spack instance
-    config_files = ["compilers.yaml", "modules.yaml", "packages.yaml"]
-    for afile in config_files:
-        shutil.copy(dir_path + '/sysconfigs/' + machine + '/' + afile, spack_dir + '/etc/spack/')
+        file = spack_etc + 'upstreams.yaml'
+        data = yaml.safe_load(open(file, 'r'))
+        data['upstreams']['spack-instance-1']['install_tree'] = '/project/g110/spack-install/' + machine
+        yaml.safe_dump(data, open(file, 'w'), default_flow_style=False)
 
     print('Spack successfully installed. \nsource ' + spack_dir +
           '/share/spack/setup-env.sh for setting up the instance.')
