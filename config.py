@@ -66,21 +66,23 @@ def main():
         '--pckgidir',
         type=str,
         help=
-        'Define spack package, modules installation directory. Default: tsa; /scratch/$USER/spack, daint; /scratch/snx3000/$USER/spack'
+        'Define spack package, modules installation directory. Default: admin; /project/g110, non-admin; $SCRATCH'
     )
     parser.add_argument(
         '-s',
         '--stgidir',
         type=str,
+        default='$SCRATCH',
         help=
-        'Define spack stages directory. Default: tsa; /scratch/$USER/spack, daint; /scratch/snx3000/$USER/spack'
+        'Define spack stages directory. Default: $SCRATCH'
     )
     parser.add_argument(
         '-c',
         '--cacheidir',
         type=str,
+        default='~/.spack',
         help=
-        'Define spack caches (source and misc)  directories. Default:  ~/.spack/machine/source_cache and ~/.spack/machine/cache'
+        'Define spack caches (source and misc)  directories. Default:  ~/.spack'
     )
     args = parser.parse_args()
 
@@ -89,8 +91,6 @@ def main():
 
     if not os.path.isdir(spack_dir):
         print('Cloning spack instance to: ' + spack_dir)
-        if args.version is None:
-            args.version = spack_version
         cmd = 'git clone {repo} -b {branch} {dest_dir}'.format(
             repo=spack_repo,
             branch=args.version,
@@ -138,12 +138,6 @@ def main():
             args.pckgidir = '/project/g110'
         else:
             args.pckgidir = '$SCRATCH'
-
-    if not args.stgidir:
-        args.stgidir = '$SCRATCH'
-
-    if not args.cacheidir:
-        args.cacheidir = '~/.spack'
 
     config_data['config']['install_tree']['root'] = (
         to_spack_abs_path(args.pckgidir) + '/spack-install/' +
