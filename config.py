@@ -169,8 +169,7 @@ def main():
     # copy modules.yaml, packages.yaml and compiles.yaml files in site scope of spack instance
     config_files = ["compilers.yaml", "modules.yaml", "packages.yaml"]
     for afile in config_files:
-        cmd = 'cp ' + dir_path + '/sysconfigs/' + machine + '/' + afile + ' ' + spack_dir + '/etc/spack/'
-        subprocess.run(cmd.split(), check=True)
+        shutil.copy(dir_path + '/sysconfigs/' + machine + '/' + afile, spack_dir + '/etc/spack/')
 
     print('Spack successfully installed. \nsource ' + spack_dir +
           '/share/spack/setup-env.sh for setting up the instance.')
