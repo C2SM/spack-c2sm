@@ -69,9 +69,7 @@ def main():
         '--stgidir',
         type=str,
         default='$SCRATCH',
-        help=
-        'Define spack stages directory. Default: $SCRATCH'
-    )
+        help='Define spack stages directory. Default: $SCRATCH')
     parser.add_argument(
         '-c',
         '--cacheidir',
@@ -87,8 +85,10 @@ def main():
     machine = admin_and_machine.replace('admin-', '')
     spack_dir = args.idir + '/spack'
     spack_etc = args.idir + '/spack/etc/spack/'
-    package_install_dir = to_spack_abs_path(args.pckgidir or ('/project/g110' if admin else '$SCRATCH'))
-    build_stage_dir = to_spack_abs_path(args.stgidir) + '/spack-stages/' + admin_and_machine
+    package_install_dir = to_spack_abs_path(
+        args.pckgidir or ('/project/g110' if admin else '$SCRATCH'))
+    build_stage_dir = to_spack_abs_path(
+        args.stgidir) + '/spack-stages/' + admin_and_machine
     cache_dir = to_spack_abs_path(args.cacheidir)
 
     # clone spack
@@ -106,14 +106,15 @@ def main():
         machine + '/compilers.yaml',
         machine + '/modules.yaml',
         machine + '/packages.yaml',
-        ]
+    ]
     if args.upstreams == 'ON':
         config_files.append('upstreams.yaml')
     for cfile in config_files:
         shutil.copy(dir_path + '/sysconfigs/' + cfile, spack_etc)
 
     # install version_detection.py
-    shutil.copy(dir_path + '/tools/version_detection.py', spack_dir + '/lib/spack/version_detection.py')
+    shutil.copy(dir_path + '/tools/version_detection.py',
+                spack_dir + '/lib/spack/version_detection.py')
     sys.path.insert(1, os.path.join(spack_dir, '/lib/spack/external'))
 
     print('Installing mch packages & ' + admin_and_machine + ' config files.')
@@ -145,9 +146,12 @@ def main():
     # configure config.yaml
     file = spack_etc + 'config.yaml'
     data = yaml.safe_load(open(file, 'r'))
-    data['config']['install_tree']['root'] = (package_install_dir + '/spack-install/' + machine)
-    data['config']['module_roots']['tcl'] = (package_install_dir + '/modules/' + admin_and_machine)
-    data['config']['source_cache'] = (cache_dir + '/' + machine + '/source_cache')
+    data['config']['install_tree']['root'] = (package_install_dir +
+                                              '/spack-install/' + machine)
+    data['config']['module_roots']['tcl'] = (package_install_dir +
+                                             '/modules/' + admin_and_machine)
+    data['config']['source_cache'] = (cache_dir + '/' + machine +
+                                      '/source_cache')
     data['config']['misc_cache'] = (cache_dir + '/' + machine + '/cache')
     data['config']['build_stage'] = [build_stage_dir]
     data['config']['extensions'] = [dir_path + '/tools/spack-scripting']
@@ -157,7 +161,8 @@ def main():
     if args.upstreams == 'ON':
         file = spack_etc + 'upstreams.yaml'
         data = yaml.safe_load(open(file, 'r'))
-        data['upstreams']['spack-instance-1']['install_tree'] = '/project/g110/spack-install/' + machine
+        data['upstreams']['spack-instance-1'][
+            'install_tree'] = '/project/g110/spack-install/' + machine
         yaml.safe_dump(data, open(file, 'w'), default_flow_style=False)
 
     print('Spack successfully installed. \nsource ' + spack_dir +
