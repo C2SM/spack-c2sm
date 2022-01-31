@@ -91,6 +91,9 @@ class Icon(Package):
             default=False,
             description='Build with hammoz and atm_phy_echam enabled.')
     variant('ocean', default=True, description='Build with ocean enabled')
+    variant('silent-rules',
+            default=True,
+            description='Build with Make silent rules ON')
 
     conflicts('icon_target=cpu', when='+claw')
     conflicts('icon_target=gpu', when='%intel')
@@ -160,6 +163,10 @@ class Icon(Package):
         # Rte-rrtmgp
         if '~rte-rrtmgp' in self.spec:
             args.append('--disable-rte-rrtmgp')
+
+        # Silent rules
+        if '~silent-rules' in self.spec:
+            args.append('--disable-silent-rules')
 
         return args
 
