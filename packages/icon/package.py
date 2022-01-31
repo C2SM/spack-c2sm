@@ -91,7 +91,9 @@ class Icon(Package):
             default=False,
             description='Build with hammoz and atm_phy_echam enabled.')
     variant('ocean', default=True, description='Build with ocean enabled')
-    variant('silent-rules', default=True, description='Build with Make silent rules ON')
+    variant('silent-rules',
+            default=True,
+            description='Build with Make silent rules ON')
 
     conflicts('icon_target=cpu', when='+claw')
     conflicts('icon_target=gpu', when='%intel')
