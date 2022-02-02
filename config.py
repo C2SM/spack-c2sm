@@ -5,7 +5,6 @@ import os
 import sys
 import shutil
 import subprocess
-from ruamel import yaml
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -116,6 +115,7 @@ def main():
     shutil.copy(dir_path + '/tools/version_detection.py',
                 spack_dir + '/lib/spack/version_detection.py')
     sys.path.insert(1, os.path.join(spack_dir, '/lib/spack/external'))
+    from ruamel import yaml
 
     print('Installing mch packages & ' + admin_and_machine + ' config files.')
 
