@@ -94,6 +94,15 @@ def main():
         args.stgidir) + '/spack-stages/' + admin_and_machine
     cache_dir = to_spack_abs_path(args.cacheidir)
 
+    print("dir_path: " + dir_path)
+    print("admin_and_machine: " + admin_and_machine)
+    print("machine: " + machine)
+    print("spack_dir: " + spack_dir)
+    print("spack_etc: " + spack_etc)
+    print("package_install_dir: " + package_install_dir)
+    print("build_stage_dir: " + build_stage_dir)
+    print("cache_dir: " + cache_dir)
+
     # clone spack
     if not os.path.isdir(spack_dir):
         print('Cloning spack instance to: ' + spack_dir)
