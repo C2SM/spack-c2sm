@@ -56,6 +56,10 @@ def main():
                         type=str,
                         default=spack_version,
                         help='Spack version, Default: ' + spack_version)
+    parser.add_argument('-r',
+                        '--reposdir',
+                        type=str,
+                        help='Deprecated and ignored')
     parser.add_argument(
         '-p',
         '--pckgidir',
