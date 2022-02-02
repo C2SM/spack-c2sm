@@ -114,7 +114,7 @@ def main():
     # install config files to spack_etc
     config_files = [
         'repos.yaml',
-        'config.yml',
+        machine + '/config.yaml',
         machine + '/compilers.yaml',
         machine + '/modules.yaml',
         machine + '/packages.yaml',
