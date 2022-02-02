@@ -6,7 +6,7 @@ import sys
 import shutil
 import subprocess
 
-dir_path = os.path.dirname(os.path.realpath(__file__))
+spack_c2sm_path = os.path.dirname(os.path.realpath(__file__))
 
 spack_version = 'v0.17.0'
 spack_repo = 'https://github.com/spack/spack.git'
@@ -36,7 +36,7 @@ def main():
         '-i',
         '--idir',
         type=str,
-        default=dir_path,
+        default=spack_c2sm_path,
         required=True,
         help=
         'Where the Spack instance is installed or you want it to be installed')
@@ -94,7 +94,7 @@ def main():
         args.stgidir) + '/spack-stages/' + admin_and_machine
     cache_dir = to_spack_abs_path(args.cacheidir)
 
-    print("dir_path: " + dir_path)
+    print("spack_c2sm_path: " + spack_c2sm_path)
     print("admin_and_machine: " + admin_and_machine)
     print("machine: " + machine)
     print("spack_dir: " + spack_dir)
@@ -122,10 +122,10 @@ def main():
     if args.upstreams == 'ON':
         config_files.append('upstreams.yaml')
     for cfile in config_files:
-        shutil.copy(dir_path + '/sysconfigs/' + cfile, spack_etc)
+        shutil.copy(spack_c2sm_path + '/sysconfigs/' + cfile, spack_etc)
 
     # install version_detection.py
-    shutil.copy(dir_path + '/tools/version_detection.py',
+    shutil.copy(spack_c2sm_path + '/tools/version_detection.py',
                 spack_dir + '/lib/spack/version_detection.py')
     sys.path.insert(1, os.path.join(spack_dir, '/lib/spack/external'))
     from ruamel import yaml
@@ -153,7 +153,7 @@ def main():
     # configure repos.yaml
     file = spack_etc + 'repos.yaml'
     data = yaml.safe_load(open(file, 'r'))
-    data['repos'] = [dir_path]
+    data['repos'] = [spack_c2sm_path]
     yaml.safe_dump(data, open(file, 'w'), default_flow_style=False)
 
     # configure config.yaml
@@ -167,7 +167,7 @@ def main():
                                       '/source_cache')
     data['config']['misc_cache'] = (cache_dir + '/' + machine + '/cache')
     data['config']['build_stage'] = [build_stage_dir]
-    data['config']['extensions'] = [dir_path + '/tools/spack-scripting']
+    data['config']['extensions'] = [spack_c2sm_path + '/tools/spack-scripting']
     yaml.safe_dump(data, open(file, 'w'), default_flow_style=False)
 
     # configure upstreams.yaml
