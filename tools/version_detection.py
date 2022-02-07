@@ -6,8 +6,6 @@ def get_tags(repo):
     git_obj = subprocess.run(["git", "ls-remote", "--refs", repo],
                              capture_output=True)
     if git_obj.returncode != 0:
-        print("\nWarning: no access to {:s} => not fetching versions\n".format(
-            repo))
         return []
     else:
         git_tags = [
