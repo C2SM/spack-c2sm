@@ -88,8 +88,10 @@ def main():
     machine = admin_and_machine.replace('admin-', '')
     spack_dir = args.idir + '/spack'
     spack_etc = args.idir + '/spack/etc/spack'
-    package_install_dir = to_spack_abs_path(args.pckgidir or ('/project/g110' if admin else '$SCRATCH'))
-    build_stage_dir = to_spack_abs_path(args.stgidir) + '/spack-stages/' + admin_and_machine
+    package_install_dir = to_spack_abs_path(
+        args.pckgidir or ('/project/g110' if admin else '$SCRATCH'))
+    build_stage_dir = to_spack_abs_path(
+        args.stgidir) + '/spack-stages/' + admin_and_machine
     cache_dir = to_spack_abs_path(args.cacheidir)
 
     print("spack_c2sm_path: " + spack_c2sm_path)
@@ -104,9 +106,7 @@ def main():
     if not os.path.isdir(spack_dir):
         print('Cloning spack instance to: ' + spack_dir)
         cmd = 'git clone {repo} -b {branch} {dest_dir}'.format(
-            repo=spack_repo,
-            branch=args.version,
-            dest_dir=spack_dir)
+            repo=spack_repo, branch=args.version, dest_dir=spack_dir)
         subprocess.run(cmd.split(), check=True)
         print('Installing custom dev-build command')
         shutil.copy('./tools/spack-scripting/scripting/cmd/dev_build.py',
@@ -140,23 +140,26 @@ def main():
     # copy config.yaml file in site scope of spack instance
     configfile = spack_etc + '/config.yaml'
 
-    shutil.copy(
-        'sysconfigs/' + machine + '/config.yaml',
-        configfile)
+    shutil.copy('sysconfigs/' + machine + '/config.yaml', configfile)
 
     config_data = yaml.safe_load(open(configfile, 'r'))
 
-    config_data['config']['install_tree']['root'] = (
-        package_install_dir + '/spack-install/' + machine)
-    config_data['config']['source_cache'] = (
-        cache_dir + '/' + machine + '/source_cache')
-    config_data['config']['misc_cache'] = (cache_dir + '/' + machine + '/cache')
+    config_data['config']['install_tree']['root'] = (package_install_dir +
+                                                     '/spack-install/' +
+                                                     machine)
+    config_data['config']['source_cache'] = (cache_dir + '/' + machine +
+                                             '/source_cache')
+    config_data['config']['misc_cache'] = (cache_dir + '/' + machine +
+                                           '/cache')
     config_data['config']['build_stage'] = [
         build_stage_dir + '/spack-stages/' + admin_and_machine
     ]
-    config_data['config']['module_roots']['tcl'] = (
-        package_install_dir + '/modules/' + admin_and_machine)
-    config_data['config']['extensions'] = [spack_c2sm_path + '/tools/spack-scripting']
+    config_data['config']['module_roots']['tcl'] = (package_install_dir +
+                                                    '/modules/' +
+                                                    admin_and_machine)
+    config_data['config']['extensions'] = [
+        spack_c2sm_path + '/tools/spack-scripting'
+    ]
     yaml.safe_dump(config_data,
                    open(configfile, 'w'),
                    default_flow_style=False)
