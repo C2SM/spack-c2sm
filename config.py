@@ -6,7 +6,7 @@ import sys
 import shutil
 import subprocess
 
-dir_path = os.path.dirname(os.path.realpath(__file__))
+spack_c2sm_path = os.path.dirname(os.path.realpath(__file__))
 
 spack_version = 'v0.17.0'
 spack_repo = 'https://github.com/spack/spack.git'
@@ -36,7 +36,7 @@ def main():
         '-i',
         '--idir',
         type=str,
-        default=dir_path,
+        default=spack_c2sm_path,
         required=True,
         help=
         'Where the Spack instance is installed or you want it to be installed')
@@ -83,7 +83,6 @@ def main():
     )
     args = parser.parse_args()
 
-    spack_c2sm_path = dir_path
     admin_and_machine = args.machine
     admin = ('admin' in admin_and_machine)
     machine = admin_and_machine.replace('admin-', '')
@@ -102,26 +101,26 @@ def main():
     print("build_stage_dir: " + build_stage_dir)
     print("cache_dir: " + cache_dir)
 
-    if not os.path.isdir(args.idir + '/spack'):
-        print('Cloning spack instance to: ' + args.idir)
+    if not os.path.isdir(spack_dir):
+        print('Cloning spack instance to: ' + spack_dir)
         cmd = 'git clone {repo} -b {branch} {dest_dir}'.format(
             repo=spack_repo,
             branch=args.version,
-            dest_dir=os.path.join(args.idir, 'spack'))
+            dest_dir=spack_dir)
         subprocess.run(cmd.split(), check=True)
         print('Installing custom dev-build command')
         shutil.copy('./tools/spack-scripting/scripting/cmd/dev_build.py',
-                    args.idir + '/spack/lib/spack/spack/cmd/')
+                    spack_dir + '/lib/spack/spack/cmd/')
 
     shutil.copy('./tools/version_detection.py',
-                args.idir + '/spack/lib/spack/version_detection.py')
-    sys.path.insert(1, os.path.join(args.idir, 'spack/lib/spack/external'))
+                spack_dir + '/lib/spack/version_detection.py')
+    sys.path.insert(1, os.path.join(spack_dir, 'lib/spack/external'))
     from ruamel import yaml
 
-    print('Installing mch packages & ' + args.machine + ' config files.')
+    print('Installing mch packages & ' + admin_and_machine + ' config files.')
 
     if not args.reposdir:
-        args.reposdir = args.idir + '/spack/etc/spack'
+        args.reposdir = spack_etc
 
     # installing repos.yaml
     if not os.path.isdir(args.reposdir):
@@ -130,57 +129,46 @@ def main():
             args.reposdir)
 
     print('Installing repos.yaml on ' + args.reposdir)
-    shutil.copy(dir_path + '/sysconfigs/repos.yaml', args.reposdir)
+    shutil.copy(spack_c2sm_path + '/sysconfigs/repos.yaml', args.reposdir)
     reposfile = os.path.join(args.reposdir, 'repos.yaml')
     repos_data = yaml.safe_load(open(reposfile, 'r'))
-    repos_data['repos'] = [dir_path]
+    repos_data['repos'] = [spack_c2sm_path]
     yaml.safe_dump(repos_data, open(reposfile, 'w'), default_flow_style=False)
 
     # configure config.yaml
 
     # copy config.yaml file in site scope of spack instance
-    configfile = args.idir + '/spack/etc/spack' + '/config.yaml'
+    configfile = spack_etc + '/config.yaml'
 
     shutil.copy(
-        'sysconfigs/' + args.machine.replace('admin-', '') + '/config.yaml',
+        'sysconfigs/' + machine + '/config.yaml',
         configfile)
 
     config_data = yaml.safe_load(open(configfile, 'r'))
 
-    if not args.pckgidir:
-        if 'admin' in args.machine:
-            args.pckgidir = '/project/g110'
-        else:
-            args.pckgidir = '$SCRATCH'
-
     config_data['config']['install_tree']['root'] = (
-        to_spack_abs_path(args.pckgidir) + '/spack-install/' +
-        args.machine.replace('admin-', ''))
+        package_install_dir + '/spack-install/' + machine)
     config_data['config']['source_cache'] = (
-        to_spack_abs_path(args.cacheidir) + '/' +
-        args.machine.replace('admin-', '') + '/source_cache')
-    config_data['config']['misc_cache'] = (to_spack_abs_path(args.cacheidir) +
-                                           '/' +
-                                           args.machine.replace('admin-', '') +
-                                           '/cache')
+        cache_dir + '/' + machine + '/source_cache')
+    config_data['config']['misc_cache'] = (cache_dir + '/' + machine + '/cache')
     config_data['config']['build_stage'] = [
-        to_spack_abs_path(args.stgidir) + '/spack-stages/' + args.machine
+        build_stage_dir + '/spack-stages/' + admin_and_machine
     ]
     config_data['config']['module_roots']['tcl'] = (
-        to_spack_abs_path(args.pckgidir) + '/modules/' + args.machine)
-    config_data['config']['extensions'] = [dir_path + '/tools/spack-scripting']
+        package_install_dir + '/modules/' + admin_and_machine)
+    config_data['config']['extensions'] = [spack_c2sm_path + '/tools/spack-scripting']
     yaml.safe_dump(config_data,
                    open(configfile, 'w'),
                    default_flow_style=False)
 
     # copy modified upstreams.yaml if not admin
     if args.upstreams == 'ON':
-        upstreamfile = args.idir + '/spack/etc/spack' + '/upstreams.yaml'
+        upstreamfile = spack_etc + '/upstreams.yaml'
         shutil.copy('sysconfigs/upstreams.yaml', upstreamfile)
 
         upstreams_data = yaml.safe_load(open(upstreamfile, 'r'))
         upstreams_data['upstreams']['spack-instance-1']['install_tree'] = '/project/g110/spack-install/' + \
-            args.machine.replace('admin-', '')
+            machine
         yaml.safe_dump(upstreams_data,
                        open(upstreamfile, 'w'),
                        default_flow_style=False)
@@ -188,12 +176,11 @@ def main():
     # copy modules.yaml, packages.yaml and compiles.yaml files in site scope of spack instance
     config_files = ["compilers.yaml", "modules.yaml", "packages.yaml"]
     for afile in config_files:
-        cmd = 'cp ' + dir_path + '/sysconfigs/' + args.machine.replace(
-            'admin-', '') + '/' + afile + ' ' + args.idir + '/spack/etc/spack/'
+        cmd = 'cp ' + spack_c2sm_path + '/sysconfigs/' + machine + '/' + afile + ' ' + spack_etc + '/'
         subprocess.run(cmd.split(), check=True)
 
-    print('Spack successfully installed. \nsource ' + args.idir +
-          '/spack/share/spack/setup-env.sh for setting up the instance.')
+    print('Spack successfully installed. \nsource ' + spack_dir +
+          '/share/spack/setup-env.sh for setting up the instance.')
 
 
 if __name__ == "__main__":
