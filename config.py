@@ -83,6 +83,25 @@ def main():
     )
     args = parser.parse_args()
 
+    spack_c2sm_path = dir_path
+    admin_and_machine = args.machine
+    admin = ('admin' in admin_and_machine)
+    machine = admin_and_machine.replace('admin-', '')
+    spack_dir = args.idir + '/spack'
+    spack_etc = args.idir + '/spack/etc/spack'
+    package_install_dir = to_spack_abs_path(args.pckgidir or ('/project/g110' if admin else '$SCRATCH'))
+    build_stage_dir = to_spack_abs_path(args.stgidir) + '/spack-stages/' + admin_and_machine
+    cache_dir = to_spack_abs_path(args.cacheidir)
+
+    print("spack_c2sm_path: " + spack_c2sm_path)
+    print("admin_and_machine: " + admin_and_machine)
+    print("machine: " + machine)
+    print("spack_dir: " + spack_dir)
+    print("spack_etc: " + spack_etc)
+    print("package_install_dir: " + package_install_dir)
+    print("build_stage_dir: " + build_stage_dir)
+    print("cache_dir: " + cache_dir)
+
     if not os.path.isdir(args.idir + '/spack'):
         print('Cloning spack instance to: ' + args.idir)
         cmd = 'git clone {repo} -b {branch} {dest_dir}'.format(
