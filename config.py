@@ -12,6 +12,21 @@ spack_version = 'v0.17.0'
 spack_repo = 'https://github.com/spack/spack.git'
 
 
+def to_spack_abs_path(path: str) -> str:
+    # Spack paths support environment variables and `~` in paths, so we need to handle them separately.
+    # (see: https://spack.readthedocs.io/en/latest/configuration.html#config-file-variables )
+
+    # It's enough to check only the start
+    # (environment variables in the middle of a path are fine):
+    if path.startswith(("$", "~")):
+        # We assume environment variables to be absolute.
+        # (we can't really fix them anyways, since they could change)
+        return path
+
+    # convert to absolute path
+    return os.path.realpath(path)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description=
@@ -126,20 +141,6 @@ def main():
 
     if not args.cacheidir:
         args.cacheidir = '~/.spack'
-
-    def to_spack_abs_path(path: str) -> str:
-        # Spack paths support environment variables and `~` in paths, so we need to handle them separately.
-        # (see: https://spack.readthedocs.io/en/latest/configuration.html#config-file-variables )
-
-        # It's enough to check only the start
-        # (environment variables in the middle of a path are fine):
-        if path.startswith(("$", "~")):
-            # We assume environment variables to be absolute.
-            # (we can't really fix them anyways, since they could change)
-            return path
-
-        # convert to absolute path
-        return os.path.realpath(path)
 
     config_data['config']['install_tree']['root'] = (
         to_spack_abs_path(args.pckgidir) + '/spack-install/' +
