@@ -103,10 +103,7 @@ def main():
 
     if not os.path.isdir(spack_dir):
         print('Cloning spack instance to: ' + spack_dir)
-        cmd = 'git clone {repo} -b {branch} {dest_dir}'.format(
-            repo=spack_repo,
-            branch=args.version,
-            dest_dir=spack_dir)
+        cmd = f'git clone {spack_repo} -b {args.version} {spack_dir}'
         subprocess.run(cmd.split(), check=True)
 
     shutil.copy('./tools/version_detection.py',
