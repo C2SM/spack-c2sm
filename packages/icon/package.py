@@ -97,7 +97,6 @@ class Icon(Package):
 
     conflicts('icon_target=cpu', when='+claw')
     conflicts('icon_target=gpu', when='%intel')
-    conflicts('icon_target=gpu', when='%cce')
 
     atm_phy_echam_submodels_namelists_dir = 'externals/atm_phy_echam_submodels/namelists'
     config_dir = '.'
