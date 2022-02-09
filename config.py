@@ -59,7 +59,7 @@ def main():
     parser.add_argument('-r',
                         '--reposdir',
                         type=str,
-                        help='repos.yaml install directory')
+                        help='Deprecated and ignored')
     parser.add_argument(
         '-p',
         '--pckgidir',
@@ -115,21 +115,11 @@ def main():
 
     print('Installing mch packages & ' + admin_and_machine + ' config files.')
 
-    if not args.reposdir:
-        args.reposdir = spack_etc
-
-    # installing repos.yaml
-    if not os.path.isdir(args.reposdir):
-        raise OSError(
-            "repository directory requested with -r does not exists: " +
-            args.reposdir)
-
-    print('Installing repos.yaml on ' + args.reposdir)
-    shutil.copy(spack_c2sm_path + '/sysconfigs/repos.yaml', args.reposdir)
-    reposfile = os.path.join(args.reposdir, 'repos.yaml')
-    repos_data = yaml.safe_load(open(reposfile, 'r'))
-    repos_data['repos'] = [spack_c2sm_path]
-    yaml.safe_dump(repos_data, open(reposfile, 'w'), default_flow_style=False)
+    shutil.copy(spack_c2sm_path + '/sysconfigs/repos.yaml', spack_etc + '/')
+    file = os.path.join(spack_etc, 'repos.yaml')
+    data = yaml.safe_load(open(file, 'r'))
+    data['repos'] = [spack_c2sm_path]
+    yaml.safe_dump(data, open(file, 'w'), default_flow_style=False)
 
     # configure config.yaml
 
