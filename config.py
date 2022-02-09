@@ -155,11 +155,16 @@ def main():
     # configure config.yaml
     file = os.path.join(spack_etc, 'config.yaml')
     data = yaml.safe_load(open(file, 'r'))
-    data['config']['install_tree']['root'] = (package_install_dir + '/spack-install/' + machine)
-    data['config']['module_roots']['tcl'] = (package_install_dir + '/modules/' + admin_and_machine)
-    data['config']['source_cache'] = (cache_dir + '/' + machine + '/source_cache')
+    data['config']['install_tree']['root'] = (package_install_dir +
+                                              '/spack-install/' + machine)
+    data['config']['module_roots']['tcl'] = (package_install_dir +
+                                             '/modules/' + admin_and_machine)
+    data['config']['source_cache'] = (cache_dir + '/' + machine +
+                                      '/source_cache')
     data['config']['misc_cache'] = (cache_dir + '/' + machine + '/cache')
-    data['config']['build_stage'] = [build_stage_dir + '/spack-stages/' + admin_and_machine]
+    data['config']['build_stage'] = [
+        build_stage_dir + '/spack-stages/' + admin_and_machine
+    ]
     data['config']['extensions'] = [spack_c2sm_path + '/tools/spack-scripting']
     yaml.safe_dump(data, open(file, 'w'), default_flow_style=False)
 
@@ -168,7 +173,8 @@ def main():
         file = os.path.join(spack_etc, 'upstreams.yaml')
         data = yaml.safe_load(open(file, 'r'))
         data = yaml.safe_load(open(file, 'r'))
-        data['upstreams']['spack-instance-1']['install_tree'] = '/project/g110/spack-install/' + machine
+        data['upstreams']['spack-instance-1'][
+            'install_tree'] = '/project/g110/spack-install/' + machine
         yaml.safe_dump(data, open(file, 'w'), default_flow_style=False)
 
     print('Spack successfully installed. \nsource ' + spack_dir +
