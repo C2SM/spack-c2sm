@@ -97,19 +97,23 @@ class CosmoDycoreTest(unittest.TestCase):
 
     def test_install_float_cpu(self):
         # The dycore team's testing relies on this.
-        run('spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda')
+        run('spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda'
+            )
 
     def test_install_float_gpu(self):
         # The dycore team's testing relies on this.
-        run('spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release +cuda')
+        run('spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release +cuda'
+            )
 
     def test_install_double_cpu(self):
         # The dycore team's testing relies on this.
-        run('spack install --test=root cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda')
+        run('spack install --test=root cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda'
+            )
 
     def test_install_double_gpu(self):
         # The dycore team's testing relies on this.
-        run('spack install --test=root cosmo-dycore@master%gcc real_type=double build_type=Release +cuda')
+        run('spack install --test=root cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
+            )
 
 
 class CosmoEccodesDefinitionsTest(unittest.TestCase):
@@ -206,7 +210,8 @@ class IconTest(unittest.TestCase):
         run('touch a_fake_file.f90', cwd='icon-cscs/pgi_cpu')
 
         try:
-            run('spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu', cwd='icon-cscs/pgi_cpu')
+            run('spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu',
+                cwd='icon-cscs/pgi_cpu')
         finally:
             run('rm -rf icon-cscs')
 
@@ -217,7 +222,8 @@ class IconTest(unittest.TestCase):
         run('touch a_fake_file.f90', cwd='icon-cscs/pgi_gpu')
 
         try:
-            run('spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu', cwd='icon-cscs/pgi_gpu')
+            run('spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu',
+                cwd='icon-cscs/pgi_gpu')
         finally:
             run('rm -rf icon-cscs')
 
@@ -514,7 +520,8 @@ if __name__ == '__main__':
         # collect and run tests from all packages selected
         suite = unittest.TestSuite([
             test_loader.loadTestsFromTestCase(case) for case in all_test_cases
-            if case.package_name in packages_to_test and machine in case.machines
+            if case.package_name in packages_to_test
+            and machine in case.machines
         ])
         result = unittest.TextTestRunner(verbosity=2).run(suite)
         sys.exit(not result.wasSuccessful())
