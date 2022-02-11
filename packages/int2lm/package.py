@@ -126,13 +126,16 @@ class Int2lm(MakefilePackage):
             env.set('MPII', '-I' + self.spec['mpi'].prefix + '/include')
             if self.compiler.name != 'gcc':
                 env.set(
-                    'MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich_' +
-                    self.compiler.name)
+                    'MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich')
 
         # Compiler & linker variables
         if self.compiler.name == 'pgi':
             env.set('F90', 'pgf90 -D__PGI_FORTRAN__')
             env.set('LD', 'pgf90 -D__PGI_FORTRAN__')
+        if self.compiler.name == 'nvhpc':
+            print('here')
+            env.set('F90', 'nvfortran')
+            env.set('LD', 'nvfortran')
         elif self.compiler.name == 'cce':
             env.set('F90', 'ftn -D__CRAY_FORTRAN__')
             env.set('LD', 'ftn -D__CRAY_FORTRAN__')
@@ -169,9 +172,12 @@ class Int2lm(MakefilePackage):
                 OptionsFileName += '.gnu'
             elif self.compiler.name == 'pgi':
                 OptionsFileName += '.pgi'
+            elif self.compiler.name == 'nvhpc':
+                OptionsFileName += '.pgi'
             elif self.compiler.name == 'cce':
                 OptionsFileName += '.cray'
             makefile.filter('/Options.*', '/' + OptionsFileName)
+        print(self.compiler.name)
 
     def install(self, spec, prefix):
         with working_dir(self.build_directory):
