@@ -97,22 +97,22 @@ class CosmoDycoreTest(unittest.TestCase):
 
     def test_install_float_cpu(self):
         # The dycore team's testing relies on this.
-        run('spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda'
+        run('spack install --test=root cosmo-dycore@org_master%gcc real_type=float build_type=Release ~cuda'
             )
 
     def test_install_float_gpu(self):
         # The dycore team's testing relies on this.
-        run('spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release +cuda'
+        run('spack install --test=root cosmo-dycore@org_master%gcc real_type=float build_type=Release +cuda'
             )
 
     def test_install_double_cpu(self):
         # The dycore team's testing relies on this.
-        run('spack install --test=root cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda'
+        run('spack install --test=root cosmo-dycore@org_master%gcc real_type=double build_type=Release ~cuda'
             )
 
     def test_install_double_gpu(self):
         # The dycore team's testing relies on this.
-        run('spack install --test=root cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
+        run('spack install --test=root cosmo-dycore@org_master%gcc real_type=double build_type=Release +cuda'
             )
 
 
