@@ -73,6 +73,10 @@ class Int2lm(MakefilePackage):
 
     build_directory = 'TESTSUITE'
 
+    def setup_run_environment(self,env):
+        env.prepend_path('LD_LIBRARY_PATH', '/opt/cray/pe/hdf5-parallel/1.12.0.0/pgi/20.1/lib')
+
+
     def setup_build_environment(self, env):
         self.setup_run_environment(env)
 
