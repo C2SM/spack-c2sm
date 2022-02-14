@@ -98,7 +98,9 @@ class Int2lm(MakefilePackage):
         if self.spec.variants['slave'].value == 'daint':
             env.set('NETCDFL', '-L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf')
             env.set('NETCDFI', '-I$(NETCDF_DIR)/include')
-            env.prepend_path('LD_LIBRARY_PATH', '/opt/cray/pe/hdf5-parallel/1.12.0.0/pgi/20.1/lib')
+            env.prepend_path(
+                'LD_LIBRARY_PATH',
+                '/opt/cray/pe/hdf5-parallel/1.12.0.0/pgi/20.1/lib')
         else:
             env.set(
                 'NETCDFL', '-L' + self.spec['netcdf-fortran'].prefix +
