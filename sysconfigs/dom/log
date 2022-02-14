@@ -1,0 +1,900 @@
+==> Warning: the original concretizer is currently being used.
+	Upgrade to "clingo" at your earliest convenience. The original concretizer will be removed from Spack starting at v0.18.0
+==> Warning: Missing a source id for cosmo@c2sm-master
+{
+  "spec": {
+    "_meta": {
+      "version": 2
+    },
+    "nodes": [
+      {
+        "name": "cosmo",
+        "version": "c2sm-master",
+        "arch": {
+          "platform": "cray",
+          "platform_os": "cnl7",
+          "target": {
+            "name": "haswell",
+            "vendor": "GenuineIntel",
+            "features": [
+              "aes",
+              "avx",
+              "avx2",
+              "bmi1",
+              "bmi2",
+              "f16c",
+              "fma",
+              "mmx",
+              "movbe",
+              "pclmulqdq",
+              "popcnt",
+              "rdrand",
+              "sse",
+              "sse2",
+              "sse4_1",
+              "sse4_2",
+              "ssse3"
+            ],
+            "generation": 0,
+            "parents": [
+              "ivybridge",
+              "x86_64_v3"
+            ]
+          }
+        },
+        "compiler": {
+          "name": "pgi",
+          "version": "21.5"
+        },
+        "namespace": "mch",
+        "parameters": {
+          "claw": false,
+          "cosmo_target": "cpu",
+          "cppdycore": false,
+          "cuda_arch": "60",
+          "debug": false,
+          "dycoretest": true,
+          "eccodes": true,
+          "gt1": false,
+          "oasis": false,
+          "parallel": true,
+          "pollen": false,
+          "production": false,
+          "real_type": "double",
+          "serialize": false,
+          "set_version": false,
+          "slave": "daint",
+          "slurm_account": "g110",
+          "slurm_bin": "srun",
+          "slurm_constraint": "gpu",
+          "slurm_nodes": "1",
+          "slurm_opt_account": "-A",
+          "slurm_opt_constraint": "-C",
+          "slurm_opt_nodes": "-n",
+          "slurm_opt_partition": "-p",
+          "slurm_partition": "normal",
+          "verbose": false,
+          "zlib_ng": false,
+          "cflags": [],
+          "cppflags": [],
+          "cxxflags": [],
+          "fflags": [],
+          "ldflags": [],
+          "ldlibs": []
+        },
+        "dependencies": [
+          {
+            "name": "cmake",
+            "build_hash": "pcg4tpah5tynv43qvdq2my2tddpc7dro",
+            "type": [
+              "build"
+            ]
+          },
+          {
+            "name": "cosmo-eccodes-definitions",
+            "build_hash": "y7uqoqgci5yovy6p7h36ime4uqhes7oc",
+            "type": [
+              "build",
+              "link",
+              "run"
+            ]
+          },
+          {
+            "name": "jasper",
+            "build_hash": "k4eichlkzpvh4pexmjh62d6owdigoitw",
+            "type": [
+              "build"
+            ]
+          },
+          {
+            "name": "libgrib1",
+            "build_hash": "zfakhdeqsksxleiclefepd5j34q7lzgd",
+            "type": [
+              "build"
+            ]
+          },
+          {
+            "name": "mpich",
+            "build_hash": "fk4lvvincn2x2hpwe7bxroymbfj7otrt",
+            "type": [
+              "build",
+              "link",
+              "run"
+            ]
+          },
+          {
+            "name": "netcdf-c",
+            "build_hash": "vyeufgv3jd266ylgrrrcpyy7s3pro4k5",
+            "type": [
+              "build",
+              "link"
+            ]
+          },
+          {
+            "name": "netcdf-fortran",
+            "build_hash": "x2g45rscxygcg7xyhf7xyowu7k2oqsrs",
+            "type": [
+              "build",
+              "link"
+            ]
+          },
+          {
+            "name": "perl",
+            "build_hash": "bbvvmbfqqpx2bui7znv7l6wwavwjb726",
+            "type": [
+              "build"
+            ]
+          },
+          {
+            "name": "slurm",
+            "build_hash": "gebds3jxbowz572virccsvqpvyotqtyh",
+            "type": [
+              "run"
+            ]
+          }
+        ],
+        "hash": "5weq33njimn2jsgfutgpqjlxz5b4t74t",
+        "full_hash": "eryxyipgl3a3tpr7cenuxcsokozbovhw",
+        "build_hash": "p74z4ucnz7ctnmjdqsws53r2jngnh2bx"
+      },
+      {
+        "name": "cmake",
+        "version": "3.14.5",
+        "arch": {
+          "platform": "cray",
+          "platform_os": "cnl7",
+          "target": {
+            "name": "haswell",
+            "vendor": "GenuineIntel",
+            "features": [
+              "aes",
+              "avx",
+              "avx2",
+              "bmi1",
+              "bmi2",
+              "f16c",
+              "fma",
+              "mmx",
+              "movbe",
+              "pclmulqdq",
+              "popcnt",
+              "rdrand",
+              "sse",
+              "sse2",
+              "sse4_1",
+              "sse4_2",
+              "ssse3"
+            ],
+            "generation": 0,
+            "parents": [
+              "ivybridge",
+              "x86_64_v3"
+            ]
+          }
+        },
+        "compiler": {
+          "name": "gcc",
+          "version": "8.3.0"
+        },
+        "namespace": "builtin",
+        "parameters": {
+          "build_type": "Release",
+          "doc": false,
+          "ncurses": true,
+          "openssl": true,
+          "ownlibs": false,
+          "patches": [
+            "1c540040c7e203dd8e27aa20345ecb07fe06570d56410a24a266ae570b1c4c39"
+          ],
+          "qt": false,
+          "cflags": [],
+          "cppflags": [],
+          "cxxflags": [],
+          "fflags": [],
+          "ldflags": [],
+          "ldlibs": []
+        },
+        "external": {
+          "path": "/apps/dom/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5",
+          "module": null,
+          "extra_attributes": {}
+        },
+        "patches": [
+          "1c540040c7e203dd8e27aa20345ecb07fe06570d56410a24a266ae570b1c4c39"
+        ],
+        "hash": "pcg4tpah5tynv43qvdq2my2tddpc7dro",
+        "full_hash": "yc7f5grsuup3zhv4yhwtoqu6eaxlqo27",
+        "build_hash": "pcg4tpah5tynv43qvdq2my2tddpc7dro"
+      },
+      {
+        "name": "cosmo-eccodes-definitions",
+        "version": "2.19.0.7",
+        "arch": {
+          "platform": "cray",
+          "platform_os": "cnl7",
+          "target": {
+            "name": "haswell",
+            "vendor": "GenuineIntel",
+            "features": [
+              "aes",
+              "avx",
+              "avx2",
+              "bmi1",
+              "bmi2",
+              "f16c",
+              "fma",
+              "mmx",
+              "movbe",
+              "pclmulqdq",
+              "popcnt",
+              "rdrand",
+              "sse",
+              "sse2",
+              "sse4_1",
+              "sse4_2",
+              "ssse3"
+            ],
+            "generation": 0,
+            "parents": [
+              "ivybridge",
+              "x86_64_v3"
+            ]
+          }
+        },
+        "compiler": {
+          "name": "pgi",
+          "version": "21.5"
+        },
+        "namespace": "mch",
+        "parameters": {
+          "cflags": [],
+          "cppflags": [],
+          "cxxflags": [],
+          "fflags": [],
+          "ldflags": [],
+          "ldlibs": []
+        },
+        "dependencies": [
+          {
+            "name": "eccodes",
+            "build_hash": "s46ez576gcbe5f66m7mmhtmn7zkrrgf6",
+            "type": [
+              "build",
+              "link",
+              "run"
+            ]
+          }
+        ],
+        "hash": "5d5274wz6ghcycgifhrefaum6lkzmw3v",
+        "full_hash": "q4vkpqrubbfyntpyboxxnr5byzr3qven",
+        "build_hash": "y7uqoqgci5yovy6p7h36ime4uqhes7oc"
+      },
+      {
+        "name": "eccodes",
+        "version": "2.19.0",
+        "arch": {
+          "platform": "cray",
+          "platform_os": "cnl7",
+          "target": {
+            "name": "haswell",
+            "vendor": "GenuineIntel",
+            "features": [
+              "aes",
+              "avx",
+              "avx2",
+              "bmi1",
+              "bmi2",
+              "f16c",
+              "fma",
+              "mmx",
+              "movbe",
+              "pclmulqdq",
+              "popcnt",
+              "rdrand",
+              "sse",
+              "sse2",
+              "sse4_1",
+              "sse4_2",
+              "ssse3"
+            ],
+            "generation": 0,
+            "parents": [
+              "ivybridge",
+              "x86_64_v3"
+            ]
+          }
+        },
+        "compiler": {
+          "name": "pgi",
+          "version": "21.5"
+        },
+        "namespace": "mch",
+        "parameters": {
+          "aec": false,
+          "build_shared_libs": false,
+          "build_type": "RelWithDebInfo",
+          "examples": true,
+          "fortran": true,
+          "ipo": false,
+          "jp2k": "jasper",
+          "memfs": false,
+          "netcdf": false,
+          "openmp": false,
+          "png": false,
+          "pthreads": false,
+          "python": false,
+          "test": true,
+          "cflags": [],
+          "cppflags": [],
+          "cxxflags": [],
+          "fflags": [],
+          "ldflags": [],
+          "ldlibs": []
+        },
+        "dependencies": [
+          {
+            "name": "cmake",
+            "build_hash": "pcg4tpah5tynv43qvdq2my2tddpc7dro",
+            "type": [
+              "build",
+              "link"
+            ]
+          },
+          {
+            "name": "jasper",
+            "build_hash": "k4eichlkzpvh4pexmjh62d6owdigoitw",
+            "type": [
+              "build"
+            ]
+          }
+        ],
+        "hash": "icdx62q2ijfbgehelyord2sijdb24mjn",
+        "full_hash": "66ey2d6qpknzklgecymtgzot6z523h5p",
+        "build_hash": "s46ez576gcbe5f66m7mmhtmn7zkrrgf6"
+      },
+      {
+        "name": "jasper",
+        "version": "1.900.1",
+        "arch": {
+          "platform": "cray",
+          "platform_os": "cnl7",
+          "target": {
+            "name": "haswell",
+            "vendor": "GenuineIntel",
+            "features": [
+              "aes",
+              "avx",
+              "avx2",
+              "bmi1",
+              "bmi2",
+              "f16c",
+              "fma",
+              "mmx",
+              "movbe",
+              "pclmulqdq",
+              "popcnt",
+              "rdrand",
+              "sse",
+              "sse2",
+              "sse4_1",
+              "sse4_2",
+              "ssse3"
+            ],
+            "generation": 0,
+            "parents": [
+              "ivybridge",
+              "x86_64_v3"
+            ]
+          }
+        },
+        "compiler": {
+          "name": "gcc",
+          "version": "8.3.0"
+        },
+        "namespace": "builtin",
+        "parameters": {
+          "build_type": "Release",
+          "jpeg": true,
+          "opengl": false,
+          "patches": [
+            "db104400a2e72f610b8fa4d061a32282254819c70b024ef1cf99fef64aca67e3"
+          ],
+          "shared": true,
+          "cflags": [],
+          "cppflags": [],
+          "cxxflags": [],
+          "fflags": [],
+          "ldflags": [],
+          "ldlibs": []
+        },
+        "patches": [
+          "db104400a2e72f610b8fa4d061a32282254819c70b024ef1cf99fef64aca67e3"
+        ],
+        "dependencies": [
+          {
+            "name": "libjpeg",
+            "build_hash": "rglsi7ncw4dvf4w427w5ij7lhb3v3jnm",
+            "type": [
+              "build",
+              "link"
+            ]
+          }
+        ],
+        "hash": "f7h5p6o7bcma2dprdzwt5lvhcrbkjqvd",
+        "full_hash": "o53jj762bm5vffdwb3styyu4oscpe7t5",
+        "build_hash": "k4eichlkzpvh4pexmjh62d6owdigoitw"
+      },
+      {
+        "name": "libjpeg",
+        "version": "8.1.2",
+        "arch": {
+          "platform": "cray",
+          "platform_os": "cnl7",
+          "target": {
+            "name": "haswell",
+            "vendor": "GenuineIntel",
+            "features": [
+              "aes",
+              "avx",
+              "avx2",
+              "bmi1",
+              "bmi2",
+              "f16c",
+              "fma",
+              "mmx",
+              "movbe",
+              "pclmulqdq",
+              "popcnt",
+              "rdrand",
+              "sse",
+              "sse2",
+              "sse4_1",
+              "sse4_2",
+              "ssse3"
+            ],
+            "generation": 0,
+            "parents": [
+              "ivybridge",
+              "x86_64_v3"
+            ]
+          }
+        },
+        "compiler": {
+          "name": "gcc",
+          "version": "8.3.0"
+        },
+        "namespace": "builtin",
+        "parameters": {
+          "cflags": [],
+          "cppflags": [],
+          "cxxflags": [],
+          "fflags": [],
+          "ldflags": [],
+          "ldlibs": []
+        },
+        "external": {
+          "path": "/usr",
+          "module": null,
+          "extra_attributes": {}
+        },
+        "hash": "rglsi7ncw4dvf4w427w5ij7lhb3v3jnm",
+        "full_hash": "cct232cxwzlf4ib3fscnxbecq4vmzt26",
+        "build_hash": "rglsi7ncw4dvf4w427w5ij7lhb3v3jnm"
+      },
+      {
+        "name": "libgrib1",
+        "version": "22-01-2020",
+        "arch": {
+          "platform": "cray",
+          "platform_os": "cnl7",
+          "target": {
+            "name": "haswell",
+            "vendor": "GenuineIntel",
+            "features": [
+              "aes",
+              "avx",
+              "avx2",
+              "bmi1",
+              "bmi2",
+              "f16c",
+              "fma",
+              "mmx",
+              "movbe",
+              "pclmulqdq",
+              "popcnt",
+              "rdrand",
+              "sse",
+              "sse2",
+              "sse4_1",
+              "sse4_2",
+              "ssse3"
+            ],
+            "generation": 0,
+            "parents": [
+              "ivybridge",
+              "x86_64_v3"
+            ]
+          }
+        },
+        "compiler": {
+          "name": "pgi",
+          "version": "21.5"
+        },
+        "namespace": "mch",
+        "parameters": {
+          "cflags": [],
+          "cppflags": [],
+          "cxxflags": [],
+          "fflags": [],
+          "ldflags": [],
+          "ldlibs": []
+        },
+        "hash": "zfakhdeqsksxleiclefepd5j34q7lzgd",
+        "full_hash": "ymv7bkxqopnxjxqqxfkwiyl3ihemuf3h",
+        "build_hash": "zfakhdeqsksxleiclefepd5j34q7lzgd"
+      },
+      {
+        "name": "mpich",
+        "version": "7.7.18",
+        "arch": {
+          "platform": "cray",
+          "platform_os": "cnl7",
+          "target": {
+            "name": "haswell",
+            "vendor": "GenuineIntel",
+            "features": [
+              "aes",
+              "avx",
+              "avx2",
+              "bmi1",
+              "bmi2",
+              "f16c",
+              "fma",
+              "mmx",
+              "movbe",
+              "pclmulqdq",
+              "popcnt",
+              "rdrand",
+              "sse",
+              "sse2",
+              "sse4_1",
+              "sse4_2",
+              "ssse3"
+            ],
+            "generation": 0,
+            "parents": [
+              "ivybridge",
+              "x86_64_v3"
+            ]
+          }
+        },
+        "compiler": {
+          "name": "pgi",
+          "version": "21.5"
+        },
+        "namespace": "mch",
+        "parameters": {
+          "argobots": false,
+          "device": "ch4",
+          "fortran": true,
+          "hwloc": true,
+          "hydra": true,
+          "libxml2": true,
+          "netmod": "ofi",
+          "pci": true,
+          "pmi": "pmi",
+          "romio": true,
+          "slurm": false,
+          "verbs": false,
+          "wrapperrpath": true,
+          "cflags": [],
+          "cppflags": [],
+          "cxxflags": [],
+          "fflags": [],
+          "ldflags": [],
+          "ldlibs": []
+        },
+        "external": {
+          "path": "/opt/cray/pe/mpt/7.7.18/gni/mpich-nvidia/20.7",
+          "module": [
+            "cray-mpich/7.7.18"
+          ],
+          "extra_attributes": {}
+        },
+        "hash": "fk4lvvincn2x2hpwe7bxroymbfj7otrt",
+        "full_hash": "undmvxkjohsvx52jv6kjdvrxeqhlpmnx",
+        "build_hash": "fk4lvvincn2x2hpwe7bxroymbfj7otrt"
+      },
+      {
+        "name": "netcdf-c",
+        "version": "4.7.4.4",
+        "arch": {
+          "platform": "cray",
+          "platform_os": "cnl7",
+          "target": {
+            "name": "haswell",
+            "vendor": "GenuineIntel",
+            "features": [
+              "aes",
+              "avx",
+              "avx2",
+              "bmi1",
+              "bmi2",
+              "f16c",
+              "fma",
+              "mmx",
+              "movbe",
+              "pclmulqdq",
+              "popcnt",
+              "rdrand",
+              "sse",
+              "sse2",
+              "sse4_1",
+              "sse4_2",
+              "ssse3"
+            ],
+            "generation": 0,
+            "parents": [
+              "ivybridge",
+              "x86_64_v3"
+            ]
+          }
+        },
+        "compiler": {
+          "name": "pgi",
+          "version": "21.5"
+        },
+        "namespace": "builtin",
+        "parameters": {
+          "dap": false,
+          "fsync": false,
+          "hdf4": false,
+          "jna": false,
+          "mpi": true,
+          "parallel-netcdf": true,
+          "patches": [
+            "2c88dfbd6d339a0336a43b14a65a1d1df995b853b645e4af612617612a642a53"
+          ],
+          "pic": true,
+          "shared": true,
+          "cflags": [],
+          "cppflags": [],
+          "cxxflags": [],
+          "fflags": [],
+          "ldflags": [],
+          "ldlibs": []
+        },
+        "external": {
+          "path": "/opt/cray/pe/netcdf-hdf5parallel/4.7.4.4",
+          "module": [
+            "cray-netcdf-hdf5parallel/4.7.4.4"
+          ],
+          "extra_attributes": {}
+        },
+        "patches": [
+          "2c88dfbd6d339a0336a43b14a65a1d1df995b853b645e4af612617612a642a53"
+        ],
+        "hash": "vyeufgv3jd266ylgrrrcpyy7s3pro4k5",
+        "full_hash": "svu76z544snjmmulpeheaoyrcfyeolie",
+        "build_hash": "vyeufgv3jd266ylgrrrcpyy7s3pro4k5"
+      },
+      {
+        "name": "netcdf-fortran",
+        "version": "4.7.4.4",
+        "arch": {
+          "platform": "cray",
+          "platform_os": "cnl7",
+          "target": {
+            "name": "haswell",
+            "vendor": "GenuineIntel",
+            "features": [
+              "aes",
+              "avx",
+              "avx2",
+              "bmi1",
+              "bmi2",
+              "f16c",
+              "fma",
+              "mmx",
+              "movbe",
+              "pclmulqdq",
+              "popcnt",
+              "rdrand",
+              "sse",
+              "sse2",
+              "sse4_1",
+              "sse4_2",
+              "ssse3"
+            ],
+            "generation": 0,
+            "parents": [
+              "ivybridge",
+              "x86_64_v3"
+            ]
+          }
+        },
+        "compiler": {
+          "name": "pgi",
+          "version": "21.5"
+        },
+        "namespace": "builtin",
+        "parameters": {
+          "doc": false,
+          "pic": true,
+          "shared": true,
+          "cflags": [],
+          "cppflags": [],
+          "cxxflags": [],
+          "fflags": [],
+          "ldflags": [],
+          "ldlibs": []
+        },
+        "external": {
+          "path": "/opt/cray/pe/netcdf-hdf5parallel/4.7.4.4",
+          "module": [
+            "cray-netcdf-hdf5parallel/4.7.4.4"
+          ],
+          "extra_attributes": {}
+        },
+        "hash": "x2g45rscxygcg7xyhf7xyowu7k2oqsrs",
+        "full_hash": "yxiec4jxcecwgtqvmtyp2lopldayxymc",
+        "build_hash": "x2g45rscxygcg7xyhf7xyowu7k2oqsrs"
+      },
+      {
+        "name": "perl",
+        "version": "5.26.1",
+        "arch": {
+          "platform": "cray",
+          "platform_os": "cnl7",
+          "target": {
+            "name": "haswell",
+            "vendor": "GenuineIntel",
+            "features": [
+              "aes",
+              "avx",
+              "avx2",
+              "bmi1",
+              "bmi2",
+              "f16c",
+              "fma",
+              "mmx",
+              "movbe",
+              "pclmulqdq",
+              "popcnt",
+              "rdrand",
+              "sse",
+              "sse2",
+              "sse4_1",
+              "sse4_2",
+              "ssse3"
+            ],
+            "generation": 0,
+            "parents": [
+              "ivybridge",
+              "x86_64_v3"
+            ]
+          }
+        },
+        "compiler": {
+          "name": "pgi",
+          "version": "21.5"
+        },
+        "namespace": "builtin",
+        "parameters": {
+          "cpanm": true,
+          "patches": [
+            "0eac10ed90aeb0459ad8851f88081d439a4e41978e586ec743069e8b059370ac",
+            "8cf4302ca8b480c60ccdcaa29ec53d9d50a71d4baf469ac8c6fca00ca31e58a2"
+          ],
+          "shared": true,
+          "threads": true,
+          "cflags": [],
+          "cppflags": [],
+          "cxxflags": [],
+          "fflags": [],
+          "ldflags": [],
+          "ldlibs": []
+        },
+        "external": {
+          "path": "/usr",
+          "module": null,
+          "extra_attributes": {}
+        },
+        "patches": [
+          "8cf4302ca8b480c60ccdcaa29ec53d9d50a71d4baf469ac8c6fca00ca31e58a2",
+          "0eac10ed90aeb0459ad8851f88081d439a4e41978e586ec743069e8b059370ac"
+        ],
+        "hash": "bbvvmbfqqpx2bui7znv7l6wwavwjb726",
+        "full_hash": "u6wzawzc5ireh3ldrl74pnsitjftgirr",
+        "build_hash": "bbvvmbfqqpx2bui7znv7l6wwavwjb726"
+      },
+      {
+        "name": "slurm",
+        "version": "20.02.2-1",
+        "arch": {
+          "platform": "cray",
+          "platform_os": "cnl7",
+          "target": {
+            "name": "haswell",
+            "vendor": "GenuineIntel",
+            "features": [
+              "aes",
+              "avx",
+              "avx2",
+              "bmi1",
+              "bmi2",
+              "f16c",
+              "fma",
+              "mmx",
+              "movbe",
+              "pclmulqdq",
+              "popcnt",
+              "rdrand",
+              "sse",
+              "sse2",
+              "sse4_1",
+              "sse4_2",
+              "ssse3"
+            ],
+            "generation": 0,
+            "parents": [
+              "ivybridge",
+              "x86_64_v3"
+            ]
+          }
+        },
+        "compiler": {
+          "name": "gcc",
+          "version": "8.3.0"
+        },
+        "namespace": "builtin",
+        "parameters": {
+          "gtk": false,
+          "hdf5": false,
+          "hwloc": false,
+          "mariadb": false,
+          "pmix": false,
+          "readline": true,
+          "restd": false,
+          "sysconfdir": "PREFIX/etc",
+          "cflags": [],
+          "cppflags": [],
+          "cxxflags": [],
+          "fflags": [],
+          "ldflags": [],
+          "ldlibs": []
+        },
+        "external": {
+          "path": null,
+          "module": [
+            "slurm/20.02.2-1"
+          ],
+          "extra_attributes": {}
+        },
+        "hash": "gebds3jxbowz572virccsvqpvyotqtyh",
+        "full_hash": "ysqwkqsrp75elp7xt5sm6vzq2jhfey5b",
+        "build_hash": "gebds3jxbowz572virccsvqpvyotqtyh"
+      }
+    ]
+  }
+}
