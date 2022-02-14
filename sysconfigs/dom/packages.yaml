@@ -257,10 +257,10 @@ packages:
     externals:
     - spec: m4@1.4.18%gcc
       prefix: /usr
-  cray-mpich:
+  mpich:
     buildable: false
     externals:
-      - spec: cray-mpich@7.7.18
+      - spec: mpich@7.7.18
         modules:
         - cray-mpich/7.7.18
   netcdf:
