@@ -2,7 +2,7 @@ packages:
   all:
         # default compilers defined by the system
         # these reflect the current installed PE
-    compiler: [gcc@8.3.0, pgi@20.1.1,cce@10.0.2]
+    compiler: [gcc@8.3.0, pgi@21.3,cce@10.0.2]
     providers:
       mpi: [mpich]
             # if the mpich package support +cuda in the future it needs to be put there
@@ -260,52 +260,24 @@ packages:
   mpich:
     buildable: false
     externals:
-      - spec: mpich@7.7.15
+      - spec: mpich@7.7.18
         modules:
-        - cray-mpich/7.7.15
+        - cray-mpich/7.7.18
   netcdf-c:
     buildable: false
     externals:
-    - spec: netcdf-c@4.7.4.0%cce~parallel-netcdf~mpi
-      prefix: /opt/cray/pe/netcdf/4.7.4.0/CRAYCLANG/9.0
-    - spec: netcdf-c@4.7.4.0%gcc+parallel-netcdf+mpi
-      modules:
-      - cray-netcdf-hdf5parallel/4.7.4.0
-    - spec: netcdf-c@4.7.4.0%intel+parallel-netcdf+mpi
-      modules:
-      - cray-netcdf-hdf5parallel/4.7.4.0
-    - spec: netcdf-c@4.7.4.0%cce+parallel-netcdf+mpi
-      modules:
-      - cray-netcdf-hdf5parallel/4.7.4.0
     - spec: netcdf-c@4.7.4.0%pgi+parallel-netcdf+mpi
       modules:
-      - cray-netcdf-hdf5parallel/4.7.4.0
-    - spec: netcdf-c@4.7.4.0%gcc~parallel-netcdf~mpi
-      modules:
-      - cray-netcdf/4.7.4.0
-    - spec: netcdf-c@4.7.4.0%intel~parallel-netcdf~mpi
-      modules:
-      - cray-netcdf/4.7.4.0
-    - spec: netcdf-c@4.7.4.0%cce~parallel-netcdf~mpi
-      modules:
-      - cray-netcdf/4.7.4.0
+      - cray-netcdf-hdf5parallel/4.7.4.4
     - spec: netcdf-c@4.7.4.0%pgi~parallel-netcdf~mpi
       modules:
-      - cray-netcdf/4.7.4.0
+      - cray-netcdf/4.7.4.4
   netcdf-fortran:
     buildable: false
     externals:
-    - spec: netcdf-fortran@4.7.4.0%gcc
-      prefix: /opt/cray/pe/netcdf/4.7.4.0/gnu/8.2
-    - spec: netcdf-fortran@4.7.4.0%intel
+    - spec: netcdf-fortran@4.7.4.4%pgi
       modules:
-      - cray-netcdf-hdf5parallel/4.7.4.0
-    - spec: netcdf-fortran@4.7.4.0%cce
-      modules:
-      - cray-netcdf-hdf5parallel/4.7.4.0
-    - spec: netcdf-fortran@4.7.4.0%pgi
-      modules:
-      - cray-netcdf-hdf5parallel/4.7.4.0
+      - cray-netcdf-hdf5parallel/4.7.4.4
   netlib-scalapack:
     variants: build_type=Release
   netlib-lapack:

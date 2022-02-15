@@ -15,7 +15,7 @@ compilers:
     environment: {}
     extra_rpaths: []
 - compiler:
-    spec: pgi@20.1.1
+    spec: pgi@21.3
     paths:
       cc: cc
       cxx: CC
@@ -25,8 +25,7 @@ compilers:
     operating_system: cnl7
     target: any
     modules:
-    - PrgEnv-pgi/6.0.8
-    - pgi/20.1.1
-    - cdt/20.08
+    - PrgEnv-nvidia
+    - nvidia/21.3
     environment: {}
     extra_rpaths: []

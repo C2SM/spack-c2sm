@@ -74,7 +74,7 @@ class Int2lm(MakefilePackage):
     build_directory = 'TESTSUITE'
 
     def setup_run_environment(self,env):
-        env.prepend_path('LD_LIBRARY_PATH', '/opt/cray/pe/hdf5-parallel/1.12.0.0/pgi/20.1/lib')
+        env.prepend_path('LD_LIBRARY_PATH', '/opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/lib/')
 
 
     def setup_build_environment(self, env):
@@ -102,7 +102,6 @@ class Int2lm(MakefilePackage):
         if self.spec.variants['slave'].value == 'daint':
             env.set('NETCDFL', '-L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf')
             env.set('NETCDFI', '-I$(NETCDF_DIR)/include')
-            env.prepend_path('LD_LIBRARY_PATH', '/opt/cray/pe/hdf5-parallel/1.12.0.0/pgi/20.1/lib')
         else:
             env.set(
                 'NETCDFL', '-L' + self.spec['netcdf-fortran'].prefix +
@@ -136,10 +135,6 @@ class Int2lm(MakefilePackage):
         if self.compiler.name == 'pgi':
             env.set('F90', 'pgf90 -D__PGI_FORTRAN__')
             env.set('LD', 'pgf90 -D__PGI_FORTRAN__')
-        if self.compiler.name == 'nvhpc':
-            print('here')
-            env.set('F90', 'nvfortran')
-            env.set('LD', 'nvfortran')
         elif self.compiler.name == 'cce':
             env.set('F90', 'ftn -D__CRAY_FORTRAN__')
             env.set('LD', 'ftn -D__CRAY_FORTRAN__')
@@ -175,8 +170,6 @@ class Int2lm(MakefilePackage):
             if self.compiler.name == 'gcc':
                 OptionsFileName += '.gnu'
             elif self.compiler.name == 'pgi':
-                OptionsFileName += '.pgi'
-            elif self.compiler.name == 'nvhpc':
                 OptionsFileName += '.pgi'
             elif self.compiler.name == 'cce':
                 OptionsFileName += '.cray'
