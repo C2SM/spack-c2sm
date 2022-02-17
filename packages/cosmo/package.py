@@ -323,8 +323,9 @@ class Cosmo(MakefilePackage):
         if '+claw' in self.spec:
             claw_flags = ''
             # Set special flags after CLAW release 2.1
-            if self.compiler.name in ('pgi', 'nvhpc') and self.spec[
-                    'claw'].version >= Version(2.1):
+            if self.compiler.name in (
+                    'pgi',
+                    'nvhpc') and self.spec['claw'].version >= Version(2.1):
                 claw_flags += ' --fc-vendor=portland --fc-cmd=${FC}'
             if 'cosmo_target=gpu' in self.spec:
                 claw_flags += ' --directive=openacc'
@@ -352,7 +353,8 @@ class Cosmo(MakefilePackage):
             env.set('MPPIOI', '-I{:s}/build/lib/mct'.format(oasis_prefix))
 
         # Linker flags
-        if self.compiler.name in ('pgi', 'nvhpc') and '~cppdycore' in self.spec:
+        if self.compiler.name in ('pgi',
+                                  'nvhpc') and '~cppdycore' in self.spec:
             env.set('LFLAGS', '-lstdc++')
 
         # Compiler & linker variables
@@ -430,7 +432,8 @@ class Cosmo(MakefilePackage):
                 OptionsFile.filter(
                     'PFLAGS   = -Mpreprocess.*',
                     'PFLAGS   = -Mpreprocess -DNO_MPI_HOST_DATA')
-            if 'cosmo_target=gpu' in self.spec and self.compiler.name in ('pgi', 'nvhpc'):
+            if 'cosmo_target=gpu' in self.spec and self.compiler.name in (
+                    'pgi', 'nvhpc'):
                 OptionsFile.filter(
                     'PFLAGS   = -Mpreprocess.*',
                     'PFLAGS   = -Mpreprocess -DNO_ACC_FINALIZE')
