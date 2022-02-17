@@ -28,7 +28,7 @@ packages:
   cmake:
     buildable: false
     externals:
-    - spec: cmake@3.10.2
+    - spec: cmake@3.10.2%gcc
       prefix: /usr
   cpio:
     externals:
@@ -158,6 +158,10 @@ packages:
     externals:
     - spec: openssl@1.1.0i-fips
       prefix: /usr
+  openjdk:
+    externals:
+    - spec: openjdk@1.8.0
+      prefix: /usr/lib64/jvm/java-1.8.0-openjdk
   perl:
     externals:
     - spec: perl@5.26.1~cpanm+shared+threads
