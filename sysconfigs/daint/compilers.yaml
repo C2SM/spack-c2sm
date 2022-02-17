@@ -86,6 +86,6 @@ compilers:
     target: any
     modules:
     - PrgEnv-nvidia
-    - nvidia/21.5
+    - nvhpc/21.5
     environment: {}
     extra_rpaths: []
