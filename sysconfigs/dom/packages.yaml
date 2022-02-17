@@ -102,12 +102,13 @@ packages:
       modules:
       - cray-libsci_acc/20.06.1
   cuda:
-    version: ['10.2']
+    version: ['11.0']
     externals:
-    - spec: cuda@10.2%gcc
+    - spec: cuda@11.0%gcc
       modules:
       # - cudatoolkit/10.2.89_3.28-2.1__g52c0314
-      - cudatoolkit/21.5_10.2
+      # - cudatoolkit/21.5_10.2
+      - cudatoolkit/11.0.2_3.38-8.1__g5b73779
   curl:
     externals:
     - spec: curl@7.60.0

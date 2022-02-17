@@ -190,7 +190,7 @@ class Cosmo(MakefilePackage):
     conflicts('~gt1', when='@5.07a.mch1.0.p1')
     conflicts('~gt1', when='@5.07a.mch1.0.base')
     conflicts('~gt1', when='@5.07.mch1.0.p10')
-    conflicts('+cppdycore', when='%pgi cosmo_target=cpu')
+    conflicts('+cppdycore', when='%nvhpc cosmo_target=cpu')
     # - ML - A conflict should be added there if the oasis variant is
     # chosen and the version is neither c2sm-features nor
     # dev-build. The problem is that this doesn't seem possible in a
