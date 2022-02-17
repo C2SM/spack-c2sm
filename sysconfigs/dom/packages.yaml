@@ -2,7 +2,7 @@ packages:
   all:
         # default compilers defined by the system
         # these reflect the current installed PE
-    compiler: [gcc@8.3.0, pgi@21.3, nvidia@21.3, nvhpc@21.3, nvhpc@21.5, cce@10.0.2]
+    compiler: [gcc@8.3.0, nvhpc@21.5, cce@10.0.2]
     providers:
       mpi: [mpich]
             # if the mpich package support +cuda in the future it needs to be put there
@@ -106,7 +106,8 @@ packages:
     externals:
     - spec: cuda@10.2%gcc
       modules:
-      - cudatoolkit/10.2.89_3.28-2.1__g52c0314
+      # - cudatoolkit/10.2.89_3.28-2.1__g52c0314
+      - cudatoolkit/21.5_10.2
   curl:
     externals:
     - spec: curl@7.60.0
