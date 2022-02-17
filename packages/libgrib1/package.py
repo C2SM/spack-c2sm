@@ -42,8 +42,6 @@ class Libgrib1(MakefilePackage):
             _makefile_name += '.gnu'
         elif self.compiler.name == 'pgi':
             _makefile_name += '.pgi'
-        elif self.compiler.name == 'nvhpc':
-            _makefile_name += '.pgi'
         elif self.compiler.name == 'cce':
             _makefile_name += '.cray'
         self._makefile_name = _makefile_name

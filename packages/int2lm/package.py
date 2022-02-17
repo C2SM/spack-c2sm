@@ -132,7 +132,8 @@ class Int2lm(MakefilePackage):
         else:
             env.set('MPII', '-I' + self.spec['mpi'].prefix + '/include')
             if self.compiler.name != 'gcc':
-                env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich')
+                env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich_' +
+                    self.compiler.name)
 
         # Compiler & linker variables
         if self.compiler.name == 'pgi':
@@ -177,7 +178,6 @@ class Int2lm(MakefilePackage):
             elif self.compiler.name == 'cce':
                 OptionsFileName += '.cray'
             makefile.filter('/Options.*', '/' + OptionsFileName)
-        print(self.compiler.name)
 
     def install(self, spec, prefix):
         with working_dir(self.build_directory):
