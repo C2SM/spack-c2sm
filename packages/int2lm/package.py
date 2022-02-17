@@ -73,10 +73,10 @@ class Int2lm(MakefilePackage):
 
     build_directory = 'TESTSUITE'
 
-    def setup_run_environment(self, env):
-        env.prepend_path(
-            'LD_LIBRARY_PATH',
-            '/opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/lib/')
+    # def setup_run_environment(self, env):
+    #     env.prepend_path(
+    #         'LD_LIBRARY_PATH',
+    #         '/opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/lib/')
 
     def setup_build_environment(self, env):
         self.setup_run_environment(env)
@@ -118,6 +118,9 @@ class Int2lm(MakefilePackage):
         elif self.compiler.name == 'cce':
             env.set('GRIBDWDL',
                     '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_cray')
+        elif self.compiler.name in ('pgi', 'nvhpc'):
+            env.set('GRIBDWDL',
+                    '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_pgi')
         else:
             env.set(
                 'GRIBDWDL', '-L' + self.spec['libgrib1'].prefix +
@@ -136,6 +139,9 @@ class Int2lm(MakefilePackage):
         if self.compiler.name == 'pgi':
             env.set('F90', 'pgf90 -D__PGI_FORTRAN__')
             env.set('LD', 'pgf90 -D__PGI_FORTRAN__')
+        elif self.compiler.name == 'nvhpc':
+            env.set('F90', 'nvfortran -D__PGI_FORTRAN__')
+            env.set('LD', 'nvfortran -D__PGI_FORTRAN__')
         elif self.compiler.name == 'cce':
             env.set('F90', 'ftn -D__CRAY_FORTRAN__')
             env.set('LD', 'ftn -D__CRAY_FORTRAN__')
@@ -170,7 +176,7 @@ class Int2lm(MakefilePackage):
             OptionsFileName = 'Options'
             if self.compiler.name == 'gcc':
                 OptionsFileName += '.gnu'
-            elif self.compiler.name == 'pgi':
+            elif self.compiler.name in ('pgi', 'nvhpc'):
                 OptionsFileName += '.pgi'
             elif self.compiler.name == 'cce':
                 OptionsFileName += '.cray'

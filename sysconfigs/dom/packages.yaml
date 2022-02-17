@@ -2,7 +2,7 @@ packages:
   all:
         # default compilers defined by the system
         # these reflect the current installed PE
-    compiler: [gcc@8.3.0, pgi@21.3,cce@10.0.2]
+    compiler: [gcc@8.3.0, pgi@21.3, nvidia@21.3, nvhpc@21.3, nvhpc@21.5, cce@10.0.2]
     providers:
       mpi: [mpich]
             # if the mpich package support +cuda in the future it needs to be put there

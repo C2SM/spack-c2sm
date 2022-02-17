@@ -199,12 +199,12 @@ class Cosmo(MakefilePackage):
 
     build_directory = 'cosmo/ACC'
 
-    def setup_run_environment(self, env):
-        env.prepend_path('LD_LIBRARY_PATH',
-                         '/opt/cray/pe/hdf5-parallel/1.12.0.0/pgi/20.1/lib')
-        env.prepend_path(
-            'LD_LIBRARY_PATH',
-            '/opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/lib/')
+    # def setup_run_environment(self, env):
+    #     env.prepend_path('LD_LIBRARY_PATH',
+    #                      '/opt/cray/pe/hdf5-parallel/1.12.0.0/pgi/20.1/lib')
+    #     env.prepend_path(
+    #         'LD_LIBRARY_PATH',
+    #         '/opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/lib/')
 
     def setup_build_environment(self, env):
 
@@ -255,9 +255,9 @@ class Cosmo(MakefilePackage):
         if self.spec.variants['slave'].value == 'daint':
             env.set('NETCDFL', '-L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf')
             env.set('NETCDFI', '-I$(NETCDF_DIR)/include')
-            env.prepend_path(
-                'LD_LIBRARY_PATH',
-                '/opt/cray/pe/hdf5-parallel/1.12.0.0/pgi/20.1/lib')
+            # env.prepend_path(
+            #     'LD_LIBRARY_PATH',
+            #     '/opt/cray/pe/hdf5-parallel/1.12.0.0/pgi/20.1/lib')
         else:
             env.set(
                 'NETCDFL', '-L' + self.spec['netcdf-fortran'].prefix +
@@ -270,6 +270,12 @@ class Cosmo(MakefilePackage):
         if self.compiler.name == 'gcc':
             env.set('GRIBDWDL',
                     '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_gnu')
+        elif self.compiler.name == 'cce':
+            env.set('GRIBDWDL',
+                    '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_cray')
+        elif self.compiler.name == 'nvhpc':
+            env.set('GRIBDWDL',
+                    '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_pgi')
         else:
             env.set(
                 'GRIBDWDL', '-L' + self.spec['libgrib1'].prefix +
@@ -317,7 +323,7 @@ class Cosmo(MakefilePackage):
         if '+claw' in self.spec:
             claw_flags = ''
             # Set special flags after CLAW release 2.1
-            if self.compiler.name == 'pgi' and self.spec[
+            if self.compiler.name in ('pgi', 'nvhpc') and self.spec[
                     'claw'].version >= Version(2.1):
                 claw_flags += ' --fc-vendor=portland --fc-cmd=${FC}'
             if 'cosmo_target=gpu' in self.spec:
@@ -346,11 +352,11 @@ class Cosmo(MakefilePackage):
             env.set('MPPIOI', '-I{:s}/build/lib/mct'.format(oasis_prefix))
 
         # Linker flags
-        if self.compiler.name == 'pgi' and '~cppdycore' in self.spec:
+        if self.compiler.name in ('pgi', 'nvhpc') and '~cppdycore' in self.spec:
             env.set('LFLAGS', '-lstdc++')
 
         # Compiler & linker variables
-        if self.compiler.name == 'pgi':
+        if self.compiler.name in ('pgi', 'nvhpc'):
             env.set('F90', self.mpi_spec.mpifc + ' -D__PGI_FORTRAN__')
             env.set('LD', self.mpi_spec.mpifc + ' -D__PGI_FORTRAN__')
         else:
@@ -394,7 +400,7 @@ class Cosmo(MakefilePackage):
             OptionsFileName = 'Options'
             if self.compiler.name == 'gcc':
                 OptionsFileName += '.gnu'
-            elif self.compiler.name == 'pgi':
+            elif self.compiler.name in ('pgi', 'nvhpc'):
                 OptionsFileName += '.pgi'
             elif self.compiler.name == 'cce':
                 OptionsFileName += '.cray'
@@ -424,7 +430,7 @@ class Cosmo(MakefilePackage):
                 OptionsFile.filter(
                     'PFLAGS   = -Mpreprocess.*',
                     'PFLAGS   = -Mpreprocess -DNO_MPI_HOST_DATA')
-            if 'cosmo_target=gpu' in self.spec and self.compiler.name == 'pgi':
+            if 'cosmo_target=gpu' in self.spec and self.compiler.name in ('pgi', 'nvhpc'):
                 OptionsFile.filter(
                     'PFLAGS   = -Mpreprocess.*',
                     'PFLAGS   = -Mpreprocess -DNO_ACC_FINALIZE')

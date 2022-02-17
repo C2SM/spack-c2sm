@@ -15,6 +15,22 @@ compilers:
     environment: {}
     extra_rpaths: []
 - compiler:
+    spec: pgi@20.1.1
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: cnl7
+    target: any
+    modules:
+    - PrgEnv-pgi/6.0.8
+    - pgi/20.1.1
+    - cdt/20.08
+    environment: {}
+    extra_rpaths: []
+- compiler:
     spec: pgi@21.3
     paths:
       cc: cc
@@ -27,5 +43,50 @@ compilers:
     modules:
     - PrgEnv-nvidia
     - nvidia/21.3
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: nvidia@21.3
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: cnl7
+    target: any
+    modules:
+    - PrgEnv-nvidia
+    - nvidia/21.3
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: nvhpc@21.3
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: cnl7
+    target: any
+    modules:
+    - PrgEnv-nvidia
+    - nvhpc/21.3
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: nvhpc@21.5
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: cnl7
+    target: any
+    modules:
+    - PrgEnv-nvidia
+    - nvhpc/21.5
     environment: {}
     extra_rpaths: []
