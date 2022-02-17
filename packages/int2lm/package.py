@@ -73,11 +73,6 @@ class Int2lm(MakefilePackage):
 
     build_directory = 'TESTSUITE'
 
-    # def setup_run_environment(self, env):
-    #     env.prepend_path(
-    #         'LD_LIBRARY_PATH',
-    #         '/opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/lib/')
-
     def setup_build_environment(self, env):
         self.setup_run_environment(env)
 

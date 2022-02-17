@@ -2,7 +2,7 @@ packages:
   all:
         # default compilers defined by the system
         # these reflect the current installed PE
-    compiler: [gcc@8.3.0, nvhpc@21.5, cce@10.0.2]
+    compiler: [gcc@9.3.0,gcc@8.3.0, nvhpc@21.5, cce@10.0.2]
     providers:
       mpi: [mpich]
             # if the mpich package support +cuda in the future it needs to be put there
@@ -282,10 +282,6 @@ packages:
     variants: build_type=Release
   netlib-lapack:
     variants: build_type=Release +external-blas+lapacke
-  # ompt-openmp:
-  #   externals:
-  #   - spec: ompt-openmp@0.1%pgi
-  #     prefix: /opt/pgi/20.1.1/linux86-64-llvm/20.1/lib/libomp
   openblas:
     variants: +pic +shared threads=openmp ~virtual_machine
   openssl:
