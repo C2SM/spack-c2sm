@@ -255,7 +255,6 @@ class Int2lmTest(unittest.TestCase):
             run('spack install --test=root int2lm@c2sm-master%nvhpc')
 
 
-
 class IconDuskE2ETest(unittest.TestCase):
     package_name = 'icondusk-e2e'
     depends_on = {'atlas_utilities', 'dawn4py', 'dusk', 'atlas', 'cuda'}
@@ -477,8 +476,9 @@ if __name__ == '__main__':
         commands.remove('--tsa')
 
     # configure spack
-    print(f'Configuring spack with upstream {upstream} on machine {spack_machine}.',
-          flush=True)
+    print(
+        f'Configuring spack with upstream {upstream} on machine {spack_machine}.',
+        flush=True)
     subprocess.run(
         f'python ./config.py -m {spack_machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache',
         check=True,
