@@ -5,50 +5,6 @@ packages:
         mpi: [mpich]
         # if the mpich package support +cuda in the future it needs to be put there
         mpicuda: [mpich]
-  cuda:
-    externals:
-    -spec: cuda@11.0%nvhpc
-      prefix: /opt/nvidia/hpc_sdk/Linux_x86_64/20.9/cuda
-  mpich:
-    buildable: false
-    externals:
-    - spec: mpich@8.1.9%gcc
-      modules:
-      - cray-mpich/8.1.9
-    - spec: mpich@8.1.9%intel
-      modules:
-      - cray-mpich/8.1.9
-    - spec: mpich@8.1.9%cce
-      modules:
-      - cray-mpich/8.1.9
-    - spec: mpich@8.1.11%nvhpc
-      modules:
-      - cray-mpich/8.1.11
-  netcdf-c:
-    buildable: false
-    externals:
-    - spec: netcdf-c@4.7.4.7%cce
-      prefix: /opt/cray/pe/netcdf-hdf5parallel/4.7.4.7/crayclang/10.0
-    - spec: netcdf-c@4.7.4.7%nvhpc
-      prefix: /opt/cray/pe/netcdf-hdf5parallel/4.7.4.7/nvidia/20.7
-    - spec: netcdf-c@4.7.4.7%gcc
-      prefix: /opt/cray/pe/netcdf-hdf5parallel/4.7.4.7/gnu/9.1
-    - spec: netcdf-c@4.7.4.7%intel
-      prefix: /opt/cray/pe/netcdf-hdf5parallel/4.7.4.7/intel/19.0
-    - spec: netcdf-c@4.7.4.7%nvhpc
-      prefix: /opt/cray/pe/netcdf-hdf5parallel/4.7.4.7/nvidia/20.7
-  netcdf-fortran:
-    buildable: false
-    externals:
-    - spec: netcdf-fortran@4.7.4.7%cce
-      prefix: /opt/cray/pe/netcdf/4.7.4.7/crayclang/10.0
-    - spec: netcdf-fortran@4.7.4.7%nvhpc
-      prefix: /opt/cray/pe/netcdf/4.7.4.7/nvidia/20.7
-    - spec: netcdf-fortran@4.7.4.7%gcc
-      prefix: /opt/cray/pe/netcdf/4.7.4.7/gnu/9.1
-    - spec: netcdf-fortran@4.7.4.7%intel
-      prefix: /opt/cray/pe/netcdf/4.7.4.7/intel/19.0
-  # spack external find packages
   autoconf:
     externals:
     - spec: autoconf@2.69
@@ -77,6 +33,10 @@ packages:
     externals:
     - spec: cpio@2.12
       prefix: /usr
+  cuda:
+    externals:
+    -spec: cuda@11.0%nvhpc
+      prefix: /opt/nvidia/hpc_sdk/Linux_x86_64/20.9/cuda
   diffutils:
     externals:
     - spec: diffutils@3.6
@@ -122,6 +82,8 @@ packages:
     externals:
     - spec: groff@1.22.3
       prefix: /usr
+  icon:
+    variants: host=muttler
   libfuse:
     externals:
     - spec: libfuse@2.9.7
@@ -144,10 +106,49 @@ packages:
     externals:
     - spec: m4@1.4.18
       prefix: /usr
+  mpich:
+    buildable: false
+    externals:
+    - spec: mpich@8.1.9%gcc
+      modules:
+      - cray-mpich/8.1.9
+    - spec: mpich@8.1.9%intel
+      modules:
+      - cray-mpich/8.1.9
+    - spec: mpich@8.1.9%cce
+      modules:
+      - cray-mpich/8.1.9
+    - spec: mpich@8.1.11%nvhpc
+      modules:
+      - cray-mpich/8.1.11
   ncurses:
     externals:
     - spec: ncurses@6.1.20180317+termlib abi=6
       prefix: /usr
+  netcdf-c:
+    buildable: false
+    externals:
+    - spec: netcdf-c@4.7.4.7%cce
+      prefix: /opt/cray/pe/netcdf-hdf5parallel/4.7.4.7/crayclang/10.0
+    - spec: netcdf-c@4.7.4.7%nvhpc
+      prefix: /opt/cray/pe/netcdf-hdf5parallel/4.7.4.7/nvidia/20.7
+    - spec: netcdf-c@4.7.4.7%gcc
+      prefix: /opt/cray/pe/netcdf-hdf5parallel/4.7.4.7/gnu/9.1
+    - spec: netcdf-c@4.7.4.7%intel
+      prefix: /opt/cray/pe/netcdf-hdf5parallel/4.7.4.7/intel/19.0
+    - spec: netcdf-c@4.7.4.7%nvhpc
+      prefix: /opt/cray/pe/netcdf-hdf5parallel/4.7.4.7/nvidia/20.7
+  netcdf-fortran:
+    buildable: false
+    externals:
+    - spec: netcdf-fortran@4.7.4.7%cce
+      prefix: /opt/cray/pe/netcdf/4.7.4.7/crayclang/10.0
+    - spec: netcdf-fortran@4.7.4.7%nvhpc
+      prefix: /opt/cray/pe/netcdf/4.7.4.7/nvidia/20.7
+    - spec: netcdf-fortran@4.7.4.7%gcc
+      prefix: /opt/cray/pe/netcdf/4.7.4.7/gnu/9.1
+    - spec: netcdf-fortran@4.7.4.7%intel
+      prefix: /opt/cray/pe/netcdf/4.7.4.7/intel/19.0
   opengl:
     externals:
     - spec: opengl@3.1
