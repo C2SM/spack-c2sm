@@ -1,0 +1,79 @@
+compilers:
+- compiler:
+    spec: aocc@8.2.0
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags:
+      cflags: null
+      cxxflags: null
+      fflags: null
+    operating_system: sles15
+    target: any
+    modules:
+    - PrgEnv-aocc
+    - aocc/8.2.0
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: cce@13.0.0
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: sles15
+    target: any
+    modules:
+    - PrgEnv-cray
+    - cce/13.0.0
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: gcc@11.2.0
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: sles15
+    target: any
+    modules:
+    - PrgEnv-gnu
+    - gcc/11.2.0
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: intel@8.2.0
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: sles15
+    target: any
+    modules:
+    - PrgEnv-intel
+    - intel/8.2.0
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: nvhpc@20.9
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: sles15
+    target: any
+    modules:
+    - PrgEnv-nvidia
+    - nvidia/20.9
+    environment: {}
+    extra_rpaths: []
