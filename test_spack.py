@@ -503,7 +503,8 @@ if __name__ == '__main__':
         # collect and run tests from all packages selected
         suite = unittest.TestSuite([
             test_loader.loadTestsFromTestCase(case) for case in all_test_cases
-            if case.package_name in packages_to_test and machine in case.machines
+            if case.package_name in packages_to_test
+            and machine in case.machines
         ])
         result = unittest.TextTestRunner(verbosity=2).run(suite)
         sys.exit(not result.wasSuccessful())
