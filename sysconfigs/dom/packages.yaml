@@ -35,7 +35,7 @@ packages:
   cosmo:
     variants: cuda_arch=60 cosmo_target=gpu slave=daint
     version: [master]
-    compiler: [nvhpc]
+    compiler: [pgi]
   gridtools:
     variants: +cuda cuda_arch=60
     compiler: [gcc]
@@ -231,25 +231,16 @@ packages:
         modules:
         - cray-mpich/7.7.18
   netcdf-c:
-    buildable: false
     externals:
-    - spec: netcdf-c@4.7.4.0%pgi+parallel-netcdf+mpi
+    - spec: netcdf-c@4.7.4.4+mpi
       modules:
       - cray-netcdf-hdf5parallel/4.7.4.4
-    - spec: netcdf-c@4.7.4.0%gcc@8.3.0 +parallel-netcdf+mpi
-      prefix: /opt/cray/pe/netcdf/4.7.4.4/GNU/8.2
-    - spec: netcdf-c@4.7.4.0%pgi~parallel-netcdf~mpi
-      modules:
-      - cray-netcdf/4.7.4.4
   netcdf-fortran:
     buildable: false
     externals:
-    - spec: netcdf-fortran@4.7.4.4%pgi
+    - spec: netcdf-fortran@4.7.4.4
       modules:
       - cray-netcdf-hdf5parallel/4.7.4.4
-    externals:
-    - spec: netcdf-fortran@4.7.4.4%gcc@8.3.0
-      prefix: /opt/cray/pe/netcdf/4.7.4.4/GNU/8.2
   netlib-scalapack:
     variants: build_type=Release
   netlib-lapack:
