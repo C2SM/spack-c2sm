@@ -35,8 +35,7 @@ class Icon(Package):
     version('2.6.x-rc', commit='040de650', submodules=True)
     version('2.0.17', commit='39ed04ad', submodules=True)
 
-    depends_on('cmake%gcc')
-    depends_on('libxml2@2.9.8:%gcc', type=('build', 'link', 'run'))
+    depends_on('libxml2%gcc', type=('build', 'link', 'run'))
     depends_on('serialbox@2.6.0 ~python ~sdb ~shared',
                when='serialize_mode=create',
                type=('build', 'link', 'run'))

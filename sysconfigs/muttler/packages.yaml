@@ -26,6 +26,7 @@ packages:
     - spec: bzip2@1.0.6
       prefix: /usr
   cmake:
+    buildable: false
     externals:
     - spec: cmake@3.10.2
       prefix: /usr
@@ -93,10 +94,6 @@ packages:
   libtool:
     externals:
     - spec: libtool@2.4.6
-      prefix: /usr
-  libxml2:
-    externals:
-    - spec: libxml2@2.9.7%gcc
       prefix: /usr
   lustre:
     externals:
