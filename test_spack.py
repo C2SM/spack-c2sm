@@ -53,13 +53,21 @@ class CosmoTest(unittest.TestCase):
 
     def test_install_master_gpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('spack installcosmo cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
-            )
+        if machine == 'tsa':
+            run('spack installcosmo cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
+                )
+        if machine == 'daint':
+            run('spack installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=gpu +cppdycore'
+                )
 
     def test_install_master_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('spack installcosmo cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
-            )
+        if machine == 'tsa':
+            run('spack installcosmo cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
+                )
+        if machine == 'daint':
+            run('spack installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=cpu ~cppdycore'
+                )
 
     # def test_install_test(self):
     #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/289
@@ -73,8 +81,12 @@ class CosmoTest(unittest.TestCase):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         run('git clone git@github.com:MeteoSwiss-APN/cosmo.git')
         try:
-            run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore',
-                cwd='cosmo')
+            if machine == 'tsa':
+                run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore',
+                    cwd='cosmo')
+            if machine == 'daint':
+                run('spack devbuildcosmo cosmo@dev-build%nvhpc cosmo_target=cpu ~cppdycore',
+                    cwd='cosmo')
         finally:
             run('rm -rf cosmo')
 
@@ -82,15 +94,20 @@ class CosmoTest(unittest.TestCase):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         run('git clone git@github.com:MeteoSwiss-APN/cosmo.git')
         try:
-            run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
-                cwd='cosmo')
+            if machine == 'tsa':
+                run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
+                    cwd='cosmo')
+            if machine == 'daint':
+                run('spack devbuildcosmo cosmo@dev-build%nvhpc cosmo_target=gpu +cppdycore',
+                    cwd='cosmo')
         finally:
             run('rm -rf cosmo')
 
     def test_install_old_version(self):
         # So we can reproduce results from old versions.
-        run('spack installcosmo cosmo@apn_5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore'
-            )
+        if machine == 'tsa':
+            run('spack installcosmo cosmo@apn_5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore'
+                )
 
 
 class CosmoDycoreTest(unittest.TestCase):
@@ -240,15 +257,22 @@ class Int2lmTest(unittest.TestCase):
 
     def test_install_pgi(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('spack install --test=root int2lm@c2sm-master%pgi')
+        if machine == 'tsa':
+            run('spack install --test=root int2lm@c2sm-master%pgi')
+
+    def test_install_no_pollen(self):
+        # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
+        if machine == 'tsa':
+            run('spack install --test=root int2lm@org-master%pgi pollen=False')
 
     def test_install_gcc(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         run('spack install --test=root int2lm@c2sm-master%gcc')
 
-    def test_install_no_pollen(self):
-        # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('spack install --test=root int2lm@org-master%pgi pollen=False')
+    def test_install_nvhpc(self):
+        # Replacement of PGI after upgrade of Daint Feb 22
+        if machine == 'daint':
+            run('spack install --test=root int2lm@c2sm-master%nvhpc')
 
 
 class IconDuskE2ETest(unittest.TestCase):
@@ -460,16 +484,23 @@ if __name__ == '__main__':
 
     if '--daint' in commands:
         machine = 'daint'
+        spack_machine = machine
         commands.remove('--daint')
+    if '--dom' in commands:
+        machine = 'daint'
+        spack_machine = 'dom'
+        commands.remove('--dom')
     if '--tsa' in commands:
         machine = 'tsa'
+        spack_machine = machine
         commands.remove('--tsa')
 
     # configure spack
-    print(f'Configuring spack with upstream {upstream} on machine {machine}.',
-          flush=True)
+    print(
+        f'Configuring spack with upstream {upstream} on machine {spack_machine}.',
+        flush=True)
     subprocess.run(
-        f'python ./config.py -m {machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache',
+        f'python ./config.py -m {spack_machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache',
         check=True,
         shell=True)
 
