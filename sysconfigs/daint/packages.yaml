@@ -266,10 +266,10 @@ packages:
   netcdf-c:
     buildable: false
     externals:
-    - spec: netcdf-c@4.7.4.0%nvhpc+parallel-netcdf+mpi
+    - spec: netcdf-c@4.7.4.4%nvhpc+parallel-netcdf+mpi
       modules:
       - cray-netcdf-hdf5parallel/4.7.4.4
-    - spec: netcdf-c@4.7.4.0%nvhpc~parallel-netcdf~mpi
+    - spec: netcdf-c@4.7.4.4%nvhpc~parallel-netcdf~mpi
       modules:
       - cray-netcdf/4.7.4.4
   netcdf-fortran:
