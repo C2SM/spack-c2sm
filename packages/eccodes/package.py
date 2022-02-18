@@ -94,7 +94,7 @@ class Eccodes(CMakePackage):
             default=False,
             description='Enable GRIB to NetCDF conversion tool')
     variant('jp2k',
-            default='openjpeg',
+            default='jasper',
             values=('openjpeg', 'jasper', 'none'),
             description='Specify JPEG2000 decoding/encoding backend')
     variant('png',
