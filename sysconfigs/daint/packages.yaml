@@ -268,19 +268,16 @@ packages:
     buildable: false
     externals:
     - spec: netcdf-c@4.7.4.4%nvhpc+parallel-netcdf+mpi
-      modules:
-      - cray-netcdf-hdf5parallel/4.7.4.4
+      prefix: /opt/cray/pe/netcdf-hdf5parallel/4.7.4.4/nvidia/20.7
     - spec: netcdf-c@4.7.4.4%nvhpc~parallel-netcdf~mpi
-      modules:
-      - cray-netcdf/4.7.4.4
+      prefix: /opt/cray/pe/netcdf/4.7.4.4/nvidia/20.7
     - spec: netcdf-c@4.7.4.4%gcc+parallel-netcdf+mpi
       prefix:  /opt/cray/pe/netcdf-hdf5parallel/4.7.4.4/GNU/8.2
   netcdf-fortran:
     buildable: false
     externals:
     - spec: netcdf-fortran@4.7.4.4%nvhpc
-      modules:
-      - cray-netcdf-hdf5parallel/4.7.4.4
+      prefix: /opt/cray/pe/netcdf-hdf5parallel/4.7.4.4/nvidia/20.7
     - spec: netcdf-fortran@4.7.4.4%gcc
       prefix: /opt/cray/pe/netcdf/4.7.4.4/GNU/8.2
   netlib-scalapack:
