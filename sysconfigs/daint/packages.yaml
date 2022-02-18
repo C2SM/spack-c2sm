@@ -11,6 +11,7 @@ packages:
       blas: [cray-libsci_acc, cray-libsci, intel-mkl]
       scalapack: [cray-libsci_acc, cray-libsci, intel-mkl]
       pkgconfig: [pkg-config]
+    target: [haswell]
   autoconf:
     externals:
     - spec: autoconf@2.69%gcc
