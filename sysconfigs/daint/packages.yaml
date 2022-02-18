@@ -147,7 +147,7 @@ packages:
       - cray-hdf5/1.12.0.0
     - spec: hdf5@1.12.0.0%intel+mpi+hl
       modules:
-      - cray-hdf5-parallel/1.12.0.0
+      - cray-hdf5-parallel/1.12.0.4
     - spec: hdf5@1.12.0.0%gcc+mpi+hl
       modules:
       - cray-hdf5-parallel/1.12.0.0
@@ -272,12 +272,16 @@ packages:
     - spec: netcdf-c@4.7.4.4%nvhpc~parallel-netcdf~mpi
       modules:
       - cray-netcdf/4.7.4.4
+    - spec: netcdf-c@4.7.4.4%gcc+parallel-netcdf+mpi
+      prefix:  /opt/cray/pe/netcdf-hdf5parallel/4.7.4.4/GNU/8.2
   netcdf-fortran:
     buildable: false
     externals:
     - spec: netcdf-fortran@4.7.4.4%nvhpc
       modules:
       - cray-netcdf-hdf5parallel/4.7.4.4
+    - spec: netcdf-fortran@4.7.4.4%gcc
+      prefix: /opt/cray/pe/netcdf/4.7.4.4/GNU/8.2
   netlib-scalapack:
     variants: build_type=Release
   netlib-lapack:
