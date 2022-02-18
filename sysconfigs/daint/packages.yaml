@@ -2,14 +2,13 @@ packages:
   all:
         # default compilers defined by the system
         # these reflect the current installed PE
-    compiler: [gcc@9.3.0, gcc@8.3.0, nvhpc@21.5, cce@12.0.3]
+    compiler: [gcc@8.3.0,gcc@11.2.0, nvhpc@21.5, cce@12.0.3]
     providers:
       mpi: [mpich]
             # if the mpich package support +cuda in the future it needs to be put there
       mpicuda: [mpich]
-      mkl: [intel-mkl]
-      blas: [cray-libsci_acc, cray-libsci, intel-mkl]
-      scalapack: [cray-libsci_acc, cray-libsci, intel-mkl]
+      blas: [cray-libsci_acc, cray-libsci]
+      scalapack: [cray-libsci_acc, cray-libsci]
       pkgconfig: [pkg-config]
     target: [haswell]
   autoconf:
@@ -66,9 +65,6 @@ packages:
     - spec: cray-libsci@20.06.1%gcc
       modules:
       - cray-libsci/20.06.1
-    - spec: cray-libsci@20.06.1%intel
-      modules:
-      - cray-libsci/20.06.1
     - spec: cray-libsci@20.06.1%cce
       modules:
       - cray-libsci/20.06.1
@@ -84,16 +80,10 @@ packages:
     - spec: cray-libsci@20.09.1%cce
       modules:
       - cray-libsci/20.09.1
-    - spec: cray-libsci@20.09.1%intel
-      modules:
-      - cray-libsci/20.09.1
   cray-libsci_acc:
     buildable: false
     externals:
     - spec: cray-libsci_acc@20.06.1%gcc
-      modules:
-      - cray-libsci_acc/20.06.1
-    - spec: cray-libsci_acc@20.06.1%intel
       modules:
       - cray-libsci_acc/20.06.1
     - spec: cray-libsci_acc@20.06.1%cce
@@ -134,9 +124,6 @@ packages:
       prefix: /opt/cray/pe/hdf5/1.12.0.0/CRAYCLANG/9.0
     - spec: hdf5@1.12.0.0%cce~mpi+hl+fortran
       prefix: /opt/cray/pe/hdf5/1.12.0.0/CRAYCLANG/9.0
-    - spec: hdf5@1.12.0.0%intel~mpi+hl
-      modules:
-      - cray-hdf5/1.12.0.0
     - spec: hdf5@1.12.0.0%gcc~mpi+hl
       modules:
       - cray-hdf5/1.12.0.0
@@ -146,9 +133,6 @@ packages:
     - spec: hdf5@1.12.0.0%nvhpc~mpi+hl
       modules:
       - cray-hdf5/1.12.0.0
-    - spec: hdf5@1.12.0.0%intel+mpi+hl
-      modules:
-      - cray-hdf5-parallel/1.12.0.4
     - spec: hdf5@1.12.0.0%gcc+mpi+hl
       modules:
       - cray-hdf5-parallel/1.12.0.0
@@ -158,9 +142,6 @@ packages:
     - spec: hdf5@1.12.0.0%nvhpc+mpi+hl
       modules:
       - cray-hdf5-parallel/1.12.0.0
-    - spec: hdf5@1.12.0.0%intel~mpi+hl+fortran
-      modules:
-      - cray-hdf5/1.12.0.0
     - spec: hdf5@1.12.0.0%gcc~mpi+hl+fortran
       modules:
       - cray-hdf5/1.12.0.0
@@ -170,9 +151,6 @@ packages:
     - spec: hdf5@1.12.0.0%nvhpc~mpi+hl+fortran
       modules:
       - cray-hdf5/1.12.0.0
-    - spec: hdf5@1.12.0.4%intel~mpi+hl+fortran
-      modules:
-      - cray-hdf5/1.12.0.4
     - spec: hdf5@1.12.0.4%gcc~mpi+hl+fortran
       modules:
       - cray-hdf5/1.12.0.4
@@ -182,9 +160,6 @@ packages:
     - spec: hdf5@1.12.0.4%nvhpc~mpi+hl+fortran
       modules:
       - cray-hdf5/1.12.0.4
-    - spec: hdf5@1.12.0.0%intel+mpi+hl+fortran
-      modules:
-      - cray-hdf5-parallel/1.12.0.0
     - spec: hdf5@1.12.0.0%gcc+mpi+hl+fortran
       modules:
       - cray-hdf5-parallel/1.12.0.0
@@ -194,9 +169,6 @@ packages:
     - spec: hdf5@1.12.0.0%nvhpc+mpi+hl+fortran
       modules:
       - cray-hdf5-parallel/1.12.0.0
-    - spec: hdf5@1.12.0.4%intel+mpi+hl+fortran
-      modules:
-      - cray-hdf5-parallel/1.12.0.4
     - spec: hdf5@1.12.0.4%gcc+mpi+hl+fortran
       modules:
       - cray-hdf5-parallel/1.12.0.4
@@ -213,27 +185,6 @@ packages:
     compiler: [cce]
   icon:
     variants: host=daint
-  intel-mkl:
-    buildable: false
-    externals:
-    - spec: intel-mkl@2019.1.144%intel+ilp64 threads=tbb
-      prefix: /opt/intel
-    - spec: intel-mkl@2019.1.144%gcc+ilp64 threads=tbb
-      prefix: /opt/intel
-    - spec: intel-mkl@2019.1.144%cce+ilp64 threads=tbb
-      prefix: /opt/intel
-    - spec: intel-mkl@2019.1.144%intel+ilp64 threads=openmp
-      prefix: /opt/intel
-    - spec: intel-mkl@2019.1.144%gcc+ilp64 threads=openmp
-      prefix: /opt/intel
-    - spec: intel-mkl@2019.1.144%cce+ilp64 threads=openmp
-      prefix: /opt/intel
-    - spec: intel-mkl@2019.1.144%intel~ilp64 threads=none
-      prefix: /opt/intel
-    - spec: intel-mkl@2019.1.144%gcc~ilp64 threads=none
-      prefix: /opt/intel
-    - spec: intel-mkl@2019.1.144%cce~ilp64 threads=none
-      prefix: /opt/intel
   int2lm:
     variants: slave=daint
   int2lm-org:
