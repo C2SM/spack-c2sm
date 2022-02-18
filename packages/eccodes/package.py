@@ -3,33 +3,41 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-
 _definitions = {
     # German Meteorological Service (Deutscher Wetterdienst, DWD):
     'edzw': {
-        'conflicts': {'when': '@:2.19.1,2.22.0,2.24.0:'},
-        'resources': [
-            {
-                'when': '@2.20.0',
-                'url': 'http://opendata.dwd.de/weather/lib/grib/eccodes_definitions.edzw-2.20.0-1.tar.gz',
-                'sha256': 'a92932f8a13c33cba65d3a33aa06c7fb4a37ed12a78e9abe2c5e966402b99af4'
-            },
-            {
-                'when': '@2.21.0',
-                'url': 'http://opendata.dwd.de/weather/lib/grib/eccodes_definitions.edzw-2.21.0-3.tar.bz2',
-                'sha256': '046f1f6450abb3b44c31dee6229f4aab06ca0d3576e27e93e05ccb7cd6e2d9d9'
-            },
-            {
-                'when': '@2.22.1',
-                'url': 'http://opendata.dwd.de/weather/lib/grib/eccodes_definitions.edzw-2.22.1-1.tar.bz2',
-                'sha256': 'be73102a0dcabb236bacd2a70c7b5475f673fda91b49e34df61bef0fa5ad3389'
-            },
-            {
-                'when': '@2.23.0',
-                'url': 'http://opendata.dwd.de/weather/lib/grib/eccodes_definitions.edzw-2.23.0-4.tar.bz2',
-                'sha256': 'c5db32861c7d23410aed466ffef3ca661410d252870a3949442d3ecb176aa338'
-            }
-        ]
+        'conflicts': {
+            'when': '@:2.19.1,2.22.0,2.24.0:'
+        },
+        'resources': [{
+            'when':
+            '@2.20.0',
+            'url':
+            'http://opendata.dwd.de/weather/lib/grib/eccodes_definitions.edzw-2.20.0-1.tar.gz',
+            'sha256':
+            'a92932f8a13c33cba65d3a33aa06c7fb4a37ed12a78e9abe2c5e966402b99af4'
+        }, {
+            'when':
+            '@2.21.0',
+            'url':
+            'http://opendata.dwd.de/weather/lib/grib/eccodes_definitions.edzw-2.21.0-3.tar.bz2',
+            'sha256':
+            '046f1f6450abb3b44c31dee6229f4aab06ca0d3576e27e93e05ccb7cd6e2d9d9'
+        }, {
+            'when':
+            '@2.22.1',
+            'url':
+            'http://opendata.dwd.de/weather/lib/grib/eccodes_definitions.edzw-2.22.1-1.tar.bz2',
+            'sha256':
+            'be73102a0dcabb236bacd2a70c7b5475f673fda91b49e34df61bef0fa5ad3389'
+        }, {
+            'when':
+            '@2.23.0',
+            'url':
+            'http://opendata.dwd.de/weather/lib/grib/eccodes_definitions.edzw-2.23.0-4.tar.bz2',
+            'sha256':
+            'c5db32861c7d23410aed466ffef3ca661410d252870a3949442d3ecb176aa338'
+        }]
     }
 }
 
@@ -44,50 +52,81 @@ class Eccodes(CMakePackage):
 
     maintainers = ['skosukhin']
 
-    version('2.24.2', sha256='c60ad0fd89e11918ace0d84c01489f21222b11d6cad3ff7495856a0add610403')
-    version('2.23.0', sha256='cbdc8532537e9682f1a93ddb03440416b66906a4cc25dec3cbd73940d194bf0c')
-    version('2.22.1', sha256='75c7ee96469bb30b0c8f7edbdc4429ece4415897969f75c36173545242bc9e85')
-    version('2.21.0', sha256='da0a0bf184bb436052e3eae582defafecdb7c08cdaab7216780476e49b509755')
-    version('2.20.0', sha256='207a3d7966e75d85920569b55a19824673e8cd0b50db4c4dac2d3d52eacd7985')
-    version('2.19.1', sha256='9964bed5058e873d514bd4920951122a95963128b12f55aa199d9afbafdd5d4b')
-    version('2.19.0', sha256='a1d080aed1b17a9d4e3aecccc5a328c057830cd4d54f451f5498b80b24c46404')
-    version('2.18.0', sha256='d88943df0f246843a1a062796edbf709ef911de7269648eef864be259e9704e3')
-    version('2.14.1', sha256='16da742691c0ac81ccc378ae3f97311ef0dfdc82505aa4c652eb773e911cc9d6')
-    version('2.13.0', sha256='c5ce1183b5257929fc1f1c8496239e52650707cfab24f4e0e1f1a471135b8272')
-    version('2.5.0', sha256='18ab44bc444168fd324d07f7dea94f89e056f5c5cd973e818c8783f952702e4e')
-    version('2.2.0', sha256='1a4112196497b8421480e2a0a1164071221e467853486577c4f07627a702f4c3')
+    version('2.24.2',
+            sha256=
+            'c60ad0fd89e11918ace0d84c01489f21222b11d6cad3ff7495856a0add610403')
+    version('2.23.0',
+            sha256=
+            'cbdc8532537e9682f1a93ddb03440416b66906a4cc25dec3cbd73940d194bf0c')
+    version('2.22.1',
+            sha256=
+            '75c7ee96469bb30b0c8f7edbdc4429ece4415897969f75c36173545242bc9e85')
+    version('2.21.0',
+            sha256=
+            'da0a0bf184bb436052e3eae582defafecdb7c08cdaab7216780476e49b509755')
+    version('2.20.0',
+            sha256=
+            '207a3d7966e75d85920569b55a19824673e8cd0b50db4c4dac2d3d52eacd7985')
+    version('2.19.1',
+            sha256=
+            '9964bed5058e873d514bd4920951122a95963128b12f55aa199d9afbafdd5d4b')
+    version('2.19.0',
+            sha256=
+            'a1d080aed1b17a9d4e3aecccc5a328c057830cd4d54f451f5498b80b24c46404')
+    version('2.18.0',
+            sha256=
+            'd88943df0f246843a1a062796edbf709ef911de7269648eef864be259e9704e3')
+    version('2.14.1',
+            sha256=
+            '16da742691c0ac81ccc378ae3f97311ef0dfdc82505aa4c652eb773e911cc9d6')
+    version('2.13.0',
+            sha256=
+            'c5ce1183b5257929fc1f1c8496239e52650707cfab24f4e0e1f1a471135b8272')
+    version('2.5.0',
+            sha256=
+            '18ab44bc444168fd324d07f7dea94f89e056f5c5cd973e818c8783f952702e4e')
+    version('2.2.0',
+            sha256=
+            '1a4112196497b8421480e2a0a1164071221e467853486577c4f07627a702f4c3')
 
     variant('tools', default=False, description='Build the command line tools')
-    variant('netcdf', default=False,
+    variant('netcdf',
+            default=False,
             description='Enable GRIB to NetCDF conversion tool')
-    variant('jp2k', default='openjpeg', values=('openjpeg', 'jasper', 'none'),
+    variant('jp2k',
+            default='openjpeg',
+            values=('openjpeg', 'jasper', 'none'),
             description='Specify JPEG2000 decoding/encoding backend')
-    variant('png', default=False,
+    variant('png',
+            default=False,
             description='Enable PNG support for decoding/encoding')
-    variant('aec', default=False,
+    variant('aec',
+            default=False,
             description='Enable Adaptive Entropy Coding for decoding/encoding')
-    variant('pthreads', default=False,
-            description='Enable POSIX threads')
-    variant('openmp', default=False,
-            description='Enable OpenMP threads')
-    variant('memfs', default=False,
+    variant('pthreads', default=False, description='Enable POSIX threads')
+    variant('openmp', default=False, description='Enable OpenMP threads')
+    variant('memfs',
+            default=False,
             description='Enable memory based access to definitions/samples')
-    variant('python', default=False,
+    variant('python',
+            default=False,
             description='Enable the Python 2 interface')
     variant('fortran', default=True, description='Enable the Fortran support')
-    variant('shared', default=True,
+    variant('shared',
+            default=True,
             description='Build shared versions of the libraries')
 
     variant('definitions',
             values=disjoint_sets(
-                ('auto',),
-                ('default',) + tuple(_definitions.keys()),
+                ('auto', ),
+                ('default', ) + tuple(_definitions.keys()),
             ).with_default('auto'),
             description="List of definitions to install")
 
     variant('samples',
             values=disjoint_sets(
-                ('auto',), ('default',),
+                ('auto', ),
+                ('default', ),
             ).with_default('auto'),
             description="List of samples to install")
 
@@ -104,32 +143,36 @@ class Eccodes(CMakePackage):
     # The interface is available only for Python 2.
     # Python 3 interface is available as a separate packages:
     # https://confluence.ecmwf.int/display/ECC/Python+3+interface+for+ecCodes
-    depends_on('python@2.6:2', when='+python',
-               type=('build', 'link', 'run'))
+    depends_on('python@2.6:2', when='+python', type=('build', 'link', 'run'))
     depends_on('py-numpy', when='+python', type=('build', 'run'))
     extends('python', when='+python')
 
     depends_on('cmake@3.6:', type='build')
     depends_on('cmake@3.12:', when='@2.19:', type='build')
 
-    conflicts('+openmp', when='+pthreads',
+    conflicts('+openmp',
+              when='+pthreads',
               msg='Cannot enable both POSIX threads and OMP')
 
-    conflicts('+netcdf', when='~tools',
+    conflicts('+netcdf',
+              when='~tools',
               msg='Cannot enable the NetCDF conversion tool '
-                  'when the command line tools are disabled')
+              'when the command line tools are disabled')
 
-    conflicts('~tools', when='@:2.18.0',
+    conflicts('~tools',
+              when='@:2.18.0',
               msg='The command line tools can be disabled '
-                  'only starting version 2.19.0')
+              'only starting version 2.19.0')
 
     for center, definitions in _definitions.items():
         kwargs = definitions.get('conflicts', None)
         if kwargs:
             conflicts('definitions={0}'.format(center), **kwargs)
         for kwargs in definitions.get('resources', []):
-            resource(name=center, destination='spack-definitions',
-                     placement='definitions.{0}'.format(center), **kwargs)
+            resource(name=center,
+                     destination='spack-definitions',
+                     placement='definitions.{0}'.format(center),
+                     **kwargs)
 
     # Enforce linking against the specified JPEG2000 backend, see also
     # https://github.com/ecmwf/eccodes/commit/2c10828495900ff3d80d1e570fe96c1df16d97fb
@@ -139,9 +182,11 @@ class Eccodes(CMakePackage):
     patch('cmake_install_rpath.patch', when='@:2.10')
 
     # Fix a bug preventing cmake from finding NetCDF:
-    patch('https://github.com/ecmwf/ecbuild/commit/3916c7d22575c45166fcc89edcbe02a6e9b81aa2.patch',
-          sha256='857454528b666c52eb36ef3aa5d40ae018981b44e129bb8df3c2d3d560e3fa03',
-          when='@:2.4.0+netcdf')
+    patch(
+        'https://github.com/ecmwf/ecbuild/commit/3916c7d22575c45166fcc89edcbe02a6e9b81aa2.patch',
+        sha256=
+        '857454528b666c52eb36ef3aa5d40ae018981b44e129bb8df3c2d3d560e3fa03',
+        when='@:2.4.0+netcdf')
 
     @when('%nag+fortran')
     def patch(self):
@@ -156,11 +201,11 @@ class Eccodes(CMakePackage):
         # large. We would also have to introduce several versions of each patch
         # file to support different versions of the package.
 
-        patch_kind_files = ['fortran/eccodes_f90_head.f90',
-                            'fortran/eccodes_f90_tail.f90',
-                            'fortran/grib_f90_head.f90',
-                            'fortran/grib_f90_tail.f90',
-                            'fortran/grib_types.f90']
+        patch_kind_files = [
+            'fortran/eccodes_f90_head.f90', 'fortran/eccodes_f90_tail.f90',
+            'fortran/grib_f90_head.f90', 'fortran/grib_f90_tail.f90',
+            'fortran/grib_types.f90'
+        ]
 
         patch_unix_ext_files = []
 
@@ -204,11 +249,9 @@ class Eccodes(CMakePackage):
 
         # Return the kind and not the size:
         filter_file(r'(^\s*kind_of_double\s*=\s*)(\d{1,2})(\s*$)',
-                    '\\1kind(real\\2)\\3',
-                    'fortran/grib_types.f90', **kwargs)
+                    '\\1kind(real\\2)\\3', 'fortran/grib_types.f90', **kwargs)
         filter_file(r'(^\s*kind_of_\w+\s*=\s*)(\d{1,2})(\s*$)',
-                    '\\1kind(x\\2)\\3',
-                    'fortran/grib_types.f90', **kwargs)
+                    '\\1kind(x\\2)\\3', 'fortran/grib_types.f90', **kwargs)
 
         # Replace integer kinds:
         for size, r in [(2, 4), (4, 9), (8, 18)]:
@@ -259,17 +302,17 @@ class Eccodes(CMakePackage):
         if return_memfs:
             libraries.append('libeccodes_memfs')
 
-        libs = find_libraries(
-            libraries, root=self.prefix, shared=shared, recursive=True
-        )
+        libs = find_libraries(libraries,
+                              root=self.prefix,
+                              shared=shared,
+                              recursive=True)
 
         if libs and len(libs) == len(libraries):
             return libs
 
         msg = 'Unable to recursively locate {0} {1} libraries in {2}'
         raise spack.error.NoLibrariesError(
-            msg.format('shared' if shared else 'static',
-                       self.spec.name,
+            msg.format('shared' if shared else 'static', self.spec.name,
                        self.spec.prefix))
 
     @run_before('cmake')
@@ -294,8 +337,7 @@ class Eccodes(CMakePackage):
             self.define_from_variant('ENABLE_MEMFS', 'memfs'),
             self.define_from_variant(
                 'ENABLE_PYTHON{0}'.format(
-                    '2' if self.spec.satisfies('@2.20.0:') else ''),
-                'python'),
+                    '2' if self.spec.satisfies('@2.20.0:') else ''), 'python'),
             self.define_from_variant('ENABLE_FORTRAN', 'fortran'),
             self.define('BUILD_SHARED_LIBS',
                         'BOTH' if '+shared' in self.spec else 'OFF'),
@@ -313,11 +355,12 @@ class Eccodes(CMakePackage):
                 # NETCDF_ROOT, NETCDF_DIR, and NETCDF_PATH:
                 self.define('NETCDF_PATH', self.spec['netcdf-c'].prefix),
                 # Prevent overriding by environment variable HDF5_ROOT:
-                self.define('HDF5_ROOT', self.spec['hdf5'].prefix)])
+                self.define('HDF5_ROOT', self.spec['hdf5'].prefix)
+            ])
 
         if jp2k == 'openjpeg':
-            args.append(self.define('OPENJPEG_PATH',
-                                    self.spec['openjpeg'].prefix))
+            args.append(
+                self.define('OPENJPEG_PATH', self.spec['openjpeg'].prefix))
 
         if '+png' in self.spec:
             args.append(self.define('ZLIB_ROOT', self.spec['zlib'].prefix))
@@ -332,14 +375,16 @@ class Eccodes(CMakePackage):
         definitions = self.spec.variants['definitions'].value
 
         if 'auto' not in definitions:
-            args.append(self.define('ENABLE_INSTALL_ECCODES_DEFINITIONS',
-                                    'default' in definitions))
+            args.append(
+                self.define('ENABLE_INSTALL_ECCODES_DEFINITIONS', 'default'
+                            in definitions))
 
         samples = self.spec.variants['samples'].value
 
         if 'auto' not in samples:
-            args.append(self.define('ENABLE_INSTALL_ECCODES_SAMPLES',
-                                    'default' in samples))
+            args.append(
+                self.define('ENABLE_INSTALL_ECCODES_SAMPLES', 'default'
+                            in samples))
 
         return args
 
@@ -350,8 +395,8 @@ class Eccodes(CMakePackage):
             if center not in noop:
                 center_dir = 'definitions.{0}'.format(center)
                 install_tree(
-                    join_path(self.stage.source_path,
-                              'spack-definitions', center_dir),
+                    join_path(self.stage.source_path, 'spack-definitions',
+                              center_dir),
                     join_path(self.prefix.share.eccodes, center_dir))
 
     def check(self):
