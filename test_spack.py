@@ -462,12 +462,15 @@ if __name__ == '__main__':
     test_loader = unittest.TestLoader()
 
     # Do self-test first to fail fast
+    print('====================================', flush=True)
     print('Self-tests:', flush=True)
+    print('====================================', flush=True)
     suite = unittest.TestSuite([
         test_loader.loadTestsFromTestCase(DAG_Algorithm_Test),
         test_loader.loadTestsFromTestCase(SelfTest)
     ])
     result = unittest.TextTestRunner(verbosity=2).run(suite)
+    print('====================================', flush=True)
     if not result.wasSuccessful():
         sys.exit(1)
 
@@ -482,6 +485,11 @@ if __name__ == '__main__':
         upstream = 'ON'
         commands.remove('--upstream')
 
+    exclusive = False
+    if '--exclusive' in commands:
+        exclusive = True
+        commands.remove('--exclusive')
+
     if '--daint' in commands:
         machine = 'daint'
         spack_machine = machine
@@ -495,46 +503,59 @@ if __name__ == '__main__':
         spack_machine = machine
         commands.remove('--tsa')
 
-    # configure spack
+    known_commands = dependencies.keys() | expansions.keys()
+
+    # handles backward compatibility to run an arbitrary command
+    is_arbitrary_command = any(c not in known_commands for c in commands)
+
+    print('Test plan:', flush=True)
+    print('====================================', flush=True)
     print(
         f'Configuring spack with upstream {upstream} on machine {spack_machine}.',
         flush=True)
+
+    if is_arbitrary_command:
+        joined_command = ' '.join(commands)
+        print(f'Executing: {joined_command}', flush=True)
+    else:
+        commands = set(commands)
+
+        # expand expandable commands
+        while any(c in expansions for c in commands):
+            for c in commands:
+                if c in expansions:
+                    commands |= expansions[c]
+                    commands.remove(c)
+                    break
+
+        # all commands are packages now!
+
+        if exclusive:
+            packages_to_test = commands
+        else:
+            packages_to_test = Self_and_up(commands, dependencies)
+
+        # run tests
+        print(f'Testing packages: {packages_to_test}', flush=True)
+
+    print('====================================', flush=True)
+    print('Testing now...', flush=True)
+
+    # configure spack
     subprocess.run(
         f'python ./config.py -m {spack_machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache',
         check=True,
         shell=True)
 
-    known_commands = dependencies.keys() | expansions.keys()
-
-    # handles backward compatibility to run any command
-    if any(c not in known_commands for c in commands):
-        joined_command = ' '.join(commands)
-        print(f'Input contains unknown command. Executing: {joined_command}',
-              flush=True)
+    if is_arbitrary_command:
         run(joined_command)
         sys.exit()
-
-    commands = set(commands)
-
-    # expand expandable commands
-    while any(c in expansions for c in commands):
-        for c in commands:
-            if c in expansions:
-                commands |= expansions[c]
-                commands.remove(c)
-                break
-
-    # all commands are packages now!
-
-    packages_to_test = Self_and_up(commands, dependencies)
-
-    # collect tests from all packages to test
-    suite = unittest.TestSuite([
-        test_loader.loadTestsFromTestCase(case) for case in all_test_cases
-        if case.package_name in packages_to_test and machine in case.machines
-    ])
-
-    # run tests
-    print(f'Testing packages: {packages_to_test}', flush=True)
-    result = unittest.TextTestRunner(verbosity=2).run(suite)
-    sys.exit(not result.wasSuccessful())
+    else:
+        # collect and run tests from all packages selected
+        suite = unittest.TestSuite([
+            test_loader.loadTestsFromTestCase(case) for case in all_test_cases
+            if case.package_name in packages_to_test
+            and machine in case.machines
+        ])
+        result = unittest.TextTestRunner(verbosity=2).run(suite)
+        sys.exit(not result.wasSuccessful())

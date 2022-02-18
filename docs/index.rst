@@ -22,6 +22,7 @@ mostly at the Swiss Super Computing Center (CSCS).
    SpackManagement
    CI
    SpackChoice
+   PrTesting
 
 Indices and tables
 ==================
