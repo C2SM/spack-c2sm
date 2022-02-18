@@ -263,11 +263,11 @@ packages:
     externals:
       - spec: mpich@7.7.18%cce
         modules:
-        - cray-mpich/7.7.18%cce
+        - cray-mpich/7.7.18
     externals:
       - spec: mpich@7.7.18%gcc
         modules:
-        - cray-mpich/7.7.18%gcc
+        - cray-mpich/7.7.18
   openmpi:
     buildable: false
     externals:
