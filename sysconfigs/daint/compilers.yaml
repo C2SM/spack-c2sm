@@ -77,15 +77,14 @@ compilers:
 - compiler:
     spec: nvhpc@21.5
     paths:
-      cc: cc
-      cxx: CC
-      f77: ftn
-      fc: ftn
+      cc: /opt/nvidia/hpc_sdk/Linux_x86_64/21.5/compilers/bin/nvc
+      cxx: /opt/nvidia/hpc_sdk/Linux_x86_64/21.5/compilers/bin/nvc++
+      f77: /opt/nvidia/hpc_sdk/Linux_x86_64/21.5/compilers/bin/nvfortran
+      fc: /opt/nvidia/hpc_sdk/Linux_x86_64/21.5/compilers/bin/nvfortran
     flags: {}
     operating_system: cnl7
     target: any
     modules:
-    - PrgEnv-nvidia
     - nvhpc/21.5
     environment: {}
     extra_rpaths: []
