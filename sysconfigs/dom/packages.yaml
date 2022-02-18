@@ -2,8 +2,7 @@ packages:
   all:
         # default compilers defined by the system
         # these reflect the current installed PE
-    compiler: [gcc@10.1.0, gcc@9.3.0, gcc@8.3.0, pgi@20.1.1, pgi@20.1.0, cce@11.0.0,
-      cce@10.0.2, intel@19.0.1.144]
+    compiler: [gcc@9.3.0,gcc@8.3.0, nvhpc@21.5, cce@10.0.2]
     providers:
       mpi: [mpich]
             # if the mpich package support +cuda in the future it needs to be put there
@@ -36,7 +35,7 @@ packages:
   cosmo:
     variants: cuda_arch=60 cosmo_target=gpu slave=daint
     version: [master]
-    compiler: [pgi]
+    compiler: [nvhpc]
   gridtools:
     variants: +cuda cuda_arch=60
     compiler: [gcc]
@@ -52,7 +51,7 @@ packages:
     externals:
     - spec: cmake@3.14.5%gcc
       prefix: /apps/dom/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5
-    - spec: cmake@3.14.5%pgi
+    - spec: cmake@3.14.5%nvhpc
       prefix: /apps/dom/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5
   cp2k:
     variants: blas=mkl ~elpa+libxc+mpi+openmp~pexsi~plumed smm=libxsmm
@@ -72,10 +71,10 @@ packages:
     - spec: cray-libsci@20.06.1%cce
       modules:
       - cray-libsci/20.06.1
-    - spec: cray-libsci@20.06.1%pgi
+    - spec: cray-libsci@20.06.1%nvhpc
       modules:
       - cray-libsci/20.06.1
-    - spec: cray-libsci@20.09.1%pgi
+    - spec: cray-libsci@20.09.1%nvhpc
       modules:
       - cray-libsci/20.09.1
     - spec: cray-libsci@20.09.1%gcc
@@ -99,15 +98,15 @@ packages:
     - spec: cray-libsci_acc@20.06.1%cce
       modules:
       - cray-libsci_acc/20.06.1
-    - spec: cray-libsci_acc@20.06.1%pgi
+    - spec: cray-libsci_acc@20.06.1%nvhpc
       modules:
       - cray-libsci_acc/20.06.1
   cuda:
-    version: ['10.2']
+    version: ['11.0']
     externals:
-    - spec: cuda@10.2%gcc
+    - spec: cuda@11.0%gcc
       modules:
-      - cudatoolkit/10.2.89_3.28-2.1__g52c0314
+      - cudatoolkit/11.0.2_3.38-8.1__g5b73779
   curl:
     externals:
     - spec: curl@7.60.0
@@ -143,7 +142,7 @@ packages:
     - spec: hdf5@1.12.0.0%cce~mpi+hl
       modules:
       - cray-hdf5/1.12.0.0
-    - spec: hdf5@1.12.0.0%pgi~mpi+hl
+    - spec: hdf5@1.12.0.0%nvhpc~mpi+hl
       modules:
       - cray-hdf5/1.12.0.0
     - spec: hdf5@1.12.0.0%intel+mpi+hl
@@ -155,7 +154,7 @@ packages:
     - spec: hdf5@1.12.0.0%cce+mpi+hl
       modules:
       - cray-hdf5-parallel/1.12.0.0
-    - spec: hdf5@1.12.0.0%pgi+mpi+hl
+    - spec: hdf5@1.12.0.0%nvhpc+mpi+hl
       modules:
       - cray-hdf5-parallel/1.12.0.0
     - spec: hdf5@1.12.0.0%intel~mpi+hl+fortran
@@ -167,7 +166,7 @@ packages:
     - spec: hdf5@1.12.0.0%cce~mpi+hl+fortran
       modules:
       - cray-hdf5/1.12.0.0
-    - spec: hdf5@1.12.0.0%pgi~mpi+hl+fortran
+    - spec: hdf5@1.12.0.0%nvhpc~mpi+hl+fortran
       modules:
       - cray-hdf5/1.12.0.0
     - spec: hdf5@1.12.0.4%intel~mpi+hl+fortran
@@ -179,7 +178,7 @@ packages:
     - spec: hdf5@1.12.0.4%cce~mpi+hl+fortran
       modules:
       - cray-hdf5/1.12.0.4
-    - spec: hdf5@1.12.0.4%pgi~mpi+hl+fortran
+    - spec: hdf5@1.12.0.4%nvhpc~mpi+hl+fortran
       modules:
       - cray-hdf5/1.12.0.4
     - spec: hdf5@1.12.0.0%intel+mpi+hl+fortran
@@ -191,7 +190,7 @@ packages:
     - spec: hdf5@1.12.0.0%cce+mpi+hl+fortran
       modules:
       - cray-hdf5-parallel/1.12.0.0
-    - spec: hdf5@1.12.0.0%pgi+mpi+hl+fortran
+    - spec: hdf5@1.12.0.0%nvhpc+mpi+hl+fortran
       modules:
       - cray-hdf5-parallel/1.12.0.0
     - spec: hdf5@1.12.0.4%intel+mpi+hl+fortran
@@ -203,7 +202,7 @@ packages:
     - spec: hdf5@1.12.0.4%cce+mpi+hl+fortran
       modules:
       - cray-hdf5-parallel/1.12.0.4
-    - spec: hdf5@1.12.0.4%pgi+mpi+hl+fortran
+    - spec: hdf5@1.12.0.4%nvhpc+mpi+hl+fortran
       modules:
       - cray-hdf5-parallel/1.12.0.4
   hwloc:
@@ -261,95 +260,28 @@ packages:
   mpich:
     buildable: false
     externals:
-    - spec: mpich@7.7.15%gcc
-      modules:
-      - cray-mpich/7.7.15
-    - spec: mpich@7.7.15%intel
-      modules:
-      - cray-mpich/7.7.15
-    - spec: mpich@7.7.15%cce
-      modules:
-      - cray-mpich/7.7.15
-    - spec: mpich@7.7.15%pgi
-      modules:
-      - cray-mpich/7.7.15
-    - spec: mpich@7.7.17%gcc
-      modules:
-      - cray-mpich/7.7.17
-    - spec: mpich@7.7.17%intel
-      modules:
-      - cray-mpich/7.7.17
-    - spec: mpich@7.7.17%cce
-      modules:
-      - cray-mpich/7.7.17
-    - spec: mpich@7.7.17%pgi
-      modules:
-      - cray-mpich/7.7.17
+      - spec: mpich@7.7.18
+        modules:
+        - cray-mpich/7.7.18
   netcdf-c:
     buildable: false
     externals:
-    - spec: netcdf-c@4.7.4.0%cce~parallel-netcdf~mpi
-      prefix: /opt/cray/pe/netcdf/4.7.4.0/CRAYCLANG/9.0
-    - spec: netcdf-c@4.7.4.0%gcc+parallel-netcdf+mpi
+    - spec: netcdf-c@4.7.4.0%nvhpc+parallel-netcdf+mpi
       modules:
-      - cray-netcdf-hdf5parallel/4.7.4.0
-    - spec: netcdf-c@4.7.4.0%intel+parallel-netcdf+mpi
+      - cray-netcdf-hdf5parallel/4.7.4.4
+    - spec: netcdf-c@4.7.4.0%nvhpc~parallel-netcdf~mpi
       modules:
-      - cray-netcdf-hdf5parallel/4.7.4.0
-    - spec: netcdf-c@4.7.4.0%cce+parallel-netcdf+mpi
-      modules:
-      - cray-netcdf-hdf5parallel/4.7.4.0
-    - spec: netcdf-c@4.7.4.0%pgi+parallel-netcdf+mpi
-      modules:
-      - cray-netcdf-hdf5parallel/4.7.4.0
-    - spec: netcdf-c@4.7.4.0%gcc~parallel-netcdf~mpi
-      modules:
-      - cray-netcdf/4.7.4.0
-    - spec: netcdf-c@4.7.4.0%intel~parallel-netcdf~mpi
-      modules:
-      - cray-netcdf/4.7.4.0
-    - spec: netcdf-c@4.7.4.0%cce~parallel-netcdf~mpi
-      modules:
-      - cray-netcdf/4.7.4.0
-    - spec: netcdf-c@4.7.4.0%pgi~parallel-netcdf~mpi
-      modules:
-      - cray-netcdf/4.7.4.0
+      - cray-netcdf/4.7.4.4
   netcdf-fortran:
     buildable: false
     externals:
-    - spec: netcdf-fortran@4.7.4.0%cce~mpi
-      prefix: /opt/cray/pe/netcdf/4.7.4.0/CRAYCLANG/9.0
-    - spec: netcdf-fortran@4.7.4.0%gcc+mpi
+    - spec: netcdf-fortran@4.7.4.4%nvhpc
       modules:
-      - cray-netcdf-hdf5parallel/4.7.4.0
-    - spec: netcdf-fortran@4.7.4.0%intel+mpi
-      modules:
-      - cray-netcdf-hdf5parallel/4.7.4.0
-    - spec: netcdf-fortran@4.7.4.0%cce+mpi
-      modules:
-      - cray-netcdf-hdf5parallel/4.7.4.0
-    - spec: netcdf-fortran@4.7.4.0%pgi+mpi
-      modules:
-      - cray-netcdf-hdf5parallel/4.7.4.0
-    - spec: netcdf-fortran@4.7.4.0%cce~mpi
-      modules:
-      - cray-netcdf/4.7.4.0
-  netcdf-cxx4:
-    buildable: false
-    externals:
-    - spec: netcdf-cxx4@4.7.4.0%gcc
-      prefix: /opt/cray/pe/netcdf/4.7.4.0/gnu/8.2/
-    - spec: netcdf-cxx4@4.7.4.0%gcc
-      modules:
-      - cray-netcdf/4.7.4.0
+      - cray-netcdf-hdf5parallel/4.7.4.4
   netlib-scalapack:
     variants: build_type=Release
   netlib-lapack:
     variants: build_type=Release +external-blas+lapacke
-  ompt-openmp:
-    externals:
-    - spec: ompt-openmp@0.1%pgi
-      prefix: /opt/pgi/20.1.1/linux86-64-llvm/20.1/lib/libomp
   openblas:
     variants: +pic +shared threads=openmp ~virtual_machine
   openssl:
