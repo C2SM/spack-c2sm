@@ -490,8 +490,9 @@ if __name__ == '__main__':
 
     print('Test plan:', flush=True)
     print('====================================', flush=True)
-    print(f'Configuring spack with upstream {upstream} on machine {spack_machine}.',
-          flush=True)
+    print(
+        f'Configuring spack with upstream {upstream} on machine {spack_machine}.',
+        flush=True)
 
     if is_arbitrary_command:
         joined_command = ' '.join(commands)
