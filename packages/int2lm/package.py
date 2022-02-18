@@ -184,7 +184,6 @@ class Int2lm(MakefilePackage):
             elif self.compiler.name == 'cce':
                 OptionsFileName += '.cray'
             makefile.filter('/Options.*', '/' + OptionsFileName)
-        print(self.compiler.name)
 
     def install(self, spec, prefix):
         with working_dir(self.build_directory):
