@@ -190,6 +190,7 @@ class Cosmo(MakefilePackage):
     conflicts('~gt1', when='@5.07a.mch1.0.p1')
     conflicts('~gt1', when='@5.07a.mch1.0.base')
     conflicts('~gt1', when='@5.07.mch1.0.p10')
+    conflicts('+cppdycore', when='%nvhpc cosmo_target=cpu')
     conflicts('+cppdycore', when='%pgi cosmo_target=cpu')
     # - ML - A conflict should be added there if the oasis variant is
     # chosen and the version is neither c2sm-features nor
@@ -198,6 +199,14 @@ class Cosmo(MakefilePackage):
     # setup_build_environment method
 
     build_directory = 'cosmo/ACC'
+
+    def setup_run_environment(self, env):
+        # Account for a wrong path in nvidia-module on Daint
+        if self.spec.variants[
+                'slave'].value == 'daint' and self.compiler.name == 'nvhpc':
+            env.prepend_path(
+                'LD_LIBRARY_PATH',
+                '/opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/lib/')
 
     def setup_build_environment(self, env):
 
@@ -260,6 +269,12 @@ class Cosmo(MakefilePackage):
         if self.compiler.name == 'gcc':
             env.set('GRIBDWDL',
                     '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_gnu')
+        elif self.compiler.name == 'cce':
+            env.set('GRIBDWDL',
+                    '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_cray')
+        elif self.compiler.name == 'nvhpc':
+            env.set('GRIBDWDL',
+                    '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_pgi')
         else:
             env.set(
                 'GRIBDWDL', '-L' + self.spec['libgrib1'].prefix +
@@ -307,8 +322,9 @@ class Cosmo(MakefilePackage):
         if '+claw' in self.spec:
             claw_flags = ''
             # Set special flags after CLAW release 2.1
-            if self.compiler.name == 'pgi' and self.spec[
-                    'claw'].version >= Version(2.1):
+            if self.compiler.name in (
+                    'pgi',
+                    'nvhpc') and self.spec['claw'].version >= Version(2.1):
                 claw_flags += ' --fc-vendor=portland --fc-cmd=${FC}'
             if 'cosmo_target=gpu' in self.spec:
                 claw_flags += ' --directive=openacc'
@@ -336,11 +352,12 @@ class Cosmo(MakefilePackage):
             env.set('MPPIOI', '-I{:s}/build/lib/mct'.format(oasis_prefix))
 
         # Linker flags
-        if self.compiler.name == 'pgi' and '~cppdycore' in self.spec:
+        if self.compiler.name in ('pgi',
+                                  'nvhpc') and '~cppdycore' in self.spec:
             env.set('LFLAGS', '-lstdc++')
 
         # Compiler & linker variables
-        if self.compiler.name == 'pgi':
+        if self.compiler.name in ('pgi', 'nvhpc'):
             env.set('F90', self.mpi_spec.mpifc + ' -D__PGI_FORTRAN__')
             env.set('LD', self.mpi_spec.mpifc + ' -D__PGI_FORTRAN__')
         else:
@@ -384,7 +401,7 @@ class Cosmo(MakefilePackage):
             OptionsFileName = 'Options'
             if self.compiler.name == 'gcc':
                 OptionsFileName += '.gnu'
-            elif self.compiler.name == 'pgi':
+            elif self.compiler.name in ('pgi', 'nvhpc'):
                 OptionsFileName += '.pgi'
             elif self.compiler.name == 'cce':
                 OptionsFileName += '.cray'
@@ -414,7 +431,8 @@ class Cosmo(MakefilePackage):
                 OptionsFile.filter(
                     'PFLAGS   = -Mpreprocess.*',
                     'PFLAGS   = -Mpreprocess -DNO_MPI_HOST_DATA')
-            if 'cosmo_target=gpu' in self.spec and self.compiler.name == 'pgi':
+            if 'cosmo_target=gpu' in self.spec and self.compiler.name in (
+                    'pgi', 'nvhpc'):
                 OptionsFile.filter(
                     'PFLAGS   = -Mpreprocess.*',
                     'PFLAGS   = -Mpreprocess -DNO_ACC_FINALIZE')
