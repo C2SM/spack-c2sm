@@ -4,9 +4,9 @@ packages:
         # these reflect the current installed PE
     compiler: [gcc@9.3.0, gcc@8.3.0, nvhpc@21.5, cce@12.0.3]
     providers:
-      mpi: [openmpi, mpich]
+      mpi: [mpich]
             # if the mpich package support +cuda in the future it needs to be put there
-      mpicuda: [openmpi, mpich]
+      mpicuda: [mpich]
       mkl: [intel-mkl]
       blas: [cray-libsci_acc, cray-libsci, intel-mkl]
       scalapack: [cray-libsci_acc, cray-libsci, intel-mkl]
@@ -261,18 +261,9 @@ packages:
   mpich:
     buildable: false
     externals:
-      - spec: mpich@7.7.18%cce
+      - spec: mpich@7.7.18
         modules:
         - cray-mpich/7.7.18
-    externals:
-      - spec: mpich@7.7.18%gcc
-        modules:
-        - cray-mpich/7.7.18
-  openmpi:
-    buildable: false
-    externals:
-      - spec: openmpi@3.1.5%nvhpc@21.5
-        prefix: /opt/nvidia/hpc_sdk/Linux_x86_64/21.5/comm_libs/mpi
   netcdf-c:
     buildable: false
     externals:
