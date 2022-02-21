@@ -121,7 +121,7 @@ class CosmoDycoreTest(unittest.TestCase):
         # The dycore team's testing relies on this.
         if machine == 'tsa':
             run('spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda ^openmpi%pgi@20.4 +cuda'
-            )
+                )
         else:
             run('spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda'
                 )
@@ -475,9 +475,11 @@ class SelfTest(unittest.TestCase):
             for dep in deps:
                 self.assertTrue(dep in all_package_names)
 
+
 def PrintAndLog(msg):
     summary.write(msg + '\n')
     print(msg, flush=True)
+
 
 if __name__ == '__main__':
     summary = open("summary.log", 'w')
@@ -533,7 +535,8 @@ if __name__ == '__main__':
     print('Test plan:', flush=True)
     print('====================================', flush=True)
     PrintAndLog(
-        f'Configuring spack with upstream {upstream} on machine {spack_machine.upper()}.')
+        f'Configuring spack with upstream {upstream} on machine {spack_machine.upper()}.'
+    )
 
     if is_arbitrary_command:
         joined_command = ' '.join(commands)
@@ -579,6 +582,7 @@ if __name__ == '__main__':
         ])
 
         with io.StringIO() as buffer:
-            result = unittest.TextTestRunner(stream=buffer, verbosity=2).run(suite)
+            result = unittest.TextTestRunner(stream=buffer,
+                                             verbosity=2).run(suite)
             PrintAndLog(buffer.getvalue())
         sys.exit(not result.wasSuccessful())
