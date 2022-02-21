@@ -200,14 +200,6 @@ class Cosmo(MakefilePackage):
 
     build_directory = 'cosmo/ACC'
 
-    def setup_run_environment(self, env):
-        # Account for a wrong path in nvidia-module on Daint
-        if self.spec.variants[
-                'slave'].value == 'daint' and self.compiler.name == 'nvhpc':
-            env.prepend_path(
-                'LD_LIBRARY_PATH',
-                '/opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/lib/')
-
     def setup_build_environment(self, env):
 
         # - ML - Dirty conflict check (see above)
