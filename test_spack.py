@@ -5,6 +5,8 @@ import inspect
 import sys
 import subprocess
 import unittest
+import io
+import logging
 
 all_machines = {'daint', 'tsa'}
 
@@ -473,22 +475,26 @@ class SelfTest(unittest.TestCase):
             for dep in deps:
                 self.assertTrue(dep in all_package_names)
 
+def PrintAndLog(msg):
+    summary.write(msg + '\n')
+    print(msg, flush=True)
 
 if __name__ == '__main__':
+    summary = open("summary.log", 'w')
     test_loader = unittest.TestLoader()
 
     # Do self-test first to fail fast
-    print('====================================', flush=True)
-    print('Self-tests:', flush=True)
-    print('====================================', flush=True)
     suite = unittest.TestSuite([
         test_loader.loadTestsFromTestCase(DAG_Algorithm_Test),
         test_loader.loadTestsFromTestCase(SelfTest)
     ])
-    result = unittest.TextTestRunner(verbosity=2).run(suite)
-    print('====================================', flush=True)
-    if not result.wasSuccessful():
-        sys.exit(1)
+    with io.StringIO() as buffer:
+        result = unittest.TextTestRunner(stream=buffer, verbosity=2).run(suite)
+        if result.wasSuccessful():
+            PrintAndLog("Self-tests ok")
+        else:
+            PrintAndLog(buffer.getvalue())
+            sys.exit(1)
 
     commands = sys.argv[1:]
     sys.argv = [sys.argv[0]]  # unittest needs this
@@ -526,13 +532,12 @@ if __name__ == '__main__':
 
     print('Test plan:', flush=True)
     print('====================================', flush=True)
-    print(
-        f'Configuring spack with upstream {upstream} on machine {spack_machine}.',
-        flush=True)
+    PrintAndLog(
+        f'Configuring spack with upstream {upstream} on machine {spack_machine.upper()}.')
 
     if is_arbitrary_command:
         joined_command = ' '.join(commands)
-        print(f'Executing: {joined_command}', flush=True)
+        PrintAndLog(f'Executing: {joined_command}')
     else:
         commands = set(commands)
 
@@ -551,8 +556,7 @@ if __name__ == '__main__':
         else:
             packages_to_test = Self_and_up(commands, dependencies)
 
-        # run tests
-        print(f'Testing packages: {packages_to_test}', flush=True)
+        PrintAndLog(f'Testing packages: {packages_to_test}')
 
     print('====================================', flush=True)
     print('Testing now...', flush=True)
@@ -573,5 +577,8 @@ if __name__ == '__main__':
             if case.package_name in packages_to_test
             and machine in case.machines
         ])
-        result = unittest.TextTestRunner(verbosity=2).run(suite)
+
+        with io.StringIO() as buffer:
+            result = unittest.TextTestRunner(stream=buffer, verbosity=2).run(suite)
+            PrintAndLog(buffer.getvalue())
         sys.exit(not result.wasSuccessful())
