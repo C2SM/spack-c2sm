@@ -36,7 +36,7 @@ packages:
   cosmo:
     variants: cuda_arch=60 cosmo_target=gpu slave=daint
     version: [master]
-    compiler: [nvhpc]
+    compiler: [nvhpc@21.5]
   gridtools:
     variants: +cuda cuda_arch=60
     compiler: [gcc]
