@@ -119,7 +119,7 @@ class CosmoDycoreTest(unittest.TestCase):
         # The dycore team's testing relies on this.
         if machine == 'tsa':
             run('spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda ^openmpi%pgi@20.4 +cuda'
-            )
+                )
         else:
             run('spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda'
                 )
