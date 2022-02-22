@@ -204,8 +204,7 @@ packages:
       modules:
       - cray-hdf5-parallel/1.12.0.4
     - spec: hdf5@1.12.0.4%nvhpc+mpi+hl+fortran
-      modules:
-      - cray-hdf5-parallel/1.12.0.4
+      prefix: /opt/cray/pe/hdf5-parallel/1.12.0.4/nvidia/20.7
   hwloc:
     variants: +cuda
   icontools:
@@ -255,6 +254,7 @@ packages:
     - spec: lz4@1.8.0
       prefix: /usr
   m4:
+    buildable: false
     externals:
     - spec: m4@1.4.18%gcc
       prefix: /usr
