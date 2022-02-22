@@ -77,7 +77,7 @@ compilers:
 - compiler:
     spec: nvhpc@21.3
     paths:
-      cc: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/bin/nvcc
+      cc: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/bin/nvc
       cxx: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/bin/nvc++
       f77: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/bin/nvfortran
       fc: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/bin/nvfortran
@@ -92,7 +92,7 @@ compilers:
 - compiler:
     spec: pgi@21.3.0
     paths:
-      cc: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/bin/nvcc
+      cc: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/bin/nvc
       cxx: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/bin/nvc++
       f77: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/bin/nvfortran
       fc: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/bin/nvfortran
