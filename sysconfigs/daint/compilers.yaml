@@ -77,10 +77,10 @@ compilers:
 - compiler:
     spec: nvhpc@21.3
     paths:
-      cc: cc
-      cxx: CC
-      f77: ftn
-      fc: ftn
+      cc: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/bin/nvcc
+      cxx: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/bin/nvc++
+      f77: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/bin/nvfortran
+      fc: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/bin/nvfortran
     flags: {}
     operating_system: cnl7
     target: any
@@ -92,10 +92,10 @@ compilers:
 - compiler:
     spec: pgi@21.3.0
     paths:
-      cc: cc
-      cxx: CC
-      f77: ftn
-      fc: ftn
+      cc: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/bin/nvcc
+      cxx: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/bin/nvc++
+      f77: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/bin/nvfortran
+      fc: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/bin/nvfortran
     flags: {}
     operating_system: cnl7
     target: any
