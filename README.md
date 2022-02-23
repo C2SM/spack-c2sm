@@ -45,4 +45,3 @@ case $(hostname -s) in
 esac
 source $SPACK_ROOT/share/spack/setup-env.sh
 ```
-
