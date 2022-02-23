@@ -73,14 +73,6 @@ class Int2lm(MakefilePackage):
 
     build_directory = 'TESTSUITE'
 
-    def setup_run_environment(self, env):
-        # Account for a wrong path in nvidia-module on Daint
-        if self.spec.variants[
-                'slave'].value == 'daint' and self.compiler.name == 'nvhpc':
-            env.prepend_path(
-                'LD_LIBRARY_PATH',
-                '/opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/lib/')
-
     def setup_build_environment(self, env):
         self.setup_run_environment(env)
 
@@ -136,7 +128,13 @@ class Int2lm(MakefilePackage):
         else:
             env.set('MPII', '-I' + self.spec['mpi'].prefix + '/include')
             if self.compiler.name != 'gcc':
-                env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich')
+
+                # manually add libs to linker because of broke modules on Piz Daint for nvidia
+                if self.spec.variants['slave'].value == 'daint' and self.compiler.name in ('pgi', 'nvhpc'):
+                    env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich -lnvcpumath -lnvhpcatm')
+
+                else:
+                    env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich')
 
         # Compiler & linker variables
         if self.compiler.name == 'pgi':

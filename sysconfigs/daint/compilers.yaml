@@ -75,21 +75,6 @@ compilers:
     environment: {}
     extra_rpaths: []
 - compiler:
-    spec: nvhpc@21.5
-    paths:
-      cc: cc
-      cxx: CC
-      f77: ftn
-      fc: ftn
-    flags: {}
-    operating_system: cnl7
-    target: any
-    modules:
-    - PrgEnv-nvidia
-    - nvhpc/21.5
-    environment: {}
-    extra_rpaths: []
-- compiler:
     spec: nvhpc@21.3
     paths:
       cc: cc
