@@ -95,9 +95,12 @@ packages:
   hdf5:
     buildable: false
     externals:
-    - spec: hdf5@1.12.0.4
+    - spec: hdf5@1.12.0.4 ~mpi +hl
       modules:
       - cray-hdf5/1.12.0.4 
+    - spec: hdf5@1.12.0.4 +mpi +hl
+      modules:
+      - cray-hdf5-parallel/1.12.0.4
   hwloc:
     variants: +cuda
   icontools:
