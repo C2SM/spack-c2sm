@@ -46,7 +46,7 @@ class Icon(Package):
     depends_on('serialbox@2.6.0 ~python ~sdb ~shared',
                when='serialize_mode=perturb',
                type=('build', 'link', 'run'))
-    depends_on('eccodes@2.19.0 +build_shared_libs',
+    depends_on('eccodes@2.19.0',
                when='+eccodes',
                type=('build', 'link', 'run'))
     depends_on('claw@2.0.2', when='+claw', type=('build', 'link', 'run'))
