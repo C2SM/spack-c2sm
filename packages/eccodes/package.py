@@ -113,7 +113,7 @@ class Eccodes(CMakePackage):
             description='Enable the Python 2 interface')
     variant('fortran', default=True, description='Enable the Fortran support')
     variant('shared',
-            default=True,
+            default=False,
             description='Build shared versions of the libraries')
 
     variant('definitions',
