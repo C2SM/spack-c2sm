@@ -2,7 +2,7 @@ packages:
   all:
         # default compilers defined by the system
         # these reflect the current installed PE
-    compiler: [gcc@9.3.0, gcc@8.3.0, nvhpc@21.5, cce@12.0.3]
+    compiler: [gcc@9.3.0, gcc@8.3.0, nvhpc@21.3, cce@12.0.3, gcc@11.2.0,intel@2021.3.0]
     providers:
       mpi: [mpich]
             # if the mpich package support +cuda in the future it needs to be put there
@@ -36,7 +36,7 @@ packages:
   cosmo:
     variants: cuda_arch=60 cosmo_target=gpu slave=daint
     version: [master]
-    compiler: [nvhpc]
+    compiler: [nvhpc@21.3]
   gridtools:
     variants: +cuda cuda_arch=60
     compiler: [gcc]
@@ -59,49 +59,15 @@ packages:
   cray-libsci:
     buildable: false
     externals:
-    - spec: cray-libsci@20.06.1%cce
-      prefix: /opt/cray/pe/libsci/20.06.1/CRAYCLANG/9.0/x86_64
-    - spec: cray-libsci@20.09.1%cce
-      prefix: /opt/cray/pe/libsci/20.09.1/CRAYCLANG/9.0/x86_64
-    - spec: cray-libsci@20.06.1%gcc
-      modules:
-      - cray-libsci/20.06.1
-    - spec: cray-libsci@20.06.1%intel
-      modules:
-      - cray-libsci/20.06.1
-    - spec: cray-libsci@20.06.1%cce
-      modules:
-      - cray-libsci/20.06.1
-    - spec: cray-libsci@20.06.1%nvhpc
-      modules:
-      - cray-libsci/20.06.1
-    - spec: cray-libsci@20.09.1%nvhpc
-      modules:
-      - cray-libsci/20.09.1
-    - spec: cray-libsci@20.09.1%gcc
-      modules:
-      - cray-libsci/20.09.1
-    - spec: cray-libsci@20.09.1%cce
-      modules:
-      - cray-libsci/20.09.1
-    - spec: cray-libsci@20.09.1%intel
+    - spec: cray-libsci@20.09.1
       modules:
       - cray-libsci/20.09.1
   cray-libsci_acc:
     buildable: false
     externals:
-    - spec: cray-libsci_acc@20.06.1%gcc
+    - spec: cray-libsci_acc@20.10.1
       modules:
-      - cray-libsci_acc/20.06.1
-    - spec: cray-libsci_acc@20.06.1%intel
-      modules:
-      - cray-libsci_acc/20.06.1
-    - spec: cray-libsci_acc@20.06.1%cce
-      modules:
-      - cray-libsci_acc/20.06.1
-    - spec: cray-libsci_acc@20.06.1%nvhpc
-      modules:
-      - cray-libsci_acc/20.06.1
+      - cray-libsci_acc/20.10.1
   cuda:
     version: ['11.0']
     externals:
@@ -130,89 +96,20 @@ packages:
   hdf5:
     buildable: false
     externals:
-    - spec: hdf5@1.12.0.0%cce~mpi+hl
-      prefix: /opt/cray/pe/hdf5/1.12.0.0/CRAYCLANG/9.0
-    - spec: hdf5@1.12.0.0%cce~mpi+hl+fortran
-      prefix: /opt/cray/pe/hdf5/1.12.0.0/CRAYCLANG/9.0
-    - spec: hdf5@1.12.0.0%intel~mpi+hl
+    - spec: hdf5@1.12.0.4 ~mpi +hl
       modules:
-      - cray-hdf5/1.12.0.0
-    - spec: hdf5@1.12.0.0%gcc~mpi+hl
-      modules:
-      - cray-hdf5/1.12.0.0
-    - spec: hdf5@1.12.0.0%cce~mpi+hl
-      modules:
-      - cray-hdf5/1.12.0.0
-    - spec: hdf5@1.12.0.0%nvhpc~mpi+hl
-      modules:
-      - cray-hdf5/1.12.0.0
-    - spec: hdf5@1.12.0.0%intel+mpi+hl
-      modules:
-      - cray-hdf5-parallel/1.12.0.4
-    - spec: hdf5@1.12.0.0%gcc+mpi+hl
-      modules:
-      - cray-hdf5-parallel/1.12.0.0
-    - spec: hdf5@1.12.0.0%cce+mpi+hl
-      modules:
-      - cray-hdf5-parallel/1.12.0.0
-    - spec: hdf5@1.12.0.0%nvhpc+mpi+hl
-      modules:
-      - cray-hdf5-parallel/1.12.0.0
-    - spec: hdf5@1.12.0.0%intel~mpi+hl+fortran
-      modules:
-      - cray-hdf5/1.12.0.0
-    - spec: hdf5@1.12.0.0%gcc~mpi+hl+fortran
-      modules:
-      - cray-hdf5/1.12.0.0
-    - spec: hdf5@1.12.0.0%cce~mpi+hl+fortran
-      modules:
-      - cray-hdf5/1.12.0.0
-    - spec: hdf5@1.12.0.0%nvhpc~mpi+hl+fortran
-      modules:
-      - cray-hdf5/1.12.0.0
-    - spec: hdf5@1.12.0.4%intel~mpi+hl+fortran
-      modules:
-      - cray-hdf5/1.12.0.4
-    - spec: hdf5@1.12.0.4%gcc~mpi+hl+fortran
-      modules:
-      - cray-hdf5/1.12.0.4
-    - spec: hdf5@1.12.0.4%cce~mpi+hl+fortran
-      modules:
-      - cray-hdf5/1.12.0.4
-    - spec: hdf5@1.12.0.4%nvhpc~mpi+hl+fortran
-      modules:
-      - cray-hdf5/1.12.0.4
-    - spec: hdf5@1.12.0.0%intel+mpi+hl+fortran
-      modules:
-      - cray-hdf5-parallel/1.12.0.0
-    - spec: hdf5@1.12.0.0%gcc+mpi+hl+fortran
-      modules:
-      - cray-hdf5-parallel/1.12.0.0
-    - spec: hdf5@1.12.0.0%cce+mpi+hl+fortran
-      modules:
-      - cray-hdf5-parallel/1.12.0.0
-    - spec: hdf5@1.12.0.0%nvhpc+mpi+hl+fortran
-      modules:
-      - cray-hdf5-parallel/1.12.0.0
-    - spec: hdf5@1.12.0.4%intel+mpi+hl+fortran
-      modules:
-      - cray-hdf5-parallel/1.12.0.4
-    - spec: hdf5@1.12.0.4%gcc+mpi+hl+fortran
-      modules:
-      - cray-hdf5-parallel/1.12.0.4
-    - spec: hdf5@1.12.0.4%cce+mpi+hl+fortran
-      modules:
-      - cray-hdf5-parallel/1.12.0.4
-    - spec: hdf5@1.12.0.4%nvhpc+mpi+hl+fortran
+      - cray-hdf5/1.12.0.4 
+    - spec: hdf5@1.12.0.4 +mpi +hl
       modules:
       - cray-hdf5-parallel/1.12.0.4
   hwloc:
     variants: +cuda
   icontools:
     variants: slave=daint
-    compiler: [cce]
+    compiler: [gcc]
   icon:
     variants: host=daint
+    compiler: [nvhpc@21.3, pgi@21.3.0, cce@12.0.3]
   intel-mkl:
     buildable: false
     externals:
@@ -235,8 +132,6 @@ packages:
     - spec: intel-mkl@2019.1.144%cce~ilp64 threads=none
       prefix: /opt/intel
   int2lm:
-    variants: slave=daint
-  int2lm-org:
     variants: slave=daint
   libjpeg:
     externals:

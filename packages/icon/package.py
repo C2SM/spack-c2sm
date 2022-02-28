@@ -34,6 +34,10 @@ class Icon(Package):
             submodules=True)
     version('2.6.x-rc', commit='040de650', submodules=True)
     version('2.0.17', commit='39ed04ad', submodules=True)
+    version('exclaim-master',
+            branch='master',
+            git='git@github.com:C2SM/icon-exclaim.git',
+            submodules=True)
 
     depends_on('cmake%gcc')
     depends_on('libxml2@2.9.8:%gcc', type=('build', 'link', 'run'))
