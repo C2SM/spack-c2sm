@@ -1,20 +1,5 @@
 compilers:
 - compiler:
-    spec: cce@12.0.3
-    paths:
-      cc: cc
-      cxx: CC
-      f77: ftn
-      fc: ftn
-    flags: {}
-    operating_system: cnl7
-    target: any
-    modules:
-    - PrgEnv-cray
-    - cce/12.0.3
-    environment: {}
-    extra_rpaths: []
-- compiler:
     spec: gcc@8.3.0
     paths:
       cc: cc
@@ -27,36 +12,6 @@ compilers:
     modules:
     - PrgEnv-gnu
     - gcc/8.3.0
-    environment: {}
-    extra_rpaths: []
-- compiler:
-    spec: gcc@11.2.0
-    paths:
-      cc: cc
-      cxx: CC
-      f77: ftn
-      fc: ftn
-    flags: {}
-    operating_system: cnl7
-    target: any
-    modules:
-    - PrgEnv-gnu
-    - gcc/11.2.0
-    environment: {}
-    extra_rpaths: []
-- compiler:
-    spec: intel@2021.3.0
-    paths:
-      cc: cc
-      cxx: CC
-      f77: ftn
-      fc: ftn
-    flags: {}
-    operating_system: cnl7
-    target: any
-    modules:
-    - PrgEnv-intel
-    - intel/21021.3.0
     environment: {}
     extra_rpaths: []
 - compiler:
