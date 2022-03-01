@@ -8,12 +8,12 @@ import unittest
 
 all_machines = {'daint', 'tsa'}
 
-
 # For each spack test there should be at least one line of comment stating
 # why this spack command is tested and/or where this spack command is used.
 # Otherwise this may apply:
 # “All Your Tests are Terrible..." - Titus Winters & Hyrum Wright
 # https://www.youtube.com/watch?v=u5senBJUkPc&ab_channel=CppCon
+
 
 class TestCase(unittest.TestCase):
 
@@ -27,7 +27,10 @@ class TestCase(unittest.TestCase):
             if machine == 'tsa':
                 srun = 'srun -c 16 -t 01:00:00'
 
-        subprocess.run(f'{setup} cd {cwd} && {srun} {command} >> {machine}_{self.package_name}_{self._testMethodName}.log', check=True, shell=True)
+        subprocess.run(
+            f'{setup} cd {cwd} && {srun} {command} >> {machine}_{self.package_name}_{self._testMethodName}.log',
+            check=True,
+            shell=True)
 
     def Srun(self, command: str, cwd='.'):
         return self.Run(command, cwd, parallel=True)
@@ -63,20 +66,24 @@ class CosmoTest(TestCase):
     def test_install_master_gpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
-            self.Srun('spack installcosmo cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
-                )
+            self.Srun(
+                'spack installcosmo cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
+            )
         if machine == 'daint':
-            self.Srun('spack installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=gpu +cppdycore'
-                )
+            self.Srun(
+                'spack installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=gpu +cppdycore'
+            )
 
     def test_install_master_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
-            self.Run('spack installcosmo cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
-                )
+            self.Run(
+                'spack installcosmo cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
+            )
         if machine == 'daint':
-            self.Run('spack installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=cpu ~cppdycore'
-                )
+            self.Run(
+                'spack installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=cpu ~cppdycore'
+            )
 
     # def test_install_test(self):
     #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/289
@@ -91,10 +98,12 @@ class CosmoTest(TestCase):
         self.Run('git clone git@github.com:MeteoSwiss-APN/cosmo.git')
         try:
             if machine == 'tsa':
-                self.Srun('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore',
+                self.Srun(
+                    'spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore',
                     cwd='cosmo')
             if machine == 'daint':
-                self.Srun('spack devbuildcosmo cosmo@dev-build%nvhpc cosmo_target=cpu ~cppdycore',
+                self.Srun(
+                    'spack devbuildcosmo cosmo@dev-build%nvhpc cosmo_target=cpu ~cppdycore',
                     cwd='cosmo')
         finally:
             self.Run('rm -rf cosmo')
@@ -104,10 +113,12 @@ class CosmoTest(TestCase):
         self.Run('git clone git@github.com:MeteoSwiss-APN/cosmo.git')
         try:
             if machine == 'tsa':
-                self.Srun('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
+                self.Srun(
+                    'spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
                     cwd='cosmo')
             if machine == 'daint':
-                self.Srun('spack devbuildcosmo cosmo@dev-build%nvhpc cosmo_target=gpu +cppdycore',
+                self.Srun(
+                    'spack devbuildcosmo cosmo@dev-build%nvhpc cosmo_target=gpu +cppdycore',
                     cwd='cosmo')
         finally:
             self.Run('rm -rf cosmo')
@@ -115,8 +126,9 @@ class CosmoTest(TestCase):
     def test_install_old_version(self):
         # So we can reproduce results from old versions.
         if machine == 'tsa':
-            self.Srun('spack installcosmo cosmo@apn_5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore'
-                )
+            self.Srun(
+                'spack installcosmo cosmo@apn_5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore'
+            )
 
 
 class CosmoDycoreTest(TestCase):
@@ -204,13 +216,15 @@ class IconTest(TestCase):
 
     def test_install_nwp_gpu_nvidia(self):
         # So we can make sure ICON-NWP (OpenACC) devs can compile (mimick Buildbot for Tsa)
-        self.Srun('spack install icon@nwp%nvhpc icon_target=gpu +claw +eccodes +ocean'
-            )
+        self.Srun(
+            'spack install icon@nwp%nvhpc icon_target=gpu +claw +eccodes +ocean'
+        )
 
     def test_install_nwp_cpu_nvidia(self):
         # So we can make sure ICON-NWP (OpenACC) devs can compile (mimick Buildbot for Tsa)
-        self.Srun('spack install icon@nwp%nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean'
-            )
+        self.Srun(
+            'spack install icon@nwp%nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean'
+        )
 
     # TODO: Reactivate once the test works!
     # def test_devbuild_cpu(self):
@@ -252,7 +266,8 @@ class Int2lmTest(TestCase):
     def test_install_no_pollen(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
-            self.Srun('spack install --test=root int2lm@org-master%pgi pollen=False')
+            self.Srun(
+                'spack install --test=root int2lm@org-master%pgi pollen=False')
 
     def test_install_gcc(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
@@ -542,7 +557,9 @@ if __name__ == '__main__':
         setup = ''
         if joined_command.startswith('spack'):
             setup = f'source spack/share/spack/setup-env.sh &&'
-        subprocess.run(f'{setup} {joined_command} >> {machine}.log', check=True, shell=True)
+        subprocess.run(f'{setup} {joined_command} >> {machine}.log',
+                       check=True,
+                       shell=True)
         sys.exit()
     else:
         # collect and run tests from all packages selected
