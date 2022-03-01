@@ -94,6 +94,7 @@ class Icon(Package):
     variant('ham',
             default=False,
             description='Build with hammoz and atm_phy_echam enabled.')
+    variant('art', default=False, description='Build with art enabled')
     variant('ocean', default=True, description='Build with ocean enabled')
     variant('silent-rules',
             default=True,
@@ -148,6 +149,10 @@ class Icon(Package):
         if self.spec.variants['serialize_mode'].value != 'none':
             args.append('--enable-serialization=' +
                         self.spec.variants['serialize_mode'].value)
+
+        # Art
+        if '+art' in self.spec:
+            args.append('--enable-art')
 
         # Claw
         if '+claw' in self.spec:
