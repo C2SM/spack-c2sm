@@ -8,21 +8,6 @@ import unittest
 
 all_machines = {'daint', 'tsa'}
 
-def run(command: str, cwd='.', parallel=False):
-    setup = ''
-    if command.startswith('spack'):
-        setup = f'source spack/share/spack/setup-env.sh &&'
-
-    srun = ''
-    if parallel:
-        if machine == 'tsa':
-            srun = 'srun -c 16 -t 01:00:00'
-
-    subprocess.run(f'{setup} cd {cwd} && {srun} {command}', check=True, shell=True)
-
-def srun(command: str, cwd='.'):
-    return run(command, cwd, parallel=True)
-
 
 # For each spack test there should be at least one line of comment stating
 # why this spack command is tested and/or where this spack command is used.
@@ -30,26 +15,43 @@ def srun(command: str, cwd='.'):
 # “All Your Tests are Terrible..." - Titus Winters & Hyrum Wright
 # https://www.youtube.com/watch?v=u5senBJUkPc&ab_channel=CppCon
 
+class TestCase(unittest.TestCase):
 
-class AtlasTest(unittest.TestCase):
+    def Run(self, command: str, cwd='.', parallel=False):
+        setup = ''
+        if command.startswith('spack'):
+            setup = f'source spack/share/spack/setup-env.sh &&'
+
+        srun = ''
+        if parallel:
+            if machine == 'tsa':
+                srun = 'srun -c 16 -t 01:00:00'
+
+        subprocess.run(f'{setup} cd {cwd} && {srun} {command} >> {machine}_{self.package_name}_{self._testMethodName}.log', check=True, shell=True)
+
+    def Srun(self, command: str, cwd='.'):
+        return self.Run(command, cwd, parallel=True)
+
+
+class AtlasTest(TestCase):
     package_name = 'atlas'
     depends_on = {'ecbuild', 'eckit'}
     machines = all_machines
 
 
-class AtlasUtilityTest(unittest.TestCase):
+class AtlasUtilityTest(TestCase):
     package_name = 'atlas_utilities'
     depends_on = {'atlas', 'eckit'}
     machines = all_machines
 
 
-class ClawTest(unittest.TestCase):
+class ClawTest(TestCase):
     package_name = 'claw'
     depends_on = {}
     machines = all_machines
 
 
-class CosmoTest(unittest.TestCase):
+class CosmoTest(TestCase):
     package_name = 'cosmo'
     depends_on = {
         'cuda', 'serialbox', 'libgrib1', 'cosmo-grib-api-definitions',
@@ -61,181 +63,181 @@ class CosmoTest(unittest.TestCase):
     def test_install_master_gpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
-            srun('spack installcosmo cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
+            self.Srun('spack installcosmo cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
                 )
         if machine == 'daint':
-            srun('spack installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=gpu +cppdycore'
+            self.Srun('spack installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=gpu +cppdycore'
                 )
 
     def test_install_master_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
-            run('spack installcosmo cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
+            self.Run('spack installcosmo cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
                 )
         if machine == 'daint':
-            run('spack installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=cpu ~cppdycore'
+            self.Run('spack installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=cpu ~cppdycore'
                 )
 
     # def test_install_test(self):
     #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/289
-    #     srun('spack installcosmo --test=root cosmo@master%pgi')
+    #     self.Srun('spack installcosmo --test=root cosmo@master%pgi')
 
     # def test_install_test_claw(self):
     #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/289
-    #     srun('spack installcosmo --test=root cosmo@master%pgi +claw')
+    #     self.Srun('spack installcosmo --test=root cosmo@master%pgi +claw')
 
     def test_devbuild_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('git clone git@github.com:MeteoSwiss-APN/cosmo.git')
+        self.Run('git clone git@github.com:MeteoSwiss-APN/cosmo.git')
         try:
             if machine == 'tsa':
-                srun('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore',
+                self.Srun('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore',
                     cwd='cosmo')
             if machine == 'daint':
-                srun('spack devbuildcosmo cosmo@dev-build%nvhpc cosmo_target=cpu ~cppdycore',
+                self.Srun('spack devbuildcosmo cosmo@dev-build%nvhpc cosmo_target=cpu ~cppdycore',
                     cwd='cosmo')
         finally:
-            run('rm -rf cosmo')
+            self.Run('rm -rf cosmo')
 
     def test_devbuild_gpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('git clone git@github.com:MeteoSwiss-APN/cosmo.git')
+        self.Run('git clone git@github.com:MeteoSwiss-APN/cosmo.git')
         try:
             if machine == 'tsa':
-                srun('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
+                self.Srun('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
                     cwd='cosmo')
             if machine == 'daint':
-                srun('spack devbuildcosmo cosmo@dev-build%nvhpc cosmo_target=gpu +cppdycore',
+                self.Srun('spack devbuildcosmo cosmo@dev-build%nvhpc cosmo_target=gpu +cppdycore',
                     cwd='cosmo')
         finally:
-            run('rm -rf cosmo')
+            self.Run('rm -rf cosmo')
 
     def test_install_old_version(self):
         # So we can reproduce results from old versions.
         if machine == 'tsa':
-            srun('spack installcosmo cosmo@apn_5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore'
+            self.Srun('spack installcosmo cosmo@apn_5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore'
                 )
 
 
-class CosmoDycoreTest(unittest.TestCase):
+class CosmoDycoreTest(TestCase):
     package_name = 'cosmo-dycore'
     depends_on = {'gridtools', 'serialbox', 'cuda'}
     machines = all_machines
 
 
-class CosmoEccodesDefinitionsTest(unittest.TestCase):
+class CosmoEccodesDefinitionsTest(TestCase):
     package_name = 'cosmo-eccodes-definitions'
     depends_on = {'eccodes'}
     machines = all_machines
 
 
-class CosmoGribApiTest(unittest.TestCase):
+class CosmoGribApiTest(TestCase):
     package_name = 'cosmo-grib-api'
     depends_on = {}
     machines = all_machines
 
 
-class CosmoGribApiDefinitionsTest(unittest.TestCase):
+class CosmoGribApiDefinitionsTest(TestCase):
     package_name = 'cosmo-grib-api-definitions'
     depends_on = {'cosmo-grib-api'}
     machines = all_machines
 
 
-class CudaTest(unittest.TestCase):
+class CudaTest(TestCase):
     package_name = 'cuda'
     depends_on = {}
     machines = all_machines
 
 
-class DawnTest(unittest.TestCase):
+class DawnTest(TestCase):
     package_name = 'dawn'
     depends_on = {}
     machines = all_machines
 
 
-class Dawn4PyTest(unittest.TestCase):
+class Dawn4PyTest(TestCase):
     package_name = 'dawn4py'
     depends_on = {}
     machines = all_machines
 
 
-class DuskTest(unittest.TestCase):
+class DuskTest(TestCase):
     package_name = 'dusk'
     depends_on = {'dawn4py'}
     machines = all_machines
 
 
-class DyiconBenchmarksTest(unittest.TestCase):
+class DyiconBenchmarksTest(TestCase):
     package_name = 'dyicon_benchmarks'
     depends_on = {'atlas_utilities', 'atlas', 'cuda'}
     machines = all_machines
 
 
-class EcbuildTest(unittest.TestCase):
+class EcbuildTest(TestCase):
     package_name = 'ecbuild'
     depends_on = {}
     machines = all_machines
 
 
-class EccodesTest(unittest.TestCase):
+class EccodesTest(TestCase):
     package_name = 'eccodes'
     depends_on = {}
     machines = all_machines
 
 
-class EckitTest(unittest.TestCase):
+class EckitTest(TestCase):
     package_name = 'eckit'
     depends_on = {'ecbuild'}
     machines = all_machines
 
 
-class GridToolsTest(unittest.TestCase):
+class GridToolsTest(TestCase):
     package_name = 'gridtools'
     depends_on = {'cuda'}
     machines = all_machines
 
 
-class IconTest(unittest.TestCase):
+class IconTest(TestCase):
     package_name = 'icon'
     depends_on = {'serialbox', 'eccodes', 'claw'}
     machines = {'daint'}
 
     def test_install_nwp_gpu_nvidia(self):
         # So we can make sure ICON-NWP (OpenACC) devs can compile (mimick Buildbot for Tsa)
-        srun('spack install icon@nwp%nvhpc icon_target=gpu +claw +eccodes +ocean'
+        self.Srun('spack install icon@nwp%nvhpc icon_target=gpu +claw +eccodes +ocean'
             )
 
     def test_install_nwp_cpu_nvidia(self):
         # So we can make sure ICON-NWP (OpenACC) devs can compile (mimick Buildbot for Tsa)
-        srun('spack install icon@nwp%nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean'
+        self.Srun('spack install icon@nwp%nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean'
             )
 
     # TODO: Reactivate once the test works!
     # def test_devbuild_cpu(self):
     #     # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-    #     run('git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git')
-    #     run('mkdir -p icon-cscs/pgi_cpu')
-    #     run('touch a_fake_file.f90', cwd='icon-cscs/pgi_cpu')
+    #     self.Run('git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git')
+    #     self.Run('mkdir -p icon-cscs/pgi_cpu')
+    #     self.Run('touch a_fake_file.f90', cwd='icon-cscs/pgi_cpu')
 
     #     try:
-    #         srun('spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu', cwd='icon-cscs/pgi_cpu')
+    #         self.Srun('spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu', cwd='icon-cscs/pgi_cpu')
     #     finally:
-    #         run('rm -rf icon-cscs')
+    #         self.Run('rm -rf icon-cscs')
 
     # TODO: Reactivate once the test works!
     # def test_devbuild_gpu(self):
     #     # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-    #     run('git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git')
-    #     run('mkdir -p icon-cscs/pgi_gpu')
-    #     run('touch a_fake_file.f90', cwd='icon-cscs/pgi_gpu')
+    #     self.Run('git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git')
+    #     self.Run('mkdir -p icon-cscs/pgi_gpu')
+    #     self.Run('touch a_fake_file.f90', cwd='icon-cscs/pgi_gpu')
 
     #     try:
-    #         srun('spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu', cwd='icon-cscs/pgi_gpu')
+    #         self.Srun('spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu', cwd='icon-cscs/pgi_gpu')
     #     finally:
-    #         run('rm -rf icon-cscs')
+    #         self.Run('rm -rf icon-cscs')
 
 
-class Int2lmTest(unittest.TestCase):
+class Int2lmTest(TestCase):
     package_name = 'int2lm'
     depends_on = {
         'cosmo-grib-api-definitions', 'cosmo-eccodes-definitions', 'libgrib1'
@@ -245,94 +247,94 @@ class Int2lmTest(unittest.TestCase):
     def test_install_pgi(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
-            srun('spack install --test=root int2lm@c2sm-master%pgi')
+            self.Srun('spack install --test=root int2lm@c2sm-master%pgi')
 
     def test_install_no_pollen(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
-            srun('spack install --test=root int2lm@org-master%pgi pollen=False')
+            self.Srun('spack install --test=root int2lm@org-master%pgi pollen=False')
 
     def test_install_gcc(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        srun('spack install --test=root int2lm@c2sm-master%gcc')
+        self.Srun('spack install --test=root int2lm@c2sm-master%gcc')
 
     def test_install_nvhpc(self):
         # Replacement of PGI after upgrade of Daint Feb 22
         if machine == 'daint':
-            srun('spack install --test=root int2lm@c2sm-master%nvhpc')
+            self.Srun('spack install --test=root int2lm@c2sm-master%nvhpc')
 
 
-class IconDuskE2ETest(unittest.TestCase):
+class IconDuskE2ETest(TestCase):
     package_name = 'icondusk-e2e'
     depends_on = {'atlas_utilities', 'dawn4py', 'dusk', 'atlas', 'cuda'}
     machines = all_machines
 
 
-class IconToolsTest(unittest.TestCase):
+class IconToolsTest(TestCase):
     package_name = 'icontools'
     depends_on = {'eccodes', 'cosmo-grib-api'}
     machines = all_machines
 
     # C2SM supported version
     def test_install(self):
-        srun('spack install --test=root icontools@c2sm-master%gcc')
+        self.Srun('spack install --test=root icontools@c2sm-master%gcc')
 
 
-class LibGrib1Test(unittest.TestCase):
+class LibGrib1Test(TestCase):
     package_name = 'libgrib1'
     depends_on = {}
     machines = all_machines
 
 
-class LogTest(unittest.TestCase):
+class LogTest(TestCase):
     package_name = 'log'
     depends_on = {}
     machines = all_machines
 
 
-class MpichTest(unittest.TestCase):
+class MpichTest(TestCase):
     package_name = 'mpich'
     depends_on = {}
     machines = all_machines
 
 
-class OasisTest(unittest.TestCase):
+class OasisTest(TestCase):
     package_name = 'oasis'
     depends_on = {}
     machines = all_machines
 
 
-class OmniCompilerTest(unittest.TestCase):
+class OmniCompilerTest(TestCase):
     package_name = 'omnicompiler'
     depends_on = {}
     machines = all_machines
 
 
-class OmniXmodPoolTest(unittest.TestCase):
+class OmniXmodPoolTest(TestCase):
     package_name = 'omni-xmod-pool'
     depends_on = {}
     machines = all_machines
 
 
-class OpenMPITest(unittest.TestCase):
+class OpenMPITest(TestCase):
     package_name = 'openmpi'
     depends_on = {}
     machines = all_machines
 
 
-class SerialBoxTest(unittest.TestCase):
+class SerialBoxTest(TestCase):
     package_name = 'serialbox'
     depends_on = {}
     machines = all_machines
 
 
-class XcodeMLToolsTest(unittest.TestCase):
+class XcodeMLToolsTest(TestCase):
     package_name = 'xcodeml-tools'
     depends_on = {}
     machines = all_machines
 
 
-class ZLibNGTest(unittest.TestCase):
+class ZLibNGTest(TestCase):
     package_name = 'zlib_ng'
     depends_on = {}
     machines = all_machines
@@ -343,7 +345,7 @@ all_test_cases = {
     c
     for _, c in inspect.getmembers(
         sys.modules[__name__], lambda member: inspect.isclass(member) and
-        issubclass(member, unittest.TestCase))
+        issubclass(member, TestCase) and member != TestCase)
 }
 
 # Maps all packages in this repo to the set of packages they depend on. Must form a DAG.
@@ -535,7 +537,10 @@ if __name__ == '__main__':
         shell=True)
 
     if is_arbitrary_command:
-        run(joined_command)
+        setup = ''
+        if joined_command.startswith('spack'):
+            setup = f'source spack/share/spack/setup-env.sh &&'
+        subprocess.run(f'{setup} {joined_command} >> {machine}.log', check=True, shell=True)
         sys.exit()
     else:
         # collect and run tests from all packages selected
