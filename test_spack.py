@@ -466,8 +466,10 @@ if __name__ == '__main__':
     commands = sys.argv[1:]
     sys.argv = [sys.argv[0]]  # unittest needs this
 
-    commands.remove('launch')
-    commands.remove('jenkins')
+    if 'launch' in commands:
+        commands.remove('launch')
+    if 'jenkins' in commands:
+        commands.remove('jenkins')
 
     upstream = 'OFF'
     if '--upstream' in commands:
