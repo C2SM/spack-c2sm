@@ -5,35 +5,7 @@
 
 import subprocess, re, itertools, os
 from spack import *
-
-
-def get_releases(repo):
-    git_obj = subprocess.run(["git", "ls-remote", "--refs", repo],
-                             capture_output=True)
-    if git_obj.returncode != 0:
-        print("\nWarning: no access to {:s} => not fetching versions\n".format(
-            repo))
-        return []
-    else:
-        git_tags = [
-            re.match('refs/tags/(.*)', x.decode('utf-8')).group(1)
-            for x in git_obj.stdout.split()
-            if re.match('refs/tags/(.*)', x.decode('utf-8'))
-        ]
-        return git_tags
-
-
-def set_versions(repo, reg_filter=None):
-    def filterfn(repo_tag):
-        return re.match(reg_filter, repo_tag) != None
-
-    tags = get_releases(repo)
-    if tags:
-        if reg_filter:
-            tags = list(filter(filterfn, tags))
-
-        for tag in tags:
-            version(tag, git=repo, tag=tag, get_full_repo=True)
+from version_detection import set_versions
 
 
 class Cosmo(MakefilePackage):
@@ -62,8 +34,8 @@ class Cosmo(MakefilePackage):
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
 
-    set_versions(apngit, reg_filter='.*mch.*')
-    set_versions(c2smgit)
+    set_versions(version, apngit, 'apn', regex_filter='.*mch.*')
+    set_versions(version, c2smgit, 'c2sm')
 
     depends_on('netcdf-fortran', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))
@@ -218,6 +190,7 @@ class Cosmo(MakefilePackage):
     conflicts('~gt1', when='@5.07a.mch1.0.p1')
     conflicts('~gt1', when='@5.07a.mch1.0.base')
     conflicts('~gt1', when='@5.07.mch1.0.p10')
+    conflicts('+cppdycore', when='%nvhpc cosmo_target=cpu')
     conflicts('+cppdycore', when='%pgi cosmo_target=cpu')
     # - ML - A conflict should be added there if the oasis variant is
     # chosen and the version is neither c2sm-features nor
@@ -288,6 +261,12 @@ class Cosmo(MakefilePackage):
         if self.compiler.name == 'gcc':
             env.set('GRIBDWDL',
                     '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_gnu')
+        elif self.compiler.name == 'cce':
+            env.set('GRIBDWDL',
+                    '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_cray')
+        elif self.compiler.name == 'nvhpc':
+            env.set('GRIBDWDL',
+                    '-L' + self.spec['libgrib1'].prefix + '/lib -lgrib1_pgi')
         else:
             env.set(
                 'GRIBDWDL', '-L' + self.spec['libgrib1'].prefix +
@@ -297,6 +276,15 @@ class Cosmo(MakefilePackage):
         # MPI library
         if self.mpi_spec.name == 'openmpi':
             env.set('MPIL', '-L' + self.mpi_spec.prefix + ' -lmpi_cxx')
+
+        # manually add libs to linker because of broke modules on Piz Daint for nvidia
+        elif self.spec.variants[
+                'slave'].value == 'daint' and self.compiler.name in ('pgi',
+                                                                     'nvhpc'):
+            env.set(
+                'MPIL', '-L' + self.spec['mpi'].prefix +
+                ' -lmpich -lnvcpumath -lnvhpcatm')
+
         env.set('MPII', '-I' + self.mpi_spec.prefix + '/include')
 
         # Dycoregt & Gridtools linrary
@@ -335,8 +323,9 @@ class Cosmo(MakefilePackage):
         if '+claw' in self.spec:
             claw_flags = ''
             # Set special flags after CLAW release 2.1
-            if self.compiler.name == 'pgi' and self.spec[
-                    'claw'].version >= Version(2.1):
+            if self.compiler.name in (
+                    'pgi',
+                    'nvhpc') and self.spec['claw'].version >= Version(2.1):
                 claw_flags += ' --fc-vendor=portland --fc-cmd=${FC}'
             if 'cosmo_target=gpu' in self.spec:
                 claw_flags += ' --directive=openacc'
@@ -364,11 +353,12 @@ class Cosmo(MakefilePackage):
             env.set('MPPIOI', '-I{:s}/build/lib/mct'.format(oasis_prefix))
 
         # Linker flags
-        if self.compiler.name == 'pgi' and '~cppdycore' in self.spec:
+        if self.compiler.name in ('pgi',
+                                  'nvhpc') and '~cppdycore' in self.spec:
             env.set('LFLAGS', '-lstdc++')
 
         # Compiler & linker variables
-        if self.compiler.name == 'pgi':
+        if self.compiler.name in ('pgi', 'nvhpc'):
             env.set('F90', self.mpi_spec.mpifc + ' -D__PGI_FORTRAN__')
             env.set('LD', self.mpi_spec.mpifc + ' -D__PGI_FORTRAN__')
         else:
@@ -412,7 +402,7 @@ class Cosmo(MakefilePackage):
             OptionsFileName = 'Options'
             if self.compiler.name == 'gcc':
                 OptionsFileName += '.gnu'
-            elif self.compiler.name == 'pgi':
+            elif self.compiler.name in ('pgi', 'nvhpc'):
                 OptionsFileName += '.pgi'
             elif self.compiler.name == 'cce':
                 OptionsFileName += '.cray'
@@ -442,7 +432,8 @@ class Cosmo(MakefilePackage):
                 OptionsFile.filter(
                     'PFLAGS   = -Mpreprocess.*',
                     'PFLAGS   = -Mpreprocess -DNO_MPI_HOST_DATA')
-            if 'cosmo_target=gpu' in self.spec and self.compiler.name == 'pgi':
+            if 'cosmo_target=gpu' in self.spec and self.compiler.name in (
+                    'pgi', 'nvhpc'):
                 OptionsFile.filter(
                     'PFLAGS   = -Mpreprocess.*',
                     'PFLAGS   = -Mpreprocess -DNO_ACC_FINALIZE')

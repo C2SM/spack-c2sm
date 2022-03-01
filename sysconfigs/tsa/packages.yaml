@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler: [gcc@8.3.0, pgi@20.4]
+    compiler: [gcc@8.3.0, nvhpc@21.2, pgi@20.4]
     providers:
       mpicuda: [openmpi+cuda, mpich]
       mpi: [openmpi~cuda]
@@ -41,6 +41,9 @@ packages:
     - spec: openmpi@4.0.2%gcc@8.3.0 ~cuda
       modules:
       - /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2-nocuda/easybuild/modules/all/openmpi/4.0.2-gcc-8.3.0
+    - spec: openmpi@4.1.0%nvhpc@21.2 +cuda 
+      modules:
+      - /apps/common/UES/sandbox/kraushm/tsa-nvhpc/easybuild/modules/all/openmpi/4.1.0-nvhpc-21.2-cuda-11.2
   netcdf-fortran:
     externals:
     - spec: netcdf-fortran@4.4.5%gcc@8.3.0
@@ -48,6 +51,9 @@ packages:
     - spec: netcdf-fortran@4.4.5%pgi@20.4
       modules:
       - /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/pgi/20.4/easybuild/modules/all/netcdf-fortran/4.4.5-pgi-20.4-gcc-8.3.0
+    - spec: netcdf-fortran@4.4.5%nvhpc@21.2
+      modules: 
+      - /apps/common/UES/sandbox/kraushm/tsa-nvhpc/easybuild/modules/all/netcdf-fortran/4.4.5-nvhpc-21.2-cuda-11.2
   netcdf-c:
     externals:
     - spec: netcdf-c@4.7.0%gcc@8.3.0 +mpi
@@ -55,6 +61,9 @@ packages:
     - spec: netcdf-c@4.7.0%pgi@20.4 +mpi
       modules:
       - /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/pgi/20.4/easybuild/modules/all/netcdf/4.7.0-pgi-20.4-gcc-8.3.0
+    - spec: netcdf-c@4.7.0%nvhpc@21.2
+      modules: 
+      - /apps/common/UES/sandbox/kraushm/tsa-nvhpc/easybuild/modules/all/netcdf/4.7.0-nvhpc-21.2-cuda-11.2
   netcdf-cxx4:
     externals:
     - spec: netcdf-cxx4@4.3.0%gcc@8.3.0

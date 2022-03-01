@@ -15,6 +15,7 @@
 
 from spack import *
 import subprocess
+from version_detection import set_versions
 
 
 class Icontools(AutotoolsPackage):
@@ -33,6 +34,9 @@ class Icontools(AutotoolsPackage):
     version('c2sm-master', git=c2sm, branch='master', submodules=True)
     version('dev-build', git=c2sm, branch='master', submodules=True)
     version('dkrz-master', git=dkrz, branch='master', submodules=True)
+
+    set_versions(version, c2sm, 'c2sm')
+    set_versions(version, dkrz, 'dkrz')
 
     depends_on('autoconf%gcc', type='build')
     depends_on('automake%gcc', type='build')

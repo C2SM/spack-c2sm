@@ -41,7 +41,11 @@ The commands below build COSMO with the C++ Dycore for the target GPU.
 
 .. code-block:: bash
 
+  # on Tsa
   spack installcosmo cosmo@org-master%pgi cosmo_target=gpu +cppdycore 
+
+  # on Piz Daint
+  spack installcosmo cosmo@org-master%nvhpc cosmo_target=gpu +cppdycore 
 
 or
 
@@ -57,7 +61,11 @@ The commands below build COSMO without the C++ Dycore  for the target CPU.
 
 .. code-block:: bash
 
+  # on Tsa
   spack installcosmo cosmo@org-master%pgi cosmo_target=cpu ~cppdycore 
+
+  # on Piz Daint
+  spack installcosmo cosmo@org-master%nvhpc cosmo_target=cpu ~cppdycore 
 
 or
 
@@ -87,7 +95,11 @@ In order to build int2lm from the C2SM-RCM GitHub organization use the following
 
 .. code-block:: bash
 
+  # on Tsa
   spack install int2lm@c2sm-master%pgi
+
+  # on Piz Daint
+  spack install int2lm@c2sm-master%nvhpc
 
 Int2lm from COSMO-ORG
 ^^^^^^^^^^^^^^^^^^^^^
@@ -95,7 +107,11 @@ In order to build int2lm from the COSMO-ORG GitHub organization use the followin
 
 .. code-block:: bash
 
+  # on Tsa
   spack install int2lm@org-master%pgi pollen=False
+
+  # on Piz Daint
+  spack install int2lm@org-master%nvhpc pollen=False
 
 ICON
 ------
@@ -167,9 +183,18 @@ or
 
 .. code-block:: bash
 
-  spack location -i int2lm@c2sm-master%pgi
+  spack location -i int2lm@c2sm-master%nvhpc
 
 Note that the package location is also given on the last log line of
 the install process. For cosmo you'll find the executable, either
 ``cosmo_cpu`` or ``cosmo_gpu``, under the ``bin`` subdirectory whereas the
 int2lm executable will be the ``bin`` *file* itself.
+
+Running executables from Spack
+------------------------------
+In order to obtain a correct run-environment for any executable compiled by Spack,
+load the environment provided by Spack:
+
+.. code-block:: bash
+
+  spack load package@<version>%<compiler> +<variants>

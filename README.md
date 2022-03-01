@@ -33,3 +33,15 @@ cd <cosmo_base_dir> # cosmo, not cosmo/cosmo
 spack devbuildcosmo cosmo@dev-build # -t option for test, -c for clean build usually cosmo@dev-build%pgi is enough
 
 ```
+
+## Automatically source the correct spack instance & python3 when using bash
+
+If you want to automatically source the correct spack instance depending on the machine you are working on, you can add the following lines to your .bashrc file:
+
+```bash
+case $(hostname -s) in
+      tsa*|arolla*) module load python; export SPACK_ROOT=/project/g110/spack/user/tsa/spack ;;
+      daint*) module load cray-python; export SPACK_ROOT=/project/g110/spack/user/daint/spack ;;
+esac
+source $SPACK_ROOT/share/spack/setup-env.sh
+```

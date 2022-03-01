@@ -1,6 +1,38 @@
 Important Spack Commands
 ========================
 
+Spack find
+----------
+List and search installed packages
+
+Usage (spack find)
+^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: bash
+  
+  spack find <package>@<version>%<compiler> +<variants>
+
+An example output for spack find of a spec could look as follows:
+
+.. code-block:: bash
+
+  spack find -v cosmo
+  
+  ==> 8 installed packages
+  -- linux-rhel7-skylake_avx512 / gcc@8.3.0 -----------------------
+  cosmo@master~claw cosmo_target=cpu ~cppdycore~debug+dycoretest+eccodes+parallel~pollen~production real_type=double ~serialize slave=tsa ~verbose
+  cosmo@master~claw cosmo_target=cpu ~cppdycore~debug+dycoretest+eccodes+parallel~pollen~production real_type=float ~serialize slave=tsa ~verbose
+
+  -- linux-rhel7-skylake_avx512 / pgi@19.9 ------------------------
+  cosmo@dev-build~claw cosmo_target=cpu ~cppdycore~debug+dycoretest~eccodes+parallel~pollen~production real_type=float +serialize slave=tsa ~verbose
+  cosmo@5.07.mch1.0.p6+claw cosmo_target=gpu +cppdycore~debug+eccodes+parallel+pollen+production real_type=double ~serialize slave=tsa ~verbose
+  cosmo@5.07.mch1.0.p6+claw cosmo_target=gpu +cppdycore~debug+eccodes+parallel+pollen+production real_type=float ~serialize slave=tsa ~verbose
+
+Options (spack find)
+^^^^^^^^^^^^^^^^^^^^^
+* \--paths, -p: show paths to package install directories
+* \--variants, -v: show variants in output (can be long)
+
 Spack list
 ----------
 List and search available packages
@@ -73,8 +105,8 @@ Usage (spack install)
 Options (spack install)
 ^^^^^^^^^^^^^^^^^^^^^^^
 * -v: print output of configuration and compilation for all dependencies to terminal
-* --test=root: run package tests during installation for top-level packages (but skip tests for dependencies)
-* --keep-stage: keep all source needed to build the package
+* \--test=root: run package tests during installation for top-level packages (but skip tests for dependencies)
+* \--keep-stage: keep all source needed to build the package
 
 Spack installcosmo
 ------------------
@@ -100,17 +132,17 @@ Usage (spack installcosmo)
 
 Options (spack installcosmo)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* --test {root,all}: If root is chosen, run COSMO testsuite before installation 
+* \--test {root,all}: If root is chosen, run COSMO testsuite before installation 
                      (but skip tests for dependencies). If all is chosen, 
                      run package tests during installation for all packages.
-* -j --jobs: explicitly set number of parallel jobs
-* --only {package,dependencies}: select the mode of installation.
+* -j \--jobs: explicitly set number of parallel jobs
+* \--only {package,dependencies}: select the mode of installation.
                                  the default is to install the package along with all its dependencies.
                                  alternatively one can decide to install only the package or only
                                  the dependencies.
-* --keep-stage: don't remove the build after compilation
-* -v, --verbose: Verbose installation
-* --force_uninstall: Force uninstall if COSMO-package is already installed
+* \--keep-stage: don't remove the build after compilation
+* -v, \--verbose: Verbose installation
+* \--force_uninstall: Force uninstall if COSMO-package is already installed
 
 Spack dev-build
 ---------------
@@ -136,8 +168,8 @@ Usage (spack dev-build)
 
 Options (spack dev-build)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-* --test=root: run package tests during installation for top-level packages (but skip tests for dependencies)
-* --until <stage>: only run installation until certain stage, like *build* or *install*
+* \--test=root: run package tests during installation for top-level packages (but skip tests for dependencies)
+* \--until <stage>: only run installation until certain stage, like *build* or *install*
 
 .. code-block:: bash
 
@@ -167,15 +199,17 @@ Usage (spack devbuildcosmo)
 
 Options (spack devbuildcosmo)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* --no_specyaml: Ignore *spec.yaml*
+
+* \--no_specyaml: Ignore *spec.yaml*
 * -c --clean_build: Clean build
-* -j <JOBS>, --jobs <JOBS>: Explicitly set number of parallel jobs
-* --test {root,dycore,all}: If root is chosen, run COSMO testsuite before installation
+* -j <JOBS>, \--jobs <JOBS>: Explicitly set number of parallel jobs
+
+* \--test {root,dycore,all}: If root is chosen, run COSMO testsuite before installation
                             (but skip tests for dependencies). If dycore is chosen,
                             run test for Dycore and COSMO testsuite.
                             If all is chosen,
                             run package tests during installation for all packages.
-* -c, --clean_build: Clean dev-build
+* -c, \--clean_build: Clean dev-build
 
 Spack location
 --------------
@@ -221,7 +255,7 @@ Replacing *<command>* with *bash* allows to interactively execute programmes in 
 
 Options (spack build-env)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-* --dump <filename>: dump environment to <filename> to be sourced at some point
+* \--dump <filename>: dump environment to <filename> to be sourced at some point
 
 Spack edit
 ----------
@@ -241,6 +275,9 @@ Add package to the user environment. It can be used i. e. to set all runtime pat
 like `LD_LIBRARY_PATH` as defined in the respective package.
 `More information in the official Spack documentation <https://spack.readthedocs.io/en/latest/command_index.html?highlight=spack%20load#spack-load>`_
 
+It is recommended to load the corresponding environment prior to any execution of an executable
+compiled by Spack.
+
 Usage (spack load)
 ^^^^^^^^^^^^^^^^^^
 
@@ -250,4 +287,4 @@ Usage (spack load)
 
 Options (spack load)
 ^^^^^^^^^^^^^^^^^^^^
-* ---first: load the first match if multiple packages match the spec
+* \--first: load the first match if multiple packages match the spec

@@ -34,6 +34,10 @@ class Icon(Package):
             submodules=True)
     version('2.6.x-rc', commit='040de650', submodules=True)
     version('2.0.17', commit='39ed04ad', submodules=True)
+    version('exclaim-master',
+            branch='master',
+            git='git@github.com:C2SM/icon-exclaim.git',
+            submodules=True)
 
     depends_on('cmake%gcc')
     depends_on('libxml2@2.9.8:%gcc', type=('build', 'link', 'run'))
@@ -91,10 +95,12 @@ class Icon(Package):
             default=False,
             description='Build with hammoz and atm_phy_echam enabled.')
     variant('ocean', default=True, description='Build with ocean enabled')
+    variant('silent-rules',
+            default=True,
+            description='Build with Make silent rules ON')
 
     conflicts('icon_target=cpu', when='+claw')
     conflicts('icon_target=gpu', when='%intel')
-    conflicts('icon_target=gpu', when='%cce')
 
     atm_phy_echam_submodels_namelists_dir = 'externals/atm_phy_echam_submodels/namelists'
     config_dir = '.'
@@ -113,7 +119,7 @@ class Icon(Package):
             'host'].value + '.' + self.spec.variants['icon_target'].value
         if self.compiler.name == 'cce':
             _config_file_name += '.cray'
-        elif self.compiler.name == 'pgi':
+        elif self.compiler.name == 'nvhpc' or self.compiler.name == 'pgi':
             _config_file_name += '.nvidia'
         else:
             _config_file_name += '.' + self.compiler.name
@@ -151,10 +157,19 @@ class Icon(Package):
         if '+eccodes' in self.spec:
             args.append('--enable-grib2')
 
+        # Ocean
         if '~ocean' in self.spec:
             args.append('--disable-ocean')
         else:
             args.append('--enable-ocean')
+
+        # Rte-rrtmgp
+        if '~rte-rrtmgp' in self.spec:
+            args.append('--disable-rte-rrtmgp')
+
+        # Silent rules
+        if '~silent-rules' in self.spec:
+            args.append('--disable-silent-rules')
 
         return args
 

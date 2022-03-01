@@ -1,1 +1,2 @@
 psphinxTheme
+karma-sphinx-theme

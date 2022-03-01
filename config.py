@@ -81,6 +81,8 @@ def main():
         shutil.copy('./tools/spack-scripting/scripting/cmd/dev_build.py',
                     args.idir + '/spack/lib/spack/spack/cmd/')
 
+    shutil.copy('./tools/version_detection.py',
+                args.idir + '/spack/lib/spack/version_detection.py')
     sys.path.insert(1, os.path.join(args.idir, 'spack/lib/spack/external'))
     from ruamel import yaml
 
@@ -178,7 +180,7 @@ def main():
             'admin-', '') + '/' + afile + ' ' + args.idir + '/spack/etc/spack/'
         subprocess.run(cmd.split(), check=True)
 
-    print('Spack successfully installed. \nSource ' + args.idir +
+    print('Spack successfully installed. \nsource ' + args.idir +
           '/spack/share/spack/setup-env.sh for setting up the instance.')
 
 

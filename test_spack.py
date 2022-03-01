@@ -53,13 +53,21 @@ class CosmoTest(unittest.TestCase):
 
     def test_install_master_gpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('spack installcosmo cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
-            )
+        if machine == 'tsa':
+            run('spack installcosmo cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
+                )
+        if machine == 'daint':
+            run('spack installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=gpu +cppdycore'
+                )
 
     def test_install_master_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('spack installcosmo cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
-            )
+        if machine == 'tsa':
+            run('spack installcosmo cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
+                )
+        if machine == 'daint':
+            run('spack installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=cpu ~cppdycore'
+                )
 
     # def test_install_test(self):
     #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/289
@@ -73,8 +81,12 @@ class CosmoTest(unittest.TestCase):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         run('git clone git@github.com:MeteoSwiss-APN/cosmo.git')
         try:
-            run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore',
-                cwd='cosmo')
+            if machine == 'tsa':
+                run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore',
+                    cwd='cosmo')
+            if machine == 'daint':
+                run('spack devbuildcosmo cosmo@dev-build%nvhpc cosmo_target=cpu ~cppdycore',
+                    cwd='cosmo')
         finally:
             run('rm -rf cosmo')
 
@@ -82,15 +94,20 @@ class CosmoTest(unittest.TestCase):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         run('git clone git@github.com:MeteoSwiss-APN/cosmo.git')
         try:
-            run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
-                cwd='cosmo')
+            if machine == 'tsa':
+                run('spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
+                    cwd='cosmo')
+            if machine == 'daint':
+                run('spack devbuildcosmo cosmo@dev-build%nvhpc cosmo_target=gpu +cppdycore',
+                    cwd='cosmo')
         finally:
             run('rm -rf cosmo')
 
     def test_install_old_version(self):
         # So we can reproduce results from old versions.
-        run('spack installcosmo cosmo@5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore'
-            )
+        if machine == 'tsa':
+            run('spack installcosmo cosmo@apn_5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore'
+                )
 
 
 class CosmoDycoreTest(unittest.TestCase):
@@ -174,11 +191,17 @@ class GridToolsTest(unittest.TestCase):
 class IconTest(unittest.TestCase):
     package_name = 'icon'
     depends_on = {'serialbox', 'eccodes', 'claw'}
-    machines = all_machines
+    machines = {'daint'}
 
-    # def test_install(self):
-    #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/289
-    #     run('spack install icon@nwp%pgi icon_target=gpu +claw')
+    def test_install_nwp_gpu_nvidia(self):
+        # So we can make sure ICON-NWP (OpenACC) devs can compile (mimick Buildbot for Tsa)
+        run('spack install icon@nwp%nvhpc icon_target=gpu +claw +eccodes +ocean'
+            )
+
+    def test_install_nwp_cpu_nvidia(self):
+        # So we can make sure ICON-NWP (OpenACC) devs can compile (mimick Buildbot for Tsa)
+        run('spack install icon@nwp%nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean'
+            )
 
     # TODO: Reactivate once the test works!
     # def test_devbuild_cpu(self):
@@ -214,15 +237,22 @@ class Int2lmTest(unittest.TestCase):
 
     def test_install_pgi(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('spack install --test=root int2lm@c2sm-master%pgi')
+        if machine == 'tsa':
+            run('spack install --test=root int2lm@c2sm-master%pgi')
+
+    def test_install_no_pollen(self):
+        # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
+        if machine == 'tsa':
+            run('spack install --test=root int2lm@org-master%pgi pollen=False')
 
     def test_install_gcc(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         run('spack install --test=root int2lm@c2sm-master%gcc')
 
-    def test_install_no_pollen(self):
-        # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        run('spack install --test=root int2lm@org-master%pgi pollen=False')
+    def test_install_nvhpc(self):
+        # Replacement of PGI after upgrade of Daint Feb 22
+        if machine == 'daint':
+            run('spack install --test=root int2lm@c2sm-master%nvhpc')
 
 
 class IconDuskE2ETest(unittest.TestCase):
@@ -349,6 +379,7 @@ def Has_cycle(directed_graph: map, visited=None, vertex=None) -> bool:
 
 
 class DAG_Algorithm_Test(unittest.TestCase):
+
     def test_direction(self):
         # a -> b -> c
         DAG = {'a': {'b'}, 'b': {'c'}}
@@ -388,6 +419,7 @@ class DAG_Algorithm_Test(unittest.TestCase):
 
 
 class SelfTest(unittest.TestCase):
+
     def test_expansions(self):
         """Tests that expandable commands are not package names"""
         for exp in expansions.keys():
@@ -410,12 +442,15 @@ if __name__ == '__main__':
     test_loader = unittest.TestLoader()
 
     # Do self-test first to fail fast
+    print('====================================', flush=True)
     print('Self-tests:', flush=True)
+    print('====================================', flush=True)
     suite = unittest.TestSuite([
         test_loader.loadTestsFromTestCase(DAG_Algorithm_Test),
         test_loader.loadTestsFromTestCase(SelfTest)
     ])
     result = unittest.TextTestRunner(verbosity=2).run(suite)
+    print('====================================', flush=True)
     if not result.wasSuccessful():
         sys.exit(1)
 
@@ -430,52 +465,77 @@ if __name__ == '__main__':
         upstream = 'ON'
         commands.remove('--upstream')
 
+    exclusive = False
+    if '--exclusive' in commands:
+        exclusive = True
+        commands.remove('--exclusive')
+
     if '--daint' in commands:
         machine = 'daint'
+        spack_machine = machine
         commands.remove('--daint')
+    if '--dom' in commands:
+        machine = 'daint'
+        spack_machine = 'dom'
+        commands.remove('--dom')
     if '--tsa' in commands:
         machine = 'tsa'
+        spack_machine = machine
         commands.remove('--tsa')
-
-    # configure spack
-    print(f'Configuring spack with upstream {upstream} on machine {machine}.',
-          flush=True)
-    subprocess.run(
-        f'python ./config.py -m {machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache',
-        check=True,
-        shell=True)
 
     known_commands = dependencies.keys() | expansions.keys()
 
-    # handles backward compatibility to run any command
-    if any(c not in known_commands for c in commands):
+    # handles backward compatibility to run an arbitrary command
+    is_arbitrary_command = any(c not in known_commands for c in commands)
+
+    print('Test plan:', flush=True)
+    print('====================================', flush=True)
+    print(
+        f'Configuring spack with upstream {upstream} on machine {spack_machine}.',
+        flush=True)
+
+    if is_arbitrary_command:
         joined_command = ' '.join(commands)
-        print(f'Input contains unknown command. Executing: {joined_command}',
-              flush=True)
+        print(f'Executing: {joined_command}', flush=True)
+    else:
+        commands = set(commands)
+
+        # expand expandable commands
+        while any(c in expansions for c in commands):
+            for c in commands:
+                if c in expansions:
+                    commands |= expansions[c]
+                    commands.remove(c)
+                    break
+
+        # all commands are packages now!
+
+        if exclusive:
+            packages_to_test = commands
+        else:
+            packages_to_test = Self_and_up(commands, dependencies)
+
+        # run tests
+        print(f'Testing packages: {packages_to_test}', flush=True)
+
+    print('====================================', flush=True)
+    print('Testing now...', flush=True)
+
+    # configure spack
+    subprocess.run(
+        f'python ./config.py -m {spack_machine} -i . -r ./spack/etc/spack -p ./spack -s ./spack -u {upstream} -c ./spack-cache',
+        check=True,
+        shell=True)
+
+    if is_arbitrary_command:
         run(joined_command)
         sys.exit()
-
-    commands = set(commands)
-
-    # expand expandable commands
-    while any(c in expansions for c in commands):
-        for c in commands:
-            if c in expansions:
-                commands |= expansions[c]
-                commands.remove(c)
-                break
-
-    # all commands are packages now!
-
-    packages_to_test = Self_and_up(commands, dependencies)
-
-    # collect tests from all packages to test
-    suite = unittest.TestSuite([
-        test_loader.loadTestsFromTestCase(case) for case in all_test_cases
-        if case.package_name in packages_to_test and machine in case.machines
-    ])
-
-    # run tests
-    print(f'Testing packages: {packages_to_test}', flush=True)
-    result = unittest.TextTestRunner(verbosity=2).run(suite)
-    sys.exit(not result.wasSuccessful())
+    else:
+        # collect and run tests from all packages selected
+        suite = unittest.TestSuite([
+            test_loader.loadTestsFromTestCase(case) for case in all_test_cases
+            if case.package_name in packages_to_test
+            and machine in case.machines
+        ])
+        result = unittest.TextTestRunner(verbosity=2).run(suite)
+        sys.exit(not result.wasSuccessful())
