@@ -73,7 +73,7 @@ def remove_duplicate_packages(c2sm,cscs,external):
     c2sm.update(external)
     return c2sm
 
-spack_config_root = os.getenv('SPACK_SYSTEM_CONFIG_PATH')
+spack_config_root = os.environ['SPACK_SYSTEM_CONFIG_PATH']
 
 # compilers
 c2sm_compilers = load_from_yaml('sysconfigs/templates/daint/compilers.yaml')['compilers']
