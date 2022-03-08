@@ -66,6 +66,12 @@ def main():
         help=
         'Define spack caches (source and misc)  directories. Default:  ~/.spack/machine/source_cache and ~/.spack/machine/cache'
     )
+
+    parser.add_argument('--no_yaml_copy',
+                        type=str,
+                        default='OFF',
+                        choices=('ON', 'OFF'),
+                        help='ON or OFF, copy machine-specific yaml')
     args = parser.parse_args()
 
     if not os.path.isdir(args.idir + '/spack'):
@@ -174,11 +180,12 @@ def main():
                        default_flow_style=False)
 
     # copy modules.yaml, packages.yaml and compiles.yaml files in site scope of spack instance
-    config_files = ["compilers.yaml", "modules.yaml", "packages.yaml"]
-    for afile in config_files:
-        cmd = 'cp ' + dir_path + '/sysconfigs/' + args.machine.replace(
-            'admin-', '') + '/' + afile + ' ' + args.idir + '/spack/etc/spack/'
-        subprocess.run(cmd.split(), check=True)
+    if args.no_yaml_copy == 'ON':
+        config_files = ["compilers.yaml", "modules.yaml", "packages.yaml"]
+        for afile in config_files:
+            cmd = 'cp ' + dir_path + '/sysconfigs/' + args.machine.replace(
+                'admin-', '') + '/' + afile + ' ' + args.idir + '/spack/etc/spack/'
+            subprocess.run(cmd.split(), check=True)
 
     print('Spack successfully installed. \nsource ' + args.idir +
           '/spack/share/spack/setup-env.sh for setting up the instance.')
