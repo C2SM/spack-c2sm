@@ -80,11 +80,16 @@ spack_config_root = os.environ['SPACK_SYSTEM_CONFIG_PATH']
 
 os.environ["SPACK_USER_CONFIG_PATH"] = os.getcwd()
 
-command = ["./config.py","-i",".","-u","OFF","-m","daint","--no_yaml_copy", "ON"]
-subprocess.run(command,check=True)
-command = ['bash', '-c',"source spack/share/spack/setup-env.sh && \
-           spack external find --not-buildable --scope=user"]
-subprocess.run(command,check=True)
+command = [
+    "./config.py", "-i", ".", "-u", "OFF", "-m", "daint", "--no_yaml_copy",
+    "ON"
+]
+subprocess.run(command, check=True)
+command = [
+    'bash', '-c', "source spack/share/spack/setup-env.sh && \
+           spack external find --not-buildable --scope=user"
+]
+subprocess.run(command, check=True)
 
 os.environ.pop("SPACK_USER_CONFIG_PATH")
 

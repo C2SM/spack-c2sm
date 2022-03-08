@@ -184,7 +184,8 @@ def main():
         config_files = ["compilers.yaml", "modules.yaml", "packages.yaml"]
         for afile in config_files:
             cmd = 'cp ' + dir_path + '/sysconfigs/' + args.machine.replace(
-                'admin-', '') + '/' + afile + ' ' + args.idir + '/spack/etc/spack/'
+                'admin-',
+                '') + '/' + afile + ' ' + args.idir + '/spack/etc/spack/'
             subprocess.run(cmd.split(), check=True)
 
     print('Spack successfully installed. \nsource ' + args.idir +
