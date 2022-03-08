@@ -75,6 +75,7 @@ def remove_duplicate_packages(c2sm, cscs, external):
     c2sm.update(external)
     return c2sm
 
+
 spack_config_root = os.environ['SPACK_SYSTEM_CONFIG_PATH']
 
 os.environ["SPACK_USER_CONFIG_PATH"] = os.getcwd()
