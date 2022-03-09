@@ -180,7 +180,7 @@ def main():
                        default_flow_style=False)
 
     # copy modules.yaml, packages.yaml and compiles.yaml files in site scope of spack instance
-    if args.no_yaml_copy == 'ON':
+    if args.no_yaml_copy == 'OFF':
         config_files = ["compilers.yaml", "modules.yaml", "packages.yaml"]
         for afile in config_files:
             cmd = 'cp ' + dir_path + '/sysconfigs/' + args.machine.replace(
