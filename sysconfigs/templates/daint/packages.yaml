@@ -111,3 +111,7 @@ packages:
     externals:
     - spec: bzip2@1.0.6
       prefix: /usr
+  libxml2:
+    externals:
+    - spec: libxml2@2.9.7%gcc
+      prefix: /usr
