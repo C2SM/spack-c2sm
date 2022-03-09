@@ -59,3 +59,55 @@ packages:
       modules:
       - daint-gpu
       - CMake/3.22.1
+  cuda:
+    buildable: false
+    version: ['11.0']
+    externals:
+    - spec: cuda@11.0
+      prefix: /usr/local/cuda-11.0
+  curl:
+    buildable: false
+    externals:
+    - spec: curl@7.60.0
+      prefix: /usr
+  diffutils:
+    buildable: false
+    externals:
+    - spec: diffutils@3.6
+      prefix: /usr
+  zlib:
+    buildable: false
+    externals:
+    - spec: zlib@1.2.11
+      prefix: /usr
+  openssl:
+    buildable: false
+    externals:
+    - spec: openssl@1.1.0i
+      prefix: /usr
+  pkg-config:
+    buildable: false
+    externals:
+    - spec: pkg-config@0.29.2
+      prefix: /usr
+  autoconf:
+    buildable: false
+    externals:
+    - spec: autoconf@2.69%gcc
+      prefix: /usr
+  automake:
+    buildable: false
+    externals:
+    - spec: automake@1.15.1%gcc
+      prefix: /usr
+  binutils:
+    buildable: false
+    variants: +gold~headers+libiberty+nls~plugin
+    externals:
+    - spec: binutils@2.32
+      prefix: /usr
+  bzip2:
+    buildable: false
+    externals:
+    - spec: bzip2@1.0.6
+      prefix: /usr
