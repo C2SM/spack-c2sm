@@ -75,7 +75,8 @@ def remove_duplicate_packages(c2sm, cscs, external):
     c2sm.update(external)
     return c2sm
 
-def allign_cuda_versions(joint,cscs, version):
+
+def allign_cuda_versions(joint, cscs, version):
     spec_joint = joint['cuda']['externals'][0]['spec']
     specs_cscs = []
     prefix_cscs = []
@@ -93,6 +94,7 @@ def allign_cuda_versions(joint,cscs, version):
     joint['cuda']['externals'][0]['prefix'] = prefix
 
     return joint
+
 
 spack_config_root = os.environ['SPACK_SYSTEM_CONFIG_PATH']
 
@@ -138,7 +140,7 @@ joint_packages = remove_duplicate_packages(c2sm_packages, cscs_packages,
 # cross-check
 
 # cuda
-joint_packages = allign_cuda_versions(joint_packages,cscs_packages, '11.0')
+joint_packages = allign_cuda_versions(joint_packages, cscs_packages, '11.0')
 
 joint_yaml = {}
 joint_yaml['packages'] = joint_packages
