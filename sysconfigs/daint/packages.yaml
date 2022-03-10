@@ -1,54 +1,355 @@
 packages:
   all:
-        # default compilers defined by the system
-        # these reflect the current installed PE
-    compiler: [gcc@9.3.0, gcc@8.3.0, nvhpc@21.3, cce@12.0.3, gcc@11.2.0,intel@2021.3.0]
+    compiler:
+    - gcc@9.3.0
+    - gcc@8.3.0
+    - nvhpc@21.3
+    - cce@12.0.3
+    - gcc@11.2.0
+    - intel@2021.3.0
     providers:
-      mpi: [cray-mpich]
-            # if the mpich package support +cuda in the future it needs to be put there
-      mpicuda: [cray-mpich]
-      mkl: [intel-mkl]
-      blas: [cray-libsci_acc, cray-libsci, intel-mkl]
-      scalapack: [cray-libsci_acc, cray-libsci, intel-mkl]
-      pkgconfig: [pkg-config]
-    target: [haswell]
+      blas:
+      - cray-libsci_acc
+      - cray-libsci
+      - intel-mkl
+      mkl:
+      - intel-mkl
+      mpi:
+      - cray-mpich
+      mpicuda:
+      - cray-mpich
+      pkgconfig:
+      - pkg-config
+      scalapack:
+      - cray-libsci_acc
+      - cray-libsci
+      - intel-mkl
+    target:
+    - haswell
+  autoconf:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: autoconf@2.69%gcc
+  automake:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: automake@1.15.1%gcc
+  bash:
+    buildable: false
+    externals:
+    - prefix: /usr/local
+      spec: bash@4.4.23
+  binutils:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: binutils@2.32
+    variants: +gold~headers+libiberty+nls~plugin
+  bison:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: bison@3.0.4
+  bzip2:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: bzip2@1.0.6
+  cmake:
+    buildable: false
+    externals:
+    - modules:
+      - daint-gpu
+      - CMake/3.22.1
+      spec: cmake@3.22
   cosmo:
+    compiler:
+    - nvhpc@21.3
     variants: cuda_arch=60 cosmo_target=gpu slave=daint
-    version: [master]
-    compiler: [nvhpc@21.3]
-  gridtools:
-    variants: +cuda cuda_arch=60
-    compiler: [gcc]
+    version:
+    - master
   cosmo-dycore:
+    compiler:
+    - gcc@8.3.0
     variants: slave=daint +cuda cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/
       slurm_partition= "normal" slurm_bin= "srun" slurm_gpu= "-" slurm_opt_nodes=
       "-N" slurm_nodes= "{0}"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint=
       "-C" slurm_constraint= "gpu"
-    compiler: [gcc@8.3.0]
-  icontools:
-    variants: slave=daint
-    compiler: [gcc]
+  cpio:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: cpio@2.12
+  cray-libsci:
+    externals:
+    - modules:
+      - cray-libsci/20.09.1
+      spec: cray-libsci@20.09.1
+  cray-mpich:
+    externals:
+    - modules:
+      - cray-mpich/7.7.18
+      spec: cray-mpich@7.7.18
+  cuda:
+    buildable: false
+    externals:
+    - prefix: /usr/local/cuda-11.0
+      spec: cuda@11.0
+    version:
+    - '11.0'
+  curl:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: curl@7.60.0
+  diffutils:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: diffutils@3.6
+  doxygen:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: doxygen@1.8.14~graphviz~mscgen
+  file:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: file@5.32
+  findutils:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: findutils@4.6.0
+  flex:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: flex@2.6.4+lex
+  gawk:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: gawk@4.2.1
+  gcc:
+    buildable: false
+    externals:
+    - extra_attributes:
+        compilers:
+          c: /usr/bin/gcc
+          cxx: /usr/bin/g++
+          fortran: /usr/bin/gfortran-7
+      prefix: /usr
+      spec: gcc@7.5.0 languages=c,c++,fortran
+  ghostscript:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: ghostscript@9.52
+  git:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: git@2.26.2~tcltk
+  git-lfs:
+    buildable: false
+    externals:
+    - prefix: /users/juckerj/.local
+      spec: git-lfs@2.10.0
+  gmake:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: gmake@4.2.1
+  gridtools:
+    compiler:
+    - gcc
+    variants: +cuda cuda_arch=60
+  groff:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: groff@1.22.3
+  hdf5:
+    buildable: false
+    externals:
+    - modules:
+      - cray-hdf5/1.12.0.4
+      spec: hdf5@1.12.0.4 ~mpi +hl
+    - modules:
+      - cray-hdf5-parallel/1.12.0.4
+      spec: hdf5@1.12.0.4 +mpi +hl
   icon:
+    compiler:
+    - nvhpc@21.3
+    - pgi@21.3.0
+    - cce@12.0.3
     variants: host=daint
-    compiler: [nvhpc@21.3, pgi@21.3.0, cce@12.0.3]
+  icontools:
+    compiler:
+    - gcc
+    variants: slave=daint
   int2lm:
     variants: slave=daint
+  jemalloc:
+    externals:
+    - modules:
+      - cray-jemalloc/5.1.0.3
+      spec: jemalloc@5.1.0.3
+  krb5:
+    buildable: false
+    externals:
+    - prefix: /usr/lib/mit
+      spec: krb5@1.16.3
+  libfuse:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: libfuse@2.9.7
+    - prefix: /usr
+      spec: libfuse@3.6.1
+  libtool:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: libtool@2.4.6
+  libxml2:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: libxml2@2.9.7%gcc
+  lustre:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: lustre@2.12.4.3_cray_148_ga7edc4b
+  m4:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: m4@1.4.18
+  ncurses:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: ncurses@6.1.20180317+termlib abi=6
   netcdf-c:
     buildable: false
     externals:
-    - spec: netcdf-c@4.7.4.4%nvhpc+parallel-netcdf+mpi
-      modules:
+    - modules:
       - cray-netcdf-hdf5parallel/4.7.4.4
-    - spec: netcdf-c@4.7.4.4%nvhpc~parallel-netcdf~mpi
-      modules:
+      spec: netcdf-c@4.7.4.4%nvhpc+parallel-netcdf+mpi
+    - modules:
       - cray-netcdf/4.7.4.4
-    - spec: netcdf-c@4.7.4.4%gcc+parallel-netcdf+mpi
-      prefix:  /opt/cray/pe/netcdf-hdf5parallel/4.7.4.4/GNU/8.2
+      spec: netcdf-c@4.7.4.4%nvhpc~parallel-netcdf~mpi
+    - prefix: /opt/cray/pe/netcdf-hdf5parallel/4.7.4.4/GNU/8.2
+      spec: netcdf-c@4.7.4.4%gcc+parallel-netcdf+mpi
   netcdf-fortran:
     buildable: false
     externals:
-    - spec: netcdf-fortran@4.7.4.4%nvhpc
-      modules:
+    - modules:
       - cray-netcdf-hdf5parallel/4.7.4.4
-    - spec: netcdf-fortran@4.7.4.4%gcc
-      prefix: /opt/cray/pe/netcdf/4.7.4.4/GNU/8.2
+      spec: netcdf-fortran@4.7.4.4%nvhpc
+    - prefix: /opt/cray/pe/netcdf/4.7.4.4/GNU/8.2
+      spec: netcdf-fortran@4.7.4.4%gcc
+  openssh:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: openssh@8.1p1
+  openssl:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: openssl@1.1.0i
+  papi:
+    externals:
+    - modules:
+      - papi/6.0.0.9
+      spec: papi@6.0.0.9
+  perl:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: perl@5.26.1~cpanm+shared+threads
+  petsc:
+    externals:
+    - modules:
+      - cray-petsc/3.14.5.0
+      spec: petsc@3.14.5.0~complex~cuda~int64
+    - modules:
+      - cray-petsc-64/3.14.5.0
+      spec: petsc@3.14.5.0~complex~cuda+int64
+    - modules:
+      - cray-petsc-complex/3.14.5.0
+      spec: petsc@3.14.5.0+complex~cuda~int64
+    - modules:
+      - cray-petsc-complex-64/3.14.5.0
+      spec: petsc@3.14.5.0+complex~cuda+int64
+  pkg-config:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: pkg-config@0.29.2
+  python:
+    buildable: false
+    externals:
+    - prefix: /opt/python/3.9.4.1
+      spec: python@3.9.4+bz2+ctypes+dbm+lzma~nis+pyexpat+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+    - prefix: /usr
+      spec: python@2.7.18+bz2+ctypes~dbm~lzma+nis+pyexpat+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+    - prefix: /usr
+      spec: python@3.6.13+bz2+ctypes~dbm+lzma+nis+pyexpat+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
+  r:
+    externals:
+    - modules:
+      - cray-R/4.1.1.0
+      spec: r@4.1.1.0
+  rsync:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: rsync@3.1.3
+  ruby:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: ruby@2.5.9
+  sed:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: sed@4.4
+  sqlite:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: sqlite@3.36.0+fts~functions+rtree
+  tar:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: tar@1.30
+  texinfo:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: texinfo@6.5
+  texlive:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: texlive@20170524
+  xz:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: xz@5.2.3
+  zlib:
+    buildable: false
+    externals:
+    - prefix: /usr
+      spec: zlib@1.2.11

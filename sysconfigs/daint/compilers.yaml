@@ -1,46 +1,136 @@
 compilers:
 - compiler:
-    spec: gcc@8.3.0
-    paths:
-      cc: cc
-      cxx: CC
-      f77: ftn
-      fc: ftn
+    environment: {}
+    extra_rpaths: []
     flags: {}
-    operating_system: cnl7
-    target: any
     modules:
     - PrgEnv-gnu
     - gcc/8.3.0
+    operating_system: cnl7
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    spec: gcc@8.3.0
+    target: any
+- compiler:
     environment: {}
     extra_rpaths: []
-- compiler:
+    flags: {}
+    modules:
+    - PrgEnv-nvidia
+    - nvidia/21.3
+    operating_system: cnl7
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
     spec: nvhpc@21.3
-    paths:
-      cc: cc
-      cxx: CC
-      f77: ftn
-      fc: ftn
-    flags: {}
-    operating_system: cnl7
     target: any
-    modules:
-    - PrgEnv-nvidia
-    - nvidia/21.3
-    environment: {}
-    extra_rpaths: []
 - compiler:
-    spec: pgi@21.3.0
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-nvidia
+    - nvidia/21.3
+    operating_system: cnl7
     paths:
       cc: cc
       cxx: CC
       f77: ftn
       fc: ftn
-    flags: {}
-    operating_system: cnl7
+    spec: pgi@21.3.0
     target: any
-    modules:
-    - PrgEnv-nvidia
-    - nvidia/21.3
+- compiler:
     environment: {}
     extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-cray
+    - cce/12.0.3
+    operating_system: cnl7
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    spec: cce@12.0.3
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-gnu
+    - gcc/9.3.0
+    operating_system: cnl7
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    spec: gcc@9.3.0
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-gnu
+    - gcc/10.3.0
+    operating_system: cnl7
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    spec: gcc@10.3.0
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-gnu
+    - gcc/11.2.0
+    operating_system: cnl7
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    spec: gcc@11.2.0
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-intel
+    - intel/2021.3.0
+    operating_system: cnl7
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    spec: intel@2021.3.0
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-pgi
+    - pgi/20.1.1
+    operating_system: cnl7
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    spec: pgi@20.1.1
+    target: any
