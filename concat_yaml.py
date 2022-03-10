@@ -141,9 +141,9 @@ def join_compilers(primary, secondary):
 
 def join_packages(primary, secondary, external):
     print('Join packages')
-    primary_packages = load_from_yaml(primary)
-    secondary_packages = load_from_yaml(secondary)
-    external_packages = load_from_yaml(external)
+    primary_packages = load_from_yaml(primary)['packages']
+    secondary_packages = load_from_yaml(secondary)['packages']
+    external_packages = load_from_yaml(external)['packages']
 
     primary_package_names = dictkeys_as_set(primary_packages)
     secondary_package_names = dictkeys_as_set(secondary_packages)
@@ -163,8 +163,10 @@ def join_packages(primary, secondary, external):
 
     primary.update(secondary)
     primary.update(external)
+    dict = {}
+    dict['packages'] = primary
 
-    return primary
+    return dict
 
 
 spack_config_root = os.environ['SPACK_SYSTEM_CONFIG_PATH']
