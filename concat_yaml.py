@@ -8,6 +8,7 @@ warnings.simplefilter('ignore', yaml.error.UnsafeLoaderWarning)
 
 
 def load_from_yaml(file):
+    print(f'Load yaml file: {file}')
     with open(file, "r") as f:
         try:
             data = yaml.load(f)
@@ -32,7 +33,6 @@ def dictkeys_as_set(dict):
 
 
 def remove_duplicate_compilers(c2sm, cscs, keys):
-
     c2sm_specs = specs_from_list_with_keys(c2sm, keys[0], keys[1])
     cscs_specs = specs_from_list_with_keys(cscs, keys[0], keys[1])
 
@@ -95,55 +95,92 @@ def allign_cuda_versions(joint, cscs, version):
 
     return joint
 
+def spack_external_find(machine,packages_file):
+
+    print(f'Find externals on {machine}')
+
+    os.environ["SPACK_USER_CONFIG_PATH"] = os.getcwd()
+
+    if os.path.exists(packages_file): os.remove(packages_file)
+
+    command = [
+        "./config.py", "-i", ".", "-u", "OFF", "-m", machine, "--no_yaml_copy",
+        "ON"
+    ]
+    subprocess.run(command, check=True)
+    command = [
+        'bash', '-c', "source spack/share/spack/setup-env.sh && \
+               spack external find --not-buildable --scope=user"
+    ]
+    subprocess.run(command, check=True)
+
+    os.environ.pop("SPACK_USER_CONFIG_PATH")
+
+def dump_yaml_to_file(yaml_content,yaml_name,final_key):
+    print(f'Dump to yaml: {yaml_name}')
+    yaml_data = {}
+    yaml_data[final_key] = yaml_content
+    yaml.safe_dump(yaml_data,
+                   open(yaml_name, 'w'),
+                   default_flow_style=False)
+
+def join_compilers(primary,secondary):
+    print('Join compilers')
+
+    primary_compilers = load_from_yaml(primary)
+    secondary_compilers = load_from_yaml(secondary)
+
+    joint = remove_duplicate_compilers(primary_compilers['compilers'],
+            secondary_compilers['compilers'],
+            ['compiler', 'spec'])
+
+    return joint
+
+def join_packages(primary,secondary,external):
+    print('Join packages')
+    primary_packages = load_from_yaml(primary)
+    secondary_packages = load_from_yaml(secondary)
+    external_packages = load_from_yaml(external)
+
+    primary_package_names = dictkeys_as_set(primary_packages)
+    secondary_package_names = dictkeys_as_set(secondary_packages)
+    external_package_names = dictkeys_as_set(external_packages)
+
+    duplicates = (primary_package_names & secondary_package_names)
+    for dupl in duplicates:
+        secondary_package_names.remove(dupl)
+
+    duplicates = (primary_package_names & external_package_names)
+    for dupl in duplicates:
+        external_package_names.remove(dupl)
+
+    primary = remove_from_dict(primary_packages, primary_package_names)
+    secondary = remove_from_dict(secondary_packages, secondary_package_names)
+    external = remove_from_dict(external_packages, external_package_names)
+
+    primary.update(secondary)
+    primary.update(external)
+
+    return primary
+
 
 spack_config_root = os.environ['SPACK_SYSTEM_CONFIG_PATH']
 
-os.environ["SPACK_USER_CONFIG_PATH"] = os.getcwd()
+c2sm_compiler_file = 'sysconfigs/templates/daint/compilers.yaml'
+module_compiler_file = f'{spack_config_root}/compilers.yaml'
+joint_compiler_file = 'sysconfigs/daint/compilers.yaml'
 
-command = [
-    "./config.py", "-i", ".", "-u", "OFF", "-m", "daint", "--no_yaml_copy",
-    "ON"
-]
-subprocess.run(command, check=True)
-command = [
-    'bash', '-c', "source spack/share/spack/setup-env.sh && \
-           spack external find --not-buildable --scope=user"
-]
-subprocess.run(command, check=True)
+c2sm_packages_file = 'sysconfigs/templates/daint/packages.yaml'
+module_packages_file = f'{spack_config_root}/packages.yaml'
+external_packages_file = 'packages.yaml'
+joint_packages_file = 'sysconfigs/daint/packages.yaml'
 
-os.environ.pop("SPACK_USER_CONFIG_PATH")
 
-# compilers
-c2sm_compilers = load_from_yaml(
-    'sysconfigs/templates/daint/compilers.yaml')['compilers']
-cscs_compilers = load_from_yaml(
-    f'{spack_config_root}/compilers.yaml')['compilers']
-joint_compilers = remove_duplicate_compilers(c2sm_compilers, cscs_compilers,
-                                             ['compiler', 'spec'])
+spack_external_find('daint',external_packages_file)
 
-joint_yaml = {}
-joint_yaml['compilers'] = joint_compilers
-yaml.safe_dump(joint_yaml,
-               open('sysconfigs/daint/compilers.yaml', 'w'),
-               default_flow_style=False)
+joint_compilers = join_compilers(c2sm_compiler_file,module_compiler_file)
 
-# packages
-c2sm_packages = load_from_yaml(
-    'sysconfigs/templates/daint/packages.yaml')['packages']
-cscs_packages = load_from_yaml(
-    f'{spack_config_root}/packages.yaml')['packages']
-external_packages = load_from_yaml('packages.yaml')['packages']
+joint_packages = join_packages(c2sm_packages_file, module_packages_file, external_packages_file)
 
-joint_packages = remove_duplicate_packages(c2sm_packages, cscs_packages,
-                                           external_packages)
-
-# cross-check
-
-# cuda
-joint_packages = allign_cuda_versions(joint_packages, cscs_packages, '11.0')
-
-joint_yaml = {}
-joint_yaml['packages'] = joint_packages
-yaml.safe_dump(joint_yaml,
-               open('sysconfigs/daint/packages.yaml', 'w'),
-               default_flow_style=False)
+dump_yaml_to_file(joint_compilers,joint_compiler_file, 'compilers')
+dump_yaml_to_file(joint_packages,joint_packages_file, 'packages')
