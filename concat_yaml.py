@@ -95,7 +95,8 @@ def allign_cuda_versions(joint, cscs, version):
 
     return joint
 
-def spack_external_find(machine,packages_file):
+
+def spack_external_find(machine, packages_file):
 
     print(f'Find externals on {machine}')
 
@@ -122,7 +123,7 @@ def dump_yaml_to_file(yaml_content,yaml_name):
                    open(yaml_name, 'w'),
                    default_flow_style=False)
 
-def join_compilers(primary,secondary):
+def join_compilers(primary, secondary):
     print('Join compilers')
 
     primary_compilers = load_from_yaml(primary)
@@ -135,7 +136,8 @@ def join_compilers(primary,secondary):
 
     return joint
 
-def join_packages(primary,secondary,external):
+
+def join_packages(primary, secondary, external):
     print('Join packages')
     primary_packages = load_from_yaml(primary)
     secondary_packages = load_from_yaml(secondary)
@@ -174,12 +176,12 @@ module_packages_file = f'{spack_config_root}/packages.yaml'
 external_packages_file = 'packages.yaml'
 joint_packages_file = 'sysconfigs/daint/packages.yaml'
 
+spack_external_find('daint', external_packages_file)
 
-spack_external_find('daint',external_packages_file)
+joint_compilers = join_compilers(c2sm_compiler_file, module_compiler_file)
 
-joint_compilers = join_compilers(c2sm_compiler_file,module_compiler_file)
-
-joint_packages = join_packages(c2sm_packages_file, module_packages_file, external_packages_file)
+joint_packages = join_packages(c2sm_packages_file, module_packages_file,
+                               external_packages_file)
 
 dump_yaml_to_file(joint_compilers,joint_compiler_file)
 dump_yaml_to_file(joint_packages,joint_packages_file)
