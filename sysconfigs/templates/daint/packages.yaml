@@ -112,6 +112,16 @@ packages:
     - spec: bzip2@1.0.6
       prefix: /usr
   libxml2:
+    buildable: false
     externals:
     - spec: libxml2@2.9.7%gcc
       prefix: /usr
+  hdf5:
+    buildable: false
+    externals:
+    - spec: hdf5@1.12.0.4 ~mpi +hl
+      modules:
+      - cray-hdf5/1.12.0.4
+    - spec: hdf5@1.12.0.4 +mpi +hl
+      modules:
+      - cray-hdf5-parallel/1.12.0.4
