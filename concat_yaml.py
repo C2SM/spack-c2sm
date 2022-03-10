@@ -116,11 +116,9 @@ def spack_external_find(machine,packages_file):
 
     os.environ.pop("SPACK_USER_CONFIG_PATH")
 
-def dump_yaml_to_file(yaml_content,yaml_name,final_key):
+def dump_yaml_to_file(yaml_content,yaml_name):
     print(f'Dump to yaml: {yaml_name}')
-    yaml_data = {}
-    yaml_data[final_key] = yaml_content
-    yaml.safe_dump(yaml_data,
+    yaml.safe_dump(yaml_content,
                    open(yaml_name, 'w'),
                    default_flow_style=False)
 
@@ -130,7 +128,8 @@ def join_compilers(primary,secondary):
     primary_compilers = load_from_yaml(primary)
     secondary_compilers = load_from_yaml(secondary)
 
-    joint = remove_duplicate_compilers(primary_compilers['compilers'],
+    joint = {}
+    joint['compilers'] = remove_duplicate_compilers(primary_compilers['compilers'],
             secondary_compilers['compilers'],
             ['compiler', 'spec'])
 
@@ -182,5 +181,5 @@ joint_compilers = join_compilers(c2sm_compiler_file,module_compiler_file)
 
 joint_packages = join_packages(c2sm_packages_file, module_packages_file, external_packages_file)
 
-dump_yaml_to_file(joint_compilers,joint_compiler_file, 'compilers')
-dump_yaml_to_file(joint_packages,joint_packages_file, 'packages')
+dump_yaml_to_file(joint_compilers,joint_compiler_file)
+dump_yaml_to_file(joint_packages,joint_packages_file)

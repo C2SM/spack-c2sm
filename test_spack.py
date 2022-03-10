@@ -252,7 +252,7 @@ class Int2lmTest(unittest.TestCase):
     def test_install_nvhpc(self):
         # Replacement of PGI after upgrade of Daint Feb 22
         if machine == 'daint':
-            run('spack install --test=root int2lm@c2sm-master%nvhpc')
+            run('spack install -v --test=root int2lm@c2sm-master%nvhpc')
 
 
 class IconDuskE2ETest(unittest.TestCase):
@@ -268,7 +268,7 @@ class IconToolsTest(unittest.TestCase):
 
     # C2SM supported version
     def test_install(self):
-        run('spack install --test=root icontools@c2sm-master%gcc')
+        run('spack install -v --test=root icontools@c2sm-master%gcc')
 
 
 class LibGrib1Test(unittest.TestCase):
