@@ -129,6 +129,11 @@ class Eccodes(CMakePackage):
                 ('default', ),
             ).with_default('auto'),
             description="List of samples to install")
+            
+    variant('build_type',
+            default='RelWithDebInfo',
+            description='The build type to build',
+            values=('Debug', 'Release', 'RelWithDebInfo', 'Production'))
 
     depends_on('netcdf-c', when='+netcdf')
     # Cannot be built with openjpeg@2.0.x.
