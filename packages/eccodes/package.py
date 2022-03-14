@@ -129,7 +129,7 @@ class Eccodes(CMakePackage):
                 ('default', ),
             ).with_default('auto'),
             description="List of samples to install")
-            
+
     variant('build_type',
             default='RelWithDebInfo',
             description='The build type to build',
