@@ -77,7 +77,7 @@ class Eccodes(CMakePackage):
     depends_on('openjpeg@1.5.0:1.5.999,2.1.0:2.1.999', when='jp2k=openjpeg')
     depends_on('jasper%gcc', when='jp2k=jasper', type='build')
     depends_on('libpng', when='+png')
-    depends_on('libaec', when='+aec')
+    depends_on('libaec', when='+aec', type=('build', 'link'))
     # Can be built with Python2 or Python3.
     depends_on('python', when='+memfs', type='build')
     # The interface works only for Python2.
