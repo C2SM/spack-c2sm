@@ -12,6 +12,7 @@ pipeline {
                     }
                     post {
                         always {
+                            archiveArtifacts artifacts: '*.log'
                             echo 'Cleaning up workspace'
                             deleteDir() 
                         }
@@ -26,6 +27,7 @@ pipeline {
                     }
                     post {
                         always {
+                            archiveArtifacts artifacts: '*.log'
                             echo 'Cleaning up workspace'
                             deleteDir() 
                         }
