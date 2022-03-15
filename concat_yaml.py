@@ -180,7 +180,7 @@ module_packages_file = f'{spack_config_root}/packages.yaml'
 external_packages_file = 'packages.yaml'
 joint_packages_file = 'sysconfigs/daint/packages.yaml'
 
-#spack_external_find('daint', external_packages_file)
+spack_external_find('daint', external_packages_file)
 
 joint_compilers = join_compilers(c2sm_compiler_file, module_compiler_file)
 
