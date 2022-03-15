@@ -463,7 +463,9 @@ class SelfTest(unittest.TestCase):
             for dep in deps:
                 self.assertTrue(dep in all_package_names)
 
+
 class CustomTestSuite(unittest.TestSuite):
+
     def run(self, result, debug=False):
         """
         We override the 'run' routine to support the execution of unittest in parallel
@@ -489,6 +491,7 @@ class CustomTestSuite(unittest.TestSuite):
         return result
 
     async def startRunCase(self, index, test, result):
+
         def _isnotsuite(test):
             "A crude way to tell apart testcases and suites with duck-typing"
             try:
@@ -507,14 +510,15 @@ class CustomTestSuite(unittest.TestSuite):
             self._handleClassSetUp(test, result)
             result._previousTestClass = test.__class__
 
-            if (getattr(test.__class__, '_classSetupFailed', False) or
-                    getattr(result, '_moduleSetUpFailed', False)):
+            if (getattr(test.__class__, '_classSetupFailed', False)
+                    or getattr(result, '_moduleSetUpFailed', False)):
                 return True
 
         await loop.run_in_executor(None, test, result)
 
         if self._cleanup:
             self._removeTestAtIndex(index)
+
 
 if __name__ == '__main__':
     test_loader = unittest.TestLoader()
