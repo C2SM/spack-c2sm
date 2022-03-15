@@ -65,6 +65,11 @@ def custom_devbuild(source_path, spec, args):
     elif args.things_to_test == 'all':
         args.things_to_test = True
 
+    # Bugfix: somehow args are changed outside of function when changed here
+    elif isinstance(args.things_to_test, list):
+        if args.things_to_test[0] != 'cosmo':
+            tty.die("spack dev-build requires a package spec argument.")
+
     else:
         args.things_to_test = False
 
