@@ -497,18 +497,25 @@ if __name__ == '__main__':
         exclusive = True
         commands.remove('--exclusive')
 
+    machine_count = 0
     if '--daint' in commands:
         machine = 'daint'
         spack_machine = machine
-        commands.remove('--daint')
+        commands = [x for x in commands if x != '--daint']
+        machine_count += 1
     if '--dom' in commands:
         machine = 'daint'
         spack_machine = 'dom'
-        commands.remove('--dom')
+        commands = [x for x in commands if x != '--dom']
+        machine_count += 1
     if '--tsa' in commands:
         machine = 'tsa'
         spack_machine = machine
-        commands.remove('--tsa')
+        commands = [x for x in commands if x != '--tsa']
+        machine_count += 1
+
+    if machine_count != 1:
+        sys.exit()
 
     known_commands = dependencies.keys() | expansions.keys()
 
