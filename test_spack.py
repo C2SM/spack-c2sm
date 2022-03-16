@@ -79,11 +79,11 @@ class CosmoTest(TestCase):
     def test_install_master_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
-            self.Run(
+            self.Srun(
                 'spack installcosmo cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
             )
         if machine == 'daint':
-            self.Run(
+            self.Srun(
                 'spack installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=cpu ~cppdycore'
             )
 
