@@ -21,7 +21,7 @@ class TestCase(unittest.TestCase):
     def Run(self, command: str, cwd='.', parallel=False):
         setup = ''
         if command.startswith('spack'):
-            setup = f'source spack/share/spack/setup-env.sh &&'
+            setup = f'source spack/share/spack/setup-env.sh ; '
 
         srun = ''
         if parallel:
@@ -30,7 +30,7 @@ class TestCase(unittest.TestCase):
 
         # 2>&1 redirects stderr to stdout
         subprocess.run(
-            f'{setup} cd {cwd} && {srun} {command} >> {machine}_{self.package_name}_{self._testMethodName}.log 2>&1',
+            f'{setup} cd {cwd} ; {srun} {command} >> {machine}_{self.package_name}_{self._testMethodName}.log 2>&1',
             check=True,
             shell=True)
 
