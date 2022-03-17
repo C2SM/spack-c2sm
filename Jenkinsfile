@@ -12,7 +12,7 @@ pipeline {
                     }
                     post {
                         always {
-                            archiveArtifacts artifacts: '*.log'
+                            archiveArtifacts artifacts: '*.log', allowEmptyArchive: true
                             echo 'Cleaning up workspace'
                             deleteDir() 
                         }
@@ -27,7 +27,7 @@ pipeline {
                     }
                     post {
                         always {
-                            archiveArtifacts artifacts: '*.log'
+                            archiveArtifacts artifacts: '*.log', allowEmptyArchive: true
                             echo 'Cleaning up workspace'
                             deleteDir() 
                         }
