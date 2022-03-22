@@ -250,7 +250,6 @@ class Cosmo(MakefilePackage):
             env.set('AECL', '-L' + self.spec['libaec'].prefix + '/lib64 -laec')
             env.set('AECI', '-I' + self.spec['libaec'].prefix + '/include')
 
-
         # Netcdf library
         if self.spec.variants['slave'].value == 'daint':
             env.set('NETCDFL', '-L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf')
