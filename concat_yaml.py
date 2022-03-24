@@ -169,6 +169,25 @@ def join_packages(primary, secondary, external):
     return dict
 
 
+def rename_cray_mpich_to_mpich(packages):
+    print('Rename cray-mpich to mpich')
+    cray_mpich = packages['packages']['cray-mpich']
+
+    spec = cray_mpich['externals'][0]['spec']
+    spec = spec.replace('cray-','')
+
+    cray_mpich['externals'][0]['spec'] = spec
+
+    packages['packages']['mpich']= cray_mpich
+
+    packages['packages']['mpich']['buildable'] = False
+
+    packages['packages'].pop('cray-mpich')
+
+    return packages
+
+
+
 spack_config_root = os.environ['SPACK_SYSTEM_CONFIG_PATH']
 
 c2sm_compiler_file = 'sysconfigs/templates/daint/compilers.yaml'
@@ -186,6 +205,8 @@ joint_compilers = join_compilers(c2sm_compiler_file, module_compiler_file)
 
 joint_packages = join_packages(c2sm_packages_file, module_packages_file,
                                external_packages_file)
+
+joint_packages = rename_cray_mpich_to_mpich(joint_packages)
 
 dump_yaml_to_file(joint_compilers, joint_compiler_file)
 dump_yaml_to_file(joint_packages, joint_packages_file)
