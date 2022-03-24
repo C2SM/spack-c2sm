@@ -65,6 +65,12 @@ def custom_devbuild(source_path, spec, args):
     elif args.things_to_test == 'all':
         args.things_to_test = True
 
+    # Bugfix: somehow args are changed outside of function when changed inside here
+    # Therefore, at second call of this function things_to_test is a list
+    elif isinstance(args.things_to_test, list):
+        if args.things_to_test[0] != 'cosmo':
+            tty.die("unknown entry in devbuildcosmo for argument '--test' ")
+
     else:
         args.things_to_test = False
 
