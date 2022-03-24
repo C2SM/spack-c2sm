@@ -125,3 +125,9 @@ packages:
     - spec: hdf5@1.12.0.4 +mpi +hl
       modules:
       - cray-hdf5-parallel/1.12.0.4
+  slurm:
+    buildable: false
+    externals:
+    - spec: slurm%gcc
+      modules:
+      - slurm
