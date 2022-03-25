@@ -1,6 +1,6 @@
 PR testing
 ===================================
-To test a PR create a comment ``launch jenkins [--upstream] [--exclusive] ...``
+To test a PR create a comment ``launch jenkins [--upstream] [--exclusive] [--tsa] [--daint] ...``
 with either
 * a space separated list of predefined commands (see "supported commands")
 or
@@ -8,6 +8,8 @@ or
 
 ``--upstream`` links the instance with the upstream spack-admin instance.
 ``--exclusive`` invokes only tests from the listed commands.
+``--test`` runs tests only on Tsa.
+``--daint`` runs tests only on Piz Daint.
 
 What is tested
 ^^^^^^^^^^^^^^^^
