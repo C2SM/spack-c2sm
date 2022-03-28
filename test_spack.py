@@ -140,75 +140,43 @@ class CosmoDycoreTest(TestCase):
 
     def test_install_float_cpu(self):
         # The dycore team's PR testing relies on this.
-        # The dycore tests launch an srun, so the spack command can't be launched in an srun either. sruns don't nest!
-        if machine == 'tsa':
-            self.Srun(
-                'spack install cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda ^openmpi%pgi@20.4 +cuda'
-            )
-            self.Run(
-                'spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda ^openmpi%pgi@20.4 +cuda'
-            )
-        else:
-            self.Srun(
-                'spack install cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda'
-            )
-            self.Run(
-                'spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda'
-            )
+        # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
+        self.Srun(
+            'spack install cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda'
+        )
+        self.Run(
+            'spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda'
+        )
 
     def test_install_float_gpu(self):
         # The dycore team's PR testing relies on this.
-        # The dycore tests launch an srun, so the spack command can't be launched in an srun either. sruns don't nest!
-        if machine == 'tsa':
-            self.Srun(
-                'spack install cosmo-dycore@master%gcc real_type=float build_type=Release +cuda ^openmpi%pgi@20.4 +cuda'
-            )
-            self.Run(
-                'spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release +cuda ^openmpi%pgi@20.4 +cuda'
-            )
-        else:
-            self.Srun(
-                'spack install cosmo-dycore@master%gcc real_type=float build_type=Release +cuda'
-            )
-            self.Run(
-                'spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release +cuda'
-            )
+        # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
+        self.Srun(
+            'spack install cosmo-dycore@master%gcc real_type=float build_type=Release +cuda'
+        )
+        self.Run(
+            'spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release +cuda'
+        )
 
     def test_install_double_cpu(self):
         # The dycore team's PR testing relies on this.
-        # The dycore tests launch an srun, so the spack command can't be launched in an srun either. sruns don't nest!
-        if machine == 'tsa':
-            self.Srun(
-                'spack install cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda ^openmpi%pgi@20.4 +cuda'
-            )
-            self.Run(
-                'spack install --test=root cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda ^openmpi%pgi@20.4 +cuda'
-            )
-        else:
-            self.Srun(
-                'spack install cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda'
-            )
-            self.Run(
-                'spack install --test=root cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda'
-            )
+        # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
+        self.Srun(
+            'spack install cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda'
+        )
+        self.Run(
+            'spack install --test=root cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda'
+        )
 
     def test_install_double_gpu(self):
         # The dycore team's PR testing relies on this.
-        # The dycore tests launch an srun, so the spack command can't be launched in an srun either. sruns don't nest!
-        if machine == 'tsa':
-            self.Srun(
-                'spack install cosmo-dycore@master%gcc real_type=double build_type=Release +cuda ^openmpi%pgi@20.4 +cuda'
-            )
-            self.Run(
-                'spack install --test=root cosmo-dycore@master%gcc real_type=double build_type=Release +cuda ^openmpi%pgi@20.4 +cuda'
-            )
-        else:
-            self.Srun(
-                'spack install cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
-            )
-            self.Run(
-                'spack install --test=root cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
-            )
+        # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
+        self.Srun(
+            'spack install cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
+        )
+        self.Run(
+            'spack install --test=root cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
+        )
 
 
 class CosmoEccodesDefinitionsTest(TestCase):
