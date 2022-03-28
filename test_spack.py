@@ -28,7 +28,7 @@ class TestCase(unittest.TestCase):
             if machine == 'tsa':
                 srun = 'srun -c 16 -t 01:00:00'
             if machine == 'daint':
-                srun = 'srun -c mc -A g110 -t 01:00:00'
+                srun = 'srun -C mc -A g110 -t 01:00:00'
 
         # 2>&1 redirects stderr to stdout
         subprocess.run(
