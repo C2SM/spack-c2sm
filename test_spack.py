@@ -138,6 +138,46 @@ class CosmoDycoreTest(TestCase):
     depends_on = {'gridtools', 'serialbox', 'cuda'}
     machines = all_machines
 
+    def test_install_float_cpu(self):
+        # The dycore team's PR testing relies on this.
+        # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
+        self.Srun(
+            'spack install cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda'
+        )
+        self.Run(
+            'spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda'
+        )
+
+    def test_install_float_gpu(self):
+        # The dycore team's PR testing relies on this.
+        # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
+        self.Srun(
+            'spack install cosmo-dycore@master%gcc real_type=float build_type=Release +cuda'
+        )
+        self.Run(
+            'spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release +cuda'
+        )
+
+    def test_install_double_cpu(self):
+        # The dycore team's PR testing relies on this.
+        # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
+        self.Srun(
+            'spack install cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda'
+        )
+        self.Run(
+            'spack install --test=root cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda'
+        )
+
+    def test_install_double_gpu(self):
+        # The dycore team's PR testing relies on this.
+        # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
+        self.Srun(
+            'spack install cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
+        )
+        self.Run(
+            'spack install --test=root cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
+        )
+
 
 class CosmoEccodesDefinitionsTest(TestCase):
     package_name = 'cosmo-eccodes-definitions'
