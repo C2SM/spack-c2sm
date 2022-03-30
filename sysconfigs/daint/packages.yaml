@@ -85,8 +85,8 @@ packages:
   cray-libsci:
     externals:
     - modules:
-      - cray-libsci/20.06.1
-      spec: cray-libsci@20.06.1
+      - cray-libsci/20.09.1
+      spec: cray-libsci@20.09.1
   cuda:
     buildable: false
     externals:
