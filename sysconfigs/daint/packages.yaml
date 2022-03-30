@@ -15,9 +15,9 @@ packages:
       mkl:
       - intel-mkl
       mpi:
-      - cray-mpich
+      - mpich
       mpicuda:
-      - cray-mpich
+      - mpich
       pkgconfig:
       - pkg-config
       scalapack:
@@ -87,11 +87,6 @@ packages:
     - modules:
       - cray-libsci/20.09.1
       spec: cray-libsci@20.09.1
-  cray-mpich:
-    externals:
-    - modules:
-      - cray-mpich/7.7.18
-      spec: cray-mpich@7.7.18
   cuda:
     buildable: false
     externals:
@@ -140,7 +135,7 @@ packages:
     - extra_attributes:
         compilers:
           c: /usr/bin/gcc
-          cxx: /usr/bin/g++
+          cxx: /usr/bin/g++-7
           fortran: /usr/bin/gfortran-7
       prefix: /usr
       spec: gcc@7.5.0 languages=c,c++,fortran
@@ -154,11 +149,6 @@ packages:
     externals:
     - prefix: /usr
       spec: git@2.26.2~tcltk
-  git-lfs:
-    buildable: false
-    externals:
-    - prefix: /users/juckerj/.local
-      spec: git-lfs@2.10.0
   gmake:
     buildable: false
     externals:
@@ -231,6 +221,12 @@ packages:
     externals:
     - prefix: /usr
       spec: m4@1.4.18
+  mpich:
+    buildable: false
+    externals:
+    - modules:
+      - cray-mpich/7.7.18
+      spec: mpich@7.7.18
   ncurses:
     buildable: false
     externals:
@@ -323,6 +319,12 @@ packages:
     externals:
     - prefix: /usr
       spec: sed@4.4
+  slurm:
+    buildable: false
+    externals:
+    - modules:
+      - slurm
+      spec: slurm%gcc
   sqlite:
     buildable: false
     externals:
