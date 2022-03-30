@@ -69,7 +69,7 @@ class CosmoTest(TestCase):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
             self.Srun(
-                'spack installcosmo cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
+                'spack installcosmo --test=root cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
             )
         if machine == 'daint':
             self.Srun(
@@ -80,7 +80,7 @@ class CosmoTest(TestCase):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
             self.Srun(
-                'spack installcosmo cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
+                'spack installcosmo --test=root cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
             )
         if machine == 'daint':
             self.Srun(
@@ -101,11 +101,11 @@ class CosmoTest(TestCase):
         try:
             if machine == 'tsa':
                 self.Srun(
-                    'spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore',
+                    'spack devbuildcosmo --test=root cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore',
                     cwd='cosmo')
             if machine == 'daint':
                 self.Srun(
-                    'spack devbuildcosmo cosmo@dev-build%nvhpc cosmo_target=cpu ~cppdycore',
+                    'spack devbuildcosmo --test=root cosmo@dev-build%nvhpc cosmo_target=cpu ~cppdycore',
                     cwd='cosmo')
         finally:
             self.Run('rm -rf cosmo')
@@ -116,11 +116,11 @@ class CosmoTest(TestCase):
         try:
             if machine == 'tsa':
                 self.Srun(
-                    'spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
+                    'spack devbuildcosmo --test=root cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
                     cwd='cosmo')
             if machine == 'daint':
                 self.Srun(
-                    'spack devbuildcosmo cosmo@dev-build%nvhpc cosmo_target=gpu +cppdycore',
+                    'spack devbuildcosmo --test=root cosmo@dev-build%nvhpc cosmo_target=gpu +cppdycore',
                     cwd='cosmo')
         finally:
             self.Run('rm -rf cosmo')
@@ -129,7 +129,7 @@ class CosmoTest(TestCase):
         # So we can reproduce results from old versions.
         if machine == 'tsa':
             self.Srun(
-                'spack installcosmo cosmo@apn_5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore'
+                'spack installcosmo --test=root cosmo@apn_5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore'
             )
 
 
