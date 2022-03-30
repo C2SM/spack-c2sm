@@ -83,6 +83,7 @@ packages:
     - prefix: /usr
       spec: cpio@2.12
   cray-libsci:
+    buildable: false
     externals:
     - modules:
       - cray-libsci/20.09.1
