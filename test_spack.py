@@ -254,43 +254,49 @@ class GridToolsTest(TestCase):
 class IconTest(TestCase):
     package_name = 'icon'
     depends_on = {'serialbox', 'eccodes', 'claw'}
-    machines = {'daint'}
+    machines = all_machines
 
     def test_install_nwp_gpu_nvidia(self):
-        # So we can make sure ICON-NWP (OpenACC) devs can compile (mimick Buildbot for Tsa)
-        self.Srun(
-            'spack install icon@nwp%nvhpc icon_target=gpu +claw +eccodes +ocean'
-        )
+        # So we can make sure ICON-NWP (OpenACC) devs can compile (mimicks Buildbot for Tsa)
+        if machine == 'tsa':
+            self.Srun(
+                'spack install icon@nwp%pgi icon_target=gpu +claw +eccodes +ocean'
+            )
+        else:
+            self.Srun(
+                'spack install icon@nwp%nvhpc icon_target=gpu +claw +eccodes +ocean'
+            )
 
     def test_install_nwp_cpu_nvidia(self):
-        # So we can make sure ICON-NWP (OpenACC) devs can compile (mimick Buildbot for Tsa)
-        self.Srun(
-            'spack install icon@nwp%nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean'
-        )
+        # So we can make sure ICON-NWP (OpenACC) devs can compile (mimicks Buildbot for Tsa)
+        if machine == 'tsa':
+            self.Srun(
+                'spack install icon@nwp%pgi icon_target=cpu serialize_mode=create +eccodes +ocean'
+            )
+        else:
+            self.Srun(
+                'spack install icon@nwp%nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean'
+            )
 
-    # TODO: Reactivate once the test works!
-    # def test_devbuild_cpu(self):
-    #     # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-    #     self.Run('git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git')
-    #     self.Run('mkdir -p icon-cscs/pgi_cpu')
-    #     self.Run('touch a_fake_file.f90', cwd='icon-cscs/pgi_cpu')
+    def test_devbuild_cpu(self):
+        # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
+        self.Run('git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git')
+        self.Run('mkdir -p icon-cscs/pgi_cpu')
+        self.Run('touch a_fake_file.f90', cwd='icon-cscs/pgi_cpu')
+        try:
+            self.Srun('spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu', cwd='icon-cscs/pgi_cpu')
+        finally:
+            self.Run('rm -rf icon-cscs')
 
-    #     try:
-    #         self.Srun('spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu', cwd='icon-cscs/pgi_cpu')
-    #     finally:
-    #         self.Run('rm -rf icon-cscs')
-
-    # TODO: Reactivate once the test works!
-    # def test_devbuild_gpu(self):
-    #     # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-    #     self.Run('git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git')
-    #     self.Run('mkdir -p icon-cscs/pgi_gpu')
-    #     self.Run('touch a_fake_file.f90', cwd='icon-cscs/pgi_gpu')
-
-    #     try:
-    #         self.Srun('spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu', cwd='icon-cscs/pgi_gpu')
-    #     finally:
-    #         self.Run('rm -rf icon-cscs')
+    def test_devbuild_gpu(self):
+        # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
+        self.Run('git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git')
+        self.Run('mkdir -p icon-cscs/pgi_gpu')
+        self.Run('touch a_fake_file.f90', cwd='icon-cscs/pgi_gpu')
+        try:
+            self.Srun('spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu', cwd='icon-cscs/pgi_gpu')
+        finally:
+            self.Run('rm -rf icon-cscs')
 
 
 class Int2lmTest(TestCase):
