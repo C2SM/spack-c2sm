@@ -1,5 +1,8 @@
 compilers::
 - compiler:
+    environment:
+      set:
+        CSCS_APPS_PATH: '/apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01'
     extra_rpaths: []
     flags: {}
     modules:
@@ -13,6 +16,9 @@ compilers::
     spec: pgi@20.4
     target: any
 - compiler:
+    environment:
+      set:
+        CSCS_APPS_PATH: /apps/common/UES/sandbox/kraushm/tsa-nvhpc
     extra_rpaths: []
     flags: {}
     modules:
