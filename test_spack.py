@@ -71,7 +71,7 @@ class CosmoTest(TestCase):
             self.Srun(
                 'spack installcosmo --test=root cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
             )
-        if machine == 'daint':
+        else:
             self.Srun(
                 'spack installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=gpu +cppdycore'
             )
@@ -82,7 +82,7 @@ class CosmoTest(TestCase):
             self.Srun(
                 'spack installcosmo --test=root cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
             )
-        if machine == 'daint':
+        else:
             self.Srun(
                 'spack installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=cpu ~cppdycore'
             )
@@ -103,7 +103,7 @@ class CosmoTest(TestCase):
                 self.Srun(
                     'spack devbuildcosmo --test=root cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore',
                     cwd='cosmo')
-            if machine == 'daint':
+            else:
                 self.Srun(
                     'spack devbuildcosmo --test=root cosmo@dev-build%nvhpc cosmo_target=cpu ~cppdycore',
                     cwd='cosmo')
@@ -121,7 +121,7 @@ class CosmoTest(TestCase):
                 self.Run(
                     'spack devbuildcosmo --test=root cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
                     cwd='cosmo')
-            if machine == 'daint':
+            else:
                 self.Srun(
                     'spack devbuildcosmo cosmo@dev-build%nvhpc cosmo_target=gpu +cppdycore',
                     cwd='cosmo')
