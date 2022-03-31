@@ -286,11 +286,11 @@ class IconTest(TestCase):
         try:
             if machine == 'tsa':
                 self.Srun(
-                    'spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu',
+                    'spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu',
                     cwd='icon-cscs/pgi_cpu')
             else:
                 self.Srun(
-                    'spack dev-build -i -u build icon@dev-build%nvhpc config_dir=./.. icon_target=cpu',
+                    'spack dev-build -u build icon@dev-build%nvhpc config_dir=./.. icon_target=cpu',
                     cwd='icon-cscs/pgi_cpu')
         finally:
             self.Run('rm -rf icon-cscs')
@@ -303,11 +303,11 @@ class IconTest(TestCase):
         try:
             if machine == 'tsa':
                 self.Srun(
-                    'spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu',
+                    'spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu',
                     cwd='icon-cscs/pgi_gpu')
             else:
                 self.Srun(
-                    'spack dev-build -i -u build icon@dev-build%nvhpc config_dir=./.. icon_target=gpu',
+                    'spack dev-build -u build icon@dev-build%nvhpc config_dir=./.. icon_target=gpu',
                     cwd='icon-cscs/pgi_gpu')
         finally:
             self.Run('rm -rf icon-cscs')
