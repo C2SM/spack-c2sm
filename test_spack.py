@@ -284,9 +284,14 @@ class IconTest(TestCase):
         self.Run('mkdir -p icon-cscs/pgi_cpu')
         self.Run('touch a_fake_file.f90', cwd='icon-cscs/pgi_cpu')
         try:
-            self.Srun(
-                'spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu',
-                cwd='icon-cscs/pgi_cpu')
+            if machine == 'tsa':
+                self.Srun(
+                    'spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu',
+                    cwd='icon-cscs/pgi_cpu')
+            else:
+                self.Srun(
+                    'spack dev-build -i -u build icon@dev-build%nvhpc config_dir=./.. icon_target=cpu',
+                    cwd='icon-cscs/pgi_cpu')
         finally:
             self.Run('rm -rf icon-cscs')
 
@@ -296,9 +301,14 @@ class IconTest(TestCase):
         self.Run('mkdir -p icon-cscs/pgi_gpu')
         self.Run('touch a_fake_file.f90', cwd='icon-cscs/pgi_gpu')
         try:
-            self.Srun(
-                'spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu',
-                cwd='icon-cscs/pgi_gpu')
+            if machine == 'tsa':
+                self.Srun(
+                    'spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu',
+                    cwd='icon-cscs/pgi_gpu')
+            else:
+                self.Srun(
+                    'spack dev-build -i -u build icon@dev-build%nvhpc config_dir=./.. icon_target=gpu',
+                    cwd='icon-cscs/pgi_gpu')
         finally:
             self.Run('rm -rf icon-cscs')
 
