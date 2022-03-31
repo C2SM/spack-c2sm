@@ -10,7 +10,6 @@ packages:
     providers:
       blas:
       - cray-libsci_acc
-      - cray-libsci
       - intel-mkl
       mkl:
       - intel-mkl
@@ -22,7 +21,6 @@ packages:
       - pkg-config
       scalapack:
       - cray-libsci_acc
-      - cray-libsci
       - intel-mkl
     target:
     - haswell
@@ -82,12 +80,6 @@ packages:
     externals:
     - prefix: /usr
       spec: cpio@2.12
-  cray-libsci:
-    buildable: false
-    externals:
-    - spec: cray-libsci@20.09.1
-      modules:
-      - cray-libsci/20.09.1
   cray-libsci_acc:
     buildable: false
     externals:
