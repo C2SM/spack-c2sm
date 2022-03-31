@@ -116,10 +116,16 @@ class CosmoTest(TestCase):
         try:
             if machine == 'tsa':
                 self.Srun(
+                    'spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
+                    cwd='cosmo')
+                self.Run(
                     'spack devbuildcosmo --test=root cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
                     cwd='cosmo')
             if machine == 'daint':
                 self.Srun(
+                    'spack devbuildcosmo cosmo@dev-build%nvhpc cosmo_target=gpu +cppdycore',
+                    cwd='cosmo')
+                self.Run(
                     'spack devbuildcosmo --test=root cosmo@dev-build%nvhpc cosmo_target=gpu +cppdycore',
                     cwd='cosmo')
         finally:
