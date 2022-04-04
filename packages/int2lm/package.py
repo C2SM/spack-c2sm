@@ -87,12 +87,12 @@ class Int2lm(MakefilePackage):
             grib_lib_names = ' -leccodes_f90 -leccodes'
             # Default installation lib path changed to from lib to lib64 after 2.19.0
             if self.spec['eccodes'].version >= Version('2.19.0'):
-                lib_dir = '/lib64'
+                lib_dir = '/lib'
             else:
                 lib_dir = '/lib'
         env.set(
             'GRIBAPIL', '-L' + grib_prefix + lib_dir + grib_lib_names + ' -L' +
-            self.spec['jasper'].prefix + '/lib64 -ljasper')
+            self.spec['jasper'].prefix + '/lib -ljasper')
         env.set('GRIBAPII', '-I' + grib_prefix + '/include')
 
         # Netcdf library
@@ -103,7 +103,7 @@ class Int2lm(MakefilePackage):
             env.set(
                 'NETCDFL', '-L' + self.spec['netcdf-fortran'].prefix +
                 '/lib -lnetcdff -L' + self.spec['netcdf-c'].prefix +
-                '/lib64 -lnetcdf')
+                '/lib -lnetcdf')
             env.set('NETCDFI',
                     '-I' + self.spec['netcdf-fortran'].prefix + '/include')
 
