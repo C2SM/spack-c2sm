@@ -124,7 +124,7 @@ class Int2lm(MakefilePackage):
 
         # MPI library
         if self.spec['mpi'].name == 'openmpi':
-            env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpi_mpifh')
+            env.set('MPIL', '-L' + self.spec['mpi'].prefix + '/lib' + ' -lmpi_mpifh')
             env.set('MPII', '-I' + self.spec['mpi'].prefix + '/include')
         else:
             env.set('MPII', '-I' + self.spec['mpi'].prefix + '/include')
