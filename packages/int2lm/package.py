@@ -89,8 +89,7 @@ class Int2lm(MakefilePackage):
                 lib_dir = '/lib64'
             else:
                 lib_dir = '/lib'
-        env.set(
-            'GRIBAPIL', '-L' + grib_prefix + lib_dir + grib_lib_names)
+        env.set('GRIBAPIL', '-L' + grib_prefix + lib_dir + grib_lib_names)
         env.set('GRIBAPII', '-I' + grib_prefix + '/include')
 
         # Netcdf library
