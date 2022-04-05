@@ -52,7 +52,6 @@ class Int2lm(MakefilePackage):
     depends_on('mpi', type=('build', 'link', 'run'), when='+parallel')
     depends_on('netcdf-c', type=('build', 'link'))
     depends_on('netcdf-fortran', type=('build', 'link'))
-    depends_on('jasper@1.900.1%gcc', type='build')
 
     variant('debug', default=False, description='Build debug INT2LM')
     variant('eccodes',
@@ -91,8 +90,7 @@ class Int2lm(MakefilePackage):
             else:
                 lib_dir = '/lib'
         env.set(
-            'GRIBAPIL', '-L' + grib_prefix + lib_dir + grib_lib_names + ' -L' +
-            self.spec['jasper'].prefix + '/lib64 -ljasper')
+            'GRIBAPIL', '-L' + grib_prefix + lib_dir + grib_lib_names)
         env.set('GRIBAPII', '-I' + grib_prefix + '/include')
 
         # Netcdf library
