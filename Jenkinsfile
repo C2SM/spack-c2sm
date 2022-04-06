@@ -8,10 +8,11 @@ pipeline {
                     steps {
                         sh """
                         module load python/3.7.4
-                        srun -c 16 -t 04:00:00 python test_spack.py --tsa """ + env.ghprbCommentBody
+                        python test_spack.py --tsa """ + env.ghprbCommentBody
                     }
                     post {
                         always {
+                            archiveArtifacts artifacts: '*.log', allowEmptyArchive: true
                             echo 'Cleaning up workspace'
                             deleteDir() 
                         }
@@ -26,6 +27,7 @@ pipeline {
                     }
                     post {
                         always {
+                            archiveArtifacts artifacts: '*.log', allowEmptyArchive: true
                             echo 'Cleaning up workspace'
                             deleteDir() 
                         }
