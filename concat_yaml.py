@@ -77,24 +77,39 @@ def remove_duplicate_packages(c2sm, cscs, external):
     return c2sm
 
 
-def allign_cuda_versions(joint, cscs, version):
-    spec_joint = joint['cuda']['externals'][0]['spec']
-    specs_cscs = []
-    prefix_cscs = []
-    for i in range(len(cscs['cuda']['externals'])):
-        specs_cscs.append(cscs['cuda']['externals'][i]['spec'])
-        prefix_cscs.append(cscs['cuda']['externals'][i]['prefix'])
+def allign_cuda_versions(joint_packages, module_packages_file, version):
+    print('Allign cuda versions')
+
+    module_packages = load_from_yaml(module_packages_file)['packages']
+
+    cuda_joint = joint_packages['packages']['cuda']
+
+    spec_joint = cuda_joint['externals'][0]['spec']
+
+    if version not in spec_joint:
+        raise ValueError(f'Cuda version {version} not provided by yaml from templates')
+
+    specs_module = []
+    prefix_module = []
+    for i in range(len(module_packages['cuda']['externals'])):
+        specs_module.append(module_packages['cuda']['externals'][i]['spec'])
+        prefix_module.append(module_packages['cuda']['externals'][i]['prefix'])
 
     i = 0
-    for spec in specs_cscs:
+    found_cuda_version = False
+    for spec in specs_module:
         if version in spec:
-            prefix = prefix_cscs[i]
+            prefix = prefix_module[i]
+            found_cuda_version = True
             break
         i += 1
 
-    joint['cuda']['externals'][0]['prefix'] = prefix
+    if not found_cuda_version:
+        raise ValueError(f'Cuda version {version} not provided by spack-config module')
 
-    return joint
+    joint_packages['packages']['cuda']['externals'][0]['prefix'] = prefix
+
+    return joint_packages
 
 
 def spack_external_find(machine, packages_file):
@@ -204,6 +219,10 @@ if __name__ == '__main__':
     external_packages_file = 'packages.yaml'
     joint_packages_file = f'sysconfigs/{args.machine}/packages.yaml'
 
+    print('Cleanup')
+    if os.path.exists(joint_packages_file): os.remove(joint_packages_file)
+    if os.path.exists(joint_compiler_file): os.remove(joint_compiler_file)
+
     spack_external_find(args.machine, external_packages_file)
 
     joint_compilers = join_compilers(c2sm_compiler_file, module_compiler_file)
@@ -212,6 +231,7 @@ if __name__ == '__main__':
                                    external_packages_file)
 
     joint_packages = rename_cray_mpich_to_mpich(joint_packages)
+    joint_packages = allign_cuda_versions(joint_packages,module_packages_file,'11.0')
 
     dump_yaml_to_file(joint_compilers, joint_compiler_file)
     dump_yaml_to_file(joint_packages, joint_packages_file)
