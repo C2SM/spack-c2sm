@@ -87,7 +87,8 @@ def allign_cuda_versions(joint_packages, module_packages_file, version):
     spec_joint = cuda_joint['externals'][0]['spec']
 
     if version not in spec_joint:
-        raise ValueError(f'Cuda version {version} not provided by yaml from templates')
+        raise ValueError(
+            f'Cuda version {version} not provided by yaml from templates')
 
     specs_module = []
     prefix_module = []
@@ -105,7 +106,8 @@ def allign_cuda_versions(joint_packages, module_packages_file, version):
         i += 1
 
     if not found_cuda_version:
-        raise ValueError(f'Cuda version {version} not provided by spack-config module')
+        raise ValueError(
+            f'Cuda version {version} not provided by spack-config module')
 
     joint_packages['packages']['cuda']['externals'][0]['prefix'] = prefix
 
@@ -232,7 +234,8 @@ if __name__ == '__main__':
                                    external_packages_file)
 
     joint_packages = rename_cray_mpich_to_mpich(joint_packages)
-    joint_packages = allign_cuda_versions(joint_packages,module_packages_file,'11.0')
+    joint_packages = allign_cuda_versions(joint_packages, module_packages_file,
+                                          '11.0')
 
     dump_yaml_to_file(joint_compilers, joint_compiler_file)
     dump_yaml_to_file(joint_packages, joint_packages_file)
