@@ -175,11 +175,11 @@ def rename_cray_mpich_to_mpich(packages):
     cray_mpich = packages['packages']['cray-mpich']
 
     spec = cray_mpich['externals'][0]['spec']
-    spec = spec.replace('cray-','')
+    spec = spec.replace('cray-', '')
 
     cray_mpich['externals'][0]['spec'] = spec
 
-    packages['packages']['mpich']= cray_mpich
+    packages['packages']['mpich'] = cray_mpich
 
     packages['packages']['mpich']['buildable'] = False
 
@@ -187,10 +187,11 @@ def rename_cray_mpich_to_mpich(packages):
 
     return packages
 
+
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--machine','-m', dest='machine')
+    parser.add_argument('--machine', '-m', dest='machine')
     args = parser.parse_args()
 
     spack_config_root = os.environ['SPACK_SYSTEM_CONFIG_PATH']
