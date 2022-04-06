@@ -127,7 +127,7 @@ class Icontools(AutotoolsPackage):
                 test_process = subprocess.run([
                     'sbatch', '-W', '--time=00:15:00', '-A',
                     self.spec.variants['slurm_account'].value, '-C', 'gpu',
-                    '-p', 'debug', './C2SM/test/jenkins/test.sh'
+                    '-p', 'normal', './C2SM/test/jenkins/test.sh'
                 ],
                                               stderr=subprocess.STDOUT)
 
