@@ -3,6 +3,7 @@ from ruamel import yaml
 import warnings
 import subprocess
 import os
+import argparse
 
 warnings.simplefilter('ignore', yaml.error.UnsafeLoaderWarning)
 
@@ -186,27 +187,31 @@ def rename_cray_mpich_to_mpich(packages):
 
     return packages
 
+if __name__ == '__main__':
 
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--machine','-m', dest='machine')
+    args = parser.parse_args()
 
-spack_config_root = os.environ['SPACK_SYSTEM_CONFIG_PATH']
+    spack_config_root = os.environ['SPACK_SYSTEM_CONFIG_PATH']
 
-c2sm_compiler_file = 'sysconfigs/templates/daint/compilers.yaml'
-module_compiler_file = f'{spack_config_root}/compilers.yaml'
-joint_compiler_file = 'sysconfigs/daint/compilers.yaml'
+    c2sm_compiler_file = f'sysconfigs/templates/{args.machine}/compilers.yaml'
+    module_compiler_file = f'{spack_config_root}/compilers.yaml'
+    joint_compiler_file = f'sysconfigs/{args.machine}/compilers.yaml'
 
-c2sm_packages_file = 'sysconfigs/templates/daint/packages.yaml'
-module_packages_file = f'{spack_config_root}/packages.yaml'
-external_packages_file = 'packages.yaml'
-joint_packages_file = 'sysconfigs/daint/packages.yaml'
+    c2sm_packages_file = f'sysconfigs/templates/{args.machine}/packages.yaml'
+    module_packages_file = f'{spack_config_root}/packages.yaml'
+    external_packages_file = 'packages.yaml'
+    joint_packages_file = f'sysconfigs/{args.machine}/packages.yaml'
 
-spack_external_find('daint', external_packages_file)
+    spack_external_find(args.machine, external_packages_file)
 
-joint_compilers = join_compilers(c2sm_compiler_file, module_compiler_file)
+    joint_compilers = join_compilers(c2sm_compiler_file, module_compiler_file)
 
-joint_packages = join_packages(c2sm_packages_file, module_packages_file,
-                               external_packages_file)
+    joint_packages = join_packages(c2sm_packages_file, module_packages_file,
+                                   external_packages_file)
 
-joint_packages = rename_cray_mpich_to_mpich(joint_packages)
+    joint_packages = rename_cray_mpich_to_mpich(joint_packages)
 
-dump_yaml_to_file(joint_compilers, joint_compiler_file)
-dump_yaml_to_file(joint_packages, joint_packages_file)
+    dump_yaml_to_file(joint_compilers, joint_compiler_file)
+    dump_yaml_to_file(joint_packages, joint_packages_file)
