@@ -204,6 +204,7 @@ def rename_cray_mpich_to_mpich(packages):
 
     return packages
 
+
 def allow_xml_to_be_built(packages):
     print('Allow building of xml')
     packages['packages']['libxml2']['buildable'] = True
