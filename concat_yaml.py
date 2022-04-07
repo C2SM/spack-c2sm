@@ -204,6 +204,11 @@ def rename_cray_mpich_to_mpich(packages):
 
     return packages
 
+def allow_xml_to_be_built(packages):
+    print('Allow building of xml')
+    packages['packages']['libxml2']['buildable'] = True
+    return packages
+
 
 if __name__ == '__main__':
 
@@ -226,7 +231,7 @@ if __name__ == '__main__':
     if os.path.exists(joint_packages_file): os.remove(joint_packages_file)
     if os.path.exists(joint_compiler_file): os.remove(joint_compiler_file)
 
-    spack_external_find(args.machine, external_packages_file)
+    #spack_external_find(args.machine, external_packages_file)
 
     joint_compilers = join_compilers(c2sm_compiler_file, module_compiler_file)
 
@@ -236,6 +241,7 @@ if __name__ == '__main__':
     joint_packages = rename_cray_mpich_to_mpich(joint_packages)
     joint_packages = allign_cuda_versions(joint_packages, module_packages_file,
                                           '11.0')
+    joint_packages = allow_xml_to_be_built(joint_packages)
 
     dump_yaml_to_file(joint_compilers, joint_compiler_file)
     dump_yaml_to_file(joint_packages, joint_packages_file)
