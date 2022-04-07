@@ -231,7 +231,7 @@ if __name__ == '__main__':
     if os.path.exists(joint_packages_file): os.remove(joint_packages_file)
     if os.path.exists(joint_compiler_file): os.remove(joint_compiler_file)
 
-    #spack_external_find(args.machine, external_packages_file)
+    spack_external_find(args.machine, external_packages_file)
 
     joint_compilers = join_compilers(c2sm_compiler_file, module_compiler_file)
 
