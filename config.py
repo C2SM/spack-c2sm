@@ -68,10 +68,8 @@ def main():
     )
 
     parser.add_argument('--no_yaml_copy',
-                        type=str,
-                        default='OFF',
-                        choices=('ON', 'OFF'),
-                        help='ON or OFF, copy machine-specific yaml')
+                        action='store_true',
+                        help='Do not copy yaml-files from sysconfig to spack-instance')
     args = parser.parse_args()
 
     if not os.path.isdir(args.idir + '/spack'):
@@ -181,7 +179,7 @@ def main():
 
     # copy modules.yaml, packages.yaml and compiles.yaml files in site scope of spack instance
     config_files = ["compilers.yaml", "modules.yaml", "packages.yaml"]
-    if args.no_yaml_copy == 'OFF':
+    if not args.no_yaml_copy:
         for afile in config_files:
             cmd = 'cp ' + dir_path + '/sysconfigs/' + args.machine.replace(
                 'admin-',
