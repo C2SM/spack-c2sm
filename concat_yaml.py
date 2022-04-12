@@ -9,11 +9,12 @@ warnings.simplefilter('ignore', yaml.error.UnsafeLoaderWarning)
 
 # CONSISTENCY CHECKS
 
+
 def allign_cuda_versions(joint_packages, module_packages_file, version):
     '''
     Take to prefix provided by spack-config and replace the one
     taken from sysconfig/templates
-    ''' 
+    '''
 
     print('Allign cuda versions')
 
@@ -50,6 +51,7 @@ def allign_cuda_versions(joint_packages, module_packages_file, version):
 
     return joint_packages
 
+
 def rename_cray_mpich_to_mpich(packages):
     '''
     Rename cray-mpich from spack-config module
@@ -72,12 +74,15 @@ def rename_cray_mpich_to_mpich(packages):
 
     return packages
 
+
 def allow_xml_to_be_built(packages):
     print('Allow building of xml')
     packages['packages']['libxml2']['buildable'] = True
     return packages
 
+
 # SPACK COMMANDS
+
 
 def spack_external_find(machine, packages_file):
     '''
@@ -92,7 +97,14 @@ def spack_external_find(machine, packages_file):
     if os.path.exists(packages_file): os.remove(packages_file)
 
     command = [
-        "./config.py", "-i", ".", "-u", "OFF", "-m", machine, "--no_yaml_copy",
+        "./config.py",
+        "-i",
+        ".",
+        "-u",
+        "OFF",
+        "-m",
+        machine,
+        "--no_yaml_copy",
     ]
     subprocess.run(command, check=True)
     command = [
@@ -103,7 +115,9 @@ def spack_external_find(machine, packages_file):
 
     os.environ.pop("SPACK_USER_CONFIG_PATH")
 
+
 # MERGE OF INDIVIDUAL YAML-FILES
+
 
 def remove_duplicate_compilers(c2sm, cscs, keys):
     c2sm_specs = specs_from_list_with_keys(c2sm, keys[0], keys[1])
@@ -117,6 +131,7 @@ def remove_duplicate_compilers(c2sm, cscs, keys):
     cscs = [item for item in cscs if item[keys[0]][keys[1]] in cscs_specs]
 
     return c2sm + cscs
+
 
 def remove_duplicate_packages(c2sm, cscs, external):
     c2sm_package_names = dictkeys_as_set(c2sm)
@@ -139,6 +154,7 @@ def remove_duplicate_packages(c2sm, cscs, external):
     c2sm.update(external)
     return c2sm
 
+
 def join_compilers(primary, secondary):
     print('Join compilers')
 
@@ -151,6 +167,7 @@ def join_compilers(primary, secondary):
         ['compiler', 'spec'])
 
     return joint
+
 
 def join_packages(primary, secondary, external):
     print('Join packages')
@@ -181,7 +198,9 @@ def join_packages(primary, secondary, external):
 
     return dict
 
+
 # HELPERS
+
 
 def load_from_yaml(file):
     print(f'Load yaml file: {file}')
@@ -192,6 +211,7 @@ def load_from_yaml(file):
             raise syaml.SpackYAMLError("error parsing YAML spec:", str(e))
     return data
 
+
 def specs_from_list_with_keys(spec_list, key_1, key_2):
     specs = set()
     for item in spec_list:
@@ -199,11 +219,13 @@ def specs_from_list_with_keys(spec_list, key_1, key_2):
 
     return specs
 
+
 def dictkeys_as_set(dict):
     keys = set()
     for spec in dict.keys():
         keys.add(spec)
     return keys
+
 
 def remove_from_dict(dict, filter):
     filtered = {}
@@ -212,11 +234,13 @@ def remove_from_dict(dict, filter):
             filtered[key] = value
     return filtered
 
+
 def dump_yaml_to_file(yaml_content, yaml_name):
     print(f'Dump to yaml: {yaml_name}')
     yaml.safe_dump(yaml_content,
                    open(yaml_name, 'w'),
                    default_flow_style=False)
+
 
 if __name__ == '__main__':
 

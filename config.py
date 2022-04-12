@@ -67,9 +67,10 @@ def main():
         'Define spack caches (source and misc)  directories. Default:  ~/.spack/machine/source_cache and ~/.spack/machine/cache'
     )
 
-    parser.add_argument('--no_yaml_copy',
-                        action='store_true',
-                        help='Do not copy yaml-files from sysconfig to spack-instance')
+    parser.add_argument(
+        '--no_yaml_copy',
+        action='store_true',
+        help='Do not copy yaml-files from sysconfig to spack-instance')
     args = parser.parse_args()
 
     if not os.path.isdir(args.idir + '/spack'):
