@@ -72,7 +72,7 @@ class Eccodes(CMakePackage):
     # tests are enabled but the testing scripts don't use it.
     # depends_on('valgrind', type='test', when='+test')
 
-    depends_on('cmake@3.14.5:')
+    depends_on('cmake@3.14.5:%gcc')
     depends_on('netcdf-c', when='+netcdf')
     depends_on('openjpeg@1.5.0:1.5.999,2.1.0:2.1.999', when='jp2k=openjpeg')
     depends_on('jasper%gcc', when='jp2k=jasper', type='build')

@@ -55,7 +55,7 @@ packages:
   cmake:
     buildable: false
     externals:
-    - spec: cmake@3.22
+    - spec: cmake@3.22%gcc
       modules:
       - daint-gpu
       - CMake/3.22.1
@@ -63,7 +63,7 @@ packages:
     buildable: false
     version: ['11.0']
     externals:
-    - spec: cuda@11.0
+    - spec: cuda@11.0%gcc
       prefix: /usr/local/cuda-11.0
   curl:
     buildable: false
@@ -83,7 +83,7 @@ packages:
   openssl:
     buildable: false
     externals:
-    - spec: openssl@1.1.0i
+    - spec: openssl@1.1.0
       prefix: /usr
   pkg-config:
     buildable: false
