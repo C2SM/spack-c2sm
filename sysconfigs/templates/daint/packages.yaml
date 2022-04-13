@@ -65,7 +65,7 @@ packages:
     externals:
     - spec: cuda@11.0%gcc
       modules:
-        - - cudatoolkit/11.0.2_3.38-8.1__g5b73779
+      - cudatoolkit/11.0.2_3.38-8.1__g5b73779
   curl:
     buildable: false
     externals:
