@@ -64,7 +64,8 @@ packages:
     version: ['11.0']
     externals:
     - spec: cuda@11.0%gcc
-      prefix: /usr/local/cuda-11.0
+      modules:
+        - - cudatoolkit/11.0.2_3.38-8.1__g5b73779
   curl:
     buildable: false
     externals:

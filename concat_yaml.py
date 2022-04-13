@@ -274,8 +274,8 @@ if __name__ == '__main__':
                                    external_packages_file)
 
     joint_packages = rename_cray_mpich_to_mpich(joint_packages)
-    joint_packages = allign_cuda_versions(joint_packages, module_packages_file,
-                                          '11.0')
+    #joint_packages = allign_cuda_versions(joint_packages, module_packages_file,
+    #                                      '11.0')
     joint_packages = allow_xml_to_be_built(joint_packages)
 
     dump_yaml_to_file(joint_compilers, joint_compiler_file)
