@@ -253,7 +253,7 @@ def git_diff(machine):
         print('Could not find git -> Abort')
         sys.exit(1)
 
-    # git diff exits with 1 if differences are found    
+    # git diff exits with 1 if differences are found
     except subprocess.CalledProcessError:
         commit_and_push_to_git(machine)
 
@@ -279,7 +279,9 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--machine', '-m', dest='machine')
-    parser.add_argument('--commit_and_push', action='store_true', dest='commit_and_push_to_git')
+    parser.add_argument('--commit_and_push',
+                        action='store_true',
+                        dest='commit_and_push_to_git')
     args = parser.parse_args()
 
     try:
