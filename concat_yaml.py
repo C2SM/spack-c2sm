@@ -4,6 +4,7 @@ import warnings
 import subprocess
 import os
 import argparse
+import sys
 
 warnings.simplefilter('ignore', yaml.error.UnsafeLoaderWarning)
 
@@ -242,10 +243,43 @@ def dump_yaml_to_file(yaml_content, yaml_name):
                    default_flow_style=False)
 
 
+def git_diff(machine):
+    print('Running git diff')
+
+    command = ['/usr/bin/git', 'diff', '--exit-code', '--name-only']
+    try:
+        subprocess.run(command, check=True)
+    except FileNotFoundError:
+        print('Could not find git -> Abort')
+        sys.exit(1)
+
+    # git diff exits with 1 if differences are found    
+    except subprocess.CalledProcessError:
+        commit_and_push_to_git(machine)
+
+
+def commit_and_push_to_git(machine):
+    print('Commit to Git')
+    branch = f'{machine}_automatic_update'
+
+    command = ['/usr/bin/git', 'switch', '-c', branch]
+    subprocess.run(command, check=True)
+
+    command = ['/usr/bin/git', 'add', f'sysconfigs/{machine}/*']
+    subprocess.run(command, check=True)
+
+    command = ['/usr/bin/git', 'commit', '-m', f'update config for {machine}']
+    subprocess.run(command, check=True)
+
+    command = ['/usr/bin/git', 'push', 'origin', branch]
+    subprocess.run(command, check=True)
+
+
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--machine', '-m', dest='machine')
+    parser.add_argument('--commit_and_push', action='store_true', dest='commit_and_push_to_git')
     args = parser.parse_args()
 
     try:
@@ -280,3 +314,6 @@ if __name__ == '__main__':
 
     dump_yaml_to_file(joint_compilers, joint_compiler_file)
     dump_yaml_to_file(joint_packages, joint_packages_file)
+
+    if commit_and_push_to_git:
+        git_diff(args.machine)
