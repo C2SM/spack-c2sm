@@ -87,9 +87,9 @@ Spack instance on Dom
 -------------------------
 In order to allow preliminary testing on Dom for users, an instance of Spack is installed on Dom.
 Dom, as a system under constant change, cannot provide the stability of Daint or Tsa.
-Therefore a weekly Jenkins plan `spack-config <https://jenkins-mch.cscs.ch/view/C2SM/job/spack-config/`__ collects the required configurations in an automatic fashion. Subsequently the following packages are tested:
+Therefore a weekly Jenkins plan `spack-config <https://jenkins-mch.cscs.ch/view/C2SM/job/spack-config/>`__ collects the required configurations in an automatic fashion. Subsequently the following packages are tested:
    * Cosmo
    * Int2lm
    * Icontools
 
-In case of passing tests, another Jenkins plan `publish-spack-config <https://jenkins-mch.cscs.ch/view/C2SM/job/publish-spack-config/`__ is triggered to commit and push the most recent config for Dom.
+In case of passing tests, another Jenkins plan `publish-spack-config <https://jenkins-mch.cscs.ch/view/C2SM/job/publish-spack-config>/`__ is triggered to commit and push the most recent config for Dom.
