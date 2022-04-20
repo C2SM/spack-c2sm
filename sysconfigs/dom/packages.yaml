@@ -136,8 +136,8 @@ packages:
     - extra_attributes:
         compilers:
           c: /usr/bin/gcc-7
-          cxx: /usr/bin/g++
-          fortran: /usr/bin/gfortran-7
+          cxx: /usr/bin/g++-7
+          fortran: /usr/bin/gfortran
       prefix: /usr
       spec: gcc@7.5.0 languages=c,c++,fortran
   ghostscript:
@@ -150,6 +150,11 @@ packages:
     externals:
     - prefix: /usr
       spec: git@2.26.2~tcltk
+  git-lfs:
+    buildable: false
+    externals:
+    - prefix: /users/juckerj/.local
+      spec: git-lfs@2.10.0
   gmake:
     buildable: false
     externals:
@@ -294,7 +299,7 @@ packages:
   python:
     buildable: false
     externals:
-    - prefix: /opt/python/3.9.4.1
+    - prefix: /scratch/snx3000tds/juckerj/spack-c2sm/venv
       spec: python@3.9.4+bz2+ctypes+dbm+lzma~nis+pyexpat+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
     - prefix: /usr
       spec: python@2.7.18+bz2+ctypes~dbm~lzma+nis+pyexpat+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
