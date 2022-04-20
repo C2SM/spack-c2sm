@@ -180,16 +180,16 @@ def main():
 
     # copy modules.yaml, packages.yaml and compiles.yaml files in site scope of spack instance
     config_files = ["compilers.yaml", "modules.yaml", "packages.yaml"]
-    if not args.no_yaml_copy:
+    if args.no_yaml_copy:
+        print(
+            f'Warning: Do not copy config files: {config_files} to Spack instance!'
+        )
+    else:
         for afile in config_files:
             cmd = 'cp ' + dir_path + '/sysconfigs/' + args.machine.replace(
                 'admin-',
                 '') + '/' + afile + ' ' + args.idir + '/spack/etc/spack/'
             subprocess.run(cmd.split(), check=True)
-    else:
-        print(
-            f'Warning: Do not copy config files: {config_files} to Spack instance!'
-        )
 
     print('Spack successfully installed. \nsource ' + args.idir +
           '/spack/share/spack/setup-env.sh for setting up the instance.')

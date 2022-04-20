@@ -279,9 +279,9 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--machine', '-m', dest='machine')
-    parser.add_argument('--commit_and_push',
+    parser.add_argument('--publish_to_git',
                         action='store_true',
-                        dest='commit_and_push_to_git')
+                        dest='publish_to_git')
     args = parser.parse_args()
 
     try:
@@ -317,5 +317,5 @@ if __name__ == '__main__':
     dump_yaml_to_file(joint_compilers, joint_compiler_file)
     dump_yaml_to_file(joint_packages, joint_packages_file)
 
-    if commit_and_push_to_git:
+    if args.publish_to_git:
         git_diff(args.machine)
