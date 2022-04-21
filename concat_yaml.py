@@ -29,24 +29,13 @@ def allign_cuda_versions(joint_packages, module_packages_file, version):
         raise ValueError(
             f'Cuda version {version} not provided by yaml from templates')
 
-    specs_module = []
-    prefix_module = []
-    for i in range(len(module_packages['cuda']['externals'])):
-        specs_module.append(module_packages['cuda']['externals'][i]['spec'])
-        prefix_module.append(module_packages['cuda']['externals'][i]['prefix'])
+    specs_module = [ ex['spec'] for ex in module_packages['cuda']['externals'] ]
+    prefix_module = [ ex['prefix'] for ex in module_packages['cuda']['externals'] ]
 
-    i = 0
-    found_cuda_version = False
-    for spec in specs_module:
-        if version in spec:
-            prefix = prefix_module[i]
-            found_cuda_version = True
-            break
-        i += 1
-
-    if not found_cuda_version:
-        raise ValueError(
-            f'Cuda version {version} not provided by spack-config module')
+    try:
+        prefix = next(prefix for spec, prefix in zip(specs_module, prefix_module) if version in spec)
+    except StopIteration:
+        raise ValueError(f'Cuda version {version} not provided by spack-config module')
 
     joint_packages['packages']['cuda']['externals'][0]['prefix'] = prefix
 
@@ -125,28 +114,6 @@ def disambiguate_compilers_with_precedence(primary, secondary, key_1,key_2):
     return primary + [ item for item in secondary if item[key_1][key_2] not in primary_specs]
 
 
-def remove_duplicate_packages(c2sm, cscs, external):
-    c2sm_package_names = dictkeys_as_set(c2sm)
-    cscs_package_names = dictkeys_as_set(cscs)
-    external_package_names = dictkeys_as_set(external)
-
-    duplicates = (c2sm_package_names & cscs_package_names)
-    for dupl in duplicates:
-        cscs_package_names.remove(dupl)
-
-    duplicates = (c2sm_package_names & external_package_names)
-    for dupl in duplicates:
-        external_package_names.remove(dupl)
-
-    c2sm = keep_entries_from_filter(c2sm, filter=c2sm_package_names)
-    cscs = keep_entries_from_filter(cscs, filter=cscs_package_names)
-    external = keep_entries_from_filter(external, filter=external_package_names)
-
-    c2sm.update(cscs)
-    c2sm.update(external)
-    return c2sm
-
-
 def join_compilers(primary, secondary):
     print('Join compilers')
 
@@ -160,34 +127,15 @@ def join_compilers(primary, secondary):
     return { 'compilers': compilers }
 
 
-def join_packages(primary, secondary, external):
+def join_packages(primary, secondary, tertiary):
     print('Join packages')
     primary_packages = load_from_yaml(primary)['packages']
     secondary_packages = load_from_yaml(secondary)['packages']
-    external_packages = load_from_yaml(external)['packages']
+    tertiary_packages = load_from_yaml(tertiary)['packages']
 
-    primary_package_names = dictkeys_as_set(primary_packages)
-    secondary_package_names = dictkeys_as_set(secondary_packages)
-    external_package_names = dictkeys_as_set(external_packages)
-
-    duplicates = (primary_package_names & secondary_package_names)
-    for dupl in duplicates:
-        secondary_package_names.remove(dupl)
-
-    duplicates = (primary_package_names & external_package_names)
-    for dupl in duplicates:
-        external_package_names.remove(dupl)
-
-    primary = keep_entries_from_filter(primary_packages, filter=primary_package_names)
-    secondary = keep_entries_from_filter(secondary_packages, filter=secondary_package_names)
-    external = keep_entries_from_filter(external_packages, filter=external_package_names)
-
-    primary.update(secondary)
-    primary.update(external)
-    dict = {}
-    dict['packages'] = primary
-
-    return dict
+    tertiary_packages.update(secondary_packages)
+    tertiary_packages.update(primary_packages)
+    return { 'packages' : tertiary_packages }
 
 
 # HELPERS
@@ -203,18 +151,7 @@ def load_from_yaml(file):
     return data
 
 
-def dictkeys_as_set(dict):
-    keys = set()
-    for spec in dict.keys():
-        keys.add(spec)
-    return keys
-
-
-def keep_entries_from_filter(dict, filter):
-    return { k:v for k,v in dict.items() if k in filter }
-
-
-def dump_yaml_to_file(yaml_content, yaml_name):
+def dump_to_yaml(yaml_content, yaml_name):
     print(f'Dump to yaml: {yaml_name}')
     yaml.safe_dump(yaml_content,
                    open(yaml_name, 'w'),
@@ -280,7 +217,7 @@ if __name__ == '__main__':
     if os.path.exists(joint_packages_file): os.remove(joint_packages_file)
     if os.path.exists(joint_compiler_file): os.remove(joint_compiler_file)
 
-    #spack_external_find(args.machine, external_packages_file)
+    spack_external_find(args.machine, external_packages_file)
 
     joint_compilers = join_compilers(c2sm_compiler_file, module_compiler_file)
 
@@ -288,12 +225,15 @@ if __name__ == '__main__':
                                    external_packages_file)
 
     joint_packages = rename_cray_mpich_to_mpich(joint_packages)
+    
+    # currently the cuda version cannot be taken from the config-module
     #joint_packages = allign_cuda_versions(joint_packages, module_packages_file,
     #                                      '11.0')
+
     joint_packages = allow_xml_to_be_built(joint_packages)
 
-    dump_yaml_to_file(joint_compilers, joint_compiler_file)
-    dump_yaml_to_file(joint_packages, joint_packages_file)
+    dump_to_yaml(joint_compilers, joint_compiler_file)
+    dump_to_yaml(joint_packages, joint_packages_file)
 
     if args.publish_to_git:
         git_diff(args.machine)
