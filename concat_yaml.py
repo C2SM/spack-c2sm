@@ -29,13 +29,18 @@ def allign_cuda_versions(joint_packages, module_packages_file, version):
         raise ValueError(
             f'Cuda version {version} not provided by yaml from templates')
 
-    specs_module = [ ex['spec'] for ex in module_packages['cuda']['externals'] ]
-    prefix_module = [ ex['prefix'] for ex in module_packages['cuda']['externals'] ]
+    specs_module = [ex['spec'] for ex in module_packages['cuda']['externals']]
+    prefix_module = [
+        ex['prefix'] for ex in module_packages['cuda']['externals']
+    ]
 
     try:
-        prefix = next(prefix for spec, prefix in zip(specs_module, prefix_module) if version in spec)
+        prefix = next(prefix
+                      for spec, prefix in zip(specs_module, prefix_module)
+                      if version in spec)
     except StopIteration:
-        raise ValueError(f'Cuda version {version} not provided by spack-config module')
+        raise ValueError(
+            f'Cuda version {version} not provided by spack-config module')
 
     joint_packages['packages']['cuda']['externals'][0]['prefix'] = prefix
 
@@ -137,7 +142,7 @@ def join_packages(primary, secondary, tertiary):
 
     tertiary_packages.update(secondary_packages)
     tertiary_packages.update(primary_packages)
-    return { 'packages' : tertiary_packages }
+    return {'packages': tertiary_packages}
 
 
 # HELPERS
@@ -227,7 +232,7 @@ if __name__ == '__main__':
                                    external_packages_file)
 
     joint_packages = rename_cray_mpich_to_mpich(joint_packages)
-    
+
     # currently the cuda version cannot be taken from the config-module
     #joint_packages = allign_cuda_versions(joint_packages, module_packages_file,
     #                                      '11.0')
