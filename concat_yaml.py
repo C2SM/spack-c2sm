@@ -29,22 +29,16 @@ def allign_cuda_versions(joint_packages, module_packages_file, version):
         raise ValueError(
             f'Cuda version {version} not provided by yaml from templates')
 
-    specs_module = []
-    prefix_module = []
-    for i in range(len(module_packages['cuda']['externals'])):
-        specs_module.append(module_packages['cuda']['externals'][i]['spec'])
-        prefix_module.append(module_packages['cuda']['externals'][i]['prefix'])
+    specs_module = [ex['spec'] for ex in module_packages['cuda']['externals']]
+    prefix_module = [
+        ex['prefix'] for ex in module_packages['cuda']['externals']
+    ]
 
-    i = 0
-    found_cuda_version = False
-    for spec in specs_module:
-        if version in spec:
-            prefix = prefix_module[i]
-            found_cuda_version = True
-            break
-        i += 1
-
-    if not found_cuda_version:
+    try:
+        prefix = next(prefix
+                      for spec, prefix in zip(specs_module, prefix_module)
+                      if version in spec)
+    except StopIteration:
         raise ValueError(
             f'Cuda version {version} not provided by spack-config module')
 
@@ -120,40 +114,11 @@ def spack_external_find(machine, packages_file):
 # MERGE OF INDIVIDUAL YAML-FILES
 
 
-def remove_duplicate_compilers(c2sm, cscs, keys):
-    c2sm_specs = specs_from_list_with_keys(c2sm, keys[0], keys[1])
-    cscs_specs = specs_from_list_with_keys(cscs, keys[0], keys[1])
-
-    duplicates = (c2sm_specs & cscs_specs)
-    for dupl in duplicates:
-        cscs_specs.remove(dupl)
-
-    c2sm = [item for item in c2sm if item[keys[0]][keys[1]] in c2sm_specs]
-    cscs = [item for item in cscs if item[keys[0]][keys[1]] in cscs_specs]
-
-    return c2sm + cscs
-
-
-def remove_duplicate_packages(c2sm, cscs, external):
-    c2sm_package_names = dictkeys_as_set(c2sm)
-    cscs_package_names = dictkeys_as_set(cscs)
-    external_package_names = dictkeys_as_set(external)
-
-    duplicates = (c2sm_package_names & cscs_package_names)
-    for dupl in duplicates:
-        cscs_package_names.remove(dupl)
-
-    duplicates = (c2sm_package_names & external_package_names)
-    for dupl in duplicates:
-        external_package_names.remove(dupl)
-
-    c2sm = remove_from_dict(c2sm, c2sm_package_names)
-    cscs = remove_from_dict(cscs, cscs_package_names)
-    external = remove_from_dict(external, external_package_names)
-
-    c2sm.update(cscs)
-    c2sm.update(external)
-    return c2sm
+def disambiguate_compilers_with_precedence(primary, secondary, key_1, key_2):
+    primary_specs = {item[key_1][key_2] for item in primary}
+    return primary + [
+        item for item in secondary if item[key_1][key_2] not in primary_specs
+    ]
 
 
 def join_compilers(primary, secondary):
@@ -162,42 +127,22 @@ def join_compilers(primary, secondary):
     primary_compilers = load_from_yaml(primary)
     secondary_compilers = load_from_yaml(secondary)
 
-    joint = {}
-    joint['compilers'] = remove_duplicate_compilers(
+    compilers = disambiguate_compilers_with_precedence(
         primary_compilers['compilers'], secondary_compilers['compilers'],
-        ['compiler', 'spec'])
+        'compiler', 'spec')
 
-    return joint
+    return {'compilers': compilers}
 
 
-def join_packages(primary, secondary, external):
+def join_packages(primary, secondary, tertiary):
     print('Join packages')
     primary_packages = load_from_yaml(primary)['packages']
     secondary_packages = load_from_yaml(secondary)['packages']
-    external_packages = load_from_yaml(external)['packages']
+    tertiary_packages = load_from_yaml(tertiary)['packages']
 
-    primary_package_names = dictkeys_as_set(primary_packages)
-    secondary_package_names = dictkeys_as_set(secondary_packages)
-    external_package_names = dictkeys_as_set(external_packages)
-
-    duplicates = (primary_package_names & secondary_package_names)
-    for dupl in duplicates:
-        secondary_package_names.remove(dupl)
-
-    duplicates = (primary_package_names & external_package_names)
-    for dupl in duplicates:
-        external_package_names.remove(dupl)
-
-    primary = remove_from_dict(primary_packages, primary_package_names)
-    secondary = remove_from_dict(secondary_packages, secondary_package_names)
-    external = remove_from_dict(external_packages, external_package_names)
-
-    primary.update(secondary)
-    primary.update(external)
-    dict = {}
-    dict['packages'] = primary
-
-    return dict
+    tertiary_packages.update(secondary_packages)
+    tertiary_packages.update(primary_packages)
+    return {'packages': tertiary_packages}
 
 
 # HELPERS
@@ -213,30 +158,7 @@ def load_from_yaml(file):
     return data
 
 
-def specs_from_list_with_keys(spec_list, key_1, key_2):
-    specs = set()
-    for item in spec_list:
-        specs.add(item[key_1][key_2])
-
-    return specs
-
-
-def dictkeys_as_set(dict):
-    keys = set()
-    for spec in dict.keys():
-        keys.add(spec)
-    return keys
-
-
-def remove_from_dict(dict, filter):
-    filtered = {}
-    for key, value in dict.items():
-        if key in filter:
-            filtered[key] = value
-    return filtered
-
-
-def dump_yaml_to_file(yaml_content, yaml_name):
+def dump_to_yaml(yaml_content, yaml_name):
     print(f'Dump to yaml: {yaml_name}')
     yaml.safe_dump(yaml_content,
                    open(yaml_name, 'w'),
@@ -279,9 +201,9 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--machine', '-m', dest='machine')
-    parser.add_argument('--commit_and_push',
+    parser.add_argument('--publish_to_git',
                         action='store_true',
-                        dest='commit_and_push_to_git')
+                        dest='publish_to_git')
     args = parser.parse_args()
 
     try:
@@ -310,12 +232,15 @@ if __name__ == '__main__':
                                    external_packages_file)
 
     joint_packages = rename_cray_mpich_to_mpich(joint_packages)
+
+    # currently the cuda version cannot be taken from the config-module
     #joint_packages = allign_cuda_versions(joint_packages, module_packages_file,
     #                                      '11.0')
+
     joint_packages = allow_xml_to_be_built(joint_packages)
 
-    dump_yaml_to_file(joint_compilers, joint_compiler_file)
-    dump_yaml_to_file(joint_packages, joint_packages_file)
+    dump_to_yaml(joint_compilers, joint_compiler_file)
+    dump_to_yaml(joint_packages, joint_packages_file)
 
-    if commit_and_push_to_git:
+    if args.publish_to_git:
         git_diff(args.machine)
