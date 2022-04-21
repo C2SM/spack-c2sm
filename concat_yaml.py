@@ -120,18 +120,9 @@ def spack_external_find(machine, packages_file):
 # MERGE OF INDIVIDUAL YAML-FILES
 
 
-def remove_duplicate_compilers(c2sm, cscs, keys):
-    c2sm_specs = specs_from_list_with_keys(c2sm, keys[0], keys[1])
-    cscs_specs = specs_from_list_with_keys(cscs, keys[0], keys[1])
-
-    duplicates = (c2sm_specs & cscs_specs)
-    for dupl in duplicates:
-        cscs_specs.remove(dupl)
-
-    c2sm = [item for item in c2sm if item[keys[0]][keys[1]] in c2sm_specs]
-    cscs = [item for item in cscs if item[keys[0]][keys[1]] in cscs_specs]
-
-    return c2sm + cscs
+def disambiguate_compilers_with_precedence(primary, secondary, key_1,key_2):
+    primary_specs = { item[key_1][key_2] for item in primary }
+    return primary + [ item for item in secondary if item[key_1][key_2] not in primary_specs]
 
 
 def remove_duplicate_packages(c2sm, cscs, external):
@@ -147,9 +138,9 @@ def remove_duplicate_packages(c2sm, cscs, external):
     for dupl in duplicates:
         external_package_names.remove(dupl)
 
-    c2sm = remove_from_dict(c2sm, c2sm_package_names)
-    cscs = remove_from_dict(cscs, cscs_package_names)
-    external = remove_from_dict(external, external_package_names)
+    c2sm = keep_entries_from_filter(c2sm, filter=c2sm_package_names)
+    cscs = keep_entries_from_filter(cscs, filter=cscs_package_names)
+    external = keep_entries_from_filter(external, filter=external_package_names)
 
     c2sm.update(cscs)
     c2sm.update(external)
@@ -162,12 +153,11 @@ def join_compilers(primary, secondary):
     primary_compilers = load_from_yaml(primary)
     secondary_compilers = load_from_yaml(secondary)
 
-    joint = {}
-    joint['compilers'] = remove_duplicate_compilers(
+    compilers = disambiguate_compilers_with_precedence(
         primary_compilers['compilers'], secondary_compilers['compilers'],
-        ['compiler', 'spec'])
+        'compiler','spec')
 
-    return joint
+    return { 'compilers': compilers }
 
 
 def join_packages(primary, secondary, external):
@@ -188,9 +178,9 @@ def join_packages(primary, secondary, external):
     for dupl in duplicates:
         external_package_names.remove(dupl)
 
-    primary = remove_from_dict(primary_packages, primary_package_names)
-    secondary = remove_from_dict(secondary_packages, secondary_package_names)
-    external = remove_from_dict(external_packages, external_package_names)
+    primary = keep_entries_from_filter(primary_packages, filter=primary_package_names)
+    secondary = keep_entries_from_filter(secondary_packages, filter=secondary_package_names)
+    external = keep_entries_from_filter(external_packages, filter=external_package_names)
 
     primary.update(secondary)
     primary.update(external)
@@ -213,14 +203,6 @@ def load_from_yaml(file):
     return data
 
 
-def specs_from_list_with_keys(spec_list, key_1, key_2):
-    specs = set()
-    for item in spec_list:
-        specs.add(item[key_1][key_2])
-
-    return specs
-
-
 def dictkeys_as_set(dict):
     keys = set()
     for spec in dict.keys():
@@ -228,12 +210,8 @@ def dictkeys_as_set(dict):
     return keys
 
 
-def remove_from_dict(dict, filter):
-    filtered = {}
-    for key, value in dict.items():
-        if key in filter:
-            filtered[key] = value
-    return filtered
+def keep_entries_from_filter(dict, filter):
+    return { k:v for k,v in dict.items() if k in filter }
 
 
 def dump_yaml_to_file(yaml_content, yaml_name):
@@ -302,7 +280,7 @@ if __name__ == '__main__':
     if os.path.exists(joint_packages_file): os.remove(joint_packages_file)
     if os.path.exists(joint_compiler_file): os.remove(joint_compiler_file)
 
-    spack_external_find(args.machine, external_packages_file)
+    #spack_external_find(args.machine, external_packages_file)
 
     joint_compilers = join_compilers(c2sm_compiler_file, module_compiler_file)
 
