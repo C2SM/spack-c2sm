@@ -109,9 +109,11 @@ def spack_external_find(machine, packages_file):
 # MERGE OF INDIVIDUAL YAML-FILES
 
 
-def disambiguate_compilers_with_precedence(primary, secondary, key_1,key_2):
-    primary_specs = { item[key_1][key_2] for item in primary }
-    return primary + [ item for item in secondary if item[key_1][key_2] not in primary_specs]
+def disambiguate_compilers_with_precedence(primary, secondary, key_1, key_2):
+    primary_specs = {item[key_1][key_2] for item in primary}
+    return primary + [
+        item for item in secondary if item[key_1][key_2] not in primary_specs
+    ]
 
 
 def join_compilers(primary, secondary):
@@ -122,9 +124,9 @@ def join_compilers(primary, secondary):
 
     compilers = disambiguate_compilers_with_precedence(
         primary_compilers['compilers'], secondary_compilers['compilers'],
-        'compiler','spec')
+        'compiler', 'spec')
 
-    return { 'compilers': compilers }
+    return {'compilers': compilers}
 
 
 def join_packages(primary, secondary, tertiary):
