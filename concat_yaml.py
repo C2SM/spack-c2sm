@@ -120,9 +120,11 @@ def spack_external_find(machine, packages_file):
 # MERGE OF INDIVIDUAL YAML-FILES
 
 
-def disambiguate_compilers_with_precedence(primary, secondary, key_1,key_2):
-    primary_specs = { item[key_1][key_2] for item in primary }
-    return primary + [ item for item in secondary if item[key_1][key_2] not in primary_specs]
+def disambiguate_compilers_with_precedence(primary, secondary, key_1, key_2):
+    primary_specs = {item[key_1][key_2] for item in primary}
+    return primary + [
+        item for item in secondary if item[key_1][key_2] not in primary_specs
+    ]
 
 
 def remove_duplicate_packages(c2sm, cscs, external):
@@ -140,7 +142,8 @@ def remove_duplicate_packages(c2sm, cscs, external):
 
     c2sm = keep_entries_from_filter(c2sm, filter=c2sm_package_names)
     cscs = keep_entries_from_filter(cscs, filter=cscs_package_names)
-    external = keep_entries_from_filter(external, filter=external_package_names)
+    external = keep_entries_from_filter(external,
+                                        filter=external_package_names)
 
     c2sm.update(cscs)
     c2sm.update(external)
@@ -155,9 +158,9 @@ def join_compilers(primary, secondary):
 
     compilers = disambiguate_compilers_with_precedence(
         primary_compilers['compilers'], secondary_compilers['compilers'],
-        'compiler','spec')
+        'compiler', 'spec')
 
-    return { 'compilers': compilers }
+    return {'compilers': compilers}
 
 
 def join_packages(primary, secondary, external):
@@ -178,9 +181,12 @@ def join_packages(primary, secondary, external):
     for dupl in duplicates:
         external_package_names.remove(dupl)
 
-    primary = keep_entries_from_filter(primary_packages, filter=primary_package_names)
-    secondary = keep_entries_from_filter(secondary_packages, filter=secondary_package_names)
-    external = keep_entries_from_filter(external_packages, filter=external_package_names)
+    primary = keep_entries_from_filter(primary_packages,
+                                       filter=primary_package_names)
+    secondary = keep_entries_from_filter(secondary_packages,
+                                         filter=secondary_package_names)
+    external = keep_entries_from_filter(external_packages,
+                                        filter=external_package_names)
 
     primary.update(secondary)
     primary.update(external)
@@ -211,7 +217,7 @@ def dictkeys_as_set(dict):
 
 
 def keep_entries_from_filter(dict, filter):
-    return { k:v for k,v in dict.items() if k in filter }
+    return {k: v for k, v in dict.items() if k in filter}
 
 
 def dump_yaml_to_file(yaml_content, yaml_name):
