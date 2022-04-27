@@ -97,7 +97,7 @@ class Icon(Package):
     variant('art', default=False, description='Build with art enabled')
     variant('ocean', default=True, description='Build with ocean enabled')
     variant('dace', default=False, description='Build with DACE enabled')
-    variant('rttov', default=False,description='Build with RTTOV enabled')
+    variant('rttov', default=False, description='Build with RTTOV enabled')
     variant('silent-rules',
             default=True,
             description='Build with Make silent rules ON')
