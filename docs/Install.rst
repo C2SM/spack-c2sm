@@ -49,7 +49,7 @@ Note the config will append *spack/* directory to <spack-installation-directory>
 The -r option usually needs to point to the **site scope** of your spack-instance installation, that is, *<spack-installation-directory>/spack/etc/spack*. 
 It can however also be used if you are a CSCS user and do not want to have your own spack instance 
 *but still want to develop the mch-packages*. In that case, you can clone the 
-spack-mch repo, let the -i, -m options void, BUT overwrite the *site scoped* repos.yaml 
+spack-c2sm repo, let the -i, -m options void, BUT overwrite the *site scoped* repos.yaml 
 files of the maintained spack instances by installing a new 
 repos.yaml in your **user scope** *~/.spack*.
 
@@ -60,7 +60,7 @@ Example:
     SPACK_DIR=$SCRATCH
     ./config.py -m tsa -i $SPACK_DIR -r $SPACK_DIR/spack/etc/spack -u ON
 
-**Careful: the repos.yaml file is always modified in a way that it points to the spack-mch package repositories from which you call the config.sh script.**
+**Careful: the repos.yaml file is always modified in a way that it points to the spack-c2sm package repositories from which you call the config.sh script.**
 
 Next and final step is to source your newly installed instance under *$SPACK_DIR/share/spack* 
 in order to activate it.
@@ -81,7 +81,7 @@ They are available under spack/etc/spack. Their structure is:
 * modules.yaml: all info about the created modules, i.e which env variable or modules should be set once loaded
 * config.yaml: specifies the main installation path and the main module installation path, where to find thebinaries etc.
 * upstreams.yaml: specifies where to find the pre-installed software, that are under /project/g110/spack-install/
-* repos.yaml: specifies where to find the only mch packages that are stored in spack-mch repository
+* repos.yaml: specifies where to find the only mch packages that are stored in spack-c2sm repository
 
 Spack instance on Dom
 -------------------------
