@@ -40,7 +40,7 @@ class Icon(Package):
             submodules=True)
 
     depends_on('cmake%gcc')
-    depends_on('libxml2@2.9.8:%gcc', type=('build', 'link', 'run'))
+    depends_on('libxml2%gcc', type=('build', 'link', 'run'))
     depends_on('serialbox@2.6.0 ~python ~sdb ~shared',
                when='serialize_mode=create',
                type=('build', 'link', 'run'))
@@ -54,6 +54,7 @@ class Icon(Package):
                when='+eccodes',
                type=('build', 'link', 'run'))
     depends_on('claw@2.0.2', when='+claw', type=('build', 'link', 'run'))
+    depends_on('netcdf-fortran')
 
     variant('icon_target',
             default='gpu',
@@ -64,7 +65,7 @@ class Icon(Package):
             default='daint',
             description='Build on described host (e.g daint)',
             multi=False,
-            values=('tsa', 'daint'))
+            values=('tsa', 'daint', 'dom', 'muttler', 'manali'))
     variant('site',
             default='cscs',
             description='Build on described site (e.g cscs)',
