@@ -136,7 +136,12 @@ packages:
     externals:
     - spec: netcdf-c@4.7.0%nvhpc@22.3+mpi
       modules:
-      - onetcdf/4.7.4-nvhpc-22.3
+      - netcdf/4.7.4-nvhpc-22.3
+  netcdf-fortran:
+    externals:
+    - spec: netcdf-fortran@4.4.5%nvhpc@22.3
+      modules:
+      - netcdf/4.4.5-nvhpc-22.3
   openmpi:
     externals:
     - spec: openmpi@4.1.3%nvhpc@22.3+cuda+cxx~cxx_exceptions~java~memchecker+pmi+pmix~sqlite3+static~thread_multiple~wrapper-rpath
