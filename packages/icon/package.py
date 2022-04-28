@@ -40,7 +40,7 @@ class Icon(Package):
             submodules=True)
 
     depends_on('cmake%gcc')
-    depends_on('libxml2@%gcc', type=('build', 'link', 'run'))
+    depends_on('libxml2%gcc', type=('build', 'link', 'run'))
     depends_on('serialbox@2.6.0 ~python ~sdb ~shared',
                when='serialize_mode=create',
                type=('build', 'link', 'run'))
