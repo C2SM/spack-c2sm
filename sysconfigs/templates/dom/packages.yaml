@@ -52,13 +52,16 @@ packages:
       - cray-netcdf-hdf5parallel/4.7.4.4
     - spec: netcdf-fortran@4.7.4.4%gcc
       prefix: /opt/cray/pe/netcdf/4.7.4.4/GNU/8.2
-  cmake:
-    buildable: false
-    externals:
-    - spec: cmake@3.14%gcc
-      modules:
-      - daint-gpu
-      - CMake/3.14
+  cmake:                                                                        
+    buildable: false                                                            
+    variants: ~doc+ncurses+openssl~ownlibs~qt                                   
+    externals:                                                                  
+    - spec: cmake@3.14.5%gcc                                                    
+      prefix: /apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5
+    - spec: cmake@3.14.5%nvhpc
+      prefix: /apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5
+    - spec: cmake@3.14.5
+      prefix: /apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5
   cuda:
     buildable: false
     version: ['11.0']
