@@ -73,7 +73,7 @@ class CosmoTest(TestCase):
             )
         else:
             self.Srun(
-                'spack -d installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=gpu +cppdycore'
+                'spack installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=gpu +cppdycore'
             )
 
     def test_install_master_cpu(self):
@@ -84,7 +84,7 @@ class CosmoTest(TestCase):
             )
         else:
             self.Srun(
-                'spack -d installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=cpu ~cppdycore'
+                'spack installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=cpu ~cppdycore'
             )
 
     # def test_install_test(self):
