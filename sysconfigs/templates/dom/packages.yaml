@@ -56,10 +56,6 @@ packages:
     buildable: false                                                            
     variants: ~doc+ncurses+openssl~ownlibs~qt                                   
     externals:                                                                  
-    - spec: cmake@3.14.5%gcc                                                    
-      prefix: /apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5
-    - spec: cmake@3.14.5%nvhpc
-      prefix: /apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5
     - spec: cmake@3.14.5
       prefix: /apps/daint/UES/jenkins/7.0.UP01/gpu/easybuild/software/CMake/3.14.5
   cuda:
