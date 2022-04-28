@@ -136,13 +136,13 @@ packages:
     externals:
     - spec: netcdf-c@4.7.0%nvhpc@22.3+mpi
       modules:
-      - netCDF/4.7.0-NVHPC-22.3
+      - onetcdf/4.7.4-nvhpc-22.3
   openmpi:
     externals:
     - spec: openmpi@4.1.3%nvhpc@22.3+cuda+cxx~cxx_exceptions~java~memchecker+pmi+pmix~sqlite3+static~thread_multiple~wrapper-rpath
         fabrics=ucx schedulers=slurm
       modules:
-      - OpenMPI/4.1.3-NVHPC-22.3
+      - openmpi/4.1.3-nvhpc-22.3
   openssh:
     externals:
     - spec: openssh@8.1p1
