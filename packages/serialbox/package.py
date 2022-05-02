@@ -37,7 +37,7 @@ class Serialbox(CMakePackage):
     version('2.4.3', commit='f15bd29db2e75d4e775bd133400bab33df55856b')
 
     # %gcc is needed, otherwise cmake picks old cc/cxx compiler
-    depends_on('cmake%gcc',type='build')
+    depends_on('cmake%gcc', type='build')
     depends_on('boost@1.67.0%gcc')
     depends_on('netcdf-c', when='+netcdf')
     depends_on('netcdf-cxx4', when='+netcdf')
