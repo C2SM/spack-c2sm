@@ -11,10 +11,10 @@ packages:
     providers: {}
     compiler: []
     externals:
-    - spec: cmake@3.14.5%pgi
+    - spec: cmake@3.14.5%gcc
       modules:
       - cmake/3.14.5
-    - spec: cmake@3.14.5%gcc
+    - spec: cmake@3.14.5%pgi
       modules:
       - cmake/3.14.5
   cuda:
