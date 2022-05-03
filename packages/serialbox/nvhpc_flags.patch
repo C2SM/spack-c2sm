@@ -1,0 +1,14 @@
+diff --git a/cmake/modules/SerialboxFortranCompilerFlags.cmake b/cmake/modules/SerialboxFortranCompilerFlags.cmake
+index a36cb15..d5ed736 100644
+--- a/cmake/modules/SerialboxFortranCompilerFlags.cmake
++++ b/cmake/modules/SerialboxFortranCompilerFlags.cmake
+@@ -17,6 +17,9 @@ endif()
+ if("${CMAKE_Fortran_COMPILER_ID}" MATCHES "PGI")
+   include(Fortran/PGI)
+ endif()
++if("${CMAKE_Fortran_COMPILER_ID}" MATCHES "NVHPC")
++  include(Fortran/PGI)
++endif()
+ if("${CMAKE_Fortran_COMPILER_ID}" MATCHES "GNU")
+   include(Fortran/GNU)
+ endif()
