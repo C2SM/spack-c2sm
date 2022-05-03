@@ -84,8 +84,8 @@ class Serialbox(CMakePackage):
     def cmake_args(self):
         args = []
 
-        args.append('-DCMAKE_C_COMPILER=gcc')
-        args.append('-DCMAKE_CXX_COMPILER=g++')
+        args.append('-DCMAKE_C_COMPILER={0}'.format(self.compiler.cc))
+        args.append('-DCMAKE_CXX_COMPILER={0}'.format(self.compiler.cxx))
         args.append('-DCMAKE_BUILD_TYPE={0}'.format(
             self.spec.variants['build_type'].value))
         args.append('-DBOOST_ROOT={0}'.format(self.spec['boost'].prefix))
