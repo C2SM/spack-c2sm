@@ -36,9 +36,7 @@ class Serialbox(CMakePackage):
     version('2.5.4', commit='26de94919c1b405b5900df5825791be4fa703ec0')
     version('2.4.3', commit='f15bd29db2e75d4e775bd133400bab33df55856b')
 
-    patch('nvhpc.patch', when='%nvhpc')
     patch('nvhpc_flags.patch', when='%nvhpc')
-    patch('nvhpc.patch', when='%pgi')
 
     depends_on('cmake%gcc', type='build')
     depends_on('boost@1.67.0%gcc')
@@ -143,3 +141,10 @@ class Serialbox(CMakePackage):
             args.append('-DSERIALBOX_ENABLE_SDB=OFF')
 
         return args
+
+    def flag_handler(self, name, flags):
+        if self.compiler.name in ('pgi','nvhpc') :
+            if name == 'cxxflags':
+                flags.append('-D__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1')
+
+        return flags, None, None
