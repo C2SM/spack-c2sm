@@ -59,6 +59,10 @@ packages:
       modules:
       - daint-gpu
       - CMake/3.14
+    - spec: cmake@3.14%nvhpc
+      modules:
+      - daint-gpu
+      - CMake/3.14
   cuda:
     buildable: false
     version: ['11.0']
