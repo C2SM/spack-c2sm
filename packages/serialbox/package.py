@@ -143,7 +143,7 @@ class Serialbox(CMakePackage):
         return args
 
     def flag_handler(self, name, flags):
-        if self.compiler.name in ('pgi','nvhpc') :
+        if self.compiler.name in ('pgi', 'nvhpc'):
             if name == 'cxxflags':
                 flags.append('-D__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1')
 
