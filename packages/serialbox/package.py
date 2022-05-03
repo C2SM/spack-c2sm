@@ -38,7 +38,7 @@ class Serialbox(CMakePackage):
 
     patch('nvhpc_flags.patch', when='%nvhpc')
 
-    depends_on('cmake%gcc', type='build')
+    depends_on('cmake', type='build')
     depends_on('boost@1.67.0%gcc')
     depends_on('netcdf-c', when='+netcdf')
     depends_on('netcdf-cxx4', when='+netcdf')
@@ -84,9 +84,13 @@ class Serialbox(CMakePackage):
 
     def cmake_args(self):
         args = []
+        if self.compiler.name == 'pgi':
+            args.append('-DCMAKE_C_COMPILER=gcc')
+            args.append('-DCMAKE_CXX_COMPILER=g++')
+        else:
+            args.append('-DCMAKE_C_COMPILER={0}'.format(self.compiler.cc))
+            args.append('-DCMAKE_CXX_COMPILER={0}'.format(self.compiler.cxx))
 
-        args.append('-DCMAKE_C_COMPILER={0}'.format(self.compiler.cc))
-        args.append('-DCMAKE_CXX_COMPILER={0}'.format(self.compiler.cxx))
         args.append('-DCMAKE_BUILD_TYPE={0}'.format(
             self.spec.variants['build_type'].value))
         args.append('-DBOOST_ROOT={0}'.format(self.spec['boost'].prefix))
@@ -143,7 +147,7 @@ class Serialbox(CMakePackage):
         return args
 
     def flag_handler(self, name, flags):
-        if self.compiler.name in ('pgi', 'nvhpc'):
+        if self.compiler.name == 'nvhpc':
             if name == 'cxxflags':
                 flags.append('-D__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1')
 
