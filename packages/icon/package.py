@@ -96,12 +96,15 @@ class Icon(Package):
             description='Build with hammoz and atm_phy_echam enabled.')
     variant('art', default=False, description='Build with art enabled')
     variant('ocean', default=True, description='Build with ocean enabled')
+    variant('dace', default=False, description='Build with DACE enabled')
+    variant('rttov', default=False, description='Build with RTTOV enabled')
     variant('silent-rules',
             default=True,
             description='Build with Make silent rules ON')
 
     conflicts('icon_target=cpu', when='+claw')
     conflicts('icon_target=gpu', when='%intel')
+    conflicts('+dace', when='+rttov')
 
     atm_phy_echam_submodels_namelists_dir = 'externals/atm_phy_echam_submodels/namelists'
     config_dir = '.'
@@ -126,6 +129,10 @@ class Icon(Package):
             _config_file_name += '.' + self.compiler.name
 
         self._config_file_name = _config_file_name
+
+        if '+dace' in self.spec:
+            env.set('ICON_FCFLAGS', '-O2')
+            env.set('ICON_DACE_FCFLAGS', '-O1')
 
         if '~skip-config' in self.spec:
             env.set('XML2_ROOT', self.spec['libxml2'].prefix)
@@ -162,6 +169,10 @@ class Icon(Package):
         if '+eccodes' in self.spec:
             args.append('--enable-grib2')
 
+        # DACE
+        if '+dace' in self.spec:
+            args.append('--enable-dace')
+
         # Ocean
         if '~ocean' in self.spec:
             args.append('--disable-ocean')
@@ -171,6 +182,10 @@ class Icon(Package):
         # Rte-rrtmgp
         if '~rte-rrtmgp' in self.spec:
             args.append('--disable-rte-rrtmgp')
+
+        # RTTOV
+        if '~rttov' in self.spec:
+            args.append('--disable-rttov')
 
         # Silent rules
         if '~silent-rules' in self.spec:
