@@ -36,9 +36,6 @@ class Serialbox(CMakePackage):
     version('2.5.4', commit='26de94919c1b405b5900df5825791be4fa703ec0')
     version('2.4.3', commit='f15bd29db2e75d4e775bd133400bab33df55856b')
 
-    patch('nvhpc_flags.patch', when='%nvhpc')
-
-    depends_on('cmake', type='build')
     depends_on('boost@1.67.0%gcc')
     depends_on('netcdf-c', when='+netcdf')
     depends_on('netcdf-cxx4', when='+netcdf')
@@ -84,13 +81,9 @@ class Serialbox(CMakePackage):
 
     def cmake_args(self):
         args = []
-        if self.compiler.name == 'pgi':
-            args.append('-DCMAKE_C_COMPILER=gcc')
-            args.append('-DCMAKE_CXX_COMPILER=g++')
-        else:
-            args.append('-DCMAKE_C_COMPILER={0}'.format(self.compiler.cc))
-            args.append('-DCMAKE_CXX_COMPILER={0}'.format(self.compiler.cxx))
 
+        args.append('-DCMAKE_C_COMPILER=gcc')
+        args.append('-DCMAKE_CXX_COMPILER=g++')
         args.append('-DCMAKE_BUILD_TYPE={0}'.format(
             self.spec.variants['build_type'].value))
         args.append('-DBOOST_ROOT={0}'.format(self.spec['boost'].prefix))
@@ -145,10 +138,3 @@ class Serialbox(CMakePackage):
             args.append('-DSERIALBOX_ENABLE_SDB=OFF')
 
         return args
-
-    def flag_handler(self, name, flags):
-        if self.compiler.name == 'nvhpc':
-            if name == 'cxxflags':
-                flags.append('-D__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1')
-
-        return flags, None, None
