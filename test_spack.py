@@ -69,9 +69,9 @@ class CosmoTest(TestCase):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
             self.Srun(
-                'spack installcosmo cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
+                'spack installcosmo --test=root cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
             )
-        if machine == 'daint':
+        else:
             self.Srun(
                 'spack installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=gpu +cppdycore'
             )
@@ -80,9 +80,9 @@ class CosmoTest(TestCase):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
             self.Srun(
-                'spack installcosmo cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
+                'spack installcosmo --test=root cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
             )
-        if machine == 'daint':
+        else:
             self.Srun(
                 'spack installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=cpu ~cppdycore'
             )
@@ -101,11 +101,11 @@ class CosmoTest(TestCase):
         try:
             if machine == 'tsa':
                 self.Srun(
-                    'spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore',
+                    'spack devbuildcosmo --test=root cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore',
                     cwd='cosmo')
-            if machine == 'daint':
+            else:
                 self.Srun(
-                    'spack devbuildcosmo cosmo@dev-build%nvhpc cosmo_target=cpu ~cppdycore',
+                    'spack devbuildcosmo --test=root cosmo@dev-build%nvhpc cosmo_target=cpu ~cppdycore',
                     cwd='cosmo')
         finally:
             self.Run('rm -rf cosmo')
@@ -118,9 +118,15 @@ class CosmoTest(TestCase):
                 self.Srun(
                     'spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
                     cwd='cosmo')
-            if machine == 'daint':
+                self.Run(
+                    'spack devbuildcosmo --test=root cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
+                    cwd='cosmo')
+            else:
                 self.Srun(
                     'spack devbuildcosmo cosmo@dev-build%nvhpc cosmo_target=gpu +cppdycore',
+                    cwd='cosmo')
+                self.Run(
+                    'spack devbuildcosmo --test=root cosmo@dev-build%nvhpc cosmo_target=gpu +cppdycore',
                     cwd='cosmo')
         finally:
             self.Run('rm -rf cosmo')
@@ -129,7 +135,7 @@ class CosmoTest(TestCase):
         # So we can reproduce results from old versions.
         if machine == 'tsa':
             self.Srun(
-                'spack installcosmo cosmo@apn_5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore'
+                'spack installcosmo --test=root cosmo@apn_5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore'
             )
 
 
@@ -254,43 +260,63 @@ class GridToolsTest(TestCase):
 class IconTest(TestCase):
     package_name = 'icon'
     depends_on = {'serialbox', 'eccodes', 'claw'}
-    machines = {'daint'}
+    machines = all_machines
 
     def test_install_nwp_gpu_nvidia(self):
-        # So we can make sure ICON-NWP (OpenACC) devs can compile (mimick Buildbot for Tsa)
-        self.Srun(
-            'spack install icon@nwp%nvhpc icon_target=gpu +claw +eccodes +ocean'
-        )
+        # So we can make sure ICON-NWP (OpenACC) devs can compile (mimicks Buildbot for Tsa)
+        if machine == 'tsa':
+            self.Srun(
+                'spack install icon@nwp%pgi icon_target=gpu +claw +eccodes +ocean'
+            )
+        else:
+            self.Srun(
+                'spack install icon@nwp%nvhpc icon_target=gpu +claw +eccodes +ocean'
+            )
 
     def test_install_nwp_cpu_nvidia(self):
-        # So we can make sure ICON-NWP (OpenACC) devs can compile (mimick Buildbot for Tsa)
-        self.Srun(
-            'spack install icon@nwp%nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean'
-        )
+        # So we can make sure ICON-NWP (OpenACC) devs can compile (mimicks Buildbot for Tsa)
+        if machine == 'tsa':
+            self.Srun(
+                'spack install icon@nwp%pgi icon_target=cpu serialize_mode=create +eccodes +ocean'
+            )
+        else:
+            self.Srun(
+                'spack install icon@nwp%nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean'
+            )
 
-    # TODO: Reactivate once the test works!
-    # def test_devbuild_cpu(self):
-    #     # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-    #     self.Run('git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git')
-    #     self.Run('mkdir -p icon-cscs/pgi_cpu')
-    #     self.Run('touch a_fake_file.f90', cwd='icon-cscs/pgi_cpu')
+    def test_devbuild_cpu(self):
+        # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
+        self.Run('git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git')
+        self.Run('mkdir -p icon-cscs/pgi_cpu')
+        self.Run('touch a_fake_file.f90', cwd='icon-cscs/pgi_cpu')
+        try:
+            if machine == 'tsa':
+                self.Srun(
+                    'spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu',
+                    cwd='icon-cscs/pgi_cpu')
+            else:
+                self.Srun(
+                    'spack dev-build -u build icon@dev-build%nvhpc config_dir=./.. icon_target=cpu',
+                    cwd='icon-cscs/pgi_cpu')
+        finally:
+            self.Run('rm -rf icon-cscs')
 
-    #     try:
-    #         self.Srun('spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu', cwd='icon-cscs/pgi_cpu')
-    #     finally:
-    #         self.Run('rm -rf icon-cscs')
-
-    # TODO: Reactivate once the test works!
-    # def test_devbuild_gpu(self):
-    #     # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-    #     self.Run('git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git')
-    #     self.Run('mkdir -p icon-cscs/pgi_gpu')
-    #     self.Run('touch a_fake_file.f90', cwd='icon-cscs/pgi_gpu')
-
-    #     try:
-    #         self.Srun('spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu', cwd='icon-cscs/pgi_gpu')
-    #     finally:
-    #         self.Run('rm -rf icon-cscs')
+    def test_devbuild_gpu(self):
+        # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
+        self.Run('git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git')
+        self.Run('mkdir -p icon-cscs/pgi_gpu')
+        self.Run('touch a_fake_file.f90', cwd='icon-cscs/pgi_gpu')
+        try:
+            if machine == 'tsa':
+                self.Srun(
+                    'spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu',
+                    cwd='icon-cscs/pgi_gpu')
+            else:
+                self.Srun(
+                    'spack dev-build -u build icon@dev-build%nvhpc config_dir=./.. icon_target=gpu',
+                    cwd='icon-cscs/pgi_gpu')
+        finally:
+            self.Run('rm -rf icon-cscs')
 
 
 class Int2lmTest(TestCase):

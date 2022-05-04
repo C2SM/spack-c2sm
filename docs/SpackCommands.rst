@@ -12,7 +12,7 @@ Usage (spack find)
   
   spack find <package>@<version>%<compiler> +<variants>
 
-An example output for spack find of a spec could look as follows:
+Example output:
 
 .. code-block:: bash
 
@@ -32,6 +32,57 @@ Options (spack find)
 ^^^^^^^^^^^^^^^^^^^^^
 * \--paths, -p: show paths to package install directories
 * \--variants, -v: show variants in output (can be long)
+
+
+Machine processing (spack find)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+For a raw list of installation folders, use
+
+.. code-block:: bash
+
+  spack find --format "{prefix}" <spec>
+
+Example output:
+
+.. code-block:: bash
+
+  spack find --format "{prefix}" cosmo
+  /project/g110/spack-install/tsa/cosmo/apn_5.09a.mch1.2.p2/pgi/qh4lqyvz73zcm2emfwwhcfue6kkm3xyo
+  /project/g110/spack-install/tsa/cosmo/apn_5.09a.mch1.2.p2/pgi/ssezzpu36dc4j5lc35rkytuieicoptfr
+  /project/g110/spack-install/tsa/cosmo/mch/pgi/4h7b7x62dcpvrctghjv23jrpnkep4ela
+  /project/g110/spack-install/tsa/cosmo/mch/pgi/6ijz5756a65p6wblxbr3enllmpdzcvh5
+  /project/g110/spack-install/tsa/cosmo/5.09a.mch1.2.p1/pgi/us5kk56wraktww7e543cxi4dbud2lalv
+  /project/g110/spack-install/tsa/cosmo/5.09a.mch1.2.p1/pgi/o3jtuao2gwrz7uwyekvxvr7ylltwnt4w
+  /project/g110/spack-install/tsa/cosmo/master/gcc/aejk4rps3es6o5trdwppzew3f2j37kl6
+  /project/g110/spack-install/tsa/cosmo/master/pgi/vkwywww3z52ttmlzzpn4df5jnr5paiw4
+  /project/g110/spack-install/tsa/cosmo/master/gcc/l52ikknglfrfolr462lc4ez6abulmphs
+  /project/g110/spack-install/tsa/cosmo/master/pgi/bbjwypwllbba6nmkvronktzo2vt6k3dw
+  /project/g110/spack-install/tsa/cosmo/master/pgi/gnm6i4pya3lrscgdnvvzgt77bssbfcab
+  /project/g110/spack-install/tsa/cosmo/master/pgi/koaxr3hlillunjtywkh46vcpzgrarnxc
+  /project/g110/spack-install/tsa/cosmo/master/pgi/i72unz2dzlp4donztoi7kxbubj4kfqtw
+  /project/g110/spack-install/tsa/cosmo/master/pgi/rvqs2tqltwlohpkyedzwnjggtwtgu4ly
+  /project/g110/spack-install/tsa/cosmo/master/pgi/i2hc4rhlhhapga6gheq3tcnbyrytadoy
+  /project/g110/spack-install/tsa/cosmo/master/pgi/kmrbrer2mlzz2rkn3ykhxr6h6glbwptn
+
+Tip:
+If you want just any installation folder that matches the spec, the output can be truncated with '| head -n 1' to get the first.
+If you want the installation folder of the spec that matches your spec, filled with the current defaults, you have to use Python.
+
+.. code-block:: python
+
+  #!/usr/bin/env spack python
+  from spack.spec import Spec
+  s = Spec('cosmo')
+  s.concretize()
+  install_dir = s.format('{prefix}')
+  print(install_dir)
+
+or as a one-liner
+
+.. code-block:: bash
+
+  spack python -c "print(spack.spec.Spec('cosmo').concretized().format('{prefix}'))"
+
 
 Spack list
 ----------

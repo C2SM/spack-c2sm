@@ -86,7 +86,7 @@ packages:
       prefix: /usr
   bison:
     externals:
-    - spec: bison@3.0.4%gcc
+    - spec: bison@3.0.4
       prefix: /usr
   gettext:
     externals:
@@ -94,7 +94,7 @@ packages:
       prefix: /usr
   flex:
     externals:
-    - spec: flex@2.5.37%gcc
+    - spec: flex@2.5.37
       prefix: /usr
   ncurses:
     externals:

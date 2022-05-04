@@ -45,10 +45,10 @@ class Claw(CMakePackage):
     depends_on('cmake@3.12:%gcc', type='build')
     depends_on('java@8:', when="@2.0:")
     depends_on('java@7:', when="@1.1.0:1.2.3")
-    depends_on('ant@1.9:%gcc', type='build')
-    depends_on('libxml2%gcc')
-    depends_on('bison%gcc', type='build')
-    depends_on('flex%gcc', type='build')
+    depends_on('ant@1.9:', type='build')
+    depends_on('libxml2')
+    depends_on('bison', type='build')
+    depends_on('flex', type='build')
 
     def setup_environment(self, spack_env, run_env):
         spack_env.set('YACC', 'bison -y')
