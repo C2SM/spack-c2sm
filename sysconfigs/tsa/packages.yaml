@@ -17,7 +17,8 @@ packages:
     - spec: cmake@3.14.5%pgi
       modules:
       - cmake/3.14.5
-      - gcc/7.2.0
+      - PrgEnv-pgi/20.4
+      - gcc/8.3.0
   cuda:
     buildable: true
     version: []
