@@ -55,14 +55,14 @@ packages:
   cmake:
     buildable: false
     externals:
-    - spec: cmake@3.14%gcc
+    - spec: cmake@3.14.5%gcc
       modules:
       - daint-gpu
-      - CMake/3.14
-    - spec: cmake@3.14%nvhpc
+      - CMake/3.14.5
+    - spec: cmake@3.14.5%nvhpc
       modules:
       - daint-gpu
-      - CMake/3.14
+      - CMake/3.14.5
   cuda:
     buildable: false
     version: ['11.0']
