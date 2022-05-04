@@ -8,7 +8,7 @@ or
 
 ``--upstream`` links the instance with the upstream spack-admin instance.
 ``--exclusive`` invokes only tests from the listed commands.
-``--test`` runs tests only on Tsa.
+``--tsa`` runs tests only on Tsa.
 ``--daint`` runs tests only on Piz Daint.
 
 What is tested
