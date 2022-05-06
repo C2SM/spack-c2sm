@@ -11,6 +11,6 @@ config:
     root:
   source_cache:
   misc_cache:
-  build_jobs: 128
+  build_jobs: 16
   db_lock_timeout: 20
-  concretizer: clingo
+  concretizer: original

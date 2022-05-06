@@ -196,3 +196,26 @@ packages:
     externals:
     - spec: zip@3.0
       prefix: /usr
+  icontools:
+    variants: slave=manali
+  int2lm:
+    variants: slave=manali
+  libgrib1:
+    variants: slave=manali
+  cosmo-dycore:
+    variants: +cuda cuda_arch=80 data_path=/scratch/jenkins/data/cosmo/ slave=manali
+      slurm_bin= "srun" slurm_partition= "debug" slurm_gpu= "--gres=gpu:{0}" slurm_opt_nodes=
+      "-n" slurm_nodes= "{0}" slurm_opt_account= "-" slurm_account= "-" slurm_opt_constraint=
+      "-" slurm_constraint= "-"
+    compiler: [gcc]
+  gridtools:
+    variants: +cuda cuda_arch=80
+    compiler: [gcc]
+  cosmo:
+    variants: cuda_arch=80 cosmo_target=gpu slave=tsa slurm_bin= "srun" slurm_partition=
+      "debug" slurm_opt_nodes= "-n" slurm_nodes= "1" slurm_opt_account= "-" slurm_account=
+      "-" slurm_opt_constraint= "-" slurm_constraint= "-"
+
+    version: [master]
+  icon:
+    variants: host=manali ~ocean
