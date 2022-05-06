@@ -102,7 +102,9 @@ class Icon(Package):
     variant('silent-rules',
             default=True,
             description='Build with Make silent rules ON')
-    variant('proper-netcdf-dep', default=False, description='Have proper dependency on netcdf-fortran (temporary)')
+    variant('proper-netcdf-dep',
+            default=False,
+            description='Have proper dependency on netcdf-fortran (temporary)')
 
     conflicts('icon_target=cpu', when='+claw')
     conflicts('icon_target=gpu', when='%intel')
