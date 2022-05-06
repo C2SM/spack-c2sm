@@ -114,10 +114,6 @@ packages:
     externals:
     - spec: libtool@2.4.6
       prefix: /usr
-  libxml2:
-    externals:
-    - spec: libxml2@2.9.7
-      prefix: /usr
   lustre:
     externals:
     - spec: lustre@2.12.4.4_cray_63_g22dbafd
