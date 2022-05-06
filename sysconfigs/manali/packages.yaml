@@ -34,7 +34,9 @@ packages:
       prefix: /usr
   cmake:
     externals:
-    - spec: cmake@3.17.0
+    - spec: cmake@3.17.0%gcc
+      prefix: /usr
+    - spec: cmake@3.17.0%nvhpc
       prefix: /usr
   cpio:
     externals:
