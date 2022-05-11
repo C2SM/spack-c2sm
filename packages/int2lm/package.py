@@ -141,7 +141,7 @@ class Int2lm(MakefilePackage):
 
                 else:
                     env.set('MPIL',
-                            '-L' + self.spec['mpi'].prefix + ' -lmpichf90')
+                            '-L' + self.spec['mpi'].prefix + ' -lmpich')
 
         # Compiler & linker variables
         if self.compiler.name == 'pgi':
