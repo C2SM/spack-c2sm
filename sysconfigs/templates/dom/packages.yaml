@@ -136,3 +136,5 @@ packages:
     - spec: slurm%gcc
       modules:
       - slurm
+  serialbox:
+    variants: ~examples
