@@ -92,5 +92,8 @@ Therefore a weekly Jenkins plan `spack-config <https://jenkins-mch.cscs.ch/view/
    * Cosmo
    * Int2lm
    * Icontools
+   * Icon
 
 In case of passing tests, another Jenkins plan `publish-spack-config <https://jenkins-mch.cscs.ch/view/C2SM/job/publish-spack-config/>`__ is triggered to commit and push the most recent config for Dom.
+The procedure above obtains the latest state of Dom and provides it to our users as fast a possible.
+**Careful: According to CSCS, Dom's state can change at any time up to the date of any possible upgrade of Piz Daint.**
