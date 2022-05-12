@@ -27,21 +27,6 @@ compilers:
       cxx: CC
       f77: ftn
       fc: ftn
-    spec: nvhpc@21.3
-    target: any
-- compiler:
-    environment: {}
-    extra_rpaths: []
-    flags: {}
-    modules:
-    - PrgEnv-nvidia
-    - nvidia/21.3
-    operating_system: cnl7
-    paths:
-      cc: cc
-      cxx: CC
-      f77: ftn
-      fc: ftn
     spec: pgi@21.3.0
     target: any
 - compiler:
@@ -133,6 +118,21 @@ compilers:
       f77: ftn
       fc: ftn
     spec: intel@2021.3.0
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-nvidia
+    - nvidia/21.3
+    operating_system: cnl7
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    spec: nvhpc@21.3
     target: any
 - compiler:
     environment: {}
