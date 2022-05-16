@@ -82,10 +82,11 @@ def main():
             branch=args.version,
             dest_dir=os.path.join(args.idir, 'spack'))
         subprocess.run(cmd.split(), check=True)
-        print('Installing custom dev-build command')
-        shutil.copy('./tools/spack-scripting/scripting/cmd/dev_build.py',
-                    args.idir + '/spack/lib/spack/spack/cmd/')
 
+    print('Installing custom dev-build command')
+    shutil.copy('./tools/spack-scripting/scripting/cmd/dev_build.py',
+                args.idir + '/spack/lib/spack/spack/cmd/')
+    print('Installing version_detection')
     shutil.copy('./tools/version_detection.py',
                 args.idir + '/spack/lib/spack/version_detection.py')
     sys.path.insert(1, os.path.join(args.idir, 'spack/lib/spack/external'))
