@@ -54,7 +54,7 @@ class Icon(Package):
                when='+eccodes',
                type=('build', 'link', 'run'))
     depends_on('claw@2.0.2', when='+claw', type=('build', 'link', 'run'))
-    depends_on('netcdf-fortran')
+    depends_on('netcdf-fortran', when='+proper-netcdf-dep')
 
     variant('icon_target',
             default='gpu',
@@ -102,6 +102,9 @@ class Icon(Package):
     variant('silent-rules',
             default=True,
             description='Build with Make silent rules ON')
+    variant('proper-netcdf-dep',
+            default=False,
+            description='Have proper dependency on netcdf-fortran (temporary)')
 
     conflicts('icon_target=cpu', when='+claw')
     conflicts('icon_target=gpu', when='%intel')
