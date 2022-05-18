@@ -1,4 +1,4 @@
-# The C2SM Spack Deployment
+# The C2SM Spack Deployment test
 Spack is the package manager used by C2SM and MeteoSwiss to install 
 and deploy our software on supercomputers 
 mostly at the Swiss Super Computing Center (CSCS)
