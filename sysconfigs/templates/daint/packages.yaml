@@ -55,11 +55,11 @@ packages:
   cmake:
     buildable: false
     externals:
-    - spec: cmake@3.22%gcc
+    - spec: cmake@3.22.1%gcc
       modules:
       - daint-gpu
       - CMake/3.22.1
-    - spec: cmake@3.22%nvhpc
+    - spec: cmake@3.22.1%nvhpc
       modules:
       - daint-gpu
       - CMake/3.22.1
