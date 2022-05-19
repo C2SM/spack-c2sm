@@ -179,6 +179,7 @@ def main():
                        open(upstreamfile, 'w'),
                        default_flow_style=False)
 
+    # copy modules.yaml, packages.yaml and compiles.yaml files in site scope of spack instance
     config_files = ["compilers.yaml", "modules.yaml", "packages.yaml"]
     if args.no_yaml_copy:
         print(
