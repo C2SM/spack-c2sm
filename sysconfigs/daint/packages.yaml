@@ -12,6 +12,10 @@ packages:
       - cray-libsci_acc
       - cray-libsci
       - intel-mkl
+      - netlib-lapack
+      lapack:
+      - cray-libsci
+      - netlib-lapack
       mkl:
       - intel-mkl
       mpi:
@@ -87,10 +91,27 @@ packages:
     - prefix: /usr
       spec: cpio@2.12
   cray-libsci:
+    buildable: false
+    # The modules work only for %cce, %gcc and %intel.
     externals:
-    - modules:
+    - spec: cray-libsci@20.06.1%cce
+      modules:
+      - cray-libsci/20.06.1
+    - spec: cray-libsci@20.06.1%gcc
+      modules:
+      - cray-libsci/20.06.1
+    - spec: cray-libsci@20.06.1%intel
+      modules:
+      - cray-libsci/20.06.1
+    - spec: cray-libsci@20.09.1%cce
+      modules:
       - cray-libsci/20.09.1
-      spec: cray-libsci@20.09.1
+    - spec: cray-libsci@20.09.1%gcc
+      modules:
+      - cray-libsci/20.09.1
+    - spec: cray-libsci@20.09.1%intel
+      modules:
+      - cray-libsci/20.09.1
   cuda:
     buildable: false
     externals:
@@ -169,14 +190,14 @@ packages:
     - prefix: /usr
       spec: groff@1.22.3
   hdf5:
-    buildable: false
+    buildable: true
     externals:
     - modules:
       - cray-hdf5/1.12.0.4
-      spec: hdf5@1.12.0.4 ~mpi +hl
+      spec: hdf5@1.12.0.4 ~mpi +hl ~fortran
     - modules:
       - cray-hdf5-parallel/1.12.0.4
-      spec: hdf5@1.12.0.4 +mpi +hl
+      spec: hdf5@1.12.0.4 +mpi +hl ~fortran
   icon:
     compiler:
     - nvhpc@21.3
@@ -256,6 +277,15 @@ packages:
       spec: netcdf-fortran@4.7.4.4%nvhpc
     - prefix: /opt/cray/pe/netcdf/4.7.4.4/GNU/8.2
       spec: netcdf-fortran@4.7.4.4%gcc
+# PGI and NVIDIA compilers have their own netlib-lapack.
+  netlib-lapack:
+    externals:
+    - spec: netlib-lapack@3.8.0%pgi@20.1.0~external-blas+lapacke+shared
+      prefix: /opt/pgi/20.1.0/linux86-64-llvm/20.1
+    - spec: netlib-lapack@3.8.0%pgi@20.1.1~external-blas+lapacke+shared
+      prefix: /opt/pgi/20.1.1/linux86-64-llvm/20.1
+    - spec: netlib-lapack@3.9.0%nvhpc@21.3~external-blas+lapacke+shared
+      prefix: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers
   openssh:
     buildable: false
     externals:

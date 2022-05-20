@@ -54,6 +54,8 @@ class Icon(Package):
                when='+eccodes',
                type=('build', 'link', 'run'))
     depends_on('claw@2.0.2', when='+claw', type=('build', 'link', 'run'))
+    depends_on('zlib', when='+emvorado', type=('link','run'))
+    depends_on('rttov@13.1 +hdf5', when='+rttov', type=('build','link','run'))
 
     variant('icon_target',
             default='gpu',
@@ -98,13 +100,15 @@ class Icon(Package):
     variant('ocean', default=True, description='Build with ocean enabled')
     variant('dace', default=False, description='Build with DACE enabled')
     variant('rttov', default=False, description='Build with RTTOV enabled')
+    variant('emvorado', default=False, description='Build with emvorado enabled')
     variant('silent-rules',
             default=True,
             description='Build with Make silent rules ON')
 
     conflicts('icon_target=cpu', when='+claw')
     conflicts('icon_target=gpu', when='%intel')
-    conflicts('+dace', when='+rttov')
+    conflicts('~dace', when='+emvorado')
+    conflicts('~rttov', when='+emvorado')
 
     atm_phy_echam_submodels_namelists_dir = 'externals/atm_phy_echam_submodels/namelists'
     config_dir = '.'
@@ -142,6 +146,11 @@ class Icon(Package):
                 env.set('CLAW', self.spec['claw'].prefix + '/bin/clawfc')
             if '+eccodes' in self.spec:
                 env.set('ECCODES_ROOT', self.spec['eccodes'].prefix)
+            if '+emvorado' in self.spec:
+                env.set('ZLIB_ROOT', self.spec['zlib'].prefix)
+            if '+rttov' in self.spec:
+                env.set('RTTOV_ROOT', self.spec['rttov'].prefix)
+                env.set('HDF5_ROOT', self.spec['hdf5'].prefix)
 
     def configure_args(self):
 
@@ -168,6 +177,10 @@ class Icon(Package):
         # Eccodes
         if '+eccodes' in self.spec:
             args.append('--enable-grib2')
+
+        # Emvorado
+        if '+eccodes' in self.spec:
+            args.append('--enable-emvorado')
 
         # DACE
         if '+dace' in self.spec:
