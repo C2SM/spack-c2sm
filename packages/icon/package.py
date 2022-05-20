@@ -54,8 +54,10 @@ class Icon(Package):
                when='+eccodes',
                type=('build', 'link', 'run'))
     depends_on('claw@2.0.2', when='+claw', type=('build', 'link', 'run'))
-    depends_on('zlib', when='+emvorado', type=('link','run'))
-    depends_on('rttov@13.1 +hdf5', when='+rttov', type=('build','link','run'))
+    depends_on('zlib', when='+emvorado', type=('link', 'run'))
+    depends_on('rttov@13.1 +hdf5',
+               when='+rttov',
+               type=('build', 'link', 'run'))
 
     variant('icon_target',
             default='gpu',
@@ -100,7 +102,9 @@ class Icon(Package):
     variant('ocean', default=True, description='Build with ocean enabled')
     variant('dace', default=False, description='Build with DACE enabled')
     variant('rttov', default=False, description='Build with RTTOV enabled')
-    variant('emvorado', default=False, description='Build with emvorado enabled')
+    variant('emvorado',
+            default=False,
+            description='Build with emvorado enabled')
     variant('silent-rules',
             default=True,
             description='Build with Make silent rules ON')
