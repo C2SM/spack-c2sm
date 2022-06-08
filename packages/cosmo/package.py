@@ -423,7 +423,8 @@ class Cosmo(MakefilePackage):
                 if '~serialize' in spec:
                     makefile.filter(
                         'TARGET     :=.*', 'TARGET     := {0}'.format(
-                            'cosmo-ghg_' + spec.variants['cosmo_target'].value))
+                            'cosmo-ghg_' +
+                            spec.variants['cosmo_target'].value))
                 else:
                     makefile.filter('TARGET     :=.*',
                                     'TARGET     := {0}'.format('cosmo-ghg'))
@@ -463,18 +464,23 @@ class Cosmo(MakefilePackage):
                 if '+serialize' in spec:
                     install('cosmo-ghg_serialize', prefix.bin)
                 else:
-                    install('cosmo-ghg_' + self.spec.variants['cosmo_target'].value,
-                            prefix.bin)
-                    install('cosmo-ghg_' + self.spec.variants['cosmo_target'].value,
-                            'test/testsuite')
+                    install(
+                        'cosmo-ghg_' +
+                        self.spec.variants['cosmo_target'].value, prefix.bin)
+                    install(
+                        'cosmo-ghg_' +
+                        self.spec.variants['cosmo_target'].value,
+                        'test/testsuite')
             else:
                 if '+serialize' in spec:
                     install('cosmo_serialize', prefix.bin)
                 else:
-                    install('cosmo_' + self.spec.variants['cosmo_target'].value,
-                            prefix.bin)
-                    install('cosmo_' + self.spec.variants['cosmo_target'].value,
-                            'test/testsuite')
+                    install(
+                        'cosmo_' + self.spec.variants['cosmo_target'].value,
+                        prefix.bin)
+                    install(
+                        'cosmo_' + self.spec.variants['cosmo_target'].value,
+                        'test/testsuite')
 
     @run_after('install')
     @on_package_attributes(run_tests=True)
