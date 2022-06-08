@@ -419,7 +419,7 @@ class Cosmo(MakefilePackage):
 
             makefile = FileFilter('Makefile')
             makefile.filter('/Options.*', '/' + OptionsFileName)
-            if self.spec.version == 'empa-ghg':
+            if self.spec.version == Version('empa-ghg'):
                 if '~serialize' in spec:
                     makefile.filter(
                         'TARGET     :=.*', 'TARGET     := {0}'.format(
@@ -459,7 +459,7 @@ class Cosmo(MakefilePackage):
 
         with working_dir(self.build_directory):
             mkdir(prefix.bin)
-            if self.spec.version == 'empa-ghg':
+            if self.spec.version == Version('empa-ghg'):
                 if '+serialize' in spec:
                     install('cosmo-ghg_serialize', prefix.bin)
                 else:
