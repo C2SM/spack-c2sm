@@ -419,13 +419,22 @@ class Cosmo(MakefilePackage):
 
             makefile = FileFilter('Makefile')
             makefile.filter('/Options.*', '/' + OptionsFileName)
-            if '~serialize' in spec:
-                makefile.filter(
-                    'TARGET     :=.*', 'TARGET     := {0}'.format(
-                        'cosmo_' + spec.variants['cosmo_target'].value))
+            if self.spec.version == 'empa-ghg':
+                if '~serialize' in spec:
+                    makefile.filter(
+                        'TARGET     :=.*', 'TARGET     := {0}'.format(
+                            'cosmo-ghg_' + spec.variants['cosmo_target'].value))
+                else:
+                    makefile.filter('TARGET     :=.*',
+                                    'TARGET     := {0}'.format('cosmo-ghg'))
             else:
-                makefile.filter('TARGET     :=.*',
-                                'TARGET     := {0}'.format('cosmo'))
+                if '~serialize' in spec:
+                    makefile.filter(
+                        'TARGET     :=.*', 'TARGET     := {0}'.format(
+                            'cosmo_' + spec.variants['cosmo_target'].value))
+                else:
+                    makefile.filter('TARGET     :=.*',
+                                    'TARGET     := {0}'.format('cosmo'))
 
             if 'cosmo_target=gpu' in self.spec:
                 cuda_version = self.spec['cuda'].version
@@ -450,13 +459,22 @@ class Cosmo(MakefilePackage):
 
         with working_dir(self.build_directory):
             mkdir(prefix.bin)
-            if '+serialize' in spec:
-                install('cosmo_serialize', prefix.bin)
+            if self.spec.version == 'empa-ghg':
+                if '+serialize' in spec:
+                    install('cosmo-ghg_serialize', prefix.bin)
+                else:
+                    install('cosmo-ghg_' + self.spec.variants['cosmo_target'].value,
+                            prefix.bin)
+                    install('cosmo-ghg_' + self.spec.variants['cosmo_target'].value,
+                            'test/testsuite')
             else:
-                install('cosmo_' + self.spec.variants['cosmo_target'].value,
-                        prefix.bin)
-                install('cosmo_' + self.spec.variants['cosmo_target'].value,
-                        'test/testsuite')
+                if '+serialize' in spec:
+                    install('cosmo_serialize', prefix.bin)
+                else:
+                    install('cosmo_' + self.spec.variants['cosmo_target'].value,
+                            prefix.bin)
+                    install('cosmo_' + self.spec.variants['cosmo_target'].value,
+                            'test/testsuite')
 
     @run_after('install')
     @on_package_attributes(run_tests=True)
