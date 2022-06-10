@@ -11,6 +11,7 @@ class CosmoDycore(CMakePackage):
     git = "git@github.com:COSMO-ORG/cosmo.git"
     apngit = "git@github.com:MeteoSwiss-APN/cosmo.git"
     c2smgit = "git@github.com:C2SM-RCM/cosmo.git"
+    empagit = 'git@github.com:C2SM-RCM/cosmo-ghg.git'
 
     maintainers = ['elsagermann']
 
@@ -25,10 +26,12 @@ class CosmoDycore(CMakePackage):
     version('c2sm-features',
             git='git@github.com:C2SM-RCM/cosmo.git',
             branch='c2sm-features')
+    version('empa-ghg', git=empagit, branch='c2sm')
 
     set_versions(version, apngit, 'apn', regex_filter='.*mch.*')
     set_versions(version, c2smgit, 'c2sm')
     set_versions(version, git, 'org')
+    set_versions(version, empagit, 'empa')
 
     #deprecated
     version('master', branch='master')
