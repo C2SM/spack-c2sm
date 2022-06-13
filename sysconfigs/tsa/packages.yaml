@@ -116,6 +116,8 @@ packages:
     externals:
     - spec: jasper@1.900.1%gcc +shared
       prefix: /usr
+  serialbox:
+    variants: ~examples +fortran ~python ~sdb
   bzip2:
     externals:
     - spec: bzip2@1.0.6

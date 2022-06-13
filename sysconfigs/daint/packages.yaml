@@ -325,7 +325,7 @@ packages:
     - prefix: /usr
       spec: sed@4.4
   serialbox:
-    variants: ~examples
+    variants: ~examples +fortran ~python
   slurm:
     buildable: false
     externals:
