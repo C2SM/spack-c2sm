@@ -55,7 +55,7 @@ class Serialbox(CMakePackage):
     depends_on('cmake@3.12:', type='build')
     # We might be provided with an external vanilla cmake, and we need one with
     # with https://gitlab.kitware.com/cmake/cmake/-/merge_requests/5025
-    depends_on('cmake@3.19:', when='%pgi', type='build')
+    #depends_on('cmake@3.19:', when='%pgi', type='build')
 
     depends_on('boost@1.67.0%gcc', type='build')
     depends_on('boost+filesystem+system',
