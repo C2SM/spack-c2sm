@@ -3,7 +3,6 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-
 from spack.package import *
 
 
@@ -17,28 +16,41 @@ class Serialbox(CMakePackage):
 
     maintainers = ['skosukhin']
 
-    version('2.6.1', sha256='b795ce576e8c4fd137e48e502b07b136079c595c82c660cfa2e284b0ef873342')
-    version('2.6.0', sha256='9199f8637afbd7f2b3c5ba932d1c63e9e14d553a0cafe6c29107df0e04ee9fae')
-    version('2.5.4', sha256='f4aee8ef284f58e6847968fe4620e222ac7019d805bbbb26c199e4b6a5094fee')
-    version('2.5.3', sha256='696499b3f43978238c3bcc8f9de50bce2630c07971c47c9e03af0324652b2d5d')
+    version('2.6.1',
+            sha256=
+            'b795ce576e8c4fd137e48e502b07b136079c595c82c660cfa2e284b0ef873342')
+    version('2.6.0',
+            sha256=
+            '9199f8637afbd7f2b3c5ba932d1c63e9e14d553a0cafe6c29107df0e04ee9fae')
+    version('2.5.4',
+            sha256=
+            'f4aee8ef284f58e6847968fe4620e222ac7019d805bbbb26c199e4b6a5094fee')
+    version('2.5.3',
+            sha256=
+            '696499b3f43978238c3bcc8f9de50bce2630c07971c47c9e03af0324652b2d5d')
 
     variant('c', default=True, description='enable C interface')
     variant('python', default=False, description='enable Python interface')
     variant('fortran', default=False, description='enable Fortran interface')
-    variant('ftg', default=False,
+    variant('ftg',
+            default=False,
             description='enable FortranTestGenerator frontend')
     variant('sdb', default=False, description='enable stencil debugger')
     variant('shared', default=True, description='build shared libraries')
     variant('examples', default=False, description='build the examples')
-    variant('logging', default=True,
+    variant('logging',
+            default=True,
             description='enable the logging infrastructure')
-    variant('async-api', default=True,
+    variant('async-api',
+            default=True,
             description='enable the asynchronous API')
-    variant('netcdf', default=False,
+    variant('netcdf',
+            default=False,
             description='build the NetCDF archive backend')
-    variant('std-filesystem', default=True,
+    variant('std-filesystem',
+            default=True,
             description='use std::experimental::filesystem (no dependency on '
-                        'compiled boost libs)')
+            'compiled boost libs)')
 
     depends_on('cmake@3.12:', type='build')
     # We might be provided with an external vanilla cmake, and we need one with
@@ -47,7 +59,8 @@ class Serialbox(CMakePackage):
 
     depends_on('boost@1.67.0%gcc', type='build')
     depends_on('boost+filesystem+system',
-               when='~std-filesystem', type=('build', 'link'))
+               when='~std-filesystem',
+               type=('build', 'link'))
 
     depends_on('netcdf-c', when='+netcdf')
 
@@ -66,19 +79,25 @@ class Serialbox(CMakePackage):
     patch('nag/examples.patch', when='@2.3.1:%nag+fortran+examples')
     patch('nag/ftg.patch', when='@2.3.1:%nag+ftg')
 
-    conflicts('+ftg', when='~fortran',
+    conflicts('+ftg',
+              when='~fortran',
               msg='the FortranTestGenerator frontend requires the Fortran '
-                  'interface')
-    conflicts('+ftg', when='@:2.2.999',
+              'interface')
+    conflicts('+ftg',
+              when='@:2.2.999',
               msg='the FortranTestGenerator frontend is supported only '
-                  'starting version 2.3.0')
-    conflicts('+sdb', when='~python',
+              'starting version 2.3.0')
+    conflicts('+sdb',
+              when='~python',
               msg='the stencil debugger requires the Python interface')
-    conflicts('+fortran', when='~c',
+    conflicts('+fortran',
+              when='~c',
               msg='the Fortran interface requires the C interface')
-    conflicts('+python', when='~c',
+    conflicts('+python',
+              when='~c',
               msg='the Python interface requires the C interface')
-    conflicts('+python', when='~shared',
+    conflicts('+python',
+              when='~shared',
               msg='the Python interface requires the shared libraries')
 
     def patch(self):
@@ -89,9 +108,8 @@ class Serialbox(CMakePackage):
         # Remove hard-coded -march=native
         # (see https://github.com/GridTools/serialbox/pull/233):
         if self.spec.satisfies('@2.0.1:2.6.0'):
-            filter_file(
-                r'^(\s*set\(CMAKE_CXX_FLAGS.*-march=native)',
-                r'#\1', 'CMakeLists.txt')
+            filter_file(r'^(\s*set\(CMAKE_CXX_FLAGS.*-march=native)', r'#\1',
+                        'CMakeLists.txt')
 
         # Do not fallback to boost::filesystem:
         if '+std-filesystem' in self.spec:
@@ -113,15 +131,12 @@ class Serialbox(CMakePackage):
                 'libSerialboxC',
                 'libSerialboxCore',
             ],
-            ('c',): [
+            ('c', ): [
                 'libSerialboxC',
                 'libSerialboxCore',
             ],
-            ('fortran',): [
-                'libSerialboxFortran',
-                'libSerialboxC',
-                'libSerialboxCore'
-            ]
+            ('fortran', ):
+            ['libSerialboxFortran', 'libSerialboxC', 'libSerialboxCore']
         }
 
         key = tuple(sorted(query_parameters))
@@ -130,10 +145,13 @@ class Serialbox(CMakePackage):
         if self.spec.satisfies('@2.5.0:2.5'):
             libraries = [
                 '{0}{1}'.format(name, 'Shared' if shared else 'Static')
-                for name in libraries]
+                for name in libraries
+            ]
 
-        libs = find_libraries(
-            libraries, root=self.prefix, shared=shared, recursive=True)
+        libs = find_libraries(libraries,
+                              root=self.prefix,
+                              shared=shared,
+                              recursive=True)
 
         if libs:
             return libs
@@ -153,12 +171,13 @@ class Serialbox(CMakePackage):
             # undefined reference to
             #     `std::experimental::filesystem::v1::__cxx11::path::
             #         _M_find_extension[abi:cxx11]() const'
-            if any(self.spec.satisfies('{0}+std-filesystem'.format(x))
-                   for x in ['%intel@:19.0.1', '%pgi@:19.9']):
+            if any(
+                    self.spec.satisfies('{0}+std-filesystem'.format(x))
+                    for x in ['%intel@:19.0.1', '%pgi@:19.9']):
                 cmake_flags.append('-D_GLIBCXX_USE_CXX11_ABI=0')
 
         if self.compiler.name == 'nvhpc' and name in ['cflags', 'cxxflags']:
-                cmake_flags.append('-D__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1')
+            cmake_flags.append('-D__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1')
 
         return flags, None, (cmake_flags or None)
 
@@ -194,8 +213,8 @@ class Serialbox(CMakePackage):
             # broken and do not instruct the compiler to link to the OpenSSL
             # libraries:
             self.define('SERIALBOX_USE_OPENSSL', False),
-            self.define_from_variant('SERIALBOX_ENABLE_EXPERIMENTAL_FILESYSTEM',
-                                     'std-filesystem'),
+            self.define_from_variant(
+                'SERIALBOX_ENABLE_EXPERIMENTAL_FILESYSTEM', 'std-filesystem'),
             self.define_from_variant('SERIALBOX_USE_NETCDF', 'netcdf'),
             self.define('SERIALBOX_TESTING', self.run_tests),
         ]
