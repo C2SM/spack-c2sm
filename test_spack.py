@@ -27,6 +27,8 @@ class TestCase(unittest.TestCase):
         if parallel:
             if machine == 'tsa':
                 srun = 'srun -c 16 -t 01:00:00'
+            if machine == 'daint':
+                srun = 'srun -C gpu -A g110 -t 01:00:00'
 
         # 2>&1 redirects stderr to stdout
         subprocess.run(
@@ -362,7 +364,8 @@ class Int2lmTest(TestCase):
     def test_install_nvhpc(self):
         # Replacement of PGI after upgrade of Daint Feb 22
         if machine == 'daint':
-            self.Srun('spack install --test=root int2lm@c2sm-master%nvhpc')
+            self.Srun('spack install --until build int2lm@c2sm-master%nvhpc')
+            self.Run('spack install -dont-restage --test=root int2lm@c2sm-master%nvhpc')
 
 
 class IconDuskE2ETest(TestCase):
