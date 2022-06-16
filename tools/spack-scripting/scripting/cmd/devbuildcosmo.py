@@ -48,16 +48,18 @@ def setup_parser(subparser):
                            action="store_true",
                            help="Clean dev-build")
 
-    subparser.add_argument('--dont-restage',
-                           action='store_false',
-                           dest="restage",
-                           help="if a partial install is detected, don’t delete prior state")
+    subparser.add_argument(
+        '--dont-restage',
+        action='store_false',
+        dest="restage",
+        help="if a partial install is detected, don’t delete prior state")
 
-    subparser.add_argument('-u',
-                           '--until',
-                           dest='until',
-                           default=None,
-                           help="phase to stop after when installing (only applies to COSMO)")
+    subparser.add_argument(
+        '-u',
+        '--until',
+        dest='until',
+        default=None,
+        help="phase to stop after when installing (only applies to COSMO)")
 
 
 def custom_devbuild(source_path, spec, args):
@@ -85,9 +87,11 @@ def custom_devbuild(source_path, spec, args):
     else:
         args.things_to_test = False
 
-    kwargs = {'make_jobs': args.jobs, 
-              'restage': args.restage,
-              'tests': args.things_to_test}
+    kwargs = {
+        'make_jobs': args.jobs,
+        'restage': args.restage,
+        'tests': args.things_to_test
+    }
 
     # for testing purposes we want to split build and install phase for COSMO
     if package.name == 'cosmo':

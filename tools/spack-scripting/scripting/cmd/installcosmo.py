@@ -63,10 +63,11 @@ the dependencies""")
                            action='store_true',
                            help="force uninstall if package already installed")
 
-    subparser.add_argument('--dont-restage',
-                           action='store_false',
-                           dest="restage",
-                           help="if a partial install is detected, don’t delete prior state")
+    subparser.add_argument(
+        '--dont-restage',
+        action='store_false',
+        dest="restage",
+        help="if a partial install is detected, don’t delete prior state")
 
     subparser.add_argument('-u',
                            '--until',

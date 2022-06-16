@@ -69,7 +69,8 @@ class CosmoTest(TestCase):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
             self.Srun(
-                'spack installcosmo --until build cosmo@org-master%pgi cosmo_target=gpu +cppdycore')
+                'spack installcosmo --until build cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
+            )
             self.Run(
                 'spack installcosmo --dont-restage --test=root cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
             )
@@ -82,7 +83,8 @@ class CosmoTest(TestCase):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
             self.Srun(
-                'spack installcosmo --until build cosmo@org-master%pgi cosmo_target=cpu ~cppdycore')
+                'spack installcosmo --until build cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
+            )
             self.Run(
                 'spack installcosmo --dont-restage --test=root cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
             )
@@ -139,7 +141,8 @@ class CosmoTest(TestCase):
         # So we can reproduce results from old versions.
         if machine == 'tsa':
             self.Srun(
-                'spack installcosmo --until build cosmo@apn_5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore')
+                'spack installcosmo --until build cosmo@apn_5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore'
+            )
             self.Srun(
                 'spack installcosmo --dont-restage --test=root cosmo@apn_5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore'
             )
@@ -376,7 +379,9 @@ class IconToolsTest(TestCase):
     # C2SM supported version
     def test_install(self):
         self.Srun('spack install --until build icontools@c2sm-master%gcc')
-        self.Run('spack install --dont-restage --test=root icontools@c2sm-master%gcc')
+        self.Run(
+            'spack install --dont-restage --test=root icontools@c2sm-master%gcc'
+        )
 
 
 class LibGrib1Test(TestCase):
