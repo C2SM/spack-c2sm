@@ -65,10 +65,10 @@ class Serialbox(CMakePackage):
     depends_on('netcdf-c', when='+netcdf')
 
     # The preprocessor can be run with Python 2:
-    depends_on('python', type='run')
+    #depends_on('python', type=('build','run'))
     # The Python interface is compatible only with Python 3:
-    depends_on('python@3.4:', when='+python', type=('build', 'run'))
-    depends_on('py-numpy', when='+python', type=('build', 'run'))
+    #depends_on('python@3.4:', when='+python', type=('build', 'run'))
+    #depends_on('py-numpy', when='+python', type=('build', 'run'))
 
     # pp_ser fails to process source files containing Unicode character with
     # Python 3 (https://github.com/GridTools/serialbox/pull/249):
