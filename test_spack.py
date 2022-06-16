@@ -78,7 +78,10 @@ class CosmoTest(TestCase):
             )
         else:
             self.Srun(
-                'spack installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=gpu +cppdycore'
+                'spack installcosmo --until build cosmo@org-master%nvhpc cosmo_target=gpu +cppdycore'
+            )
+            self.Run(
+                'spack installcosmo --dont-restage --test=root cosmo@org-master%nvhpc cosmo_target=gpu +cppdycore'
             )
 
     def test_install_master_cpu(self):
@@ -92,7 +95,10 @@ class CosmoTest(TestCase):
             )
         else:
             self.Srun(
-                'spack installcosmo --test=root cosmo@org-master%nvhpc cosmo_target=cpu ~cppdycore'
+                'spack installcosmo --until build cosmo@org-master%nvhpc cosmo_target=cpu ~cppdycore'
+            )
+            self.Run(
+                'spack installcosmo --dont-restage --test=root cosmo@org-master%nvhpc cosmo_target=cpu ~cppdycore'
             )
 
     # def test_install_test(self):
@@ -116,7 +122,10 @@ class CosmoTest(TestCase):
                     cwd='cosmo')
             else:
                 self.Srun(
-                    'spack devbuildcosmo --test=root cosmo@dev-build%nvhpc cosmo_target=cpu ~cppdycore',
+                    'spack devbuildcosmo --until build cosmo@dev-build%nvhpc cosmo_target=cpu ~cppdycore',
+                    cwd='cosmo')
+                self.Run(
+                    'spack devbuildcosmo --dont-restage --test=root cosmo@dev-build%nvhpc cosmo_target=cpu ~cppdycore',
                     cwd='cosmo')
         finally:
             self.Run('rm -rf cosmo')
@@ -145,7 +154,7 @@ class CosmoTest(TestCase):
             self.Srun(
                 'spack installcosmo --until build cosmo@apn_5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore'
             )
-            self.Srun(
+            self.Run(
                 'spack installcosmo --dont-restage --test=root cosmo@apn_5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore'
             )
 
