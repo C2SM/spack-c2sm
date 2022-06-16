@@ -365,7 +365,9 @@ class Int2lmTest(TestCase):
         # Replacement of PGI after upgrade of Daint Feb 22
         if machine == 'daint':
             self.Srun('spack install --until build int2lm@c2sm-master%nvhpc')
-            self.Run('spack install --dont-restage --test=root int2lm@c2sm-master%nvhpc')
+            self.Run(
+                'spack install --dont-restage --test=root int2lm@c2sm-master%nvhpc'
+            )
 
 
 class IconDuskE2ETest(TestCase):
