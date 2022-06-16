@@ -330,20 +330,25 @@ class Int2lmTest(TestCase):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
             self.Srun('spack install --until build int2lm@c2sm-master%pgi')
-            self.Run('spack install --dont-restage --test=root int2lm@c2sm-master%pgi')
+            self.Run(
+                'spack install --dont-restage --test=root int2lm@c2sm-master%pgi'
+            )
 
     def test_install_no_pollen(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
             self.Srun(
-                'spack install --until build int2lm@org-master%pgi pollen=False')
+                'spack install --until build int2lm@org-master%pgi pollen=False'
+            )
             self.Run(
-                'spack install --dont-restage --test=root int2lm@org-master%pgi pollen=False')
+                'spack install --dont-restage --test=root int2lm@org-master%pgi pollen=False'
+            )
 
     def test_install_gcc(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         self.Srun('spack install --until build int2lm@c2sm-master%gcc')
-        self.Run('spack install --dont-restage --test=root int2lm@c2sm-master%gcc')
+        self.Run(
+            'spack install --dont-restage --test=root int2lm@c2sm-master%gcc')
 
     def test_install_nvhpc(self):
         # Replacement of PGI after upgrade of Daint Feb 22
