@@ -69,7 +69,9 @@ class CosmoTest(TestCase):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
             self.Srun(
-                'spack installcosmo --test=root cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
+                'spack installcosmo --until build cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
+            self.Run(
+                'spack installcosmo --dont-restage --test=root cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
             )
         else:
             self.Srun(
@@ -80,7 +82,9 @@ class CosmoTest(TestCase):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
             self.Srun(
-                'spack installcosmo --test=root cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
+                'spack installcosmo --until build cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
+            self.Run(
+                'spack installcosmo --dont-restage --test=root cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
             )
         else:
             self.Srun(
@@ -101,7 +105,10 @@ class CosmoTest(TestCase):
         try:
             if machine == 'tsa':
                 self.Srun(
-                    'spack devbuildcosmo --test=root cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore',
+                    'spack devbuildcosmo --until build cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore',
+                    cwd='cosmo')
+                self.Run(
+                    'spack devbuildcosmo --dont-restage --test=root cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore',
                     cwd='cosmo')
             else:
                 self.Srun(
@@ -116,17 +123,14 @@ class CosmoTest(TestCase):
         try:
             if machine == 'tsa':
                 self.Srun(
-                    'spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
+                    'spack devbuildcosmo --until build cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
                     cwd='cosmo')
                 self.Run(
-                    'spack devbuildcosmo --test=root cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
+                    'spack devbuildcosmo --dont-restage --test=root cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
                     cwd='cosmo')
             else:
                 self.Srun(
                     'spack devbuildcosmo cosmo@dev-build%nvhpc cosmo_target=gpu +cppdycore',
-                    cwd='cosmo')
-                self.Run(
-                    'spack devbuildcosmo --test=root cosmo@dev-build%nvhpc cosmo_target=gpu +cppdycore',
                     cwd='cosmo')
         finally:
             self.Run('rm -rf cosmo')
@@ -135,7 +139,9 @@ class CosmoTest(TestCase):
         # So we can reproduce results from old versions.
         if machine == 'tsa':
             self.Srun(
-                'spack installcosmo --test=root cosmo@apn_5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore'
+                'spack installcosmo --until build cosmo@apn_5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore'
+            self.Srun(
+                'spack installcosmo --dont-restage --test=root cosmo@apn_5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore'
             )
 
 
@@ -148,40 +154,40 @@ class CosmoDycoreTest(TestCase):
         # The dycore team's PR testing relies on this.
         # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
         self.Srun(
-            'spack install cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda'
+            'spack install --until build cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda'
         )
         self.Run(
-            'spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda'
+            'spack install --dont-restage --test=root cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda'
         )
 
     def test_install_float_gpu(self):
         # The dycore team's PR testing relies on this.
         # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
         self.Srun(
-            'spack install cosmo-dycore@master%gcc real_type=float build_type=Release +cuda'
+            'spack install --until build cosmo-dycore@master%gcc real_type=float build_type=Release +cuda'
         )
         self.Run(
-            'spack install --test=root cosmo-dycore@master%gcc real_type=float build_type=Release +cuda'
+            'spack install --dont-restage --test=root cosmo-dycore@master%gcc real_type=float build_type=Release +cuda'
         )
 
     def test_install_double_cpu(self):
         # The dycore team's PR testing relies on this.
         # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
         self.Srun(
-            'spack install cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda'
+            'spack install --until build cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda'
         )
         self.Run(
-            'spack install --test=root cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda'
+            'spack install --dont-restage --test=root cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda'
         )
 
     def test_install_double_gpu(self):
         # The dycore team's PR testing relies on this.
         # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
         self.Srun(
-            'spack install cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
+            'spack install --until build cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
         )
         self.Run(
-            'spack install --test=root cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
+            'spack install --dont-restage --test=root cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
         )
 
 
