@@ -168,40 +168,40 @@ class CosmoDycoreTest(TestCase):
         # The dycore team's PR testing relies on this.
         # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
         self.Srun(
-            'spack install --until build cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda'
+            'spack install --show-log-on-error --until build cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda'
         )
         self.Run(
-            'spack install --dont-restage --test=root cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda'
+            'spack install --show-log-on-error --dont-restage --test=root cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda'
         )
 
     def test_install_float_gpu(self):
         # The dycore team's PR testing relies on this.
         # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
         self.Srun(
-            'spack install --until build cosmo-dycore@master%gcc real_type=float build_type=Release +cuda'
+            'spack install --show-log-on-error --until build cosmo-dycore@master%gcc real_type=float build_type=Release +cuda'
         )
         self.Run(
-            'spack install --dont-restage --test=root cosmo-dycore@master%gcc real_type=float build_type=Release +cuda'
+            'spack install --show-log-on-error --dont-restage --test=root cosmo-dycore@master%gcc real_type=float build_type=Release +cuda'
         )
 
     def test_install_double_cpu(self):
         # The dycore team's PR testing relies on this.
         # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
         self.Srun(
-            'spack install --until build cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda'
+            'spack install --show-log-on-error --until build cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda'
         )
         self.Run(
-            'spack install --dont-restage --test=root cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda'
+            'spack install --show-log-on-error --dont-restage --test=root cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda'
         )
 
     def test_install_double_gpu(self):
         # The dycore team's PR testing relies on this.
         # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
         self.Srun(
-            'spack install --until build cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
+            'spack install --show-log-on-error --until build cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
         )
         self.Run(
-            'spack install --dont-restage --test=root cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
+            'spack install --show-log-on-error --dont-restage --test=root cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
         )
 
 
@@ -286,22 +286,22 @@ class IconTest(TestCase):
         # So we can make sure ICON-NWP (OpenACC) devs can compile (mimicks Buildbot for Tsa)
         if machine == 'tsa':
             self.Srun(
-                'spack install icon@nwp%pgi icon_target=gpu +claw +eccodes +ocean'
+                'spack install --show-log-on-error icon@nwp%pgi icon_target=gpu +claw +eccodes +ocean'
             )
         else:
             self.Srun(
-                'spack install icon@nwp%nvhpc icon_target=gpu +claw +eccodes +ocean'
+                'spack install --show-log-on-error icon@nwp%nvhpc icon_target=gpu +claw +eccodes +ocean'
             )
 
     def test_install_nwp_cpu_nvidia(self):
         # So we can make sure ICON-NWP (OpenACC) devs can compile (mimicks Buildbot for Tsa)
         if machine == 'tsa':
             self.Srun(
-                'spack install icon@nwp%pgi icon_target=cpu serialize_mode=create +eccodes +ocean'
+                'spack install --show-log-on-error icon@nwp%pgi icon_target=cpu serialize_mode=create +eccodes +ocean'
             )
         else:
             self.Srun(
-                'spack install icon@nwp%nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean'
+                'spack install --show-log-on-error icon@nwp%nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean'
             )
 
     def test_devbuild_cpu(self):
@@ -349,33 +349,33 @@ class Int2lmTest(TestCase):
     def test_install_pgi(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
-            self.Srun('spack install --until build int2lm@c2sm-master%pgi')
+            self.Srun('spack install --show-log-on-error --until build int2lm@c2sm-master%pgi')
             self.Run(
-                'spack install --dont-restage --test=root int2lm@c2sm-master%pgi'
+                'spack install --show-log-on-error --dont-restage --test=root int2lm@c2sm-master%pgi'
             )
 
     def test_install_no_pollen(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
             self.Srun(
-                'spack install --until build int2lm@org-master%pgi pollen=False'
+                'spack install --show-log-on-error --until build int2lm@org-master%pgi pollen=False'
             )
             self.Run(
-                'spack install --dont-restage --test=root int2lm@org-master%pgi pollen=False'
+                'spack install --show-log-on-error --dont-restage --test=root int2lm@org-master%pgi pollen=False'
             )
 
     def test_install_gcc(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        self.Srun('spack install --until build int2lm@c2sm-master%gcc')
+        self.Srun('spack install --show-log-on-error --until build int2lm@c2sm-master%gcc')
         self.Run(
-            'spack install --dont-restage --test=root int2lm@c2sm-master%gcc')
+            'spack install --show-log-on-error --dont-restage --test=root int2lm@c2sm-master%gcc')
 
     def test_install_nvhpc(self):
         # Replacement of PGI after upgrade of Daint Feb 22
         if machine == 'daint':
-            self.Srun('spack install --until build int2lm@c2sm-master%nvhpc')
+            self.Srun('spack install --show-log-on-error --until build int2lm@c2sm-master%nvhpc')
             self.Run(
-                'spack install --dont-restage --test=root int2lm@c2sm-master%nvhpc'
+                'spack install --show-log-on-error --dont-restage --test=root int2lm@c2sm-master%nvhpc'
             )
 
 
@@ -392,9 +392,9 @@ class IconToolsTest(TestCase):
 
     # C2SM supported version
     def test_install(self):
-        self.Srun('spack install --until build icontools@c2sm-master%gcc')
+        self.Srun('spack install --show-log-on-error --until build icontools@c2sm-master%gcc')
         self.Run(
-            'spack install --dont-restage --test=root icontools@c2sm-master%gcc'
+            'spack install --show-log-on-error --dont-restage --test=root icontools@c2sm-master%gcc'
         )
 
 
