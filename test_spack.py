@@ -32,7 +32,7 @@ class TestCase(unittest.TestCase):
                 srun = 'srun -C gpu -A g110 -t 01:00:00'
 
         # randomly delay start of installation to avoid write-locks
-        delay = randint(5,20)
+        delay = randint(5, 20)
 
         # 2>&1 redirects stderr to stdout
         subprocess.run(
@@ -353,7 +353,9 @@ class Int2lmTest(TestCase):
     def test_install_pgi(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
-            self.Srun('spack install --show-log-on-error --until build int2lm@c2sm-master%pgi')
+            self.Srun(
+                'spack install --show-log-on-error --until build int2lm@c2sm-master%pgi'
+            )
             self.Run(
                 'spack install --show-log-on-error --dont-restage --test=root int2lm@c2sm-master%pgi'
             )
@@ -370,14 +372,19 @@ class Int2lmTest(TestCase):
 
     def test_install_gcc(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        self.Srun('spack install --show-log-on-error --until build int2lm@c2sm-master%gcc')
+        self.Srun(
+            'spack install --show-log-on-error --until build int2lm@c2sm-master%gcc'
+        )
         self.Run(
-            'spack install --show-log-on-error --dont-restage --test=root int2lm@c2sm-master%gcc')
+            'spack install --show-log-on-error --dont-restage --test=root int2lm@c2sm-master%gcc'
+        )
 
     def test_install_nvhpc(self):
         # Replacement of PGI after upgrade of Daint Feb 22
         if machine == 'daint':
-            self.Srun('spack install --show-log-on-error --until build int2lm@c2sm-master%nvhpc')
+            self.Srun(
+                'spack install --show-log-on-error --until build int2lm@c2sm-master%nvhpc'
+            )
             self.Run(
                 'spack install --show-log-on-error --dont-restage --test=root int2lm@c2sm-master%nvhpc'
             )
@@ -396,7 +403,9 @@ class IconToolsTest(TestCase):
 
     # C2SM supported version
     def test_install(self):
-        self.Srun('spack install --show-log-on-error --until build icontools@c2sm-master%gcc')
+        self.Srun(
+            'spack install --show-log-on-error --until build icontools@c2sm-master%gcc'
+        )
         self.Run(
             'spack install --show-log-on-error --dont-restage --test=root icontools@c2sm-master%gcc'
         )
