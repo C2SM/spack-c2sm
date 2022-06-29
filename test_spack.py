@@ -6,7 +6,6 @@ import sys
 import subprocess
 import unittest
 import asyncio
-from random import randint
 
 all_machines = {'daint', 'tsa'}
 
@@ -31,12 +30,9 @@ class TestCase(unittest.TestCase):
             if machine == 'daint':
                 srun = 'srun -C gpu -A g110 -t 01:00:00'
 
-        # randomly delay start of installation to avoid write-locks
-        delay = randint(5, 20)
-
         # 2>&1 redirects stderr to stdout
         subprocess.run(
-            f'{setup} (cd {cwd} ; {srun} sleep {delay} && {command}) >> {machine}_{self.package_name}_{self._testMethodName}.log 2>&1',
+            f'{setup} (cd {cwd} ; {srun} {command}) >> {machine}_{self.package_name}_{self._testMethodName}.log 2>&1',
             check=True,
             shell=True)
 
