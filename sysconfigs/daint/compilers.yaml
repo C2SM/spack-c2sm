@@ -64,6 +64,21 @@ compilers:
     extra_rpaths: []
     flags: {}
     modules:
+    - PrgEnv-cray
+    - cce/14.0.0
+    operating_system: cnl7
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    spec: cce@14.0.0
+    target: any
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
     - PrgEnv-gnu
     - gcc/9.3.0
     operating_system: cnl7
