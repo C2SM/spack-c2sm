@@ -183,16 +183,3 @@ def devbuildcosmo(self, args):
 
     # Dev-build cosmo
     custom_devbuild(source_path, cosmo_spec, args)
-
-    # Serialize data
-    if "+serialize" in cosmo_spec:
-        print("\033[92m" + "==> " + "\033[0m" + "cosmo: Serializing data")
-        try:
-            subprocess.run([
-                source_path + '/cosmo/ACC/test/tools/serialize_cosmo.py',
-                self.spec__str__(), '-b', source_path
-            ],
-                           check=True,
-                           stderr=subprocess.STDOUT)
-        except:
-            tty.die('Serialization failed')
