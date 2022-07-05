@@ -63,7 +63,7 @@ class Cosmo(MakefilePackage):
     depends_on('omni-xmod-pool', when='+claw', type='build')
     depends_on('claw%gcc', when='+claw', type='build')
     depends_on('boost%gcc', when='cosmo_target=gpu ~cppdycore', type='build')
-    depends_on('cmake%gcc', type='build')
+    depends_on('cmake', type='build')
     depends_on('zlib_ng +compat', when='+zlib_ng', type=('link', 'run'))
     depends_on('oasis', when='+oasis', type=('build', 'link', 'run'))
 
