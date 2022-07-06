@@ -212,7 +212,10 @@ class Icon(Package):
     @on_package_attributes(run_tests=True)
     def check(self):
         try:
-            subprocess.run(['./scripts/spack/test.py', '--spec', self.spec.__str__()],check=True)
+            subprocess.run(
+                ['./scripts/spack/test.py', '--spec',
+                 self.spec.__str__()],
+                check=True)
         except:
             raise InstallError('Tests failed')
 
