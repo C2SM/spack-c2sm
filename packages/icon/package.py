@@ -40,6 +40,7 @@ class Icon(Package):
             submodules=True)
 
     depends_on('cmake%gcc')
+    depends_on('cdo')
     depends_on('libxml2@2.9.8:%gcc', type=('build', 'link', 'run'))
     depends_on('serialbox@2.6.0 ~python ~sdb ~shared',
                when='serialize_mode=create',
@@ -207,8 +208,17 @@ class Icon(Package):
     def install(self, spec, prefix):
         make('install')
 
+    @run_before('install')
+    @on_package_attributes(run_tests=True)
+    def check(self):
+        try:
+            subprocess.run(['./scripts/spack/test.py', '--spec', self.spec.__str__()],check=True)
+        except:
+            raise InstallError('Tests failed')
+
     @run_after('build')
     def test(self):
+
         if self.spec.variants['test_name'].value != 'none':
             if '+ham' in self.spec:
                 try:
