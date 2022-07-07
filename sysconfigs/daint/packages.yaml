@@ -68,13 +68,6 @@ packages:
       - daint-gpu
       - CMake/3.22.1
       spec: cmake@3.22.1%nvhpc
-  cdo:
-    buildable: false
-    externals:
-    - modules:
-      - daint-gpu
-      - CDO
-      spec: cdo
   cosmo:
     compiler:
     - nvhpc@21.3
