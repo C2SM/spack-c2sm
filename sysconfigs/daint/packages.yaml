@@ -63,11 +63,7 @@ packages:
     - modules:
       - daint-gpu
       - CMake/3.22.1
-      spec: cmake@3.22.1%gcc
-    - modules:
-      - daint-gpu
-      - CMake/3.22.1
-      spec: cmake@3.22.1%nvhpc
+      spec: cmake@3.22.1
   cosmo:
     compiler:
     - nvhpc@21.3
@@ -325,7 +321,7 @@ packages:
     - prefix: /usr
       spec: sed@4.4
   serialbox:
-    variants: ~examples
+    variants: ~examples +fortran ~python
   slurm:
     buildable: false
     externals:
