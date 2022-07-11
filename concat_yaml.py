@@ -193,7 +193,7 @@ def commit_and_push_to_git(machine):
     command = ['/usr/bin/git', 'commit', '-m', f'update config for {machine}']
     subprocess.run(command, check=True)
 
-    command = ['/usr/bin/git', 'push', 'origin', branch]
+    command = ['/usr/bin/git', 'push', '--force', 'origin', branch]
     subprocess.run(command, check=True)
 
 
