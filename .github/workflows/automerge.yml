@@ -1,0 +1,22 @@
+name: Merge latest Dom config
+on:
+  push:
+    branches:
+    # We only want to allow automatic merge from protected branch
+    - test
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@dom_automatic_upgrade
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Push changes
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git commit -am "GitHub Action: Dom automatic upgrade"
+          git push origin test_master
+
+
