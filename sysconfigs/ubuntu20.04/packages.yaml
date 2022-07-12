@@ -1,0 +1,47 @@
+packages:
+  all:
+    compiler: [gcc@9.4.0]
+    providers:
+      mpicuda: [openmpi+cuda, mpich]
+      mpi: [openmpi~cuda]
+  cmake:
+    buildable: true
+    version: [3.16.3]
+    target: []
+    providers: {}
+    compiler: []
+    externals:
+    - spec: cmake@3.16.3
+      prefix: /bin/cmake
+  netcdf-fortran:
+    externals:
+    - spec: netcdf-fortran@4.7.3%gcc
+      prefix: /usr
+  netcdf-c:
+    externals:
+    - spec: netcdf-c@4.7.3%gcc
+      prefix: /usr
+  perl:
+    externals:
+    - spec: perl
+      prefix: /usr/bin/perl
+  m4:
+    externals:
+    - spec: m4
+      prefix: /bin/
+  automake:
+    externals:
+    - spec: automake
+      prefix: /bin
+  autoconf:
+    externals:
+    - spec: autoconf
+      prefix: /bin
+  jasper:
+    externals:
+    - spec: jasper
+      prefix: /usr
+  bzip2:
+    externals:
+    - spec: bzip2@1.0.6
+      prefix: /usr

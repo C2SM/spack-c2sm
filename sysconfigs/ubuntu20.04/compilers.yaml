@@ -1,0 +1,14 @@
+compilers:
+- compiler:
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    operating_system: ubuntu20.04
+    modules: []
+    paths:
+      cc: /bin/gcc-9
+      cxx: /bin/g++-9
+      f77: /bin/gfortran-9
+      fc: /bin/gfortran-9
+    spec: gcc@9.4.0
+    target: any

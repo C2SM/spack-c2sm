@@ -1,0 +1,15 @@
+config:
+  template_dirs:
+    - $spack/templates
+  module_roots:
+    tcl:
+  build_stage:
+  extensions:
+  install_tree:
+    projections:
+      all: '{name}/{version}/{compiler.name}/{hash}'
+    root:
+  source_cache:
+  misc_cache:
+  build_jobs: 6
+  concretizer: original
