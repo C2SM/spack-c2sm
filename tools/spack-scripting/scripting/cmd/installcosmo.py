@@ -63,6 +63,18 @@ the dependencies""")
                            action='store_true',
                            help="force uninstall if package already installed")
 
+    subparser.add_argument(
+        '--dont-restage',
+        action='store_false',
+        dest="restage",
+        help="if a partial install is detected, don’t delete prior state")
+
+    subparser.add_argument('-u',
+                           '--until',
+                           dest='until',
+                           default=None,
+                           help="phase to stop after when installing")
+
 
 def custom_install(spec, args):
     package = spack.repo.get(spec)
@@ -80,7 +92,9 @@ def custom_install(spec, args):
         'install_package': ('package' in args.things_to_install),
         'keep_stage': args.keep_stage,
         'tests': args.things_to_test,
-        'verbose': args.lverbose
+        'verbose': args.lverbose,
+        'stop_at': args.until,
+        'restage': args.restage
     }
 
     if args.things_to_install == 'dependencies':

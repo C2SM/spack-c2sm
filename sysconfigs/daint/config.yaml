@@ -11,6 +11,5 @@ config:
     root:
   source_cache:
   misc_cache:
-  build_jobs: 4
-  db_lock_timeout: 20
+  build_jobs: 12
   concretizer: original
