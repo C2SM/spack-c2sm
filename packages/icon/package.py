@@ -65,7 +65,8 @@ class Icon(Package):
             default='daint',
             description='Build on described host (e.g daint)',
             multi=False,
-            values=('tsa', 'daint', 'dom', 'muttler', 'manali', 'balfrin', 'tasna'))
+            values=('tsa', 'daint', 'dom', 'muttler', 'manali', 'balfrin',
+                    'tasna'))
     variant('site',
             default='cscs',
             description='Build on described site (e.g cscs)',
