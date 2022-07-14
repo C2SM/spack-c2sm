@@ -1,8 +1,9 @@
 modules:
-  enable:
-    - tcl
-  tcl: 
-    naming_scheme: '${PACKAGE}/${VERSION}'
-    hash_length: 7
-    blacklist: ['%gcc', '%pgi']
-    whitelist: ['cosmo', 'cosmo-dycore', 'cosmo-eccodes-definitions', 'cosmo-gribapi-definitions']
+  default:
+    enable:
+      - tcl
+    tcl: 
+      naming_scheme: '${PACKAGE}/${VERSION}'
+      hash_length: 7
+      blacklist: ['%gcc', '%pgi']
+      whitelist: ['cosmo', 'cosmo-dycore', 'cosmo-eccodes-definitions', 'cosmo-gribapi-definitions']
