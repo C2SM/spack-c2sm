@@ -133,4 +133,4 @@ packages:
       modules:
       - slurm
   serialbox:
-    variants: ~examples
+    variants: ~examples +fortran ~python
