@@ -25,14 +25,17 @@ class FlexpartIfs(MakefilePackage):
         build = ['nfc=yes', 'VERBOSE=1', 'serial']
         return build
 
+    def edit(self, spec, prefix):
+        copy('src/makefile.meteoswiss', 'src/makefile')
+
     def setup_build_environment(self, env):
         env.set('ECCODESROOT', self.spec['eccodes'].prefix)
         env.set(
             'ECCODES_LD_FLAGS', '-L' + self.spec['eccodes'].prefix +
             '/lib64 -leccodes_f90 -leccodes')
         env.set('EBROOTNETCDFMINFORTRAN', self.spec['netcdf-fortran'].prefix)
-#        env.set(
-#            'JASPER_LD_FLAGS', '-Wl,--no-relax')
+        env.set(
+            'JASPER_LD_FLAGS', '-Wl,--no-relax')
         env.set('CURL_INCLUDES', '/usr')
 
     def install(self, spec, prefix):
