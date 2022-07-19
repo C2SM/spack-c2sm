@@ -37,6 +37,7 @@ class FlexpartIfs(MakefilePackage):
         #abuse of JASPER_LD_FLAGS since there is no other entrypoint var for LDFLAGS
         env.set(
             'JASPER_LD_FLAGS', '-Wl,--no-relax')
+        # not really required, just a default since the -I flags would be inconsistent with an empty string
         env.set('CURL_INCLUDES', '/usr')
 
     def install(self, spec, prefix):
