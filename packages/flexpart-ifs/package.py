@@ -35,8 +35,7 @@ class FlexpartIfs(MakefilePackage):
             '/lib64 -leccodes_f90 -leccodes')
         env.set('EBROOTNETCDFMINFORTRAN', self.spec['netcdf-fortran'].prefix)
         #abuse of JASPER_LD_FLAGS since there is no other entrypoint var for LDFLAGS
-        env.set(
-            'JASPER_LD_FLAGS', '-Wl,--no-relax')
+        env.set('JASPER_LD_FLAGS', '-Wl,--no-relax')
         env.set('CURL_INCLUDES', '/usr')
 
     def install(self, spec, prefix):
