@@ -41,4 +41,5 @@ class FlexpartIfs(MakefilePackage):
         env.set('CURL_INCLUDES', '/usr')
 
     def install(self, spec, prefix):
+        mkdir(prefix.bin)
         install('src/FLEXPART', prefix.bin)
