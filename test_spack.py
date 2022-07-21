@@ -46,7 +46,7 @@ class TestCase(unittest.TestCase):
 
 class AtlasUtilityTest(TestCase):
     package_name = 'atlas_utilities'
-    depends_on = {'atlas', 'eckit'}
+    depends_on = {}
     machines = all_machines
 
 
