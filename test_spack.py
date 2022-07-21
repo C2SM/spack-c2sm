@@ -238,10 +238,12 @@ class Dawn4PyTest(TestCase):
     depends_on = {}
     machines = all_machines
 
+
 class DuskTest(TestCase):
     package_name = 'dusk'
     depends_on = {'dawn4py'}
     machines = all_machines
+
 
 class EccodesTest(TestCase):
     package_name = 'eccodes'
