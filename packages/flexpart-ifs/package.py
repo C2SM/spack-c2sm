@@ -41,4 +41,6 @@ class FlexpartIfs(MakefilePackage):
 
     def install(self, spec, prefix):
         mkdir(prefix.bin)
+        mkdir(prefix.share)
         install('src/FLEXPART', prefix.bin)
+        install('test/*', prefix.share)
