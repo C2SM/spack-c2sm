@@ -7,6 +7,7 @@
 from spack import *
 from distutils.dir_util import copy_tree
 
+
 class FlexpartIfs(MakefilePackage):
     """flexpart is a Lagrangian dispersion model"""
 
@@ -42,8 +43,8 @@ class FlexpartIfs(MakefilePackage):
     def install(self, spec, prefix):
         mkdir(prefix.bin)
         mkdir(prefix.share)
-        mkdir(prefix.share+'/test/')
-        mkdir(prefix.share+'/options/')
-        copy_tree('options/', prefix.share+'/options/')
+        mkdir(prefix.share + '/test/')
+        mkdir(prefix.share + '/options/')
+        copy_tree('options/', prefix.share + '/options/')
         install('src/FLEXPART', prefix.bin)
-        install('test/*', prefix.share+'/test/')
+        install('test/*', prefix.share + '/test/')
