@@ -22,7 +22,7 @@ class FlexpartIfs(MakefilePackage):
 
     @property
     def build_targets(self):
-        build = ['nfc=yes', 'VERBOSE=1', 'serial']
+        build = ['ncf=yes', 'VERBOSE=1', 'serial']
         return build
 
     def edit(self, spec, prefix):
