@@ -135,9 +135,9 @@ packages:
     externals:
     - extra_attributes:
         compilers:
-          c: /usr/bin/gcc-7
+          c: /usr/bin/gcc
           cxx: /usr/bin/g++
-          fortran: /usr/bin/gfortran
+          fortran: /usr/bin/gfortran-7
       prefix: /usr
       spec: gcc@7.5.0 languages=c,c++,fortran
   ghostscript:
