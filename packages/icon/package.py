@@ -6,6 +6,7 @@
 import os, subprocess
 from spack import *
 
+import llnl.util.tty as tty
 
 class Icon(Package):
     """The ICON modelling framework is a joint project between the
@@ -210,13 +211,17 @@ class Icon(Package):
     @run_before('install')
     @on_package_attributes(run_tests=True)
     def check(self):
-        try:
-            subprocess.run(
-                ['./scripts/spack/test.py', '--spec',
-                 self.spec.__str__()],
-                check=True)
-        except:
-            raise InstallError('Tests failed')
+        if os.path.exists('scripts/spack/test.py'):
+            try:
+                subprocess.run(
+                    ['./scripts/spack/test.py', '--spec',
+                     self.spec.__str__()],
+                    check=True)
+            except:
+                raise InstallError('Tests failed')
+        else:
+            tty.warn('Cannot find test.py -> skipping tests')
+
 
     @run_after('build')
     def test(self):
@@ -271,4 +276,4 @@ class Icon(Package):
             if not 'OK' in str(test_status):
                 raise InstallError('Test failed')
             elif 'OK' in str(test_status):
-                print('Test OK!')
+                tty.info('Test OK!')
