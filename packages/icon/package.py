@@ -8,6 +8,7 @@ from spack import *
 
 import llnl.util.tty as tty
 
+
 class Icon(Package):
     """The ICON modelling framework is a joint project between the
     German Weather Service and the
@@ -221,7 +222,6 @@ class Icon(Package):
                 raise InstallError('Tests failed')
         else:
             tty.warn('Cannot find test.py -> skipping tests')
-
 
     @run_after('build')
     def test(self):
