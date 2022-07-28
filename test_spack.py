@@ -66,7 +66,9 @@ cosmo_deps = {
     'cuda', 'serialbox', 'libgrib1', 'cosmo-grib-api-definitions',
     'cosmo-eccodes-definitions', 'omni-xmod-pool', 'claw', 'zlib_ng',
     'cosmo-dycore'
-    }
+}
+
+
 class CosmoTestDevBuild(TestCase):
     package_name = 'cosmo'
     depends_on = cosmo_deps
@@ -110,6 +112,7 @@ class CosmoTestDevBuild(TestCase):
                     cwd='cosmo')
         finally:
             self.Run('rm -rf cosmo')
+
 
 class CosmoTest(TestCase):
     package_name = 'cosmo'
@@ -162,6 +165,8 @@ class CosmoTest(TestCase):
 
 
 dycore_deps = {'gridtools', 'serialbox', 'cuda'}
+
+
 class CosmoDycoreTestDouble(TestCase):
     package_name = 'cosmo-dycore'
     depends_on = dycore_deps
@@ -186,6 +191,8 @@ class CosmoDycoreTestDouble(TestCase):
         self.Run(
             'spack install --show-log-on-error --dont-restage --test=root cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
         )
+
+
 class CosmoDycoreTestFloat(TestCase):
     package_name = 'cosmo-dycore'
     depends_on = dycore_deps
@@ -284,8 +291,9 @@ class GridToolsTest(TestCase):
     machines = all_machines
 
 
-
 icon_deps = {'serialbox', 'eccodes', 'claw'}
+
+
 class IconTest(TestCase):
     package_name = 'icon'
     depends_on = icon_deps
@@ -312,6 +320,7 @@ class IconTest(TestCase):
             self.Srun(
                 'spack install --show-log-on-error icon@nwp%nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean'
             )
+
 
 class IconTestDevBuild(TestCase):
     package_name = 'icon'
