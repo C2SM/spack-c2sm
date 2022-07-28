@@ -70,6 +70,7 @@ cosmo_deps = {
 class CosmoTestDevBuild(TestCase):
     package_name = 'cosmo'
     depends_on = cosmo_deps
+    machines = all_machines
 
     def test_devbuild_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
@@ -113,6 +114,7 @@ class CosmoTestDevBuild(TestCase):
 class CosmoTest(TestCase):
     package_name = 'cosmo'
     depends_on = cosmo_deps
+    machines = all_machines
 
     def test_install_master_gpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
