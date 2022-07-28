@@ -362,3 +362,9 @@ packages:
     externals:
     - prefix: /usr
       spec: zlib@1.2.11
+  cdo:
+      buildable: false
+    externals:
+    - prefix: /project/d56/daint/local.gcc
+      spec: cdo@1.9.5
+

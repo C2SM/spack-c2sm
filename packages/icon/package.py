@@ -56,6 +56,7 @@ class Icon(Package):
                when='+eccodes',
                type=('build', 'link', 'run'))
     depends_on('claw@2.0.2', when='+claw', type=('build', 'link', 'run'))
+    depends_on('cdo')
 
     variant('icon_target',
             default='gpu',

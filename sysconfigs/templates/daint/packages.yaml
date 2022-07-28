@@ -138,3 +138,8 @@ packages:
       - slurm
   serialbox:
     variants: ~examples
+  cdo:
+      buildable: false
+    externals:
+    - prefix: /project/d56/daint/local.gcc
+      spec: cdo@1.9.5
