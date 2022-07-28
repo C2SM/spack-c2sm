@@ -62,56 +62,14 @@ class ClawTest(TestCase):
     machines = all_machines
 
 
-class CosmoTest(TestCase):
-    package_name = 'cosmo'
-    depends_on = {
-        'cuda', 'serialbox', 'libgrib1', 'cosmo-grib-api-definitions',
-        'cosmo-eccodes-definitions', 'omni-xmod-pool', 'claw', 'zlib_ng',
-        'cosmo-dycore'
+cosmo_deps = {
+    'cuda', 'serialbox', 'libgrib1', 'cosmo-grib-api-definitions',
+    'cosmo-eccodes-definitions', 'omni-xmod-pool', 'claw', 'zlib_ng',
+    'cosmo-dycore'
     }
-    machines = all_machines
-
-    def test_install_master_gpu(self):
-        # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        if machine == 'tsa':
-            self.Srun(
-                'spack installcosmo --until build cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
-            )
-            self.Run(
-                'spack installcosmo --dont-restage --test=root cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
-            )
-        else:
-            self.Srun(
-                'spack installcosmo --until build cosmo@org-master%nvhpc cosmo_target=gpu +cppdycore'
-            )
-            self.Run(
-                'spack installcosmo --dont-restage --test=root cosmo@org-master%nvhpc cosmo_target=gpu +cppdycore'
-            )
-
-    def test_install_master_cpu(self):
-        # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        if machine == 'tsa':
-            self.Srun(
-                'spack installcosmo --until build cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
-            )
-            self.Run(
-                'spack installcosmo --dont-restage --test=root cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
-            )
-        else:
-            self.Srun(
-                'spack installcosmo --until build cosmo@org-master%nvhpc cosmo_target=cpu ~cppdycore'
-            )
-            self.Run(
-                'spack installcosmo --dont-restage --test=root cosmo@org-master%nvhpc cosmo_target=cpu ~cppdycore'
-            )
-
-    # def test_install_test(self):
-    #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/289
-    #     self.Srun('spack installcosmo --test=root cosmo@master%pgi')
-
-    # def test_install_test_claw(self):
-    #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/289
-    #     self.Srun('spack installcosmo --test=root cosmo@master%pgi +claw')
+class CosmoTestDevBuild(TestCase):
+    package_name = 'cosmo'
+    depends_on = cosmo_deps
 
     def test_devbuild_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
@@ -152,6 +110,44 @@ class CosmoTest(TestCase):
         finally:
             self.Run('rm -rf cosmo')
 
+class CosmoTest(TestCase):
+    package_name = 'cosmo'
+    depends_on = cosmo_deps
+
+    def test_install_master_gpu(self):
+        # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
+        if machine == 'tsa':
+            self.Srun(
+                'spack installcosmo --until build cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
+            )
+            self.Run(
+                'spack installcosmo --dont-restage --test=root cosmo@org-master%pgi cosmo_target=gpu +cppdycore'
+            )
+        else:
+            self.Srun(
+                'spack installcosmo --until build cosmo@org-master%nvhpc cosmo_target=gpu +cppdycore'
+            )
+            self.Run(
+                'spack installcosmo --dont-restage --test=root cosmo@org-master%nvhpc cosmo_target=gpu +cppdycore'
+            )
+
+    def test_install_master_cpu(self):
+        # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
+        if machine == 'tsa':
+            self.Srun(
+                'spack installcosmo --until build cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
+            )
+            self.Run(
+                'spack installcosmo --dont-restage --test=root cosmo@org-master%pgi cosmo_target=cpu ~cppdycore'
+            )
+        else:
+            self.Srun(
+                'spack installcosmo --until build cosmo@org-master%nvhpc cosmo_target=cpu ~cppdycore'
+            )
+            self.Run(
+                'spack installcosmo --dont-restage --test=root cosmo@org-master%nvhpc cosmo_target=cpu ~cppdycore'
+            )
+
     def test_install_old_version(self):
         # So we can reproduce results from old versions.
         if machine == 'tsa':
@@ -163,9 +159,34 @@ class CosmoTest(TestCase):
             )
 
 
-class CosmoDycoreTest(TestCase):
+dycore_deps = {'gridtools', 'serialbox', 'cuda'}
+class CosmoDycoreTestDouble(TestCase):
     package_name = 'cosmo-dycore'
-    depends_on = {'gridtools', 'serialbox', 'cuda'}
+    depends_on = dycore_deps
+    machines = all_machines
+
+    def test_install_double_cpu(self):
+        # The dycore team's PR testing relies on this.
+        # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
+        self.Srun(
+            'spack install --show-log-on-error --until build cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda'
+        )
+        self.Run(
+            'spack install --show-log-on-error --dont-restage --test=root cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda'
+        )
+
+    def test_install_double_gpu(self):
+        # The dycore team's PR testing relies on this.
+        # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
+        self.Srun(
+            'spack install --show-log-on-error --until build cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
+        )
+        self.Run(
+            'spack install --show-log-on-error --dont-restage --test=root cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
+        )
+class CosmoDycoreTestFloat(TestCase):
+    package_name = 'cosmo-dycore'
+    depends_on = dycore_deps
     machines = all_machines
 
     def test_install_float_cpu(self):
@@ -186,26 +207,6 @@ class CosmoDycoreTest(TestCase):
         )
         self.Run(
             'spack install --show-log-on-error --dont-restage --test=root cosmo-dycore@master%gcc real_type=float build_type=Release +cuda'
-        )
-
-    def test_install_double_cpu(self):
-        # The dycore team's PR testing relies on this.
-        # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
-        self.Srun(
-            'spack install --show-log-on-error --until build cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda'
-        )
-        self.Run(
-            'spack install --show-log-on-error --dont-restage --test=root cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda'
-        )
-
-    def test_install_double_gpu(self):
-        # The dycore team's PR testing relies on this.
-        # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
-        self.Srun(
-            'spack install --show-log-on-error --until build cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
-        )
-        self.Run(
-            'spack install --show-log-on-error --dont-restage --test=root cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
         )
 
 
@@ -281,9 +282,11 @@ class GridToolsTest(TestCase):
     machines = all_machines
 
 
+
+icon_deps = {'serialbox', 'eccodes', 'claw'}
 class IconTest(TestCase):
     package_name = 'icon'
-    depends_on = {'serialbox', 'eccodes', 'claw'}
+    depends_on = icon_deps
     machines = all_machines
 
     def test_install_nwp_gpu_nvidia(self):
@@ -307,6 +310,11 @@ class IconTest(TestCase):
             self.Srun(
                 'spack install --show-log-on-error icon@nwp%nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean'
             )
+
+class IconTestDevBuild(TestCase):
+    package_name = 'icon'
+    depends_on = icon_deps
+    machines = all_machines
 
     def test_devbuild_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
