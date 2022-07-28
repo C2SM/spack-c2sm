@@ -342,6 +342,7 @@ class IconTest(TestCase):
         finally:
             self.Run('rm -rf icon-cscs')
 
+
 class IconTestExclaim(TestCase):
     package_name = 'icon'
     depends_on = {'serialbox', 'eccodes', 'claw'}
@@ -353,6 +354,7 @@ class IconTestExclaim(TestCase):
         self.Run(
             'spack install --show-log-on-error --dont-restage --test=root icon@exclaim-master%nvhpc icon_target=cpu +eccodes +ocean'
         )
+
     def test_install_exclaim_gpu_nvidia(self):
         self.Srun(
             'spack install --show-log-on-error --until build --test=root icon@exclaim-master%nvhpc icon_target=gpu +eccodes +ocean +claw')
