@@ -349,11 +349,15 @@ class IconTestExclaim(TestCase):
 
     def test_install_exclaim_cpu_nvidia(self):
         self.Srun(
-            'spack install --show-log-on-error --test=root icon@exclaim-master%nvhpc icon_target=cpu +eccodes +ocean'
+            'spack install --show-log-on-error --until build --test=root icon@exclaim-master%nvhpc icon_target=cpu +eccodes +ocean')
+        self.Run(
+            'spack install --show-log-on-error --dont-restage --test=root icon@exclaim-master%nvhpc icon_target=cpu +eccodes +ocean'
         )
     def test_install_exclaim_gpu_nvidia(self):
         self.Srun(
-            'spack install --show-log-on-error --test=root icon@exclaim-master%nvhpc icon_target=gpu +eccodes +ocean'
+            'spack install --show-log-on-error --until build --test=root icon@exclaim-master%nvhpc icon_target=gpu +eccodes +ocean +claw')
+        self.Run(
+            'spack install --show-log-on-error --dont-restage --test=root icon@exclaim-master%nvhpc icon_target=gpu +eccodes +ocean +claw'
         )
 
 
