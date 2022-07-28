@@ -1,0 +1,18 @@
+name: Create Pull Request
+on:
+  push:
+    branches:
+      - dom_automatic_update
+jobs:
+  create-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: pull-request
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: "master"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_label: "Automatic PR"
+          pr_title: "[Dom CI] Tests pass for COSMO, ICON, Icontools and Int2lm"

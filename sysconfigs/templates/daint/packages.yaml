@@ -55,11 +55,7 @@ packages:
   cmake:
     buildable: false
     externals:
-    - spec: cmake@3.22.1%gcc
-      modules:
-      - daint-gpu
-      - CMake/3.22.1
-    - spec: cmake@3.22.1%nvhpc
+    - spec: cmake@3.22.1
       modules:
       - daint-gpu
       - CMake/3.22.1
@@ -137,7 +133,7 @@ packages:
       modules:
       - slurm
   serialbox:
-    variants: ~examples
+    variants: ~examples +fortran ~python
   cdo:
       buildable: false
     externals:

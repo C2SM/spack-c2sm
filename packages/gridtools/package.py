@@ -52,7 +52,7 @@ class Gridtools(CMakePackage):
     variant('cuda', default=True, description='Build with cuda or target gpu')
 
     depends_on('ncurses')
-    depends_on('cmake@3.14.5:%gcc')
+    depends_on('cmake@3.14.5:')
     depends_on('boost@1.67.0:')
     depends_on('mpi', type=('build', 'link', 'run'), when='~cuda')
     depends_on('mpicuda', type=('build', 'link', 'run'), when='+cuda')
