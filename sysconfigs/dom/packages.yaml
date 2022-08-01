@@ -135,7 +135,7 @@ packages:
     externals:
     - extra_attributes:
         compilers:
-          c: /usr/bin/gcc
+          c: /usr/bin/gcc-7
           cxx: /usr/bin/g++
           fortran: /usr/bin/gfortran-7
       prefix: /usr
