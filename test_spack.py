@@ -288,11 +288,7 @@ class IconTest(TestCase):
 
     def test_install_nwp_gpu_nvidia(self):
         # So we can make sure ICON-NWP (OpenACC) devs can compile (mimicks Buildbot for Tsa)
-        if machine == 'tsa':
-            self.Srun(
-                'spack install --show-log-on-error icon@nwp%pgi icon_target=gpu +claw +eccodes +ocean'
-            )
-        else:
+        if machine != 'tsa':
             self.Srun(
                 'spack install --show-log-on-error icon@nwp%nvhpc icon_target=gpu +claw +eccodes +ocean'
             )
@@ -314,7 +310,11 @@ class IconTest(TestCase):
         self.Run('mkdir -p icon-nwp/cpu')
         self.Run('touch .dummy_file', cwd='icon-nwp/cpu')
         try:
-            if machine != 'tsa':
+            if machine == 'tsa':
+                self.Srun(
+                    'spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu',
+                    cwd='icon-nwp/cpu')
+            else:
                 self.Srun(
                     'spack dev-build -u build icon@dev-build%nvhpc config_dir=./.. icon_target=cpu',
                     cwd='icon-nwp/cpu')
