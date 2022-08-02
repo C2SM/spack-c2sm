@@ -61,10 +61,8 @@ class Icon(Package):
             values=('gpu', 'cpu'),
             multi=False)
     variant('host',
-            default='daint',
-            description='Build on described host (e.g daint)',
-            multi=False,
-            values=('tsa', 'daint'))
+            default='nothing',
+            description='Build on described host (e.g daint)')
     variant('site',
             default='cscs',
             description='Build on described site (e.g cscs)',

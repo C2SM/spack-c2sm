@@ -61,9 +61,8 @@ class Int2lm(MakefilePackage):
     variant('parallel', default=True, description='Build parallel INT2LM')
     variant('pollen', default=True, description='Build with pollen enabled')
     variant('slave',
-            default='tsa',
-            description='Build on slave tsa or daint',
-            multi=False)
+            default='nothing',
+            description='Build on slave')
     variant('verbose', default=False, description='Build with verbose enabled')
 
     conflicts(

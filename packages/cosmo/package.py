@@ -103,9 +103,8 @@ class Cosmo(MakefilePackage):
             multi=False)
     variant('claw', default=False, description='Build with claw-compiler')
     variant('slave',
-            default='tsa',
-            description='Build on slave tsa, daint or kesch',
-            multi=False)
+            default='nothing',
+            description='Build on slave')
     variant('eccodes',
             default=True,
             description='Build with eccodes instead of grib-api')

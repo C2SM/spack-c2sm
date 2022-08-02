@@ -50,9 +50,8 @@ class CosmoDycore(CMakePackage):
             values=('double', 'float'),
             multi=False)
     variant('slave',
-            default='tsa',
-            description='Build on slave tsa or daint',
-            multi=False)
+            default='nothing',
+            description='Build on slave')
     variant(
         'pmeters',
         default=False,
