@@ -134,13 +134,15 @@ In order to build a CPU icon binary from a local source
 
 .. code-block:: bash
 
-  git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git #icon-nwp, icon-aes, etc...
+  git clone --recursive git@gitlab.dkrz.de:icon/icon-nwp.git #icon-cscs, icon-aes, etc...
   # alternatively just clone and use here 'git submodule update --init --recursive'
-  cd icon-cscs #icon-nwp, icon-aes, etc...
-  mkdir pgi_cpu
-  cd pgi_cpu
-  touch a_fake_file.f90 #spack doesn't want to build in empty folder...
-  spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu # don't forget +eccodes if you want eccodes, add +skip-config to only do make
+  cd icon-nwp #icon-cscs, icon-aes, etc...
+  mkdir cpu
+  cd cpu
+  touch .dummy_file #spack doesn't want to build in empty folder...
+  spack dev-build -i -u build icon@dev-build%nvhpc config_dir=./.. icon_target=cpu # don't forget +eccodes if you want eccodes, add +skip-config to only do make
+
+On Tsa use '%pgi'!
 
 ICON GPU BUILD
 ^^^^^^^^^^^^^^^^^^^^
@@ -148,13 +150,15 @@ In order to build a GPU icon binary from a local source
 
 .. code-block:: bash
 
-  git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git #icon-nwp, icon-aes, etc...
+  git clone --recursive git@gitlab.dkrz.de:icon/icon-nwp.git #icon-cscs, icon-aes, etc...
   # alternatively just clone and use here 'git submodule update --init --recursive'
-  cd icon-cscs #icon-nwp, icon-aes, etc...
-  mkdir pgi_gpu
-  cd pgi_gpu
-  touch a_fake_file.f90 #spack doesn't want to build in empty folder...
-  spack dev-build -i -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu # don't forget +eccodes if you want eccodes, add +skip-config to only do make
+  cd icon-nwp #icon-cscs, icon-aes, etc...
+  mkdir gpu
+  cd gpu
+  touch .dummy_file #spack doesn't want to build in empty folder...
+  spack dev-build -i -u build icon@dev-build%nvhpc config_dir=./.. icon_target=gpu # don't forget +eccodes if you want eccodes, add +skip-config to only do make
+
+Not supported on Tsa.
 
 Running ICON
 ^^^^^^^^^^^^
