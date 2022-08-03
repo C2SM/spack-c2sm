@@ -35,7 +35,9 @@ class CosmoDycore(CMakePackage):
 
     #deprecated
     version('master', branch='master')
-    version('mch', git='https://github.com/MeteoSwiss-APN/cosmo.git', branch='mch')
+    version('mch',
+            git='https://github.com/MeteoSwiss-APN/cosmo.git',
+            branch='mch')
 
     variant('build_type',
             default='Release',
