@@ -178,6 +178,7 @@ packages:
     - nvhpc@21.3
     - pgi@21.3.0
     - cce@12.0.3
+    - gcc@9.3.0
     variants: host=daint
   icontools:
     compiler:

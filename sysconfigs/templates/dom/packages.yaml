@@ -30,7 +30,7 @@ packages:
     compiler: [gcc]
   icon:
     variants: host=daint
-    compiler: [nvhpc@21.3, pgi@21.3.0, cce@12.0.3]
+    compiler: [nvhpc@21.3, pgi@21.3.0, cce@12.0.3, gcc@9.3.0]
   int2lm:
     variants: slave=daint
   netcdf-c:
@@ -134,3 +134,8 @@ packages:
       - slurm
   serialbox:
     variants: ~examples +fortran ~python
+  cdo:
+    buildable: false
+    externals:
+    - prefix: /project/d56/daint/local.gcc/bin
+      spec: cdo@1.9.5
