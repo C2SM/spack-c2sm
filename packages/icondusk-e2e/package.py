@@ -14,7 +14,7 @@ class IconduskE2e(CMakePackage):
     """A library for numerical weather prediction and climate modelling"""
 
     homepage = 'https://github.com/dawn-ico/icondusk-e2e'
-    git = 'git@github.com:dawn-ico/icondusk-e2e.git'
+    git = 'https://github.com/dawn-ico/icondusk-e2e.git'
     maintainers = ['cosunae']
 
     version('master', branch='master')

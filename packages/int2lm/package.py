@@ -17,9 +17,9 @@ class Int2lm(MakefilePackage):
 
     homepage = "http://www.cosmo-model.org/content/model/"
     url = "https://github.com/MeteoSwiss-APN/int2lm/archive/refs/tags/v2.8.4.tar.gz"
-    git = 'git@github.com:MeteoSwiss-APN/int2lm.git'
-    c2smgit = 'git@github.com:C2SM-RCM/int2lm.git'
-    orggit = 'git@github.com:COSMO-ORG/int2lm.git'
+    git = 'https://github.com/MeteoSwiss-APN/int2lm.git'
+    c2smgit = 'https://github.com/C2SM-RCM/int2lm.git'
+    orggit = 'https://github.com/COSMO-ORG/int2lm.git'
 
     maintainers = ['morsier']
 

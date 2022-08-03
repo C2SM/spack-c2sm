@@ -37,9 +37,9 @@ The variety of different version-suffix for the cosmo-package:
 
 .. code-block:: python
 
-    git      = 'git@github.com:COSMO-ORG/cosmo.git'
-    apngit   = 'git@github.com:MeteoSwiss-APN/cosmo.git'
-    c2smgit  = 'git@github.com:C2SM-RCM/cosmo.git'
+    git      = 'https://github.com/COSMO-ORG/cosmo.git'
+    apngit   = 'https://github.com/MeteoSwiss-APN/cosmo.git'
+    c2smgit  = 'https://github.com/C2SM-RCM/cosmo.git'
 
     version('org-master', branch='master', get_full_repo=True)
     version('apn-mch', git=apngit, branch='mch', get_full_repo=True)
