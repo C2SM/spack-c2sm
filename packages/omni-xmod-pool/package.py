@@ -30,7 +30,7 @@ class OmniXmodPool(Package):
     homepage = "https://www.example.com"
     url = "omni-xmod-pool"
 
-    git = 'git@github.com:claw-project/omni-xmod-pool.git'
+    git = 'ssh://git@github.com:claw-project/omni-xmod-pool.git'
 
     maintainers = ['elsagermann']
 

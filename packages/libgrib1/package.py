@@ -27,7 +27,7 @@ class Libgrib1(MakefilePackage):
     """To code / decode the meteorological data to GRIB, special software is needed. While a DWD-written software, the GRIB1-library is used to work with GRIB 1 data, the new application programmers interface grib_api from ECMWF is used for dealing with GRIB 2. But grib_api can also deal with GRIB 1 data. The approach, how data is coded to / decoded from GRIB messages is rather different in these software packages. While the GRIB1-library provides interfaces to code / decode the full GRIB message in one step, the grib_api uses the so-called key/value approach, where the single meta data could be set"""
 
     homepage = "https://github.com/C2SM-RCM/libgrib1"
-    git = "git@github.com:C2SM-RCM/libgrib1.git"
+    git = "ssh://git@github.com:C2SM-RCM/libgrib1.git"
 
     # notify when the package is updated.
     maintainers = ['elsagermann']

@@ -10,7 +10,7 @@ class Gridtools(CMakePackage):
     """The GridTools framework is a set of libraries and utilities to develop performance portable applications in the area of weather and climate."""
 
     homepage = "https://github.com/GridTools/gridtools.git"
-    git = "git@github.com:GridTools/gridtools.git"
+    git = "ssh://git@github.com:GridTools/gridtools.git"
 
     maintainers = ['elsagermann']
 
