@@ -115,7 +115,7 @@ class CosmoTest(TestCase):
 
     def test_devbuild_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        self.Run('git clone git@github.com:MeteoSwiss-APN/cosmo.git')
+        self.Run('git clone ssh://git@github.com/MeteoSwiss-APN/cosmo.git')
         try:
             if machine == 'tsa':
                 self.Srun(
@@ -136,7 +136,7 @@ class CosmoTest(TestCase):
 
     def test_devbuild_gpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        self.Run('git clone git@github.com:MeteoSwiss-APN/cosmo.git')
+        self.Run('git clone ssh://git@github.com/MeteoSwiss-APN/cosmo.git')
         try:
             if machine == 'tsa':
                 self.Srun(
