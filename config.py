@@ -160,8 +160,8 @@ def main():
     config_data['config']['build_stage'] = [
         to_spack_abs_path(args.stgidir) + '/spack-stages/' + args.machine
     ]
-    config_data['config']['roots']['tcl'] = (
-        to_spack_abs_path(args.pckgidir) + '/modules/' + args.machine)
+    config_data['config']['roots']['tcl'] = (to_spack_abs_path(args.pckgidir) +
+                                             '/modules/' + args.machine)
     config_data['config']['extensions'] = [dir_path + '/tools/spack-scripting']
     yaml.safe_dump(config_data,
                    open(configfile, 'w'),
