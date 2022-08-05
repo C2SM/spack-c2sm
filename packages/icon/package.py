@@ -36,7 +36,7 @@ class Icon(Package):
     version('2.0.17', commit='39ed04ad', submodules=True)
     version('exclaim-master',
             branch='master',
-            git='git@github.com:C2SM/icon-exclaim.git',
+            git='ssh://git@github.com/C2SM/icon-exclaim.git',
             submodules=True)
 
     depends_on('cmake')

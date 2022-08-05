@@ -41,7 +41,7 @@ Notice the requirements.txt will install all python dependencies required by spa
 
 .. code-block:: bash
 
-    git clone git@github.com:C2SM/spack-c2sm.git
+    git clone ssh://git@github.com/C2SM/spack-c2sm.git
     cd spack-c2sm
     ./config.py -m <machine> -i <spack-installation-directory> -v <version> -r <repos.yaml-installation-directory> -p <spack packages, modules & stages installation-directory> -u <ON or OFF, install upstreams.yaml>
 
