@@ -389,6 +389,16 @@ class Int2lmTest(TestCase):
                 'spack install --show-log-on-error --dont-restage --test=root int2lm@c2sm-master%nvhpc'
             )
 
+    def test_install_nvhpc_features(self):
+        # c2sm-features contains some additional functionalities
+        if machine == 'daint':
+            self.Srun(
+                'spack install --show-log-on-error --until build int2lm@c2sm-features%nvhpc'
+            )
+            self.Run(
+                'spack install --show-log-on-error --dont-restage --test=root int2lm@c2sm-features%nvhpc'
+            )
+
 
 class IconDuskE2ETest(TestCase):
     package_name = 'icondusk-e2e'
