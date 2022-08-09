@@ -60,9 +60,12 @@ Then try again.
 Error: Multiple definitions of compiler
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 (Happening when having multiple compilers.yaml defining the same compiler spec)
+
 If ``spack -d install <package>@<version>%<compiler>`` ends up compiling the package
-with a different compiler then ``<compiler>`` and subsequently fails because of wrong compiler flags check
-the log. You might spot the following lines:
+with a different compiler than ``<compiler>`` and subsequently fails because of wrong compiler flags,
+have a look at the log.
+
+You might spot the following lines:
 
 .. code-block:: bash
 
@@ -87,7 +90,10 @@ the log. You might spot the following lines:
 
 The example log above indicates that two compilers.yaml files are read.
 The file ``/users/jenkins/.spack/cray/compilers.yaml`` was automatically generated using
-``spack compiler find``. This should be avoided with user Jenkins.
+``spack compiler find``. 
+
+**This should be avoided with user Jenkins.**
+
 To get rid of the problem, simply delete the offending compilers.yaml file.
 
 
