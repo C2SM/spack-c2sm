@@ -145,6 +145,8 @@ class Icon(Package):
                 env.set('CLAW', self.spec['claw'].prefix + '/bin/clawfc')
             if '+eccodes' in self.spec:
                 env.set('ECCODES_ROOT', self.spec['eccodes'].prefix)
+        if self.run_tests:
+            env.set('BB_SYSTEM','use_d56_account')
 
     def configure_args(self):
 
