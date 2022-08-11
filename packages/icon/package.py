@@ -98,7 +98,9 @@ class Icon(Package):
     variant('ocean', default=True, description='Build with ocean enabled')
     variant('dace', default=False, description='Build with DACE enabled')
     variant('rttov', default=False, description='Build with RTTOV enabled')
-    variant('mixed-precision', default=False, description='Build the ICON dycore in mixed precision')
+    variant('mixed-precision',
+            default=False,
+            description='Build the ICON dycore in mixed precision')
     variant('silent-rules',
             default=True,
             description='Build with Make silent rules ON')
