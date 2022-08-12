@@ -284,29 +284,19 @@ class GridToolsTest(TestCase):
 class IconTest(TestCase):
     package_name = 'icon'
     depends_on = {'serialbox', 'eccodes', 'claw'}
-    machines = all_machines
+    machines = {'daint'}
 
     def test_install_nwp_gpu_nvidia(self):
         # So we can make sure ICON-NWP (OpenACC) devs can compile (mimicks Buildbot for Tsa)
-        if machine == 'tsa':
-            self.Srun(
-                'spack install --show-log-on-error icon@nwp%pgi icon_target=gpu +claw +eccodes +ocean'
-            )
-        else:
-            self.Srun(
-                'spack install --show-log-on-error icon@nwp%nvhpc icon_target=gpu +claw +eccodes +ocean'
-            )
+        self.Srun(
+            'spack install --show-log-on-error icon@nwp%nvhpc icon_target=gpu +claw +eccodes +ocean'
+        )
 
     def test_install_nwp_cpu_nvidia(self):
         # So we can make sure ICON-NWP (OpenACC) devs can compile (mimicks Buildbot for Tsa)
-        if machine == 'tsa':
-            self.Srun(
-                'spack install --show-log-on-error icon@nwp%pgi icon_target=cpu serialize_mode=create +eccodes +ocean'
-            )
-        else:
-            self.Srun(
-                'spack install --show-log-on-error icon@nwp%nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean'
-            )
+        self.Srun(
+            'spack install --show-log-on-error icon@nwp%nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean'
+        )
 
     def test_devbuild_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
@@ -314,14 +304,9 @@ class IconTest(TestCase):
         self.Run('mkdir -p icon-cscs/pgi_cpu')
         self.Run('touch a_fake_file.f90', cwd='icon-cscs/pgi_cpu')
         try:
-            if machine == 'tsa':
-                self.Srun(
-                    'spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu',
-                    cwd='icon-cscs/pgi_cpu')
-            else:
-                self.Srun(
-                    'spack dev-build -u build icon@dev-build%nvhpc config_dir=./.. icon_target=cpu',
-                    cwd='icon-cscs/pgi_cpu')
+            self.Srun(
+                'spack dev-build -u build icon@dev-build%nvhpc config_dir=./.. icon_target=cpu',
+                cwd='icon-cscs/pgi_cpu')
         finally:
             self.Run('rm -rf icon-cscs')
 
@@ -331,14 +316,9 @@ class IconTest(TestCase):
         self.Run('mkdir -p icon-cscs/pgi_gpu')
         self.Run('touch a_fake_file.f90', cwd='icon-cscs/pgi_gpu')
         try:
-            if machine == 'tsa':
-                self.Srun(
-                    'spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu',
-                    cwd='icon-cscs/pgi_gpu')
-            else:
-                self.Srun(
-                    'spack dev-build -u build icon@dev-build%nvhpc config_dir=./.. icon_target=gpu',
-                    cwd='icon-cscs/pgi_gpu')
+            self.Srun(
+                'spack dev-build -u build icon@dev-build%nvhpc config_dir=./.. icon_target=gpu',
+                cwd='icon-cscs/pgi_gpu')
         finally:
             self.Run('rm -rf icon-cscs')
 
