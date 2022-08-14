@@ -98,6 +98,9 @@ class Icon(Package):
     variant('ocean', default=True, description='Build with ocean enabled')
     variant('dace', default=False, description='Build with DACE enabled')
     variant('rttov', default=False, description='Build with RTTOV enabled')
+    variant('mixed-precision',
+            default=False,
+            description='Build the ICON dycore in mixed precision')
     variant('silent-rules',
             default=True,
             description='Build with Make silent rules ON')
@@ -186,6 +189,10 @@ class Icon(Package):
         # RTTOV
         if '~rttov' in self.spec:
             args.append('--disable-rttov')
+
+        # Mixed-precision
+        if '+mixed-precision' in self.spec:
+            args.append('--enable-mixed-precision')
 
         # Silent rules
         if '~silent-rules' in self.spec:

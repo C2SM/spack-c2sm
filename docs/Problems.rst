@@ -57,6 +57,46 @@ you should remove your spack user config scope which is containing the broken ca
 
 Then try again.
 
+Error: Multiple definitions of compiler
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Happening when having multiple compilers.yaml defining the same compiler spec)
+
+If ``spack -d install <package>@<version>%<compiler>`` ends up compiling the package
+with a different compiler than ``<compiler>`` and subsequently fails because of wrong compiler flags,
+have a look at the log.
+
+You might spot the following lines:
+
+.. code-block:: bash
+
+    Reading config file /project/g110/spack/user/admin-daint/spack/etc/spack/compilers.yaml
+    Reading config file /users/jenkins/.spack/cray/compilers.yaml
+    
+    ...
+
+
+    Multiple definitions of compiler nvhpc@21.3for architecture cray-cnl7-haswell:
+     [nvhpc(cc
+         CC
+         ftn
+         ftn
+         ['PrgEnv-nvhpc', 'nvhpc/21.3']
+         cnl7), nvhpc(cc
+         CC
+         ftn
+         ftn
+         ['PrgEnv-nvidia', 'nvidia/21.3']
+         cnl7)]
+
+The example log above indicates that two compilers.yaml files are read.
+The file ``/users/jenkins/.spack/cray/compilers.yaml`` was automatically generated using
+``spack compiler find``. 
+
+**This should be avoided with user Jenkins.**
+
+To get rid of the problem, simply delete the offending compilers.yaml file.
+
+
 Delete entire Spack
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 As a last option it sometimes helps to delete all directories used by Spack.
