@@ -102,7 +102,7 @@ class Cosmo(MakefilePackage):
             values=('double', 'float'),
             multi=False)
     variant('claw', default=False, description='Build with claw-compiler')
-    variant('slave', default='nothing', description='Build on slave')
+    variant('slave', default='none', description='Build on slave')
     variant('eccodes',
             default=True,
             description='Build with eccodes instead of grib-api')

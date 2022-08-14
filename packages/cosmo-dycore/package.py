@@ -49,7 +49,7 @@ class CosmoDycore(CMakePackage):
             description='Build with double or single precision enabled',
             values=('double', 'float'),
             multi=False)
-    variant('slave', default='nothing', description='Build on slave')
+    variant('slave', default='none', description='Build on slave')
     variant(
         'pmeters',
         default=False,

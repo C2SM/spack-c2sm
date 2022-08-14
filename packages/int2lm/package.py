@@ -60,7 +60,7 @@ class Int2lm(MakefilePackage):
             description='Build with eccodes instead of grib-api')
     variant('parallel', default=True, description='Build parallel INT2LM')
     variant('pollen', default=True, description='Build with pollen enabled')
-    variant('slave', default='nothing', description='Build on slave')
+    variant('slave', default='none', description='Build on slave')
     variant('verbose', default=False, description='Build with verbose enabled')
 
     conflicts(
