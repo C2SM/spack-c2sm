@@ -28,9 +28,9 @@ class CosmoGribApiDefinitions(Package):
 
     # FIXME: Add a proper url for your package's homepage here.
     homepage = "https://github.com/elsagermann/libgrib-api-cosmo-resources.git"
-    url = "git@github.com:elsagermann/libgrib-api-cosmo-resources.git"
+    url = "ssh://git@github.com/elsagermann/libgrib-api-cosmo-resources.git"
 
-    git = 'git@github.com:elsagermann/libgrib-api-cosmo-resources.git'
+    git = 'ssh://git@github.com/elsagermann/libgrib-api-cosmo-resources.git'
     maintainers = ['elsagermann']
 
     version('1.20.0.2', commit='06f61f95ca2f5f0ddea668d82429331927ce81dc')
