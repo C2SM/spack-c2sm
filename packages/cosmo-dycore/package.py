@@ -33,12 +33,6 @@ class CosmoDycore(CMakePackage):
     set_versions(version, git, 'org')
     set_versions(version, empagit, 'empa')
 
-    #deprecated
-    version('master', branch='master')
-    version('mch',
-            git='ssh://git@github.com/MeteoSwiss-APN/cosmo.git',
-            branch='mch')
-
     variant('build_type',
             default='Release',
             description='Build type',
