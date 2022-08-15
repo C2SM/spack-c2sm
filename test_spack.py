@@ -306,7 +306,7 @@ class IconTest(TestCase):
         try:
             self.Srun(
                 'spack dev-build -u build icon@dev-build%nvhpc config_dir=./.. icon_target=cpu',
-                cwd='icon-cscs/pgi_cpu')
+                cwd='icon-nwp/pgi_cpu')
         finally:
             self.Run('rm -rf icon-nwp')
 
@@ -318,7 +318,7 @@ class IconTest(TestCase):
         try:
             self.Srun(
                 'spack dev-build -u build icon@dev-build%nvhpc config_dir=./.. icon_target=gpu',
-                cwd='icon-cscs/pgi_gpu')
+                cwd='icon-nwp/pgi_gpu')
         finally:
             self.Run('rm -rf icon-nwp')
 
