@@ -29,10 +29,6 @@ class Cosmo(MakefilePackage):
             get_full_repo=True)
     version('empa-ghg', git=empagit, branch='c2sm', get_full_repo=True)
 
-    #deprecated
-    version('master', branch='master', get_full_repo=True)
-    version('mch', git=apngit, branch='mch', get_full_repo=True)
-
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
 
