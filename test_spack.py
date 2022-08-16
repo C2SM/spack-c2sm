@@ -44,15 +44,9 @@ class TestCase(unittest.TestCase):
         return self.Run(command, cwd, parallel=True)
 
 
-class AtlasTest(TestCase):
-    package_name = 'atlas'
-    depends_on = {'ecbuild', 'eckit'}
-    machines = all_machines
-
-
 class AtlasUtilityTest(TestCase):
     package_name = 'atlas_utilities'
-    depends_on = {'atlas', 'eckit'}
+    depends_on = {}
     machines = all_machines
 
 
@@ -251,27 +245,9 @@ class DuskTest(TestCase):
     machines = all_machines
 
 
-class DyiconBenchmarksTest(TestCase):
-    package_name = 'dyicon_benchmarks'
-    depends_on = {'atlas_utilities', 'atlas', 'cuda'}
-    machines = all_machines
-
-
-class EcbuildTest(TestCase):
-    package_name = 'ecbuild'
-    depends_on = {}
-    machines = all_machines
-
-
 class EccodesTest(TestCase):
     package_name = 'eccodes'
     depends_on = {}
-    machines = all_machines
-
-
-class EckitTest(TestCase):
-    package_name = 'eckit'
-    depends_on = {'ecbuild'}
     machines = all_machines
 
 
@@ -368,12 +344,6 @@ class Int2lmTest(TestCase):
             self.Run(
                 'spack install --show-log-on-error --dont-restage --test=root int2lm@c2sm-master%nvhpc'
             )
-
-
-class IconDuskE2ETest(TestCase):
-    package_name = 'icondusk-e2e'
-    depends_on = {'atlas_utilities', 'dawn4py', 'dusk', 'atlas', 'cuda'}
-    machines = all_machines
 
 
 class IconToolsTest(TestCase):
