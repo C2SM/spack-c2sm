@@ -32,28 +32,22 @@ class Icon(Package):
             git='git@git.iac.ethz.ch:hammoz/icon-hammoz.git',
             branch='hammoz/gpu/master',
             submodules=True)
-    version('2.6.x-rc', commit='040de650', submodules=True)
-    version('2.0.17', commit='39ed04ad', submodules=True)
     version('exclaim-master',
             branch='master',
             git='git@github.com:C2SM/icon-exclaim.git',
             submodules=True)
+    version('2.6.x-rc', commit='040de650', submodules=True)
+    version('2.0.17', commit='39ed04ad', submodules=True)
 
     depends_on('cmake')
     depends_on('libxml2@2.9.8:%gcc', type=('build', 'link', 'run'))
-    depends_on('serialbox@2.6.0 ~python ~sdb ~shared',
-               when='serialize_mode=create',
-               type=('build', 'link', 'run'))
-    depends_on('serialbox@2.6.0 ~python ~sdb ~shared',
-               when='serialize_mode=read',
-               type=('build', 'link', 'run'))
-    depends_on('serialbox@2.6.0 ~python ~sdb ~shared',
-               when='serialize_mode=perturb',
-               type=('build', 'link', 'run'))
     depends_on('eccodes@2.19.0 +build_shared_libs',
                when='+eccodes',
                type=('build', 'link', 'run'))
     depends_on('claw@2.0.2', when='+claw', type=('build', 'link', 'run'))
+
+    for x in ['create', 'read', 'perturb']:
+        depends_on('serialbox@2.6.0 ~python ~sdb ~shared', type=('build', 'link', 'run'), when=f'serialize_mode={x}')
 
     variant('icon_target',
             default='gpu',
@@ -109,15 +103,12 @@ class Icon(Package):
     conflicts('icon_target=gpu', when='%intel')
     conflicts('+dace', when='+rttov')
 
-    atm_phy_echam_submodels_namelists_dir = 'externals/atm_phy_echam_submodels/namelists'
-    config_dir = '.'
     phases = ['configure', 'build', 'install']
 
     @run_before('configure')
     def generate_hammoz_nml(self):
         if '+ham' in self.spec:
-            with working_dir(self.config_dir + '/' +
-                             self.atm_phy_echam_submodels_namelists_dir):
+            with working_dir('./externals/atm_phy_echam_submodels/namelists'):
                 make()
 
     def setup_build_environment(self, env):
@@ -177,10 +168,10 @@ class Icon(Package):
             args.append('--enable-dace')
 
         # Ocean
-        if '~ocean' in self.spec:
-            args.append('--disable-ocean')
-        else:
+        if '+ocean' in self.spec:
             args.append('--enable-ocean')
+        else:
+            args.append('--disable-ocean')
 
         # Rte-rrtmgp
         if '~rte-rrtmgp' in self.spec:
@@ -202,10 +193,7 @@ class Icon(Package):
 
     def configure(self, spec, prefix):
         if '~skip-config' in spec:
-            configure = Executable(self.config_dir + '/config/' +
-                                   self.spec.variants['site'].value + '/' +
-                                   self._config_file_name + ' --prefix=' +
-                                   prefix)
+            configure = Executable(f'{self.config_dir}/config/{self.spec.variants["site"].value}/{self._config_file_name} --prefix={prefix}')
             configure(*self.configure_args())
 
     def build(self, spec, prefix):
@@ -216,7 +204,9 @@ class Icon(Package):
 
     @run_after('build')
     def test(self):
-        if self.spec.variants['test_name'].value != 'none':
+        if self.spec.variants['test_name'].value == 'none':
+            return
+            
             if '+ham' in self.spec:
                 try:
                     subprocess.run([
@@ -263,7 +253,7 @@ class Icon(Package):
                 ['cat', 'finish.status'],
                 cwd=os.path.join('experiments',
                                  self.spec.variants['test_name'].value))
-            if not 'OK' in str(test_status):
-                raise InstallError('Test failed')
-            elif 'OK' in str(test_status):
-                print('Test OK!')
+        if 'OK' in str(test_status):
+            print('Test OK!')
+        else:
+            raise InstallError('Test failed')
