@@ -83,9 +83,9 @@ class Cosmo(MakefilePackage):
         test_dep = '+dycoretest' if it[3] else '~dycoretest'
         gt1_dep = '+gt1' if it[4] else '~gt1'
 
-        orig = 'cosmo-dycore' + '%gcc@8.1.0:8.4.0 real_type=' + real_type + ' ' + prod_opt + ' ' + cuda_opt + ' ' + test_opt + ' ' + gt1_dep
-        dep = 'real_type=' + real_type + ' ' + prod_opt + ' ' + cuda_dep + ' +cppdycore' + ' ' + test_dep + ' ' + gt1_dep
-        depends_on(orig, when=dep, type='build')
+        dep = f'cosmo-dycore%gcc@8.1.0:8.4.0 real_type={real_type} {prod_opt} {cuda_opt} {test_opt} {gt1_dep}'
+        condition = f'real_type={real_type} {prod_opt} {cuda_dep} {test_dep} {gt1_dep} +cppdycore'
+        depends_on(dep, when=condition, type='build')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('dycoretest',
@@ -162,10 +162,9 @@ class Cosmo(MakefilePackage):
             default='g110',
             description='Slurm option to specify account for testing')
 
-    variant(
-        'slurm_opt_constraint',
-        default='-C',
-        description='Slurm option to specify constraints for nodes requested')
+    variant('slurm_opt_constraint',
+            default='-C',
+            description='Slurm option to specify constraints for nodes requested')
     variant('slurm_constraint',
             default='gpu',
             description='Slurm constraints for nodes requested')
