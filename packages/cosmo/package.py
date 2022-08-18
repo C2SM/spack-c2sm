@@ -162,9 +162,10 @@ class Cosmo(MakefilePackage):
             default='g110',
             description='Slurm option to specify account for testing')
 
-    variant('slurm_opt_constraint',
-            default='-C',
-            description='Slurm option to specify constraints for nodes requested')
+    variant(
+        'slurm_opt_constraint',
+        default='-C',
+        description='Slurm option to specify constraints for nodes requested')
     variant('slurm_constraint',
             default='gpu',
             description='Slurm constraints for nodes requested')

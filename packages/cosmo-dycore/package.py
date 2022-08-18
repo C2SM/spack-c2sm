@@ -137,7 +137,8 @@ class CosmoDycore(CMakePackage):
         args = []
 
         if '+gt1' in spec:
-            args.append(f'-DGridTools_DIR={spec["gridtools"].prefix}/lib/cmake')
+            args.append(
+                f'-DGridTools_DIR={spec["gridtools"].prefix}/lib/cmake')
 
         args.append(f'-DCMAKE_BUILD_TYPE={spec.variants["build_type"].value}')
         args.append(f'-DCMAKE_INSTALL_PREFIX={self.prefix}')

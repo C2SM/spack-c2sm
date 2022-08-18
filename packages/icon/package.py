@@ -47,7 +47,9 @@ class Icon(Package):
     depends_on('claw@2.0.2', when='+claw', type=('build', 'link', 'run'))
 
     for x in ['create', 'read', 'perturb']:
-        depends_on('serialbox@2.6.0 ~python ~sdb ~shared', type=('build', 'link', 'run'), when=f'serialize_mode={x}')
+        depends_on('serialbox@2.6.0 ~python ~sdb ~shared',
+                   type=('build', 'link', 'run'),
+                   when=f'serialize_mode={x}')
 
     variant('icon_target',
             default='gpu',
@@ -193,7 +195,9 @@ class Icon(Package):
 
     def configure(self, spec, prefix):
         if '~skip-config' in spec:
-            configure = Executable(f'{self.config_dir}/config/{self.spec.variants["site"].value}/{self._config_file_name} --prefix={prefix}')
+            configure = Executable(
+                f'{self.config_dir}/config/{self.spec.variants["site"].value}/{self._config_file_name} --prefix={prefix}'
+            )
             configure(*self.configure_args())
 
     def build(self, spec, prefix):
@@ -206,7 +210,7 @@ class Icon(Package):
     def test(self):
         if self.spec.variants['test_name'].value == 'none':
             return
-            
+
             if '+ham' in self.spec:
                 try:
                     subprocess.run([
