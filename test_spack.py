@@ -44,15 +44,9 @@ class TestCase(unittest.TestCase):
         return self.Run(command, cwd, parallel=True)
 
 
-class AtlasTest(TestCase):
-    package_name = 'atlas'
-    depends_on = {'ecbuild', 'eckit'}
-    machines = all_machines
-
-
 class AtlasUtilityTest(TestCase):
     package_name = 'atlas_utilities'
-    depends_on = {'atlas', 'eckit'}
+    depends_on = {}
     machines = all_machines
 
 
@@ -251,27 +245,9 @@ class DuskTest(TestCase):
     machines = all_machines
 
 
-class DyiconBenchmarksTest(TestCase):
-    package_name = 'dyicon_benchmarks'
-    depends_on = {'atlas_utilities', 'atlas', 'cuda'}
-    machines = all_machines
-
-
-class EcbuildTest(TestCase):
-    package_name = 'ecbuild'
-    depends_on = {}
-    machines = all_machines
-
-
 class EccodesTest(TestCase):
     package_name = 'eccodes'
     depends_on = {}
-    machines = all_machines
-
-
-class EckitTest(TestCase):
-    package_name = 'eckit'
-    depends_on = {'ecbuild'}
     machines = all_machines
 
 
@@ -284,29 +260,19 @@ class GridToolsTest(TestCase):
 class IconTest(TestCase):
     package_name = 'icon'
     depends_on = {'serialbox', 'eccodes', 'claw'}
-    machines = all_machines
+    machines = {'daint'}
 
     def test_install_nwp_gpu_nvidia(self):
         # So we can make sure ICON-NWP (OpenACC) devs can compile (mimicks Buildbot for Tsa)
-        if machine == 'tsa':
-            self.Srun(
-                'spack install --show-log-on-error icon@nwp%pgi icon_target=gpu +claw +eccodes +ocean'
-            )
-        else:
-            self.Srun(
-                'spack install --show-log-on-error icon@nwp%nvhpc icon_target=gpu +claw +eccodes +ocean'
-            )
+        self.Srun(
+            'spack install --show-log-on-error icon@nwp%nvhpc icon_target=gpu +claw +eccodes +ocean'
+        )
 
     def test_install_nwp_cpu_nvidia(self):
         # So we can make sure ICON-NWP (OpenACC) devs can compile (mimicks Buildbot for Tsa)
-        if machine == 'tsa':
-            self.Srun(
-                'spack install --show-log-on-error icon@nwp%pgi icon_target=cpu serialize_mode=create +eccodes +ocean'
-            )
-        else:
-            self.Srun(
-                'spack install --show-log-on-error icon@nwp%nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean'
-            )
+        self.Srun(
+            'spack install --show-log-on-error icon@nwp%nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean'
+        )
 
     def test_devbuild_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
@@ -314,14 +280,9 @@ class IconTest(TestCase):
         self.Run('mkdir -p icon-cscs/pgi_cpu')
         self.Run('touch a_fake_file.f90', cwd='icon-cscs/pgi_cpu')
         try:
-            if machine == 'tsa':
-                self.Srun(
-                    'spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=cpu',
-                    cwd='icon-cscs/pgi_cpu')
-            else:
-                self.Srun(
-                    'spack dev-build -u build icon@dev-build%nvhpc config_dir=./.. icon_target=cpu',
-                    cwd='icon-cscs/pgi_cpu')
+            self.Srun(
+                'spack dev-build -u build icon@dev-build%nvhpc config_dir=./.. icon_target=cpu',
+                cwd='icon-cscs/pgi_cpu')
         finally:
             self.Run('rm -rf icon-cscs')
 
@@ -331,14 +292,9 @@ class IconTest(TestCase):
         self.Run('mkdir -p icon-cscs/pgi_gpu')
         self.Run('touch a_fake_file.f90', cwd='icon-cscs/pgi_gpu')
         try:
-            if machine == 'tsa':
-                self.Srun(
-                    'spack dev-build -u build icon@dev-build%pgi config_dir=./.. icon_target=gpu',
-                    cwd='icon-cscs/pgi_gpu')
-            else:
-                self.Srun(
-                    'spack dev-build -u build icon@dev-build%nvhpc config_dir=./.. icon_target=gpu',
-                    cwd='icon-cscs/pgi_gpu')
+            self.Srun(
+                'spack dev-build -u build icon@dev-build%nvhpc config_dir=./.. icon_target=gpu',
+                cwd='icon-cscs/pgi_gpu')
         finally:
             self.Run('rm -rf icon-cscs')
 
@@ -410,12 +366,6 @@ class Int2lmTest(TestCase):
             self.Run(
                 'spack install --show-log-on-error --dont-restage --test=root int2lm@c2sm-master%nvhpc'
             )
-
-
-class IconDuskE2ETest(TestCase):
-    package_name = 'icondusk-e2e'
-    depends_on = {'atlas_utilities', 'dawn4py', 'dusk', 'atlas', 'cuda'}
-    machines = all_machines
 
 
 class IconToolsTest(TestCase):
