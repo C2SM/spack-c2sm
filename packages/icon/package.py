@@ -37,7 +37,7 @@ class Icon(Package):
     version('2.6.x-rc', commit='040de650', submodules=True)
     version('2.0.17', commit='39ed04ad', submodules=True)
     version('exclaim-master',
-            branch='fix_account',
+            branch='icon_nwp_0d023e9f',
             git='git@github.com:C2SM/icon-exclaim.git',
             submodules=True)
 
