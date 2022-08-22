@@ -137,13 +137,12 @@ class CosmoDycore(CMakePackage):
         args = []
 
         if '+gt1' in spec:
-            GridToolsDir = spec['gridtools'].prefix + '/lib/cmake'
-            args.append('-DGridTools_DIR={0}'.format(GridToolsDir))
+            args.append(
+                f'-DGridTools_DIR={spec["gridtools"].prefix}/lib/cmake')
 
-        args.append('-DCMAKE_BUILD_TYPE={0}'.format(
-            self.spec.variants['build_type'].value))
-        args.append('-DCMAKE_INSTALL_PREFIX={0}'.format(self.prefix))
-        args.append('-DBOOST_ROOT={0}'.format(spec['boost'].prefix))
+        args.append(f'-DCMAKE_BUILD_TYPE={spec.variants["build_type"].value}')
+        args.append(f'-DCMAKE_INSTALL_PREFIX={self.prefix}')
+        args.append(f'-DBOOST_ROOT={spec["boost"].prefix}')
         args.append('-DGT_ENABLE_BINDINGS_GENERATION=ON')
         args.append('-DCMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY=ON')
         args.append('-DBoost_USE_STATIC_LIBS=ON')
@@ -152,34 +151,29 @@ class CosmoDycore(CMakePackage):
             args.append('-DDYCORE_ENABLE_PERFORMANCE_METERS=ON')
         else:
             args.append('-DDYCORE_ENABLE_PERFORMANCE_METERS=OFF')
-        if spec.variants['real_type'].value == 'float':
-            args.append('-DPRECISION=float')
-        else:
-            args.append('-DPRECISION=double')
+        args.append(f'-DPRECISION={spec.variants["real_type"].value}')
 
         if not spec.variants['build_tests'].value:
             args.append('-DBUILD_TESTING=OFF')
         else:
             args.append('-DBUILD_TESTING=ON')
-            SerialBoxRoot = spec['serialbox'].prefix + '/cmake'
-            args.append('-DSerialbox_DIR={0}'.format(SerialBoxRoot))
-        # target=gpu
+            args.append(f'-DSerialbox_DIR={spec["serialbox"].prefix}/cmake')
+
         if '+cuda' in spec:
             args.append('-DENABLE_CUDA=ON')
             cuda_arch = spec.variants['cuda_arch'].value
             if cuda_arch is not None:
-                args.append('-DCUDA_ARCH=sm_{0}'.format(cuda_arch))
-            if '~gt1' in spec:
-                args.append('-DDYCORE_TARGET_ARCHITECTURE=gpu')
-            else:
+                args.append(f'-DCUDA_ARCH=sm_{cuda_arch}')
+            if '+gt1' in spec:
                 args.append('-DDYCORE_TARGET_ARCHITECTURE=CUDA')
-        # target=cpu
+            else:
+                args.append('-DDYCORE_TARGET_ARCHITECTURE=gpu')
         else:
             args.append('-DENABLE_CUDA=OFF')
-            if '~gt1' in spec:
-                args.append('-DDYCORE_TARGET_ARCHITECTURE=cpu_ifirst')
-            else:
+            if '+gt1' in spec:
                 args.append('-DDYCORE_TARGET_ARCHITECTURE=x86')
+            else:
+                args.append('-DDYCORE_TARGET_ARCHITECTURE=cpu_ifirst')
 
         return args
 
@@ -190,7 +184,7 @@ class CosmoDycore(CMakePackage):
             try:
                 subprocess.run([
                     './test_dycore.py', '-s',
-                    self.spec.__str__(), '-b',
+                    str(self.spec), '-b',
                     str(self.build_directory)
                 ],
                                cwd=self.root_cmakelists_dir + '/test/tools',
