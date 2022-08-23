@@ -17,24 +17,28 @@ class Icon(Package):
 
     homepage = 'https://gitlab.dkrz.de/icon/icon'
     url = 'https://gitlab.dkrz.de/icon/icon/-/archive/icon-2.6.2.2/icon-icon-2.6.2.2.tar.gz'
-    git = 'git@gitlab.dkrz.de:icon/icon.git'
+    git = 'ssh://git@gitlab.dkrz.de/icon/icon.git'
 
     maintainers = ['egermann']
 
     version('master', branch='master', submodules=True)
     version('dev-build', branch='master', submodules=True)
-    version('nwp', git='git@gitlab.dkrz.de:icon/icon-nwp.git', submodules=True)
-    version('cscs',
-            git='git@gitlab.dkrz.de:icon/icon-cscs.git',
+    version('nwp',
+            git='ssh://git@gitlab.dkrz.de/icon/icon-nwp.git',
             submodules=True)
-    version('aes', git='git@gitlab.dkrz.de:icon/icon-aes.git', submodules=True)
+    version('cscs',
+            git='ssh://git@gitlab.dkrz.de/icon/icon-cscs.git',
+            submodules=True)
+    version('aes',
+            git='ssh://git@gitlab.dkrz.de/icon/icon-aes.git',
+            submodules=True)
     version('ham',
-            git='git@git.iac.ethz.ch:hammoz/icon-hammoz.git',
+            git='ssh://git@git.iac.ethz.ch:hammoz/icon-hammoz.git',
             branch='hammoz/gpu/master',
             submodules=True)
     version('exclaim-master',
             branch='master',
-            git='git@github.com:C2SM/icon-exclaim.git',
+            git='ssh://git@github.com/C2SM/icon-exclaim.git',
             submodules=True)
     version('2.6.x-rc', commit='040de650', submodules=True)
     version('2.0.17', commit='39ed04ad', submodules=True)

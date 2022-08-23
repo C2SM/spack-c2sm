@@ -8,23 +8,23 @@ class CosmoDycore(CMakePackage):
 
     homepage = "https://github.com/COSMO-ORG/cosmo/tree/master/dycore"
 
-    git = "git@github.com:COSMO-ORG/cosmo.git"
-    apngit = "git@github.com:MeteoSwiss-APN/cosmo.git"
-    c2smgit = "git@github.com:C2SM-RCM/cosmo.git"
-    empagit = 'git@github.com:C2SM-RCM/cosmo-ghg.git'
+    git = "ssh://git@github.com/COSMO-ORG/cosmo.git"
+    apngit = "ssh://git@github.com/MeteoSwiss-APN/cosmo.git"
+    c2smgit = "ssh://git@github.com/C2SM-RCM/cosmo.git"
+    empagit = 'ssh://git@github.com/C2SM-RCM/cosmo-ghg.git'
 
     maintainers = ['elsagermann']
 
     version('org-master', branch='master')
     version('dev-build', branch='master')
     version('apn-mch',
-            git='git@github.com:MeteoSwiss-APN/cosmo.git',
+            git='ssh://git@github.com/MeteoSwiss-APN/cosmo.git',
             branch='mch')
     version('c2sm-master',
-            git='git@github.com:C2SM-RCM/cosmo.git',
+            git='ssh://git@github.com/C2SM-RCM/cosmo.git',
             branch='master')
     version('c2sm-features',
-            git='git@github.com:C2SM-RCM/cosmo.git',
+            git='ssh://git@github.com/C2SM-RCM/cosmo.git',
             branch='c2sm-features')
     version('empa-ghg', git=empagit, branch='c2sm')
 
@@ -35,7 +35,9 @@ class CosmoDycore(CMakePackage):
 
     #deprecated
     version('master', branch='master')
-    version('mch', git='git@github.com:MeteoSwiss-APN/cosmo.git', branch='mch')
+    version('mch',
+            git='ssh://git@github.com/MeteoSwiss-APN/cosmo.git',
+            branch='mch')
 
     variant('build_type',
             default='Release',
