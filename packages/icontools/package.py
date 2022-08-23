@@ -57,10 +57,8 @@ class Icontools(AutotoolsPackage):
     depends_on('jasper@1.900.1%gcc', type=('build', 'link'))
 
     variant('slave',
-            default='daint',
-            description='Build on described slave (e.g daint)',
-            multi=False,
-            values=('tsa', 'daint'))
+            default='none',
+            description='Build on described slave (e.g daint)')
     variant('slurm_account',
             default='g110',
             description=
