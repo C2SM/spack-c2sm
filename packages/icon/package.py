@@ -50,11 +50,11 @@ class Icon(Package):
     version('2.0.17', commit='39ed04ad', submodules=True)
 
     depends_on('cmake')
-    depends_on('libxml2@2.9.8:', type=('build', 'link', 'run'))
-    depends_on('eccodes@2.19.0 +build_shared_libs',
+    depends_on('libxml2')
+    depends_on('eccodes@2.19.0: +shared',
                when='+eccodes',
                type=('build', 'link', 'run'))
-    depends_on('claw@2.0.2', when='+claw', type=('build', 'link', 'run'))
+    depends_on('claw@2.0.2', when='+claw', type='build')
     depends_on('cdo')
 
     for x in ['create', 'read', 'perturb']:
