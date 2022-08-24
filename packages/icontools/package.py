@@ -38,10 +38,10 @@ class Icontools(AutotoolsPackage):
     set_versions(version, c2sm, 'c2sm')
     set_versions(version, dkrz, 'dkrz')
 
-    depends_on('autoconf%gcc', type='build')
-    depends_on('automake%gcc', type='build')
-    depends_on('libtool%gcc', type='build')
-    depends_on('m4%gcc', type='build')
+    depends_on('autoconf', type='build')
+    depends_on('automake', type='build')
+    depends_on('libtool', type='build')
+    depends_on('m4', type='build')
 
     depends_on('netcdf-fortran', type=('build', 'link'))
     depends_on('netcdf-c ~mpi', type=('build', 'link'))
@@ -54,7 +54,7 @@ class Icontools(AutotoolsPackage):
     depends_on('cosmo-grib-api',
                type=('build', 'link', 'run'),
                when='~eccodes')
-    depends_on('jasper@1.900.1%gcc', type=('build', 'link'))
+    depends_on('jasper@1.900.1', type=('build', 'link'))
 
     variant('slave',
             default='none',

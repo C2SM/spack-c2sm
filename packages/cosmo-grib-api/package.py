@@ -21,10 +21,10 @@ class CosmoGribApi(AutotoolsPackage):
     version('1.13.1', commit='d3deb226c90177a586e4b7181451944f5f47d243')
 
     depends_on('m4')
-    depends_on('autoconf%gcc')
-    depends_on('automake%gcc')
-    depends_on('libtool%gcc')
-    depends_on('jasper@1.900.1%gcc')
+    depends_on('autoconf')
+    depends_on('automake')
+    depends_on('libtool')
+    depends_on('jasper@1.900.1')
 
     force_autoreconf = True
 

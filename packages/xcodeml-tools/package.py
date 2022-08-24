@@ -44,10 +44,10 @@ class XcodemlTools(AutotoolsPackage):
     depends_on('autoconf@2.69:')
     depends_on('m4')
     depends_on('automake')
-    depends_on('libxml2%gcc')
+    depends_on('libxml2')
     depends_on('java@8:')
-    depends_on('bison%gcc')
-    depends_on('flex%gcc')
+    depends_on('bison')
+    depends_on('flex')
     depends_on('libtool')
 
     def configure_args(self):
