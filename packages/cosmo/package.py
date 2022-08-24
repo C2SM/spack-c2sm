@@ -43,10 +43,8 @@ class Cosmo(MakefilePackage):
                when='cosmo_target=gpu',
                type=('build', 'link', 'run'))
     depends_on('serialbox', when='+serialize', type='build')
-    depends_on('mpicuda',
-               type=('build', 'link', 'run'),
-               when='cosmo_target=gpu')
     depends_on('mpi', type=('build', 'link', 'run'), when='cosmo_target=cpu')
+    depends_on('mpi +cuda', type=('build', 'link', 'run'), when='cosmo_target=gpu')
     depends_on('libgrib1', type='build')
     depends_on('jasper@1.900.1%gcc', type=('build', 'link'))
     depends_on('cosmo-grib-api-definitions',
@@ -207,11 +205,8 @@ class Cosmo(MakefilePackage):
 
         self.setup_run_environment(env)
 
-        # Check mpi provider (mpicuda or mpi)
-        if 'cosmo_target=gpu' in self.spec:
-            self.mpi_spec = self.spec['mpicuda']
-        else:
-            self.mpi_spec = self.spec['mpi']
+        # Check mpi provider
+        self.mpi_spec = self.spec['mpi']
 
         # Grib-api. eccodes library
         if '~eccodes' in self.spec:
