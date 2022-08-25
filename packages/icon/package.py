@@ -213,52 +213,52 @@ class Icon(Package):
         if self.spec.variants['test_name'].value == 'none':
             return
 
-            if '+ham' in self.spec:
-                try:
-                    subprocess.run([
-                        'indata_hammoz_root=/store/c2sm/c2sme/input_gcm/icon/input_hammoz/ ./make_runscripts -s '
-                        + self.spec.variants['test_name'].value
-                    ],
-                                   shell=True,
-                                   stderr=subprocess.STDOUT,
-                                   check=True)
-                except:
-                    raise InstallError('make runscripts failed')
-            else:
-                try:
-                    subprocess.run([
-                        './make_runscripts', '-s',
-                        self.spec.variants['test_name'].value
-                    ],
-                                   stderr=subprocess.STDOUT,
-                                   check=True)
-                except:
-                    raise InstallError('make runscripts failed')
+        if '+ham' in self.spec:
             try:
-                if self.spec.variants['host'].value == 'daint':
-                    subprocess.run([
-                        'sbatch', '-W', '--time=00:15:00', '-A', 'g110', '-C',
-                        'gpu', '-p', 'debug',
-                        'exp.' + self.spec.variants['test_name'].value + '.run'
-                    ],
-                                   stderr=subprocess.STDOUT,
-                                   cwd='run',
-                                   check=True)
-                if self.spec.variants['host'].value == 'tsa':
-                    subprocess.run([
-                        'sbatch', '-W', '--time=00:15:00', '-p', 'dev',
-                        'exp.' + self.spec.variants['test_name'].value + '.run'
-                    ],
-                                   stderr=subprocess.STDOUT,
-                                   cwd='run',
-                                   check=True)
+                subprocess.run([
+                    'indata_hammoz_root=/store/c2sm/c2sme/input_gcm/icon/input_hammoz/ ./make_runscripts -s '
+                    + self.spec.variants['test_name'].value
+                ],
+                               shell=True,
+                               stderr=subprocess.STDOUT,
+                               check=True)
             except:
-                raise InstallError('Submitting test failed')
+                raise InstallError('make runscripts failed')
+        else:
+            try:
+                subprocess.run([
+                    './make_runscripts', '-s',
+                    self.spec.variants['test_name'].value
+                ],
+                               stderr=subprocess.STDOUT,
+                               check=True)
+            except:
+                raise InstallError('make runscripts failed')
+        try:
+            if self.spec.variants['host'].value == 'daint':
+                subprocess.run([
+                    'sbatch', '-W', '--time=00:15:00', '-A', 'g110', '-C',
+                    'gpu', '-p', 'debug',
+                    'exp.' + self.spec.variants['test_name'].value + '.run'
+                ],
+                               stderr=subprocess.STDOUT,
+                               cwd='run',
+                               check=True)
+            if self.spec.variants['host'].value == 'tsa':
+                subprocess.run([
+                    'sbatch', '-W', '--time=00:15:00', '-p', 'dev',
+                    'exp.' + self.spec.variants['test_name'].value + '.run'
+                ],
+                               stderr=subprocess.STDOUT,
+                               cwd='run',
+                               check=True)
+        except:
+            raise InstallError('Submitting test failed')
 
-            test_status = subprocess.check_output(
-                ['cat', 'finish.status'],
-                cwd=os.path.join('experiments',
-                                 self.spec.variants['test_name'].value))
+        test_status = subprocess.check_output(
+            ['cat', 'finish.status'],
+            cwd=os.path.join('experiments',
+                             self.spec.variants['test_name'].value))
         if 'OK' in str(test_status):
             print('Test OK!')
         else:
