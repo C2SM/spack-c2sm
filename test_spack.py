@@ -109,7 +109,7 @@ class CosmoTest(TestCase):
 
     def test_devbuild_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        self.Run('git clone git@github.com:MeteoSwiss-APN/cosmo.git')
+        self.Run('git clone ssh://git@github.com/MeteoSwiss-APN/cosmo.git')
         try:
             if machine == 'tsa':
                 self.Srun(
@@ -130,7 +130,7 @@ class CosmoTest(TestCase):
 
     def test_devbuild_gpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        self.Run('git clone git@github.com:MeteoSwiss-APN/cosmo.git')
+        self.Run('git clone ssh://git@github.com/MeteoSwiss-APN/cosmo.git')
         try:
             if machine == 'tsa':
                 self.Srun(
@@ -276,7 +276,9 @@ class IconTest(TestCase):
 
     def test_devbuild_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        self.Run('git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git')
+        self.Run(
+            'git clone --recursive ssh://git@gitlab.dkrz.de/icon/icon-cscs.git'
+        )
         self.Run('mkdir -p icon-cscs/pgi_cpu')
         self.Run('touch a_fake_file.f90', cwd='icon-cscs/pgi_cpu')
         try:
@@ -288,7 +290,9 @@ class IconTest(TestCase):
 
     def test_devbuild_gpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        self.Run('git clone --recursive git@gitlab.dkrz.de:icon/icon-cscs.git')
+        self.Run(
+            'git clone --recursive ssh://git@gitlab.dkrz.de/icon/icon-cscs.git'
+        )
         self.Run('mkdir -p icon-cscs/pgi_gpu')
         self.Run('touch a_fake_file.f90', cwd='icon-cscs/pgi_gpu')
         try:

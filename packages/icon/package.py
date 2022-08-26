@@ -19,44 +19,44 @@ class Icon(Package):
 
     homepage = 'https://gitlab.dkrz.de/icon/icon'
     url = 'https://gitlab.dkrz.de/icon/icon/-/archive/icon-2.6.2.2/icon-icon-2.6.2.2.tar.gz'
-    git = 'git@gitlab.dkrz.de:icon/icon.git'
+    git = 'ssh://git@gitlab.dkrz.de/icon/icon.git'
 
     maintainers = ['egermann']
 
     version('master', branch='master', submodules=True)
     version('dev-build', branch='master', submodules=True)
-    version('nwp', git='git@gitlab.dkrz.de:icon/icon-nwp.git', submodules=True)
-    version('cscs',
-            git='git@gitlab.dkrz.de:icon/icon-cscs.git',
+    version('nwp',
+            git='ssh://git@gitlab.dkrz.de/icon/icon-nwp.git',
             submodules=True)
-    version('aes', git='git@gitlab.dkrz.de:icon/icon-aes.git', submodules=True)
+    version('cscs',
+            git='ssh://git@gitlab.dkrz.de/icon/icon-cscs.git',
+            submodules=True)
+    version('aes',
+            git='ssh://git@gitlab.dkrz.de/icon/icon-aes.git',
+            submodules=True)
     version('ham',
-            git='git@git.iac.ethz.ch:hammoz/icon-hammoz.git',
+            git='ssh://git@git.iac.ethz.ch:hammoz/icon-hammoz.git',
             branch='hammoz/gpu/master',
+            submodules=True)
+    version('exclaim-master',
+            branch='master',
+            git='ssh://git@github.com/C2SM/icon-exclaim.git',
             submodules=True)
     version('2.6.x-rc', commit='040de650', submodules=True)
     version('2.0.17', commit='39ed04ad', submodules=True)
-    version('exclaim-master',
-            branch='master',
-            git='git@github.com:C2SM/icon-exclaim.git',
-            submodules=True)
 
     depends_on('cmake')
     depends_on('libxml2@2.9.8:%gcc', type=('build', 'link', 'run'))
-    depends_on('serialbox@2.6.0 ~python ~sdb ~shared',
-               when='serialize_mode=create',
-               type=('build', 'link', 'run'))
-    depends_on('serialbox@2.6.0 ~python ~sdb ~shared',
-               when='serialize_mode=read',
-               type=('build', 'link', 'run'))
-    depends_on('serialbox@2.6.0 ~python ~sdb ~shared',
-               when='serialize_mode=perturb',
-               type=('build', 'link', 'run'))
     depends_on('eccodes@2.19.0 +build_shared_libs',
                when='+eccodes',
                type=('build', 'link', 'run'))
     depends_on('claw@2.0.2', when='+claw', type=('build', 'link', 'run'))
     depends_on('cdo')
+
+    for x in ['create', 'read', 'perturb']:
+        depends_on('serialbox@2.6.0 ~python ~sdb ~shared',
+                   type=('build', 'link', 'run'),
+                   when=f'serialize_mode={x}')
 
     variant('icon_target',
             default='gpu',
@@ -64,10 +64,8 @@ class Icon(Package):
             values=('gpu', 'cpu'),
             multi=False)
     variant('host',
-            default='daint',
-            description='Build on described host (e.g daint)',
-            multi=False,
-            values=('tsa', 'daint'))
+            default='none',
+            description='Build on described host (e.g daint)')
     variant('site',
             default='cscs',
             description='Build on described site (e.g cscs)',
@@ -115,15 +113,12 @@ class Icon(Package):
     conflicts('icon_target=gpu', when='%intel')
     conflicts('+dace', when='+rttov')
 
-    atm_phy_echam_submodels_namelists_dir = 'externals/atm_phy_echam_submodels/namelists'
-    config_dir = '.'
     phases = ['configure', 'build', 'install']
 
     @run_before('configure')
     def generate_hammoz_nml(self):
         if '+ham' in self.spec:
-            with working_dir(self.config_dir + '/' +
-                             self.atm_phy_echam_submodels_namelists_dir):
+            with working_dir('./externals/atm_phy_echam_submodels/namelists'):
                 make()
 
     def setup_build_environment(self, env):
@@ -188,10 +183,10 @@ class Icon(Package):
             args.append('--enable-dace')
 
         # Ocean
-        if '~ocean' in self.spec:
-            args.append('--disable-ocean')
-        else:
+        if '+ocean' in self.spec:
             args.append('--enable-ocean')
+        else:
+            args.append('--disable-ocean')
 
         # Rte-rrtmgp
         if '~rte-rrtmgp' in self.spec:
@@ -213,10 +208,9 @@ class Icon(Package):
 
     def configure(self, spec, prefix):
         if '~skip-config' in spec:
-            configure = Executable(self.config_dir + '/config/' +
-                                   self.spec.variants['site'].value + '/' +
-                                   self._config_file_name + ' --prefix=' +
-                                   prefix)
+            configure = Executable(
+                f'{self.config_dir}/config/{self.spec.variants["site"].value}/{self._config_file_name} --prefix={prefix}'
+            )
             configure(*self.configure_args())
 
     def build(self, spec, prefix):
@@ -241,55 +235,56 @@ class Icon(Package):
 
     @run_after('build')
     def test(self):
+        if self.spec.variants['test_name'].value == 'none':
+            return
 
-        if self.spec.variants['test_name'].value != 'none':
-            if '+ham' in self.spec:
-                try:
-                    subprocess.run([
-                        'indata_hammoz_root=/store/c2sm/c2sme/input_gcm/icon/input_hammoz/ ./make_runscripts -s '
-                        + self.spec.variants['test_name'].value
-                    ],
-                                   shell=True,
-                                   stderr=subprocess.STDOUT,
-                                   check=True)
-                except:
-                    raise InstallError('make runscripts failed')
-            else:
-                try:
-                    subprocess.run([
-                        './make_runscripts', '-s',
-                        self.spec.variants['test_name'].value
-                    ],
-                                   stderr=subprocess.STDOUT,
-                                   check=True)
-                except:
-                    raise InstallError('make runscripts failed')
+        if '+ham' in self.spec:
             try:
-                if self.spec.variants['host'].value == 'daint':
-                    subprocess.run([
-                        'sbatch', '-W', '--time=00:15:00', '-A', 'g110', '-C',
-                        'gpu', '-p', 'debug',
-                        'exp.' + self.spec.variants['test_name'].value + '.run'
-                    ],
-                                   stderr=subprocess.STDOUT,
-                                   cwd='run',
-                                   check=True)
-                if self.spec.variants['host'].value == 'tsa':
-                    subprocess.run([
-                        'sbatch', '-W', '--time=00:15:00', '-p', 'dev',
-                        'exp.' + self.spec.variants['test_name'].value + '.run'
-                    ],
-                                   stderr=subprocess.STDOUT,
-                                   cwd='run',
-                                   check=True)
+                subprocess.run([
+                    'indata_hammoz_root=/store/c2sm/c2sme/input_gcm/icon/input_hammoz/ ./make_runscripts -s '
+                    + self.spec.variants['test_name'].value
+                ],
+                               shell=True,
+                               stderr=subprocess.STDOUT,
+                               check=True)
             except:
-                raise InstallError('Submitting test failed')
+                raise InstallError('make runscripts failed')
+        else:
+            try:
+                subprocess.run([
+                    './make_runscripts', '-s',
+                    self.spec.variants['test_name'].value
+                ],
+                               stderr=subprocess.STDOUT,
+                               check=True)
+            except:
+                raise InstallError('make runscripts failed')
+        try:
+            if self.spec.variants['host'].value == 'daint':
+                subprocess.run([
+                    'sbatch', '-W', '--time=00:15:00', '-A', 'g110', '-C',
+                    'gpu', '-p', 'debug',
+                    'exp.' + self.spec.variants['test_name'].value + '.run'
+                ],
+                               stderr=subprocess.STDOUT,
+                               cwd='run',
+                               check=True)
+            if self.spec.variants['host'].value == 'tsa':
+                subprocess.run([
+                    'sbatch', '-W', '--time=00:15:00', '-p', 'dev',
+                    'exp.' + self.spec.variants['test_name'].value + '.run'
+                ],
+                               stderr=subprocess.STDOUT,
+                               cwd='run',
+                               check=True)
+        except:
+            raise InstallError('Submitting test failed')
 
-            test_status = subprocess.check_output(
-                ['cat', 'finish.status'],
-                cwd=os.path.join('experiments',
-                                 self.spec.variants['test_name'].value))
-            if not 'OK' in str(test_status):
-                raise InstallError('Test failed')
-            elif 'OK' in str(test_status):
-                tty.info('Test OK!')
+        test_status = subprocess.check_output(
+            ['cat', 'finish.status'],
+            cwd=os.path.join('experiments',
+                             self.spec.variants['test_name'].value))
+        if 'OK' in str(test_status):
+            print('Test OK!')
+        else:
+            raise InstallError('Test failed')
