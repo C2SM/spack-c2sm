@@ -15,12 +15,10 @@ packages:
   bash:
     externals:
     - spec: bash@4.4.23
-      prefix: /usr/local
+      prefix: /usr
   binutils:
     externals:
-    - spec: binutils@2.37
-      prefix: /apps/manali/UES/jenkins/MCH-PE20.08-UP01/NVHPC/22.3/easybuild/software/binutils/2.37-GCCcore-11.2.0
-    - spec: binutils@2.35.1
+    - spec: binutils@2.37.20211103
       prefix: /usr
   bison:
     externals:
@@ -28,8 +26,6 @@ packages:
       prefix: /usr
   bzip2:
     externals:
-    - spec: bzip2@1.0.8
-      prefix: /apps/manali/UES/jenkins/MCH-PE20.08-UP01/generic/easybuild/software/bzip2/1.0.8
     - spec: bzip2@1.0.6
       prefix: /usr
   cmake:
@@ -44,8 +40,8 @@ packages:
       prefix: /usr
   cuda:
     externals:
-    - spec: cuda@11.6.124
-      prefix: /apps/manali/UES/jenkins/MCH-PE20.08-UP01/NVHPC/22.3/easybuild/software/CUDA/11.6.2
+    - spec: cuda@11.7.64
+      prefix: /user-environment/linux-sles15-zen3/gcc-11.3.0/nvhpc-22.7-n6kvdhyr5cuikivsw2ujf3hg34yh4okw/Linux_x86_64/22.7/compilers
   curl:
     externals:
     - spec: curl@7.66.0+gssapi+ldap+nghttp2
@@ -60,7 +56,7 @@ packages:
       prefix: /usr
   findutils:
     externals:
-    - spec: findutils@4.6.0
+    - spec: findutils@4.8.0
       prefix: /usr
   flex:
     externals:
@@ -72,13 +68,6 @@ packages:
       prefix: /usr
   gcc:
     externals:
-    - spec: gcc@11.2.0 languages=c,c++,fortran
-      prefix: /apps/manali/UES/jenkins/MCH-PE20.08-UP01/NVHPC/22.3/easybuild/software/GCCcore/11.2.0
-      extra_attributes:
-        compilers:
-          c: /apps/manali/UES/jenkins/MCH-PE20.08-UP01/NVHPC/22.3/easybuild/software/GCCcore/11.2.0/bin/x86_64-pc-linux-gnu-accel-nvptx-none-gcc
-          cxx: /apps/manali/UES/jenkins/MCH-PE20.08-UP01/NVHPC/22.3/easybuild/software/GCCcore/11.2.0/bin/x86_64-pc-linux-gnu-g++
-          fortran: /apps/manali/UES/jenkins/MCH-PE20.08-UP01/NVHPC/22.3/easybuild/software/GCCcore/11.2.0/bin/gfortran
     - spec: gcc@7.5.0 languages=c,c++,fortran
       prefix: /usr
       extra_attributes:
@@ -88,7 +77,7 @@ packages:
           fortran: /usr/bin/gfortran-7
   gettext:
     externals:
-    - spec: gettext@0.19.8.1
+    - spec: gettext@0.20.2
       prefix: /usr
   ghostscript:
     externals:
@@ -96,7 +85,7 @@ packages:
       prefix: /usr
   git:
     externals:
-    - spec: git@2.26.2~tcltk
+    - spec: git@2.34.1~tcltk
       prefix: /usr
   gmake:
     externals:
@@ -105,6 +94,14 @@ packages:
   groff:
     externals:
     - spec: groff@1.22.3
+      prefix: /usr
+  hwloc:
+    externals:
+    - spec: hwloc@2.6.0a1
+      prefix: /usr
+  openjdk:
+    externals:
+    - spec: openjdk@11.0.14_9-suse-3.74.2-x8664
       prefix: /usr
   libfuse:
     externals:
@@ -118,7 +115,7 @@ packages:
       prefix: /usr
   lustre:
     externals:
-    - spec: lustre@2.12.4.4_cray_63_g22dbafd
+    - spec: lustre@2.15.0.2_rc2_cray_113_g62287d0
       prefix: /usr
   m4:
     externals:
@@ -126,29 +123,16 @@ packages:
       prefix: /usr
   ncurses:
     externals:
-    - spec: ncurses@6.1.20180127 abi=6
-      prefix: /apps/manali/UES/jenkins/MCH-PE20.08-UP01/generic/easybuild/software/ncurses/6.1
     - spec: ncurses@6.1.20180317+termlib abi=6
       prefix: /usr
-  netcdf-c:
-    externals:
-    - spec: netcdf-c@4.7.0%nvhpc@22.3+mpi
-      modules:
-      - netcdf/4.7.4-nvhpc-22.3
   netcdf-fortran:
     externals:
-    - spec: netcdf-fortran@4.4.5%nvhpc@22.3
+    - spec: netcdf-fortran@4.5.4%nvhpc@22.7
       modules:
-      - netcdf/4.4.5-nvhpc-22.3
-  openmpi:
-    externals:
-    - spec: openmpi@4.1.3%nvhpc@22.3+cuda+cxx~cxx_exceptions~java~memchecker+pmi+pmix~sqlite3+static~thread_multiple~wrapper-rpath
-        fabrics=ucx schedulers=slurm
-      modules:
-      - openmpi/4.1.3-nvhpc-22.3
+      - netcdf-fortran/4.5.4-nvhpc-22.7-c7b5rgc
   openssh:
     externals:
-    - spec: openssh@8.1p1
+    - spec: openssh@8.4p1
       prefix: /usr
   openssl:
     externals:
@@ -172,7 +156,7 @@ packages:
       prefix: /usr
   slurm:
     externals:
-    - spec: slurm@20.11.8
+    - spec: slurm@20.11.9
       prefix: /usr
   tar:
     externals:
