@@ -31,6 +31,7 @@ class Int2lm(MakefilePackage):
 
     # C2SM tags
     version('c2sm-master', git=c2smgit, branch='master')
+    version('c2sm-features', git=c2smgit, branch='c2sm-features')
     set_versions(version, c2smgit, 'c2sm')
 
     # ORG tags
