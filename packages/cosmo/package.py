@@ -13,10 +13,10 @@ class Cosmo(MakefilePackage):
 
     homepage = "http://www.cosmo-model.org"
     url = "https://github.com/MeteoSwiss-APN/cosmo/archive/5.07.mch1.0.p5.tar.gz"
-    git = 'git@github.com:COSMO-ORG/cosmo.git'
-    apngit = 'git@github.com:MeteoSwiss-APN/cosmo.git'
-    c2smgit = 'git@github.com:C2SM-RCM/cosmo.git'
-    empagit = 'git@github.com:C2SM-RCM/cosmo-ghg.git'
+    git = 'ssh://git@github.com/COSMO-ORG/cosmo.git'
+    apngit = 'ssh://git@github.com/MeteoSwiss-APN/cosmo.git'
+    c2smgit = 'ssh://git@github.com/C2SM-RCM/cosmo.git'
+    empagit = 'ssh://git@github.com/C2SM-RCM/cosmo-ghg.git'
     maintainers = ['elsagermann']
 
     version('org-master', branch='master', get_full_repo=True)
@@ -83,9 +83,9 @@ class Cosmo(MakefilePackage):
         test_dep = '+dycoretest' if it[3] else '~dycoretest'
         gt1_dep = '+gt1' if it[4] else '~gt1'
 
-        orig = 'cosmo-dycore' + '%gcc@8.1.0:8.4.0 real_type=' + real_type + ' ' + prod_opt + ' ' + cuda_opt + ' ' + test_opt + ' ' + gt1_dep
-        dep = 'real_type=' + real_type + ' ' + prod_opt + ' ' + cuda_dep + ' +cppdycore' + ' ' + test_dep + ' ' + gt1_dep
-        depends_on(orig, when=dep, type='build')
+        dep = f'cosmo-dycore%gcc@8.1.0:8.4.0 real_type={real_type} {prod_opt} {cuda_opt} {test_opt} {gt1_dep}'
+        condition = f'real_type={real_type} {prod_opt} {cuda_dep} {test_dep} {gt1_dep} +cppdycore'
+        depends_on(dep, when=condition, type='build')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('dycoretest',
@@ -102,10 +102,7 @@ class Cosmo(MakefilePackage):
             values=('double', 'float'),
             multi=False)
     variant('claw', default=False, description='Build with claw-compiler')
-    variant('slave',
-            default='tsa',
-            description='Build on slave tsa, daint or kesch',
-            multi=False)
+    variant('slave', default='none', description='Build on slave')
     variant('eccodes',
             default=True,
             description='Build with eccodes instead of grib-api')

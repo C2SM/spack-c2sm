@@ -17,9 +17,9 @@ class Int2lm(MakefilePackage):
 
     homepage = "http://www.cosmo-model.org/content/model/"
     url = "https://github.com/MeteoSwiss-APN/int2lm/archive/refs/tags/v2.8.4.tar.gz"
-    git = 'git@github.com:MeteoSwiss-APN/int2lm.git'
-    c2smgit = 'git@github.com:C2SM-RCM/int2lm.git'
-    orggit = 'git@github.com:COSMO-ORG/int2lm.git'
+    git = 'ssh://git@github.com/MeteoSwiss-APN/int2lm.git'
+    c2smgit = 'ssh://git@github.com/C2SM-RCM/int2lm.git'
+    orggit = 'ssh://git@github.com/COSMO-ORG/int2lm.git'
 
     maintainers = ['morsier']
 
@@ -31,6 +31,7 @@ class Int2lm(MakefilePackage):
 
     # C2SM tags
     version('c2sm-master', git=c2smgit, branch='master')
+    version('c2sm-features', git=c2smgit, branch='c2sm-features')
     set_versions(version, c2smgit, 'c2sm')
 
     # ORG tags
@@ -60,10 +61,7 @@ class Int2lm(MakefilePackage):
             description='Build with eccodes instead of grib-api')
     variant('parallel', default=True, description='Build parallel INT2LM')
     variant('pollen', default=True, description='Build with pollen enabled')
-    variant('slave',
-            default='tsa',
-            description='Build on slave tsa or daint',
-            multi=False)
+    variant('slave', default='none', description='Build on slave')
     variant('verbose', default=False, description='Build with verbose enabled')
 
     conflicts(

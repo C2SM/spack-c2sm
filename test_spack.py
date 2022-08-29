@@ -44,15 +44,9 @@ class TestCase(unittest.TestCase):
         return self.Run(command, cwd, parallel=True)
 
 
-class AtlasTest(TestCase):
-    package_name = 'atlas'
-    depends_on = {'ecbuild', 'eckit'}
-    machines = all_machines
-
-
 class AtlasUtilityTest(TestCase):
     package_name = 'atlas_utilities'
-    depends_on = {'atlas', 'eckit'}
+    depends_on = {}
     machines = all_machines
 
 
@@ -115,7 +109,7 @@ class CosmoTest(TestCase):
 
     def test_devbuild_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        self.Run('git clone git@github.com:MeteoSwiss-APN/cosmo.git')
+        self.Run('git clone ssh://git@github.com/MeteoSwiss-APN/cosmo.git')
         try:
             if machine == 'tsa':
                 self.Srun(
@@ -136,7 +130,7 @@ class CosmoTest(TestCase):
 
     def test_devbuild_gpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        self.Run('git clone git@github.com:MeteoSwiss-APN/cosmo.git')
+        self.Run('git clone ssh://git@github.com/MeteoSwiss-APN/cosmo.git')
         try:
             if machine == 'tsa':
                 self.Srun(
@@ -251,27 +245,9 @@ class DuskTest(TestCase):
     machines = all_machines
 
 
-class DyiconBenchmarksTest(TestCase):
-    package_name = 'dyicon_benchmarks'
-    depends_on = {'atlas_utilities', 'atlas', 'cuda'}
-    machines = all_machines
-
-
-class EcbuildTest(TestCase):
-    package_name = 'ecbuild'
-    depends_on = {}
-    machines = all_machines
-
-
 class EccodesTest(TestCase):
     package_name = 'eccodes'
     depends_on = {}
-    machines = all_machines
-
-
-class EckitTest(TestCase):
-    package_name = 'eckit'
-    depends_on = {'ecbuild'}
     machines = all_machines
 
 
@@ -300,7 +276,7 @@ class IconTest(TestCase):
 
     def test_devbuild_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        self.Run('git clone --recursive git@gitlab.dkrz.de:icon/icon-nwp.git')
+        self.Run('git clone --recursive ssh://git@gitlab.dkrz.de/icon/icon-nwp.git')
         self.Run('mkdir -p icon-nwp/cpu')
         self.Run('touch .dummy_file', cwd='icon-nwp/cpu')
         try:
@@ -312,7 +288,7 @@ class IconTest(TestCase):
 
     def test_devbuild_gpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        self.Run('git clone --recursive git@gitlab.dkrz.de:icon/icon-nwp.git')
+        self.Run('git clone --recursive ssh://git@gitlab.dkrz.de/icon/icon-nwp.git')
         self.Run('mkdir -p icon-nwp/gpu')
         self.Run('touch .dummy_file', cwd='icon-nwp/gpu')
         try:
@@ -369,11 +345,15 @@ class Int2lmTest(TestCase):
                 'spack install --show-log-on-error --dont-restage --test=root int2lm@c2sm-master%nvhpc'
             )
 
-
-class IconDuskE2ETest(TestCase):
-    package_name = 'icondusk-e2e'
-    depends_on = {'atlas_utilities', 'dawn4py', 'dusk', 'atlas', 'cuda'}
-    machines = all_machines
+    def test_install_nvhpc_features(self):
+        # c2sm-features contains some additional functionalities
+        if machine == 'daint':
+            self.Srun(
+                'spack install --show-log-on-error --until build int2lm@c2sm-features%nvhpc'
+            )
+            self.Run(
+                'spack install --show-log-on-error --dont-restage --test=root int2lm@c2sm-features%nvhpc'
+            )
 
 
 class IconToolsTest(TestCase):
