@@ -153,8 +153,3 @@ packages:
     externals:
     - spec: llvm@10.0.0
       prefix: /project/g110/install/tsa/llvm-10
-  cdo:
-    buildable: false
-    externals:
-    - spec: cdo@1.9.7.1
-      prefix: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2/easybuild/software/CDO/1.9.7.1-fosscuda-2019b/bin
