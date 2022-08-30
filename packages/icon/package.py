@@ -105,9 +105,6 @@ class Icon(Package):
     variant('silent-rules',
             default=True,
             description='Build with Make silent rules ON')
-    variant('use-standard-account',
-            default=False,
-            description='Perform tests with user\'s standard account')
 
     conflicts('icon_target=cpu', when='+claw')
     conflicts('icon_target=gpu', when='%intel')
@@ -147,9 +144,7 @@ class Icon(Package):
             if '+eccodes' in self.spec:
                 env.set('ECCODES_ROOT', self.spec['eccodes'].prefix)
         if self.run_tests:
-            if '+use-standard-account' in self.spec:
-                env.set('BB_SYSTEM', '')
-            else:
+                # setting BB_SYSTEM sets d56 as account in file create_target_header
                 env.set('BB_SYSTEM', 'use_d56_account')
 
     def configure_args(self):
