@@ -144,8 +144,8 @@ class Icon(Package):
             if '+eccodes' in self.spec:
                 env.set('ECCODES_ROOT', self.spec['eccodes'].prefix)
         if self.run_tests:
-                # setting BB_SYSTEM sets d56 as account in file create_target_header
-                env.set('BB_SYSTEM', 'use_d56_account')
+            # setting BB_SYSTEM sets d56 as account in file create_target_header
+            env.set('BB_SYSTEM', 'use_d56_account')
 
     def configure_args(self):
 
