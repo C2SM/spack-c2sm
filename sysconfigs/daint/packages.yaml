@@ -178,6 +178,7 @@ packages:
     - nvhpc@21.3
     - pgi@21.3.0
     - cce@12.0.3
+    - gcc@9.3.0
     variants: host=daint
   icontools:
     compiler:
@@ -358,3 +359,9 @@ packages:
     externals:
     - prefix: /usr
       spec: zlib@1.2.11
+  cdo:
+    buildable: false
+    externals:
+    - prefix: /project/d56/daint/local.gcc/bin
+      spec: cdo@1.9.5
+

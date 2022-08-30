@@ -6,6 +6,8 @@
 import os, subprocess
 from spack import *
 
+import llnl.util.tty as tty
+
 
 class Icon(Package):
     """The ICON modelling framework is a joint project between the
@@ -49,6 +51,7 @@ class Icon(Package):
                when='+eccodes',
                type=('build', 'link', 'run'))
     depends_on('claw@2.0.2', when='+claw', type=('build', 'link', 'run'))
+    depends_on('cdo')
 
     for x in ['create', 'read', 'perturb']:
         depends_on('serialbox@2.6.0 ~python ~sdb ~shared',
@@ -140,6 +143,9 @@ class Icon(Package):
                 env.set('CLAW', self.spec['claw'].prefix + '/bin/clawfc')
             if '+eccodes' in self.spec:
                 env.set('ECCODES_ROOT', self.spec['eccodes'].prefix)
+        if self.run_tests:
+            # setting BB_SYSTEM sets d56 as account in file create_target_header
+            env.set('BB_SYSTEM', 'use_d56_account')
 
     def configure_args(self):
 
@@ -207,6 +213,20 @@ class Icon(Package):
 
     def install(self, spec, prefix):
         make('install')
+
+    @run_before('install')
+    @on_package_attributes(run_tests=True)
+    def check(self):
+        if os.path.exists('scripts/spack/test.py'):
+            try:
+                subprocess.run(
+                    ['./scripts/spack/test.py', '--spec',
+                     self.spec.__str__()],
+                    check=True)
+            except:
+                raise InstallError('Tests failed')
+        else:
+            tty.warn('Cannot find test.py -> skipping tests')
 
     @run_after('build')
     def test(self):

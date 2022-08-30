@@ -299,6 +299,28 @@ class IconTest(TestCase):
             self.Run('rm -rf icon-nwp')
 
 
+class IconTestExclaim(TestCase):
+    package_name = 'icon'
+    depends_on = {'serialbox', 'eccodes', 'claw'}
+    machines = 'daint'
+
+    def test_install_exclaim_cpu_nvidia(self):
+        self.Srun(
+            'spack install --show-log-on-error --until build --test=root icon@exclaim-master%nvhpc icon_target=cpu +eccodes +ocean'
+        )
+        self.Run(
+            'spack install --show-log-on-error --dont-restage --test=root icon@exclaim-master%nvhpc icon_target=cpu +eccodes +ocean'
+        )
+
+    def test_install_exclaim_gpu_nvidia(self):
+        self.Srun(
+            'spack install --show-log-on-error --until build --test=root icon@exclaim-master%nvhpc icon_target=gpu +eccodes +ocean +claw'
+        )
+        self.Run(
+            'spack install --show-log-on-error --dont-restage --test=root icon@exclaim-master%nvhpc icon_target=gpu +eccodes +ocean +claw'
+        )
+
+
 class Int2lmTest(TestCase):
     package_name = 'int2lm'
     depends_on = {

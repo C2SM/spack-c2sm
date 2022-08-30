@@ -134,3 +134,8 @@ packages:
       - slurm
   serialbox:
     variants: ~examples +fortran ~python
+  cdo:
+    buildable: false
+    externals:
+    - prefix: /project/d56/daint/local.gcc/bin
+      spec: cdo@1.9.5
