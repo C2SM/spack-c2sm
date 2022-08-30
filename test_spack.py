@@ -276,31 +276,27 @@ class IconTest(TestCase):
 
     def test_devbuild_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        self.Run(
-            'git clone --recursive ssh://git@gitlab.dkrz.de/icon/icon-cscs.git'
-        )
-        self.Run('mkdir -p icon-cscs/pgi_cpu')
-        self.Run('touch a_fake_file.f90', cwd='icon-cscs/pgi_cpu')
+        self.Run('git clone --recursive ssh://git@gitlab.dkrz.de/icon/icon-nwp.git')
+        self.Run('mkdir -p icon-nwp/cpu')
+        self.Run('touch .dummy_file', cwd='icon-nwp/cpu')
         try:
             self.Srun(
                 'spack dev-build -u build icon@dev-build%nvhpc config_dir=./.. icon_target=cpu',
-                cwd='icon-cscs/pgi_cpu')
+                cwd='icon-nwp/cpu')
         finally:
-            self.Run('rm -rf icon-cscs')
+            self.Run('rm -rf icon-nwp')
 
     def test_devbuild_gpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        self.Run(
-            'git clone --recursive ssh://git@gitlab.dkrz.de/icon/icon-cscs.git'
-        )
-        self.Run('mkdir -p icon-cscs/pgi_gpu')
-        self.Run('touch a_fake_file.f90', cwd='icon-cscs/pgi_gpu')
+        self.Run('git clone --recursive ssh://git@gitlab.dkrz.de/icon/icon-nwp.git')
+        self.Run('mkdir -p icon-nwp/gpu')
+        self.Run('touch .dummy_file', cwd='icon-nwp/gpu')
         try:
             self.Srun(
                 'spack dev-build -u build icon@dev-build%nvhpc config_dir=./.. icon_target=gpu',
-                cwd='icon-cscs/pgi_gpu')
+                cwd='icon-nwp/gpu')
         finally:
-            self.Run('rm -rf icon-cscs')
+            self.Run('rm -rf icon-nwp')
 
 
 class Int2lmTest(TestCase):
