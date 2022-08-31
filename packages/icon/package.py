@@ -55,6 +55,7 @@ class Icon(Package):
                type=('build', 'link', 'run'))
     depends_on('claw@2.0.2', when='+claw', type=('build', 'link', 'run'))
     depends_on('netcdf-fortran', when='+proper-netcdf-dep')
+    depends_on('netcdf-c', when='+proper-netcdf-dep')
 
     variant('icon_target',
             default='gpu',
