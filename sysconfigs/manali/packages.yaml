@@ -125,11 +125,16 @@ packages:
     externals:
     - spec: ncurses@6.1.20180317+termlib abi=6
       prefix: /usr
+  netcdf-c:
+    externals:
+    - spec: netcdf-c@4.8.1%nvhpc@22.7
+      modules:
+      - netcdf-c/4.8.1-22.7-fdmtoe6
   netcdf-fortran:
     externals:
     - spec: netcdf-fortran@4.5.4%nvhpc@22.7
       modules:
-      - netcdf-fortran/4.5.4-nvhpc-22.7-c7b5rgc
+      - netcdf-fortran/4.5.4-22.7-l4ymshp
   openssh:
     externals:
     - spec: openssh@8.4p1
