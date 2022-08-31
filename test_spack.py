@@ -320,6 +320,14 @@ class IconTestExclaim(TestCase):
             'spack install --show-log-on-error --dont-restage --test=root icon@exclaim-master%nvhpc icon_target=gpu +eccodes +ocean +claw'
         )
 
+    def test_install_exclaim_cpu_gcc(self):
+        self.Srun(
+            'spack install --show-log-on-error --until build --test=root icon@exclaim-master%gcc icon_target=cpu +eccodes +ocean'
+        )
+        self.Run(
+            'spack install --show-log-on-error --dont-restage --test=root icon@exclaim-master%gcc icon_target=cpu +eccodes +ocean'
+        )
+
 
 class Int2lmTest(TestCase):
     package_name = 'int2lm'

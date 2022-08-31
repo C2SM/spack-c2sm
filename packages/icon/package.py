@@ -108,6 +108,7 @@ class Icon(Package):
 
     conflicts('icon_target=cpu', when='+claw')
     conflicts('icon_target=gpu', when='%intel')
+    conflicts('icon_target=gpu', when='%gcc')
     conflicts('+dace', when='+rttov')
 
     phases = ['configure', 'build', 'install']
