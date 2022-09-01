@@ -276,7 +276,8 @@ class IconTest(TestCase):
 
     def test_devbuild_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        self.Run('git clone --recursive ssh://git@gitlab.dkrz.de/icon/icon-nwp.git')
+        self.Run(
+            'git clone --recursive ssh://git@gitlab.dkrz.de/icon/icon-nwp.git')
         self.Run('mkdir -p icon-nwp/cpu')
         self.Run('touch .dummy_file', cwd='icon-nwp/cpu')
         try:
@@ -288,7 +289,8 @@ class IconTest(TestCase):
 
     def test_devbuild_gpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        self.Run('git clone --recursive ssh://git@gitlab.dkrz.de/icon/icon-nwp.git')
+        self.Run(
+            'git clone --recursive ssh://git@gitlab.dkrz.de/icon/icon-nwp.git')
         self.Run('mkdir -p icon-nwp/gpu')
         self.Run('touch .dummy_file', cwd='icon-nwp/gpu')
         try:
@@ -318,6 +320,14 @@ class IconTestExclaim(TestCase):
         )
         self.Run(
             'spack install --show-log-on-error --dont-restage --test=root icon@exclaim-master%nvhpc icon_target=gpu +eccodes +ocean +claw'
+        )
+
+    def test_install_exclaim_cpu_gcc(self):
+        self.Srun(
+            'spack install --show-log-on-error --until build --test=root icon@exclaim-master%gcc icon_target=cpu +eccodes +ocean'
+        )
+        self.Run(
+            'spack install --show-log-on-error --dont-restage --test=root icon@exclaim-master%gcc icon_target=cpu +eccodes +ocean'
         )
 
 
