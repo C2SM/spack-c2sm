@@ -1,0 +1,38 @@
+# This is a Spack Environment file.
+#
+# It describes a set of packages to be installed, along with
+# configuration settings.
+spack:
+  specs:
+  - claw@2.0.3
+  - claw@2.0
+  - cosmo-eccodes-definitions@2.19.0.7
+  - cosmo-eccodes-definitions@2.18.0.1
+  - cosmo-grib-api-definitions@1.20.0.2
+  - cosmo-grib-api@1.20.0.2
+  - cosmo-grib-api@1.13.1
+  - libgrib1@22-01-2020
+  view: false
+  concretizer:
+    unify: false
+  mirrors:
+    c2sm_mirror:
+      fetch:
+        url: file:///project/g110/spack/mirror
+        access_pair:
+        - null
+        - null
+        access_token: null
+        profile: null
+        endpoint_url: null
+      push:
+        url: file:///project/g110/spack/mirror
+        access_pair:
+        - null
+        - null
+        access_token: null
+        profile: null
+        endpoint_url: null
+  config:
+    install_tree:
+      padded_length: 128
