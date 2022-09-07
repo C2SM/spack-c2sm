@@ -1,0 +1,144 @@
+packages:
+  cosmo: # manually added
+    variants: slave=balfrin cuda_arch=80 slurm_bin= "srun" slurm_partition="debug" slurm_opt_nodes= "-n" slurm_nodes= "1" slurm_opt_account= "-" slurm_account="-" slurm_opt_constraint= "-" slurm_constraint= "-"
+  cosmo-dycore: # manually added
+    variants: slave=balfrin cuda_arch=80 slurm_bin= "srun" slurm_partition="debug" slurm_gpu="--gres=gpu:{0}" slurm_opt_nodes="-n" slurm_nodes= "{0}" slurm_opt_account= "-" slurm_account= "-" slurm_opt_constraint="-" slurm_constraint= "-" data_path=/scratch/jenkins/data/cosmo/
+  gridtools: # manually added
+    variants: +cuda cuda_arch=80
+  icon: # manually added
+    variants: host=balfrin
+  icontools: # manually added
+    variants: slave=balfrin
+  int2lm: # manually added
+    variants: slave=balfrin
+  pkg-config:
+    externals:
+    - spec: pkg-config@0.29.2
+      prefix: /usr
+  autoconf:
+    externals:
+    - spec: autoconf@2.69
+      prefix: /usr
+  binutils:
+    externals:
+    - spec: binutils@2.37.20211103
+      prefix: /usr
+  texinfo:
+    externals:
+    - spec: texinfo@6.5
+      prefix: /usr
+  flex:
+    externals:
+    - spec: flex@2.6.4+lex
+      prefix: /usr
+  curl:
+    externals:
+    - spec: curl@7.66.0+gssapi+ldap+nghttp2
+      prefix: /usr
+  git:
+    externals:
+    - spec: git@2.34.1~tcltk
+      prefix: /usr
+  gmake:
+    externals:
+    - spec: gmake@4.2.1
+      prefix: /usr
+  openssl:
+    externals:
+    - spec: openssl@1.1.1d
+      prefix: /usr
+  openssh:
+    externals:
+    - spec: openssh@8.4p1
+      prefix: /usr
+  diffutils:
+    externals:
+    - spec: diffutils@3.6
+      prefix: /usr
+  groff:
+    externals:
+    - spec: groff@1.22.3
+      prefix: /usr
+  automake:
+    externals:
+    - spec: automake@1.15.1
+      prefix: /usr
+  bison:
+    externals:
+    - spec: bison@3.0.4
+      prefix: /usr
+  findutils:
+    externals:
+    - spec: findutils@4.8.0
+      prefix: /usr
+  tar:
+    externals:
+    - spec: tar@1.30
+      prefix: /usr
+  coreutils:
+    externals:
+    - spec: coreutils@8.32
+      prefix: /usr
+  gawk:
+    externals:
+    - spec: gawk@4.2.1
+      prefix: /usr
+  libtool:
+    externals:
+    - spec: libtool@2.4.6
+      prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.18
+      prefix: /usr
+  cmake:
+    externals:
+    - spec: cmake@3.17.0
+      prefix: /usr
+  all:
+    compiler: [gcc, intel, pgi, clang, xl, nag, fj, aocc]
+    providers:
+      awk: [gawk]
+      blas: [openblas, amdblis]
+      D: [ldc]
+      daal: [intel-daal]
+      elf: [elfutils]
+      fftw-api: [fftw, amdfftw]
+      flame: [libflame, amdlibflame]
+      fuse: [libfuse]
+      gl: [glx, osmesa]
+      glu: [mesa-glu, openglu]
+      golang: [gcc]
+      iconv: [libiconv]
+      ipp: [intel-ipp]
+      java: [openjdk, jdk, ibm-java]
+      jpeg: [libjpeg-turbo, libjpeg]
+      lapack: [openblas, amdlibflame]
+      libglx: [mesa+glx, mesa18+glx]
+      libllvm: [llvm]
+      libosmesa: [mesa+osmesa, mesa18+osmesa]
+      lua-lang: [lua, lua-luajit-openresty, lua-luajit]
+      luajit: [lua-luajit-openresty, lua-luajit]
+      mariadb-client: [mariadb-c-client, mariadb]
+      mkl: [intel-mkl]
+      mpe: [mpe2]
+      mpi: [openmpi, mpich]
+      mysql-client: [mysql, mariadb-c-client]
+      opencl: [pocl]
+      onedal: [intel-oneapi-dal]
+      pbs: [openpbs, torque]
+      pil: [py-pillow]
+      pkgconfig: [pkgconf, pkg-config]
+      rpc: [libtirpc]
+      scalapack: [netlib-scalapack, amdscalapack]
+      sycl: [hipsycl]
+      szip: [libaec, libszip]
+      tbb: [intel-tbb]
+      unwind: [libunwind]
+      uuid: [util-linux-uuid, libuuid]
+      xxd: [xxd-standalone, vim]
+      yacc: [bison, byacc]
+      ziglang: [zig]
+    permissions:
+      read: world
+      write: user
