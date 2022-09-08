@@ -62,11 +62,12 @@ class TestCase(unittest.TestCase):
         self.Run(cmd_root, cwd)
 
     def spack_build_and_test(self, command: str, cwd='.'):
-        cmd_build = 'spack devbuildcosmo --until build '+command
+        cmd_build = 'spack devbuildcosmo --until build ' + command
         self.Run(cmd_build, cwd, parallel=True)
 
-        cmd_root = 'spack devbuildcosmo --dont-restage --test=root '+command
+        cmd_root = 'spack devbuildcosmo --dont-restage --test=root ' + command
         self.Run(cmd_root, cwd)
+
 
 class AtlasUtilityTest(TestCase):
     package_name = 'atlas_utilities'
