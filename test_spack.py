@@ -50,14 +50,14 @@ class TestCase(unittest.TestCase):
             spack_install = 'spack install'
 
         cmd_build = spack_install + ' --show-log-on-error --until build ' + command
-        self.Run(cmd_build, cwd, parallel=True)
+        self.Srun(cmd_build, cwd)
 
         cmd_root = srun + ' --show-log-on-error --dont-restage --test=root ' + command
         self.Run(cmd_root, cwd)
 
     def spack_build_and_test(self, command: str, cwd='.'):
         cmd_build = 'spack devbuildcosmo --until build ' + command
-        self.Run(cmd_build, cwd, parallel=True)
+        self.Srun(cmd_build, cwd)
 
         cmd_root = 'spack devbuildcosmo --dont-restage --test=root ' + command
         self.Run(cmd_root, cwd)
