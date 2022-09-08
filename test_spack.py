@@ -44,9 +44,7 @@ class TestCase(unittest.TestCase):
         return self.Run(command, cwd, parallel=True)
 
     def spack_install_and_test(self, command: str, cwd='.'):
-        if 'cosmo@dev-build' in command:
-            spack_install = 'spack devbuildcosmo'
-        elif 'cosmo' in command and 'cosmo-dycore' not in command:
+        if 'cosmo' in command and 'cosmo-dycore' not in command:
             spack_install = 'spack installcosmo'
         else:
             spack_install = 'spack install'
@@ -56,12 +54,19 @@ class TestCase(unittest.TestCase):
             command = command.replace(' --show-log-on-error', '')
         else:
             srun = spack_install
+
         cmd_build = srun + ' --until build ' + command
         self.Run(cmd_build, cwd, parallel=True)
 
         cmd_root = srun + ' --dont-restage --test=root ' + command
         self.Run(cmd_root, cwd)
 
+    def spack_build_and_test(self, command: str, cwd='.'):
+        cmd_build = 'spack devbuildcosmo --until build '+command
+        self.Run(cmd_build, cwd, parallel=True)
+
+        cmd_root = 'spack devbuildcosmo --dont-restage --test=root '+command
+        self.Run(cmd_root, cwd)
 
 class AtlasUtilityTest(TestCase):
     package_name = 'atlas_utilities'
@@ -115,11 +120,11 @@ class CosmoTest(TestCase):
         self.Run('git clone ssh://git@github.com/MeteoSwiss-APN/cosmo.git')
         try:
             if machine == 'tsa':
-                self.spack_install_and_test(
+                self.spack_build_and_test(
                     'cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore',
                     cwd='cosmo')
             else:
-                self.spack_install_and_test(
+                self.spack_build_and_test(
                     'cosmo@dev-build%nvhpc cosmo_target=cpu ~cppdycore',
                     cwd='cosmo')
         finally:
@@ -130,7 +135,7 @@ class CosmoTest(TestCase):
         self.Run('git clone ssh://git@github.com/MeteoSwiss-APN/cosmo.git')
         try:
             if machine == 'tsa':
-                self.spack_install_and_test(
+                self.spack_build_and_test(
                     'cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
                     cwd='cosmo')
             else:
