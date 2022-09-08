@@ -52,15 +52,16 @@ class TestCase(unittest.TestCase):
             spack_install = 'spack install'
 
         if '--show-log-on-error' in command:
-            srun = spack_install+' --show-log-on-error'
-            command = command.replace(' --show-log-on-error','')
+            srun = spack_install + ' --show-log-on-error'
+            command = command.replace(' --show-log-on-error', '')
         else:
             srun = spack_install
-        cmd_build = srun+' --until build '+command
+        cmd_build = srun + ' --until build ' + command
         self.Run(cmd_build, cwd, parallel=True)
 
-        cmd_root = srun+' --dont-restage --test=root '+command
+        cmd_root = srun + ' --dont-restage --test=root ' + command
         self.Run(cmd_root, cwd)
+
 
 class AtlasUtilityTest(TestCase):
     package_name = 'atlas_utilities'
@@ -86,16 +87,21 @@ class CosmoTest(TestCase):
     def test_install_master_gpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
-            self.spack_install_and_test('cosmo@org-master%pgi cosmo_target=gpu +cppdycore')
+            self.spack_install_and_test(
+                'cosmo@org-master%pgi cosmo_target=gpu +cppdycore')
         else:
-            self.spack_install_and_test('cosmo@org-master%nvhpc cosmo_target=gpu +cppdycore')
+            self.spack_install_and_test(
+                'cosmo@org-master%nvhpc cosmo_target=gpu +cppdycore')
 
     def test_install_master_cpu(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
-            self.spack_install_and_test('cosmo@org-master%pgi cosmo_target=cpu ~cppdycore')
+            self.spack_install_and_test(
+                'cosmo@org-master%pgi cosmo_target=cpu ~cppdycore')
         else:
-            self.spack_install_and_test('cosmo@org-master%nvhpc cosmo_target=cpu ~cppdycore')
+            self.spack_install_and_test(
+                'cosmo@org-master%nvhpc cosmo_target=cpu ~cppdycore')
+
     # def test_install_test(self):
     #     # TODO: Decide if we want to integrate this test or not. It has been used lately here: From https://github.com/C2SM/spack-c2sm/pull/289
     #     self.Srun('spack installcosmo --test=root cosmo@master%pgi')
@@ -109,9 +115,13 @@ class CosmoTest(TestCase):
         self.Run('git clone ssh://git@github.com/MeteoSwiss-APN/cosmo.git')
         try:
             if machine == 'tsa':
-                self.spack_install_and_test('cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore', cwd='cosmo')
+                self.spack_install_and_test(
+                    'cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore',
+                    cwd='cosmo')
             else:
-                self.spack_install_and_test('cosmo@dev-build%nvhpc cosmo_target=cpu ~cppdycore', cwd='cosmo')
+                self.spack_install_and_test(
+                    'cosmo@dev-build%nvhpc cosmo_target=cpu ~cppdycore',
+                    cwd='cosmo')
         finally:
             self.Run('rm -rf cosmo')
 
@@ -120,7 +130,9 @@ class CosmoTest(TestCase):
         self.Run('git clone ssh://git@github.com/MeteoSwiss-APN/cosmo.git')
         try:
             if machine == 'tsa':
-                self.spack_install_and_test('cosmo@dev-build%pgi cosmo_target=gpu +cppdycore', cwd='cosmo')
+                self.spack_install_and_test(
+                    'cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
+                    cwd='cosmo')
             else:
                 self.Srun(
                     'spack devbuildcosmo cosmo@dev-build%nvhpc cosmo_target=gpu +cppdycore',
@@ -131,7 +143,8 @@ class CosmoTest(TestCase):
     def test_install_old_version(self):
         # So we can reproduce results from old versions.
         if machine == 'tsa':
-            self.spack_install_and_test('cosmo@apn_5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore')
+            self.spack_install_and_test(
+                'cosmo@apn_5.08.mch.1.0.p3%pgi cosmo_target=cpu ~cppdycore')
 
 
 class CosmoDycoreTest(TestCase):
@@ -142,22 +155,30 @@ class CosmoDycoreTest(TestCase):
     def test_install_float_cpu(self):
         # The dycore team's PR testing relies on this.
         # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
-        self.spack_install_and_test('cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda --show-log-on-error')
+        self.spack_install_and_test(
+            'cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda --show-log-on-error'
+        )
 
     def test_install_float_gpu(self):
         # The dycore team's PR testing relies on this.
         # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
-        self.spack_install_and_test('cosmo-dycore@master%gcc real_type=float build_type=Release --show-log-on-error +cuda')
+        self.spack_install_and_test(
+            'cosmo-dycore@master%gcc real_type=float build_type=Release --show-log-on-error +cuda'
+        )
 
     def test_install_double_cpu(self):
         # The dycore team's PR testing relies on this.
         # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
-        self.spack_install_and_test('cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda --show-log-on-error')
+        self.spack_install_and_test(
+            'cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda --show-log-on-error'
+        )
 
     def test_install_double_gpu(self):
         # The dycore team's PR testing relies on this.
         # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
-        self.spack_install_and_test('cosmo-dycore@master%gcc real_type=double build_type=Release +cuda --show-log-on-error')
+        self.spack_install_and_test(
+            'cosmo-dycore@master%gcc real_type=double build_type=Release +cuda --show-log-on-error'
+        )
 
 
 class CosmoEccodesDefinitionsTest(TestCase):
@@ -264,13 +285,19 @@ class IconTestExclaim(TestCase):
     machines = 'daint'
 
     def test_install_exclaim_cpu_nvidia(self):
-        self.spack_install_and_test('icon@exclaim-master%nvhpc icon_target=cpu +eccodes +ocean --show-log-on-error')
+        self.spack_install_and_test(
+            'icon@exclaim-master%nvhpc icon_target=cpu +eccodes +ocean --show-log-on-error'
+        )
 
     def test_install_exclaim_gpu_nvidia(self):
-        self.spack_install_and_test('icon@exclaim-master%nvhpc icon_target=gpu +eccodes +ocean +claw --show-log-on-error')
+        self.spack_install_and_test(
+            'icon@exclaim-master%nvhpc icon_target=gpu +eccodes +ocean +claw --show-log-on-error'
+        )
 
     def test_install_exclaim_cpu_gcc(self):
-        self.spack_install_and_test('icon@exclaim-master%gcc icon_target=cpu +eccodes +ocean --show-log-on-error')
+        self.spack_install_and_test(
+            'icon@exclaim-master%gcc icon_target=cpu +eccodes +ocean --show-log-on-error'
+        )
 
 
 class Int2lmTest(TestCase):
@@ -283,26 +310,31 @@ class Int2lmTest(TestCase):
     def test_install_pgi(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
-            self.spack_install_and_test('int2lm@c2sm-master%pgi --show-log-on-error')
+            self.spack_install_and_test(
+                'int2lm@c2sm-master%pgi --show-log-on-error')
 
     def test_install_no_pollen(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
-            self.spack_install_and_test('int2lm@org-master%pgi pollen=False --show-log-on-error')
+            self.spack_install_and_test(
+                'int2lm@org-master%pgi pollen=False --show-log-on-error')
 
     def test_install_gcc(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-         self.spack_install_and_test('int2lm@c2sm-master%gcc --show-log-on-error')
+        self.spack_install_and_test(
+            'int2lm@c2sm-master%gcc --show-log-on-error')
 
     def test_install_nvhpc(self):
         # Replacement of PGI after upgrade of Daint Feb 22
         if machine == 'daint':
-            self.spack_install_and_test('int2lm@c2sm-master%nvhpc --show-log-on-error')
+            self.spack_install_and_test(
+                'int2lm@c2sm-master%nvhpc --show-log-on-error')
 
     def test_install_nvhpc_features(self):
         # c2sm-features contains some additional functionalities
         if machine == 'daint':
-            self.spack_install_and_test('int2lm@c2sm-features%nvhpc --show-log-on-error')
+            self.spack_install_and_test(
+                'int2lm@c2sm-features%nvhpc --show-log-on-error')
 
 
 class IconToolsTest(TestCase):
@@ -312,7 +344,8 @@ class IconToolsTest(TestCase):
 
     # C2SM supported version
     def test_install(self):
-        self.spack_install_and_test('icontools@c2sm-master%gcc --show-log-on-error')
+        self.spack_install_and_test(
+            'icontools@c2sm-master%gcc --show-log-on-error')
 
 
 class LibGrib1Test(TestCase):
