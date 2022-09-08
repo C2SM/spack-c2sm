@@ -156,15 +156,13 @@ class CosmoDycoreTest(TestCase):
         # The dycore team's PR testing relies on this.
         # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
         self.spack_install_and_test(
-            'cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda'
-        )
+            'cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda')
 
     def test_install_float_gpu(self):
         # The dycore team's PR testing relies on this.
         # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
         self.spack_install_and_test(
-            'cosmo-dycore@master%gcc real_type=float build_type=Release +cuda'
-        )
+            'cosmo-dycore@master%gcc real_type=float build_type=Release +cuda')
 
     def test_install_double_cpu(self):
         # The dycore team's PR testing relies on this.
@@ -286,18 +284,15 @@ class IconTestExclaim(TestCase):
 
     def test_install_exclaim_cpu_nvidia(self):
         self.spack_install_and_test(
-            'icon@exclaim-master%nvhpc icon_target=cpu +eccodes +ocean'
-        )
+            'icon@exclaim-master%nvhpc icon_target=cpu +eccodes +ocean')
 
     def test_install_exclaim_gpu_nvidia(self):
         self.spack_install_and_test(
-            'icon@exclaim-master%nvhpc icon_target=gpu +eccodes +ocean +claw'
-        )
+            'icon@exclaim-master%nvhpc icon_target=gpu +eccodes +ocean +claw')
 
     def test_install_exclaim_cpu_gcc(self):
         self.spack_install_and_test(
-            'icon@exclaim-master%gcc icon_target=cpu +eccodes +ocean'
-        )
+            'icon@exclaim-master%gcc icon_target=cpu +eccodes +ocean')
 
 
 class Int2lmTest(TestCase):
@@ -310,31 +305,26 @@ class Int2lmTest(TestCase):
     def test_install_pgi(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
-            self.spack_install_and_test(
-                'int2lm@c2sm-master%pgi')
+            self.spack_install_and_test('int2lm@c2sm-master%pgi')
 
     def test_install_no_pollen(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
-            self.spack_install_and_test(
-                'int2lm@org-master%pgi pollen=False')
+            self.spack_install_and_test('int2lm@org-master%pgi pollen=False')
 
     def test_install_gcc(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
-        self.spack_install_and_test(
-            'int2lm@c2sm-master%gcc')
+        self.spack_install_and_test('int2lm@c2sm-master%gcc')
 
     def test_install_nvhpc(self):
         # Replacement of PGI after upgrade of Daint Feb 22
         if machine == 'daint':
-            self.spack_install_and_test(
-                'int2lm@c2sm-master%nvhpc')
+            self.spack_install_and_test('int2lm@c2sm-master%nvhpc')
 
     def test_install_nvhpc_features(self):
         # c2sm-features contains some additional functionalities
         if machine == 'daint':
-            self.spack_install_and_test(
-                'int2lm@c2sm-features%nvhpc')
+            self.spack_install_and_test('int2lm@c2sm-features%nvhpc')
 
 
 class IconToolsTest(TestCase):
@@ -344,8 +334,7 @@ class IconToolsTest(TestCase):
 
     # C2SM supported version
     def test_install(self):
-        self.spack_install_and_test(
-            'icontools@c2sm-master%gcc')
+        self.spack_install_and_test('icontools@c2sm-master%gcc')
 
 
 class LibGrib1Test(TestCase):
