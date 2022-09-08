@@ -485,7 +485,7 @@ class Cosmo(MakefilePackage):
         try:
             subprocess.run([
                 self.build_directory + '/test/tools/test_cosmo.py', '-s',
-                self.spec.__str__(), '-b',
+                str(self.spec), '-b',
                 str('.')
             ],
                            stderr=subprocess.STDOUT,

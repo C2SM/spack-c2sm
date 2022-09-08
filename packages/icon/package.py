@@ -222,7 +222,7 @@ class Icon(Package):
             try:
                 subprocess.run(
                     ['./scripts/spack/test.py', '--spec',
-                     self.spec.__str__()],
+                     str(self.spec)],
                     check=True)
             except:
                 raise InstallError('Tests failed')
