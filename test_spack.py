@@ -49,16 +49,10 @@ class TestCase(unittest.TestCase):
         else:
             spack_install = 'spack install'
 
-        if '--show-log-on-error' in command:
-            srun = spack_install + ' --show-log-on-error'
-            command = command.replace(' --show-log-on-error', '')
-        else:
-            srun = spack_install
-
-        cmd_build = srun + ' --until build ' + command
+        cmd_build = spack_install + ' --show-log-on-error --until build ' + command
         self.Run(cmd_build, cwd, parallel=True)
 
-        cmd_root = srun + ' --dont-restage --test=root ' + command
+        cmd_root = srun + ' --show-log-on-error --dont-restage --test=root ' + command
         self.Run(cmd_root, cwd)
 
     def spack_build_and_test(self, command: str, cwd='.'):
@@ -162,28 +156,28 @@ class CosmoDycoreTest(TestCase):
         # The dycore team's PR testing relies on this.
         # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
         self.spack_install_and_test(
-            'cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda --show-log-on-error'
+            'cosmo-dycore@master%gcc real_type=float build_type=Release ~cuda'
         )
 
     def test_install_float_gpu(self):
         # The dycore team's PR testing relies on this.
         # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
         self.spack_install_and_test(
-            'cosmo-dycore@master%gcc real_type=float build_type=Release --show-log-on-error +cuda'
+            'cosmo-dycore@master%gcc real_type=float build_type=Release +cuda'
         )
 
     def test_install_double_cpu(self):
         # The dycore team's PR testing relies on this.
         # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
         self.spack_install_and_test(
-            'cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda --show-log-on-error'
+            'cosmo-dycore@master%gcc real_type=double build_type=Release ~cuda'
         )
 
     def test_install_double_gpu(self):
         # The dycore team's PR testing relies on this.
         # The dycore tests launch an srun, therefore the spack command can't be launched in an srun aswell, because sruns don't nest!
         self.spack_install_and_test(
-            'cosmo-dycore@master%gcc real_type=double build_type=Release +cuda --show-log-on-error'
+            'cosmo-dycore@master%gcc real_type=double build_type=Release +cuda'
         )
 
 
@@ -292,17 +286,17 @@ class IconTestExclaim(TestCase):
 
     def test_install_exclaim_cpu_nvidia(self):
         self.spack_install_and_test(
-            'icon@exclaim-master%nvhpc icon_target=cpu +eccodes +ocean --show-log-on-error'
+            'icon@exclaim-master%nvhpc icon_target=cpu +eccodes +ocean'
         )
 
     def test_install_exclaim_gpu_nvidia(self):
         self.spack_install_and_test(
-            'icon@exclaim-master%nvhpc icon_target=gpu +eccodes +ocean +claw --show-log-on-error'
+            'icon@exclaim-master%nvhpc icon_target=gpu +eccodes +ocean +claw'
         )
 
     def test_install_exclaim_cpu_gcc(self):
         self.spack_install_and_test(
-            'icon@exclaim-master%gcc icon_target=cpu +eccodes +ocean --show-log-on-error'
+            'icon@exclaim-master%gcc icon_target=cpu +eccodes +ocean'
         )
 
 
@@ -317,30 +311,30 @@ class Int2lmTest(TestCase):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
             self.spack_install_and_test(
-                'int2lm@c2sm-master%pgi --show-log-on-error')
+                'int2lm@c2sm-master%pgi')
 
     def test_install_no_pollen(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         if machine == 'tsa':
             self.spack_install_and_test(
-                'int2lm@org-master%pgi pollen=False --show-log-on-error')
+                'int2lm@org-master%pgi pollen=False')
 
     def test_install_gcc(self):
         # So our quick start tutorial works: https://c2sm.github.io/spack-c2sm/QuickStart.html
         self.spack_install_and_test(
-            'int2lm@c2sm-master%gcc --show-log-on-error')
+            'int2lm@c2sm-master%gcc')
 
     def test_install_nvhpc(self):
         # Replacement of PGI after upgrade of Daint Feb 22
         if machine == 'daint':
             self.spack_install_and_test(
-                'int2lm@c2sm-master%nvhpc --show-log-on-error')
+                'int2lm@c2sm-master%nvhpc')
 
     def test_install_nvhpc_features(self):
         # c2sm-features contains some additional functionalities
         if machine == 'daint':
             self.spack_install_and_test(
-                'int2lm@c2sm-features%nvhpc --show-log-on-error')
+                'int2lm@c2sm-features%nvhpc')
 
 
 class IconToolsTest(TestCase):
@@ -351,7 +345,7 @@ class IconToolsTest(TestCase):
     # C2SM supported version
     def test_install(self):
         self.spack_install_and_test(
-            'icontools@c2sm-master%gcc --show-log-on-error')
+            'icontools@c2sm-master%gcc')
 
 
 class LibGrib1Test(TestCase):
