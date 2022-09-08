@@ -55,7 +55,7 @@ class TestCase(unittest.TestCase):
         cmd_root = srun + ' --show-log-on-error --dont-restage --test=root ' + command
         self.Run(cmd_root, cwd)
 
-    def spack_build_and_test(self, command: str, cwd='.'):
+    def spack_devbuild_and_test(self, command: str, cwd='.'):
         cmd_build = 'spack devbuildcosmo --until build ' + command
         self.Srun(cmd_build, cwd)
 
@@ -115,11 +115,11 @@ class CosmoTest(TestCase):
         self.Run('git clone ssh://git@github.com/MeteoSwiss-APN/cosmo.git')
         try:
             if machine == 'tsa':
-                self.spack_build_and_test(
+                self.spack_devbuild_and_test(
                     'cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore',
                     cwd='cosmo')
             else:
-                self.spack_build_and_test(
+                self.spack_devbuild_and_test(
                     'cosmo@dev-build%nvhpc cosmo_target=cpu ~cppdycore',
                     cwd='cosmo')
         finally:
@@ -130,7 +130,7 @@ class CosmoTest(TestCase):
         self.Run('git clone ssh://git@github.com/MeteoSwiss-APN/cosmo.git')
         try:
             if machine == 'tsa':
-                self.spack_build_and_test(
+                self.spack_devbuild_and_test(
                     'cosmo@dev-build%pgi cosmo_target=gpu +cppdycore',
                     cwd='cosmo')
             else:
