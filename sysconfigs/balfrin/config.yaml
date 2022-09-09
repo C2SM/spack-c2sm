@@ -2,7 +2,4 @@ config:
   extensions:
     - '$spack/../tools/spack-scripting'
   build_stage: '$SCRATCH'
-  install_tree:
-    projections:
-      all: '{name}/{version}/{compiler.name}/{hash}'
   build_jobs: 6
