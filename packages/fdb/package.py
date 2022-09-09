@@ -15,8 +15,12 @@ class Fdb(CMakePackage):
 
     maintainers = ["skosukhin"]
 
-    version("5.10.8", sha256="6a0db8f98e13c035098dd6ea2d7559f883664cbf9cba8143749539122ac46099")
-    version("5.7.8", sha256="6adac23c0d1de54aafb3c663d077b85d0f804724596623b381ff15ea4a835f60")
+    version("5.10.8",
+            sha256=
+            "6a0db8f98e13c035098dd6ea2d7559f883664cbf9cba8143749539122ac46099")
+    version("5.7.8",
+            sha256=
+            "6adac23c0d1de54aafb3c663d077b85d0f804724596623b381ff15ea4a835f60")
 
     variant("tools", default=True, description="Build the command line tools")
     variant(
@@ -52,7 +56,8 @@ class Fdb(CMakePackage):
     # Download test data before running a test:
     patch(
         "https://github.com/ecmwf/fdb/commit/86e06b60f9a2d76a389a5f49bedd566d4c2ad2b2.patch?full_index=1",
-        sha256="8b4bf3a473ec86fd4d7672faa7d74292dde443719299f2ba59a2c8501d6f0906",
+        sha256=
+        "8b4bf3a473ec86fd4d7672faa7d74292dde443719299f2ba59a2c8501d6f0906",
         when="@5.7.1:5.7.10+tools",
     )
 

@@ -15,7 +15,9 @@ class Metkit(CMakePackage):
 
     maintainers = ["skosukhin"]
 
-    version("1.9.2", sha256="35d5f67196197cc06e5c2afc6d1354981e7c85a441df79a2fbd774e0c343b0b4")
+    version("1.9.2",
+            sha256=
+            "35d5f67196197cc06e5c2afc6d1354981e7c85a441df79a2fbd774e0c343b0b4")
 
     variant("tools", default=True, description="Build the command line tools")
     variant("grib", default=True, description="Enable support for GRIB format")

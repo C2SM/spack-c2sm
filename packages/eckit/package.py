@@ -15,11 +15,15 @@ class Eckit(CMakePackage):
 
     maintainers = ["skosukhin"]
 
-    version("1.20.2", sha256="9c11ddaaf346e40d11312b81ca7f1b510017f26618f4c0f5c5c59c37623fbac8")
+    version("1.20.2",
+            sha256=
+            "9c11ddaaf346e40d11312b81ca7f1b510017f26618f4c0f5c5c59c37623fbac8")
 
     variant("tools", default=True, description="Build the command line tools")
     variant("mpi", default=True, description="Enable MPI support")
-    variant("admin", default=True, description="Build utilities for administration tools")
+    variant("admin",
+            default=True,
+            description="Build utilities for administration tools")
     variant("sql", default=True, description="Build SQL engine")
     variant(
         "linalg",
@@ -31,14 +35,23 @@ class Eckit(CMakePackage):
         values=any_combination_of("bzip2", "snappy", "lz4", "aec"),
         description="List of supported compression backends",
     )
-    variant("xxhash", default=True, description="Enable xxHash support for hashing")
-    variant("ssl", default=False, description="Enable MD4 and SHA1 support with OpenSSL")
-    variant("curl", default=False, description="Enable URL data transferring with cURL")
-    variant("jemalloc", default=False, description="Link against jemalloc memory allocator")
+    variant("xxhash",
+            default=True,
+            description="Enable xxHash support for hashing")
+    variant("ssl",
+            default=False,
+            description="Enable MD4 and SHA1 support with OpenSSL")
+    variant("curl",
+            default=False,
+            description="Enable URL data transferring with cURL")
+    variant("jemalloc",
+            default=False,
+            description="Link against jemalloc memory allocator")
     variant(
         "unicode",
         default=True,
-        description="Enable support for Unicode characters in Yaml/JSON" "parsers",
+        description="Enable support for Unicode characters in Yaml/JSON"
+        "parsers",
     )
     variant("aio", default=True, description="Enable asynchronous IO")
 
@@ -135,6 +148,7 @@ class Eckit(CMakePackage):
         if "linalg=mkl" not in self.spec:
             # ENABLE_LAPACK is ignored if MKL backend is enabled
             # (the LAPACK backend is still built though):
-            args.append(self.define("ENABLE_LAPACK", "linalg=lapack" in self.spec))
+            args.append(
+                self.define("ENABLE_LAPACK", "linalg=lapack" in self.spec))
 
         return args
