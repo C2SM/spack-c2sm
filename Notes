@@ -1,0 +1,14 @@
+cmake .. 
+-Deckit_DIR=/code/fdb_poc/install/lib/cmake/eckit/ 
+-Dmetkit_DIR=/code/fdb_poc/install/lib/cmake/metkit 
+-Deccodes_DIR=/code/fdb_poc/install/lib/cmake/eccodes
+
+issue on Friday with the interface functions not being seen was resolved actually by adding the '-lfdb5' to the LD flags like:
+        env.set('JASPER_LD_FLAGS', '-Wl,--no-relax' +' -L' + self.spec['fdb'].prefix +
+            '/lib'  + ' -lfdb5' + ' -L' + self.spec['fdb-fortran'].prefix + '/lib' + ' -lfdbf')
+within the spack package of fdb-flexpart (which uses fdbf library from fdb-fortran, which interfaces the fdb5 library from fdb)
+
+
+ spack install fdb@5.10.8 ^eccodes@2.19.0 +build_shared_libs jp2k=jasper  ^eckit@1.20.2 ~mpi ^metkit@1.9.2
+
+ spack spec fdb-fortran@archive_retreive ^eckit ~mpi
