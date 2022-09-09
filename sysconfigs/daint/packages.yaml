@@ -56,8 +56,6 @@ packages:
       prefix: /usr
   cmake:
     externals:
-    - spec: cmake@3.18.2
-      prefix: /users/hdominic/.local
     - spec: cmake@3.17.0
       prefix: /usr
   cosmo: # manually added
@@ -67,6 +65,12 @@ packages:
       slurm_partition= "normal" slurm_bin= "srun" slurm_gpu= "-" slurm_opt_nodes=
       "-N" slurm_nodes= "{0}"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint=
       "-C" slurm_constraint= "gpu"
+  cuda: # manually added
+    buildable: false
+    externals:
+    - spec: cuda@11.0
+      modules:
+      - cudatoolkit/11.0.2_3.38-8.1__g5b73779
   cpio:
     externals:
     - spec: cpio@2.12
