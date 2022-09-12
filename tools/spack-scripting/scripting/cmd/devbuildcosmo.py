@@ -157,7 +157,7 @@ def devbuildcosmo(self, args):
         # Note: unfortunately there is no better way to re-concretize a Spec (e.g. via API).
         #       The only solution seems to be going via string representation and then back
         #       into a Spec object. It's not elegant but it seems to work very well.
-        cosmo_spec = spack.cmd.parse_specs(cosmo_spec.__str__())[0]
+        cosmo_spec = spack.cmd.parse_specs(str(cosmo_spec))[0]
         cosmo_spec.concretize()
 
     # Clean if needed
