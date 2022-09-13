@@ -6,7 +6,7 @@ To get an instance, git clone spack-c2sm and its submodule spack.
 
 .. code-block:: bash
 
-    git clone --depth 1 --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git #TODO: Remove branch!
+    git clone --depth 1 --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
 
 On **Daint, Dom, Tsa and Arolla** setup-env.sh automatically detects the machine. You may simply execute
 
