@@ -45,7 +45,7 @@ class TestCase(unittest.TestCase):
 
     def spack_install_and_test(self, command: str, cwd='.'):
         if 'cosmo' in command and 'cosmo-dycore' not in command:
-            spack_install = 'spack installcosmo'
+            spack_install = 'spack installcosmo -v'
         else:
             spack_install = 'spack install --show-log-on-error'
 
