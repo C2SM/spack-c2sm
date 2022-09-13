@@ -118,7 +118,7 @@ class Cosmo(MakefilePackage):
     variant('cuda_arch',
             default='none',
             description='Build with cuda_arch',
-            values=('70', '60', '37'),
+            values=('80', '70', '60', '37'),
             multi=False)
     variant(
         'zlib_ng',
