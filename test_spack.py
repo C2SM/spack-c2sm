@@ -47,12 +47,12 @@ class TestCase(unittest.TestCase):
         if 'cosmo' in command and 'cosmo-dycore' not in command:
             spack_install = 'spack installcosmo'
         else:
-            spack_install = 'spack install'
+            spack_install = 'spack install --show-log-on-error'
 
-        cmd_build = spack_install + ' --show-log-on-error --until build ' + command
+        cmd_build = spack_install + ' --until build ' + command
         self.Srun(cmd_build, cwd)
 
-        cmd_root = spack_install + ' --show-log-on-error --dont-restage --test=root ' + command
+        cmd_root = spack_install + ' --dont-restage --test=root ' + command
         self.Run(cmd_root, cwd)
 
     def spack_devbuild_and_test(self, command: str, cwd='.'):
