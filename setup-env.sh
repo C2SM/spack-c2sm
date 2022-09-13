@@ -15,4 +15,4 @@ else
 fi
 
 python3 "$parent_dir"/install_sysconfig.py
-source "$parent_dir"/spack/share/spack/setup-env.sh
+. "$parent_dir"/spack/share/spack/setup-env.sh
