@@ -51,7 +51,10 @@ class Icon(Package):
                when='+eccodes',
                type=('build', 'link', 'run'))
     depends_on('claw@2.0.2', when='+claw', type='build')
+    depends_on('netcdf-fortran')
+    depends_on('netcdf-c')
     depends_on('cdo')
+    depends_on('mpi +wrappers')
 
     for x in ['create', 'read', 'perturb']:
         depends_on('serialbox@2.6.0 ~python ~sdb ~shared',
