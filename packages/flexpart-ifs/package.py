@@ -18,7 +18,7 @@ class FlexpartIfs(MakefilePackage):
             branch='meteoswiss-10')
 
     version('fdb',
-            git='ssh://git@github.com/MeteoSwiss-APN/fdb-flexpart.git',
+            git='git@github.com/MeteoSwiss-APN/fdb-flexpart.git',
             branch='fdb')
 
     depends_on('eccodes jp2k=none +fortran',
