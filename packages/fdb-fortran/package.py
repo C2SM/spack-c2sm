@@ -13,7 +13,7 @@ class FdbFortran(CMakePackage):
 
     homepage = 'https://github.com/MeteoSwiss/fdb-fortran'
     version('archive_retreive',
-            git='ssh://git@github.com:MeteoSwiss/fdb-fortran.git',
+            git='https://github.com/MeteoSwiss/fdb-fortran.git',
             branch='archive_retreive')
 
     depends_on('cmake@3.10:', type=('build'))
