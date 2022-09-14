@@ -14,11 +14,11 @@ class FlexpartIfs(MakefilePackage):
     homepage = 'https://github.com/MeteoSwiss-APN/flexpart-ifs'
     url = 'https://github.com/MeteoSwiss-APN/flexpart-ifs/archive/refs/tags/v9.2mch.tar.gz'
     version('meteoswiss-10',
-            git='git@github.com:MeteoSwiss-APN/flexpart-ifs.git',
+            git='https://github.com/MeteoSwiss-APN/flexpart-ifs.git',
             branch='meteoswiss-10')
 
     version('fdb',
-            git='git@github.com:MeteoSwiss-APN/fdb-flexpart.git',
+            git='https://github.com/MeteoSwiss-APN/fdb-flexpart.git',
             branch='fdb')
 
     depends_on('eccodes jp2k=none +fortran',
