@@ -5,7 +5,6 @@
 
 import subprocess, re, itertools, os
 from spack import *
-from version_detection import set_versions
 
 
 class Cosmo(MakefilePackage):
@@ -31,10 +30,6 @@ class Cosmo(MakefilePackage):
 
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
-
-    set_versions(version, apngit, 'apn', regex_filter='.*mch.*')
-    set_versions(version, c2smgit, 'c2sm')
-    set_versions(version, empagit, 'empa')
 
     depends_on('netcdf-fortran', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))
@@ -476,7 +471,7 @@ class Cosmo(MakefilePackage):
         try:
             subprocess.run([
                 self.build_directory + '/test/tools/test_cosmo.py', '-s',
-                self.spec.__str__(), '-b',
+                str(self.spec), '-b',
                 str('.')
             ],
                            stderr=subprocess.STDOUT,

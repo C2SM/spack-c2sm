@@ -161,7 +161,7 @@ def installcosmo(self, args):
             dep.versions = cosmo_spec.versions.copy()
 
     # re-concretize
-    cosmo_spec = spack.cmd.parse_specs(cosmo_spec.__str__())[0]
+    cosmo_spec = spack.cmd.parse_specs(str(cosmo_spec))[0]
     cosmo_spec.concretize()
 
     # Dev-build cosmo

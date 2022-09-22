@@ -17,14 +17,11 @@ def get_name():
         # '/etc/xthostname' exists on all CSCS machines, except for Tsa and Arolla.
         # It contains the machine's name as a string.
         with open('/etc/xthostname') as f:
-            print('f.readline().strip()')
-            print(f.readline().strip())
             return f.readline().strip()
     except Exception:
         pass
 
     hostname = socket.gethostname()
-    print(hostname)
     for name in known_systems:
         if name in hostname:
             return name

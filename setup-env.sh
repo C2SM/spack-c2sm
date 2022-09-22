@@ -2,17 +2,16 @@
 
 parent_dir=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 
-# Make 'python' refer to 'python3'
-if test -f "/etc/xthostname"; then
-    case $(cat /etc/xthostname) in
-        manali*|balfrin*) module load python/3.9.13-11.3.0-bteihqu;;
-        daint*|dom*) module load cray-python;;
-    esac
+if [ "$#" -eq 1 ]; then
+    machine="$1"
 else
-    case $(hostname -s) in
-        tsa*|arolla*) module load python;;
-    esac
+    machine="$( . "$parent_dir"/env-setup/machine.sh )"
 fi
 
-python3 "$parent_dir"/install_sysconfig.py
+#. "$parent_dir"/env-setup/load_python.sh
+#python "$parent_dir"/install_sysconfig.py
+
+export SPACK_SYSTEM_CONFIG_PATH="$parent_dir"/sysconfigs/"$machine"
 . "$parent_dir"/spack/share/spack/setup-env.sh
+
+echo Spack configured for "$machine".

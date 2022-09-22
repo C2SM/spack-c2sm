@@ -2,7 +2,7 @@
 
 parent_dir=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 
-source "$parent_dir"/spack/share/spack/setup-env.sh
+. "$parent_dir"/spack/share/spack/setup-env.sh
 
 mkdir "$parent_dir"/sysconfigs/"$1"
 

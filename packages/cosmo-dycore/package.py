@@ -1,6 +1,5 @@
 from spack import *
 import subprocess, re
-from version_detection import set_versions
 
 
 class CosmoDycore(CMakePackage):
@@ -27,11 +26,6 @@ class CosmoDycore(CMakePackage):
             git='ssh://git@github.com/C2SM-RCM/cosmo.git',
             branch='c2sm-features')
     version('empa-ghg', git=empagit, branch='c2sm')
-
-    set_versions(version, apngit, 'apn', regex_filter='.*mch.*')
-    set_versions(version, c2smgit, 'c2sm')
-    set_versions(version, git, 'org')
-    set_versions(version, empagit, 'empa')
 
     variant('build_type',
             default='Release',

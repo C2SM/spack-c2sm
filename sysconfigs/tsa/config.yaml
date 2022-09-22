@@ -1,8 +1,9 @@
 config:
   extensions:
     - '$spack/../tools/spack-scripting'
-  build_stage: '$SCRATCH'
+  build_stage: '$SCRATCH/spack'
   install_tree:
     projections:
       all: '{name}/{version}/{compiler.name}/{hash}'
   build_jobs: 6
+  db_lock_timeout: 120

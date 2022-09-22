@@ -201,10 +201,10 @@ packages:
       prefix: /opt/cray/pe/netcdf-hdf5parallel/4.7.4.4/GNU/8.2
   netcdf-fortran:
     externals:
-    - spec: netcdf-fortran@4.7.4.4%nvhpc # manually added
+    - spec: netcdf-fortran@4.5.3%nvhpc # manually added
       modules:
       - cray-netcdf-hdf5parallel/4.7.4.4
-    - spec: netcdf-fortran@4.7.4.4%gcc # manually added
+    - spec: netcdf-fortran@4.5.3%gcc # manually added
       prefix: /opt/cray/pe/netcdf/4.7.4.4/GNU/8.2
   ncurses:
     externals:

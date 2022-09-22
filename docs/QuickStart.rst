@@ -10,7 +10,10 @@ To set up a spack instance, clone the repository
 To load it into your command line, execute
 .. code-block:: bash
   source spack-c2sm/setup-env.sh
-This also configures your instance for your machine.
+This auto-detects your machine and configures your instance for it.
+You can force a machine with an argument. The name has to match a folder in sysconfigs.
+.. code-block:: bash
+  source spack-c2sm/setup-env.sh tsa
 
 Set up (local machines)
 -----------------------
@@ -90,7 +93,7 @@ This is a common way to do it.
   source spack-c2sm/setup-env.sh
   spack dev-build --test=root --show-log-on-error <package> @develop <variant>
 
-You can also use spack in your system tests.
+You can also use spack in your end-to-end tests.
 This is a common way to do it.
 .. code-block:: bash
   git clone --depth 1 --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
@@ -101,7 +104,7 @@ This is a common way to do it.
 COSMO
 -----
 COSMO is currently treated specially. It has its own commands in spack-c2sm.
-The reason for this is that the optional depencendy to the C++ dycore, lives in the same repository as COSMO.
+The reason for this is that the optional depencendy on the C++ dycore lives in the same repository as COSMO.
 
 To install COSMO
 .. code-block:: bash
@@ -120,7 +123,7 @@ Example variants:
 
 ICON
 ----
-ICON currently needs a workaround when dev-building. Spack refuses to build in an empty folder. So you need to populate it with
+ICON currently needs a workaround when dev-building. Spack refuses to build in an empty folder. So you need to populate it with something
 
 .. code-block:: bash
   touch .not_empty
