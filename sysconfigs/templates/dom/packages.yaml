@@ -5,8 +5,6 @@ packages:
     compiler: [gcc@9.3.0, gcc@8.3.0, nvhpc@21.3, cce@12.0.3, gcc@11.2.0,intel@2021.3.0]
     providers:
       mpi: [mpich]
-            # if the mpich package support +cuda in the future it needs to be put there
-      mpicuda: [mpich]
       mkl: [intel-mkl]
       blas: [cray-libsci_acc, cray-libsci, intel-mkl]
       scalapack: [cray-libsci_acc, cray-libsci, intel-mkl]

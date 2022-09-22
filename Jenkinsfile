@@ -7,7 +7,7 @@ pipeline {
                     agent { label 'tsa' } 
                     steps {
                         sh """
-                        module load python/3.7.4
+                        source setup-env.sh
                         python test_spack.py --tsa """ + env.ghprbCommentBody
                     }
                     post {
@@ -22,7 +22,7 @@ pipeline {
                     agent { label 'daint' } 
                     steps {
                         sh """
-                        module load cray-python
+                        source setup-env.sh
                         python test_spack.py --daint """ + env.ghprbCommentBody
                     }
                     post {

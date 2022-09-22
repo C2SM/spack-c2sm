@@ -1,151 +1,511 @@
 compilers:
 - compiler:
-    environment: {}
-    extra_rpaths: []
-    flags: {}
-    modules:
-    - PrgEnv-gnu
-    - gcc/8.3.0
-    operating_system: cnl7
+    spec: cce@10.0.2
     paths:
       cc: cc
       cxx: CC
       f77: ftn
       fc: ftn
-    spec: gcc@8.3.0
-    target: any
-- compiler:
-    environment: {}
-    extra_rpaths: []
     flags: {}
-    modules:
-    - PrgEnv-nvidia
-    - nvidia/21.3
     operating_system: cnl7
-    paths:
-      cc: cc
-      cxx: CC
-      f77: ftn
-      fc: ftn
-    spec: pgi@21.3.0
     target: any
-- compiler:
-    environment: {}
-    extra_rpaths: []
-    flags: {}
     modules:
     - PrgEnv-cray
-    - cce/12.0.3
-    operating_system: cnl7
+    - cce/10.0.2
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: cce@13.0.1
     paths:
       cc: cc
       cxx: CC
       f77: ftn
       fc: ftn
-    spec: cce@12.0.3
-    target: any
-- compiler:
-    environment: {}
-    extra_rpaths: []
     flags: {}
+    operating_system: cnl7
+    target: any
     modules:
     - PrgEnv-cray
     - cce/13.0.1
-    operating_system: cnl7
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: cce@12.0.3
     paths:
       cc: cc
       cxx: CC
       f77: ftn
       fc: ftn
-    spec: cce@13.0.1
+    flags: {}
+    operating_system: cnl7
     target: any
-- compiler:
+    modules:
+    - PrgEnv-cray
+    - cce/12.0.3
     environment: {}
     extra_rpaths: []
+- compiler:
+    spec: cce@14.0.0
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
     flags: {}
+    operating_system: cnl7
+    target: any
+    modules:
+    - PrgEnv-cray
+    - cce/14.0.0
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: gcc@8.1.0
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: cnl7
+    target: any
+    modules:
+    - PrgEnv-gnu
+    - gcc/8.1.0
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: gcc@9.3.0
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: cnl7
+    target: any
     modules:
     - PrgEnv-gnu
     - gcc/9.3.0
-    operating_system: cnl7
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: gcc@11.2.0
     paths:
       cc: cc
       cxx: CC
       f77: ftn
       fc: ftn
-    spec: gcc@9.3.0
-    target: any
-- compiler:
-    environment: {}
-    extra_rpaths: []
     flags: {}
-    modules:
-    - PrgEnv-gnu
-    - gcc/10.3.0
     operating_system: cnl7
-    paths:
-      cc: cc
-      cxx: CC
-      f77: ftn
-      fc: ftn
-    spec: gcc@10.3.0
     target: any
-- compiler:
-    environment: {}
-    extra_rpaths: []
-    flags: {}
     modules:
     - PrgEnv-gnu
     - gcc/11.2.0
-    operating_system: cnl7
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: gcc@8.3.0
     paths:
       cc: cc
       cxx: CC
       f77: ftn
       fc: ftn
-    spec: gcc@11.2.0
+    flags: {}
+    operating_system: cnl7
     target: any
-- compiler:
+    modules:
+    - PrgEnv-gnu
+    - gcc/8.3.0
     environment: {}
     extra_rpaths: []
+- compiler:
+    spec: gcc@10.3.0
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
     flags: {}
+    operating_system: cnl7
+    target: any
+    modules:
+    - PrgEnv-gnu
+    - gcc/10.3.0
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: intel@19.0.1.144
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: cnl7
+    target: any
+    modules:
+    - PrgEnv-intel
+    - intel/19.0.1.144
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: intel@2021.3.0
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: cnl7
+    target: any
     modules:
     - PrgEnv-intel
     - intel/2021.3.0
-    operating_system: cnl7
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: intel@19.1.1.217
     paths:
       cc: cc
       cxx: CC
       f77: ftn
       fc: ftn
-    spec: intel@2021.3.0
-    target: any
-- compiler:
-    environment: {}
-    extra_rpaths: []
     flags: {}
+    operating_system: cnl7
+    target: any
     modules:
-    - PrgEnv-nvidia
-    - nvidia/21.3
-    operating_system: cnl7
+    - PrgEnv-intel
+    - intel/19.1.1.217
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: intel@2022.1.0
     paths:
       cc: cc
       cxx: CC
       f77: ftn
       fc: ftn
-    spec: nvhpc@21.3
+    flags: {}
+    operating_system: cnl7
     target: any
-- compiler:
+    modules:
+    - PrgEnv-intel
+    - intel/2022.1.0
     environment: {}
     extra_rpaths: []
+- compiler:
+    spec: intel@19.1.3.304
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
     flags: {}
+    operating_system: cnl7
+    target: any
+    modules:
+    - PrgEnv-intel
+    - intel/19.1.3.304
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: intel@2021.2.0
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: cnl7
+    target: any
+    modules:
+    - PrgEnv-intel
+    - intel/2021.2.0
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: nvhpc@21.3
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: cnl7
+    target: any
+    modules:
+    - PrgEnv-nvhpc
+    - nvhpc/21.3
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: nvhpc@21.5
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: cnl7
+    target: any
+    modules:
+    - PrgEnv-nvhpc
+    - nvhpc/21.5
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: nvhpc@21.9
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: cnl7
+    target: any
+    modules:
+    - PrgEnv-nvhpc
+    - nvhpc/21.9
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: nvhpc@22.2
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: cnl7
+    target: any
+    modules:
+    - PrgEnv-nvhpc
+    - nvhpc/22.2
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: pgi@20.1.0
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: cnl7
+    target: any
+    modules:
+    - PrgEnv-pgi
+    - pgi/20.1.0
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: pgi@20.1.1
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: cnl7
+    target: any
     modules:
     - PrgEnv-pgi
     - pgi/20.1.1
-    operating_system: cnl7
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: dpcpp@2022.1.0
     paths:
-      cc: cc
-      cxx: CC
-      f77: ftn
-      fc: ftn
-    spec: pgi@20.1.1
-    target: any
+      cc: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/icx
+      cxx: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/dpcpp
+      f77: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/ifx
+      fc: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/ifx
+    flags: {}
+    operating_system: sles15
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: gcc@10.3.0
+    paths:
+      cc: /opt/gcc/10.3.0/bin/gcc
+      cxx: /opt/gcc/10.3.0/bin/g++
+      f77: /opt/gcc/10.3.0/bin/gfortran
+      fc: /opt/gcc/10.3.0/bin/gfortran
+    flags: {}
+    operating_system: sles15
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: gcc@11.2.0
+    paths:
+      cc: /opt/gcc/11.2.0/bin/gcc
+      cxx: /opt/gcc/11.2.0/bin/g++
+      f77: /opt/gcc/11.2.0/bin/gfortran
+      fc: /opt/gcc/11.2.0/bin/gfortran
+    flags: {}
+    operating_system: sles15
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: gcc@7.5.0
+    paths:
+      cc: /usr/bin/gcc
+      cxx: /usr/bin/g++
+      f77: /usr/bin/gfortran
+      fc: /usr/bin/gfortran
+    flags: {}
+    operating_system: sles15
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: gcc@8.1.0
+    paths:
+      cc: /opt/gcc/8.1.0/bin/gcc
+      cxx: /opt/gcc/8.1.0/bin/g++
+      f77: /opt/gcc/8.1.0/bin/gfortran
+      fc: /opt/gcc/8.1.0/bin/gfortran
+    flags: {}
+    operating_system: sles15
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: gcc@8.3.0
+    paths:
+      cc: /opt/gcc/8.3.0/bin/gcc
+      cxx: /opt/gcc/8.3.0/bin/g++
+      f77: /opt/gcc/8.3.0/bin/gfortran
+      fc: /opt/gcc/8.3.0/bin/gfortran
+    flags: {}
+    operating_system: sles15
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: gcc@9.3.0
+    paths:
+      cc: /opt/gcc/9.3.0/bin/gcc
+      cxx: /opt/gcc/9.3.0/bin/g++
+      f77: /opt/gcc/9.3.0/bin/gfortran
+      fc: /opt/gcc/9.3.0/bin/gfortran
+    flags: {}
+    operating_system: sles15
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: intel@19.0.1.144
+    paths:
+      cc: /opt/intel/compilers_and_libraries_2019.1.144/linux/bin/intel64/icc
+      cxx: /opt/intel/compilers_and_libraries_2019.1.144/linux/bin/intel64/icpc
+      f77: /opt/intel/compilers_and_libraries_2019.1.144/linux/bin/intel64/ifort
+      fc: /opt/intel/compilers_and_libraries_2019.1.144/linux/bin/intel64/ifort
+    flags: {}
+    operating_system: sles15
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: intel@19.1.1.217
+    paths:
+      cc: /opt/intel/compilers_and_libraries_2020.1.217/linux/bin/intel64/icc
+      cxx: /opt/intel/compilers_and_libraries_2020.1.217/linux/bin/intel64/icpc
+      f77: /opt/intel/compilers_and_libraries_2020.1.217/linux/bin/intel64/ifort
+      fc: /opt/intel/compilers_and_libraries_2020.1.217/linux/bin/intel64/ifort
+    flags: {}
+    operating_system: sles15
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: intel@19.1.3.304
+    paths:
+      cc: /opt/intel/compilers_and_libraries_2020.4.304/linux/bin/intel64/icc
+      cxx: /opt/intel/compilers_and_libraries_2020.4.304/linux/bin/intel64/icpc
+      f77: /opt/intel/compilers_and_libraries_2020.4.304/linux/bin/intel64/ifort
+      fc: /opt/intel/compilers_and_libraries_2020.4.304/linux/bin/intel64/ifort
+    flags: {}
+    operating_system: sles15
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: intel@2021.2.0
+    paths:
+      cc: /opt/intel/oneapi/compiler/2021.2.0/linux/bin/intel64/icc
+      cxx: /opt/intel/oneapi/compiler/2021.2.0/linux/bin/intel64/icpc
+      f77: /opt/intel/oneapi/compiler/2021.2.0/linux/bin/intel64/ifort
+      fc: /opt/intel/oneapi/compiler/2021.2.0/linux/bin/intel64/ifort
+    flags: {}
+    operating_system: sles15
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: intel@2021.3.0
+    paths:
+      cc: /opt/intel/oneapi/compiler/2021.3.0/linux/bin/intel64/icc
+      cxx: /opt/intel/oneapi/compiler/2021.3.0/linux/bin/intel64/icpc
+      f77: /opt/intel/oneapi/compiler/2021.3.0/linux/bin/intel64/ifort
+      fc: /opt/intel/oneapi/compiler/2021.3.0/linux/bin/intel64/ifort
+    flags: {}
+    operating_system: sles15
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: intel@2021.6.0
+    paths:
+      cc: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/icc
+      cxx: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/icpc
+      f77: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/ifort
+      fc: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/ifort
+    flags: {}
+    operating_system: sles15
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: oneapi@2022.1.0
+    paths:
+      cc: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/icx
+      cxx: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/icpx
+      f77: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/ifx
+      fc: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/ifx
+    flags: {}
+    operating_system: sles15
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: pgi@20.1
+    paths:
+      cc: /opt/pgi/20.1.0/linux86-64/20.1/bin/pgcc
+      cxx: /opt/pgi/20.1.0/linux86-64/20.1/bin/pgc++
+      f77: /opt/pgi/20.1.0/linux86-64/20.1/bin/pgfortran
+      fc: /opt/pgi/20.1.0/linux86-64/20.1/bin/pgf90
+    flags: {}
+    operating_system: sles15
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []

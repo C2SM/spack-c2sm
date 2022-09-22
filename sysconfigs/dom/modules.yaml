@@ -1,89 +1,90 @@
 modules:
-  enable:
-    - tcl
-  tcl: 
-    all:
-      autoload: 'direct'
-    naming_scheme: '${PACKAGE}/${VERSION}'
-    hash_length: 7
-    blacklist: ['cmake', 'slurm', 'boost', 'automake', 'autoconf', 'jasper', 'libtool', 'm4', 'ncurses', 'netcdf-c', 'netcdf-fortran', 'perl', 'libjpeg']
-    boost:
-      environment:
-        set:
-          BOOST_ROOT: '${PREFIX}'
-    gridtools:
-      environment:
-        set:
-          GRIDTOOLS_DIR: '${PREFIX}'
-          GRIDTOOLS_ROOT: '${PREFIX}' 
-    cosmo-dycore:
-      environment:
-        set:
-          DYCOREGT_DIR: '${PREFIX}'
-    cosmo-grib-api-definitions:
-      environment:
-        prepend_path:
-          GRIB_DEFINITION_PATH: '${PREFIX}/cosmoDefinitions/definitions/'
-          GRIB_SAMPLES_PATH: '${PREFIX}/cosmoDefinitions/samples'
-    cosmo-grib-api:
-      environment:
-        set:
-          GRIBAPI_DIR: '${PREFIX}'
-        prepend_path:
-          GRIB_DEFINITION_PATH: '{PREFIX}/share/grib_api/definitions'
-    cosmo-eccodes-definitions:
-      environment:
-        prepend_path:
-          GRIB_DEFINITION_PATH: '${PREFIX}/cosmoDefinitions/definitions/'
-          GRIB_SAMPLES_PATH: '${PREFIX}/cosmoDefinitions/samples'
-    eccodes:
-      environment:
-        set:
-          GRIBAPI_DIR: '${PREFIX}'
-        prepend_path:
-          GRIB_DEFINITION_PATH: '{PREFIX}/share/eccodes/definitions'
-    serialbox:
-      environment:
-        set:
-          SERIALBOX_DIR: '${PREFIX}'
-          SERIALBOX_ROOT: '${PREFIX}'
-    claw:
-      environment:
-        set:
-          CLAWDIR: '${PREFIX}'
-          CLAWFC: '${PREFIX}/bin/clawfc'
-    omni-xmod-pool:
-      environment:
-        set:
-          CLAWXMODSPOOL: '${PREFIX}'
-    ant:
-      environment:
-        set:
-         ANT_HOME: '${PREFIX}'
-    bison:
-      environment:
-        set:
-          YACC: 'bison -y'
-    cosmo-dycore:
-      environment:
-        set:
-          UCX_MEMTYPE_CACHE: 'n'
-          UCX_TLS: 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma'
-          MPICH_G2G_PIPELINE: '64'
-          MPICH_RDMA_ENABLED_CUDA: '1'
-    cosmo cosmo_target=cpu:
-      environment:
-        set:
-          UCX_MEMTYPE_CACHE: 'n'
-          UCX_TLS: 'rc_x,ud_x,mm,shm,cma'
-    mpi:
-      environment:
-        set:
-          MPI_ROOT: '${PREFIX}'
-    cuda:
-      environment:
-        prepend_path:
-          CPATH: '${PREFIX}/extras/CUPTI/include:${PREFIX}/nvvm/include'
-          LD_LIBRARY_PATH: '${PREFIX}/extras/CUPTI/lib64:${PREFIX}/nvvm/lib64:/cm/local/apps/cuda/libs/current/lib64'
-          LIBRARY_PATH: '${PREFIX}/lib64/stubs'
-          PATH: '${PREFIX}:${PREFIX}/nvvm/bin'
+  default:
+    enable:
+      - tcl
+    tcl: 
+      all:
+        autoload: 'direct'
+      naming_scheme: '${PACKAGE}/${VERSION}'
+      hash_length: 7
+      blacklist: ['cmake', 'slurm', 'boost', 'automake', 'autoconf', 'jasper', 'libtool', 'm4', 'ncurses', 'netcdf-c', 'netcdf-fortran', 'perl', 'libjpeg']
+      boost:
+        environment:
+          set:
+            BOOST_ROOT: '${PREFIX}'
+      gridtools:
+        environment:
+          set:
+            GRIDTOOLS_DIR: '${PREFIX}'
+            GRIDTOOLS_ROOT: '${PREFIX}' 
+      cosmo-dycore:
+        environment:
+          set:
+            DYCOREGT_DIR: '${PREFIX}'
+      cosmo-grib-api-definitions:
+        environment:
+          prepend_path:
+            GRIB_DEFINITION_PATH: '${PREFIX}/cosmoDefinitions/definitions/'
+            GRIB_SAMPLES_PATH: '${PREFIX}/cosmoDefinitions/samples'
+      cosmo-grib-api:
+        environment:
+          set:
+            GRIBAPI_DIR: '${PREFIX}'
+          prepend_path:
+            GRIB_DEFINITION_PATH: '{PREFIX}/share/grib_api/definitions'
+      cosmo-eccodes-definitions:
+        environment:
+          prepend_path:
+            GRIB_DEFINITION_PATH: '${PREFIX}/cosmoDefinitions/definitions/'
+            GRIB_SAMPLES_PATH: '${PREFIX}/cosmoDefinitions/samples'
+      eccodes:
+        environment:
+          set:
+            GRIBAPI_DIR: '${PREFIX}'
+          prepend_path:
+            GRIB_DEFINITION_PATH: '{PREFIX}/share/eccodes/definitions'
+      serialbox:
+        environment:
+          set:
+            SERIALBOX_DIR: '${PREFIX}'
+            SERIALBOX_ROOT: '${PREFIX}'
+      claw:
+        environment:
+          set:
+            CLAWDIR: '${PREFIX}'
+            CLAWFC: '${PREFIX}/bin/clawfc'
+      omni-xmod-pool:
+        environment:
+          set:
+            CLAWXMODSPOOL: '${PREFIX}'
+      ant:
+        environment:
+          set:
+            ANT_HOME: '${PREFIX}'
+      bison:
+        environment:
+          set:
+            YACC: 'bison -y'
+      cosmo-dycore:
+        environment:
+          set:
+            UCX_MEMTYPE_CACHE: 'n'
+            UCX_TLS: 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma'
+            MPICH_G2G_PIPELINE: '64'
+            MPICH_RDMA_ENABLED_CUDA: '1'
+      cosmo cosmo_target=cpu:
+        environment:
+          set:
+            UCX_MEMTYPE_CACHE: 'n'
+            UCX_TLS: 'rc_x,ud_x,mm,shm,cma'
+      mpi:
+        environment:
+          set:
+            MPI_ROOT: '${PREFIX}'
+      cuda:
+        environment:
+          prepend_path:
+            CPATH: '${PREFIX}/extras/CUPTI/include:${PREFIX}/nvvm/include'
+            LD_LIBRARY_PATH: '${PREFIX}/extras/CUPTI/lib64:${PREFIX}/nvvm/lib64:/cm/local/apps/cuda/libs/current/lib64'
+            LIBRARY_PATH: '${PREFIX}/lib64/stubs'
+            PATH: '${PREFIX}:${PREFIX}/nvvm/bin'

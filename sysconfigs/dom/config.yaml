@@ -1,16 +1,9 @@
 config:
-  template_dirs:
-    - $spack/templates
-  module_roots:
-    tcl:
-  build_stage:
   extensions:
+    - '$spack/../tools/spack-scripting'
+  build_stage: '$SCRATCH/spack'
   install_tree:
     projections:
       all: '{name}/{version}/{compiler.name}/{hash}'
-    root:
-  source_cache:
-  misc_cache:
   build_jobs: 12
   db_lock_timeout: 120
-  concretizer: original
