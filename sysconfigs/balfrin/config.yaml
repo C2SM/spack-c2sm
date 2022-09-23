@@ -2,4 +2,4 @@ config:
   extensions:
     - '$spack/../tools/spack-scripting'
   build_stage: '$SCRATCH/spack'
-  build_jobs: 6
+  build_jobs: 12
