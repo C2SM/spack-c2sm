@@ -1,11 +1,24 @@
 compilers:
 - compiler:
-    spec: gcc@7.5.0
+    spec: gcc@11.3.0
     paths:
-      cc: /usr/bin/gcc
-      cxx: /usr/bin/g++
-      f77: /usr/bin/gfortran
-      fc: /usr/bin/gfortran
+      cc: /user-environment/linux-sles15-zen3/gcc-11.3.0/gcc-11.3.0-ijshzq3w6y6chxzth4hwxk4z4ukznocc/bin/gcc
+      cxx: /user-environment/linux-sles15-zen3/gcc-11.3.0/gcc-11.3.0-ijshzq3w6y6chxzth4hwxk4z4ukznocc/bin/g++
+      f77: /user-environment/linux-sles15-zen3/gcc-11.3.0/gcc-11.3.0-ijshzq3w6y6chxzth4hwxk4z4ukznocc/bin/gfortran
+      fc: /user-environment/linux-sles15-zen3/gcc-11.3.0/gcc-11.3.0-ijshzq3w6y6chxzth4hwxk4z4ukznocc/bin/gfortran
+    flags: {}
+    operating_system: sles15
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: nvhpc@22.7
+    paths:
+      cc: /user-environment/linux-sles15-zen3/gcc-11.3.0/nvhpc-22.7-n6kvdhyr5cuikivsw2ujf3hg34yh4okw/Linux_x86_64/22.7/compilers/bin/nvc
+      cxx: /user-environment/linux-sles15-zen3/gcc-11.3.0/nvhpc-22.7-n6kvdhyr5cuikivsw2ujf3hg34yh4okw/Linux_x86_64/22.7/compilers/bin/nvc++
+      f77: /user-environment/linux-sles15-zen3/gcc-11.3.0/nvhpc-22.7-n6kvdhyr5cuikivsw2ujf3hg34yh4okw/Linux_x86_64/22.7/compilers/bin/nvfortran
+      fc: /user-environment/linux-sles15-zen3/gcc-11.3.0/nvhpc-22.7-n6kvdhyr5cuikivsw2ujf3hg34yh4okw/Linux_x86_64/22.7/compilers/bin/nvfortran
     flags: {}
     operating_system: sles15
     target: x86_64
