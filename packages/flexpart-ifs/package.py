@@ -28,15 +28,11 @@ class FlexpartIfs(MakefilePackage):
     depends_on('fdb-fortran@archive_retreive',
                when='@fdb',
                type=('build', 'link'))
-    depends_on(
-        'fdb@5.10.8 ^eckit@1.20.2: ~mpi ^eccodes@2.19.0 jp2k=none +fortran ^metkit@1.9.2',
-        when='@fdb',
-        type=('build', 'link'))
     build_directory = 'src'
 
     @property
     def build_targets(self):
-        build = ['ncf=yes', 'VERBOSE=1', 'serial']
+        build = ['ncf=yes', 'VERBOSE=3', 'serial']
         return build
 
     def edit(self, spec, prefix):
