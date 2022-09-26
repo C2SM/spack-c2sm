@@ -21,8 +21,7 @@ class Fdb(CMakePackage):
     version("5.7.8",
             sha256=
             "6adac23c0d1de54aafb3c663d077b85d0f804724596623b381ff15ea4a835f60")
-    version("master",
-            git='https://github.com/ecmwf/fdb.git', branch='master')
+    version("master", git='https://github.com/ecmwf/fdb.git', branch='master')
 
     variant("tools", default=True, description="Build the command line tools")
     variant(
