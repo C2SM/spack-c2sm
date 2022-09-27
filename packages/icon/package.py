@@ -55,7 +55,7 @@ class Icon(Package):
                when='+eccodes',
                type=('build', 'link', 'run'))
     depends_on('claw@2.0.2', when='+claw', type=('build', 'link', 'run'))
-    depends_on('cdo')
+    depends_on('cdo', type='test')
 
     for x in ['create', 'read', 'perturb']:
         depends_on('serialbox@2.6.0 ~python ~sdb ~shared',
