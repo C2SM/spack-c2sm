@@ -32,7 +32,7 @@ class FlexpartIfs(MakefilePackage):
 
     @property
     def build_targets(self):
-        build = ['ncf=yes', 'VERBOSE=3', 'serial']
+        build = ['ncf=yes', 'VERBOSE=1', 'serial']
         return build
 
     def edit(self, spec, prefix):
