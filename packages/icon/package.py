@@ -3,13 +3,9 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-import os, subprocess
 from spack import *
 
-import llnl.util.tty as tty
-
-
-class Icon(Package):
+class Icon(AutotoolsPackage):
     """The ICON modelling framework is a joint project between the
     German Weather Service and the
     Max Planck Institute for Meteorology for
@@ -24,46 +20,48 @@ class Icon(Package):
     maintainers = ['egermann']
 
     version('master', branch='master', submodules=True)
-    version('dev-build', branch='master', submodules=True)
-    version('nwp',
-            git='ssh://git@gitlab.dkrz.de/icon/icon-nwp.git',
-            submodules=True)
-    version('cscs',
-            git='ssh://git@gitlab.dkrz.de/icon/icon-cscs.git',
-            submodules=True)
-    version('aes',
-            git='ssh://git@gitlab.dkrz.de/icon/icon-aes.git',
-            submodules=True)
-    version('ham',
-            git='ssh://git@git.iac.ethz.ch:hammoz/icon-hammoz.git',
-            branch='hammoz/gpu/master',
-            submodules=True)
-    version('exclaim-master',
-            branch='master',
-            git='ssh://git@github.com/C2SM/icon-exclaim.git',
-            submodules=True)
-    version('c2sm-master',
-            branch='master',
-            git='ssh://git@github.com/C2SM/icon.git',
-            submodules=True)
-    version('2.6.x-rc', commit='040de650', submodules=True)
-    version('2.0.17', commit='39ed04ad', submodules=True)
+    version('2.6.5', tag='icon-2.6.4', submodules=True)
+    version('2.6.4.2', tag='icon-2.6.4.2', submodules=True)
+    version('2.6.3', tag='icon-2.6.3', submodules=True)
+    version('2.6.2.2', tag='icon-2.6.2.2', submodules=True)
+    version('nwp', git='ssh://git@gitlab.dkrz.de/icon/icon-nwp.git', submodules=True)
+    version('cscs', git='ssh://git@gitlab.dkrz.de/icon/icon-cscs.git', submodules=True)
+    version('aes', git='ssh://git@gitlab.dkrz.de/icon/icon-aes.git', submodules=True)
+    version('ham', git='ssh://git@git.iac.ethz.ch:hammoz/icon-hammoz.git', branch='hammoz/gpu/master', submodules=True)
+    version('exclaim-master', git='ssh://git@github.com/C2SM/icon-exclaim.git', branch='master', submodules=True)
+    version('c2sm-master', git='ssh://git@github.com/C2SM/icon.git', branch='master', submodules=True)
 
-    depends_on('cmake')
-    depends_on('libxml2')
-    depends_on('eccodes@2.19.0: +shared',
-               when='+eccodes',
-               type=('build', 'link', 'run'))
-    depends_on('claw@2.0.2', when='+claw', type='build')
-    depends_on('netcdf-fortran')
-    depends_on('netcdf-c')
-    depends_on('cdo')
-    depends_on('mpi +wrappers')
+    # Model Features:
+    variant('atmo', default=False, description='Enable the atmosphere component')
+    variant('ocean', default=False, description='Enable the ocean component')
+    variant('jsbach', default=False, description='Enable the land component')
+    variant('coupling', default=False, description='Enable the coupling')
+    variant('ecrad', default=False, description='Enable usage of the ECMWF radiation scheme')
+    variant('rte-rrtmgp', default=False, description='Enable usage of the RTE+RRTMGP toolbox for radiation calculations')
+    variant('rttov', default=False, description='Enable usage of the radiative transfer model for TOVS')
+    variant('dace', default=False, description='Enable the DACE modules for data assimilation')
+    variant('emvorado', default=False, description='Enable the radar forward operator EMVORADO')
+    variant('art', default=False, description='Enable the aerosols and reactive trace component ART')
+    variant('silent-rules', default=False, description='Build with Make silent rules ON')
 
-    for x in ['create', 'read', 'perturb']:
-        depends_on('serialbox@2.6.0 ~python ~sdb ~shared',
-                   type=('build', 'link', 'run'),
-                   when=f'serialize_mode={x}')
+    # Infrastructural Features:
+    variant('mpi', default=False, description='Enable MPI (parallelization) support')
+    variant('openmp', default=False, description='Enable OpenMP support')
+    variant('grib2', default=False, description='Enable GRIB2 I/O')
+    variant('parallel-netcdf', default=False, description='Enable usage of the parallel features of NetCDF')
+    # variant('cdi-pio', default=False, description='Enable usage of the parallel features of CDI') #TODO: add this eventually!
+    # variant('sct', default=False, description='Enable the SCT timer') #TODO: add this eventually!
+    # variant('yaxt', default=False, description='Enable the YAXT data exchange') #TODO: add this eventually!
+    variant('claw', default=False, description='Build with claw directories enabled')
+
+    serialization_values = ('read', 'perturb', 'create')
+    variant('serialization', default='none',
+            values=('none',) + serialization_values,
+            description='Enable the Serialbox2 serialization')
+
+    # Optimization Features:
+    variant('mixed-precision', default=False, description='Enable mixed precision dycore')
+
 
     variant('icon_target',
             default='gpu',
@@ -77,48 +75,48 @@ class Icon(Package):
             default='cscs',
             description='Build on described site (e.g cscs)',
             multi=False)
-    variant('claw',
-            default=False,
-            description='Build with claw directories enabled')
-    variant('rte-rrtmgp',
-            default=True,
-            description='Build with rte-rrtmgp enabled')
-    variant('mpi-checks',
-            default=False,
-            description='Build with mpi-check enabled')
-    variant('openmp', default=True, description='Build with openmp enabled')
-    variant('serialize_mode',
-            default='none',
-            description='Build with serialization, with serialze_mode enabled',
-            values=('none', 'create', 'read', 'perturb'))
-    variant('eccodes', default=False, description='Build with grib2 enabled')
-    variant('test_name',
-            default='none',
-            description='Launch test: test_name after installation')
-    variant('skip-config', default=False, description='Skip configure phase')
     variant('config_dir',
             default='.',
             description='Enable out-of-source build by describing config_dir')
+
     variant('ham',
             default=False,
             description='Build with hammoz and atm_phy_echam enabled.')
-    variant('art', default=False, description='Build with art enabled')
-    variant('ocean', default=True, description='Build with ocean enabled')
-    variant('dace', default=False, description='Build with DACE enabled')
-    variant('rttov', default=False, description='Build with RTTOV enabled')
-    variant('mixed-precision',
-            default=False,
-            description='Build the ICON dycore in mixed precision')
-    variant('silent-rules',
-            default=True,
-            description='Build with Make silent rules ON')
 
+    depends_on('libxml2')
+
+    for x in serialization_values:
+        depends_on('serialbox', when=f'serialization={x}')
+
+    depends_on('eccodes +aec jp2k=openjpeg', when='+grib2')
+    depends_on('eccodes +aec jp2k=openjpeg +fortran', when='+emvorado')
+
+    depends_on('netcdf-fortran')
+
+    depends_on('netcdf-c')
+    depends_on('netcdf-c +mpi', when='+parallel-netcdf')
+
+    depends_on('hdf5 +szip +hl +fortran', when='+emvorado')
+
+    depends_on('zlib', when='+emvorado')
+    depends_on('mpi +wrappers', when='+mpi')
+
+    #TODO: Add cuda dependency
+
+    depends_on('claw', when='+claw', type='build')
+    depends_on('claw@:2.0.2', when='@:2.6.2.2 +claw', type='build')
+
+    depends_on('cdo')
+
+    conflicts('+rte-rrtmgp', when='@:2.6.2.2')
+    conflicts('+art', when='@:2.6.2.2')
+    conflicts('+dace', when='@:2.6.2.2~rttov')
+    conflicts('+dace', when='~mpi')
+    conflicts('+dace', when='+rttov')
+    conflicts('+emvorado', when='~mpi')
     conflicts('icon_target=cpu', when='+claw')
     conflicts('icon_target=gpu', when='%intel')
     conflicts('icon_target=gpu', when='%gcc')
-    conflicts('+dace', when='+rttov')
-
-    phases = ['configure', 'build', 'install']
 
     @run_before('configure')
     def generate_hammoz_nml(self):
@@ -127,167 +125,53 @@ class Icon(Package):
                 make()
 
     def setup_build_environment(self, env):
-        self.config_dir = self.spec.variants['config_dir'].value
-        _config_file_name = self.spec.variants[
-            'host'].value + '.' + self.spec.variants['icon_target'].value
-        if self.compiler.name == 'cce':
-            _config_file_name += '.cray'
-        elif self.compiler.name == 'nvhpc' or self.compiler.name == 'pgi':
-            _config_file_name += '.nvidia'
-        else:
-            _config_file_name += '.' + self.compiler.name
-
-        self._config_file_name = _config_file_name
-
+        env.set('XML2_ROOT', self.spec['libxml2'].prefix)
         if '+dace' in self.spec:
             env.set('ICON_FCFLAGS', '-O2')
             env.set('ICON_DACE_FCFLAGS', '-O1')
-
-        if '~skip-config' in self.spec:
-            env.set('XML2_ROOT', self.spec['libxml2'].prefix)
-            if self.spec.variants['serialize_mode'].value != 'none':
-                env.set('SERIALBOX2_ROOT', self.spec['serialbox'].prefix)
-            if '+claw' in self.spec:
-                env.set('CLAW', self.spec['claw'].prefix + '/bin/clawfc')
-            if '+eccodes' in self.spec:
-                env.set('ECCODES_ROOT', self.spec['eccodes'].prefix)
+        if self.spec.variants['serialization'].value != 'none':
+            env.set('SERIALBOX2_ROOT', self.spec['serialbox'].prefix)
+        if '+claw' in self.spec:
+            env.set('CLAW', self.spec['claw'].prefix + '/bin/clawfc')
+        if '+eccodes' in self.spec:
+            env.set('ECCODES_ROOT', self.spec['eccodes'].prefix)
         if self.run_tests:
             # setting BB_SYSTEM sets d56 as account in file create_target_header
             env.set('BB_SYSTEM', 'use_d56_account')
 
     def configure_args(self):
+        config_args = []
 
-        args = []
+        for x in ['atmo', 'ocean', 'jsbach', 'coupling', 'ecrad', 'rte-rrtmgp',
+                  'rttov', 'dace', 'emvorado', 'art', 'silent-rules', 'mpi', 'openmp', 'grib2',
+                  'parallel-netcdf', 'claw', 'mixed-precision']:
+            config_args += self.enable_or_disable(x)
+
+        serialization = self.spec.variants['serialization'].value
+        if serialization == 'none':
+            config_args.append('--disable-serialization')
+        else:
+            config_args.append(f'--enable-serialization={serialization}')
 
         # Icon-hammoz:
         if '+ham' in self.spec:
-            args.append('--enable-atm-phy-echam-submodels')
-            args.append('--enable-hammoz')
+            config_args.append('--enable-atm-phy-echam-submodels')
+            config_args.append('--enable-hammoz')
 
-        # Serialization
-        if self.spec.variants['serialize_mode'].value != 'none':
-            args.append('--enable-serialization=' +
-                        self.spec.variants['serialize_mode'].value)
-
-        # Art
-        if '+art' in self.spec:
-            args.append('--enable-art')
-
-        # Claw
-        if '+claw' in self.spec:
-            args.append('--enable-claw')
-
-        # Eccodes
-        if '+eccodes' in self.spec:
-            args.append('--enable-grib2')
-
-        # DACE
-        if '+dace' in self.spec:
-            args.append('--enable-dace')
-
-        # Ocean
-        if '+ocean' in self.spec:
-            args.append('--enable-ocean')
-        else:
-            args.append('--disable-ocean')
-
-        # Rte-rrtmgp
-        if '~rte-rrtmgp' in self.spec:
-            args.append('--disable-rte-rrtmgp')
-
-        # RTTOV
-        if '~rttov' in self.spec:
-            args.append('--disable-rttov')
-
-        # Mixed-precision
-        if '+mixed-precision' in self.spec:
-            args.append('--enable-mixed-precision')
-
-        # Silent rules
-        if '~silent-rules' in self.spec:
-            args.append('--disable-silent-rules')
-
-        return args
+        return config_args
 
     def configure(self, spec, prefix):
-        if '~skip-config' in spec:
-            configure = Executable(
-                f'{self.config_dir}/config/{self.spec.variants["site"].value}/{self._config_file_name} --prefix={prefix}'
-            )
-            configure(*self.configure_args())
+        dir = self.spec.variants["config_dir"].value
+        site = self.spec.variants["site"].value
+        host = self.spec.variants["host"].value
+        PU = self.spec.variants["icon_target"].value
 
-    def build(self, spec, prefix):
-        make()
-
-    def install(self, spec, prefix):
-        make('install')
-
-    @run_before('install')
-    @on_package_attributes(run_tests=True)
-    def check(self):
-        if os.path.exists('scripts/spack/test.py'):
-            try:
-                subprocess.run(
-                    ['./scripts/spack/test.py', '--spec',
-                     str(self.spec)],
-                    check=True)
-            except:
-                raise InstallError('Tests failed')
+        if self.compiler.name == 'cce':
+                compiler = 'cray'
+        elif self.compiler.name == 'nvhpc' or self.compiler.name == 'pgi':
+                compiler = 'nvidia'
         else:
-            tty.warn('Cannot find test.py -> skipping tests')
+                compiler = self.compiler.name
 
-    @run_after('build')
-    def test(self):
-        if self.spec.variants['test_name'].value == 'none':
-            return
-
-        if '+ham' in self.spec:
-            try:
-                subprocess.run([
-                    'indata_hammoz_root=/store/c2sm/c2sme/input_gcm/icon/input_hammoz/ ./make_runscripts -s '
-                    + self.spec.variants['test_name'].value
-                ],
-                               shell=True,
-                               stderr=subprocess.STDOUT,
-                               check=True)
-            except:
-                raise InstallError('make runscripts failed')
-        else:
-            try:
-                subprocess.run([
-                    './make_runscripts', '-s',
-                    self.spec.variants['test_name'].value
-                ],
-                               stderr=subprocess.STDOUT,
-                               check=True)
-            except:
-                raise InstallError('make runscripts failed')
-        try:
-            if self.spec.variants['host'].value == 'daint':
-                subprocess.run([
-                    'sbatch', '-W', '--time=00:15:00', '-A', 'g110', '-C',
-                    'gpu', '-p', 'debug',
-                    'exp.' + self.spec.variants['test_name'].value + '.run'
-                ],
-                               stderr=subprocess.STDOUT,
-                               cwd='run',
-                               check=True)
-            if self.spec.variants['host'].value == 'tsa':
-                subprocess.run([
-                    'sbatch', '-W', '--time=00:15:00', '-p', 'dev',
-                    'exp.' + self.spec.variants['test_name'].value + '.run'
-                ],
-                               stderr=subprocess.STDOUT,
-                               cwd='run',
-                               check=True)
-        except:
-            raise InstallError('Submitting test failed')
-
-        test_status = subprocess.check_output(
-            ['cat', 'finish.status'],
-            cwd=os.path.join('experiments',
-                             self.spec.variants['test_name'].value))
-        if 'OK' in str(test_status):
-            print('Test OK!')
-        else:
-            raise InstallError('Test failed')
+        configure = Executable(f'{dir}/config/{site}/{host}.{PU}.{compiler} --prefix={prefix}')
+        configure(*self.configure_args())
