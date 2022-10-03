@@ -19,7 +19,6 @@ class Cosmo(MakefilePackage):
     maintainers = ['elsagermann']
 
     version('org-master', branch='master', get_full_repo=True)
-    version('dev-build', branch='master', get_full_repo=True)
     version('apn-mch', git=apngit, branch='mch', get_full_repo=True)
     version('c2sm-master', git=c2smgit, branch='master', get_full_repo=True)
     version('c2sm-features',
