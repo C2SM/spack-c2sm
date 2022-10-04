@@ -21,9 +21,7 @@ class IconTest(unittest.TestCase):
 class Int2lmTest(unittest.TestCase):
 
     def test_org_master(self):
-        subprocess.run('spack spec int2lm @org-master',
-                       check=True,
-                       shell=True)
+        subprocess.run('spack spec int2lm @org-master', check=True, shell=True)
 
 
 if __name__ == '__main__':
