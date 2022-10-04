@@ -37,7 +37,7 @@ pipeline {
                     }
                     stage('Unit Tests') {
                         steps {
-                            sh "spack-c2sm/test/unit/test_env_setup_machine.sh"
+                            sh "spack-c2sm/test/unit/test_env_setup_machine.sh ${NODENAME}"
                         }
                     }
                     stage('Integration Tests') {
