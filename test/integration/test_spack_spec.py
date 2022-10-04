@@ -3,15 +3,22 @@
 # Tests that the command 'SPACK SPEC ...' work.
 
 import os
+import subprocess
 import unittest
 
-repo_path = os.path.dirname(os.path.realpath(__file__)) + '/../..'
+class CosmoTest(unittest.TestCase):
+    def test_org_master(self):
+        subprocess.run( f'spack spec cosmo @org-master', check=True, shell=True)
 
 
-class TestCosmo(unittest.TestCase):
+class IconTest(unittest.TestCase):
+    def test_nwp(self):
+        subprocess.run( f'spack spec icon @nwp', check=True, shell=True)
 
-    def test_name(self):
-        pass
+
+class Int2lmTest(unittest.TestCase):
+    def test_org_master(self):
+        subprocess.run( f'spack spec int2lm @org-master', check=True, shell=True)
 
 
 if __name__ == '__main__':

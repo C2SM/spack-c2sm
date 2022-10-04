@@ -1,5 +1,11 @@
 pipeline {
-    agent none
+    agent any
+    post {
+        always {
+            echo 'Cleaning up workspace'
+            deleteDir() 
+        }
+    }
     stages {
         stage('Tests') {
             matrix {
@@ -12,15 +18,31 @@ pipeline {
                         values 'tsa', 'daint', 'dom', 'manali'
                     }
                 }
+                post {
+                    always {
+                        echo 'Cleaning up inner workspace'
+                        deleteDir()
+                    }
+                }
                 stages {
+                    stage('Clone') {
+                        steps {
+                            sh """
+                            if [ ${NODENAME} == 'tsa' ]; then
+                                module load git
+                            fi
+                            git clone --depth 1 --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
+                            """
+                        }
+                    }
                     stage('Unit Tests') {
                         steps {
-                            echo "Unit Tests for ${NODENAME}"
+                            sh "spack-c2sm/test/unit/test_env_setup_machine.sh"
                         }
                     }
                     stage('Integration Tests') {
                         steps {
-                            echo "Integration Tests for ${NODENAME}"
+                             sh "python spack-c2sm/test/integration/test_spack_spec.py"
                         }
                     }
                 }
