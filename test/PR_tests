@@ -1,0 +1,30 @@
+pipeline {
+    agent none
+    stages {
+        stage('Tests') {
+            matrix {
+                agent {
+                    label "${NODENAME}"
+                }
+                axes {
+                    axis {
+                        name 'NODENAME'
+                        values 'tsa', 'daint', 'dom', 'manali'
+                    }
+                }
+                stages {
+                    stage('Unit Tests') {
+                        steps {
+                            echo "Unit Tests for ${NODENAME}"
+                        }
+                    }
+                    stage('Integration Tests') {
+                        steps {
+                            echo "Integration Tests for ${NODENAME}"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
