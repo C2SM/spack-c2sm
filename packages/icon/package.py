@@ -132,16 +132,22 @@ class Icon(Package):
             if self.spec.satisfies('%nvhpc'):
 
                 config_dir = self.spec.variants['config_dir'].value
-                file_to_patch = self.spec.variants['host'].value + '.' + self.spec.variants['icon_target'].value
+                file_to_patch = self.spec.variants[
+                    'host'].value + '.' + self.spec.variants[
+                        'icon_target'].value
                 file_to_patch += '.nvidia'
 
                 file_to_patch = f'{config_dir}/config/{self.spec.variants["site"].value}/{file_to_patch}'
 
                 # omptarget is not needed anymore with nvidia
-                filter_file(r'-L/opt/pgi/20.1.1/linux86-64-llvm/20.1/lib/libomp -lomptarget',' ', file_to_patch)
+                filter_file(
+                    r'-L/opt/pgi/20.1.1/linux86-64-llvm/20.1/lib/libomp -lomptarget',
+                    ' ', file_to_patch)
 
                 # cudatoolkit got a new name, delete once all config-wrappers are updated
-                filter_file(r'cudatoolkit/21.3_11.2','cudatoolkit/11.0.2_3.38-8.1__g5b73779', file_to_patch)
+                filter_file(r'cudatoolkit/21.3_11.2',
+                            'cudatoolkit/11.0.2_3.38-8.1__g5b73779',
+                            file_to_patch)
 
     @run_before('configure')
     def generate_hammoz_nml(self):
