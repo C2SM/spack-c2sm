@@ -42,7 +42,10 @@ pipeline {
                     }
                     stage('Integration Tests') {
                         steps {
-                             sh "python3 spack-c2sm/test/integration/test_spack_spec.py"
+                            sh """
+                            . spack-c2sm/setup-env.sh
+                            python3 spack-c2sm/test/integration/test_spack_spec.py
+                            """
                         }
                     }
                 }
