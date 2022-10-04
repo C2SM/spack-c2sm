@@ -9,7 +9,7 @@ mkdir "$parent_dir"/sysconfigs/"$1"
 spack env create "$1"
 spack env activate "$1"
 spack compiler find
-spack external find
+spack external find --all
 spack config get compilers > "$parent_dir"/sysconfigs/"$1"/compilers.yaml
 spack config get packages > "$parent_dir"/sysconfigs/"$1"/packages.yaml
 spack env deactivate
