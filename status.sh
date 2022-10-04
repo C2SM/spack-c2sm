@@ -18,3 +18,7 @@ python --version
 echo ""
 echo ">>> PYTHON3 --VERSION <<<"
 python3 --version
+echo ""
+echo ">>> GIT --VERSION <<<"
+git --version
+echo ""
