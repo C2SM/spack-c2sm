@@ -57,6 +57,11 @@ packages:
     externals:
     - prefix: /usr
       spec: bzip2@1.0.6
+  cdo:
+    buildable: false
+    externals:
+    - prefix: /project/d56/daint/local.gcc/bin
+      spec: cdo@1.9.5
   cmake:
     buildable: false
     externals:
@@ -135,9 +140,9 @@ packages:
     externals:
     - extra_attributes:
         compilers:
-          c: /usr/bin/gcc-7
+          c: /usr/bin/gcc
           cxx: /usr/bin/g++
-          fortran: /usr/bin/gfortran-7
+          fortran: /usr/bin/gfortran
       prefix: /usr
       spec: gcc@7.5.0 languages=c,c++,fortran
   ghostscript:
@@ -178,6 +183,7 @@ packages:
     - nvhpc@21.3
     - pgi@21.3.0
     - cce@12.0.3
+    - gcc@9.3.0
     variants: host=daint
   icontools:
     compiler:
