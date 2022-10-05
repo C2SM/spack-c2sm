@@ -21,7 +21,7 @@ class Infero(CMakePackage):
 
     depends_on('eckit@1.20.0:')
     depends_on('fckit')
-    depends_on('ecbuild',type('build'))
+    depends_on('ecbuild',type=('build'))
     depends_on('tensorflowc')
 
     def cmake_args(self):
@@ -43,6 +43,6 @@ class Infero(CMakePackage):
             # enable TF-C backend
             self.define('ENABLE_TF_C', True),
             self.define(f'TENSORFLOWC_ROOT',
-                        f'{self.spec["libtensorflow"].prefix}')
+                        f'{self.spec["tensorflowc"].prefix}')
         ]
         return args

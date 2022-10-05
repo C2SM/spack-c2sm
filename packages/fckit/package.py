@@ -19,7 +19,7 @@ class Fckit(CMakePackage):
 
     maintainers = ['juckerj']
 
-    depends_on('ecbuild',type('build'))
+    depends_on('ecbuild',type=('build'))
 
     def cmake_args(self):
         args = [self.define('ecbuild_ROOT', self.spec["ecbuild"].prefix)]

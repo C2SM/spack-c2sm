@@ -6,7 +6,7 @@
 from spack import *
 
 
-class TensorFlowC(Package):
+class Tensorflowc(Package):
     '''
     TensorFlow provides a C API that can be used to build bindings for other languages. 
     The API is defined in c_api.h and designed for simplicity and uniformity rather than convenience.
