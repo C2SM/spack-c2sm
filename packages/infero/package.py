@@ -24,23 +24,25 @@ class Infero(CMakePackage):
     depends_on('ecbuild',type('build'))
     depends_on('tensorflowc')
 
-
     def cmake_args(self):
         args = [
-            self.define('CMAKE_PREFIX_PATH',f'{self.spec["ecbuild"].prefix}/share/ecbuild/cmake'),
-            self.define('CMAKE_Fortran_MODULE_DIRECTORY',self.prefix.module),
-
+            self.define('CMAKE_PREFIX_PATH',
+                        f'{self.spec["ecbuild"].prefix}/share/ecbuild/cmake'),
+            self.define('CMAKE_Fortran_MODULE_DIRECTORY', self.prefix.module),
             self.define('ENABLE_TESTS', self.run_tests),
-            self.define('ENABLE_MPI',False),
-            self.define('ENABLE_FCKIT',False),
-            self.define('ENABLE_TENSORRT',False),
-            self.define('ENABLE_ONNX',False),
-            self.define('ENABLE_ONNX',False),
+            self.define('ENABLE_MPI', False),
+            self.define('ENABLE_FCKIT', False),
+            self.define('ENABLE_TENSORRT', False),
+            self.define('ENABLE_ONNX', False),
+            self.define('ENABLE_ONNX', False),
+            self.define('ENABLE_FCKIT', True),
 
-            self.define('ENABLE_FCKIT',True),
-            self.define(f'FCKIT_ROOT',f'{self.spec["fckit"].prefix}'),
+            # enable Fortran interfaces
+            self.define(f'FCKIT_ROOT', f'{self.spec["fckit"].prefix}'),
 
-            self.define('ENABLE_TF_C',True),
-            self.define(f'TENSORFLOWC_ROOT',f'{self.spec["tensorflowc"].prefix}')
-            ]
+            # enable TF-C backend
+            self.define('ENABLE_TF_C', True),
+            self.define(f'TENSORFLOWC_ROOT',
+                        f'{self.spec["libtensorflow"].prefix}')
+        ]
         return args
