@@ -18,7 +18,5 @@ class Fckit(CMakePackage):
     depends_on('ecbuild')
 
     def cmake_args(self):
-        args = [
-            self.define('ecbuild_ROOT',self.spec["ecbuild"].prefix)
-            ]
+        args = [self.define('ecbuild_ROOT', self.spec["ecbuild"].prefix)]
         return args
