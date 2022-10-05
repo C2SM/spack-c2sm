@@ -59,6 +59,8 @@ packages:
       modules:
       - daint-gpu
       - CMake/3.22.1
+    - prefix: /usr/bin
+      spec: cmake@3.17.0
   cuda:
     buildable: false
     version: ['11.0']
