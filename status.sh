@@ -1,7 +1,18 @@
 #!/bin/sh
 
+parent_dir=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+
+echo ">>> GIT --VERSION <<<"
+git --version
+echo ""
 echo ">>> GIT STATUS <<<"
-git status
+git -C "$parent_dir" status
+echo ""
+echo ">>> PYTHON --VERSION <<<"
+python --version
+echo ""
+echo ">>> PYTHON3 --VERSION <<<"
+python3 --version
 echo ""
 echo ">>> SPACK --VERSION <<<"
 spack --version
@@ -10,15 +21,5 @@ echo ">>> SPACK_SYSTEM_CONFIG_PATH <<<"
 echo $SPACK_SYSTEM_CONFIG_PATH
 echo ""
 echo ">>> MACHINE <<<"
-env-setup/machine.sh
-echo ""
-echo ""
-echo ">>> PYTHON --VERSION <<<"
-python --version
-echo ""
-echo ">>> PYTHON3 --VERSION <<<"
-python3 --version
-echo ""
-echo ">>> GIT --VERSION <<<"
-git --version
+"$parent_dir"/env-setup/machine.sh
 echo ""
