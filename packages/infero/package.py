@@ -21,7 +21,7 @@ class Infero(CMakePackage):
 
     depends_on('eckit@1.20.0:')
     depends_on('fckit')
-    depends_on('ecbuild',type=('build'))
+    depends_on('ecbuild', type=('build'))
     depends_on('tensorflowc')
 
     def cmake_args(self):
