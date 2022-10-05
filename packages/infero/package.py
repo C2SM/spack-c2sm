@@ -8,8 +8,10 @@ from spack import *
 
 
 class Infero(CMakePackage):
-    """ecCodes is a package developed by ECMWF for processing meteorological
-    data in GRIB (1/2), BUFR (3/4) and GTS header formats."""
+    '''
+    Infero runs a pre-trained ML model for inference. It can be deployed on a HPC system 
+    without the need for high-level python libraries (e.g. TensorFlow, PyTorch, etc..)
+    '''
 
     git = "https://github.com/jonasjucker/infero.git"
 
@@ -18,9 +20,9 @@ class Infero(CMakePackage):
     maintainers = ['juckerj']
 
     depends_on('eckit@1.20.0:')
-    depends_on('fckit@1.20.0:')
-    depends_on('ecbuild')
-    depends_on('libtensorflow')
+    depends_on('fckit')
+    depends_on('ecbuild',type('build'))
+    depends_on('tensorflowc')
 
 
     def cmake_args(self):
@@ -39,6 +41,6 @@ class Infero(CMakePackage):
             self.define(f'FCKIT_ROOT',f'{self.spec["fckit"].prefix}'),
 
             self.define('ENABLE_TF_C',True),
-            self.define(f'TENSORFLOWC_ROOT',f'{self.spec["libtensorflow"].prefix}')
+            self.define(f'TENSORFLOWC_ROOT',f'{self.spec["tensorflowc"].prefix}')
             ]
         return args

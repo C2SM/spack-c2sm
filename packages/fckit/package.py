@@ -8,6 +8,10 @@ from spack import *
 
 
 class Fckit(CMakePackage):
+    '''
+    Fortran toolkit for interoperating Fortran with C/C++.
+    In addition useful algorithms from ecKit are wrapped with Fortran.
+    '''
 
     git = 'https://github.com/ecmwf/fckit.git'
 
@@ -15,7 +19,7 @@ class Fckit(CMakePackage):
 
     maintainers = ['juckerj']
 
-    depends_on('ecbuild')
+    depends_on('ecbuild',type('build'))
 
     def cmake_args(self):
         args = [

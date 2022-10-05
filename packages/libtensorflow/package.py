@@ -6,9 +6,10 @@
 from spack import *
 
 
-class Libtensorflow(Package):
+class TensorFlowC(Package):
     '''
-    Tensorflow-C for GPU's
+    TensorFlow provides a C API that can be used to build bindings for other languages. 
+    The API is defined in c_api.h and designed for simplicity and uniformity rather than convenience.
     '''
 
     homepage = "https://www.tensorflow.org/install/lang_c"
