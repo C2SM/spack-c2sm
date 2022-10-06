@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+from collections import defaultdict
 
 
 class Icon(AutotoolsPackage):
@@ -126,6 +127,10 @@ class Icon(AutotoolsPackage):
             default=False,
             description='Build with hammoz and atm_phy_echam enabled.')
 
+    depends_on('autoconf')
+    depends_on('automake')
+    depends_on('libtool')
+
     depends_on('libxml2')
 
     for x in serialization_values:
@@ -133,6 +138,9 @@ class Icon(AutotoolsPackage):
 
     depends_on('eccodes +aec jp2k=openjpeg', when='+grib2')
     depends_on('eccodes +aec jp2k=openjpeg +fortran', when='+emvorado')
+
+    depends_on('lapack')
+    depends_on('blas')
 
     depends_on('netcdf-fortran')
 
@@ -144,16 +152,16 @@ class Icon(AutotoolsPackage):
     depends_on('zlib', when='+emvorado')
     depends_on('mpi +wrappers', when='+mpi')
 
-    #TODO: Add cuda dependency
+    depends_on('cuda', when='icon_target=gpu')
 
     depends_on('claw', when='+claw', type='build')
     depends_on('claw@:2.0.2', when='@:2.6.2.2 +claw', type='build')
 
-    depends_on('cdo')
+    depends_on('cdo', type='test')
 
     conflicts('+rte-rrtmgp', when='@:2.6.2.2')
     conflicts('+art', when='@:2.6.2.2')
-    conflicts('+dace', when='@:2.6.2.2~rttov')
+    # conflicts('+dace', when='@:2.6.2.2~rttov')
     conflicts('+dace', when='~mpi')
     conflicts('+dace', when='+rttov')
     conflicts('+emvorado', when='~mpi')
@@ -163,8 +171,9 @@ class Icon(AutotoolsPackage):
 
     @run_before('configure')
     def generate_hammoz_nml(self):
+        dir = self.spec.variants["config_dir"].value
         if '+ham' in self.spec:
-            with working_dir('./externals/atm_phy_echam_submodels/namelists'):
+            with working_dir(f'{dir}/externals/atm_phy_echam_submodels/namelists'):
                 make()
 
     def setup_build_environment(self, env):
@@ -176,14 +185,24 @@ class Icon(AutotoolsPackage):
             env.set('SERIALBOX2_ROOT', self.spec['serialbox'].prefix)
         if '+claw' in self.spec:
             env.set('CLAW', self.spec['claw'].prefix + '/bin/clawfc')
-        if '+eccodes' in self.spec:
+        if '+grib2' in self.spec or '+emvorado' in self.spec:
             env.set('ECCODES_ROOT', self.spec['eccodes'].prefix)
         if self.run_tests:
             # setting BB_SYSTEM sets d56 as account in file create_target_header
             env.set('BB_SYSTEM', 'use_d56_account')
 
+    # def enable_or_disable(self, name):
+    #     if f'+{name}' in self.spec:
+    #         prefix = 'enable'
+    #     else:
+    #         prefix = 'disable'
+    #     return [f'--{prefix}-{name}']
+
     def configure_args(self):
         config_args = []
+        # config_vars = defaultdict(list)
+        # libs = LibraryList([])
+
 
         for x in [
                 'atmo', 'ocean', 'jsbach', 'coupling', 'ecrad', 'rte-rrtmgp',
@@ -202,6 +221,55 @@ class Icon(AutotoolsPackage):
         if '+ham' in self.spec:
             config_args.append('--enable-atm-phy-echam-submodels')
             config_args.append('--enable-hammoz')
+
+        # libs += self.spec['lapack:fortran'].libs
+        # libs += self.spec['blas:fortran'].libs
+        # libs += self.spec['netcdf-fortran'].libs
+
+        # if '+mpi' in self.spec:
+        #     config_args.extend([
+        #         'CC=' + self.spec['mpi'].mpicc,
+        #         'FC=' + self.spec['mpi'].mpifc,
+        #         # We cannot provide a universal value for MPI_LAUNCH, therefore
+        #         # we have to disable the MPI checks:
+        #         '--disable-mpi-checks'])
+
+        # if '~claw' in self.spec:
+        #     config_vars['CLAWFLAGS'].append(self.spec['netcdf-fortran'].headers.include_flags)
+        #     if '+cdi-pio' in self.spec:
+        #         config_vars['CLAWFLAGS'].append(self.spec['libcdi-pio'].headers.include_flags)
+
+        # if self.spec.variants['icon_target'].value == 'cpu':
+        #     config_args.append('--disable-gpu')
+        # else:
+        #     config_args.extend([
+        #         '--enable-gpu',
+        #         '--disable-loop-exchange',
+        #         'NVCC={0}'.format(self.spec['cuda'].prefix.bin.nvcc)])
+
+        #     config_vars['NVCFLAGS'].extend(['-g', '-O3', '-arch=sm_80']) #TODO: sm_80 should not be hard coded!
+
+        # if self.compiler.name in ['pgi', 'nvhpc']:
+        #     config_vars['CFLAGS'].extend(['-g', '-O2'])
+        #     config_vars['FCFLAGS'].extend(['-g', '-O', '-Mrecursive', '-Mallocatable=03', '-Mbackslash'])
+        #     if self.spec.variants['icon_target'].value == 'gpu':
+        #         config_vars['FCFLAGS'].extend(
+        #             ['-acc=verystrict', '-Minfo=accel,inline',
+        #              '-ta=nvidia:cc80']) #TODO: 80 is the cuda_arch. This should not be hard coded!
+        #         config_vars['ICON_FCFLAGS'].append('-D__SWAPDIM')
+        #         if '+dace' in self.spec:
+        #             # Different implementation of link and acc declare between
+        #             # cray and pgi (see
+        #             # externals/dace_icon/src_for_icon/parallel_utilities.f90):
+        #             if self.version <= ver('2.6.4'):
+        #                 config_vars['ICON_FCFLAGS'].append('-DPGI_FIX_ACCLINK')
+
+        # # Finalize the LIBS variable (we always put the real collected
+        # # libraries to the front):
+        # config_vars['LIBS'].insert(0, libs.link_flags)
+
+        # config_args.extend(['{0}={1}'.format(var, ' '.join(val))
+        #                     for var, val in config_vars.items()])
 
         return config_args
 
