@@ -140,9 +140,9 @@ In order to build a CPU icon binary from a local source
   mkdir cpu
   cd cpu
   touch .dummy_file #spack doesn't want to build in empty folder...
-  spack dev-build -i -u build icon@dev-build%nvhpc config_dir=./.. icon_target=cpu # don't forget +eccodes if you want eccodes, add +skip-config to only do make
+  spack dev-build -i -u build icon@dev-build%nvhpc config_dir=./.. icon_target=cpu # add +eccodes if you work with GRIB, add +skip-config to only do make
 
-On Tsa use '%pgi'!
+Not supported on Tsa.
 
 ICON GPU BUILD
 ^^^^^^^^^^^^^^^^^^^^
