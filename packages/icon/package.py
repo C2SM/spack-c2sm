@@ -63,9 +63,13 @@ class Icon(Package):
                    type=('build', 'link', 'run'),
                    when=f'serialize_mode={x}')
 
+<<<<<<< HEAD
     variant('infero',
             description='Build with Infero to replace ECRAD with ML-implementation',
             default=False)
+=======
+    variant('infero', default=False)
+>>>>>>> 4d46ff0386a26a1ebee6d26629456dbf8de14077
     variant('icon_target',
             default='gpu',
             description='Build with target gpu or cpu',
@@ -153,7 +157,7 @@ class Icon(Package):
             if '+eccodes' in self.spec:
                 env.set('ECCODES_ROOT', self.spec['eccodes'].prefix)
             if '+infero' in self.spec:
-                env.set('INFERO_ROOT', self.spec["infero"].prefix)        
+                env.set('INFERO_ROOT', self.spec["infero"].prefix)
 
         if self.run_tests:
             # setting BB_SYSTEM sets d56 as account in file create_target_header
