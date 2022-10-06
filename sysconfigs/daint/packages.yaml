@@ -366,4 +366,11 @@ packages:
     externals:
     - prefix: /project/d56/daint/local.gcc/bin
       spec: cdo@1.9.5
+  cudnn:
+    buildable: false
+    externals:
+    - modules:
+      - daint-gpu
+      - cuDNN/.8.0.5
+      spec: cudnn@08.0.5
 

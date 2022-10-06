@@ -23,6 +23,8 @@ class Tensorflowc(Package):
 
     phases = ['install']
 
+    depends_on('cudnn', type=('run'))
+
     def install(self, spec, prefix):
         install_tree('lib', prefix.lib)
         install_tree('include', prefix.include)
