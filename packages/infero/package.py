@@ -30,6 +30,8 @@ class Infero(CMakePackage):
 
     patch('comment_out_log-level_info.patch', when='+quiet')
 
+    conflicts('%nvhpc', msg='Some unittests fail for nvhpc -> please use gcc')
+
     def flag_handler(self, name, flags):
         cmake_flags = []
 

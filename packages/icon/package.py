@@ -63,13 +63,9 @@ class Icon(Package):
                    type=('build', 'link', 'run'),
                    when=f'serialize_mode={x}')
 
-<<<<<<< HEAD
     variant('infero',
             description='Build with Infero to replace ECRAD with ML-implementation',
             default=False)
-=======
-    variant('infero', default=False)
->>>>>>> 4d46ff0386a26a1ebee6d26629456dbf8de14077
     variant('icon_target',
             default='gpu',
             description='Build with target gpu or cpu',
