@@ -56,7 +56,7 @@ class Icon(Package):
                type=('build', 'link', 'run'))
     depends_on('claw@2.0.2', when='+claw', type=('build', 'link', 'run'))
     depends_on('cdo')
-    depends_on('infero',when='+infero')
+    depends_on('infero +quiet',when='+infero')
 
     for x in ['create', 'read', 'perturb']:
         depends_on('serialbox@2.6.0 ~python ~sdb ~shared',
@@ -64,6 +64,7 @@ class Icon(Package):
                    when=f'serialize_mode={x}')
 
     variant('infero',
+            description='Build with Infero to replace ECRAD with ML-implementation',
             default=False)
     variant('icon_target',
             default='gpu',

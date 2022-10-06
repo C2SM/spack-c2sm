@@ -13,16 +13,33 @@ class Infero(CMakePackage):
     without the need for high-level python libraries (e.g. TensorFlow, PyTorch, etc..)
     '''
 
-    git = "https://github.com/jonasjucker/infero.git"
+    ecmwf = "https://github.com/ecmwf-projects/infero.git"
 
-    version('master', branch='ecrad')
+    version('0.1.2', git=ecmwf,commit='4c229a16ce75a249c83cbf43e0c953a7a42f2f83')
 
     maintainers = ['juckerj']
+
+    variant('quiet', 
+            description='Disable calls to Log::info',
+            default=False)
 
     depends_on('eckit@1.20.0:')
     depends_on('fckit')
     depends_on('ecbuild', type=('build'))
     depends_on('tensorflowc')
+
+    patch('comment_out_log-level_info.patch', when='+quiet')
+
+    def flag_handler(self, name, flags):
+        cmake_flags = []
+
+        if self.compiler.name == 'nvhpc' and name in ['cflags', 'cxxflags']:
+            cmake_flags.append('-D__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1')
+            cmake_flags.append('-D__BYTE_ORDER__')
+            cmake_flags.append('-D__ORDER_LITTLE_ENDIAN__')
+            cmake_flags.append('-D__BYTE_ORDER__=__ORDER_LITTLE_ENDIAN__')
+
+        return flags, None, (cmake_flags or None)
 
     def cmake_args(self):
         args = [
