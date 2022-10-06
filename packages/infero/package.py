@@ -15,13 +15,13 @@ class Infero(CMakePackage):
 
     ecmwf = "https://github.com/ecmwf-projects/infero.git"
 
-    version('0.1.2', git=ecmwf,commit='4c229a16ce75a249c83cbf43e0c953a7a42f2f83')
+    version('0.1.2',
+            git=ecmwf,
+            commit='4c229a16ce75a249c83cbf43e0c953a7a42f2f83')
 
     maintainers = ['juckerj']
 
-    variant('quiet', 
-            description='Disable calls to Log::info',
-            default=False)
+    variant('quiet', description='Disable calls to Log::info', default=False)
 
     depends_on('eckit@1.20.0:')
     depends_on('fckit')
