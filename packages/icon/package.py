@@ -56,15 +56,14 @@ class Icon(Package):
                type=('build', 'link', 'run'))
     depends_on('claw@2.0.2', when='+claw', type=('build', 'link', 'run'))
     depends_on('cdo')
-    depends_on('infero',when='+infero')
+    depends_on('infero', when='+infero')
 
     for x in ['create', 'read', 'perturb']:
         depends_on('serialbox@2.6.0 ~python ~sdb ~shared',
                    type=('build', 'link', 'run'),
                    when=f'serialize_mode={x}')
 
-    variant('infero',
-            default=False)
+    variant('infero', default=False)
     variant('icon_target',
             default='gpu',
             description='Build with target gpu or cpu',
@@ -152,7 +151,7 @@ class Icon(Package):
             if '+eccodes' in self.spec:
                 env.set('ECCODES_ROOT', self.spec['eccodes'].prefix)
             if '+infero' in self.spec:
-                env.set('INFERO_ROOT', self.spec["infero"].prefix)        
+                env.set('INFERO_ROOT', self.spec["infero"].prefix)
 
         if self.run_tests:
             # setting BB_SYSTEM sets d56 as account in file create_target_header
