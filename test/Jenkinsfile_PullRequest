@@ -31,20 +31,20 @@ pipeline {
                             if [ ${NODENAME} == 'tsa' ]; then
                                 module load git
                             fi
-                            git clone --depth 1 --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
+                            git clone --depth 1 --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git ${NODENAME}
                             """
                         }
                     }
                     stage('Unit Tests') {
                         steps {
-                            sh "spack-c2sm/test/unit/test_env_setup_machine.sh ${NODENAME}"
+                            sh "${NODENAME}/test/unit/test_env_setup_machine.sh ${NODENAME}"
                         }
                     }
                     stage('Integration Tests') {
                         steps {
                             sh """
-                            . spack-c2sm/setup-env.sh
-                            python3 spack-c2sm/test/integration/test_spack_spec.py
+                            . ${NODENAME}/setup-env.sh
+                            python3 ${NODENAME}/test/integration/test_spack_spec.py
                             """
                         }
                     }
