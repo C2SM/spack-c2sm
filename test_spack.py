@@ -298,8 +298,6 @@ class IconTestExclaim(TestCase):
 class InferoTest(TestCase):
     package_name = 'infero'
     depends_on = {}
-    #    'eckit','fckit','tensorflowc'
-    #}
     machines = 'daint'
 
     def test_install_gcc(self):

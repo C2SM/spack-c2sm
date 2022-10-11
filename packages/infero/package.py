@@ -28,7 +28,7 @@ class Infero(CMakePackage):
     depends_on('ecbuild', type=('build'))
     depends_on('tensorflowc')
 
-    patch('comment_out_log-level_info.patch', when='+quiet')
+    patch('comment_out_log-level_info.patch', when='@0.1.2 +quiet')
 
     conflicts('%nvhpc', msg='Some unittests fail for nvhpc -> please use gcc')
 
