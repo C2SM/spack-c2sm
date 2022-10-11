@@ -295,6 +295,25 @@ class IconTestExclaim(TestCase):
             'icon@exclaim-master%gcc icon_target=cpu +eccodes +ocean')
 
 
+class InferoTest(TestCase):
+    package_name = 'infero'
+    depends_on = {}
+    machines = 'daint'
+
+    def test_install_gcc(self):
+        # Used in a project of S. Schemm to replace ecRad with ML model
+        self.Srun(
+            'spack install --test=root --show-log-on-error infero@0.1.2%gcc@9.3.0'
+        )
+
+    def test_install_gcc_quiet(self):
+
+        # Used in a project of S. Schemm to replace ecRad with ML model
+        self.Srun(
+            'spack install --test=root --show-log-on-error infero@0.1.2%gcc@9.3.0 +quiet'
+        )
+
+
 class Int2lmTest(TestCase):
     package_name = 'int2lm'
     depends_on = {
