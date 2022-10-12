@@ -36,7 +36,6 @@ class Infero(CMakePackage):
         cmake_flags = []
 
         if self.compiler.name == 'nvhpc' and name in ['cflags', 'cxxflags']:
-            cmake_flags.append('-D__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1')
             cmake_flags.append('-D__BYTE_ORDER__')
             cmake_flags.append('-D__ORDER_LITTLE_ENDIAN__')
             cmake_flags.append('-D__BYTE_ORDER__=__ORDER_LITTLE_ENDIAN__')

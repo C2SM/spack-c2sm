@@ -137,7 +137,9 @@ compilers:
 - compiler:
     environment: {}
     extra_rpaths: []
-    flags: {}
+    flags: 
+      cppflags: -D__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1
+      cflags: -D__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1
     modules:
     - PrgEnv-nvidia
     - nvidia/21.3
@@ -147,6 +149,8 @@ compilers:
       cxx: CC
       f77: ftn
       fc: ftn
+      #cxxflags: __GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1
+      #cflags: __GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1
     spec: nvhpc@21.3
     target: any
 - compiler:
