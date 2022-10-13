@@ -137,12 +137,14 @@ compilers:
 - compiler:
     environment: {}
     extra_rpaths: []
-    flags: 
-      cppflags: -D__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1
-      cflags: -D__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1
+    flags:  {}
+    #cppflags: -D__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1
+    #  cflags: -D__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1
     modules:
     - PrgEnv-nvidia
     - nvidia/21.3
+    - daint-gpu
+    - CrayNvidia/.21.09
     operating_system: cnl7
     paths:
       cc: cc
