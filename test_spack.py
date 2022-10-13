@@ -579,13 +579,14 @@ class CustomTestSuite(unittest.TestSuite):
         if self._cleanup:
             self._removeTestAtIndex(index)
 
+
 def write_lock_summary(machine):
     no_write_lock_occured = True
     artifact = f'{machine}_write_lock_timeouts.log'
     timeout_indicator = 'Timed out waiting for a write lock'
-    with open(artifact,'w')as f:
+    with open(artifact, 'w') as f:
         for log in glob.glob('*.log'):
-            if search_str_in_file(log,timeout_indicator):
+            if search_str_in_file(log, timeout_indicator):
                 no_write_lock_occured = False
                 f.write(f'{log}: {timeout_indicator} \n')
         if no_write_lock_occured:
