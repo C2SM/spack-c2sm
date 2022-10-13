@@ -24,7 +24,6 @@ class Icon(Package):
     maintainers = ['egermann']
 
     version('master', branch='master', submodules=True)
-    version('dev-build', branch='master', submodules=True)
     version('nwp',
             git='ssh://git@gitlab.dkrz.de/icon/icon-nwp.git',
             submodules=True)
