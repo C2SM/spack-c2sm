@@ -7,15 +7,13 @@ pipeline {
                     agent { label 'daint' } 
                     steps {
                         sh """
-                        sleep 2
+                        sleep 2; 
+                        ls; pwd; . helpers.sh;
+                        gh_post_failure_comment spack-c2sm 123 'test name'
                         """
                     }
                     post {
                         always {
-                            sh """
-                            source helpers.sh
-                            gh_post_failure_comment spack-c2sm 123 'test name'
-                            """
                             echo 'Cleaning up workspace'
                             deleteDir() 
                         }
