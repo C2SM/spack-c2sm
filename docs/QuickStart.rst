@@ -1,204 +1,143 @@
-Quick Start for Spack
-=====================
-It is recommended to read the entire documentation to get familiar with Spack.
-For those of you with lack of time or interest the following short manuals do the job as well.
+Quick Start
+===========
 
-Source Spack instance on Piz Daint
-----------------------------------
-
+Set up (Daint, Dom, Tsa)
+------------------------
+To set up a spack instance, clone the repository
 .. code-block:: bash
+  git clone --depth 1 --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
 
-  module load cray-python
-  source /project/g110/spack/user/daint/spack/share/spack/setup-env.sh
-
-Source Spack instance on Tsa
-----------------------------------
-
+To load it into your command line, execute
 .. code-block:: bash
-
-  module load python
-  source /project/g110/spack/user/tsa/spack/share/spack/setup-env.sh
-  
-COSMO-Model
------------
-In order install COSMO fetched from a GitHub repository, use *spack installcosmo*:
-
+  source spack-c2sm/setup-env.sh
+This auto-detects your machine and configures your instance for it.
+You can force a machine with an argument. The name has to match a folder in sysconfigs.
 .. code-block:: bash
+  source spack-c2sm/setup-env.sh tsa
 
-  spack installcosmo cosmo@<version>%<compiler> +<variants>
-
-The second option *spack devbuildcosmo* allows to build COSMO with a local source:
-
+Set up (local machines)
+-----------------------
+Same as above, but probably you want spack to auto detect compilers and preinstalled packages
 .. code-block:: bash
+  git clone --depth 1 --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
+  source spack-c2sm/setup-env.sh
+  spack compiler find
+  spack external find --all
 
-  cd </path/to/package> 
-  spack devbuildcosmo cosmo@<version>%<compiler> +<variants>
-
-
-COSMO GPU build
-^^^^^^^^^^^^^^^
-The commands below build COSMO with the C++ Dycore for the target GPU.
-
-.. code-block:: bash
-
-  # on Tsa
-  spack installcosmo cosmo@org-master%pgi cosmo_target=gpu +cppdycore 
-
-  # on Piz Daint
-  spack installcosmo cosmo@org-master%nvhpc cosmo_target=gpu +cppdycore 
-
-or
-
-.. code-block:: bash
-
-  cd </path/to/package> 
-  spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=gpu +cppdycore
-
-
-COSMO CPU build
-^^^^^^^^^^^^^^^
-The commands below build COSMO without the C++ Dycore  for the target CPU.
-
-.. code-block:: bash
-
-  # on Tsa
-  spack installcosmo cosmo@org-master%pgi cosmo_target=cpu ~cppdycore 
-
-  # on Piz Daint
-  spack installcosmo cosmo@org-master%nvhpc cosmo_target=cpu ~cppdycore 
-
-or
-
-.. code-block:: bash
-
-  cd </path/to/package> 
-  spack devbuildcosmo cosmo@dev-build%pgi cosmo_target=cpu ~cppdycore
-
-Int2lm
+Update
 ------
-In order to install int2lm fetched from a GitHub repository, use *spack install*:
-
+To update a spack instance, pull the latest version from the repository and update the submodule
 .. code-block:: bash
+  git pull
+  git submodule update --recursive
 
-  spack install int2lm@<version>%<compiler> +<variants>
-
-The second option *spack dev-build* allows to build int2lm with a local source:
-
+Clean
+-----
+To clean a spack instance, empty the caches, uninstall everything and remove misc caches
 .. code-block:: bash
+  spack clean -a
+  spack uninstall -a
+  rm -rf ~/.spack
 
-  cd </path/to/package> 
-  spack dev-build int2lm@<version>%<compiler> +<variants>
-
-Int2lm from C2SM-RCM
-^^^^^^^^^^^^^^^^^^^^
-In order to build int2lm from the C2SM-RCM GitHub organization use the following command:
-
+Use packages
+------------
+To get information about a package, query spack
 .. code-block:: bash
+  spack info <package>
+  e.g.
+  spack info icon
 
-  # on Tsa
-  spack install int2lm@c2sm-master%pgi
-
-  # on Piz Daint
-  spack install int2lm@c2sm-master%nvhpc
-
-Int2lm from COSMO-ORG
-^^^^^^^^^^^^^^^^^^^^^
-In order to build int2lm from the COSMO-ORG GitHub organization use the following command:
-
+To see what 'spack install' would install, ask for a spec
 .. code-block:: bash
+  spack spec <variant>
+  e.g.
+  spack spec icon @master +ocean
+An unspecfied variant (e.g. 'ocean') can be concretized to ANY of its values. Spack isn't required to use the default value when a variant is unspecified. The default value only serves as a tiebreaker.
 
-  # on Tsa
-  spack install int2lm@org-master%pgi pollen=False
+To install a package
+.. code-block:: bash
+  spack install <variant>
+  e.g.
+  spack install icon @master %gcc +ocean
 
-  # on Piz Daint
-  spack install int2lm@org-master%nvhpc pollen=False
+To locate your install, query spack
+.. code-block:: bash
+  spack location --install-dir <variant>
+This prints a list of all installs that satisfy the restrictions in your variant.
+
+To run it, you may need to load environment variables
+.. code-block:: bash
+  spack load <variant>
+
+Develop packages
+----------------
+We assume that developers of a package are familiar with its build system. Therefor we reccomend to use spack to set up the environment for the package. Building and testing should be done with the package's build system and test system.
+.. code-block:: bash
+  # Load spack!
+  spack dev-build --before build <package> @develop <variant> # stops dev-build before executing the phase 'build'
+  spack build-env <package> @develop <variant> -- bash # nests a bash shell with the build env vars loaded
+  # Work on the package!
+  # Use the package's build system! (e.g. 'make')
+  # Use the package's testing infrastructure!
+  exit # to exit the nested bash
+If you want multiple dev-builds at the same time, label them with separate '@<your-label>'.
+The identifier '@develop' is common in the spack documentation but you can use any string.
+
+Environments
+------------
+Environments sits in a folder with a name. That's the name of the environment.
+
+To activate a spack environment
+.. code-block:: bash
+  spack env activate -p <env_name>
+
+To deactivate a spack environment
+.. code-block:: bash
+  spack env deactivate
+
+Most of the spack commands are sensitive to environments (`see spack doc<https://spack.readthedocs.io/en/latest/environments.html#environment-sensitive-commands>`__).
+
+Test packages (PR/MR/CI/CD)
+---------------------------
+You can use spack to test a PR/MR in your CI pipeline.
+This is a common way to do it.
+.. code-block:: bash
+  # cd into the packages repo!
+  git clone --depth 1 --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
+  source spack-c2sm/setup-env.sh
+  spack dev-build --test=root --show-log-on-error <package> @develop <variant>
+
+You can also use spack in your end-to-end tests.
+This is a common way to do it.
+.. code-block:: bash
+  git clone --depth 1 --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
+  source spack-c2sm/setup-env.sh
+  spack install --test=root --show-log-on-error <package> @<version> <variant>
+
+
+COSMO
+-----
+COSMO is currently treated specially. It has its own commands in spack-c2sm.
+The reason for this is that the optional depencendy on the C++ dycore lives in the same repository as COSMO.
+
+To install COSMO
+.. code-block:: bash
+  spack installcosmo cosmo @<version> %<compiler> <variants>
+
+To develop COSMO
+.. code-block:: bash
+  cd </path/to/package>
+  spack devbuildcosmo cosmo @<version> %<compiler> <variants>
+
+Example variants:
+.. code-block:: bash
+  spack installcosmo cosmo @org-master cosmo_target=cpu # CPU variant of https://github.com/COSMO-ORG/cosmo master
+  spack installcosmo cosmo @org-master cosmo_target=gpu # GPU variant of https://github.com/COSMO-ORG/cosmo master
+  spack installcosmo cosmo @apn_5.09a.mch1.2.p1 cosmo_target=gpu # GPU variant of https://github.com/MeteoSwiss-APN/cosmo/releases/tag/5.09a.mch1.2.p1
 
 ICON
-------
-In order to install icon fetched from a GitHub repository, use *spack install*:
+----
+ICON currently needs a workaround when dev-building. Spack refuses to build in an empty folder. So you need to populate it with something
 
 .. code-block:: bash
-
-  spack install icon@<version>%<compiler> +<variants> #@nwp, @cscs, ...
-
-The second option *spack dev-build* allows to build icon with a local source:
-
-.. code-block:: bash
-
-  cd </path/to/package> 
-  spack dev-build -i icon@dev-build%<compiler> +<variants>
-
-ICON CPU BUILD
-^^^^^^^^^^^^^^^^^^^^
-In order to build a CPU icon binary from a local source
-
-.. code-block:: bash
-
-  git clone --recursive git@gitlab.dkrz.de:icon/icon-nwp.git #icon-cscs, icon-aes, etc...
-  # alternatively just clone and use here 'git submodule update --init --recursive'
-  cd icon-nwp #icon-cscs, icon-aes, etc...
-  mkdir cpu
-  cd cpu
-  touch .dummy_file #spack doesn't want to build in empty folder...
-  spack dev-build -i -u build icon@dev-build%nvhpc config_dir=./.. icon_target=cpu # don't forget +eccodes if you want eccodes, add +skip-config to only do make
-
-On Tsa use '%pgi'!
-
-ICON GPU BUILD
-^^^^^^^^^^^^^^^^^^^^
-In order to build a GPU icon binary from a local source
-
-.. code-block:: bash
-
-  git clone --recursive git@gitlab.dkrz.de:icon/icon-nwp.git #icon-cscs, icon-aes, etc...
-  # alternatively just clone and use here 'git submodule update --init --recursive'
-  cd icon-nwp #icon-cscs, icon-aes, etc...
-  mkdir gpu
-  cd gpu
-  touch .dummy_file #spack doesn't want to build in empty folder...
-  spack dev-build -i -u build icon@dev-build%nvhpc config_dir=./.. icon_target=gpu # don't forget +eccodes if you want eccodes, add +skip-config to only do make
-
-Not supported on Tsa.
-
-Running ICON
-^^^^^^^^^^^^
-Once built, experiments need to be configured for the current machine. Take the following steps
-
-.. code-block:: bash
-
-  ./make_runscripts
-  cd run
-  sbatch exp.mch_opr_r04b07_lhn_12.run
-
-Accessing executables
----------------------
-`As stated in the official spack documentation
-<https://spack.readthedocs.io/en/latest/workflows.html#find-and-run>`_,
-"The simplest way to run a Spack binary is to find it and run it" as
-it is build with `RPATH`. In most cases there is no need to adjust the
-environment. In order to find the directory where a package was
-installed, use the ``spack location`` command like this:
-
-.. code-block:: bash
-
-  spack location -i cosmo@dev-build%pgi cosmo_target=gpu +cppdycore
-
-or
-
-.. code-block:: bash
-
-  spack location -i int2lm@c2sm-master%nvhpc
-
-Note that the package location is also given on the last log line of
-the install process. For cosmo you'll find the executable, either
-``cosmo_cpu`` or ``cosmo_gpu``, under the ``bin`` subdirectory whereas the
-int2lm executable will be the ``bin`` *file* itself.
-
-Running executables from Spack
-------------------------------
-In order to obtain a correct run-environment for any executable compiled by Spack,
-load the environment provided by Spack:
-
-.. code-block:: bash
-
-  spack load package@<version>%<compiler> +<variants>
+  touch .not_empty

@@ -1,0 +1,3 @@
+config:
+  extensions:
+    - '$spack/../tools/spack-scripting'

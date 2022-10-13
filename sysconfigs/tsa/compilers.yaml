@@ -1,5 +1,21 @@
 compilers:
 - compiler:
+    spec: gcc@4.8.5
+    paths:
+      cc: /usr/bin/gcc
+      cxx: /usr/bin/g++
+      f77: /usr/bin/gfortran
+      fc: /usr/bin/gfortran
+    flags: {}
+    operating_system: rhel7
+    target: x86_64
+    modules: []
+    environment:
+      set:
+        CSCS_APPS_PATH: /apps/common/UES/sandbox/kraushm/tsa-nvhpc
+    extra_rpaths: []
+- compiler:
+    spec: pgi@20.4
     environment:
       set:
         CSCS_APPS_PATH: '/apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01'
@@ -13,9 +29,9 @@ compilers:
       cxx: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/pgi/20.4/easybuild/software/PGI/20.4-GCC-8.3.0/linux86-64/20.4/bin/pgc++
       f77: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/pgi/20.4/easybuild/software/PGI/20.4-GCC-8.3.0/linux86-64/20.4/bin/pgfortran
       fc: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/pgi/20.4/easybuild/software/PGI/20.4-GCC-8.3.0/linux86-64/20.4/bin/pgfortran
-    spec: pgi@20.4
     target: any
 - compiler:
+    spec: nvhpc@21.2
     environment:
       set:
         CSCS_APPS_PATH: /apps/common/UES/sandbox/kraushm/tsa-nvhpc
@@ -29,9 +45,9 @@ compilers:
       cxx: /apps/common/UES/sandbox/kraushm/tsa-nvhpc/easybuild/software/NVHPC/21.2-cuda-11.2/Linux_x86_64/21.2/compilers/bin/nvc++
       f77: /apps/common/UES/sandbox/kraushm/tsa-nvhpc/easybuild/software/NVHPC/21.2-cuda-11.2/Linux_x86_64/21.2/compilers/bin/nvfortran
       fc: /apps/common/UES/sandbox/kraushm/tsa-nvhpc/easybuild/software/NVHPC/21.2-cuda-11.2/Linux_x86_64/21.2/compilers/bin/nvfortran
-    spec: nvhpc@21.2
     target: any
 - compiler:
+    spec: gcc@8.3.0
     modules:
     - /project/g110/modules/gcchack/8.3.0
     environment: {}
@@ -43,5 +59,4 @@ compilers:
       cxx: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2/easybuild/software/GCCcore/8.3.0/bin/g++
       f77: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2/easybuild/software/GCCcore/8.3.0/bin/gfortran
       fc: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/gnu/19.2/easybuild/software/GCCcore/8.3.0/bin/gfortran
-    spec: gcc@8.3.0
     target: any
