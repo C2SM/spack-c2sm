@@ -6,6 +6,7 @@ import sys
 import subprocess
 import unittest
 import asyncio
+import glob
 from random import randint
 
 all_machines = {'daint', 'tsa'}
@@ -578,6 +579,27 @@ class CustomTestSuite(unittest.TestSuite):
         if self._cleanup:
             self._removeTestAtIndex(index)
 
+def write_lock_summary(machine):
+    no_write_lock_occured = True
+    artifact = f'{machine}_write_lock_timeouts.log'
+    timeout_indicator = 'Timed out waiting for a write lock'
+    with open(artifact,'w')as f:
+        for log in glob.glob('*.log'):
+            if search_str_in_file(log,timeout_indicator):
+                no_write_lock_occured = False
+                f.write(f'{log}: {timeout_indicator} \n')
+        if no_write_lock_occured:
+            f.write('No write lock timeouts detected')
+
+
+def search_str_in_file(file_path, word):
+    with open(file_path, 'r') as file:
+        content = file.read()
+        if word in content:
+            return True
+        else:
+            return False
+
 
 if __name__ == '__main__':
     test_loader = unittest.TestLoader()
@@ -693,4 +715,7 @@ if __name__ == '__main__':
             and machine in case.machines
         ])
         result = unittest.TextTestRunner(verbosity=2).run(suite)
+
+        if not result.wasSuccessful():
+            write_lock_summary(machine)
         sys.exit(not result.wasSuccessful())
