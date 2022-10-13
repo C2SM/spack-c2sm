@@ -42,34 +42,22 @@ Others:
 
 Package-name based:
 
-* atlas
 * atlas_utilities
-* claw
 * cosmo
 * cosmo-dycore
 * cosmo-eccodes-definitions
-* cosmogrib-api
+* cosmo-grib-api
 * cosmo-grib-api-definitions
-* cuda
 * dawn
 * dawn4py
 * dusk
-* dyicon_benchmarks
-* ecbuild
-* eccodes
-* eckit
+* flexpart-ifs
 * gridtools
 * icon
-* icondusk-e2e
 * icontools
 * int2lm
 * libgrib1
-* mpich
 * oasis
-* omnicompiler
 * omni-xmod-pool
-* openmpi
-* serialbox
 * xcodeml-tools
 * zlib_ng
-
