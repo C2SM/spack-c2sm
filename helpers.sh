@@ -53,5 +53,5 @@ curl -v -H "Content-Type: application/json" \
  -H "Authorization: token ${GITHUB_AUTH_TOKEN}" \
  -X POST \
  -d "{\"body\":\"${COMMENT_MARKDOWN}\"}" \
-  "https://api.github.com/repos/ithaka/${REPO}/issues/${PULL_REQUEST_NUMBER}/comments"
+  "https://api.github.com/repos/c2sm/${REPO}/issues/${PULL_REQUEST_NUMBER}/comments"
 }
