@@ -51,7 +51,7 @@ class CosmoEccodesDefinitions(Package):
                when='@2.18.0.1')
     depends_on('eccodes@2.14.1',
                type=('build', 'link', 'run'),
-               when='@2.14.1.1-2')
+               when='@2.14.1.1:2.14.1.2')
 
     def setup_run_environment(self, env):
         eccodes_definition_path = self.spec[
