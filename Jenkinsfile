@@ -9,7 +9,7 @@ pipeline {
                         sh """
                         sleep 2; 
                         ls; pwd; . ./helpers.sh;
-                        gh_post_failure_comment spack-c2sm 469 'test name'
+                        gh_post_failure_comment spack-c2sm 557 'test name'
                         """
                     }
                     post {
