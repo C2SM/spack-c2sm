@@ -32,15 +32,15 @@ class Cosmo(MakefilePackage):
 
     depends_on('netcdf-fortran', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))
-    depends_on('slurm%gcc', type='run')
-    depends_on('cuda%gcc',
-               when='cosmo_target=gpu',
-               type=('build', 'link', 'run'))
+    depends_on('slurm', type='run')
+    depends_on('cuda', when='cosmo_target=gpu', type=('build', 'link', 'run'))
     depends_on('serialbox', when='+serialize', type='build')
     depends_on('mpi', type=('build', 'link', 'run'), when='cosmo_target=cpu')
-    depends_on('mpi +cuda', type=('build', 'link', 'run'), when='cosmo_target=gpu')
+    depends_on('mpi +cuda',
+               type=('build', 'link', 'run'),
+               when='cosmo_target=gpu')
     depends_on('libgrib1', type='build')
-    depends_on('jasper@1.900.1%gcc', type=('build', 'link'))
+    depends_on('jasper@1.900.1', type=('build', 'link'))
     depends_on('cosmo-grib-api-definitions',
                type=('build', 'run'),
                when='~eccodes')
@@ -49,8 +49,8 @@ class Cosmo(MakefilePackage):
                when='+eccodes')
     depends_on('perl@5.16.3:', type='build')
     depends_on('omni-xmod-pool', when='+claw', type='build')
-    depends_on('claw%gcc', when='+claw', type='build')
-    depends_on('boost%gcc', when='cosmo_target=gpu ~cppdycore', type='build')
+    depends_on('claw', when='+claw', type='build')
+    depends_on('boost', when='cosmo_target=gpu ~cppdycore', type='build')
     depends_on('cmake', type='build')
     depends_on('zlib_ng +compat', when='+zlib_ng', type=('link', 'run'))
     depends_on('oasis', when='+oasis', type=('build', 'link', 'run'))
@@ -71,7 +71,7 @@ class Cosmo(MakefilePackage):
         test_dep = '+dycoretest' if it[3] else '~dycoretest'
         gt1_dep = '+gt1' if it[4] else '~gt1'
 
-        dep = f'cosmo-dycore%gcc@8.1.0:8.4.0 real_type={real_type} {prod_opt} {cuda_opt} {test_opt} {gt1_dep}'
+        dep = f'cosmo-dycore@8.1.0:8.4.0 real_type={real_type} {prod_opt} {cuda_opt} {test_opt} {gt1_dep}'
         condition = f'real_type={real_type} {prod_opt} {cuda_dep} {test_dep} {gt1_dep} +cppdycore'
         depends_on(dep, when=condition, type='build')
 

@@ -101,9 +101,9 @@ class CosmoDycore(CMakePackage):
     depends_on('serialbox@2.6.0', when='+build_tests')
     depends_on('mpi', type=('build', 'link', 'run'), when='~cuda')
     depends_on('mpi +cuda', type=('build', 'link', 'run'), when='+cuda')
-    depends_on('slurm%gcc', type='run')
+    depends_on('slurm', type='run')
     depends_on('cmake@3.12:')
-    depends_on('cuda%gcc', when='+cuda', type=('build', 'link', 'run'))
+    depends_on('cuda', type=('build', 'link', 'run'), when='+cuda')
 
     conflicts('+production', when='build_type=Debug')
     conflicts('+production', when='+pmeters')
