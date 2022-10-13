@@ -9,6 +9,7 @@ pipeline {
                         sh """
                         sleep 2; 
                         """
+                    }
                 }
             }
                     }
