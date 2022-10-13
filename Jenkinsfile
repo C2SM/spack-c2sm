@@ -8,7 +8,7 @@ pipeline {
                         steps {
                             withCredentials([string(credentialsId: 'd976fe24-cabf-479e-854f-587c152644bc', variable: 'GITHUB_AUTH_TOKEN')]) {
                                 sh """
-                                . ./helpers.sh; gh_post_failure_comment 'spack-c2sm' 557 'first list \\n second line \\n third line'
+                                . ./helpers.sh; gh_post_failure_comment 'spack-c2sm' 557 '- first list \\n - second line \\n - third line \\n - *bold line* \\n '
                                 """
                             }
                         }
