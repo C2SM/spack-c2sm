@@ -97,7 +97,7 @@ class CosmoDycore(CMakePackage):
 
     depends_on('gridtools@1.1.3 ~cuda', when='~cuda+gt1')
     depends_on('gridtools@1.1.3 +cuda', when='+cuda+gt1')
-    depends_on('boost@1.67.0')
+    depends_on('boost@1.65.1: +program_options +system')
     depends_on('serialbox@2.6.0', when='+build_tests')
     depends_on('mpi', type=('build', 'link', 'run'), when='~cuda')
     depends_on('mpi +cuda', type=('build', 'link', 'run'), when='+cuda')
