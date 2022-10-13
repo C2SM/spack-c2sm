@@ -8,7 +8,7 @@ pipeline {
                     steps {
                         sh """
                         sleep 2; 
-                        ls; pwd; . helpers.sh;
+                        ls; pwd; . ./helpers.sh;
                         gh_post_failure_comment spack-c2sm 123 'test name'
                         """
                     }
