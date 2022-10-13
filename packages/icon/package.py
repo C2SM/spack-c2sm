@@ -49,17 +49,20 @@ class Icon(Package):
     version('2.0.17', commit='39ed04ad', submodules=True)
 
     depends_on('cmake')
-    depends_on('libxml2@2.9.8:%gcc', type=('build', 'link', 'run'))
-    depends_on('eccodes@2.19.0 +build_shared_libs',
-               when='+eccodes',
-               type=('build', 'link', 'run'))
-    depends_on('claw@2.0.2', when='+claw', type=('build', 'link', 'run'))
-    depends_on('cdo')
-
-    for x in ['create', 'read', 'perturb']:
-        depends_on('serialbox@2.6.0 ~python ~sdb ~shared',
-                   type=('build', 'link', 'run'),
-                   when=f'serialize_mode={x}')
+    depends_on('libxml2')
+    depends_on('serialbox', when='serialize_mode=create')
+    depends_on('serialbox', when='serialize_mode=read')
+    depends_on('serialbox', when='serialize_mode=perturb')
+    depends_on('eccodes +aec +fortran', when='+eccodes')
+    # depends_on('hdf5 +szip +hl +fortran')
+    depends_on('zlib')
+    depends_on('mpi +wrappers')
+    depends_on('claw', when='+claw', type='build')
+    depends_on('claw@:2.0.2', when='@:2.6.2.2 +claw', type='build')
+    depends_on('netcdf-fortran')
+    depends_on('netcdf-c')
+    depends_on('cuda', when='icon_target=gpu')
+    depends_on('cdo', type='test')
 
     variant('icon_target',
             default='gpu',
