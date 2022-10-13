@@ -18,7 +18,7 @@ class FdbFortran(CMakePackage):
 
     depends_on('cmake@3.10:', type=('build'))
     depends_on(
-        'fdb ^eckit@1.20.2: ~mpi ^eccodes@2.19.0 jp2k=none +fortran ^metkit@1.9.2',
+        'fdb ^eckit@1.20.2: ~mpi ^eccodes@2.19.1 jp2k=none +fortran ^metkit@1.9.2',
         type=('build', 'link'))
 
 
