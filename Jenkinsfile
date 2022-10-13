@@ -12,7 +12,6 @@ pipeline {
                     }
                 }
             }
-                    }
                     post {
                         always {
                             echo 'Cleaning up workspace'
@@ -22,7 +21,6 @@ pipeline {
                 }
             }
         }
-    }
     triggers {
         extensions {
             commitStatus {
@@ -37,4 +35,3 @@ pipeline {
             }
         }
     }
-}
