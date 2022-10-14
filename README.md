@@ -31,5 +31,7 @@ Get spack in your command line
 | Spec | `spack spec <spec>` concretizes abstract spec (unspecfied variant = **any**)<br>*Spack is not required to use the default of an unspecified variant. The default value is only a tiebreaker for the concretizer.* |
 | Install  | `spack install <spec>` |
 | Locate | `spack location --install-dir <spec>` prints location of **all** installs that satisfy the spec |
-| Env | `spack load <spec>` loads environment |
+| Env | `spack load <spec>` loads run environment |
+| Activate env | `spack env activate -p <env_name>` |
+| Deactivate env | `spack deactivate` |
 
