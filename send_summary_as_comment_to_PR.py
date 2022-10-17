@@ -64,8 +64,8 @@ def post_on_PR(comment):
 def compose_links_to_artifacts(status):
 
     base_link = 'https://jenkins-mch.cscs.ch/job/spack_PR'
-    pr_id = os.getenv('ghprbPullId')
-    pr_link = f'{base_link}/{pr_id}/artifact'
+    build_id = os.getenv('BUILD_ID')
+    pr_link = f'{base_link}/{build_id}/artifact'
 
     failed = []
     write_locked = []
