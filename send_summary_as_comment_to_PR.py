@@ -34,17 +34,18 @@ def search_str_in_file(file_path, word):
         else:
             return False
 
-def compose_markdown_comment(machine,status,links):
+
+def compose_markdown_comment(machine, status, links):
     comment = '## ' + machine.upper() + ' \\n'
 
     comment += '  ### Passed \\n'
-    for test,link in zip(status['passed'],links['passed']):
+    for test, link in zip(status['passed'], links['passed']):
         comment = f'{comment} - [{test}]({link}): **PASSED** \\n'
 
     comment = f'{comment}  ### Failed \\n'
-    for test,link in zip(status['failed'],links['failed']):
+    for test, link in zip(status['failed'], links['failed']):
         comment = f'{comment} - [{test}]({link}): **FAILED** \\n'
-    for test,link in zip(status['write_locked'],links['write_locked']):
+    for test, link in zip(status['write_locked'], links['write_locked']):
         comment = f'{comment} - [{test}]({link}): **WRITE LOCK TIMEOUT** \\n'
 
     return comment
@@ -57,16 +58,15 @@ def post_on_PR(comment):
     command += '-X POST '
     command += '-d "{\\"body\\":\\"${COMMENT_MARKDOWN}\\"}" '
     command += '"https://api.github.com/repos/c2sm/spack-c2sm/issues/${ghprbPullId}/comments" '
-    subprocess.run(command,
-        check=True,
-        shell=True)
+    subprocess.run(command, check=True, shell=True)
+
 
 def compose_links_to_artifacts(status):
 
     base_link = 'https://jenkins-mch.cscs.ch/job/spack_PR'
     pr_id = os.getenv('ghprbPullId')
     pr_link = f'{base_link}/{pr_id}/artifact'
-    
+
     failed = []
     write_locked = []
     passed = []
@@ -86,11 +86,12 @@ def compose_links_to_artifacts(status):
 
     return links
 
+
 if __name__ == '__main__':
 
     machine = sys.argv[1]
 
     status = collect_final_status_from_logs()
     links = compose_links_to_artifacts(status)
-    comment = compose_markdown_comment(machine,status,links)
+    comment = compose_markdown_comment(machine, status, links)
     post_on_PR(comment)
