@@ -29,7 +29,7 @@ class TestCase(unittest.TestCase):
             if machine == 'tsa':
                 srun = 'srun -c 16 -t 01:00:00'
             if machine == 'daint':
-                srun = 'srun -C gpu -A g110 -t 00:10:00 -p debug'
+                srun = 'srun -C gpu -A g110 -t 01:00:00'
 
         # randomly delay start of installation to avoid write-locks
         delay = randint(5, 20)
