@@ -2,15 +2,16 @@ import glob
 import subprocess
 import os
 
+
 def collect_final_status_from_logs():
     failed = []
     write_locked = []
     passed = []
     for log in glob.glob('*.log'):
-        with open(log,'r'):
-            if search_str_in_file(log,'FAIL: SPACK'):
+        with open(log, 'r'):
+            if search_str_in_file(log, 'FAIL: SPACK'):
                 failed.append(log)
-            elif search_str_in_file(log,'FAIL: TIMEOUT'):
+            elif search_str_in_file(log, 'FAIL: TIMEOUT'):
                 write_locked.append(log)
             else:
                 passed.append(log)
@@ -31,6 +32,7 @@ def search_str_in_file(file_path, word):
         else:
             return False
 
+
 def compose_markdown_comment(status):
     comment = '###Passed### \\n'
     for test in status['passed']:
@@ -46,17 +48,17 @@ def compose_markdown_comment(status):
 
     return comment
 
+
 def post_on_PR(comment):
     os.environ['COMMENT_MARKDOWN'] = comment
     command = 'curl -v -H "Content-Type: application/json" '
     command += '-H "Authorization: token ${GITHUB_AUTH_TOKEN}" '
-    command += '-X POST ' 
+    command += '-X POST '
     command += '-d "{\\"body\\":\\"${COMMENT_MARKDOWN}\\"}" '
     command += '"https://api.github.com/repos/c2sm/spack-c2sm/issues/${ghprbPullId}/comments" '
     print(command)
-    subprocess.run(command,
-        check=True,
-        shell=True)
+    subprocess.run(command, check=True, shell=True)
+
 
 if __name__ == '__main__':
 
