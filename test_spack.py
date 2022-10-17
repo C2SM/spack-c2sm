@@ -29,19 +29,35 @@ class TestCase(unittest.TestCase):
             if machine == 'tsa':
                 srun = 'srun -c 16 -t 01:00:00'
             if machine == 'daint':
-                srun = 'srun -C gpu -A g110 -t 01:00:00'
+                srun = 'srun -C gpu -A g110 -t 00:10:00 -p debug'
 
         # randomly delay start of installation to avoid write-locks
         delay = randint(5, 20)
 
-        # 2>&1 redirects stderr to stdout
-        subprocess.run(
-            f'{setup} (cd {cwd} ; {srun} sleep {delay} && {command}) >> {machine}_{self.package_name}_{self._testMethodName}.log 2>&1',
-            check=True,
-            shell=True)
+        logfile = f'{machine}_{self.package_name}_{self._testMethodName}.log'
+
+        try:
+            # 2>&1 redirects stderr to stdout
+            subprocess.run(
+                f'{setup} (cd {cwd} ; {srun} sleep {delay} && {command}) >> {logfile} 2>&1',
+                check=True,
+                shell=True)
+
+        # add reason of fail for summary posted as a comment in PR
+        except Exception as e:
+            timeout_indicator = 'Timed out waiting for a write lock'
+            with open(logfile, 'a') as log:
+                if  self.search_str_in_file(logfile, timeout_indicator):
+                    log.write('FAIL: TIMEOUT')
+                else:
+                    log.write('FAIL: SPACK')
+            raise e
+
+                
 
     def Srun(self, command: str, cwd='.'):
         return self.Run(command, cwd, parallel=True)
+
 
     def spack_install_and_test(self, command: str, cwd='.'):
         if 'cosmo' in command and 'cosmo-dycore' not in command:
@@ -55,12 +71,22 @@ class TestCase(unittest.TestCase):
         cmd_root = spack_install + ' --dont-restage --test=root ' + command
         self.Run(cmd_root, cwd)
 
+
     def spack_devbuild_and_test(self, command: str, cwd='.'):
         cmd_build = 'spack devbuildcosmo --until build ' + command
         self.Srun(cmd_build, cwd)
 
         cmd_root = 'spack devbuildcosmo --dont-restage --test=root ' + command
         self.Run(cmd_root, cwd)
+
+
+    def search_str_in_file(self,file_path,word):
+        with open(file_path, 'r') as file:
+            content = file.read()
+            if word in content:
+                return True
+            else:
+                return False
 
 
 class AtlasUtilityTest(TestCase):
@@ -310,7 +336,7 @@ class InferoTest(TestCase):
 
         # Used in a project of S. Schemm to replace ecRad with ML model
         self.Srun(
-            'spack install --test=root --show-log-on-error infero@0.1.2%gcc@9.3.0 +quiet'
+            'spack install --test=root --show-log-on-error infero@0.1.2%gcc@3.3.0 +quiet'
         )
 
 
