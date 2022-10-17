@@ -331,7 +331,7 @@ class InferoTest(TestCase):
 
         # Used in a project of S. Schemm to replace ecRad with ML model
         self.Srun(
-            'spack install --test=root --show-log-on-error infero@0.1.2%gcc@3.3.0 +quiet'
+            'spack install --test=root --show-log-on-error infero@0.1.2%gcc@9.3.0 +quiet'
         )
 
 

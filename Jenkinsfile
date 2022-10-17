@@ -12,6 +12,12 @@ pipeline {
                     }
                     post {
                         always {
+                            withCredentials([string(credentialsId: 'd976fe24-cabf-479e-854f-587c152644bc', variable: 'GITHUB_AUTH_TOKEN')]) {
+                                sh"""
+                                module load cray-python
+                                python send_summary_as_comment_to_PR.py  'tsa'
+                                """
+                            }
                             archiveArtifacts artifacts: '*.log', allowEmptyArchive: true
                             echo 'Cleaning up workspace'
                             deleteDir() 
