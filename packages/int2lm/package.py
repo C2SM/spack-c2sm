@@ -132,9 +132,8 @@ class Int2lm(MakefilePackage):
                 if self.spec.variants[
                         'slave'].value == 'daint' and self.compiler.name in (
                             'pgi', 'nvhpc'):
-                    env.set(
-                        'MPIL', '-L' + self.spec['mpi'].prefix +
-                        ' -lmpich')
+                    env.set('MPIL',
+                            '-L' + self.spec['mpi'].prefix + ' -lmpich')
 
                 else:
                     env.set('MPIL',

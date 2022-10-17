@@ -285,9 +285,7 @@ class Cosmo(MakefilePackage):
         elif self.spec.variants[
                 'slave'].value == 'daint' and self.compiler.name in ('pgi',
                                                                      'nvhpc'):
-            env.set(
-                'MPIL', '-L' + self.spec['mpi'].prefix +
-                ' -lmpich')
+            env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich')
 
         env.set('MPII', '-I' + self.mpi_spec.prefix + '/include')
 
