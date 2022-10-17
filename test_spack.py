@@ -47,17 +47,14 @@ class TestCase(unittest.TestCase):
         except Exception as e:
             timeout_indicator = 'Timed out waiting for a write lock'
             with open(logfile, 'a') as log:
-                if  self.search_str_in_file(logfile, timeout_indicator):
+                if self.search_str_in_file(logfile, timeout_indicator):
                     log.write('FAIL: TIMEOUT')
                 else:
                     log.write('FAIL: SPACK')
             raise e
 
-                
-
     def Srun(self, command: str, cwd='.'):
         return self.Run(command, cwd, parallel=True)
-
 
     def spack_install_and_test(self, command: str, cwd='.'):
         if 'cosmo' in command and 'cosmo-dycore' not in command:
@@ -71,7 +68,6 @@ class TestCase(unittest.TestCase):
         cmd_root = spack_install + ' --dont-restage --test=root ' + command
         self.Run(cmd_root, cwd)
 
-
     def spack_devbuild_and_test(self, command: str, cwd='.'):
         cmd_build = 'spack devbuildcosmo --until build ' + command
         self.Srun(cmd_build, cwd)
@@ -79,8 +75,7 @@ class TestCase(unittest.TestCase):
         cmd_root = 'spack devbuildcosmo --dont-restage --test=root ' + command
         self.Run(cmd_root, cwd)
 
-
-    def search_str_in_file(self,file_path,word):
+    def search_str_in_file(self, file_path, word):
         with open(file_path, 'r') as file:
             content = file.read()
             if word in content:

@@ -3,16 +3,17 @@ import subprocess
 import os
 import sys
 
+
 def collect_final_status_from_logs():
     failed = []
     write_locked = []
     passed = []
 
     for log in glob.glob('*.log'):
-        with open(log,'r'):
-            if search_str_in_file(log,'FAIL: SPACK'):
+        with open(log, 'r'):
+            if search_str_in_file(log, 'FAIL: SPACK'):
                 failed.append(log)
-            elif search_str_in_file(log,'FAIL: TIMEOUT'):
+            elif search_str_in_file(log, 'FAIL: TIMEOUT'):
                 write_locked.append(log)
             else:
                 passed.append(log)
@@ -35,6 +36,7 @@ def search_str_in_file(file_path, word):
 
 def compose_markdown_comment(machine,status,links):
     comment = '## ' + machine.upper() + ' \\n'
+
     comment += '  ### Passed \\n'
     for test,link in zip(status['passed'],links['passed']):
         comment = f'{comment} - [{test}]({link}): **PASSED** \\n'
@@ -47,11 +49,12 @@ def compose_markdown_comment(machine,status,links):
 
     return comment
 
+
 def post_on_PR(comment):
     os.environ['COMMENT_MARKDOWN'] = comment
     command = 'curl -v -H "Content-Type: application/json" '
     command += '-H "Authorization: token ${GITHUB_AUTH_TOKEN}" '
-    command += '-X POST ' 
+    command += '-X POST '
     command += '-d "{\\"body\\":\\"${COMMENT_MARKDOWN}\\"}" '
     command += '"https://api.github.com/repos/c2sm/spack-c2sm/issues/${ghprbPullId}/comments" '
     subprocess.run(command,
@@ -90,5 +93,4 @@ if __name__ == '__main__':
     status = collect_final_status_from_logs()
     links = compose_links_to_artifacts(status)
     comment = compose_markdown_comment(machine,status,links)
-    print(comment)
     post_on_PR(comment)
