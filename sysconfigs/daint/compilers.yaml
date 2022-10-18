@@ -137,10 +137,12 @@ compilers:
 - compiler:
     environment: {}
     extra_rpaths: []
-    flags: {}
+    flags:  {}
     modules:
     - PrgEnv-nvidia
     - nvidia/21.3
+    - daint-gpu
+    - CrayNvidia/.21.09
     operating_system: cnl7
     paths:
       cc: cc
