@@ -44,6 +44,7 @@ pipeline {
                         steps {
                             sh """
                             . ${NODENAME}/setup-env.sh
+                            python3 ${NODENAME}/test/integration/test_spack_info.py
                             python3 ${NODENAME}/test/integration/test_spack_spec.py
                             """
                         }
