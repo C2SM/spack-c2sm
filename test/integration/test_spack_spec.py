@@ -75,7 +75,8 @@ class ConditionalDependenciesSpecTest(unittest.TestCase):
     def test_cosmo(self):
         spack_spec('cosmo ~eccodes')
         spack_spec('cosmo cosmo_target=gpu ~cppdycore')
-        spack_spec('cosmo cosmo_target=gpu +serialize +eccodes +claw +zlib_ng +oasis')
+        spack_spec(
+            'cosmo cosmo_target=gpu +serialize +eccodes +claw +zlib_ng +oasis')
 
     def test_cosmo_dycore(self):
         spack_spec('cosmo-dycore ~cuda +gt1')
