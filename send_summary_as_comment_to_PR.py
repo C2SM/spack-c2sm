@@ -29,6 +29,6 @@ if __name__ == '__main__':
         'curl -v -H "Content-Type: application/json"'\
         ' -H "Authorization: token ${GITHUB_AUTH_TOKEN}"'\
         ' -X POST'\
-        ' -d "{\\"body\\":\\"{summary.text}\\"}"'\
+        ' -d "{\\"body\\":\\"' + summary.text + '\\"}"'\
         ' "https://api.github.com/repos/c2sm/spack-c2sm/issues/${ghprbPullId}/comments"',
         check=True, shell=True)
