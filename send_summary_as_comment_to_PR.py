@@ -3,22 +3,25 @@ import subprocess
 
 
 class ResultList:
+
     def __init__(self, artifact_path: str) -> None:
         self.artifact_path = artifact_path
         self.text = ''
-    
+
     def append(self, status: str, test: str, comment: str = '') -> None:
         self.text += fr'{status} [{test}]({self.artifact_path}/{test}) {comment}\n'
 
 
 if __name__ == '__main__':
-    summary = ResultList('https://jenkins-mch.cscs.ch/job/spack_PR/$BUILD_ID/artifact/')
+    summary = ResultList(
+        'https://jenkins-mch.cscs.ch/job/spack_PR/$BUILD_ID/artifact/')
 
     for file_name in glob.glob('*.log'):
         with open(file_name, 'r') as file:
             content = file.read()
             if 'FAIL: TIMEOUT' in content:
-                summary.append(':red_circle:', file_name, '**WRITE LOCK TIMEOUT**')
+                summary.append(':red_circle:', file_name,
+                               '**WRITE LOCK TIMEOUT**')
             elif 'FAIL: SPACK' in content:
                 summary.append(':red_circle:', file_name, '**FAILED**')
             else:
