@@ -11,9 +11,6 @@ def spack_spec(spec):
 class PlainSpecTest(unittest.TestCase):
     """Tests that the command 'spack spec <package>' works for all spack-c2sm packages."""
 
-    def test_atlas_utilities(self):
-        spack_spec('atlas_utilities')
-
     def test_cosmo(self):
         spack_spec('cosmo')
 

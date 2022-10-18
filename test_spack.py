@@ -63,12 +63,6 @@ class TestCase(unittest.TestCase):
         self.Run(cmd_root, cwd)
 
 
-class AtlasUtilityTest(TestCase):
-    package_name = 'atlas_utilities'
-    depends_on = {}
-    machines = all_machines
-
-
 class ClawTest(TestCase):
     package_name = 'claw'
     depends_on = {}

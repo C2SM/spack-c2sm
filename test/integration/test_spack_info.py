@@ -11,9 +11,6 @@ def spack_info(package):
 class InfoTest(unittest.TestCase):
     """Tests that the command 'spack info <package>' works for all spack-c2sm packages."""
 
-    def test_atlas_utilities(self):
-        spack_info('atlas_utilities')
-
     def test_cosmo(self):
         spack_info('cosmo')
 
