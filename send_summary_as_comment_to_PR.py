@@ -20,10 +20,10 @@ if __name__ == '__main__':
         with open(file_name, 'r') as file:
             content = file.read()
             if 'FAIL: TIMEOUT' in content:
-                summary.append(':red_circle:', file_name,
+                summary.append(':yellow_circle:', file_name,
                                '**WRITE LOCK TIMEOUT**')
             elif 'FAIL: SPACK' in content:
-                summary.append(':red_circle:', file_name, '**FAILED**')
+                summary.append(':red_circle:', file_name)
             else:
                 summary.append(':green_circle:', file_name)
 
