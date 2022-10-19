@@ -15,7 +15,7 @@ pipeline {
                             withCredentials([string(credentialsId: 'd976fe24-cabf-479e-854f-587c152644bc', variable: 'GITHUB_AUTH_TOKEN')]) {
                                 sh"""
                                 module load python/3.7.4
-                                python send_summary_as_comment_to_PR.py  'tsa'
+                                python send_summary_as_comment_to_PR.py
                                 """
                             }
                             archiveArtifacts artifacts: '*.log', allowEmptyArchive: true
@@ -36,7 +36,7 @@ pipeline {
                             withCredentials([string(credentialsId: 'd976fe24-cabf-479e-854f-587c152644bc', variable: 'GITHUB_AUTH_TOKEN')]) {
                                 sh"""
                                 module load cray-python
-                                python send_summary_as_comment_to_PR.py  'daint'
+                                python send_summary_as_comment_to_PR.py
                                 """
                             }
                             archiveArtifacts artifacts: '*.log', allowEmptyArchive: true
