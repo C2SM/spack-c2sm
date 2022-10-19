@@ -17,7 +17,9 @@ if __name__ == '__main__':
         'https://jenkins-mch.cscs.ch/job/spack_PR/$BUILD_ID/artifact/')
 
     # Trigger phrases that cause a test to get a yellow circle
-    yellow_triggers = ['Timed out waiting for a write lock', 'timed out after 5 seconds']
+    yellow_triggers = [
+        'Timed out waiting for a write lock', 'timed out after 5 seconds'
+    ]
 
     for file_name in glob.glob('*.log'):
         with open(file_name, 'r') as file:
