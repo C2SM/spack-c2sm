@@ -8,14 +8,14 @@ pipeline {
                     steps {
                         sh """
                         module load python/3.7.4
-                        python test_spack.py --tsa """ + env.ghprbCommentBody
+                        python ./ci/scripts/test_spack.py --tsa """ + env.ghprbCommentBody
                     }
                     post {
                         always {
                             withCredentials([string(credentialsId: 'd976fe24-cabf-479e-854f-587c152644bc', variable: 'GITHUB_AUTH_TOKEN')]) {
                                 sh"""
                                 module load python/3.7.4
-                                python send_summary_as_comment_to_PR.py
+                                python ./ci/scripts/send_summary_as_comment_to_PR.py
                                 """
                             }
                             archiveArtifacts artifacts: '*.log', allowEmptyArchive: true
@@ -29,14 +29,14 @@ pipeline {
                     steps {
                         sh """
                         module load cray-python
-                        python test_spack.py --daint """ + env.ghprbCommentBody
+                        python ./ci/scripts/test_spack.py --daint """ + env.ghprbCommentBody
                     }
                     post {
                         always {
                             withCredentials([string(credentialsId: 'd976fe24-cabf-479e-854f-587c152644bc', variable: 'GITHUB_AUTH_TOKEN')]) {
                                 sh"""
                                 module load cray-python
-                                python send_summary_as_comment_to_PR.py
+                                python ./ci/scripts/send_summary_as_comment_to_PR.py
                                 """
                             }
                             archiveArtifacts artifacts: '*.log', allowEmptyArchive: true

@@ -1,0 +1,42 @@
+pipeline {
+    agent none
+    stages {
+        stage('Concat latest yaml-config') {
+            agent { label 'dom' } 
+            steps {
+                sh """
+                module load daint-gpu cray-python spack-config
+                module unload cray-libsci/20.09.1
+                python -m venv .venv
+                source ./.venv/bin/activate
+                pip install ruamel.yaml
+                python ./ci/scripts/concat_yaml.py -m 'dom'
+                rm -rf spack
+                module unload spack-config
+                """
+            }
+        }
+        stage('Test packages') {
+            agent { label 'dom' } 
+            steps {
+                sh """
+                module load cray-python
+                module unload cray-libsci/20.09.1
+                python ./ci/script/test_spack.py launch jenkins --dom --exclusive infero
+                """
+            }
+        }
+        post {
+            always {
+                archiveArtifacts artifacts: '*.log', allowEmptyArchive: true
+                echo 'Cleaning up workspace'
+                deleteDir() 
+            }
+            success {
+                steps {
+                    build job: 'publish-spack-config'
+                }
+            }
+        }
+    }
+}
