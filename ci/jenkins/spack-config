@@ -80,7 +80,7 @@ pipeline {
             }
         }
         failure {
-            echo 'Sending emails''
+            echo 'Sending emails'
             mail bcc: '', body: 'spack-config failed', cc: '', from: '', replyTo: '', subject: ' Build failed in Jenkins: spack-config', to: 'jonas.jucker@c2sm.ethz.ch michael.jaehn@c2sm.ethz.ch'
         }
     }
