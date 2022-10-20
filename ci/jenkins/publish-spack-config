@@ -6,19 +6,10 @@ pipeline {
                 sh """
                 module load daint-gpu cray-python spack-config
                 module unload cray-libsci/20.09.1
-                python -m venv .venv
+                python39393 -m venv .venv
                 source ./.venv/bin/activate
                 pip install ruamel.yaml
                 python ./ci/scripts/concat_yaml.py -m dom --publish_to_git
-                """
-            }
-        }
-        stage('Test packages') {
-            steps {
-                sh """
-                module load cray-python
-                module unload cray-libsci/20.09.1
-                python ./ci/scripts/test_spack.py launch jenkins --dom --exclusive infero
                 """
             }
         }
