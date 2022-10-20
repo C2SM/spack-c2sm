@@ -24,6 +24,7 @@ pipeline {
                 python ./ci/scripts/test_spack.py launch jenkins --dom --exclusive infero
                 """
             }
+        }
         stage('Test packages') {
             parallel {
                 stage('cosmo') {
