@@ -16,44 +16,46 @@ pipeline {
                 """
             }
         }
-        parallel {
-            stage('cosmo') {
-                steps {
-                    sh """
-                    module load cray-python
-                    module unload cray-libsci/20.09.1
-                    python ./ci/scripts/test_spack.py launch jenkins --dom --exclusive cosmo
-                    """
+        stage('Test packages') {
+            parallel {
+                stage('cosmo') {
+                    steps {
+                        sh """
+                        module load cray-python
+                        module unload cray-libsci/20.09.1
+                        python ./ci/scripts/test_spack.py launch jenkins --dom --exclusive cosmo
+                        """
+                    }
                 }
-            }
-            stage('int2lm') {
-                steps {
-                    sh """
-                    sleep 10
-                    module load cray-python
-                    module unload cray-libsci/20.09.1
-                    python ./ci/scripts/test_spack.py launch jenkins --dom --exclusive int2lm
-                    """
+                stage('int2lm') {
+                    steps {
+                        sh """
+                        sleep 10
+                        module load cray-python
+                        module unload cray-libsci/20.09.1
+                        python ./ci/scripts/test_spack.py launch jenkins --dom --exclusive int2lm
+                        """
+                    }
                 }
-            }
-            stage('icon') {
-                steps {
-                    sh """
-                    sleep 20
-                    module load cray-python
-                    module unload cray-libsci/20.09.1
-                    python ./ci/scripts/test_spack.py launch jenkins --dom --exclusive icon
-                    """
+                stage('icon') {
+                    steps {
+                        sh """
+                        sleep 20
+                        module load cray-python
+                        module unload cray-libsci/20.09.1
+                        python ./ci/scripts/test_spack.py launch jenkins --dom --exclusive icon
+                        """
+                    }
                 }
-            }
-            stage('icontools') {
-                steps {
-                    sh """
-                    sleep 30
-                    module load cray-python
-                    module unload cray-libsci/20.09.1
-                    python ./ci/scripts/test_spack.py launch jenkins --dom --exclusive icontools
-                    """
+                stage('icontools') {
+                    steps {
+                        sh """
+                        sleep 30
+                        module load cray-python
+                        module unload cray-libsci/20.09.1
+                        python ./ci/scripts/test_spack.py launch jenkins --dom --exclusive icontools
+                        """
+                    }
                 }
             }
         }
