@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent {label 'dom'}
     stages {
         stage('Concat latest yaml-config') {
             agent { label 'dom' } 
@@ -15,27 +15,38 @@ pipeline {
                 module unload spack-config
                 """
             }
-        }
         stage('Test packages') {
-            agent { label 'dom' } 
-            steps {
-                sh """
-                module load cray-python
-                module unload cray-libsci/20.09.1
-                python ./ci/script/test_spack.py launch jenkins --dom --exclusive infero
-                """
+            parallel {
+                stage('infero') {
+                    steps {
+                        sh """
+                        module load cray-python
+                        module unload cray-libsci/20.09.1
+                        python ./ci/script/test_spack.py launch jenkins --dom --exclusive infero
+                        """
+                    }
+                }
+                stage('int2lm') {
+                    steps {
+                        sh """
+                        module load cray-python
+                        module unload cray-libsci/20.09.1
+                        python ./ci/script/test_spack.py launch jenkins --dom --exclusive int2lm
+                        """
+                    }
+                }
             }
         }
-        post {
-            always {
-                archiveArtifacts artifacts: '*.log', allowEmptyArchive: true
-                echo 'Cleaning up workspace'
-                deleteDir() 
-            }
-            success {
-                steps {
-                    build job: 'publish-spack-config'
-                }
+    }
+    post {
+        always {
+            archiveArtifacts artifacts: '*.log', allowEmptyArchive: true
+            echo 'Cleaning up workspace'
+            deleteDir() 
+        }
+        success {
+            steps {
+                build job: 'publish-spack-config'
             }
         }
     }

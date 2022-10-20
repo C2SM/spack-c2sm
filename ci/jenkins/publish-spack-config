@@ -6,7 +6,7 @@ pipeline {
                 sh """
                 module load daint-gpu cray-python spack-config
                 module unload cray-libsci/20.09.1
-                python39393 -m venv .venv
+                python -m venv .venv
                 source ./.venv/bin/activate
                 pip install ruamel.yaml
                 python ./ci/scripts/concat_yaml.py -m dom --publish_to_git
@@ -20,7 +20,8 @@ pipeline {
             deleteDir() 
         }
         failure {
-            mail bcc: '', body: 'publish-spack-config failed', cc: '', from: '', replyTo: '', subject: ' Build failed in Jenkins: publish-spack-config', to: 'jonas.jucker@c2sm.ethz.ch'
+            echo 'Sending emails''
+            mail bcc: '', body: 'publish-spack-config failed', cc: '', from: '', replyTo: '', subject: ' Build failed in Jenkins: publish-spack-config', to: 'jonas.jucker@c2sm.ethz.ch michael.jaehn@c2sm.ethz.ch'
         }
     }
 }
