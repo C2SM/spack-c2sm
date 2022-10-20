@@ -15,6 +15,7 @@ pipeline {
                 module unload spack-config
                 """
             }
+        }
         stage('Test packages') {
             parallel {
                 stage('infero') {
