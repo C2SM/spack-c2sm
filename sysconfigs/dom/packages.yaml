@@ -69,6 +69,8 @@ packages:
       - daint-gpu
       - CMake/3.22.1
       spec: cmake@3.22.1
+    - prefix: /usr/bin
+      spec: cmake@3.17.0
   cosmo:
     compiler:
     - nvhpc@21.3
@@ -140,8 +142,8 @@ packages:
     externals:
     - extra_attributes:
         compilers:
-          c: /usr/bin/gcc
-          cxx: /usr/bin/g++
+          c: /usr/bin/gcc-7
+          cxx: /usr/bin/g++-7
           fortran: /usr/bin/gfortran
       prefix: /usr
       spec: gcc@7.5.0 languages=c,c++,fortran
