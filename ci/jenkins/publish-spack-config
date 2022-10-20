@@ -1,8 +1,7 @@
 pipeline {
-    agent none
+    agent {label 'dom' }
     stages {
         stage('Concat latest yaml-config and publish') {
-            agent { label 'dom' } 
             steps {
                 sh """
                 module load daint-gpu cray-python spack-config
@@ -15,12 +14,11 @@ pipeline {
             }
         }
         stage('Test packages') {
-            agent { label 'dom' } 
             steps {
                 sh """
                 module load cray-python
                 module unload cray-libsci/20.09.1
-                python ./ci/script/test_spack.py launch jenkins --dom --exclusive infero
+                python ./ci/scripts/test_spack.py launch jenkins --dom --exclusive infero
                 """
             }
         }
