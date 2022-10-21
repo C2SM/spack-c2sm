@@ -1,11 +1,7 @@
 #!/usr/bin/python3
 
-import subprocess
+from .spack_commands import spack_spec
 import unittest
-
-
-def spack_spec(spec):
-    subprocess.run(f'spack spec {spec}', check=True, shell=True)
 
 
 class PlainSpecTest(unittest.TestCase):

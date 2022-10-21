@@ -1,11 +1,7 @@
 #!/usr/bin/python3
 
-import subprocess
+from .spack_commands import spack_info
 import unittest
-
-
-def spack_info(package):
-    subprocess.run(f'spack info {package}', check=True, shell=True)
 
 
 class InfoTest(unittest.TestCase):
