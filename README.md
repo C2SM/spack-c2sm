@@ -1,19 +1,49 @@
-# C2SM and MeteoSwiss' extension of spack
+# The spack extension of C2SM and MCH
 [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](https://C2SM.github.io/spack-c2sm/)
 
 Spack is the package manager used by C2SM and MeteoSwiss to install and deploy software on supercomputers, local machines and the cloud.
 
 Documentations: [spack-C2SM](https://C2SM.github.io/spack-c2sm/), [spack](https://spack.readthedocs.io/en/v0.18.1/)
 
-## Quick start for Daint, Dom, Tsa, Manali, Balfrin
-Clone the repo
+## Workflow
+With spack v0.18 we suggest local/individual spack instances and the use of spack environments.
+
+A user clones the spack repo
 ```bash
 git clone --depth 1 --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
 ```
-Get spack in your command line
+gets spack in the command line
 ```bash
 . spack-c2sm/setup-env.sh
 ```
+activates an environment
+```bash
+spack env activate -p <path_to_env>
+```
+and starts exploring
+```bash
+spack info <package>
+spack spec <spec>
+```
+and building
+```bash
+spack install <spec>
+spack dev-build <spec>
+```
+a package.
+
+Updating spack-c2sm is in the hands of the user.
+```bash
+git pull
+git submodule update --recursive
+```
+After an update we advice to clean
+```bash
+spack uninstall -a
+spack clean -a
+rm -rf ~/.spack
+```
+and rebuild.
 
 ## Command cheat sheet
 |  | Command |
