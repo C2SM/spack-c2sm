@@ -14,6 +14,9 @@ def spack(command):
 def spack_install(package):
     spack(f'install --show-log-on-error {package}')
 
+def spack_dev_build(package):
+    spack(f'dev-build --show-log-on-error {package}')
+
 
 class IconTest(unittest.TestCase):
 
@@ -22,7 +25,7 @@ class IconTest(unittest.TestCase):
         subprocess.run('mkdir -p icon-nwp/cpu', check=True, shell=True)
         subprocess.run('touch .dummy_file', cwd='icon-nwp/cpu', check=True, shell=True)
         try:
-            subprocess.run(f'. {spack_c2sm_path}/setup-env.sh; spack dev-build -u build icon @develop config_dir=./.. icon_target=cpu', cwd='icon-nwp/cpu', check=True, shell=True)
+            spack_dev_build('icon @cpu config_dir=./.. icon_target=cpu', cwd='icon-nwp/cpu')
         finally:
             subprocess.run('rm -rf icon-nwp', check=True, shell=True)
 
@@ -31,7 +34,7 @@ class IconTest(unittest.TestCase):
         subprocess.run('mkdir -p icon-nwp/gpu', check=True, shell=True)
         subprocess.run('touch .dummy_file', cwd='icon-nwp/gpu', check=True, shell=True)
         try:
-            subprocess.run(f'. {spack_c2sm_path}/setup-env.sh; spack dev-build -u build icon @develop config_dir=./.. icon_target=gpu', cwd='icon-nwp/gpu', check=True, shell=True)
+            spack_dev_build('icon @gpu config_dir=./.. icon_target=gpu', cwd='icon-nwp/gpu')
         finally:
             subprocess.run('rm -rf icon-nwp', check=True, shell=True)
 
