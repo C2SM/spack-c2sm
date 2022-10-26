@@ -25,7 +25,7 @@ class IconTest(unittest.TestCase):
         subprocess.run('mkdir -p icon-nwp/cpu', check=True, shell=True)
         subprocess.run('touch .dummy_file', cwd='icon-nwp/cpu', check=True, shell=True)
         try:
-            spack_dev_build('icon @cpu config_dir=./.. icon_target=cpu', cwd='icon-nwp/cpu')
+            spack_dev_build('icon @cpu %nvhpc config_dir=./.. icon_target=cpu', cwd='icon-nwp/cpu')
         finally:
             subprocess.run('rm -rf icon-nwp', check=True, shell=True)
 
