@@ -16,7 +16,7 @@ def spack_install(package, cwd='.'):
     spack(f'install --show-log-on-error {package}', cwd)
 
 def spack_dev_build(package, cwd='.'):
-    spack(f'dev-build --show-log-on-error {package}', cwd)
+    spack(f'dev-build {package}', cwd)
 
 
 class IconTest(unittest.TestCase):
