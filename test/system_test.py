@@ -5,17 +5,18 @@ import subprocess
 spack_c2sm_path = os.path.dirname(os.path.realpath(__file__)) + '/..'
 
 
-def spack(command):
+def spack(command, cwd='.'):
     subprocess.run(f'. {spack_c2sm_path}/setup-env.sh; spack {command}',
+                   cwd=cwd,
                    check=True,
                    shell=True)
 
 
-def spack_install(package):
-    spack(f'install --show-log-on-error {package}')
+def spack_install(package, cwd='.'):
+    spack(f'install --show-log-on-error {package}', cwd)
 
-def spack_dev_build(package):
-    spack(f'dev-build --show-log-on-error {package}')
+def spack_dev_build(package, cwd='.'):
+    spack(f'dev-build --show-log-on-error {package}', cwd)
 
 
 class IconTest(unittest.TestCase):
