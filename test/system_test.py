@@ -15,6 +15,7 @@ def spack(command, cwd='.'):
 def spack_install(package, cwd='.'):
     spack(f'install --show-log-on-error {package}', cwd)
 
+
 def spack_dev_build(package, cwd='.'):
     spack(f'dev-build {package}', cwd)
 
@@ -22,20 +23,34 @@ def spack_dev_build(package, cwd='.'):
 class IconTest(unittest.TestCase):
 
     def test_dev_build_benchmark_4_cpu(self):
-        subprocess.run('git clone --branch icon22_benchmark_4 --recursive ssh://git@gitlab.dkrz.de/icon/icon-nwp.git', check=True, shell=True)
+        subprocess.run(
+            'git clone --branch icon22_benchmark_4 --recursive ssh://git@gitlab.dkrz.de/icon/icon-nwp.git',
+            check=True,
+            shell=True)
         subprocess.run('mkdir -p icon-nwp/cpu', check=True, shell=True)
-        subprocess.run('touch .dummy_file', cwd='icon-nwp/cpu', check=True, shell=True)
+        subprocess.run('touch .dummy_file',
+                       cwd='icon-nwp/cpu',
+                       check=True,
+                       shell=True)
         try:
-            spack_dev_build('icon @cpu %nvhpc config_dir=./.. icon_target=cpu', cwd='icon-nwp/cpu')
+            spack_dev_build('icon @cpu %nvhpc config_dir=./.. icon_target=cpu',
+                            cwd='icon-nwp/cpu')
         finally:
             subprocess.run('rm -rf icon-nwp', check=True, shell=True)
 
     def test_dev_build_benchmark_4_gpu(self):
-        subprocess.run('git clone --branch icon22_benchmark_4 --recursive ssh://git@gitlab.dkrz.de/icon/icon-nwp.git', check=True, shell=True)
+        subprocess.run(
+            'git clone --branch icon22_benchmark_4 --recursive ssh://git@gitlab.dkrz.de/icon/icon-nwp.git',
+            check=True,
+            shell=True)
         subprocess.run('mkdir -p icon-nwp/gpu', check=True, shell=True)
-        subprocess.run('touch .dummy_file', cwd='icon-nwp/gpu', check=True, shell=True)
+        subprocess.run('touch .dummy_file',
+                       cwd='icon-nwp/gpu',
+                       check=True,
+                       shell=True)
         try:
-            spack_dev_build('icon @gpu config_dir=./.. icon_target=gpu', cwd='icon-nwp/gpu')
+            spack_dev_build('icon @gpu config_dir=./.. icon_target=gpu',
+                            cwd='icon-nwp/gpu')
         finally:
             subprocess.run('rm -rf icon-nwp', check=True, shell=True)
 
