@@ -18,14 +18,14 @@ def spack_install(package):
 class IconTest(unittest.TestCase):
 
     def test_dev_build_benchmark_4_cpu(self):
-        subprocess.run('git clone -branch icon22_benchmark_4 --recursive ssh://git@gitlab.dkrz.de/icon/icon-nwp.git', check=True, shell=True)
+        subprocess.run('git clone --branch icon22_benchmark_4 --recursive ssh://git@gitlab.dkrz.de/icon/icon-nwp.git', check=True, shell=True)
         subprocess.run('mkdir -p icon-nwp/cpu', check=True, shell=True)
         subprocess.run('touch .dummy_file', cwd='icon-nwp/cpu', check=True, shell=True)
         subprocess.run(f'. {spack_c2sm_path}/setup-env.sh; spack dev-build -u build icon @develop config_dir=./.. icon_target=cpu', cwd='icon-nwp/cpu', check=True, shell=True)
         subprocess.run('rm -rf icon-nwp', check=True, shell=True)
 
     def test_dev_build_benchmark_4_gpu(self):
-        subprocess.run('git clone -branch icon22_benchmark_4 --recursive ssh://git@gitlab.dkrz.de/icon/icon-nwp.git', check=True, shell=True)
+        subprocess.run('git clone --branch icon22_benchmark_4 --recursive ssh://git@gitlab.dkrz.de/icon/icon-nwp.git', check=True, shell=True)
         subprocess.run('mkdir -p icon-nwp/gpu', check=True, shell=True)
         subprocess.run('touch .dummy_file', cwd='icon-nwp/gpu', check=True, shell=True)
         subprocess.run(f'. {spack_c2sm_path}/setup-env.sh; spack dev-build -u build icon @develop config_dir=./.. icon_target=gpu', cwd='icon-nwp/gpu', check=True, shell=True)
