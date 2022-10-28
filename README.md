@@ -53,7 +53,7 @@ and rebuild.
 | Update | `git pull`<br>`git submodule update --recursive` |
 | Clean | `spack uninstall -a` uninstalls all packages<br>`spack clean -a` cleans all misc caches<br>`rm -rf ~/.spack` removes user scope data |
 
-**Spec syntax**: `<package> @<version> %<compiler> +<variant> ~<variant> ^<sub-package> +<sub-package-variant>`
+[**Spec syntax**](https://spack.readthedocs.io/en/v0.18.1/basic_usage.html#specs-dependencies): `<package>` [`@<version>`](https://spack.readthedocs.io/en/v0.18.1/basic_usage.html#version-specifier) [`%<compiler>`](https://spack.readthedocs.io/en/v0.18.1/basic_usage.html#compiler-specifier) [`+<variant> ~<variant>`](https://spack.readthedocs.io/en/v0.18.1/basic_usage.html#variants) [`^<sub-package> +<sub-package-variant>`](https://spack.readthedocs.io/en/v0.18.1/basic_usage.html#specs-dependencies) [`<compiler flags>`](https://spack.readthedocs.io/en/v0.18.1/basic_usage.html#compiler-flags)
 
 |  | Command |
 | --- | --- |
