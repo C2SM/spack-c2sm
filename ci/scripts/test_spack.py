@@ -36,22 +36,14 @@ class TestCase(unittest.TestCase):
 
         logfile = f'{machine}_{self.package_name}_{self._testMethodName}.log'
 
-        try:
-            # 2>&1 redirects stderr to stdout
-            subprocess.run(
-                f'{setup} (cd {cwd} ; {srun} sleep {delay} && {command}) >> {logfile} 2>&1',
-                check=True,
-                shell=True)
+        # 2>&1 redirects stderr to stdout
+        subprocess.run(
+            f'{setup} (cd {cwd} ; {srun} sleep {delay} && {command}) >> {logfile} 2>&1',
+            check=True,
+            shell=True)
 
-        # add reason of fail for summary posted as a comment in PR
-        except Exception as e:
-            timeout_indicator = 'Timed out waiting for a write lock'
-            with open(logfile, 'a') as log:
-                if self.search_str_in_file(logfile, timeout_indicator):
-                    log.write('FAIL: TIMEOUT')
-                else:
-                    log.write('FAIL: SPACK')
-            raise e
+        with open(logfile, 'a') as log:
+            log.write('SUCCESS')
 
     def Srun(self, command: str, cwd='.'):
         return self.Run(command, cwd, parallel=True)
@@ -82,12 +74,6 @@ class TestCase(unittest.TestCase):
                 return True
             else:
                 return False
-
-
-class AtlasUtilityTest(TestCase):
-    package_name = 'atlas_utilities'
-    depends_on = {}
-    machines = all_machines
 
 
 class ClawTest(TestCase):

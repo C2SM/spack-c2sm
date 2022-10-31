@@ -176,9 +176,6 @@ class Serialbox(CMakePackage):
                     for x in ['%intel@:19.0.1', '%pgi@:19.9']):
                 cmake_flags.append('-D_GLIBCXX_USE_CXX11_ABI=0')
 
-        if self.compiler.name == 'nvhpc' and name in ['cflags', 'cxxflags']:
-            cmake_flags.append('-D__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1')
-
         return flags, None, (cmake_flags or None)
 
     def setup_run_environment(self, env):

@@ -51,9 +51,6 @@ class Icontools(AutotoolsPackage):
         type=('build', 'link', 'run'),
     )
     depends_on('eccodes ~aec', type=('build', 'link', 'run'))
-    depends_on('cosmo-grib-api',
-               type=('build', 'link', 'run'),
-               when='~eccodes')
     depends_on('jasper@1.900.1%gcc', type=('build', 'link'))
 
     variant('slave',
