@@ -67,15 +67,6 @@ class TestCase(unittest.TestCase):
         cmd_root = 'spack devbuildcosmo --dont-restage --test=root ' + command
         self.Run(cmd_root, cwd)
 
-    def search_str_in_file(self, file_path, word):
-        with open(file_path, 'r') as file:
-            content = file.read()
-            if word in content:
-                return True
-            else:
-                return False
-
-
 class ClawTest(TestCase):
     package_name = 'claw'
     depends_on = {}
