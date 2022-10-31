@@ -67,6 +67,7 @@ class TestCase(unittest.TestCase):
         cmd_root = 'spack devbuildcosmo --dont-restage --test=root ' + command
         self.Run(cmd_root, cwd)
 
+
 class ClawTest(TestCase):
     package_name = 'claw'
     depends_on = {}
