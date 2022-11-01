@@ -1,6 +1,6 @@
 void setBuildStatus(String message, String context, String state) {
   // add a Github access token as a global 'secret text' credential on Jenkins with the id 'github-commit-status-token'
-    withCredentials([string(credentialsId: 'd976fe24-cabf-479e-854f-587c152644bc', variable: 'GITHUB_AUTH_TOKEN')]) {
+    withCredentials([string(credentialsId: 'd976fe24-cabf-479e-854f-587c152644bc', variable: 'TOKEN')]) {
         sh """
         set -x
             curl \"https://api.github.com/repos/c2sm/spack-c2sm/statuses/$GIT_COMMIT?access_token=$TOKEN\" \
