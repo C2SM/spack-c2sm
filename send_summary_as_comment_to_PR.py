@@ -34,6 +34,8 @@ if __name__ == '__main__':
                 else:
                     summary.append(':red_circle:', file_name)
 
+    if summary.text == '':
+        summary.text = 'This message prevents a false negative. Ignore it!'
     # Comment PR
     subprocess.run(
         'curl -v -H "Content-Type: application/json"'\
