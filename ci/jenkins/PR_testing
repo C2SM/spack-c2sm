@@ -15,11 +15,11 @@ pipeline {
     agent none
     stages {
         stage('Run Tests') {
+            setBuildStatus("Started", "Spack packages", "Tests")
             parallel {
                 stage('test on tsa') {
                     agent { label 'tsa' } 
                     steps {
-                        setBuildStatus("Compiling", "compile", "pending");
                         sh """
                         module load python/3.7.4
                         python ./ci/scripts/test_spack.py --tsa """ + env.ghprbCommentBody
@@ -35,7 +35,6 @@ pipeline {
                             archiveArtifacts artifacts: '*.log', allowEmptyArchive: true
                             echo 'Cleaning up workspace'
                             deleteDir() 
-                            setBuildStatus("Completed", "compile", "done");
                         }
                     }
                 }
