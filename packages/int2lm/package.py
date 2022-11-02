@@ -49,8 +49,7 @@ class Int2lm(MakefilePackage):
     depends_on('cosmo-eccodes-definitions',
                type=('build', 'link', 'run'),
                when='+eccodes')
-    depends_on('libaec', type=('build', 'link', 'run'),
-               when='^eccodes +aec')
+    depends_on('libaec', type=('build', 'link', 'run'), when='^eccodes +aec')
     depends_on('libgrib1@master', type='build')
     depends_on('mpi', type=('build', 'link', 'run'), when='+parallel')
     depends_on('netcdf-c', type=('build', 'link'))
