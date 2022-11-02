@@ -49,6 +49,8 @@ class Int2lm(MakefilePackage):
     depends_on('cosmo-eccodes-definitions',
                type=('build', 'link', 'run'),
                when='+eccodes')
+    depends_on('libaec', type=('build', 'link', 'run'),
+               when='^eccodes +aec')
     depends_on('libgrib1@master', type='build')
     depends_on('mpi', type=('build', 'link', 'run'), when='+parallel')
     depends_on('netcdf-c', type=('build', 'link'))
@@ -83,6 +85,8 @@ class Int2lm(MakefilePackage):
         else:
             grib_prefix = self.spec['eccodes'].prefix
             grib_lib_names = ' -leccodes_f90 -leccodes'
+            if '+aec' in self.spec['eccodes']:
+                grib_lib_names += ' -laec'
             # Default installation lib path changed to from lib to lib64 after 2.19.0
             if self.spec['eccodes'].version >= Version('2.19.0'):
                 lib_dir = '/lib64'
