@@ -50,9 +50,9 @@ class Icon(Package):
 
     depends_on('cmake')
     depends_on('libxml2')
-    depends_on('serialbox', when='serialize_mode=create')
-    depends_on('serialbox', when='serialize_mode=read')
-    depends_on('serialbox', when='serialize_mode=perturb')
+    depends_on('serialbox +fortran', when='serialize_mode=create')
+    depends_on('serialbox +fortran', when='serialize_mode=read')
+    depends_on('serialbox +fortran', when='serialize_mode=perturb')
     depends_on('eccodes +aec +fortran', when='+eccodes')
     # depends_on('hdf5 +szip +hl +fortran')
     depends_on('zlib')
