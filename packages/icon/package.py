@@ -125,7 +125,7 @@ class Icon(Package):
     @run_before('configure')
     def generate_hammoz_nml(self):
         if '+ham' in self.spec:
-            with working_dir('./externals/atm_phy_echam_submodels/namelists'):
+            with working_dir(self.spec.variants['config_dir'].value + '/externals/atm_phy_echam_submodels/namelists'):
                 make()
 
     def setup_build_environment(self, env):
