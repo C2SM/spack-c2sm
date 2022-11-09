@@ -1,9 +1,8 @@
 spack:
     specs:
         - cosmo@c2sm-features%nvhpc@21.3 cosmo_target=cpu ~cppdycore +eccodes
-        - serialbox@2.6.0
         - cosmo-eccodes-definitions@2.19.0.5
-        - eccodes@2.19.1
+        - eccodes@2.19.1 +fortran
         - libgrib1@22-01-2020
     concretizer:
         unify: true
