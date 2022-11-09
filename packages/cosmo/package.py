@@ -214,8 +214,8 @@ class Cosmo(MakefilePackage):
         else:
             grib_prefix = self.spec['eccodes'].prefix
             env.set(
-                'GRIBAPIL', '-L' + self.spec['eccodes:fortran'].libs
-                + ' -L' + self.spec['jasper'].libs)
+                'GRIBAPIL', str(self.spec['eccodes:fortran'].libs.ld_flags)
+                + ' ' + str(self.spec['jasper'].libs.ld_flags))
         grib_inc_dir_path = os.path.join(grib_prefix, 'include')
         if os.path.exists(grib_inc_dir_path):
             env.set('GRIBAPII', '-I' + grib_inc_dir_path)
