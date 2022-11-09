@@ -1,0 +1,10 @@
+spack:
+    specs:
+        - cosmo@c2sm-features%nvhpc@21.3 cosmo_target=gpu +eccodes ^mpich%nvhpc
+        - cosmo-dycore@c2sm-features%gcc@8.3.0 ~build_tests ^mpich%gcc
+        - cosmo-eccodes-definitions@2.19.0.5
+        - eccodes@2.19.1 +fortran
+        - libgrib1@22-01-2020
+    concretizer:
+        unify: true
+
