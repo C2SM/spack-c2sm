@@ -1,7 +1,7 @@
 import unittest
 import os
 import subprocess
-from ..src import spack_info, spack_spec
+from src import spack_info, spack_spec
 
 
 class InfoTest(unittest.TestCase):
