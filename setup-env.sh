@@ -5,7 +5,7 @@ parent_dir=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 if [ "$#" == 1 ]; then
     machine="$1"
 else
-    machine="$( "$parent_dir"/env-setup/machine.sh )"
+    machine="$( "$parent_dir"/src/machine.sh )"
 fi
 
 export SPACK_SYSTEM_CONFIG_PATH="$parent_dir"/sysconfigs/"$machine"
