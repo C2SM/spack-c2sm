@@ -1,6 +1,4 @@
 import unittest
-import os
-import subprocess
 from src import machine_name, spack_install
 
 
