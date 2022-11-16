@@ -13,7 +13,7 @@ GIT_ROOT=$(git rev-parse --show-toplevel)
 cd ${GIT_ROOT}
 mkdir -p envs && cd envs
 spack env create -d cosmo-gpu ${GIT_ROOT}/cosmo-gpu.yaml
-spacktivate cosmo-gpu # spack env activate cosmo-gpu
+spacktivate -p cosmo-gpu # spack env activate cosmo-gpu
 spack concretize
 spack install --test=root
 ```
@@ -27,7 +27,7 @@ GIT_ROOT=$(git rev-parse --show-toplevel)
 cd ${GIT_ROOT}
 mkdir -p envs && cd envs
 spack env create -d cosmo-gpu_dev ${GIT_ROOT}/cosmo-gpu.yaml
-spacktivate cosmo-gpu_dev
+spacktivate -p cosmo-gpu_dev
 ```
 
 Now, we use `spack install` to build the entire development tree:
