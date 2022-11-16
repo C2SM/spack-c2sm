@@ -1,31 +1,31 @@
-## Make spack envs work with COSMO
+# Make spack envs work with COSMO
 
 This work assumes that your spack instance is loaded via `. setup-env.sh`.
 
-### **Tested Environments**
+## **Tested Environments**
 
 - [x] `cosmo-cpu.yaml`
 - [x] `cosmo-gpu.yaml`
 
-### Spack env workflow with `spack install`
+## Spack env workflow with `spack install`
 ```bash
 mkdir env_cosmo-gpu
 cd env_cosmo-gpu
 ln -s ../cosmo-gpu.yaml .
-spack env create cosm-_gpu cosmo-gpu.yaml
-spacktivate cosmo_gpu # spack env activate cosmo_gpu
+spack env create cosmo-gpu cosmo-gpu.yaml
+spacktivate cosmo-gpu # spack env activate cosmo-gpu
 spack concretize
 spack install --test=root
 ```
 
-### Spack development workflow with `spack develop`
+## Spack development workflow with `spack develop`
 
 We follow the approach from the official [spack documentation on developer workflows](https://spack-tutorial.readthedocs.io/en/latest/tutorial_developer_workflows.html).
 
 ```bash
 mkdir devenv_cosmo-gpu
 cd devenv_cosmo-gpu
-ln -s ../cosmo_gpu.yaml .
+ln -s ../cosmo-gpu.yaml .
 spack env create -d cosmo-gpu_dev cosmo-gpu.yaml
 spacktivate cosmo-gpu_dev
 ```
@@ -58,16 +58,16 @@ This rebuilds `cosmo-dycore` from its subdirectory. Now, we can make changes to 
 and re-build with `spack-install`. To work on other packages of the spec, start again from
 `spack develop <package>@variant`.
 
-#### **TODOs
+### TODOs
 
 - [x] Figure how to make a dev-build inside an activate environment
 - [x] Figure how to build two codes (from same codebase) inside an acvtivate environment
 - [ ] Use one single spec for building COSMO CPU and GPU
 
 
-## Issues
+# Issues
 
-### Problem when parsing spec-string second time
+## Problem when parsing spec-string second time
 
 When parsing a string of a spec using `spack.cmd.parse_specs(str(cosmo_spec))[0]` or
 in `test_cosmo.py` spack complains about duplicate specs.
