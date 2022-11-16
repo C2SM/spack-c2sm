@@ -1,0 +1,108 @@
+--- a/externals/emvorado/src_emvorado/radar_dualpol_t_matrix_mod.f90
++++ b/externals/emvorado/src_emvorado/radar_dualpol_t_matrix_mod.f90
+@@ -234 +234 @@ CONTAINS
+-            DN1=DFLOAT(2*N+1)
++            DN1=DBLE(2*N+1)
+@@ -277 +277 @@ CONTAINS
+-            DN1=DFLOAT(2*N+1)
++            DN1=DBLE(2*N+1)
+@@ -429 +429 @@ CONTAINS
+-!      TIME=DFLOAT(ITIME)/6000D0
++!      TIME=DBLE(ITIME)/6000D0
+@@ -631,2 +631,2 @@ CONTAINS
+-            DNN=DFLOAT((2*N+1)*(2*NN+1))
+-            DNN=DNN/DFLOAT( N*NN*(N+1)*(NN+1) )
++            DNN=DBLE((2*N+1)*(2*NN+1))
++            DNN=DNN/DBLE( N*NN*(N+1)*(NN+1) )
+@@ -765,3 +765,3 @@ CONTAINS
+-         QN=DFLOAT(N)
+-         QN1=DFLOAT(N+1)
+-         QN2=DFLOAT(2*N+1)
++         QN=DBLE(N)
++         QN1=DBLE(N+1)
++         QN2=DBLE(2*N+1)
+@@ -776 +776 @@ CONTAINS
+-   20 QMM=DFLOAT(M*M)
++   20 QMM=DBLE(M*M)
+@@ -779 +779 @@ CONTAINS
+-         A=A*SQRT(DFLOAT(I2-1)/DFLOAT(I2))*QS
++         A=A*SQRT(DBLE(I2-1)/DBLE(I2))*QS
+@@ -784,3 +784,3 @@ CONTAINS
+-         QN=DFLOAT(N)
+-         QN2=DFLOAT(2*N+1)
+-         QN1=DFLOAT(N+1)
++         QN=DBLE(N)
++         QN2=DBLE(2*N+1)
++         QN1=DBLE(N+1)
+@@ -799 +799 @@ CONTAINS
+-         DN=DFLOAT(N*(N+1))
++         DN=DBLE(N*(N+1))
+@@ -821,2 +821,2 @@ CONTAINS
+-           AN(N)=DFLOAT(NN)
+-           D=SQRT(DFLOAT(2*N+1)/DFLOAT(NN))
++           AN(N)=DBLE(NN)
++           D=SQRT(DBLE(2*N+1)/DBLE(NN))
+@@ -833 +833 @@ CONTAINS
+-   11 NG1=DFLOAT(NGAUSS)/2D0
++   11 NG1=DBLE(NGAUSS)/2D0
+@@ -912,2 +912,2 @@ CONTAINS
+-      TB=DMAX1(TB,DFLOAT(NMAX))
+-      NNMAX1=1.2D0*SQRT(DMAX1(TA,DFLOAT(NMAX)))+3D0
++      TB=DMAX1(TB,DBLE(NMAX))
++      NNMAX1=1.2D0*SQRT(DMAX1(TA,DBLE(NMAX)))+3D0
+@@ -950 +950 @@ CONTAINS
+-      DNP=DFLOAT(N)
++      DNP=DBLE(N)
+@@ -1074 +1074 @@ CONTAINS
+-      Z(L)=1D0/(DFLOAT(2*L+1)*XX)
++      Z(L)=1D0/(DBLE(2*L+1)*XX)
+@@ -1078 +1078 @@ CONTAINS
+-         Z(I1)=1D0/(DFLOAT(2*I1+1)*XX-Z(I1+1))
++         Z(I1)=1D0/(DBLE(2*I1+1)*XX-Z(I1+1))
+@@ -1088 +1088 @@ CONTAINS
+-         U(I)=YI1-DFLOAT(I)*YI*XX
++         U(I)=YI1-DBLE(I)*YI*XX
+@@ -1110 +1110 @@ CONTAINS
+-    5     Y(I+1)=DFLOAT(2*I+1)*X1*Y(I)-Y(I-1)
++    5     Y(I+1)=DBLE(2*I+1)*X1*Y(I)-Y(I-1)
+@@ -1113 +1113 @@ CONTAINS
+-  10       V(I)=Y(I-1)-DFLOAT(I)*X1*Y(I)
++  10       V(I)=Y(I-1)-DBLE(I)*X1*Y(I)
+@@ -1136 +1136 @@ CONTAINS
+-      QF=1D0/DFLOAT(2*L+1)
++      QF=1D0/DBLE(2*L+1)
+@@ -1142 +1142 @@ CONTAINS
+-         QF=DFLOAT(2*I1+1)
++         QF=DBLE(2*I1+1)
+@@ -1175 +1175 @@ CONTAINS
+-         QI=DFLOAT(I)
++         QI=DBLE(I)
+@@ -1453 +1453 @@ CONTAINS
+-      QM=DFLOAT(M)
++      QM=DBLE(M)
+@@ -1714,3 +1714,3 @@ CONTAINS
+-         QN=DFLOAT(N)
+-         QN1=DFLOAT(N+1)
+-         QN2=DFLOAT(2*N+1)
++         QN=DBLE(N)
++         QN1=DBLE(N+1)
++         QN2=DBLE(2*N+1)
+@@ -1725 +1725 @@ CONTAINS
+-   20 QMM=DFLOAT(M*M)
++   20 QMM=DBLE(M*M)
+@@ -1728 +1728 @@ CONTAINS
+-         A=A*SQRT(DFLOAT(I2-1)/DFLOAT(I2))*QS
++         A=A*SQRT(DBLE(I2-1)/DBLE(I2))*QS
+@@ -1733,3 +1733,3 @@ CONTAINS
+-         QN=DFLOAT(N)
+-         QN2=DFLOAT(2*N+1)
+-         QN1=DFLOAT(N+1)
++         QN=DBLE(N)
++         QN2=DBLE(2*N+1)
++         QN1=DBLE(N+1)
+@@ -1830 +1830 @@ CONTAINS
+-      DN=DFLOAT(N)
++      DN=DBLE(N)
+@@ -1934 +1934 @@ CONTAINS
+-      F=DFLOAT(N)
++      F=DBLE(N)

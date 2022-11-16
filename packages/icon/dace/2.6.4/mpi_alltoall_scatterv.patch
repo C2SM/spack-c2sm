@@ -1,0 +1,21 @@
+--- a/externals/dace_icon/src_for_icon/p_alltoall_derived.incf
++++ b/externals/dace_icon/src_for_icon/p_alltoall_derived.incf
+@@ -58,8 +58,6 @@
+   !-------------------------------------------------------------------
+ #ifndef MO_MPI_SOURCE
+ #if defined (HAVE_MPI_MOD) && defined (__GFORTRAN__) && (__GNUC__ >= 10)
+-  USE mpi,              only: MPI_ALLTOALL,   &!
+-                              MPI_ALLTOALLV    !
+ #endif
+   USE mo_mpi_dace,      only: MPI_BYTE,       &!
+                               d_comm,         &!
+--- a/externals/dace_icon/src_for_icon/p_scatter_derived.incf
++++ b/externals/dace_icon/src_for_icon/p_scatter_derived.incf
+@@ -57,7 +57,6 @@
+   ! use entities from 3D-Var modules if not provided by including code
+   !-------------------------------------------------------------------
+ #if defined (HAVE_MPI_MOD) && defined (__GFORTRAN__) && (__GNUC__ >= 10)
+-  USE mpi,              ONLY: MPI_SCATTERV
+ #endif
+ #ifndef MO_MPI_SOURCE
+   USE mo_mpi_dace,      ONLY: MPI_BYTE,       &!

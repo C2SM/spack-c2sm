@@ -1,0 +1,22 @@
+--- a/externals/rte-rrtmgp/rrtmgp/kernels/default/mo_gas_optics_kernels.F90
++++ b/externals/rte-rrtmgp/rrtmgp/kernels/default/mo_gas_optics_kernels.F90
+@@ -30,7 +30,7 @@ contains
+                 temp_ref_min,temp_ref_delta,press_ref_trop_log, &
+                 vmr_ref,                                        &
+                 play,tlay,col_gas,                              &
+-                jtemp,fmajor,fminor,col_mix,tropo,jeta,jpress) bind(C, name="interpolation")
++                jtemp,fmajor,fminor,col_mix,tropo,jeta,jpress) bind(C, name="rrtm_interpolation")
+     ! input dimensions
+     integer,                            intent(in) :: ncol,nlay
+     integer,                            intent(in) :: ngas,nflav,neta,npres,ntemp
+--- a/externals/rte-rrtmgp/rrtmgp/kernels/openacc/mo_gas_optics_kernels.F90
++++ b/externals/rte-rrtmgp/rrtmgp/kernels/openacc/mo_gas_optics_kernels.F90
+@@ -30,7 +30,7 @@ contains
+                 temp_ref_min,temp_ref_delta,press_ref_trop_log, &
+                 vmr_ref,                                        &
+                 play,tlay,col_gas,                              &
+-                jtemp,fmajor,fminor,col_mix,tropo,jeta,jpress) bind(C, name="interpolation")
++                jtemp,fmajor,fminor,col_mix,tropo,jeta,jpress) bind(C, name="rrtm_interpolation")
+     ! input dimensions
+     integer,                            intent(in) :: ncol,nlay
+     integer,                            intent(in) :: ngas,nflav,neta,npres,ntemp

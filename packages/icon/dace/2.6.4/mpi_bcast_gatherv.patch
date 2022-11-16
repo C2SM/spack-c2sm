@@ -1,0 +1,20 @@
+--- a/externals/dace_icon/src_for_icon/p_bcast.incf
++++ b/externals/dace_icon/src_for_icon/p_bcast.incf
+@@ -63,7 +63,6 @@
+   ! use entities from 3D-Var modules if not provided by including code
+   !-------------------------------------------------------------------
+ #if defined (HAVE_MPI_MOD) && defined (__GFORTRAN__) && (__GNUC__ >= 10)
+-  USE mpi,              ONLY: MPI_BCAST
+ #endif
+ #ifndef MO_MPI_SOURCE
+   USE mo_mpi_dace,      ONLY: MPI_BYTE,      &!
+--- a/externals/dace_icon/src_for_icon/p_gather_derived.incf
++++ b/externals/dace_icon/src_for_icon/p_gather_derived.incf
+@@ -61,7 +61,6 @@
+   ! use entities from 3D-Var modules if not provided by including code
+   !-------------------------------------------------------------------
+ #if defined (HAVE_MPI_MOD) && defined (__GFORTRAN__) && (__GNUC__ >= 10)
+-  USE mpi,              ONLY: MPI_GATHERV
+ #endif
+ #ifndef MO_MPI_SOURCE
+   USE mo_mpi_dace,      ONLY: MPI_BYTE,       &!

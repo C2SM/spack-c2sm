@@ -1,0 +1,45 @@
+--- a/externals/sct/configure
++++ b/externals/sct/configure
+@@ -18969,7 +18969,7 @@ fi
+ 
+   test -n "$MPI_LAUNCH" && break
+ done
+-test -n "$MPI_LAUNCH" || MPI_LAUNCH="true"
++test -n "$MPI_LAUNCH" || MPI_LAUNCH="false"
+ 
+        # set MP_HOSTFILE if we are using IBM PE
+        # $ac_cv_path_MPI_LAUNCH can be a command with arguments:
+--- a/externals/sct/configure.ac
++++ b/externals/sct/configure.ac
+@@ -181,7 +181,7 @@ AS_IF([test x"$mpi" != xfalse],
+   # do not check for launch if mpirun-check is disabled
+   [AS_IF([test "x$with_mpirun_check" = "xfalse"],
+          [AC_MSG_WARN([check for MPI_LAUNCH disabled])],
+-         [AC_PATH_PROGS([MPI_LAUNCH], [poe mpirun mpiexec], [true])
++         [AC_PATH_PROGS([MPI_LAUNCH], [poe mpirun mpiexec], [false])
+        # set MP_HOSTFILE if we are using IBM PE
+        # $ac_cv_path_MPI_LAUNCH can be a command with arguments:
+        set dummy $ac_cv_path_MPI_LAUNCH
+--- a/externals/sct/tests/test_hybrid_run.in
++++ b/externals/sct/tests/test_hybrid_run.in
+@@ -13,7 +13,7 @@ $ENV{SCT_CALLSTATS}=0;
+ $ENV{SCT_PROC_CHOICE}="SCT_SELECT_ALL";
+ $ENV{OMP_NUM_THREADS}=2;
+ #parse(run_prg("@abs_top_builddir@/tests/test_hybrid")) && check_reports();
+-run_prg("@abs_top_builddir@/tests/test_hybrid");
++run_prg("@MPI_LAUNCH@ -n 2 @abs_top_builddir@/tests/test_hybrid");
+ 
+ $ENV{SCT_CALLSTATS}=0;
+ $ENV{SCT_PROC_CHOICE}="SCT_SELECT_ALL";
+--- a/externals/sct/tests/test_precision_run.in
++++ b/externals/sct/tests/test_precision_run.in
+@@ -9,7 +9,8 @@ $ENV{SCT_OUT}="stdout";
+ 
+ $ENV{SCT_CALLSTATS}=0;
+ #parse(run_prg("@abs_top_builddir@/tests/test_precision")) && check_reports();
+-run_prg("@abs_top_builddir@/tests/test_precision");
++@MPI_TRUE@run_prg("@MPI_LAUNCH@ -n 1 @abs_top_builddir@/tests/test_precision");
++@MPI_FALSE@run_prg("@abs_top_builddir@/tests/test_precision");
+ 
+ $ENV{SCT_CALLSTATS}=1;
+ #parse(run_prg("@abs_top_builddir@/tests/test_precision")) && check_reports();

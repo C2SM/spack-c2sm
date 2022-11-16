@@ -1,0 +1,18 @@
+--- a/src/data_assimilation/interfaces/mo_icon2dace.f90
++++ b/src/data_assimilation/interfaces/mo_icon2dace.f90
+@@ -1285,6 +1285,7 @@ contains
+     if (dace% lpio) write(0,*) 'deriving gridpoint distance to grid boundary'
+     call dist_to_bound (p, 50)
+ 
++#if 0
+     !-----------------------------------------------------
+     ! Test with model grid points (cell centers, vertices)
+     !-----------------------------------------------------
+@@ -1390,6 +1391,7 @@ contains
+           end if
+        end block
+     end if
++#endif
+ 
+   end subroutine icongrid_from_icon
+   !----------------------------------------------------------------------------

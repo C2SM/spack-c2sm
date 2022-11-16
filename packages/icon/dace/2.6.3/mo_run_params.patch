@@ -1,0 +1,11 @@
+--- a/externals/dace_icon/src_for_icon/mo_run_params.f90
++++ b/externals/dace_icon/src_for_icon/mo_run_params.f90
+@@ -919,7 +919,7 @@ contains
+       write (6,'(a,a     )') '  grib_packing       = ',trim(grib_packing)
+       write (6,'(a,a5,i2 )') '  rttov packages     : '           &
+ #if defined (_RTTOV_VERSION)
+-                                                      ,"RTTOV", _RTTOV_VERSION
++                                                      ,"RTTOV", _RTTOV_VERSION &
+ #endif
+                                                       ;
+       write (6,'()')

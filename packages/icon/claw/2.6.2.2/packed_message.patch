@@ -1,0 +1,57 @@
+--- a/src/parallel_infrastructure/mo_packed_message.f90
++++ b/src/parallel_infrastructure/mo_packed_message.f90
+@@ -14,7 +14,7 @@
+ 
+ MODULE mo_packed_message
+   USE ISO_C_BINDING, ONLY: c_ptr, C_LOC, C_F_POINTER, C_SIGNED_CHAR
+-#ifdef __PGI
++#if defined(__PGI) || defined(_CLAW)
+   USE ISO_C_BINDING, ONLY: C_SIZE_T, C_SIZEOF
+ #endif
+   USE mo_exception, ONLY: finish, message_text
+@@ -34,15 +34,15 @@ MODULE mo_packed_message
+ 
+   INTEGER, PARAMETER, PUBLIC :: kPackOp = 1
+   INTEGER, PARAMETER, PUBLIC :: kUnpackOp = 2
+-#ifndef __PGI
++#if defined(__PGI) || defined(_CLAW)
++  INTEGER :: tbytes(7) = -1
++#else
+ ! * obtain the storge size of supported data types in units of C_SIGNED_CHAR
+ ! (pgf90 needs some workaround since STORAGE_SIZE appears to be broken)
+   INTEGER, PARAMETER :: tbytes(7) = ([ STORAGE_SIZE(1), STORAGE_SIZE(1_i8), &
+      & STORAGE_SIZE(1_C_SIGNED_CHAR), STORAGE_SIZE(.false.), &
+      & STORAGE_SIZE(1._dp), STORAGE_SIZE(1._sp), STORAGE_SIZE('a') ] + &
+      & STORAGE_SIZE(1_C_SIGNED_CHAR) - 1) / STORAGE_SIZE(1_C_SIGNED_CHAR)
+-#else
+-  INTEGER :: tbytes(7) = -1
+ #endif
+   ! A t_PackedMessage IS used to bundle a number of different values
+   ! together into a single message, that can be communicated via a
+@@ -170,7 +170,7 @@ MODULE mo_packed_message
+ 
+ CONTAINS
+ 
+-#ifdef __PGI
++#if defined(__PGI) || defined(_CLAW)
+   SUBROUTINE init_tbytes()
+     INTEGER, PARAMETER :: crap_i(8) = 1
+     INTEGER(i8), PARAMETER :: crap_i8(8) = 1_i8
+@@ -248,7 +248,7 @@ CONTAINS
+     INTEGER(C_SIGNED_CHAR), POINTER :: vptr(:)
+     INTEGER :: bsize
+ 
+-#ifdef __PGI
++#if defined(__PGI) || defined(_CLAW)
+     IF (tbytes(1) .EQ. -1) CALL init_tbytes()
+ #endif
+     bsize = asize * tbytes(tid)
+@@ -353,7 +353,7 @@ CONTAINS
+     INTEGER(C_SIGNED_CHAR), POINTER :: vptr(:)
+     INTEGER :: bsize
+ 
+-#ifdef __PGI
++#if defined(__PGI) || defined(_CLAW)
+     IF (tbytes(1) .EQ. -1) CALL init_tbytes()
+ #endif
+     bsize = asize * tbytes(tid)

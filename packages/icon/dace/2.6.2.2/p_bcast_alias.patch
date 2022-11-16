@@ -1,0 +1,41 @@
+--- a/src/data_assimilation/interfaces/mo_icon2dace.f90
++++ b/src/data_assimilation/interfaces/mo_icon2dace.f90
+@@ -86,7 +86,7 @@ MODULE mo_icon2dace
+   !-----------------------------
+   use mo_mpi_dace,    only: dace,            &! DACE communicator
+                             set_dace_comm,   &! set the DACE MPI communicator
+-                            p_bcast,         &! generic MPI bcast routine
++                            p_bcast_alias => p_bcast,         &! generic MPI bcast routine
+                             p_ibcast,        &! generic MPI bcast routine (non-blocking)
+                             p_sum,           &! generic MPI sum
+                             p_allgather,     &! generic MPI allgather routine
+@@ -1819,10 +1819,10 @@ contains
+     call destruct    (rcobs)
+     obs% o% pe = pes
+     do i=1,ntri
+-      call p_bcast (obs% o(i)% n_spot, obs% o(i)% pe)
+-      call p_bcast (obs% o(i)% n_obs,  obs% o(i)% pe)
+-      call p_bcast (obs% o(i)% n_int,  obs% o(i)% pe)
+-      call p_bcast (obs% o(i)% n_par,  obs% o(i)% pe)
++      call p_bcast_alias (obs% o(i)% n_spot, obs% o(i)% pe)
++      call p_bcast_alias (obs% o(i)% n_obs,  obs% o(i)% pe)
++      call p_bcast_alias (obs% o(i)% n_int,  obs% o(i)% pe)
++      call p_bcast_alias (obs% o(i)% n_par,  obs% o(i)% pe)
+     end do
+     deallocate    (pes)
+     call destruct (obs_in(1))
+@@ -2327,10 +2327,10 @@ contains
+     !---------------------------
+     ! broadcast namelist entries
+     !---------------------------
+-    call p_bcast (obstypes      ,dace% pio)
+-    call p_bcast (prefix_out    ,dace% pio)
+-    call p_bcast (interpolation ,dace% pio)
+-    call p_bcast (fg_check      ,dace% pio)
++    call p_bcast_alias (obstypes      ,dace% pio)
++    call p_bcast_alias (prefix_out    ,dace% pio)
++    call p_bcast_alias (interpolation ,dace% pio)
++    call p_bcast_alias (fg_check      ,dace% pio)
+     if (interpolation < -1) call finish ("read_nml_mec_obs",    &
+                                          "invalid interpolation")
+     if (interpolation >  1) call finish ("read_nml_mec_obs",              &

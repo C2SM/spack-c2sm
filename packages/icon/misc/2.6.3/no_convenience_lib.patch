@@ -1,0 +1,11 @@
+--- a/icon.mk.in
++++ b/icon.mk.in
+@@ -314,7 +314,7 @@ check: all
+ ######################## COMPILATION AND LINKING RULES #########################
+ 
+ # Dependencies of the ICON executable:
+-$(ICON_exec_file): $(ICON_prog_obj_file) $(common_lib_file) $(BUNDLED_LIBFILES)
++$(ICON_exec_file): $(ICON_prog_obj_file) $(common_lib_member_files) $(BUNDLED_LIBFILES)
+ 
+ # Dependencies of the JSBACH executable:
+ @JSBACH_ENABLED@$(JSBACH_exec_file): $(JSBACH_prog_obj_file) $(common_lib_file) $(BUNDLED_LIBFILES)

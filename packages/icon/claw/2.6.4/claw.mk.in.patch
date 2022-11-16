@@ -1,0 +1,18 @@
+--- a/claw.mk.in
++++ b/claw.mk.in
+@@ -75,7 +75,14 @@ PYTHON= @PYTHON@
+ DEPGEN= ${PYTHON} $(srcdir)/utils/mkhelper/depgen.py
+ 
+ # CLAW flags:
+-CLAWFLAGS= --no-dep -w 132 @CLAW_MOD_IN@$(xmoddir) @CLAW_MOD_OUT@$(xmoddir) $(addprefix -I$(srcdir)/,$(inc_subdirs)) $(addprefix @CLAW_MOD_IN@$(srcdir)/externals/omni-xmod-pool/,mpi/3.0 self/0.2 yaxt/0.7.0 mtime/1.0.8 cdi/1.8.x) @CLAWFLAGS@
++#   We set '-w 1000' to minimize the number of line continuations introduced by
++#   CLAW because they might break compilation with Intel and potentially other
++#   compilers. Ideally, we would choose a larger number (~2000) to prevent the
++#   automatically generated line continuations at all. Unfortunatelly,
++#   PGI/NVIDIA compilers refuse to compile Fortran files with lines exceeding
++#   1001 character. However, the value we set seems to be enough to avoid most
++#   of the poorly injected line breaks.
++CLAWFLAGS= --no-dep -w 1000 @CLAW_MOD_IN@$(xmoddir) @CLAW_MOD_OUT@$(xmoddir) $(addprefix -I$(srcdir)/,$(inc_subdirs)) $(addprefix @CLAW_MOD_IN@$(srcdir)/externals/omni-xmod-pool/,mpi/3.0 self/0.2 yaxt/0.7.0 mtime/1.0.8 cdi/1.8.x) @CLAWFLAGS@
+ @CLAW_OLD_DRIVER_ENABLED@CLAWFLAGS+= --Wf-no-module-cache
+ @CLAW_NEW_DRIVER_ENABLED@CLAWFLAGS+= --disable-mp --no-module-cache
+ @JSBACH_ENABLED@CLAWFLAGS+= --model-config=$(srcdir)/externals/jsbach/config/icon_jsbach.toml

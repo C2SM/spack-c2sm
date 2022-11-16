@@ -1,0 +1,152 @@
+--- a/externals/dace_icon/src_for_icon/mo_ir_emis.f90
++++ b/externals/dace_icon/src_for_icon/mo_ir_emis.f90
+@@ -109,5 +109,5 @@ MODULE mo_ir_emis
+                             pca_stdv,      &! pc stdev (annual mean)
+                             pcm_stdv        ! pc stdev (monthly mean)
+-#if (_RTTOV_VERSION >= 12)
++#if (_RTTOV_VERSION >= 12) && !defined(__ICON__)
+   use mod_uwiremis_atlas, only: rttov_uwiremis_angcorr, &
+                                 angcorrminzen   ! for the angular correction
+@@ -845,5 +845,5 @@ contains
+             igbp_type = uwd% igbp (gridy, gridx)
+ 
+-#if (_RTTOV_VERSION >= 12)
++#if (_RTTOV_VERSION >= 12) && !defined(__ICON__)
+             if (satzen > angcorrminzen) then
+               call rttov_uwiremis_angcorr (     &
+--- a/externals/dace_icon/src_for_icon/mo_iratlas.f90
++++ b/externals/dace_icon/src_for_icon/mo_iratlas.f90
+@@ -65,5 +65,5 @@ MODULE mo_iratlas
+                                  errorstatus_success, &!
+                                  errorstatus_fatal
+-#if (_RTTOV_VERSION >= 12)
++#if (_RTTOV_VERSION >= 12) && !defined(__ICON__)
+   use mod_uwiremis_atlas ,only : uwiremis_atlas_data,             &
+                                  rttov_uwiremis_nullify_pointers, &
+@@ -439,5 +439,5 @@ MODULE mo_iratlas
+       0.9815_JPRB, 0.9814_JPRB, 0.9813_JPRB, 0.9813_JPRB, 0.9812_JPRB, 0.9811_JPRB, 0.9811_JPRB, 0.9810_JPRB/
+ 
+-#if (_RTTOV_VERSION < 12)
++#if (_RTTOV_VERSION < 12) || defined(__ICON__)
+   !--------------------------------------------
+   ! type definition copied from RTTOV12 sources
+@@ -599,5 +599,5 @@ CONTAINS
+       ! call rttov_uwiremis_init from RTTOV12 sources
+       !----------------------------------------------
+-#if (_RTTOV_VERSION >= 12)
++#if (_RTTOV_VERSION >= 12) && !defined(__ICON__)
+     call rttov_uwiremis_init(        &
+                       path,          &! in
+@@ -1667,5 +1667,5 @@ CONTAINS
+   ! deallocate atlas arrays
+   !------------------------
+-#if (_RTTOV_VERSION >= 12)
++#if (_RTTOV_VERSION >= 12) && !defined(__ICON__)
+     call rttov_uwiremis_close_atlas (uwd)
+ #else
+@@ -1715,5 +1715,5 @@ CONTAINS
+     uwd% cv_pack     = 98008
+ 
+-#if (_RTTOV_VERSION >= 12)
++#if (_RTTOV_VERSION >= 12) && !defined(__ICON__)
+     call rttov_uwiremis_nullify_pointers (uwd)
+ #else
+--- a/externals/dace_icon/src_for_icon/mo_tovs.f90
++++ b/externals/dace_icon/src_for_icon/mo_tovs.f90
+@@ -2435,5 +2435,7 @@ FTRACE_END('process_tovs:calc_k')
+                           fix_hgpl          = fix_hgpl          )
+ 
++#if !defined(__ICON__)
+       min_od                  = rt_min_od  ! minimum optical density in RTTOV
++#endif
+       ! Set RTIFC options
+       default_gas_units       = rt_humi
+--- a/src/data_assimilation/interfaces/mo_rtifc_13.f90
++++ b/src/data_assimilation/interfaces/mo_rtifc_13.f90
+@@ -99,5 +99,5 @@ MODULE mo_rtifc_13
+ #endif
+ 
+-#if defined(_DACE_)
++#if defined(_DACE_) && !defined(__ICON__)
+   use rttov_types,          only: ipr_deb,               &!
+                                   pe_rt => pe
+@@ -318,5 +318,5 @@ MODULE mo_rtifc_13
+ #endif
+ 
+-#if !defined(_DACE_)
++#if !defined(_DACE_) || defined(__ICON__)
+   ! we are not sure, that we use a DWD version of RTTOV -> use dummy variables
+   integer :: ipr_deb, pe_rt
+@@ -444,5 +444,5 @@ contains
+         ropts%rt_all%use_q2m           = .false.
+         ropts%rt_all%do_lambertian     = .false.
+-#if defined(_DACE_)                                       
++#if defined(_DACE_) && !defined(__ICON__)
+         ropts%config%crop_k_reg_limits = .false.
+         ropts%config%conv_overc        = .false.
+@@ -474,5 +474,5 @@ contains
+     if (present(use_q2m          )) ropts%rt_all%use_q2m           = use_q2m
+     if (present(do_lambertian    )) ropts%rt_all%do_lambertian     = do_lambertian
+-#if defined(_DACE_)
++#if defined(_DACE_) && !defined(__ICON__)
+     if (present(crop_k_reg_lims  )) ropts%config%crop_k_reg_limits = crop_k_reg_lims
+     if (present(conv_overc       )) ropts%config%conv_overc        = conv_overc
+@@ -2117,5 +2117,5 @@ FTRACE_BEGIN('rtifc_direct')
+ 
+     ! Allocate/initialize arrays
+-#if defined(_DACE_)
++#if defined(_DACE_) && !defined(__ICON__)
+     transmission%l_opdep = lopdep
+ #endif
+@@ -2233,5 +2233,5 @@ FTRACE_BEGIN('rtifc_direct')
+              transm(:,1:nchans,iprof) = dble(transmission%tau_levels(1+nlevs_top:,sind:eind))
+         if (present(transmtotal)) transmtotal(1:nchans,iprof) = dble(transmission%tau_total(sind:eind))
+-#if defined(_DACE_)
++#if defined(_DACE_) && !defined(__ICON__)
+         if (lopdep) &
+              opdep (:,1:nchans,iprof) = dble(transmission%opdep_ref (1+nlevs_top:,sind:eind))
+@@ -2264,5 +2264,5 @@ FTRACE_BEGIN('rtifc_direct')
+         if (present(transm     )) transm(:,istore(i,1),istore(i,2)) = dble(transmission%tau_levels(1+nlevs_top:,i))
+         if (present(transmtotal)) transmtotal(istore(i,1),istore(i,2)) = dble(transmission%tau_total(i))
+-#if defined(_DACE_)
++#if defined(_DACE_) && !defined(__ICON__)
+         if (lopdep) &
+              opdep(:,istore(i,1),istore(i,2)) = dble(transmission%opdep_ref(1+nlevs_top:,i))
+@@ -2734,5 +2734,5 @@ FTRACE_BEGIN('rtifc_k')
+ #undef DIM_ERROR
+ 
+-#if defined(_DACE_)
++#if defined(_DACE_) && !defined(__ICON__)
+     transmission%l_opdep   = lopdep
+     transmission_k%l_opdep = .false.
+@@ -2879,5 +2879,5 @@ FTRACE_BEGIN('rtifc_k')
+         if (l_transm) &
+              transm(:,1:nchans,iprof) = dble(transmission%tau_levels(1+nlevs_top:,sind:eind))
+-#if defined(_DACE_)
++#if defined(_DACE_) && !defined(__ICON__)
+         if (lopdep) &
+              opdep(:,1:nchans,iprof) = dble(transmission%opdep_ref(1+nlevs_top:,sind:eind))
+@@ -2908,5 +2908,5 @@ FTRACE_BEGIN('rtifc_k')
+         if (l_transm) &
+              transm(:,istore(i,1),istore(i,2)) = dble(transmission%tau_levels(1+nlevs_top:,i))
+-#if defined(_DACE_)
++#if defined(_DACE_) && !defined(__ICON__)
+         if (lopdep) &
+              opdep(:,istore(i,1),istore(i,2)) = dble(transmission%opdep_ref(1+nlevs_top:,i))
+@@ -3265,5 +3265,7 @@ FTRACE_END('rtifc_k')
+      if (.not. mw_atlas(irun)% is_mw) cycle
+      if (mw_atlas(irun)% atlas_id /= atlas_id) cycle
++#if !defined(__ICON__)
+      if (atlas_id == 2 .and. mw_atlas(irun)% cnrm_mw_atlas% inst_id /= coefs(insidx)% coef% id_inst) cycle
++#endif
+      atlas = mw_atlas(irun)
+    end do
+--- a/src/data_assimilation/interfaces/mo_rtifc_macros.incf
++++ b/src/data_assimilation/interfaces/mo_rtifc_macros.incf
+@@ -90,5 +90,5 @@
+ 
+ ! god stuff (generalized optical depth, RTTOV smoothing)
+-#if defined(_DACE_)
++#if defined(_DACE_) && !defined(__ICON__)
+ #define _RTTOV_GOD
+ #else
