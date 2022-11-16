@@ -9,10 +9,10 @@ This work assumes that your spack instance is loaded via `. setup-env.sh`.
 
 ## Spack env workflow with `spack install`
 ```bash
-mkdir env_cosmo-gpu
-cd env_cosmo-gpu
-ln -s ../cosmo-gpu.yaml .
-spack env create cosmo-gpu cosmo-gpu.yaml
+GIT_ROOT=$(git rev-parse --show-toplevel)
+cd ${GIT_ROOT}
+mkdir -p envs && cd envs
+spack env create -d cosmo-gpu ${GIT_ROOT}/cosmo-gpu.yaml
 spacktivate cosmo-gpu # spack env activate cosmo-gpu
 spack concretize
 spack install --test=root
@@ -23,10 +23,10 @@ spack install --test=root
 We follow the approach from the official [spack documentation on developer workflows](https://spack-tutorial.readthedocs.io/en/latest/tutorial_developer_workflows.html).
 
 ```bash
-mkdir devenv_cosmo-gpu
-cd devenv_cosmo-gpu
-ln -s ../cosmo-gpu.yaml .
-spack env create -d cosmo-gpu_dev cosmo-gpu.yaml
+GIT_ROOT=$(git rev-parse --show-toplevel)
+cd ${GIT_ROOT}
+mkdir -p envs && cd envs
+spack env create -d cosmo-gpu_dev ${GIT_ROOT}/cosmo-gpu.yaml
 spacktivate cosmo-gpu_dev
 ```
 
@@ -36,7 +36,7 @@ Now, we use `spack install` to build the entire development tree:
 spack install
 ```
 
-Now we specify which package and version we want to work on.
+Afterwards, we specify which package and version we want to work on.
 
 ```bash
 spack develop cosmo-dycore@c2sm-features
@@ -55,8 +55,8 @@ spack install
 ```
 
 This rebuilds `cosmo-dycore` from its subdirectory. Now, we can make changes to `cosmo-dycore`
-and re-build with `spack-install`. To work on other packages of the spec, start again from
-`spack develop <package>@variant`.
+and re-build with `spack install`. To work on other packages of the spec, start again from
+`spack develop <package>@<variant>`.
 
 ### TODOs
 
