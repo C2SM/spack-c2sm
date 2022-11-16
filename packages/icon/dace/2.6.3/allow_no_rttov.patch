@@ -1,0 +1,12 @@
+--- a/configure
++++ b/configure
+@@ -6909,7 +6909,8 @@ rm -f core conftest.err conftest.$ac_objext \
+     conftest$ac_exeext conftest.$ac_ext
+ else
+   if test "x$enable_dace" = xyes; then :
+-        as_fn_error $? "unsupported combination of the configure options: you are trying to configure with the DACE modules for data assimilation but usage of the radiative transfer model for TOVS is disabled: either disable the DACE modules for data assimilation (--disable-dace) or enable usage of the radiative transfer model for TOVS (--enable-rttov)" "$LINENO" 5
++        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: experimental combination of the configure options: you are trying to configure with the DACE modules for data assimilation (--enable-dace) but usage of the radiative transfer model for TOVS is disabled (--disable-rttov)" >&5
++$as_echo "$as_me: WARNING: experimental combination of the configure options: you are trying to configure with the DACE modules for data assimilation (--enable-dace) but usage of the radiative transfer model for TOVS is disabled (--disable-rttov)" >&2;}
+ fi
+ fi
+ 

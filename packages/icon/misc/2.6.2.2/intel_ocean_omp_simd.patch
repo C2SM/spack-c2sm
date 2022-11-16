@@ -1,0 +1,18 @@
+--- a/src/ocean/dynamics/mo_ocean_ab_timestepping_mimetic.f90
++++ b/src/ocean/dynamics/mo_ocean_ab_timestepping_mimetic.f90
+@@ -782,7 +782,6 @@ CONTAINS
+           CALL get_index_range(edges_in_domain, blockNo, start_edge_index, end_edge_index)
+           z_vn_ab(:,:,blockNo)  = 0.0_wp
+           DO je = start_edge_index, end_edge_index
+-!DIR$ SIMD
+             DO jk = 1, patch_3d%p_patch_1d(1)%dolic_e(je,blockNo)
+               z_vn_ab(je,jk,blockNo)=ab_gam * ocean_state%p_diag%vn_pred(je,jk,blockNo) &
+                 & + (1.0_wp -ab_gam) * ocean_state%p_prog(nold(1))%vn(je,jk,blockNo)
+@@ -804,7 +803,6 @@ CONTAINS
+         DO blockNo = edges_in_domain%start_block, edges_in_domain%end_block
+           CALL get_index_range(edges_in_domain, blockNo, start_edge_index, end_edge_index)
+           DO je = start_edge_index, end_edge_index
+-!DIR$ SIMD
+             DO jk=1,patch_3d%p_patch_1d(1)%dolic_e(je,blockNo)
+               z_e(je,jk,blockNo)=  z_vn_ab(je,jk,blockNo) * patch_3d%p_patch_1d(1)%prism_thick_e(je,jk,blockNo)
+             END DO

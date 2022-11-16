@@ -1,0 +1,17 @@
+--- a/configure
++++ b/configure
+@@ -8624,13 +8624,7 @@ else
+       end subroutine
+       end module
+ _ACEOF
+-      { ac_try='$CLAW -f -o conftest.claw.$ac_ext --gen-mod-files ${acx_cv_claw_module_out_flag}sub $CLAWFLAGS conftest.$ac_ext >&5'
+-  { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_try\""; } >&5
+-  (eval $ac_try) 2>&5
+-  ac_status=$?
+-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+-  test $ac_status = 0; }; }
+-      { ac_try='test -f sub/conftest_module.xmod'
++      { ac_try='$CLAW -f -o conftest.claw.$ac_ext --gen-mod-files ${acx_cv_claw_module_out_flag}sub $CLAWFLAGS conftest.$ac_ext >&5 && test -f sub/conftest_module.xmod'
+   { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_try\""; } >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?

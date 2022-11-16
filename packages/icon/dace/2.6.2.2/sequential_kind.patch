@@ -1,0 +1,33 @@
+--- a/externals/dace_icon/src_for_icon/parallel_utilities.f90
++++ b/externals/dace_icon/src_for_icon/parallel_utilities.f90
+@@ -614,7 +614,7 @@ INTEGER                 , INTENT(IN)       ::                              &
+   icommunicator         ! involved group of processors
+ 
+ ! Array arguments with intent(inout):
+-INTEGER (KIND=4),         INTENT(INOUT)    ::                              &
++INTEGER (KIND=SELECTED_INT_KIND(9)),         INTENT(INOUT)    ::                              &
+   buffer (ibufferlen)   ! buffer to be broadcasted
+ 
+ ! Scalar arguments with intent(out):
+--- a/externals/dace_icon/src_for_icon/vgrid_refatm_utils.f90
++++ b/externals/dace_icon/src_for_icon/vgrid_refatm_utils.f90
+@@ -1468,7 +1468,7 @@ CHARACTER(LEN=1), INTENT(OUT) :: newuuid(16)
+ ! local variables
+ REAL             :: rtmp(16)  ! should be default real
+ INTEGER          :: itmp(16), i, ksize, idati(8), it1(2), it2(2), is1, is2, istat
+-INTEGER(8)       :: itms1, itms2
++INTEGER(SELECTED_INT_KIND(18))       :: itms1, itms2
+ 
+ INTEGER, ALLOCATABLE :: iseed(:)
+ 
+@@ -1482,8 +1482,8 @@ CALL random_seed (size=ksize)
+ ALLOCATE (iseed(ksize), STAT=istat)
+ 
+ CALL DATE_AND_TIME(values=idati)
+-itms1 = (idati(1) - 1970) * 365_8 * 24 * 60 * 60 * 1000 &
+-       + idati(2) * 31_8 * 24 * 60 * 60 * 1000 &
++itms1 = (idati(1) - 1970) * INT(365, SELECTED_INT_KIND(18)) * 24 * 60 * 60 * 1000 &
++       + idati(2) * INT(31, SELECTED_INT_KIND(18)) * 24 * 60 * 60 * 1000 &
+        + idati(3) * 24 * 60 * 60 * 60 * 1000 &
+        + idati(5) * 60 * 60 * 1000 &
+        + idati(6) * 60 * 1000      &

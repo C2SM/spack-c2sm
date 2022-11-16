@@ -1,0 +1,84 @@
+--- a/externals/ecrad/configure
++++ b/externals/ecrad/configure
+@@ -2940,6 +2940,81 @@ else
+ fi
+ 
+ 
++   { $as_echo "$as_me:${as_lineno-$LINENO}: checking for endianness of the target system" >&5
++$as_echo_n "checking for endianness of the target system... " >&6; }
++   if ${acx_cv_fc_endianness_real+:} false; then :
++  $as_echo_n "(cached) " >&6
++else
++  acx_cv_fc_endianness_real=unknown
++      free_fmt='
++      real(dp) :: b(2) = (/11436526043186408342932917319490312838905855&
++      &2118841611962449784525241959417255606719874468829884522246508686&
++      &0799336906947500199989578974774280030598291952243399484779227378&
++      &5162269613202128034599963034475950452228997847642131801671155898&
++      &01738240.0_dp,0.0_dp/)'
++      fixed_fmt='
++      real(dp) :: b(2) = (/11436526043186408342932917319490312838905855
++     + 2118841611962449784525241959417255606719874468829884522246508686
++     + 0799336906947500199989578974774280030598291952243399484779227378
++     + 5162269613202128034599963034475950452228997847642131801671155898
++     + 01738240.0_dp,0.0_dp/)'
++     for acx_tmp in "$free_fmt" "$fixed_fmt"; do
++       cat > conftest.$ac_ext <<_ACEOF
++      subroutine conftest(i, a)
++      implicit none
++      integer, parameter :: dp =   SELECTED_REAL_KIND(13,300)
++      integer :: i
++      real(dp) :: a
++$acx_tmp
++      a = b(i)
++      end subroutine
++_ACEOF
++if ac_fn_fc_try_compile "$LINENO"; then :
++  for acx_tmp in mkhElper replEhkm lpermkhE; do
++            if grep "$acx_tmp" conftest.$ac_objext >/dev/null; then :
++  if test "x$acx_cv_fc_endianness_real" = xunknown; then :
++  acx_cv_fc_endianness_real=$acx_tmp
++else
++  acx_cv_fc_endianness_real=unknown
++                  break
++fi
++fi
++          done
++fi
++rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
++       test 0 -eq "$ac_retval" && break
++     done
++
++fi
++
++   acx_tmp=unknown
++   case $acx_cv_fc_endianness_real in #(
++  mkhElper) :
++    acx_tmp='little-endian' ;; #(
++  replEhkm) :
++    acx_tmp='big-endian' ;; #(
++  lpermkhE) :
++    acx_tmp='half little-endian, half big-endian' ;; #(
++  *) :
++     ;;
++esac
++   { $as_echo "$as_me:${as_lineno-$LINENO}: result: $acx_tmp" >&5
++$as_echo "$acx_tmp" >&6; }
++   if test "x$acx_tmp" = xunknown; then :
++  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: unable to detect the endianness of the target system" >&5
++$as_echo "$as_me: WARNING: unable to detect the endianness of the target system" >&2;}
++else
++  case $acx_cv_fc_endianness_real in #(
++       replEhkm) :
++     ;; #(
++       mkhElper) :
++    as_fn_append FCFLAGS " ${acx_cv_fc_macro_flag}__ECRAD_LITTLE_ENDIAN" ;; #(
++  *) :
++         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: the endianness of the target system is not supported" >&5
++$as_echo "$as_me: WARNING: the endianness of the target system is not supported" >&2;} ;;
++esac
++fi
++
+ if test "x$enable_silent_rules" = xyes; then :
+   DEFAULT_VERBOSITY=0
+ 

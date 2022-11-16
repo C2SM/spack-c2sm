@@ -1,0 +1,20 @@
+--- a/icon.mk.in
++++ b/icon.mk.in
+@@ -319,7 +319,7 @@ $(bindir)/icon@EXEEXT@: $(filter %.@OBJEXT@,$(shell $(DEPLIST) @deplist.config -
+ 
+ # Common linking rule for the executables:
+ $(exec_files): | $(dir_files)
+-	$(silent_FCLD)$(FC) -o $@ $(FCFLAGS) $(ICON_FCFLAGS) $(LDFLAGS) $+ $(LIBS)
++	$(silent_FCLD)$(FC) -o $@ $(FCFLAGS) $(ICON_FCFLAGS) $(LDFLAGS) $(patsubst $(builddir)/%,%,$+) $(LIBS)
+ 
+ # Note that old versions of make (3.81 and earlier) take the first matching
+ # pattern rules instead of the rule with the shortest stem. Therefore, it is
+@@ -518,7 +518,7 @@ extra_f90.d: icon.mk
+ 
+ # Dummy dependency file generation rule (called by config.status):
+ dummy-depend: | $(dir_files)
+-	@for file in $(dep_files); do \
++	@for file in $(patsubst $(builddir)/%,%,$(dep_files)); do \
+ 	  test -e "$$file" || touch "$$file"; \
+ 	done
+ 
