@@ -1,0 +1,16 @@
+spack:
+    specs:
+        - cosmo@c2sm-features%nvhpc@21.3 cosmo_target=gpu +cppdycore +eccodes
+          # ~build_tests, otherwise --test=root will trigger Dycore tests as well
+        - cosmo-dycore@c2sm-features%gcc@8.3.0 ~build_tests
+          # needs to be a root spec, otherwise we have twice (%gcc and %nvhpc)
+          # this leads to a concretize-error in test_cosmo.py
+        - cmake%nvhpc
+        - cosmo-eccodes-definitions@2.19.0.5
+        - eccodes@2.19.1 +fortran
+        - libgrib1@22-01-2020
+          # if not %nvhpc, spack links against %gcc (coming from Dycore)
+          # this is not possible for the .mod files needed to match nvhpc
+        - mpich%nvhpc
+    concretizer:
+        unify: true
