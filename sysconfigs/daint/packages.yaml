@@ -72,9 +72,9 @@ packages:
   cuda: # manually added
     buildable: false
     externals:
-    - spec: cuda@11.0
+    - spec: cuda@11.2
       modules:
-      - cudatoolkit/11.0.2_3.38-8.1__g5b73779
+      - cudatoolkit/21.3_11.2
   cpio:
     externals:
     - spec: cpio@2.12
