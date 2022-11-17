@@ -4,8 +4,9 @@ import subprocess
 spack_c2sm_path = os.path.dirname(os.path.realpath(__file__)) + '/..'
 
 
-def spack(command):
+def spack(command, cwd='.'):
     subprocess.run(f'. {spack_c2sm_path}/setup-env.sh; spack {command}',
+                   cwd=cwd,
                    check=True,
                    shell=True)
 
