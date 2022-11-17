@@ -7,8 +7,11 @@ from src import machine_name, spack_install
 
 class CosmoTest(unittest.TestCase):
 
-    def test_install_5_08_mch_1_0_p3(self):
-        spack_install('cosmo @apn_5.08.mch.1.0.p3')
+    def test_install_version_6_0(self):
+        spack_install('--test=root cosmo @6.0')
+
+    def test_install_version_5_09_mch_1_2_p2(self):
+        spack_install('--test=root cosmo @5.09a.mch1.2.p2')
 
 
 class IconTest(unittest.TestCase):
@@ -16,6 +19,9 @@ class IconTest(unittest.TestCase):
     def setUp(self):
         if machine_name() in ['tsa']:
             self.skipTest()
+
+    def test_install_version_2_6_5(self):
+        spack_install('--test=root icon @2.6.5')
 
     def test_install_nwp_cpu(self):
         spack_install('icon @nwp %nvhpc icon_target=cpu')
@@ -27,7 +33,7 @@ class IconTest(unittest.TestCase):
         """Triggers conditional dependencies"""
 
         spack_install(
-            '--test=root icon @nwp icon_target=gpu serialize_mode=create +eccodes +claw'
+            '--test=root icon @nwp icon_target=cpu serialize_mode=create +eccodes +claw'
         )
 
 

@@ -21,9 +21,10 @@ class Icon(Package):
     url = 'https://gitlab.dkrz.de/icon/icon/-/archive/icon-2.6.2.2/icon-icon-2.6.2.2.tar.gz'
     git = 'ssh://git@gitlab.dkrz.de/icon/icon.git'
 
-    maintainers = ['egermann']
+    maintainers = ['jonasjucker', 'PanicSheep']
 
     version('master', branch='master', submodules=True)
+    version('2.6.5', tag='icon-2.6.5', submodules=True)
     version('nwp',
             git='ssh://git@gitlab.dkrz.de/icon/icon-nwp.git',
             submodules=True)
@@ -45,8 +46,6 @@ class Icon(Package):
             branch='master',
             git='ssh://git@github.com/C2SM/icon.git',
             submodules=True)
-    version('2.6.x-rc', commit='040de650', submodules=True)
-    version('2.0.17', commit='39ed04ad', submodules=True)
 
     depends_on('cmake')
     depends_on('libxml2')
