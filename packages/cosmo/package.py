@@ -25,7 +25,10 @@ class Cosmo(MakefilePackage):
     version('5.09a.mch1.2.p2', git=apngit, tag='5.09a.mch1.2.p2')
 
     version('c2sm-master', git=c2smgit, branch='master', get_full_repo=True)
-    version('c2sm-features', git=c2smgit, branch='c2sm-features', get_full_repo=True)
+    version('c2sm-features',
+            git=c2smgit,
+            branch='c2sm-features',
+            get_full_repo=True)
     version('empa-ghg', git=empagit, branch='c2sm', get_full_repo=True)
 
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
