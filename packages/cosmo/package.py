@@ -459,10 +459,12 @@ class Cosmo(MakefilePackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def test(self):
+        with open('spec.yaml', mode='w') as f:
+            f.write(self.spec.to_yaml())
         try:
             subprocess.run([
                 self.build_directory + '/test/tools/test_cosmo.py', '-s',
-                str(self.spec), '-b',
+                'spec.yaml', '-b',
                 str('.')
             ],
                            stderr=subprocess.STDOUT,

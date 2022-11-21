@@ -153,11 +153,10 @@ def devbuildcosmo(self, args):
             if dep.name == "cosmo-dycore":
                 dep.versions = cosmo_spec.versions.copy()
 
-        # Re-concretize Spec: to enforce checking of constraints after update of versions.
-        # Note: unfortunately there is no better way to re-concretize a Spec (e.g. via API).
-        #       The only solution seems to be going via string representation and then back
-        #       into a Spec object. It's not elegant but it seems to work very well.
-        cosmo_spec = spack.cmd.parse_specs(str(cosmo_spec))[0]
+        # re-concretize
+        # JJ: we use conversion from/to yaml, parsing a string with the builtin
+        # spack command does not work in case spec show up twice, i.e cmake
+        cosmo_spec = Spec.from_yaml(cosmo_spec.to_yaml())
         cosmo_spec.concretize()
 
     # Clean if needed
