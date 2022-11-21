@@ -106,6 +106,7 @@ class Icon(AutotoolsPackage):
     depends_on('libcdi-pio+fortran+netcdf', when='+cdi-pio')
     depends_on('libcdi-pio grib2=eccodes', when='+cdi-pio+grib2')
     depends_on('libcdi-pio+mpi', when='+cdi-pio+mpi')
+    depends_on('cdo')
 
     default_eccodes = 'eccodes+aec jp2k=openjpeg'
     depends_on(default_eccodes + ' +fortran', when='+emvorado')
