@@ -1,5 +1,6 @@
-import os
+import os, subprocess
 from collections import defaultdict
+
 
 from llnl.util import lang, filesystem
 from spack.util.environment import is_system_path, dump_environment
@@ -605,7 +606,7 @@ class Icon(AutotoolsPackage):
             make.jobs = make_jobs
         make(*self.build_targets)
 
-    @run_before('install')
+    @run_before('configure')
     @on_package_attributes(run_tests=True)
     def check(self):
         if os.path.exists('scripts/spack/test.py'):
