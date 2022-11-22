@@ -18,6 +18,10 @@ class Icon(AutotoolsPackage):
             branch='master',
             git='ssh://git@github.com/C2SM/icon-exclaim.git',
             submodules=True)
+    version('exclaim-test',
+            branch='test_spec',
+            git='ssh://git@github.com/C2SM/icon-exclaim.git',
+            submodules=True)
 
     # Model Features:
     variant('atmo',
@@ -600,6 +604,22 @@ class Icon(AutotoolsPackage):
             make('preprocess')
             make.jobs = make_jobs
         make(*self.build_targets)
+
+    @run_before('install')
+    @on_package_attributes(run_tests=True)
+    def check(self):
+        if os.path.exists('scripts/spack/test.py'):
+            with open('spec.yaml', mode='w') as f:
+                f.write(self.spec.to_yaml())
+            try:
+                subprocess.run(
+                    ['./scripts/spack/test.py', '--spec',
+                     'spec.yaml'],
+                    check=True)
+            except:
+                raise InstallError('Tests failed')
+        else:
+            tty.warn('Cannot find test.py -> skipping tests')
 
     @property
     def archive_files(self):
