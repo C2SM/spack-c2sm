@@ -135,7 +135,7 @@ def devbuildcosmo(self, args):
 
         # Read nodes out of list.  Root spec (cosmo) is the first element;
         # dependencies are the following elements.
-        spec_list = [Spec.from_node_dict(node) for node in data["spec"]]
+        spec_list = [Spec(node) for node in data["specs"]]
         if not spec_list:
             raise spack.error.SpecError("YAML spec contains no nodes.")
 
@@ -144,12 +144,12 @@ def devbuildcosmo(self, args):
 
         # Selectively substitute the dependencies' versions with those found in the deserialized list of specs
         # The order of precedence in the choice of a dependency's version becomes:
-        # 1. the one specified in spec.yaml,
-        # 2. the one provided by the user in the command,
+        # 1. the one provided by the user in the command,
+        # 2. the one specified in spec.yaml,
         # 3. the default prescribed by the spack package.
         for dep in cosmo_spec.traverse():
             if dep.name in deps_serialized_dict and not dep.name in user_versioned_deps:
-                dep.versions = deps_serialized_dict[dep.name].versions.copy()
+                dep = deps_serialized_dict[dep.name].copy(deps=False)
             if dep.name == "cosmo-dycore":
                 dep.versions = cosmo_spec.versions.copy()
 
@@ -158,6 +158,9 @@ def devbuildcosmo(self, args):
         # spack command does not work in case spec show up twice, i.e cmake
         cosmo_spec = Spec.from_yaml(cosmo_spec.to_yaml())
         cosmo_spec.concretize()
+
+        # print final spec that is built
+        print(cosmo_spec.tree())
 
     # Clean if needed
     if args.clean_build:
@@ -176,7 +179,7 @@ def devbuildcosmo(self, args):
 
     if cosmo_spec.satisfies("+cppdycore"):
 
-        dycore_spec = cosmo_spec.get_dependency("cosmo-dycore").spec
+        dycore_spec = cosmo_spec._get_dependency("cosmo-dycore").spec
 
         custom_devbuild(source_path, dycore_spec, args)
 

@@ -21,6 +21,7 @@ class Cosmo(MakefilePackage):
     version('org-master', branch='master', get_full_repo=True)
     version('apn-mch', git=apngit, branch='mch', get_full_repo=True)
     version('c2sm-master', git=c2smgit, branch='master', get_full_repo=True)
+    version('c2sm-test', git=c2smgit, branch='test_spec', get_full_repo=True)
     version('c2sm-features',
             git=c2smgit,
             branch='c2sm-features',

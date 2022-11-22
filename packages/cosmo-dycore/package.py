@@ -22,6 +22,7 @@ class CosmoDycore(CMakePackage):
     version('c2sm-master',
             git='ssh://git@github.com/C2SM-RCM/cosmo.git',
             branch='master')
+    version('c2sm-test', git=c2smgit, branch='test_spec', get_full_repo=True)
     version('c2sm-features',
             git='ssh://git@github.com/C2SM-RCM/cosmo.git',
             branch='c2sm-features')

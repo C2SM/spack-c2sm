@@ -142,7 +142,7 @@ def installcosmo(self, args):
 
     # Read nodes out of list.  Root spec (cosmo) is the first element;
     # dependencies are the following elements.
-    spec_list = [Spec.from_node_dict(node) for node in data["spec"]]
+    spec_list = [Spec(node) for node in data["specs"]]
     if not spec_list:
         raise spack.error.SpecError("YAML spec contains no nodes.")
 
@@ -165,6 +165,9 @@ def installcosmo(self, args):
     # spack command does not work in case spec show up twice, i.e cmake
     cosmo_spec = Spec.from_yaml(cosmo_spec.to_yaml())
     cosmo_spec.concretize()
+
+    # print final spec that is built
+    print(cosmo_spec.tree())
 
     # Dev-build cosmo
     custom_install(cosmo_spec, args)
