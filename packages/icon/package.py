@@ -187,34 +187,6 @@ class Icon(AutotoolsPackage):
                       '^cuda%{0}'.format(x),
                       msg='"+cuda-gcc" requires "^cuda%gcc"')
 
-    # Revert a false assumptions that the completeness of the MPI Fortran module
-    # depends on the compiler version:
-    patch('dace/2.6.4/mpi_bcast_gatherv.patch',
-          when='@2.6.4:%gcc@10:+emvorado+mpi')
-    patch('dace/2.6.4/mpi_bcast_gatherv.patch',
-          when='@2.6.4:%gcc@10:+dace~emvorado+mpi')
-    patch('dace/2.6.4/mpi_alltoall_scatterv.patch',
-          when='@2.6.4:%gcc@10:+dace+mpi')
-
-    # Support for '-kind=sequential' when building with NAG:
-    patch('emvorado/2.6.4/sequential_kind.patch', when='@2.6.4:%nag+emvorado')
-
-    # Replace non-standard DFLOAT with DBLE:
-    patch('emvorado/2.6.4/dfloat.patch', when='@2.6.4:%nag+emvorado')
-
-    # https://gitlab.dkrz.de/art/art/-/merge_requests/27
-    patch('art/2.6.4/remove_linked_list.patch', when='@2.6.4:+art')
-
-    for x in claw_values:
-        # https://gitlab.dkrz.de/icon/icon-cimd/-/merge_requests/44
-        patch('claw/2.6.4/configure.patch', when='@2.6.4 claw={0}'.format(x))
-        patch('claw/2.6.4/claw.mk.in.patch', when='@2.6.4 claw={0}'.format(x))
-
-    for x in serialization_values:
-        # https://gitlab.dkrz.de/icon/icon-cimd/-/merge_requests/44
-        patch('serialbox/2.6.4/ser_all.patch',
-              when='@2.6.4: serialization={0}'.format(x))
-
     @when('%cce~openmp')
     def patch(self):
         # Cray Fortran preprocessor removes the OpenMP conditional compilation
