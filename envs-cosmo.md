@@ -8,12 +8,9 @@ This work assumes that your spack instance is loaded via `. setup-env.sh`.
 - [x] `cosmo-gpu.yaml`
 
 ## Spack env workflow with `spack install`
-```bash
-mkdir env_cosmo-gpu
-cd env_cosmo-gpu
-ln -s ../cosmo-gpu.yaml .
+```shell
 spack env create cosmo-gpu cosmo-gpu.yaml
-spacktivate cosmo-gpu # spack env activate cosmo-gpu
+spacktivate -p cosmo-gpu # spack env activate -p cosmo-gpu
 spack concretize
 spack install --test=root
 ```
@@ -22,47 +19,45 @@ spack install --test=root
 
 We follow the approach from the official [spack documentation on developer workflows](https://spack-tutorial.readthedocs.io/en/latest/tutorial_developer_workflows.html).
 
-```bash
-mkdir devenv_cosmo-gpu
-cd devenv_cosmo-gpu
-ln -s ../cosmo-gpu.yaml .
+```shell
 spack env create -d cosmo-gpu_dev cosmo-gpu.yaml
-spacktivate cosmo-gpu_dev
+cd cosmo-gpu_dev
+spacktivate -p .
 ```
 
 Now, we use `spack install` to build the entire development tree:
 
-```bash
+```shell
 spack install
 ```
 
-Now we specify which package and version we want to work on.
+Afterwards, we specify which package and version we want to work on.
 
-```bash
+```shell
 spack develop cosmo-dycore@c2sm-features
 ```
 
 This has now been added to our spack.yaml:
-```bash
+```shell
 grep -3 develop: spack.yaml
 ```
 
 Then, we have to re-concretize and re-build.
 
-```bash
+```shell
 spack concretize -f
 spack install
 ```
 
 This rebuilds `cosmo-dycore` from its subdirectory. Now, we can make changes to `cosmo-dycore`
-and re-build with `spack-install`. To work on other packages of the spec, start again from
-`spack develop <package>@variant`.
+and re-build with `spack install`. To work on other packages of the spec, start again from
+`spack develop <package>@<variant>`.
 
 ### TODOs
 
 - [x] Figure how to make a dev-build inside an activate environment
 - [x] Figure how to build two codes (from same codebase) inside an acvtivate environment
-- [ ] Use one single spec for building COSMO CPU and GPU
+- [ ] Combine `cosmo-cpu.yaml` and `cosmo-gpu.yaml` and  into a single file
 
 
 # Issues

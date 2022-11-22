@@ -1,4 +1,4 @@
-import os
+import os, subprocess
 from collections import defaultdict
 
 from llnl.util import lang, filesystem
@@ -16,6 +16,10 @@ class Icon(AutotoolsPackage):
     version('2.6.4', tag='master', submodules=True)
     version('exclaim-master',
             branch='master',
+            git='ssh://git@github.com/C2SM/icon-exclaim.git',
+            submodules=True)
+    version('exclaim-test',
+            branch='test_spec',
             git='ssh://git@github.com/C2SM/icon-exclaim.git',
             submodules=True)
 
@@ -106,6 +110,7 @@ class Icon(AutotoolsPackage):
     depends_on('libcdi-pio+fortran+netcdf', when='+cdi-pio')
     depends_on('libcdi-pio grib2=eccodes', when='+cdi-pio+grib2')
     depends_on('libcdi-pio+mpi', when='+cdi-pio+mpi')
+    depends_on('cdo')
 
     default_eccodes = 'eccodes+aec jp2k=openjpeg'
     depends_on(default_eccodes + ' +fortran', when='+emvorado')
@@ -556,6 +561,7 @@ class Icon(AutotoolsPackage):
 
         # Finalize the LIBS variable (we always put the real collected
         # libraries to the front):
+        config_vars['LIBS'].extend(['-lnvcpumath -lnvhpcatm'])
         config_vars['LIBS'].insert(0, libs.link_flags)
 
         # Help the libtool scripts of the bundled libraries find the correct
@@ -598,6 +604,21 @@ class Icon(AutotoolsPackage):
             make('preprocess')
             make.jobs = make_jobs
         make(*self.build_targets)
+
+    @run_before('configure')
+    @on_package_attributes(run_tests=True)
+    def check(self):
+        if os.path.exists('scripts/spack/test.py'):
+            with open('spec.yaml', mode='w') as f:
+                f.write(self.spec.to_yaml())
+            try:
+                subprocess.run(
+                    ['./scripts/spack/test.py', '--spec', 'spec.yaml'],
+                    check=True)
+            except:
+                raise InstallError('Tests failed')
+        else:
+            tty.warn('Cannot find test.py -> skipping tests')
 
     @property
     def archive_files(self):
