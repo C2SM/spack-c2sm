@@ -1,7 +1,6 @@
 import os, subprocess
 from collections import defaultdict
 
-
 from llnl.util import lang, filesystem
 from spack.util.environment import is_system_path, dump_environment
 from spack.util.executable import which_string
