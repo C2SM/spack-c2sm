@@ -1,0 +1,11 @@
+--- a/externals/dace_icon/src_for_icon/p_allgather.incf
++++ b/externals/dace_icon/src_for_icon/p_allgather.incf
+@@ -78,7 +78,7 @@
+     bufsize = 1
+ #else
+ #define MPI_TYPE MPI_BYTE
+-#ifdef __NEC__        /* Workaround for bug in NEC nfort compiler */
++#if 1
+     if (bufsize == 0) bufsize = (storage_size(recvbuf(1))+storage_size(' ')/2)/storage_size(' ')
+ #else
+     if (bufsize == 0) bufsize = size(transfer(recvbuf(1),(/' '/)))

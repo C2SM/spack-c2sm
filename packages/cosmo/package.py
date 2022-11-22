@@ -21,6 +21,7 @@ class Cosmo(MakefilePackage):
     version('org-master', branch='master', get_full_repo=True)
     version('apn-mch', git=apngit, branch='mch', get_full_repo=True)
     version('c2sm-master', git=c2smgit, branch='master', get_full_repo=True)
+    version('c2sm-test', git=c2smgit, branch='test_spec', get_full_repo=True)
     version('c2sm-features',
             git=c2smgit,
             branch='c2sm-features',
@@ -459,10 +460,12 @@ class Cosmo(MakefilePackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def test(self):
+        with open('spec.yaml', mode='w') as f:
+            f.write(self.spec.to_yaml())
         try:
             subprocess.run([
                 self.build_directory + '/test/tools/test_cosmo.py', '-s',
-                str(self.spec), '-b',
+                'spec.yaml', '-b',
                 str('.')
             ],
                            stderr=subprocess.STDOUT,

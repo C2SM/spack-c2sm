@@ -1,0 +1,2327 @@
+--- a/externals/art/chem_init/mo_art_vinterp_chem_init.f90
++++ b/externals/art/chem_init/mo_art_vinterp_chem_init.f90
+@@ -30,7 +30,8 @@ MODULE mo_art_vinterp_chem_init
+   USE mo_exception,                    ONLY: message,finish
+   USE mo_io_units,                     ONLY: filename_max
+   USE mo_impl_constants,               ONLY: MAX_CHAR_LENGTH, SUCCESS
+-  USE mo_linked_list,                  ONLY: t_var_list,t_list_element
++  USE mo_var_list,                     ONLY: t_var_list_ptr
++  USE mo_var,                          ONLY: t_var
+   USE mo_var_metadata_types,           ONLY: t_var_metadata, t_var_metadata_dynamic
+   USE mo_nh_vert_interp,               ONLY: prepare_lin_intp,prepare_extrap, lin_intp
+   USE mo_read_interface,               ONLY: t_stream_id,  openInputFile, closeFile, &
+@@ -81,7 +82,7 @@ SUBROUTINE art_read_in_chem_init(chem_init,p_patch, p_prog_list, &
+     &  p_patch                                     !< is performed
+   CHARACTER(LEN=filename_max), INTENT(IN) ::  &
+     &  chem_init_path                                !< path of the external file
+-  TYPE(t_var_list), INTENT(in)       :: &
++  TYPE(t_var_list_ptr), INTENT(in)       :: &
+     &  p_prog_list      !< current prognostic state list
+   TYPE(t_chem_init_state), INTENT(inout)    :: &
+     &  chem_init                    !< Pointer to ART diagnostic fields
+@@ -92,11 +93,10 @@ SUBROUTINE art_read_in_chem_init(chem_init,p_patch, p_prog_list, &
+   INTEGER ::      &
+     &  init_mode, & !< mode for initialisation of the tracer (from xml)
+     &  ierror,    & !< flag if meta storage element exists
++    &  iv,        & !< loop variable
+     &  jg           !< patch id
+   CHARACTER(:), ALLOCATABLE          ::  &
+     &  init_name    !< variable name in external intialisation file
+-  TYPE(t_list_element), POINTER      :: &
+-    &  current_element          !< returns the reference to current element in list
+   TYPE(t_var_metadata), POINTER      :: & 
+     &  info                     !< returns reference to tracer metadata of current element
+   TYPE(t_var_metadata_dynamic), POINTER :: & 
+@@ -119,11 +119,10 @@ SUBROUTINE art_read_in_chem_init(chem_init,p_patch, p_prog_list, &
+     &                default_read_method)
+   ! first get species names that should be initialized:
+ 
+-  current_element=>p_prog_list%p%first_list_element
+-  DO WHILE (ASSOCIATED(current_element))
++  DO iv = 1,p_prog_list%p%nvars
+ 
+-    info_dyn=>current_element%field%info_dyn
+-    info=>current_element%field%info
++    info_dyn=>p_prog_list%p%vl(iv)%p%info_dyn
++    info=>p_prog_list%p%vl(iv)%p%info
+ 
+     IF (info_dyn%tracer%lis_tracer) THEN
+ 
+@@ -153,7 +152,6 @@ SUBROUTINE art_read_in_chem_init(chem_init,p_patch, p_prog_list, &
+      END SELECT
+     ENDIF
+ 
+-    current_element => current_element%next_list_element
+   ENDDO 
+ 
+   CALL closeFile(stream_id)
+@@ -182,7 +180,7 @@ SUBROUTINE  art_vinterp_chem_init(chem_init,num_vars, jg, p_prog_list)
+     & chem_init                !< contains all meta data for vertical interpolation of external data
+   INTEGER, INTENT(in) :: &
+     &  num_vars                !< number of variables in the file
+-  TYPE(t_var_list), INTENT(in),optional       :: &
++  TYPE(t_var_list_ptr), INTENT(in),optional       :: &
+     &  p_prog_list             !< current prognostic state list
+ 
+   ! local variables
+@@ -191,7 +189,7 @@ SUBROUTINE  art_vinterp_chem_init(chem_init,num_vars, jg, p_prog_list)
+ 
+   INTEGER  ::     &
+     &  no_levels, &    !< number of levels in the external data
+-    &  i               !< loop indices
++    &  i,iv            !< loop indices
+ 
+   REAL(wp), ALLOCATABLE :: &
+     &  wfac_lin(:,:,:)    !< weighting factor of upper level
+@@ -206,8 +204,6 @@ SUBROUTINE  art_vinterp_chem_init(chem_init,num_vars, jg, p_prog_list)
+     &  init_mode, ierror   !< identifier how to initialise the tracer
+   CHARACTER(:), ALLOCATABLE          ::  &
+     &  init_name           !< name of the variable in the external dataset
+-  TYPE(t_list_element), POINTER      :: &
+-    &  current_element     !< returns the reference to current element in list
+   TYPE(t_var_metadata), POINTER      :: & 
+     &  info                !< returns reference to tracer metadata of current element
+   TYPE(t_var_metadata_dynamic), POINTER :: & 
+@@ -263,11 +259,10 @@ SUBROUTINE  art_vinterp_chem_init(chem_init,num_vars, jg, p_prog_list)
+                 &   l_pd_limit=.False.)
+     END DO
+   ELSE
+-    current_element=>p_prog_list%p%first_list_element
+-    DO WHILE (ASSOCIATED(current_element))
++    DO iv = 1,p_prog_list%p%nvars
+ 
+-      info_dyn=>current_element%field%info_dyn
+-      info=>current_element%field%info
++      info_dyn=>p_prog_list%p%vl(iv)%p%info_dyn
++      info=>p_prog_list%p%vl(iv)%p%info
+ 
+       IF (info_dyn%tracer%lis_tracer) THEN
+ 
+@@ -299,7 +294,6 @@ SUBROUTINE  art_vinterp_chem_init(chem_init,num_vars, jg, p_prog_list)
+ 
+         END SELECT
+       ENDIF
+-      current_element => current_element%next_list_element
+     ENDDO 
+   END IF
+ 
+--- a/externals/art/chemistry/mo_art_OH_chem_predcorr_method.f90
++++ b/externals/art/chemistry/mo_art_OH_chem_predcorr_method.f90
+@@ -29,7 +29,8 @@ MODULE mo_art_OH_chem_predcorr_method
+   USE mo_kind,                          ONLY: wp
+   USE mo_exception,                     ONLY: finish
+   USE mo_physical_constants,            ONLY: amd, amo3
+-  USE mo_linked_list,                   ONLY: t_list_element, t_var_list
++  USE mo_var_list,                      ONLY: t_var_list_ptr
++  USE mo_var,                           ONLY: t_var
+   ! ART
+   USE mo_art_impl_constants,            ONLY: IART_VARNAMELEN, IART_QV
+   USE mo_art_chem_types_param,          ONLY: t_chem_meta_OH, OH_get_destruct
+@@ -285,7 +286,7 @@ SUBROUTINE art_predictor_corrector_method(jg,OH_chem_meta,p_prog_list,dtime)
+     &  jg                    !< patch id on which computation is performed
+   TYPE(t_art_OH_chem_meta), INTENT(inout) ::   &
+     &  OH_chem_meta          !< general meta data of OH chemistry
+-  TYPE(t_var_list), INTENT(inout) :: &
++  TYPE(t_var_list_ptr), INTENT(inout) :: &
+     &  p_prog_list           !< list of prognistic variables
+   REAL(wp), INTENT(in) ::     &
+     &  dtime                 !< model time step
+@@ -296,12 +297,10 @@ SUBROUTINE art_predictor_corrector_method(jg,OH_chem_meta,p_prog_list,dtime)
+     &  lt_tr                      !< temporal saves of tracer lifetime and tracer production
+   
+   INTEGER ::                         &
+-    &  jb, jk, jc,                   &  !< loop indices
++    &  jb, jk, jc, iv,               &  !< loop indices
+     &  i_startidx, i_endidx             !< loop indices
+   INTEGER, POINTER ::    &
+     &  jsp                 !< index of the tracer
+-  TYPE(t_list_element), POINTER ::   &
+-    &  current_element              !< pointer to element
+   TYPE(t_art_atmo),POINTER    :: &
+     &  art_atmo                     !< Pointer to ART atmo fields
+   TYPE(t_art_chem),POINTER    :: &
+@@ -309,18 +308,20 @@ SUBROUTINE art_predictor_corrector_method(jg,OH_chem_meta,p_prog_list,dtime)
+   CHARACTER(:), ALLOCATABLE   :: &
+     &  tracer_name                  !< name of the tracer
+ 
++  TYPE(t_chem_meta_OH),POINTER ::  meta_ptr
++
+ 
+   art_chem => p_art_data(jg)%chem
+   art_atmo => p_art_data(jg)%atmo
+ 
+-  current_element => p_prog_list%p%first_list_element
+ 
+   ! Calculate lifetimes from previous determined destruction rate 
+   ! and take care of values near zero 
+-  DO WHILE(ASSOCIATED(current_element))
+-    jsp => current_element%field%info%ncontained
+-    SELECT TYPE(meta => current_element%field%info_dyn%tracer)
++  DO iv = 1, p_prog_list%p%nvars
++    jsp => p_prog_list%p%vl(iv)%p%info%ncontained
++    SELECT TYPE(meta => p_prog_list%p%vl(iv)%p%info_dyn%tracer)
+       TYPE IS (t_chem_meta_OH)
++        meta_ptr => meta
+         DO jb = art_atmo%i_startblk,art_atmo%i_endblk
+           CALL art_get_indices_c(jg, jb, i_startidx, i_endidx)
+       
+@@ -348,15 +349,14 @@ SUBROUTINE art_predictor_corrector_method(jg,OH_chem_meta,p_prog_list,dtime)
+         CALL meta%get_tracer_name(tracer_name)
+ 
+         IF (TRIM(tracer_name) == 'TRCO') THEN
+-          OH_chem_meta%CO_star => meta%tracer_star
++          OH_chem_meta%CO_star => meta_ptr%tracer_star
+         ELSE IF (TRIM(tracer_name) == 'TRCH4') THEN
+-          OH_chem_meta%CH4_star => meta%tracer_star
++          OH_chem_meta%CH4_star => meta_ptr%tracer_star
+         END IF
+     END SELECT
+ 
+     NULLIFY(jsp)
+   
+-    current_element => current_element%next_list_element
+ 
+   ENDDO ! tracers
+   
+@@ -366,23 +366,17 @@ SUBROUTINE art_predictor_corrector_method(jg,OH_chem_meta,p_prog_list,dtime)
+                 &                             OH_chem_meta%CH4_star(:,:,:),  &
+                 &                             OH_chem_meta%CO_star(:,:,:))
+   
+-  current_element => p_prog_list%p%first_list_element
+-
+-
+-  DO WHILE (ASSOCIATED(current_element))
+-    SELECT TYPE(meta => current_element%field%info_dyn%tracer)
++  DO iv = 1, p_prog_list%p%nvars
++    SELECT TYPE(meta => p_prog_list%p%vl(iv)%p%info_dyn%tracer)
+       TYPE IS (t_chem_meta_OH)
+         CALL OH_get_destruct(meta,jg,OH_chem_meta, .TRUE.)
+     END SELECT
+ 
+-    current_element => current_element%next_list_element
+   END DO
+ 
+   
+-  current_element => p_prog_list%p%first_list_element
+-
+-  DO WHILE (ASSOCIATED(current_element))
+-    SELECT TYPE(meta => current_element%field%info_dyn%tracer)
++  DO iv = 1, p_prog_list%p%nvars
++    SELECT TYPE(meta => p_prog_list%p%vl(iv)%p%info_dyn%tracer)
+       TYPE IS (t_chem_meta_OH)
+         CALL meta%get_prod_star()
+ 
+@@ -409,7 +403,6 @@ SUBROUTINE art_predictor_corrector_method(jg,OH_chem_meta,p_prog_list,dtime)
+         END DO
+     END SELECT
+ 
+-    current_element => current_element%next_list_element
+ 
+   END DO
+ 
+--- a/externals/art/chemistry/mo_art_chem_init_meta.f90
++++ b/externals/art/chemistry/mo_art_chem_init_meta.f90
+@@ -30,7 +30,8 @@ MODULE mo_art_chem_init_meta
+   ! ICON
+   USE mo_kind,                          ONLY: wp
+   USE mo_exception,                     ONLY: finish
+-  USE mo_linked_list,                   ONLY: t_var_list,t_list_element
++  USE mo_var_list,                      ONLY: t_var_list_ptr
++  USE mo_var,                           ONLY: t_var
+   ! ART
+   USE mo_art_data,                      ONLY: p_art_data
+   USE mo_art_atmo_data,                 ONLY: t_art_atmo
+@@ -81,7 +82,7 @@ SUBROUTINE art_chem_init_meta(jg,p_prog_list,OH_chem_meta,  &
+   IMPLICIT NONE
+   INTEGER, INTENT(in)  ::   &
+     &  jg                   !< patch on which computation is performed
+-  TYPE(t_var_list),INTENT(in) :: &
++  TYPE(t_var_list_ptr),INTENT(in) :: &
+     &  p_prog_list          !< current list: prognostic
+   TYPE(t_art_OH_chem_meta), INTENT(inout) ::  &
+     &  OH_chem_meta         !< general meta data of OH chemistry
+@@ -91,8 +92,6 @@ SUBROUTINE art_chem_init_meta(jg,p_prog_list,OH_chem_meta,  &
+     &  lart_mecca           !< switch for MECCA tracers
+ 
+   !local variables
+-  TYPE(t_list_element), POINTER :: &
+-    &  current_element     !< element for loop through p_prog_list
+   CHARACTER(:), ALLOCATABLE :: &
+     &  tracer_name         !< name of the tracer
+   LOGICAL ::             &
+@@ -101,7 +100,8 @@ SUBROUTINE art_chem_init_meta(jg,p_prog_list,OH_chem_meta,  &
+   TYPE(t_art_atmo), POINTER :: &
+     &  art_atmo    !< ART atmo fields
+   INTEGER :: &
+-    &  number_param_tracers !< number of parametrised chemical tracers
++    &  number_param_tracers,  & !< number of parametrised chemical tracers
++    &  iv                       !< loop index 
+ 
+   art_atmo => p_art_data(jg)%atmo
+ 
+@@ -113,11 +113,10 @@ SUBROUTINE art_chem_init_meta(jg,p_prog_list,OH_chem_meta,  &
+   CO_is_OH_tracer = .FALSE.
+   number_param_tracers = 0
+ 
+-  current_element => p_prog_list%p%first_list_element
+-  DO WHILE(ASSOCIATED(current_element))
++  DO iv = 1, p_prog_list%p%nvars
+ 
+     ! consistency check and setting the number of parametrised tracers
+-    SELECT TYPE(meta => current_element%field%info_dyn%tracer)
++    SELECT TYPE(meta =>  p_prog_list%p%vl(iv)%p%info_dyn%tracer)
+       CLASS IS (t_chem_meta_param)
+         IF (.NOT. lart_chemtracer) THEN
+           CALL finish('mo_art_chem_init_meta:art_chem_init_meta',        &
+@@ -141,7 +140,7 @@ SUBROUTINE art_chem_init_meta(jg,p_prog_list,OH_chem_meta,  &
+     END SELECT
+ 
+ 
+-    SELECT TYPE(meta => current_element%field%info_dyn%tracer)
++    SELECT TYPE(meta => p_prog_list%p%vl(iv)%p%info_dyn%tracer)
+       TYPE IS (t_chem_meta_OH)
+         CALL meta%get_tracer_name(tracer_name)
+         CALL meta%init(art_atmo%nproma,art_atmo%nlev,art_atmo%nblks)
+@@ -174,7 +173,7 @@ SUBROUTINE art_chem_init_meta(jg,p_prog_list,OH_chem_meta,  &
+         END IF
+ 
+         CALL meta%init(art_atmo%nproma,art_atmo%nlev,art_atmo%nblks)
+-        CALL linoz_fill_init(meta,jg,current_element%field%info%ncontained)
++        CALL linoz_fill_init(meta,jg,p_prog_list%p%vl(iv)%p%info%ncontained)
+ 
+       TYPE IS (t_chem_meta_simnoy)
+         CALL meta%init(art_atmo%nproma,art_atmo%nlev,art_atmo%nblks)
+@@ -188,7 +187,6 @@ SUBROUTINE art_chem_init_meta(jg,p_prog_list,OH_chem_meta,  &
+ 
+     END SELECT
+ 
+-    current_element => current_element%next_list_element
+   END DO
+ 
+   IF (OH_chem_meta%is_init) THEN
+--- a/externals/art/chemistry/mo_art_chem_types_param.f90
++++ b/externals/art/chemistry/mo_art_chem_types_param.f90
+@@ -26,8 +26,8 @@ MODULE mo_art_chem_types_param
+   USE mo_physical_constants,            ONLY: amd
+   USE mo_exception,                     ONLY: finish, message_text
+   USE mo_var_metadata_types,            ONLY: t_var_metadata_dynamic
+-  USE mo_linked_list,                   ONLY: t_var_list, t_list_element
+-  USE mo_var_list,                      ONLY: get_tracer_info_dyn_by_idx
++  USE mo_var_list,                      ONLY: t_var_list_ptr
++  USE mo_var,                           ONLY: t_var
+   USE mo_art_config,                    ONLY: art_config
+ 
+ ! ART
+@@ -1199,7 +1199,7 @@ SUBROUTINE simnoy_fill_init(this, jg, p_prog_list)
+     &  this              !< container with fields
+   INTEGER, INTENT(in) :: &
+     &  jg                !< patch id
+-  TYPE(t_var_list), INTENT(in) :: &
++  TYPE(t_var_list_ptr), INTENT(in) :: &
+     &  p_prog_list       !< list of prognostic variables
+   CHARACTER(LEN = IART_VARNAMELEN) ::  &
+     &  tracer_name,                    &  !< name of the tracer
+@@ -1209,7 +1209,7 @@ SUBROUTINE simnoy_fill_init(this, jg, p_prog_list)
+     &  ierror           !< flag if element exists in storage
+   REAL(wp) ::      &
+     &  lt_noysed, lt_tr !< sedimentation lifetime of NOy and lifetime of the tracer (s)
+-  TYPE(t_var_metadata_dynamic) :: &
++  TYPE(t_var_metadata_dynamic), TARGET :: &
+     &  info_dyn_N2O,              &  !< dynamic meta information of N2O, NOy and
+     &  info_dyn_NOy,              &  !  cold tracer. They are used to check if
+     &  info_dyn_cold                 !  the types are correct
+@@ -1217,6 +1217,9 @@ SUBROUTINE simnoy_fill_init(this, jg, p_prog_list)
+     &  art_indices       !< pointer to ART chem indices
+   CHARACTER(:), ALLOCATABLE    :: &
+     &  c_tmp
++  INTEGER :: iv
++
++  TYPE(t_chem_meta_cold), POINTER :: tracer_ptr
+ 
+   art_indices => p_art_data(jg)%chem%indices
+ 
+@@ -1225,7 +1228,11 @@ SUBROUTINE simnoy_fill_init(this, jg, p_prog_list)
+ 
+   IF (TRIM(tracer_name) == 'TRNOy') THEN
+     IF (art_indices%iTRN2O /= 0) THEN
+-      CALL get_tracer_info_dyn_by_idx(p_prog_list,art_indices%iTRN2O,info_dyn_N2O)
++      !CALL get_tracer_info_dyn_by_idx(p_prog_list,art_indices%iTRN2O,info_dyn_N2O)
++      DO iv = 1, p_prog_list%p%nvars
++        IF(p_prog_list%p%vl(iv)%p%info%ncontained /= art_indices%iTRN2O) CYCLE
++        info_dyn_N2O = p_prog_list%p%vl(iv)%p%info_dyn
++      END DO
+ 
+       SELECT TYPE (tracer => info_dyn_N2O%tracer)
+         TYPE IS (t_chem_meta_simnoy)
+@@ -1277,11 +1284,17 @@ SUBROUTINE simnoy_fill_init(this, jg, p_prog_list)
+                 &   'Cold tracer must be set before NOy in the xml file.')
+       ELSE
+         IF (this%polarchem == IART_POLARCHEM) THEN
+-          CALL get_tracer_info_dyn_by_idx(p_prog_list,art_indices%iTR_cold,info_dyn_cold)
++          !CALL get_tracer_info_dyn_by_idx(p_prog_list,art_indices%iTR_cold,info_dyn_cold)
++          DO iv = 1, p_prog_list%p%nvars
++            IF(p_prog_list%p%vl(iv)%p%info%ncontained /= art_indices%iTR_cold) CYCLE
++            info_dyn_cold = p_prog_list%p%vl(iv)%p%info_dyn
++          END DO
+           SELECT TYPE (tracer => info_dyn_cold%tracer)
+             TYPE IS (t_chem_meta_cold)
+               IF (tracer%polarchem == IART_POLARCHEM) THEN
+-                this%p_cold_sed => tracer%p_cold_sed
++                !this%p_cold_sed => tracer%p_cold_sed
++                tracer_ptr => tracer
++                this%p_cold_sed => tracer_ptr%p_cold_sed
+               ELSE
+                 CALL finish('mo_art_chem_types:simnoy_fill_init',  &
+                        &    'Cold tracer must have polchem ''on'' '&
+@@ -1342,7 +1355,11 @@ SUBROUTINE simnoy_fill_init(this, jg, p_prog_list)
+ 
+     ! Check for NOy
+     IF (art_indices%iTRNOy /= 0) THEN
+-      CALL get_tracer_info_dyn_by_idx(p_prog_list,art_indices%iTRNOy,info_dyn_NOy)
++      !CALL get_tracer_info_dyn_by_idx(p_prog_list,art_indices%iTRNOy,info_dyn_NOy)
++      DO iv = 1, p_prog_list%p%nvars
++        IF(p_prog_list%p%vl(iv)%p%info%ncontained /= art_indices%iTRNOy) CYCLE
++        info_dyn_NOy = p_prog_list%p%vl(iv)%p%info_dyn
++      END DO
+ 
+       SELECT TYPE (tracer => info_dyn_NOy%tracer)
+         TYPE IS (t_chem_meta_simnoy)
+@@ -1383,14 +1400,16 @@ SUBROUTINE set_tracer_simnoy(this,p_tracer_now, p_tracer_n2o, p_tracer_cold, p_p
+     &  p_tracer_n2o(:,:,:)            !< N2O mass mixing ratio (kg/kg)
+   REAL(wp), INTENT(in), TARGET, OPTIONAL ::  &
+     &  p_tracer_cold(:,:,:)           !< Cold tracer concentration
+-  TYPE(t_var_list), INTENT(in), OPTIONAL :: &
++  TYPE(t_var_list_ptr), INTENT(in), OPTIONAL :: &
+     &  p_prog_list                    !< List of prognostic variables
+   INTEGER, INTENT(in), OPTIONAL :: &
+     &  jg                             !< patch id
+ 
+   ! local
+-  TYPE(t_list_element), POINTER :: &
+-    &  cold_element => NULL()         !< element of cold tracer in p_prog_list
++  INTEGER :: &
++    &  iv                             !< loop index (list-element)
++
++  TYPE(t_chem_meta_cold),POINTER :: tracer_ptr
+   
+   CALL this%set_tracer(p_tracer_now)
+ 
+@@ -1400,18 +1419,18 @@ SUBROUTINE set_tracer_simnoy(this,p_tracer_now, p_tracer_n2o, p_tracer_cold, p_p
+     this%cold_tracer => p_tracer_cold
+ 
+     IF (this%polarchem == IART_POLARCHEM) THEN
+-      cold_element => p_prog_list%p%first_list_element
+ 
+-      DO WHILE (ASSOCIATED(cold_element))
+-        IF (cold_element%field%info%ncontained == p_art_data(jg)%chem%indices%iTR_cold) THEN
+-          SELECT TYPE (tracer => cold_element%field%info_dyn%tracer)
++      DO iv = 1, p_prog_list%p%nvars
++        IF (p_prog_list%p%vl(iv)%p%info%ncontained == p_art_data(jg)%chem%indices%iTR_cold) THEN
++          SELECT TYPE (tracer => p_prog_list%p%vl(iv)%p%info_dyn%tracer)
+             TYPE IS (t_chem_meta_cold)
+-              this%p_cold_sed => tracer%p_cold_sed
++              !this%p_cold_sed => tracer%p_cold_sed
++              tracer_ptr => tracer
++              this%p_cold_sed => tracer_ptr%p_cold_sed
+               EXIT
+           END SELECT
+         END IF
+ 
+-        cold_element => cold_element%next_list_element
+       END DO
+     END IF
+   END IF
+--- a/externals/art/chemistry/mo_art_chem_utils.f90
++++ b/externals/art/chemistry/mo_art_chem_utils.f90
+@@ -25,7 +25,8 @@ MODULE mo_art_chem_utils
+   USE mo_kind,                    ONLY: wp
+   USE mo_math_constants,          ONLY: pi
+   USE mo_physical_constants,      ONLY: avo, argas, amw, amd
+-  USE mo_linked_list,             ONLY: t_var_list,t_list_element
++  USE mo_var_list,                ONLY: t_var_list_ptr
++  USE mo_var,                     ONLY: t_var
+   USE mo_var_metadata_types,      ONLY: t_var_metadata_dynamic, t_var_metadata
+   USE mo_tracer_metadata_types,   ONLY: t_tracer_meta
+   USE mo_run_config,              ONLY: iqv, iqc, iqi
+@@ -418,13 +419,11 @@ SUBROUTINE art_convert_tracers_mmr_Nconc(jg,p_tracer_now,p_prog_list, vmr2Nconc)
+   REAL(wp), INTENT(INOUT), TARGET ::  &
+     &  p_tracer_now(:,:,:,:)  !< tracer concentrations (specific concentrations)
+                               !< dim: (nproma,nlev,nblks_c,ntracer)
+-  TYPE(t_var_list), INTENT(INOUT)   ::  &
++  TYPE(t_var_list_ptr), INTENT(INOUT)   ::  &
+     &  p_prog_list         !< current prognostic state list
+   REAL(wp), INTENT(in) :: &
+     &  vmr2Nconc(:,:,:)
+   ! local variables
+-  TYPE(t_list_element), POINTER :: &
+-    &  current_element  !< returns the reference to current element in list
+   TYPE(t_var_metadata_dynamic), POINTER ::  &
+     &  info_dyn         !< returns reference to tracer metadata of current element
+   TYPE(t_var_metadata), POINTER ::  &
+@@ -433,16 +432,16 @@ SUBROUTINE art_convert_tracers_mmr_Nconc(jg,p_tracer_now,p_prog_list, vmr2Nconc)
+     &  jsp
+   TYPE(t_art_chem), POINTER :: &
+     &  art_chem
++  INTEGER         :: &
++    &  iv
+ 
+   art_chem => p_art_data(jg)%chem
+ 
+ 
+-  current_element=>p_prog_list%p%first_list_element
++  DO iv = 1, p_prog_list%p%nvars
+ 
+-  DO WHILE (ASSOCIATED(current_element))
+-
+-    info_dyn=>current_element%field%info_dyn
+-    info=>current_element%field%info
++    info_dyn=>p_prog_list%p%vl(iv)%p%info_dyn
++    info=>p_prog_list%p%vl(iv)%p%info
+ 
+     jsp => info%ncontained
+ 
+@@ -461,7 +460,6 @@ SUBROUTINE art_convert_tracers_mmr_Nconc(jg,p_tracer_now,p_prog_list, vmr2Nconc)
+         END IF
+     END SELECT
+ 
+-    current_element => current_element%next_list_element
+   END DO
+ END SUBROUTINE art_convert_tracers_mmr_Nconc
+ 
+@@ -484,13 +482,11 @@ SUBROUTINE art_convert_tracers_Nconc_mmr(jg,p_tracer_now,p_prog_list, vmr2Nconc)
+   REAL(wp), INTENT(INOUT), TARGET ::  &
+     &  p_tracer_now(:,:,:,:)  !< tracer concentrations (specific concentrations)
+                               !< dim: (nproma,nlev,nblks_c,ntracer)
+-  TYPE(t_var_list), INTENT(INOUT)   ::  &
++  TYPE(t_var_list_ptr), INTENT(INOUT)   ::  &
+     &  p_prog_list         !< current prognostic state list
+   REAL(wp), INTENT(in) :: &
+     &  vmr2Nconc(:,:,:)
+   ! local variables
+-  TYPE(t_list_element), POINTER :: &
+-    &  current_element  !< returns the reference to current element in list
+   TYPE(t_var_metadata_dynamic), POINTER ::  &
+     &  info_dyn         !< returns reference to tracer metadata of current element
+   TYPE(t_var_metadata), POINTER ::  &
+@@ -499,16 +495,16 @@ SUBROUTINE art_convert_tracers_Nconc_mmr(jg,p_tracer_now,p_prog_list, vmr2Nconc)
+     &  jsp
+   TYPE(t_art_chem), POINTER :: &
+     &  art_chem
++  INTEGER          :: &
++    &  iv
+ 
+   art_chem => p_art_data(jg)%chem
+ 
+ 
+-  current_element=>p_prog_list%p%first_list_element
+-
+-  DO WHILE (ASSOCIATED(current_element))
++  DO iv = 1, p_prog_list%p%nvars
+ 
+-    info_dyn=>current_element%field%info_dyn
+-    info=>current_element%field%info
++    info_dyn=> p_prog_list%p%vl(iv)%p%info_dyn
++    info=>p_prog_list%p%vl(iv)%p%info
+ 
+     jsp => info%ncontained
+ 
+@@ -527,7 +523,6 @@ SUBROUTINE art_convert_tracers_Nconc_mmr(jg,p_tracer_now,p_prog_list, vmr2Nconc)
+         END IF
+     END SELECT
+ 
+-    current_element => current_element%next_list_element
+   END DO
+ END SUBROUTINE art_convert_tracers_Nconc_mmr
+ 
+@@ -548,25 +543,23 @@ SUBROUTINE art_convert_tracers_vmr_mmr(p_tracer_now,p_prog_list)
+   REAL(wp), INTENT(INOUT), TARGET ::  &
+     &  p_tracer_now(:,:,:,:)  !< tracer mixing ratios (specific concentrations)
+                               !< dim: (nproma,nlev,nblks_c,ntracer)
+-  TYPE(t_var_list), INTENT(IN)   ::  &
++  TYPE(t_var_list_ptr), INTENT(IN)   ::  &
+     &  p_prog_list         !< current prognostic state list
+   ! local variables
+-  TYPE(t_list_element), POINTER :: &
+-    &  current_element  !< returns the reference to current element in list
+   TYPE(t_var_metadata_dynamic), POINTER ::  &
+     &  info_dyn         !< returns reference to tracer metadata of current element
+   TYPE(t_var_metadata), POINTER ::  &
+     &  info             !< returns reference to tracer  metadata of current element
+   INTEGER, POINTER :: &
+     &  jsp
++  INTEGER          :: &
++    &  iv
+ 
+ 
+-  current_element=>p_prog_list%p%first_list_element
+-
+-  DO WHILE (ASSOCIATED(current_element))
++  DO iv = 1, p_prog_list%p%nvars
+ 
+-    info_dyn=>current_element%field%info_dyn
+-    info=>current_element%field%info
++    info_dyn=> p_prog_list%p%vl(iv)%p%info_dyn
++    info=>p_prog_list%p%vl(iv)%p%info
+ 
+     jsp => info%ncontained
+ 
+@@ -577,7 +570,6 @@ SUBROUTINE art_convert_tracers_vmr_mmr(p_tracer_now,p_prog_list)
+         CALL tracer%convert_vmr_mmr(p_tracer_now(:,:,:,jsp))
+     END SELECT
+ 
+-    current_element => current_element%next_list_element
+   END DO
+ END SUBROUTINE art_convert_tracers_vmr_mmr
+ 
+--- a/externals/art/chemistry/mo_art_chemtracer.f90
++++ b/externals/art/chemistry/mo_art_chemtracer.f90
+@@ -35,7 +35,8 @@ MODULE mo_art_chemtracer
+ #ifdef __ICON_ART
+   USE mo_kind,                          ONLY: wp
+   USE mo_exception,                     ONLY: finish
+-  USE mo_linked_list,                   ONLY: t_var_list,t_list_element
++  USE mo_var_list,                      ONLY: t_var_list_ptr
++  USE mo_var,                           ONLY: t_var
+   USE mo_var_metadata_types,            ONLY: t_var_metadata_dynamic, t_var_metadata
+ 
+   USE mtime,                            ONLY: datetime
+@@ -130,7 +131,7 @@ SUBROUTINE art_loss_chemtracer(jg,current_date,p_dtime,p_prog_list,p_tracer_now)
+     &  current_date        !< current date and time
+   REAL(wp), INTENT(IN)              ::  &
+     &  p_dtime             !< time step
+-  TYPE(t_var_list), INTENT(INOUT)   ::  &
++  TYPE(t_var_list_ptr), INTENT(INOUT)   ::  &
+     &  p_prog_list         !< current prognostic state list
+ 
+   REAL(wp), INTENT(INOUT), TARGET ::  &
+@@ -140,8 +141,6 @@ SUBROUTINE art_loss_chemtracer(jg,current_date,p_dtime,p_prog_list,p_tracer_now)
+                               !< dim: (nproma,nlev,nblks_c,ntracer)
+   
+   ! local variables
+-  TYPE(t_list_element), POINTER :: &
+-    &  current_element  !< returns the reference to current element in list
+   TYPE(t_var_metadata_dynamic), POINTER ::  &
+     &  info_dyn         !< returns reference to tracer metadata of current element
+   TYPE(t_var_metadata), POINTER ::  &
+@@ -160,6 +159,8 @@ SUBROUTINE art_loss_chemtracer(jg,current_date,p_dtime,p_prog_list,p_tracer_now)
+     &  art_param          !< Pointer to ART paretrised chem fields
+   TYPE(t_art_atmo),POINTER    :: &
+     &  art_atmo          !< Pointer to ART atmo fields
++  INTEGER                     :: &
++    &  iv                 !< loop index
+ 
+   ! ----------------------------------
+   ! --- Init pointer
+@@ -204,12 +205,10 @@ SUBROUTINE art_loss_chemtracer(jg,current_date,p_dtime,p_prog_list,p_tracer_now)
+   ! ----------------------------------
+ 
+ 
+-  current_element=>p_prog_list%p%first_list_element
++  DO iv = 1, p_prog_list%p%nvars
+ 
+-  DO WHILE (ASSOCIATED(current_element))
+-
+-    info_dyn=>current_element%field%info_dyn
+-    info=>current_element%field%info
++    info_dyn=>p_prog_list%p%vl(iv)%p%info_dyn
++    info=>p_prog_list%p%vl(iv)%p%info
+ 
+     IF (info_dyn%tracer%lis_tracer) THEN
+ 
+@@ -312,8 +311,6 @@ SUBROUTINE art_loss_chemtracer(jg,current_date,p_dtime,p_prog_list,p_tracer_now)
+   ENDIF
+ 
+   
+-  current_element => current_element%next_list_element
+-
+   ENDDO
+ 
+ 
+@@ -321,15 +318,12 @@ SUBROUTINE art_loss_chemtracer(jg,current_date,p_dtime,p_prog_list,p_tracer_now)
+   ! iTRH2O_feed
+ 
+ 
+-  current_element => p_prog_list%p%first_list_element
+-
+-  DO WHILE (ASSOCIATED(current_element))
+-    SELECT TYPE(tracer => current_element%field%info_dyn%tracer)
++  DO iv = 1, p_prog_list%p%nvars
++    SELECT TYPE(tracer =>  p_prog_list%p%vl(iv)%p%info_dyn%tracer)
+       CLASS IS (t_chem_meta_param)
+         CALL tracer%get_prod()
+     END SELECT
+     
+-    current_element => current_element%next_list_element
+   END DO
+ 
+ 
+@@ -342,13 +336,10 @@ SUBROUTINE art_loss_chemtracer(jg,current_date,p_dtime,p_prog_list,p_tracer_now)
+ 
+ 
+ 
+-  current_element=>p_prog_list%p%first_list_element
+-
+-
+-  DO WHILE (ASSOCIATED(current_element))
++  DO iv = 1, p_prog_list%p%nvars
+ 
+-    info_dyn=>current_element%field%info_dyn
+-    info=>current_element%field%info
++    info_dyn=>p_prog_list%p%vl(iv)%p%info_dyn
++    info=>p_prog_list%p%vl(iv)%p%info
+ 
+     IF (info_dyn%tracer%lis_tracer) THEN
+ 
+@@ -377,7 +368,6 @@ SUBROUTINE art_loss_chemtracer(jg,current_date,p_dtime,p_prog_list,p_tracer_now)
+ 
+     ENDIF 
+ 
+-    current_element => current_element%next_list_element
+ 
+   ENDDO !loop elements
+ 
+--- a/externals/art/chemistry/mo_art_feedback_icon.f90
++++ b/externals/art/chemistry/mo_art_feedback_icon.f90
+@@ -23,7 +23,8 @@ MODULE mo_art_feedback_icon
+   USE mo_kind,                        ONLY: wp
+   USE mo_exception,                   ONLY: message
+   USE mo_impl_constants,              ONLY: SUCCESS
+-  USE mo_linked_list,                 ONLY: t_var_list,t_list_element
++  USE mo_var_list,                    ONLY: t_var_list_ptr
++  USE mo_var,                         ONLY: t_var
+   USE mo_art_config,                  ONLY: art_config
+   USE mo_key_value_store,             ONLY: t_key_value_store
+   USE mo_tracer_metadata_types,       ONLY: t_chem_meta
+@@ -90,7 +91,7 @@ SUBROUTINE art_set_artconfig_o3_feedback(p_prog_list,jg,name_O3, dict_tracer)
+ ! Author: Michael Weimer, KIT
+ ! Initial Release: 2018-10-15
+ !>
+-  TYPE(t_var_list), INTENT(in) :: &
++  TYPE(t_var_list_ptr), INTENT(in) :: &
+     &  p_prog_list
+   INTEGER, INTENT(in) :: &
+     &  jg
+@@ -99,10 +100,8 @@ SUBROUTINE art_set_artconfig_o3_feedback(p_prog_list,jg,name_O3, dict_tracer)
+   TYPE(t_key_value_store), INTENT(in) :: &
+     &  dict_tracer
+   ! local variables
+-  TYPE(t_list_element), POINTER :: &
+-    &  current_element  !< returns the reference to
+   INTEGER :: iTRO3, O3_feed
+-  INTEGER :: ierror
++  INTEGER :: ierror, iv
+   INTEGER, POINTER :: jsp
+ 
+   CALL dict_tracer%get(name_O3,iTRO3,ierror)
+@@ -111,13 +110,11 @@ SUBROUTINE art_set_artconfig_o3_feedback(p_prog_list,jg,name_O3, dict_tracer)
+ 
+   IF (ierror == SUCCESS) THEN
+      
+-    current_element => p_prog_list%p%first_list_element
++    DO iv = 1, p_prog_list%p%nvars
+   
+-    DO WHILE (ASSOCIATED(current_element))
+-  
+-      jsp=>current_element%field%info%ncontained
++      jsp=>p_prog_list%p%vl(iv)%p%info%ncontained
+       IF (jsp == iTRO3) THEN
+-        SELECT TYPE(meta => current_element%field%info_dyn%tracer)
++        SELECT TYPE(meta => p_prog_list%p%vl(iv)%p%info_dyn%tracer)
+           CLASS IS (t_chem_meta)
+             CALL meta%opt_meta%get('feedback',O3_feed,ierror)
+             IF (ierror == SUCCESS) THEN
+@@ -134,7 +131,6 @@ SUBROUTINE art_set_artconfig_o3_feedback(p_prog_list,jg,name_O3, dict_tracer)
+         END SELECT
+       END IF
+ 
+-      current_element => current_element%next_list_element
+     END DO
+   END IF
+   
+--- a/externals/art/chemistry/mo_art_psc_init.f90
++++ b/externals/art/chemistry/mo_art_psc_init.f90
+@@ -28,7 +28,8 @@ MODULE mo_art_psc_init
+ #ifdef __ICON_ART
+   USE mo_kind,                          ONLY: wp
+   USE mo_exception,                     ONLY: finish 
+-  USE mo_linked_list,                   ONLY: t_var_list,t_list_element
++  USE mo_var_list,                      ONLY: t_var_list_ptr
++  USE mo_var,                           ONLY: t_var
+   USE mo_tracer_metadata_types,         ONLY: t_chem_meta
+   USE mo_var_metadata_types,            ONLY: t_var_metadata_dynamic, t_var_metadata
+   USE mo_art_config,                    ONLY: art_config
+@@ -110,17 +111,15 @@ SUBROUTINE art_psc_init_arrays(PSC,jg,tracer,p_prog_list)
+     &  jg                          !< patch id
+   REAL(wp), POINTER, INTENT(inout),OPTIONAL :: &
+     &  tracer(:,:,:,:)             !< Tracer mixing ratios [kg kg-1]
+-  TYPE(t_var_list),INTENT(in) :: &
++  TYPE(t_var_list_ptr),INTENT(in) :: &
+     &  p_prog_list                 !< current list: prognostic
+   ! local variables
+   INTEGER ::   &
+     &  ierror, &                   !< index if tracer of nth size bin is found
+     &  iTR,    &                   !< index of nth size bin (if found)
+-    &  n                           !< loop index over bins
++    &  n,iv                        !< loop index over bins and list-elements
+   INTEGER, POINTER :: &
+     &  jsp                         !< tracer index of current tracer in p_prog_list
+-  TYPE(t_list_element), POINTER ::  current_element  !< returns the reference to
+-                                                     !  current element in list
+ 
+   TYPE(t_art_atmo), POINTER :: &
+     &  art_atmo
+@@ -309,8 +308,6 @@ SUBROUTINE art_psc_init_arrays(PSC,jg,tracer,p_prog_list)
+       tracer(:,:,:,iTR) = 0.0_wp
+     END DO
+ 
+-    current_element=>p_prog_list%p%first_list_element
+-
+     ! ----------------------------------
+     ! --- read meta information minimum radius and maximum number density of
+     ! --- each NAT bin
+@@ -318,14 +315,14 @@ SUBROUTINE art_psc_init_arrays(PSC,jg,tracer,p_prog_list)
+     ! --- Start DO-loop over elements in list
+     ! ----------------------------------
+ 
+-    DO WHILE (ASSOCIATED(current_element))
++    DO iv = 1, p_prog_list%p%nvars
+ 
+       ! ----------------------------------
+       ! --- Get meta data of current element and assure that current element is tracer
+       ! ----------------------------------
+ 
+-      info_dyn=>current_element%field%info_dyn
+-      info=>current_element%field%info
++      info_dyn=>p_prog_list%p%vl(iv)%p%info_dyn
++      info=>p_prog_list%p%vl(iv)%p%info
+ 
+       IF (info_dyn%tracer%lis_tracer) THEN
+ 
+@@ -364,7 +361,6 @@ SUBROUTINE art_psc_init_arrays(PSC,jg,tracer,p_prog_list)
+         END IF
+       END IF
+    
+-      current_element => current_element%next_list_element
+     END DO
+     
+     ! calculate maximum and average bin size
+--- a/externals/art/chemistry/mo_art_setup_chem_productions.f90
++++ b/externals/art/chemistry/mo_art_setup_chem_productions.f90
+@@ -27,8 +27,8 @@ MODULE mo_art_setup_chem_productions
+   ! ICON
+   USE mo_kind,                       ONLY: wp
+   USE mo_exception,                  ONLY: finish
+-  USE mo_linked_list,                ONLY: t_var_list,    &
+-                                       &   t_list_element
++  USE mo_var_list,                   ONLY: t_var_list_ptr
++  USE mo_var,                        ONLY: t_var
+   USE mo_impl_constants,             ONLY: SUCCESS
+   USE mo_key_value_store,            ONLY: t_key_value_store
+   ! ART
+@@ -59,16 +59,14 @@ SUBROUTINE art_setup_chem_productions(p_prog_list, dict_tracer)
+ ! - ...
+ !>
+   IMPLICIT NONE
+-  TYPE(t_var_list), INTENT(inout) :: &
++  TYPE(t_var_list_ptr), INTENT(inout) :: &
+     &  p_prog_list
+   TYPE(t_key_value_store), INTENT(in) :: &
+     &  dict_tracer
+ 
+   ! local variables
+-  TYPE(t_list_element), POINTER :: &
+-    &  current_element
+   INTEGER ::              &
+-    &  ierror
++    &  ierror, iv
+   REAL(wp), ALLOCATABLE :: &
+     &  factors(:)
+   CHARACTER(:), ALLOCATABLE :: &
+@@ -76,10 +74,8 @@ SUBROUTINE art_setup_chem_productions(p_prog_list, dict_tracer)
+   CHARACTER(LEN = IART_VARNAMELEN), ALLOCATABLE :: &
+     &  tracer_names(:)
+ 
+-  current_element => p_prog_list%p%first_list_element
+-
+-  DO WHILE (ASSOCIATED(current_element))
+-    SELECT TYPE(meta => current_element%field%info_dyn%tracer)
++  DO iv = 1, p_prog_list%p%nvars
++    SELECT TYPE(meta => p_prog_list%p%vl(iv)%p%info_dyn%tracer)
+       CLASS IS (t_chem_meta_param)
+         CALL key_value_storage_as_string(meta%opt_meta,'products',products_str, ierror)
+  
+@@ -90,7 +86,6 @@ SUBROUTINE art_setup_chem_productions(p_prog_list, dict_tracer)
+           DEALLOCATE(tracer_names)
+         END IF
+     END SELECT
+-    current_element => current_element%next_list_element
+   END DO
+ 
+ END SUBROUTINE art_setup_chem_productions
+@@ -112,7 +107,7 @@ SUBROUTINE art_setup_product_list(educt,p_prog_list,factors,tracer_names,dict_tr
+   IMPLICIT NONE
+   CLASS(t_chem_meta_param), INTENT(in), TARGET :: &
+     &  educt
+-  TYPE(t_var_list), INTENT(inout) :: &
++  TYPE(t_var_list_ptr), INTENT(inout) :: &
+     &  p_prog_list
+   REAL(wp), INTENT(in) :: &
+     &  factors(:)
+@@ -121,11 +116,9 @@ SUBROUTINE art_setup_product_list(educt,p_prog_list,factors,tracer_names,dict_tr
+   TYPE(t_key_value_store), INTENT(in) :: &
+     &  dict_tracer
+   ! local variables
+-  TYPE(t_list_element), POINTER :: &
+-    &  current_element
+   INTEGER ::        &
+     &  num_elem, i, &
+-    &  ierror, iTR
++    &  ierror, iTR, iv
+   CHARACTER(:), ALLOCATABLE :: &
+     &  educt_name,             &
+     &  product_name
+@@ -143,10 +136,8 @@ SUBROUTINE art_setup_product_list(educt,p_prog_list,factors,tracer_names,dict_tr
+     END IF
+ 
+ 
+-    current_element => p_prog_list%p%first_list_element
+-  
+-    DO WHILE (ASSOCIATED(current_element))
+-      SELECT TYPE(meta => current_element%field%info_dyn%tracer)
++    DO iv = 1, p_prog_list%p%nvars
++      SELECT TYPE(meta => p_prog_list%p%vl(iv)%p%info_dyn%tracer)
+         CLASS IS (t_chem_meta_param)
+           CALL key_value_storage_as_string(meta%opt_meta,'name',product_name)
+ 
+@@ -155,7 +146,6 @@ SUBROUTINE art_setup_product_list(educt,p_prog_list,factors,tracer_names,dict_tr
+             EXIT
+           END IF
+       END SELECT
+-      current_element => current_element%next_list_element
+     END DO
+   END DO
+ 
+--- a/externals/art/emissions/mo_art_emiss_state.f90
++++ b/externals/art/emissions/mo_art_emiss_state.f90
+@@ -28,7 +28,8 @@ MODULE mo_art_emiss_state
+   USE mo_exception,             ONLY: finish, message
+   USE mo_art_config,            ONLY: art_config, IART_PATH_LEN
+   USE mo_run_config,            ONLY: ntracer
+-  USE mo_linked_list,           ONLY: t_var_list, t_list_element
++  USE mo_var_list,              ONLY: t_var_list_ptr
++  USE mo_var,                   ONLY: t_var
+   USE mo_tracer_metadata_types, ONLY: t_chem_meta, t_aero_meta
+   USE mo_impl_constants,        ONLY: SUCCESS
+   USE mo_key_value_store,       ONLY: t_key_value_store
+@@ -82,7 +83,7 @@ SUBROUTINE art_init_emissions_from_xml(jg,p_prog_list,cart_emiss_xml)
+   IMPLICIT NONE
+   INTEGER, INTENT(in)       ::  &
+     &  jg              !< patch on which computation is performed
+-  TYPE(t_var_list), INTENT(in) :: &
++  TYPE(t_var_list_ptr), INTENT(in) :: &
+     &  p_prog_list     !< list of prognostic variables
+   CHARACTER(LEN=*), INTENT(in) :: &
+     &  cart_emiss_xml  !< path and file name of the XML file containing the meta
+@@ -128,13 +129,11 @@ SUBROUTINE art_init_tracer_emissions(jg,p_prog_list,tixi_file_emiss)
+   IMPLICIT NONE
+   INTEGER, INTENT(in)        ::  &
+     &  jg                             !< patch on which computation is performed
+-  TYPE(t_var_list), INTENT(in) :: &
++  TYPE(t_var_list_ptr), INTENT(in) :: &
+     &  p_prog_list                    !< list of prognostic variables
+   TYPE(t_xml_file), INTENT(in) :: &
+     &  tixi_file_emiss                !< emission datasets XML file
+   !local variables
+-  TYPE(t_list_element), POINTER  :: &
+-    &  element                        !< element of p_prog_list
+   CHARACTER(:), ALLOCATABLE :: &
+     &  tracer_name,     &             !< tracer name
+     &  dummy_char                     !< dummy string when checking for the
+@@ -144,6 +143,7 @@ SUBROUTINE art_init_tracer_emissions(jg,p_prog_list,tixi_file_emiss)
+   INTEGER ::            &
+     &  ierror,          &             !< error when reading meta data
+     &  itype,           &             !< type index of emission
++    &  iv,              &             !< loop index (list elements)
+     &  icur_dataset                   !< index of the prescribed dataset
+   TYPE(t_art_emiss_type_container) ::  &
+     &  emiss                          !< local element of emission metadata to be added 
+@@ -159,24 +159,27 @@ SUBROUTINE art_init_tracer_emissions(jg,p_prog_list,tixi_file_emiss)
+   TYPE(t_art_atmo), POINTER :: &
+     &  art_atmo
+ 
++  TYPE(t_chem_meta), POINTER :: chem_meta_ptr
++  TYPE(t_aero_meta), POINTER :: aero_meta_ptr
++
+   art_atmo => p_art_data(jg)%atmo
+   NULLIFY(p_art_data(jg)%ext%land%pft)
+ 
+ 
+-  element => p_prog_list%p%first_list_element
+-  DO WHILE (ASSOCIATED(element))
++  DO iv = 1, p_prog_list%p%nvars
+ 
+-    IF (element%field%info_dyn%tracer%lis_tracer) THEN
+-      tracer_idx = element%field%info%ncontained
++    IF (p_prog_list%p%vl(iv)%p%info_dyn%tracer%lis_tracer) THEN
++      tracer_idx = p_prog_list%p%vl(iv)%p%info%ncontained
+   
+       ! set pointer to the tracer storage or skip the tracers with wrong types
+-      SELECT TYPE(meta => element%field%info_dyn%tracer)
++      SELECT TYPE(meta => p_prog_list%p%vl(iv)%p%info_dyn%tracer)
+         CLASS IS (t_chem_meta)
+-          meta_storage => meta%opt_meta
++          chem_meta_ptr => meta
++          meta_storage => chem_meta_ptr%opt_meta
+         TYPE IS (t_aero_meta)
+-          meta_storage => meta%opt_meta
++          aero_meta_ptr => meta
++          meta_storage => aero_meta_ptr%opt_meta
+         CLASS DEFAULT
+-          element => element%next_list_element
+           CYCLE
+       END SELECT
+ 
+@@ -405,7 +408,6 @@ SUBROUTINE art_init_tracer_emissions(jg,p_prog_list,tixi_file_emiss)
+       END IF
+     END IF ! lis_tracer
+        
+-    element => element%next_list_element
+   END DO
+ 
+ END SUBROUTINE art_init_tracer_emissions
+--- a/externals/art/emissions/mo_art_emission_chemtracer.f90
++++ b/externals/art/emissions/mo_art_emission_chemtracer.f90
+@@ -35,7 +35,8 @@ MODULE mo_art_emission_chemtracer
+     USE mo_math_constants,              ONLY: pi
+     USE mo_kind,                        ONLY: wp
+     USE mo_physical_constants,          ONLY: amw, amd
+-    USE mo_linked_list,                 ONLY: t_var_list,t_list_element
++    USE mo_var_list,                    ONLY: t_var_list_ptr
++    USE mo_var,                         ONLY: t_var
+     USE mo_var_metadata_types,          ONLY: t_var_metadata_dynamic, t_var_metadata
+ 
+     USE mtime,                          ONLY: datetime,                     &
+@@ -124,18 +125,18 @@ SUBROUTINE art_emiss_chemtracer(current_date,dtime,p_tracer_now,jg,p_prog_list)
+   REAL(wp), INTENT(in) :: dtime  ! time step    
+ 
+   TYPE(datetime), POINTER, INTENT(in)  :: current_date
+-  TYPE(t_var_list), INTENT(INOUT)   ::  &
++  TYPE(t_var_list_ptr), INTENT(INOUT)   ::  &
+     &  p_prog_list         !< current prognostic state list
+ 
+   !local variables
+-  TYPE(t_list_element), POINTER :: &
+-    &  current_element  !< returns the reference to current element in list
+   TYPE(t_var_metadata_dynamic), POINTER ::  &
+     &  info_dyn         !< returns reference to tracer metadata of current element
+   TYPE(t_var_metadata), POINTER ::  &
+     &  info             !< returns reference to tracer  metadata of current element
+   INTEGER, POINTER ::   &
+     &  jsp               !< returns index of element
++  INTEGER          ::   &
++    &  iv
+ 
+   TYPE(t_art_online_dms), POINTER :: &
+     &  p_online_dms           !< online dms
+@@ -158,12 +159,10 @@ SUBROUTINE art_emiss_chemtracer(current_date,dtime,p_tracer_now,jg,p_prog_list)
+   
+ 
+ 
+-  current_element=>p_prog_list%p%first_list_element
++  DO iv = 1, p_prog_list%p%nvars
+ 
+-  DO WHILE (ASSOCIATED(current_element))
+-
+-    info_dyn=>current_element%field%info_dyn
+-    info=>current_element%field%info
++    info_dyn=>p_prog_list%p%vl(iv)%p%info_dyn
++    info=>p_prog_list%p%vl(iv)%p%info
+ 
+     IF (info_dyn%tracer%lis_tracer) THEN
+ 
+@@ -271,7 +270,6 @@ SUBROUTINE art_emiss_chemtracer(current_date,dtime,p_tracer_now,jg,p_prog_list)
+       END SELECT
+     END IF
+ 
+-    current_element => current_element%next_list_element
+   END DO
+ 
+   NULLIFY(art_atmo)
+--- a/externals/art/emissions/mo_art_emission_full_chemistry.f90
++++ b/externals/art/emissions/mo_art_emission_full_chemistry.f90
+@@ -24,7 +24,8 @@
+ MODULE mo_art_emission_full_chemistry
+ #ifdef __ICON_ART
+     USE mo_kind,                     ONLY: wp
+-    USE mo_linked_list,              ONLY: t_var_list,t_list_element
++    USE mo_var_list,                 ONLY: t_var_list_ptr
++    USE mo_var,                      ONLY: t_var
+     USE mo_var_metadata_types,       ONLY: t_var_metadata_dynamic, t_var_metadata
+ 
+     USE mtime,                       ONLY: datetime
+@@ -70,18 +71,18 @@ SUBROUTINE art_emiss_full_chemistry(current_date,dtime,p_tracer_now,jg,p_prog_li
+   REAL(wp), INTENT(in) :: dtime  ! time step    
+ 
+   TYPE(datetime), POINTER, INTENT(in) :: current_date
+-  TYPE(t_var_list), INTENT(INOUT)   ::  &
++  TYPE(t_var_list_ptr), INTENT(INOUT)   ::  &
+     &  p_prog_list         !< current prognostic state list
+ 
+   !local variables
+-  TYPE(t_list_element), POINTER :: &
+-    &  current_element  !< returns the reference to current element in list
+   TYPE(t_var_metadata_dynamic), POINTER ::  &
+     &  info_dyn         !< returns reference to tracer metadata of current element
+   TYPE(t_var_metadata), POINTER ::  &
+     &  info             !< returns reference to tracer  metadata of current element
+   INTEGER, POINTER ::   &
+     &  jsp               !< returns index of element
++  INTEGER          ::   &
++    &  iv
+ 
+   TYPE(t_art_online_dms), POINTER :: &
+     &  p_online_dms
+@@ -98,12 +99,10 @@ SUBROUTINE art_emiss_full_chemistry(current_date,dtime,p_tracer_now,jg,p_prog_li
+   art_atmo => p_art_data(jg)%atmo
+   mapping_indices_kpp => p_art_data(jg)%chem%mecicon%utils%mapping_indices_kpp
+ 
+-  current_element => p_prog_list%p%first_list_element
++  DO iv = 1, p_prog_list%p%nvars
+ 
+-  DO WHILE (ASSOCIATED(current_element))
+-
+-    info_dyn=>current_element%field%info_dyn
+-    info=>current_element%field%info
++    info_dyn=>p_prog_list%p%vl(iv)%p%info_dyn
++    info=>p_prog_list%p%vl(iv)%p%info
+ 
+     IF (info_dyn%tracer%lis_tracer) THEN
+ 
+@@ -122,7 +121,6 @@ SUBROUTINE art_emiss_full_chemistry(current_date,dtime,p_tracer_now,jg,p_prog_li
+       END SELECT
+     END IF
+ 
+-    current_element => current_element%next_list_element
+   END DO
+ 
+   NULLIFY(art_atmo)
+--- a/externals/art/emissions/mo_art_emission_online_dms.f90
++++ b/externals/art/emissions/mo_art_emission_online_dms.f90
+@@ -26,7 +26,8 @@ MODULE mo_art_emission_online_dms
+ #ifdef __ICON_ART
+ ! ICON
+   USE mo_kind,                          ONLY: wp
+-  USE mo_linked_list,                   ONLY: t_var_list,t_list_element
++  USE mo_var_list,                      ONLY: t_var_list_ptr
++  USE mo_var,                           ONLY: t_var
+   USE mo_tracer_metadata_types,         ONLY: t_chem_meta
+   USE mo_var_metadata_types,            ONLY: t_var_metadata_dynamic
+   USE mo_impl_constants,                ONLY: SUCCESS
+@@ -71,14 +72,12 @@ SUBROUTINE art_extinit_dms(p_online_dms, jg, tracer_name_DMS, p_prog_list)
+     &  jg              !< patch id
+   CHARACTER(LEN=*), INTENT(in) :: &
+     &  tracer_name_DMS
+-  TYPE(t_var_list), INTENT(in)       :: &
++  TYPE(t_var_list_ptr), INTENT(in)       :: &
+     &  p_prog_list            !< current prognostic state list
+   ! local variables
+-  TYPE(t_list_element), POINTER      :: &
+-    &  current_element        !< element in p_prog_list
+   TYPE(t_var_metadata_dynamic), POINTER :: &
+     &  info_dyn 
+-  INTEGER :: ierror
++  INTEGER :: ierror, iv
+   CHARACTER(LEN=IART_VARNAMELEN)       :: &
+     &  calc_onl,        &     !< switch for online calculation 
+     &  tracer_name            !< name of the tracer
+@@ -94,15 +93,14 @@ SUBROUTINE art_extinit_dms(p_online_dms, jg, tracer_name_DMS, p_prog_list)
+   ! --- Start DO-loop over elements in list
+   ! ----------------------------------
+ 
+-  current_element=>p_prog_list%p%first_list_element
+-  DO WHILE (ASSOCIATED(current_element))
++  DO iv = 1, p_prog_list%p%nvars
+     
+     ! ----------------------------------
+     ! --- Get meta data of current element and assure that current element is
+     ! tracer
+     ! ----------------------------------
+   
+-    info_dyn=>current_element%field%info_dyn
++    info_dyn=>p_prog_list%p%vl(iv)%p%info_dyn
+   
+   
+     IF (info_dyn%tracer%lis_tracer) THEN
+@@ -142,7 +140,6 @@ SUBROUTINE art_extinit_dms(p_online_dms, jg, tracer_name_DMS, p_prog_list)
+           END IF
+       END SELECT !type meta
+     ENDIF
+-    current_element=>current_element%next_list_element
+   ENDDO
+ 
+ END SUBROUTINE art_extinit_dms
+--- a/externals/art/emissions/mo_art_prescribed_state.f90
++++ b/externals/art/emissions/mo_art_prescribed_state.f90
+@@ -26,7 +26,8 @@ MODULE mo_art_prescribed_state
+   USE mo_kind,                     ONLY: wp
+   USE mo_mpi,                      ONLY: p_max, p_min, p_comm_work
+   USE mo_exception,                ONLY: finish, message, message_text
+-  USE mo_linked_list,              ONLY: t_var_list,t_list_element
++  USE mo_var_list,                 ONLY: t_var_list_ptr
++  USE mo_var,                      ONLY: t_var
+   USE mo_impl_constants,           ONLY: SUCCESS
+   USE mo_art_config,               ONLY: IART_PATH_LEN, art_config
+   USE mo_tracer_metadata_types,    ONLY: t_chem_meta, t_aero_meta
+@@ -80,13 +81,11 @@ SUBROUTINE art_create_prescr_list(this_list,p_prog_list,jg)
+   IMPLICIT NONE
+   TYPE(t_art_prescr_list), INTENT(inout), TARGET :: &
+     &  this_list                 !< linked list to be created
+-  TYPE(t_var_list), INTENT(in) :: &
++  TYPE(t_var_list_ptr), INTENT(in) :: &
+     &  p_prog_list               !< list of prognostic tracers
+   INTEGER, INTENT(in)       :: &
+     &  jg                        !< patch on which computation is performed
+   ! local variables
+-  TYPE(t_list_element), POINTER :: &
+-    &  current_element           !< element of p_prog_list
+   TYPE(t_art_prescr_list_element), POINTER :: &
+     &  prescr_list_element,  &   !< element of this_list
+     &  prescr_list_element2      !< element of this_list
+@@ -99,7 +98,7 @@ SUBROUTINE art_create_prescr_list(this_list,p_prog_list,jg)
+   INTEGER :: &
+     &  ierror_dataset,     &     !< error index of the key_value_store, loop indices
+     &  ierror, jsp, i,     &
+-    &  dataset_idx, j
++    &  dataset_idx, j, iv
+   LOGICAL :: &
+     &  dataset_found             !< flag if dataset is found
+   TYPE(t_xml_file) :: &
+@@ -125,6 +124,9 @@ SUBROUTINE art_create_prescr_list(this_list,p_prog_list,jg)
+   TYPE(t_art_atmo), POINTER :: &
+     &  art_atmo                !< pointer to ART atmo fields
+ 
++  TYPE(t_chem_meta),POINTER :: chem_meta_ptr
++  TYPE(t_aero_meta),POINTER :: aero_meta_ptr
++
+   art_atmo => p_art_data(jg)%atmo
+ 
+   ALLOCATE(zifc_sea(art_atmo%nlevp1))
+@@ -137,24 +139,23 @@ SUBROUTINE art_create_prescr_list(this_list,p_prog_list,jg)
+ 
+     CALL art_open_xml_file(art_config(jg)%cart_ext_data_xml,tixi_file)
+ 
+-    current_element => p_prog_list%p%first_list_element
+-
+     ! go through all tracer elements and look into their storages if tracers
+     ! should be prescribed
+-    DO WHILE (ASSOCIATED(current_element))
++    DO iv = 1, p_prog_list%p%nvars
+       dataset_found = .FALSE.
+ 
+-      IF (current_element%field%info_dyn%tracer%lis_tracer) THEN
+-        jsp = current_element%field%info%ncontained
++      IF (p_prog_list%p%vl(iv)%p%info_dyn%tracer%lis_tracer) THEN
++        jsp = p_prog_list%p%vl(iv)%p%info%ncontained
+ 
+         ! set pointer to the tracer storage or skip the tracers with wrong type
+-        SELECT TYPE(meta => current_element%field%info_dyn%tracer)
++        SELECT TYPE(meta => p_prog_list%p%vl(iv)%p%info_dyn%tracer)
+           CLASS IS (t_chem_meta)
+-            meta_storage => meta%opt_meta
++            chem_meta_ptr => meta
++            meta_storage => chem_meta_ptr%opt_meta
+           TYPE IS (t_aero_meta)
+-            meta_storage => meta%opt_meta
++            aero_meta_ptr => meta
++            meta_storage => aero_meta_ptr%opt_meta
+           CLASS DEFAULT
+-            current_element => current_element%next_list_element
+             CYCLE
+         END SELECT
+ 
+@@ -168,7 +169,7 @@ SUBROUTINE art_create_prescr_list(this_list,p_prog_list,jg)
+           CALL meta_storage%get('mol_weight',mol_weight,ierror)
+           IF (ierror /= SUCCESS) THEN
+             CALL finish('mo_art_prescribed_state:art_create_prescr_list',          &
+-                    &   'For prescribing '//TRIM(current_element%field%info%name)  &
++                    &   'For prescribing '//TRIM(p_prog_list%p%vl(iv)%p%info%name)  &
+                     & //', mol_weight has to be available.')
+           END IF
+ 
+@@ -206,7 +207,7 @@ SUBROUTINE art_create_prescr_list(this_list,p_prog_list,jg)
+               CALL message('mo_art_prescribed_state:art_create_prescr_list',              &
+                      &    'WARNING: attribute rbottom_height missing for dataset with '   &
+                      &  //'variable '//TRIM(var_name_in_dataset)//' for tracer '          &
+-                     &  //TRIM(current_element%field%info%name)//'. Set to surface (0 m).')
++                     &  //TRIM(p_prog_list%p%vl(iv)%p%info%name)//'. Set to surface (0 m).')
+               bottom_height = 0._wp
+             END IF
+ 
+@@ -218,7 +219,7 @@ SUBROUTINE art_create_prescr_list(this_list,p_prog_list,jg)
+               CALL message('mo_art_prescribed_state:art_create_prescr_list',              &
+                      &    'WARNING: attribute rupper_height missing for dataset with '    &
+                      &  //'variable '//TRIM(var_name_in_dataset)//' for tracer '          &
+-                     &  //TRIM(current_element%field%info%name)//'. Set to top of atmosphere.')
++                     &  //TRIM(p_prog_list%p%vl(iv)%p%info%name)//'. Set to top of atmosphere.')
+               upper_height = MAXVAL(zifc_sea)
+             END IF
+ 
+@@ -273,7 +274,7 @@ SUBROUTINE art_create_prescr_list(this_list,p_prog_list,jg)
+           ELSE
+             CALL finish('mo_art_prescribed_state:art_create_prescr_list',  &
+                    &    'could not find cvar_name attribute in dataset '   &
+-                   &  //'element for '//TRIM(current_element%field%info%name))
++                   &  //'element for '//TRIM(p_prog_list%p%vl(iv)%p%info%name))
+           END IF
+         
+           dataset_idx = dataset_idx + 1
+@@ -282,7 +283,6 @@ SUBROUTINE art_create_prescr_list(this_list,p_prog_list,jg)
+         END DO
+       END IF
+ 
+-      current_element => current_element%next_list_element
+     END DO
+ 
+     CALL art_close_xml_file(tixi_file)
+--- a/externals/art/io/mo_art_read_initial.f90
++++ b/externals/art/io/mo_art_read_initial.f90
+@@ -31,10 +31,11 @@ MODULE mo_art_read_initial
+   USE mo_nonhydrostatic_config,         ONLY: kstart_tracer
+   USE mo_exception,                     ONLY: message, message_text
+   USE mo_util_cdi,                      ONLY: t_inputparameters
+-  USE mo_linked_list,                   ONLY: t_var_list,t_list_element
++  USE mo_var_list,                      ONLY: t_var_list_ptr
++  USE mo_var,                           ONLY: t_var
+   USE mo_var_metadata_types,            ONLY: t_var_metadata,t_var_metadata_dynamic
+   USE mo_tracer_metadata_types,         ONLY: t_aero_meta, t_chem_meta
+-  USE mo_impl_constants,                ONLY: VARNAME_LEN
++  USE mo_impl_constants,                ONLY: VARNAME_LEN => vname_len
+ ! ART
+   USE mo_art_data,                      ONLY: p_art_data
+   USE mo_art_atmo_data,                 ONLY: t_art_atmo
+@@ -69,7 +70,7 @@ SUBROUTINE art_init_aero(jg, p_prog_list, tracer)
+ !>
+   INTEGER, INTENT(in)                   :: &
+     &  jg                                    !< patch on which computation is performed
+-  TYPE(t_var_list), INTENT(IN)          :: &
++  TYPE(t_var_list_ptr), INTENT(IN)          :: &
+     &  p_prog_list                           !< current prognostic state list
+   REAL(wp), INTENT(inout)               :: &
+     &  tracer(:,:,:,:)                       !< Tracer mixing ratios [kg kg-1]
+@@ -80,8 +81,6 @@ SUBROUTINE art_init_aero(jg, p_prog_list, tracer)
+     &  info                                  !< returns reference to current element metadata
+   TYPE(t_var_metadata_dynamic), POINTER :: &
+     &  info_dyn                              !< returns reference to current element tracer metadata
+-  TYPE(t_list_element), POINTER         :: &
+-    &  current_element                       !< returns the reference to
+   INTEGER                :: &
+     &  nlen                   !< nproma or npromz_c
+   INTEGER                :: &
+@@ -92,7 +91,7 @@ SUBROUTINE art_init_aero(jg, p_prog_list, tracer)
+   CHARACTER(LEN=200)     :: &
+     &  aero_dataset           !< Path+filename of dataset for initialization of aerosol species
+   INTEGER                :: &
+-    &  jb, jk, jc             !< loop indices
++    &  jb, jk, jc, iv         !< loop indices
+   TYPE(t_art_atmo), POINTER :: &
+     &  art_atmo
+   CHARACTER(LEN=VARNAME_LEN) :: &
+@@ -107,12 +106,10 @@ SUBROUTINE art_init_aero(jg, p_prog_list, tracer)
+ 
+ ! Loop through tracers and initialize
+ 
+-  current_element=>p_prog_list%p%first_list_element
++  DO iv = 1, p_prog_list%p%nvars
+ 
+-  DO WHILE (ASSOCIATED(current_element))
+-
+-    info=>current_element%field%info
+-    info_dyn=>current_element%field%info_dyn
++    info=>p_prog_list%p%vl(iv)%p%info
++    info_dyn=>p_prog_list%p%vl(iv)%p%info_dyn
+ 
+     IF (info_dyn%tracer%lis_tracer) THEN
+ 
+@@ -149,12 +146,10 @@ SUBROUTINE art_init_aero(jg, p_prog_list, tracer)
+           ! Nothing to do here
+       END SELECT
+     ENDIF
+-    current_element => current_element%next_list_element
+   ENDDO
+ 
+ ! Cleanup
+   CALL art_close_cdi(cdi_artdataset_id, cdi_param)
+-  NULLIFY (current_element)
+ 
+ END SUBROUTINE art_init_aero
+ !!
+@@ -173,7 +168,7 @@ SUBROUTINE art_init_chem(jg, p_prog_list, tracer)
+ !>
+   INTEGER, INTENT(in)                   :: &
+     &  jg                                    !< patch on which computation is performed
+-  TYPE(t_var_list), INTENT(IN)          :: &
++  TYPE(t_var_list_ptr), INTENT(IN)          :: &
+     &  p_prog_list                           !< current prognostic state list
+   REAL(wp), INTENT(inout)               :: &
+     &  tracer(:,:,:,:)                       !< Tracer mixing ratios [kg kg-1]
+@@ -184,8 +179,6 @@ SUBROUTINE art_init_chem(jg, p_prog_list, tracer)
+     &  info                                  !< returns reference to current element metadata
+   TYPE(t_var_metadata_dynamic), POINTER :: &
+     &  info_dyn                              !< returns reference to current element tracer metadata
+-  TYPE(t_list_element), POINTER         :: &
+-    &  current_element                       !< returns the reference to
+   INTEGER                :: &
+     &  cdi_artdataset_id,   & !< CDI stream ID (for each domain)
+     &  cdi_filetype           !< One of CDI's FILETYPE_XXX constants
+@@ -194,7 +187,7 @@ SUBROUTINE art_init_chem(jg, p_prog_list, tracer)
+   CHARACTER(LEN=200)     :: &
+     &  chem_dataset           !< Path+filename of dataset for initialization of chemical species
+   INTEGER                :: &
+-    &  jb, jk, jc             !< loop indices
++    &  jb, jk, jc, iv         !< loop indices
+   INTEGER                :: &
+     &  nlen                   !< nproma or npromz_c
+   TYPE(t_art_atmo), POINTER :: &
+@@ -209,12 +202,10 @@ SUBROUTINE art_init_chem(jg, p_prog_list, tracer)
+ 
+ ! Loop through tracers and initialize
+ 
+-  current_element=>p_prog_list%p%first_list_element
+-
+-  DO WHILE (ASSOCIATED(current_element))
++  DO iv = 1, p_prog_list%p%nvars
+ 
+-    info=>current_element%field%info
+-    info_dyn=>current_element%field%info_dyn
++    info=>p_prog_list%p%vl(iv)%p%info
++    info_dyn=>p_prog_list%p%vl(iv)%p%info_dyn
+ 
+     IF (info_dyn%tracer%lis_tracer) THEN
+ 
+@@ -249,12 +240,10 @@ SUBROUTINE art_init_chem(jg, p_prog_list, tracer)
+           ! Nothing to do here
+       END SELECT
+     ENDIF
+-    current_element => current_element%next_list_element
+   ENDDO
+ 
+ ! Cleanup
+   CALL art_close_cdi(cdi_artdataset_id, cdi_param)
+-  NULLIFY (current_element)
+ 
+ END SUBROUTINE art_init_chem
+ !!
+--- a/externals/art/shared/mo_art_aerosol_state.f90
++++ b/externals/art/shared/mo_art_aerosol_state.f90
+@@ -24,7 +24,8 @@ MODULE mo_art_aerosol_state
+ #ifdef __ICON_ART
+ ! ICON
+   USE mo_exception,                     ONLY: message, finish, message_text
+-  USE mo_linked_list,                   ONLY: t_var_list, t_list_element
++  USE mo_var_list,                      ONLY: t_var_list_ptr
++  USE mo_var,                           ONLY: t_var
+   USE mo_var_metadata_types,            ONLY: t_var_metadata, t_var_metadata_dynamic
+   USE mo_tracer_metadata_types,         ONLY: t_aero_meta
+   USE mo_key_value_store,               ONLY: t_key_value_store
+@@ -200,20 +201,19 @@ SUBROUTINE art_assign_tracers_to_modes(p_mode_state,this_list)
+ !>
+   TYPE(t_mode_state),INTENT(inout) :: &
+     &  p_mode_state                     !< mode container
+-  TYPE(t_var_list),INTENT(in)      :: &
++  TYPE(t_var_list_ptr),INTENT(in)      :: &
+     &  this_list                        !< current list: prognostic
+ ! Local variables
+   TYPE(t_mode),POINTER                  :: &
+     &  this_mode                             !< Reference to current mode in list
+-  TYPE(t_list_element), POINTER         :: &
+-    &  current_element                       !< Reference to current element in list
+   TYPE(t_var_metadata), POINTER         :: &
+     &  info                                  !< returns reference to dynamic tracer metadata of current element
+   TYPE(t_var_metadata_dynamic), POINTER :: &
+     &  info_dyn                              !< returns reference to dynamic tracer metadata of current element
+   INTEGER                               :: &
+     &  ntracer_in_mode,                    & !< Number of tracer in current mode
+-    &  ntracer                               !< Number of tracer
++    &  ntracer,                            & !< Number of tracer
++    &  iv                                    !< loop index
+   CHARACTER(LEN=2)                      :: &
+     &  cntracer                              !< Number of tracer as character
+ 
+@@ -223,9 +223,8 @@ SUBROUTINE art_assign_tracers_to_modes(p_mode_state,this_list)
+     ! First step: Find out how many tracer are contained in the mode
+     ntracer_in_mode = 0
+     ntracer         = 0
+-    current_element=>this_list%p%first_list_element
+-    DO WHILE (ASSOCIATED(current_element))
+-      info_dyn=>current_element%field%info_dyn
++    DO iv = 1, this_list%p%nvars
++      info_dyn=>this_list%p%vl(iv)%p%info_dyn
+       IF (info_dyn%tracer%lis_tracer) THEN
+         SELECT TYPE(tracer_info => info_dyn%tracer)
+           CLASS IS(t_aero_meta)
+@@ -236,7 +235,6 @@ SUBROUTINE art_assign_tracers_to_modes(p_mode_state,this_list)
+             ! Nothing to do for other tracer
+         END SELECT
+       ENDIF
+-      current_element => current_element%next_list_element
+     ENDDO
+     
+     ! Write number of tracer to character for output statement
+@@ -258,10 +256,9 @@ SUBROUTINE art_assign_tracers_to_modes(p_mode_state,this_list)
+         ALLOCATE(fields%itr3(ntracer_in_mode-1))
+         fields%ntr = ntracer_in_mode
+         ! Connect
+-        current_element=>this_list%p%first_list_element
+-        DO WHILE (ASSOCIATED(current_element))
+-          info    =>current_element%field%info
+-          info_dyn=>current_element%field%info_dyn
++        DO iv = 1, this_list%p%nvars
++          info    =>this_list%p%vl(iv)%p%info
++          info_dyn=>this_list%p%vl(iv)%p%info_dyn
+           IF (info_dyn%tracer%lis_tracer) THEN
+             SELECT TYPE(tracer_info => info_dyn%tracer)
+               CLASS IS(t_aero_meta)
+@@ -286,7 +283,6 @@ SUBROUTINE art_assign_tracers_to_modes(p_mode_state,this_list)
+                 ! Nothing to do for other tracer
+             END SELECT
+           ENDIF
+-          current_element => current_element%next_list_element
+         ENDDO
+         IF (ntracer /= ntracer_in_mode-1) THEN
+           CALL finish(TRIM(routine)//':art_assign_tracers_to_modes', &
+@@ -299,10 +295,9 @@ SUBROUTINE art_assign_tracers_to_modes(p_mode_state,this_list)
+             &         '1MOM-Mode '//TRIM(fields%name)//' contains more than one tracer.')
+         ENDIF
+         ! Connect
+-        current_element=>this_list%p%first_list_element
+-        DO WHILE (ASSOCIATED(current_element))
+-          info    =>current_element%field%info
+-          info_dyn=>current_element%field%info_dyn
++        DO iv = 1, this_list%p%nvars
++          info    =>this_list%p%vl(iv)%p%info
++          info_dyn=>this_list%p%vl(iv)%p%info_dyn
+           IF (info_dyn%tracer%lis_tracer) THEN
+             SELECT TYPE(tracer_info => info_dyn%tracer)
+               CLASS IS(t_aero_meta)
+@@ -315,7 +310,6 @@ SUBROUTINE art_assign_tracers_to_modes(p_mode_state,this_list)
+                 ! Nothing to do for other tracer
+             END SELECT
+           ENDIF
+-          current_element => current_element%next_list_element
+         ENDDO
+ !--------------------------------------------------------------------------------------------------
+       CLASS DEFAULT
+--- a/externals/art/shared/mo_art_collect_atmo_state.f90
++++ b/externals/art/shared/mo_art_collect_atmo_state.f90
+@@ -22,7 +22,7 @@ MODULE mo_art_collect_atmo_state
+ #ifdef __ICON_ART
+   USE mo_kind,                          ONLY: wp
+   USE mo_grid_config,                   ONLY: nroot
+-  USE mo_linked_list,                   ONLY: t_var_list
++  USE mo_var_list,                      ONLY: t_var_list_ptr
+   USE mo_impl_constants,                ONLY: min_rlcell_int
+   USE mo_impl_constants_grf,            ONLY: grf_bdywidth_c
+   USE mo_physical_constants,            ONLY: grav, amo3, amd, amch4
+@@ -669,7 +669,7 @@ SUBROUTINE art_init_tracer_values(jg, tracer, p_prog_list)
+     &  jg                          !< number of model domain
+   REAL(wp), POINTER, INTENT(inout)  :: &
+     &  tracer(:,:,:,:)             !< Tracer mixing ratios [kg kg-1]
+-  TYPE(t_var_list), INTENT(IN)      ::  &
++  TYPE(t_var_list_ptr), INTENT(IN)      ::  &
+     &  p_prog_list                 !< current prognostic state list
+ 
+   ! local variables
+@@ -760,7 +760,7 @@ SUBROUTINE art_init_tracer_values_nwp(jg, tracer, current_date, p_prog_list)
+     &  tracer(:,:,:,:)             !< Tracer mixing ratios [kg kg-1]
+   TYPE(datetime),POINTER,INTENT(IN) :: &
+     &  current_date                !< current date and time
+-  TYPE(t_var_list), INTENT(IN)      ::  &
++  TYPE(t_var_list_ptr), INTENT(IN)      ::  &
+     &  p_prog_list                 !< current prognostic state list
+ 
+   ! local variables
+@@ -828,7 +828,7 @@ SUBROUTINE art_init_tracer_values_echam(jg, tracer, current_date, p_prog_list)
+     &  tracer(:,:,:,:)             !< Tracer mixing ratios [kg kg-1]
+   TYPE(datetime),POINTER,INTENT(in) ::   &
+     &  current_date                !< current date and time
+-  TYPE(t_var_list), INTENT(IN)    :: &
++  TYPE(t_var_list_ptr), INTENT(IN)    :: &
+     &  p_prog_list                 !< current prognostic state list
+ 
+ 
+--- a/externals/art/shared/mo_art_diag_state.f90
++++ b/externals/art/shared/mo_art_diag_state.f90
+@@ -28,7 +28,6 @@ MODULE mo_art_diag_state
+   USE mo_parallel_config,               ONLY: nproma
+   USE mo_run_config,                    ONLY: ntracer
+   USE mo_exception,                     ONLY: finish, message, message_text
+-  USE mo_linked_list,                   ONLY: t_var_list, t_list_element
+   USE mo_cdi_constants,                 ONLY: GRID_UNSTRUCTURED_CELL, GRID_CELL
+   USE mo_zaxis_type,                    ONLY: ZA_HYBRID, ZA_SURFACE,                   &
+     &  ZA_PRES_FL_SFC_200, ZA_PRES_FL_200_350, ZA_PRES_FL_350_550, ZA_ATMOSPHERE,      &
+@@ -40,19 +39,19 @@ MODULE mo_art_diag_state
+   USE mo_cf_convention,                 ONLY: t_cf_var
+   USE mo_grib2,                         ONLY: t_grib2_var, grib2_var, t_grib2_int_key, &
+     &                                         OPERATOR(+)
+-  USE mo_var_list,                      ONLY: add_var, add_ref, get_var_name
++  USE mo_var_list,                      ONLY: add_var, add_ref, t_var_list_ptr
++  USE mo_var,                           ONLY: t_var
+   USE mo_var_metadata_types,            ONLY: CLASS_DEFAULT, CLASS_CHEM,               &
+     &                                         CLASS_CHEM_STAT, CLASS_CHEM_OPTP,        &
+-    &                                         CLASS_DISTR, CLASS_DISTR_STAT,           &
+-    &                                         MAX_GROUPS
++    &                                         CLASS_DISTR, CLASS_DISTR_STAT
+   USE mo_var_metadata,                  ONLY: create_vert_interp_metadata,             &
+     &                                         create_hor_interp_metadata,              &
+-    &                                         vintp_types
++    &                                         vintp_types, get_var_name
+   USE mo_impl_constants,                ONLY: VINTP_METHOD_LIN,                        &
+     &                                         HINTP_TYPE_LONLAT_NNB,                   &
+     &                                         HINTP_TYPE_LONLAT_BCTR,                  &
+     &                                         SUCCESS, MAX_CHAR_LENGTH
+-  USE mo_var_groups,                    ONLY: groups
++  USE mo_var_groups,                    ONLY: groups, MAX_GROUPS
+   USE mo_key_value_store,               ONLY: t_key_value_store
+   USE mo_util_string,                   ONLY: tolower, str_replace, split_string
+ 
+@@ -98,9 +97,9 @@ SUBROUTINE art_create_diagnostics(jg, p_diag_list, p_prog_list)
+ 
+   INTEGER,INTENT(in)          :: &
+     &  jg                           !< patch id
+-  TYPE(t_var_list),INTENT(inout) :: &
++  TYPE(t_var_list_ptr),INTENT(inout) :: &
+     &  p_diag_list                  !< current list: diagnostic
+-  TYPE(t_var_list),INTENT(in)    :: &
++  TYPE(t_var_list_ptr),INTENT(in)    :: &
+     &  p_prog_list                  !< current list: prognostic
+ ! Local Variables
+   TYPE(t_art_psc),POINTER    :: &
+@@ -1838,7 +1837,7 @@ SUBROUTINE art_get_GRIB2_diag(shortname, xmlfile, grib2, var_class,          &
+     &  var_class                                !< Variable class, used to set the correct PDT
+   INTEGER,  OPTIONAL, INTENT(in)           :: &
+     & itrac                                     !< index of tracer in tracer loop of current diagnostic
+-  TYPE(t_var_list), OPTIONAL, INTENT(in)   :: &
++  TYPE(t_var_list_ptr), OPTIONAL, INTENT(in)   :: &
+     & p_prog_list                               !< current prognostic list, to read names of active tracers
+   INTEGER,  OPTIONAL, INTENT(out)          :: &
+     & ntrac_active_tracer                       !< number of active tracers, for which a certain diagnostics is requested
+@@ -1880,12 +1879,11 @@ SUBROUTINE art_get_GRIB2_diag(shortname, xmlfile, grib2, var_class,          &
+     & productDefinitionTemplate_list(:)         !< List of productDefinitionTemplate Numbers for each tracer of a certain diagnostics
+   CHARACTER(LEN=IART_VARNAMELEN)           :: &
+     & tracer_name                               !< tracer_name of one tracer, for which a diagnostics shall be computed
+-  TYPE(t_list_element), POINTER            :: &
+-    & current_element                           !< pointer to current element in the p_prog_list
+   CHARACTER(LEN=IART_VARNAMELEN)           :: &
+     & current_tracer_name                       !< name of current tracer as CharArray
+   INTEGER                                  :: &
+-    & ntrac                                     !< number of tracers, for which a certain diagnostics is requested
++    & ntrac,                                  & !< number of tracers, for which a certain diagnostics is requested
++    & iv                                        !< loop index
+ 
+ 
+   var_class = CLASS_DEFAULT
+@@ -1995,16 +1993,14 @@ SUBROUTINE art_get_GRIB2_diag(shortname, xmlfile, grib2, var_class,          &
+          DO i=1,ntrac
+             ind_active_tracer(i) = 0
+             WRITE(tracer_name,'(A)')shortnames(i)
+-            current_element => p_prog_list%p%first_list_element
+-            DO WHILE (ASSOCIATED(current_element))
+-               current_tracer_name = TRIM(current_element%field%info%name(1: &
+-                    & (LEN(TRIM(current_element%field%info%name))-4))) !e.g. dusta from dusta.TL1
++            DO iv = 1, p_prog_list%p%nvars
++               current_tracer_name = TRIM(p_prog_list%p%vl(iv)%p%info%name(1: &
++                    & (LEN(TRIM(p_prog_list%p%vl(iv)%p%info%name))-4))) !e.g. dusta from dusta.TL1
+                IF ( current_tracer_name == TRIM(tracer_name) ) THEN
+                   ntrac_active_tracer = ntrac_active_tracer + 1
+                   ind_active_tracer(i) = i
+                   EXIT
+                END IF
+-               current_element => current_element%next_list_element
+             END DO
+          END DO
+ 
+@@ -2137,34 +2133,32 @@ SUBROUTINE get_tracer_index_and_grib_meta(p_prog_list, tracer_name, jsp_idx, gri
+   ! -
+   !>
+ 
+-  TYPE(t_var_list),   INTENT(in)  :: p_prog_list         !< current prognostic list
++  TYPE(t_var_list_ptr),   INTENT(in)  :: p_prog_list         !< current prognostic list
+   CHARACTER(LEN=*),   INTENT(in)  :: tracer_name         !< name of tracer, for which to return the index in tracer container
+   INTEGER, POINTER,   INTENT(out) :: jsp_idx             !< index of tracer in tracer container
+   TYPE(t_grib2_var),  INTENT(out) :: grib2               !< grib2 metadata
+ 
+   !Local variables
+   CHARACTER(LEN=50)               :: current_tracer_name    !< name of current tracer
+-  TYPE(t_list_element), POINTER   :: current_element        !< pointer to current element in the list
++  INTEGER                         :: iv,idx_timelevel       !< loop index, timelevel-index
+ 
+ 
+   ! Loop through the p_prog_list
+-  current_element => p_prog_list%p%first_list_element
+-  DO WHILE (ASSOCIATED(current_element))
++  DO iv = 1, p_prog_list%p%nvars
+ 
+      ! Plain variable name (i.e. without TIMELEVEL_SUFFIX)
+-     current_tracer_name = tolower(get_var_name(current_element%field)) !e.g. dusta from dusta.TL1
++     current_tracer_name = tolower(get_var_name(p_prog_list%p%vl(iv)%p%info)) !e.g. dusta from dusta.TL1
+ 
+      ! If the requestet tracer name is reached get index in tracer container as well as grib2 metadata
+      IF ( TRIM(current_tracer_name) == TRIM(tolower(tracer_name)) ) THEN
+-        jsp_idx => current_element%field%info%ncontained
+-        grib2 = current_element%field%info%grib2
++        jsp_idx => p_prog_list%p%vl(iv)%p%info%ncontained
++        grib2 = p_prog_list%p%vl(iv)%p%info%grib2
+         EXIT
+      ELSE
+         NULLIFY(jsp_idx)
+         grib2 = grib2_var(-1, -1, -1, -1, -1, -1)
+      END IF
+ 
+-     current_element => current_element%next_list_element
+   ENDDO !Loop through p_prog_list
+ 
+ END SUBROUTINE get_tracer_index_and_grib_meta
+--- a/externals/art/shared/mo_art_external_state.f90
++++ b/externals/art/shared/mo_art_external_state.f90
+@@ -33,7 +33,7 @@ MODULE mo_art_external_state
+   USE mo_art_config,                    ONLY: t_art_config
+   USE mo_ext_data_types,                ONLY: t_external_data
+   USE mo_key_value_store,               ONLY: t_key_value_store
+-  USE mo_linked_list,                   ONLY: t_var_list
++  USE mo_var_list,                      ONLY: t_var_list_ptr
+ ! ART
+   USE mo_art_external_types,            ONLY: t_art_external
+   USE mo_art_read_extdata,              ONLY: art_read_ext_soil, art_read_pollendata,   &
+@@ -86,7 +86,7 @@ SUBROUTINE art_external_init(p_patch, artconf, ext_data, dims2d, dict_tracer, &
+     &  dict_tracer                            !< Tracer index dictionary
+   TYPE(t_art_external),INTENT(INOUT)     :: &
+     &  art_extdata                            !< External data container for ART
+-  TYPE(t_var_list), INTENT(in)           :: &
++  TYPE(t_var_list_ptr), INTENT(in)           :: &
+     &  p_prog_list                            !< current prognostic state list
+   INTEGER ::  jg              !< patch id
+ 
+--- a/externals/art/shared/mo_art_init.f90
++++ b/externals/art/shared/mo_art_init.f90
+@@ -33,7 +33,7 @@ MODULE mo_art_init
+   USE mo_grid_config,                   ONLY: start_time
+   USE mo_exception,                     ONLY: message,finish,message_text
+   USE mo_run_config,                    ONLY: number_of_grid_used, ntracer
+-  USE mo_linked_list,                   ONLY: t_var_list
++  USE mo_var_list,                      ONLY: t_var_list_ptr
+   USE mo_art_config,                    ONLY: t_art_config,art_config
+   USE mo_radiation_config,              ONLY: irad_aero
+   USE mo_ext_data_state,                ONLY: ext_data ! temporary!
+@@ -91,7 +91,7 @@ SUBROUTINE art_init(jg, tc_dt_model, tc_exp_refdate, p_prog_list, tracer)
+     &  tc_dt_model                 !< Model timestep
+   TYPE(datetime), POINTER, INTENT(in)  :: &
+     &  tc_exp_refdate              !< Experiment reference date
+-  TYPE(t_var_list),INTENT(in) :: &
++  TYPE(t_var_list_ptr),INTENT(in) :: &
+     &  p_prog_list                 !< current list: prognostic
+   REAL(wp), POINTER, INTENT(inout),OPTIONAL :: &
+     &  tracer(:,:,:,:)             !< Tracer mixing ratios [kg kg-1]
+--- a/externals/art/shared/mo_art_init_chemtracer.f90
++++ b/externals/art/shared/mo_art_init_chemtracer.f90
+@@ -34,7 +34,8 @@ MODULE mo_art_init_chemtracer
+   USE mo_run_config,                    ONLY: ntracer
+   USE mo_art_config,                    ONLY: art_config
+   USE mo_io_units,                      ONLY: filename_max
+-  USE mo_linked_list,                   ONLY: t_var_list,t_list_element
++  USE mo_var_list,                      ONLY: t_var_list_ptr
++  USE mo_var,                           ONLY: t_var
+   USE mo_var_metadata_types,            ONLY: t_var_metadata, t_var_metadata_dynamic
+   USE mo_tracer_metadata_types,         ONLY: t_chem_meta
+   USE mo_impl_constants,                ONLY: SUCCESS
+@@ -452,19 +453,17 @@ SUBROUTINE art_init_chemtracer_ext(p_patch, p_prog_list,tracer)
+   TYPE(t_patch), TARGET, INTENT(in) ::  &
+     &  p_patch  !< patch on which computation is performed
+ 
+-  TYPE(t_var_list), INTENT(in)       :: &
++  TYPE(t_var_list_ptr), INTENT(in)       :: &
+     &  p_prog_list      !< current prognostic state list
+   REAL(wp), INTENT(inout)           :: &  !< tracer mixing ratios (specific concentrations)
+     &  tracer(:,:,:,:)                    !< at current time level n (before transport)
+ 
+-  TYPE(t_list_element), POINTER      :: &
+-    &  current_element                   !< returns the reference to current element in list
+   TYPE(t_var_metadata), POINTER      :: & 
+     &  info                              !< returns reference to tracer metadata of current element
+   TYPE(t_var_metadata_dynamic), POINTER :: & 
+     &  info_dyn                          !< returns reference to tracer metadata of current element
+   INTEGER, POINTER ::  jsp                           !< returns index of element
+-  INTEGER          :: init_mode
++  INTEGER          :: init_mode, iv
+ 
+   CHARACTER(LEN=filename_max) :: coord_path
+   CHARACTER(LEN=filename_max) :: chem_init_path
+@@ -494,15 +493,12 @@ SUBROUTINE art_init_chemtracer_ext(p_patch, p_prog_list,tracer)
+ 
+   chem_init%chem_init_in%model_name = TRIM(art_config(jg)%cart_cheminit_type)
+     
+-
+-  current_element=>p_prog_list%p%first_list_element
+- 
+   conversion_factor = 1.0_wp
+  
+-  DO WHILE (ASSOCIATED(current_element))
++  DO iv = 1, p_prog_list%p%nvars
+ 
+-    info_dyn => current_element%field%info_dyn
+-    info => current_element%field%info
++    info_dyn => p_prog_list%p%vl(iv)%p%info_dyn
++    info => p_prog_list%p%vl(iv)%p%info
+     IF (info_dyn%tracer%lis_tracer) THEN
+ 
+       jsp => info%ncontained
+@@ -540,7 +536,6 @@ SUBROUTINE art_init_chemtracer_ext(p_patch, p_prog_list,tracer)
+           ENDIF
+       END SELECT
+     ENDIF
+-    current_element => current_element%next_list_element
+ 
+   ENDDO
+  
+--- a/externals/art/shared/mo_art_init_full_chemistry.f90
++++ b/externals/art/shared/mo_art_init_full_chemistry.f90
+@@ -27,7 +27,8 @@ MODULE mo_art_init_full_chemistry
+ ! ICON
+   USE mo_kind,                          ONLY: wp
+   USE mo_exception,                     ONLY: message,finish, message_text
+-  USE mo_linked_list,                   ONLY: t_var_list,t_list_element
++  USE mo_var_list,                      ONLY: t_var_list_ptr
++  USE mo_var,                           ONLY: t_var
+   USE mo_var_metadata_types,            ONLY: t_var_metadata_dynamic,    &
+                                           &   t_var_metadata
+   USE mo_tracer_metadata_types,         ONLY: t_tracer_meta
+@@ -76,14 +77,12 @@ SUBROUTINE art_init_full_chemistry(jg, p_prog_list, p_tracer_now)
+ 
+   INTEGER, INTENT(in)  ::  &
+     &  jg                              !< patch id on which computation is performed
+-  TYPE(t_var_list), INTENT(IN)  ::  &
++  TYPE(t_var_list_ptr), INTENT(IN)  ::  &
+     &  p_prog_list                     !< current prognostic state list
+   REAL(wp), INTENT(INOUT)  ::  &
+     &  p_tracer_now(:,:,:,:)           !< tracer volume mxing ratios (mol/mol)
+ 
+   ! local variables
+-  TYPE(t_list_element), POINTER  ::  &
+-    &  current_element                 !< returns the reference to element of p_prog_list
+   TYPE(t_var_metadata), POINTER  ::  &
+     &  info                            !< returns reference to tracer
+   TYPE(t_chem_init_state),POINTER       :: &
+@@ -95,7 +94,7 @@ SUBROUTINE art_init_full_chemistry(jg, p_prog_list, p_tracer_now)
+   TYPE(t_var_metadata_dynamic), POINTER :: &
+     &  info_dyn                        !< dynamic tracer metadata
+   INTEGER ::                      &
+-    &    jc, jk, jb,              &    !< loop indizes
++    &    jc, jk, jb, iv,          &    !< loop indizes
+     &    i_startidx, i_endidx
+   INTEGER ::    &
+     &  kpp_ind                         !< MECCA tracer index
+@@ -131,18 +130,15 @@ SUBROUTINE art_init_full_chemistry(jg, p_prog_list, p_tracer_now)
+   !#######################################
+ 
+ 
+-  current_element=>p_prog_list%p%first_list_element
+-
+-
+   IF (.NOT. ALLOCATED(vmr_kpp)) ALLOCATE(vmr_kpp(ntracer))
+            ! allocation of c
+ 
+   c(:) = 0.0d0
+ 
+-  DO WHILE (ASSOCIATED(current_element))
++  DO iv = 1, p_prog_list%p%nvars
+ 
+-    info_dyn => current_element%field%info_dyn
+-    info     => current_element%field%info
++    info_dyn => p_prog_list%p%vl(iv)%p%info_dyn
++    info     => p_prog_list%p%vl(iv)%p%info
+     jsp      => info%ncontained
+ 
+     SELECT TYPE(meta => info_dyn%tracer)
+@@ -173,9 +169,7 @@ SUBROUTINE art_init_full_chemistry(jg, p_prog_list, p_tracer_now)
+         ENDIF
+      END SELECT
+ 
+-     current_element => current_element%next_list_element
+-   ENDDO
+-
++     ENDDO
+ 
+   ! ######################################################
+   !
+@@ -183,12 +177,10 @@ SUBROUTINE art_init_full_chemistry(jg, p_prog_list, p_tracer_now)
+   !
+ 
+ 
+-  current_element=>p_prog_list%p%first_list_element
++  DO iv = 1, p_prog_list%p%nvars
+ 
+-  DO WHILE (ASSOCIATED(current_element))
+-
+-    info_dyn  =>  current_element%field%info_dyn
+-    info      =>  current_element%field%info
++    info_dyn  =>  p_prog_list%p%vl(iv)%p%info_dyn
++    info      =>  p_prog_list%p%vl(iv)%p%info
+     jsp       =>  info%ncontained
+     SELECT TYPE(meta => info_dyn%tracer)
+       CLASS IS (t_chem_meta_mecca)
+@@ -438,7 +430,6 @@ SUBROUTINE art_init_full_chemistry(jg, p_prog_list, p_tracer_now)
+               
+     END SELECT
+ 
+-    current_element => current_element%next_list_element
+   ENDDO
+ 
+   NULLIFY(chem_init)
+@@ -460,13 +451,11 @@ SUBROUTINE art_init_mapping_kpp_indices(jg, p_prog_list, cart_mecca_xml)
+   IMPLICIT NONE
+   INTEGER :: &
+     &  jg                !< patch id
+-  TYPE(t_var_list), INTENT(in) :: &
++  TYPE(t_var_list_ptr), INTENT(in) :: &
+     &  p_prog_list       !< list of prognostic variables
+   CHARACTER(LEN=*), INTENT(in) :: &
+     &  cart_mecca_xml    !< XML file
+   !local variables
+-  TYPE(t_list_element), POINTER :: &
+-    &  current_element  !< pointer to element in list
+   TYPE(t_var_metadata), POINTER         :: &
+     &   info            !< returns reference to tracer
+   TYPE(t_var_metadata_dynamic), POINTER :: &
+@@ -474,7 +463,8 @@ SUBROUTINE art_init_mapping_kpp_indices(jg, p_prog_list, cart_mecca_xml)
+   INTEGER, POINTER :: &
+     &  jsp              !< tracer index
+   INTEGER ::   &
+-    &  kpp_ind, iTR     !< kpp tracer index and ICON-ART tracer index
++    &  kpp_ind, iTR,  & !< kpp tracer index and ICON-ART tracer index
++    &  iv               !< loop index
+   TYPE(t_xml_file) :: &
+     &  tixi_file        !< XML file handle
+   CHARACTER(LEN=50) :: &
+@@ -510,12 +500,10 @@ SUBROUTINE art_init_mapping_kpp_indices(jg, p_prog_list, cart_mecca_xml)
+       p_art_data(jg)%chem%mecicon%utils%mapping_indices_kpp(iTR) = -1
+     END DO
+ 
+-    current_element=>p_prog_list%p%first_list_element
+-  
+-    DO WHILE (ASSOCIATED(current_element))
++    DO iv = 1, p_prog_list%p%nvars
+ 
+-      info_dyn  =>  current_element%field%info_dyn
+-      info      =>  current_element%field%info
++      info_dyn  =>  p_prog_list%p%vl(iv)%p%info_dyn
++      info      =>  p_prog_list%p%vl(iv)%p%info
+       jsp       =>  info%ncontained
+ 
+       SELECT TYPE(meta => info_dyn%tracer)
+@@ -535,7 +523,6 @@ SUBROUTINE art_init_mapping_kpp_indices(jg, p_prog_list, cart_mecca_xml)
+           p_art_data(jg)%chem%mecicon%utils%mapping_indices_kpp(kpp_ind) = jsp
+       END SELECT
+ 
+-      current_element => current_element%next_list_element
+ 
+     ENDDO
+   END IF ! mapping_indices_kpp allocated
+--- a/externals/art/shared/mo_art_pntSrc_state.f90
++++ b/externals/art/shared/mo_art_pntSrc_state.f90
+@@ -24,7 +24,6 @@ MODULE mo_art_pntSrc_state
+ #ifdef __ICON_ART
+ ! ICON
+   USE mo_kind,                          ONLY: wp
+-  USE mo_linked_list,                   ONLY: t_var_list
+   USE mo_model_domain,                  ONLY: t_patch
+   USE mo_key_value_store,               ONLY: t_key_value_store
+   USE mo_exception,                     ONLY: message, message_text, finish
+@@ -32,7 +31,7 @@ MODULE mo_art_pntSrc_state
+   USE mo_math_constants,                ONLY: pi
+   USE mtime,                            ONLY: timedelta, datetime
+   USE mo_tracer_metadata_types,         ONLY: t_aero_meta, t_chem_meta
+-  USE mo_var_list,                      ONLY: get_tracer_info_dyn_by_idx
++  USE mo_var_list,                      ONLY: t_var_list_ptr
+   USE mo_var_metadata_types,            ONLY: t_var_metadata_dynamic
+ ! ART
+   USE mo_art_data,                      ONLY: t_art_data
+@@ -85,7 +84,7 @@ SUBROUTINE art_emiss_init_pntSrc(p_patch, z_ifc, tc_dt_model, tc_exp_refdate,
+     &  cpntSrc_xml_file               !< XML file containing point source information
+   INTEGER, INTENT(in)            :: &
+     &  iart_radioact                  !< Radioactive emission configuration
+-  TYPE(t_var_list),INTENT(in)    :: &
++  TYPE(t_var_list_ptr),INTENT(in)    :: &
+     &  p_prog_list                    !< current list: prognostic
+   CHARACTER(LEN=*),INTENT(in)    :: &
+     &  radioactfile                   !< File with radioactive emission information (official format)
+@@ -290,7 +289,7 @@ SUBROUTINE tracer_metadata_for_pntSrc(p_prog_list,tr_name,itr,dg3,sigma,emiss_ra
+ ! YYYY-MM-DD: <name>, <institution>
+ ! - ...
+ !>
+-  TYPE(t_var_list), INTENT(in)    :: &
++  TYPE(t_var_list_ptr), INTENT(in)    :: &
+     &  p_prog_list                     !< list of prognostic variables
+   CHARACTER(LEN=*), INTENT(in)    :: &
+     &  tr_name                         !< name of tracer that is emitted by pntSrc
+@@ -307,15 +306,15 @@ SUBROUTINE tracer_metadata_for_pntSrc(p_prog_list,tr_name,itr,dg3,sigma,emiss_ra
+     &  emiss_rate0                     !< for aerosol tracer (modal distribution) emission 
+                                        !  -> emission rate of number concentration
+ ! Local variables
+-  TYPE(t_var_metadata_dynamic)    :: &
+-    & info                             !< returns reference to dynamic tracer metadata
++  TYPE(t_var_metadata_dynamic),POINTER     :: &
++    & info_dyn                         !< returns reference to dynamic tracer metadata
+   TYPE(t_mode),     POINTER       :: &
+     &  current_mode                    !< pointer to loop through mode structure
+   REAL(wp)                        :: &
+     &  unit_conv,                    & !< factor that converts aerosol tracer emission into µg/kg
+     &  rho                             !< density of aerosol tracer
+   INTEGER                         :: &
+-    &  ierror
++    &  ierror, iv
+   LOGICAL                         :: &
+     &  lcalc_2mom
+ 
+@@ -323,9 +322,13 @@ SUBROUTINE tracer_metadata_for_pntSrc(p_prog_list,tr_name,itr,dg3,sigma,emiss_ra
+   itr0        = UNDEF_INT_ART   ! Default for all tracers other then aero tracer in mode t_fields_2mom
+   emiss_rate0 = UNDEF_REAL_ART  ! Default for all tracers other then aero tracer in mode t_fields_2mom
+ 
+-  CALL get_tracer_info_dyn_by_idx(p_prog_list, itr, info)
++  !CALL get_tracer_info_dyn_by_idx(p_prog_list, itr, info)
++  DO iv = 1, p_prog_list%p%nvars
++    IF(p_prog_list%p%vl(iv)%p%info%ncontained /= itr) CYCLE
++    info_dyn => p_prog_list%p%vl(iv)%p%info_dyn
++  END DO
+   
+-  SELECT TYPE(tracer_info => info%tracer)
++  SELECT TYPE(tracer_info => info_dyn%tracer)
+     CLASS IS(t_aero_meta)
+       ! Loop through modes and find itr0 -> index of number concentration
+       current_mode => p_mode_state(1)%p_mode_list%p%first_mode
+@@ -343,7 +346,7 @@ SUBROUTINE tracer_metadata_for_pntSrc(p_prog_list,tr_name,itr,dg3,sigma,emiss_ra
+                                         &  'sigma_emiss has to be defined in pntSrc.xml for aero tracer')
+               CALL tracer_info%opt_meta%get('rho', rho, ierror)
+               IF (ierror /= SUCCESS) CALL finish(TRIM(routine)//':tracer_metadata_for_pntSrc',            &
+-                                        &  'rho not available for tracer '//TRIM(info%tracer%name)//'.')
++                                        &  'rho not available for tracer '//TRIM(info_dyn%tracer%name)//'.')
+               emiss_rate0 = 6.0_wp / pi / rho                             &
+                 &         * EXP( 4.5_wp * (LOG(sigma)**2)) / (dg3**3)     &
+                 &         * emiss_rate
+--- a/externals/art/shared/mo_art_tracer.f90
++++ b/externals/art/shared/mo_art_tracer.f90
+@@ -37,7 +37,8 @@ MODULE mo_art_tracer
+   USE mo_vertical_coord_table,          ONLY: vct_a
+   USE mo_exception,                     ONLY: message,finish,message_text
+   USE mo_impl_constants,                ONLY: min_rlcell, max_dom, MAX_NTRACER, SUCCESS
+-  USE mo_linked_list,                   ONLY: t_var_list,t_list_element
++  USE mo_var_list,                      ONLY: t_var_list_ptr
++  USE mo_var,                           ONLY: t_var
+   USE mo_var_metadata_types,            ONLY: t_var_metadata, t_var_metadata_dynamic
+   USE mo_fortran_tools,                 ONLY: t_ptr_2d3d
+   USE mo_advection_config,              ONLY: t_advection_config
+@@ -92,7 +93,7 @@ SUBROUTINE art_tracer(defcase,jg,nblks_c,this_list,vname_prefix,
+   INTEGER, INTENT(in)                         :: &
+     &  jg,                                       & !< patch id
+     &  nblks_c                                     !< number of blocks (dimension)
+-  TYPE(t_var_list), INTENT(inout)             :: &
++  TYPE(t_var_list_ptr), INTENT(inout)             :: &
+     &  this_list                                   !< current list  
+   CHARACTER(LEN=*), INTENT(in)                :: &  
+     &  vname_prefix                                !< prefix for variable names (usually none)
+@@ -108,8 +109,6 @@ SUBROUTINE art_tracer(defcase,jg,nblks_c,this_list,vname_prefix,
+     &  timelev,                                  &  !< Only necessary for prognostic tracer list.
+     &  ldims(3)                                     !< local dimensions, for checking
+ ! Local Variables
+-  TYPE(t_list_element), POINTER            :: &
+-    &  current_element                          !< returns the reference to current element in list
+   TYPE(t_var_metadata_dynamic), POINTER    :: &
+     &  info_dyn                                 !< returns reference to dynamic tracer metadata 
+                                                 !  of current element
+@@ -123,7 +122,8 @@ SUBROUTINE art_tracer(defcase,jg,nblks_c,this_list,vname_prefix,
+     &  tracer_idx_icon,                       & !< Index of tracer in ICON this_list container
+     &  ntracer_xml,                           & !< Number of tracer in XML file
+     &  idx_tracer_xml,                        & !< Index of tracer in XML file
+-    &  ierror                                   !< error index of storage
++    &  ierror,                                & !< error index of storage
++    &  iv                                       !< loop index
+   CHARACTER(:), ALLOCATABLE                :: &
+     &  tracer_name,                           & !< Name of tracer
+     &  tag_name                                 !< Name of tag to be added to tracer name
+@@ -459,15 +459,13 @@ SUBROUTINE art_tracer(defcase,jg,nblks_c,this_list,vname_prefix,
+   ! Get the number of tracers that need a physical tendency field (nart_tendphy):
+   IF (nart_tendphy == 0) THEN  ! only do this once (This might cause problems 
+                                !  when using more than one domain)
+-    current_element=>this_list%p%first_list_element
+-    DO WHILE (ASSOCIATED(current_element))
+-      info_dyn=>current_element%field%info_dyn
++    DO iv = 1, this_list%p%nvars
++      info_dyn=>this_list%p%vl(iv)%p%info_dyn
+       IF (info_dyn%tracer%lis_tracer) THEN
+         IF (info_dyn%tracer%lconv_tracer .OR. info_dyn%tracer%lturb_tracer) THEN
+           nart_tendphy = nart_tendphy + 1
+         ENDIF
+       ENDIF
+-      current_element => current_element%next_list_element
+     ENDDO
+   ENDIF
+   
+@@ -478,25 +476,25 @@ SUBROUTINE art_tracer(defcase,jg,nblks_c,this_list,vname_prefix,
+   SELECT CASE (TRIM(defcase))
+     CASE ('prog')
+       WRITE (message_text,*) 'ART: Definition of contiguous tracer fields for convection'  &
+-        &           //' routine for '//TRIM(this_list%p%name)
++        &           //' routine for '//TRIM(this_list%p%vlname)
+       CALL message (TRIM(routine)//':art_tracer', message_text)
+       CALL define_phy_ptr(jg, art_config(jg)%nconv_tracer, nblks_c, this_list,'conv','prog',    &
+         &                   p_prog=p_prog)
+ 
+       WRITE (message_text,*) 'ART: Definition of contiguous tracer fields for turbulence' &
+-        &           //' routine for '//TRIM(this_list%p%name)
++        &           //' routine for '//TRIM(this_list%p%vlname)
+       CALL message (TRIM(routine)//':art_tracer', message_text)
+       CALL define_phy_ptr(jg, art_config(jg)%nturb_tracer, nblks_c, this_list,'turb','prog',    &
+         &                   p_prog=p_prog)
+     CASE ('conv')
+       WRITE (message_text,*) 'ART: Definition of contiguous tracer tendencies for convection' &
+-        &           //' routine for '//TRIM(this_list%p%name)
++        &           //' routine for '//TRIM(this_list%p%vlname)
+       CALL message (TRIM(routine)//':art_tracer', message_text)
+       CALL define_phy_ptr(jg, art_config(jg)%nconv_tracer, nblks_c, this_list,'conv','tend',      &
+         &                   phy_tend=phy_tend)
+     CASE ('turb')
+       WRITE (message_text,*) 'ART: Definition of contiguous tracer tendencies for turbulence'  &
+-        &           //' routine for '//TRIM(this_list%p%name)
++        &           //' routine for '//TRIM(this_list%p%vlname)
+       CALL message (TRIM(routine)//':art_tracer', message_text)
+       CALL define_phy_ptr(jg, art_config(jg)%nturb_tracer, nblks_c, this_list,'turb','tend',      &
+         &                 phy_tend=phy_tend)
+@@ -539,7 +537,7 @@ SUBROUTINE define_phy_ptr(jg,ntracer_phy,nblks_c,this_list,defcase,ptcase,phy_te
+   INTEGER,          INTENT(in)      :: &
+     &   ntracer_phy,                   &  !< number of tracers influenced by physical process
+     &   nblks_c                           !<
+-  TYPE(t_var_list), INTENT(inout)   :: &
++  TYPE(t_var_list_ptr), INTENT(inout)   :: &
+     &   this_list                         !< current list
+   CHARACTER(LEN=*), INTENT(in)      :: &
+     &   defcase                           !< cases: conv, turb
+@@ -550,8 +548,6 @@ SUBROUTINE define_phy_ptr(jg,ntracer_phy,nblks_c,this_list,defcase,ptcase,phy_te
+   TYPE(t_nh_prog),     INTENT(inout),OPTIONAL :: &
+     &   p_prog                            !< 
+ ! Local variables
+-  TYPE(t_list_element), POINTER     :: &
+-    &   current_element                   !< pointer to current element in list
+   TYPE(t_var_metadata), POINTER     :: &
+     &   info                              !< pointer to tracer metadata of current_element
+   TYPE(t_var_metadata_dynamic), POINTER     :: &
+@@ -560,7 +556,7 @@ SUBROUTINE define_phy_ptr(jg,ntracer_phy,nblks_c,this_list,defcase,ptcase,phy_te
+     &    idx_trac, jb,                 &  !< 
+     &    i_startblk, i_endblk,         &  !< Index of start and end block 
+     &    i_rlstart, i_rlend,           &  !< Start and end values of refined grid
+-    &    i_nchdom                         !< 
++    &    i_nchdom, iv                     !< 
+   INTEGER, POINTER                  :: &
+     &    jsp                              !< returns index of element
+ 
+@@ -612,13 +608,11 @@ SUBROUTINE define_phy_ptr(jg,ntracer_phy,nblks_c,this_list,defcase,ptcase,phy_te
+   i_endblk   = p_patch(jg)%cells%end_blk(i_rlend,i_nchdom)
+   idx_trac   = 1  ! Start index with index 1.
+   
+-  current_element => this_list%p%first_list_element 
+-
+   !start DO-loop over elements in list:
+-  DO WHILE (ASSOCIATED(current_element))
++  DO iv = 1, this_list%p%nvars
+     !get meta data of current element:
+-    info_dyn=> current_element%field%info_dyn
+-    info=> current_element%field%info
++    info_dyn=> this_list%p%vl(iv)%p%info_dyn
++    info=> this_list%p%vl(iv)%p%info
+     jsp => info%ncontained
+     
+     ! There are four cases
+@@ -630,7 +624,7 @@ SUBROUTINE define_phy_ptr(jg,ntracer_phy,nblks_c,this_list,defcase,ptcase,phy_te
+           IF (TRIM(defcase) == 'conv' ) THEN
+             DO jb=i_startblk, i_endblk 
+               NULLIFY(p_prog%conv_tracer(jb,idx_trac)%ptr)
+-              p_prog%conv_tracer(jb,idx_trac)%ptr      => current_element%field%r_ptr(:,:,jb,jsp,1)
++              p_prog%conv_tracer(jb,idx_trac)%ptr      => this_list%p%vl(iv)%p%r_ptr(:,:,jb,jsp,1)
+               p_prog%conv_tracer(jb,idx_trac)%idx_tracer =  jsp
+             ENDDO
+             WRITE (message_text,'(3a,i3,a,i3,a1)') 'ART: Definition for ', info%name,  &
+@@ -650,7 +644,7 @@ SUBROUTINE define_phy_ptr(jg,ntracer_phy,nblks_c,this_list,defcase,ptcase,phy_te
+           IF (TRIM(defcase) == 'turb') THEN
+             DO jb=i_startblk, i_endblk 
+               NULLIFY(p_prog%turb_tracer(jb,idx_trac)%ptr)
+-              p_prog%turb_tracer(jb,idx_trac)%ptr       =>current_element%field%r_ptr(:,:,jb,jsp,1)
++              p_prog%turb_tracer(jb,idx_trac)%ptr       =>this_list%p%vl(iv)%p%r_ptr(:,:,jb,jsp,1)
+               p_prog%turb_tracer(jb,idx_trac)%idx_tracer= jsp
+             ENDDO
+             WRITE (message_text,'(3a,i3,a,i3,a1)') 'ART: Definition for ', info%name,           &
+@@ -669,7 +663,7 @@ SUBROUTINE define_phy_ptr(jg,ntracer_phy,nblks_c,this_list,defcase,ptcase,phy_te
+         IF (TRIM(defcase) == 'conv') THEN
+           DO jb=i_startblk, i_endblk 
+             NULLIFY(phy_tend%conv_tracer_tend(jb,idx_trac)%ptr)
+-            phy_tend%conv_tracer_tend(jb,idx_trac)%ptr  =>current_element%field%r_ptr(:,:,jb,jsp,1)
++            phy_tend%conv_tracer_tend(jb,idx_trac)%ptr  =>this_list%p%vl(iv)%p%r_ptr(:,:,jb,jsp,1)
+             phy_tend%conv_tracer_tend(jb,idx_trac)%idx_tracer = jsp
+           ENDDO
+           WRITE (message_text,'(3a,i3,a,i3,a1)') 'ART: Definition for ', info%name, 'idx_trac = ', &
+@@ -687,7 +681,7 @@ SUBROUTINE define_phy_ptr(jg,ntracer_phy,nblks_c,this_list,defcase,ptcase,phy_te
+         IF (TRIM(defcase) == 'turb') THEN
+           DO jb=i_startblk, i_endblk 
+             NULLIFY(phy_tend%turb_tracer_tend(jb,idx_trac)%ptr)
+-            phy_tend%turb_tracer_tend(jb,idx_trac)%ptr  =>current_element%field%r_ptr(:,:,jb,jsp,1)
++            phy_tend%turb_tracer_tend(jb,idx_trac)%ptr  =>this_list%p%vl(iv)%p%r_ptr(:,:,jb,jsp,1)
+             phy_tend%turb_tracer_tend(jb,idx_trac)%idx_tracer = jsp
+           ENDDO
+           WRITE (message_text,'(3a,i3,a,i3,a1)') 'ART: Definition for ', info%name, 'idx_trac = ', &
+@@ -698,7 +692,6 @@ SUBROUTINE define_phy_ptr(jg,ntracer_phy,nblks_c,this_list,defcase,ptcase,phy_te
+       ENDIF
+     ENDIF
+ 
+-    current_element => current_element%next_list_element
+   ENDDO !loop current_element
+ 
+ END SUBROUTINE define_phy_ptr
+--- a/externals/art/shared/mo_art_tracer_def_wrapper.f90
++++ b/externals/art/shared/mo_art_tracer_def_wrapper.f90
+@@ -28,16 +28,15 @@ MODULE mo_art_tracer_def_wrapper
+   USE mo_exception,                     ONLY: message,finish,message_text
+   USE mo_impl_constants,                ONLY: VINTP_METHOD_LIN, SUCCESS
+   USE mo_physical_constants,            ONLY: amd
+-  USE mo_linked_list,                   ONLY: t_var_list,t_list_element 
+ 
+   USE mo_var_metadata_types,            ONLY: t_var_metadata, t_var_metadata_dynamic,  &
+                                           &   POST_OP_NONE,                            &
+                                           &   POST_OP_SCALE,                           &
+-                                          &   t_vert_interp_meta, MAX_GROUPS,          &
++                                          &   t_vert_interp_meta,                      &
+                                           &   CLASS_DEFAULT, CLASS_CHEM, CLASS_DISTR
+   USE mo_var_metadata,                  ONLY: create_vert_interp_metadata,             &
+                                           &   vintp_types, post_op
+-  USE mo_var_groups,                    ONLY: groups
++  USE mo_var_groups,                    ONLY: groups, MAX_GROUPS
+   USE mo_fortran_tools,                 ONLY: t_ptr_2d3d
+   USE mo_advection_config,              ONLY: t_advection_config
+   USE mo_cf_convention,                 ONLY: t_cf_var
+@@ -48,7 +47,8 @@ MODULE mo_art_tracer_def_wrapper
+                                           &   GRID_UNSTRUCTURED
+   USE mo_cdi_constants,                 ONLY: GRID_CELL
+   USE mo_art_config,                    ONLY: t_art_config
+-  USE mo_var_list,                      ONLY: add_ref, find_list_element
++  USE mo_var_list,                      ONLY: add_ref, find_list_element, t_var_list_ptr
++  USE mo_var,                           ONLY: t_var
+   USE mo_tracer_metadata,               ONLY: create_tracer_metadata_aero
+ 
+   USE mo_tracer_metadata_types,         ONLY: t_tracer_meta, t_aero_meta, t_chem_meta
+@@ -112,7 +112,7 @@ SUBROUTINE art_tracer_def_wrapper(IART_TRACER_TYPE, defcase, art_config, advconf
+     &  art_config                               !< ART configuration state
+   TYPE(t_advection_config), INTENT(inout)  :: &
+     &  advconf                                  !< Advection configuration state
+-  TYPE(t_var_list), INTENT(inout)          :: &
++  TYPE(t_var_list_ptr), INTENT(inout)          :: &
+     &  this_list                                !< current list (prog, diag, tend)
+   TYPE(t_ptr_2d3d),INTENT(inout)           :: &
+     &  ptr_arr(:)                               !< Pointer to mixing ratio field
+@@ -129,7 +129,7 @@ SUBROUTINE art_tracer_def_wrapper(IART_TRACER_TYPE, defcase, art_config, advconf
+                                                 !  Not for physical tendencies 
+     &  ldims(3)                                 !< local dimensions, for checking
+ ! Local variables
+-  TYPE(t_list_element),POINTER             :: &
++  TYPE(t_var),POINTER             :: &
+     &  target_element                           !< Pointer to element in this_list
+   TYPE(t_var_metadata),POINTER             :: &
+     &  target_info                              !< Pointer to metadata of target_element
+@@ -220,7 +220,7 @@ SUBROUTINE art_tracer_def_wrapper(IART_TRACER_TYPE, defcase, art_config, advconf
+     CASE('prog')
+       target_name    =  'tracer'
+       target_element => find_list_element (this_list, target_name)
+-      target_info    => target_element%field%info
++      target_info    => target_element%info
+       idx            =  target_info%ncontained+1  ! index in 4D tracer container
+       WRITE (message_text,'(a,i3,a,a)') 'ART: Tracer index ',idx,  &
+                 &                       ' assigned to ',TRIM(tracer_name_in)
+@@ -325,7 +325,7 @@ SUBROUTINE art_tracer_def_wrapper(IART_TRACER_TYPE, defcase, art_config, advconf
+       IF(lconv_tracer) THEN
+         target_name    =  'ddt_tracer_pconv'
+         target_element => find_list_element (this_list, target_name)
+-        target_info    => target_element%field%info
++        target_info    => target_element%info
+         idx            =  target_info%ncontained+1  ! index in 4D tracer container
+         WRITE (message_text,'(a,i3,a,a)') 'ART: Tracer index ',idx,' assigned to ',  &
+                     &                     TRIM(tracer_name_in)
+@@ -365,7 +365,7 @@ SUBROUTINE art_tracer_def_wrapper(IART_TRACER_TYPE, defcase, art_config, advconf
+       IF(lturb_tracer) THEN
+         target_name    =  'ddt_tracer_turb'
+         target_element => find_list_element(this_list, target_name)
+-        target_info    => target_element%field%info
++        target_info    => target_element%info
+         idx            =  target_info%ncontained+1  ! index in 4D tracer container
+         WRITE (message_text,'(a,i3,a,a)') 'ART: Tracer index ',idx,' assigned to ',  &
+                    &                      TRIM(tracer_name_in)
+@@ -696,7 +696,7 @@ SUBROUTINE art_tracer_def_wrapper(IART_TRACER_TYPE, defcase, art_config, advconf
+         &         'Element '//TRIM(tracer_name_in)//' not found in container')
+     ENDIF
+ 
+-    target_info_dyn => target_element%field%info_dyn
++    target_info_dyn => target_element%info_dyn
+     CALL art_read_elements_xml(xmlfile,TRIM(xpath),target_info_dyn%tracer%opt_meta)
+     ! Dumping opt_meta-storage
+ !    This has to be reimplemented in mo_key_value_storage
+--- a/externals/art/tools/mo_art_diagnostics.f90
++++ b/externals/art/tools/mo_art_diagnostics.f90
+@@ -27,7 +27,6 @@ MODULE mo_art_diagnostics
+   USE mo_exception,                     ONLY: finish
+   USE mo_impl_constants,                ONLY: itfastphy, SUCCESS, MAX_CHAR_LENGTH
+   USE mo_statistics,                    ONLY: time_avg
+-  USE mo_linked_list,                   ONLY: t_var_list
+   USE mo_tropopause,                    ONLY: WMO_tropopause
+   USE mo_echam_wmo_config,              ONLY: echam_wmo_config
+ 
+--- a/externals/art/tools/mo_art_unit_conversion.f90
++++ b/externals/art/tools/mo_art_unit_conversion.f90
+@@ -25,8 +25,8 @@ MODULE mo_art_unit_conversion
+ #ifdef __ICON_ART
+ ! ICON
+   USE mo_kind,                          ONLY: wp
+-  USE mo_linked_list,                   ONLY: t_var_list
+-  USE mo_linked_list,                   ONLY: t_list_element
++  USE mo_var_list,                      ONLY: t_var_list_ptr
++  USE mo_var,                           ONLY: t_var
+   USE mo_var_metadata_types,            ONLY: t_var_metadata, POST_OP_RHO  
+   USE mo_math_constants,                ONLY: rad2deg, deg2rad
+   
+@@ -53,7 +53,7 @@ SUBROUTINE art_massmix2density(prog_list, tracer_now, tracer_new, rho)
+ ! YYYY-MM-DD: <name>, <institution>
+ ! - ...
+ !>
+-  TYPE(t_var_list),TARGET,INTENT(in) :: &
++  TYPE(t_var_list_ptr),TARGET,INTENT(in) :: &
+     &  prog_list                          !< prognostic state list
+   REAL(wp),INTENT(in)                :: &
+     &  tracer_now(:,:,:,:),             & !< tracer concentrations at timelevel nnow
+@@ -61,20 +61,17 @@ SUBROUTINE art_massmix2density(prog_list, tracer_now, tracer_new, rho)
+   REAL(wp),INTENT(inout)             :: &
+     &  tracer_new(:,:,:,:)                !< tracer concentrations at timelevel nnew
+ ! Local variables
+-  type(t_list_element), POINTER :: &
+-    &  current_element
+   TYPE(t_var_metadata), POINTER :: &  !< returns reference to tracer
+-    &   info                          !< metadata of current element
++    &  info                           !< metadata of current element
++  INTEGER                       :: &
++    &  iv                             !< loop index
+   
+-  current_element => prog_list%p%first_list_element
+-  
+-  DO WHILE (ASSOCIATED(current_element))
++  DO iv = 1, prog_list%p%nvars
+     
+-    info=>current_element%field%info
++    info=>prog_list%p%vl(iv)%p%info
+     IF (info%tlev_source == 3 .AND. info%post_op%ipost_op_type == POST_OP_RHO) THEN
+       tracer_new(:,:,:,info%ncontained) = tracer_now(:,:,:,info%ncontained) * rho(:,:,:)
+     END IF
+-    current_element => current_element%next_list_element
+   END DO
+   
+ END SUBROUTINE art_massmix2density

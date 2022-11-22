@@ -1,0 +1,29 @@
+--- a/externals/sct/src/sct_reduce.c
++++ b/externals/sct/src/sct_reduce.c
+@@ -834,7 +834,7 @@ static void gather_mpi(sct_reduction_type *r) {
+ 
+   if (my_debug) {
+     if (is_root) {
+-      char (*gpname)[max_pname_mem] =  (char (*)[max_pname_mem]) global_pnames;
++      char (*gpname)[max_pname_mem] =  (char (*)[]) global_pnames;
+       for (int iproc = 0; iproc < proc_num; iproc++) {
+         fprintf(stderr,"iproc=%d, gpname=%s\n",iproc, &gpname[iproc][0]);
+       }
+@@ -877,7 +877,7 @@ static void gather_mpi(sct_reduction_type *r) {
+     recvbuf = NULL;
+   }
+ 
+-  sct_stats_type (*my_stats)[r_thread_num] = (sct_stats_type (*)[r_thread_num]) r->stats;
++  sct_stats_type (*my_stats)[r_thread_num] = (sct_stats_type (*)[]) r->stats;
+ 
+   if (my_debug) {
+     for (int pid=0; pid<proc_num; pid++) {
+@@ -1193,7 +1193,7 @@ sct_reduction_type *sct_reduction_new(int context_choice, int proc_choice, int t
+ 	 ) ) sct_abort("calloc failed", __FILE__, __LINE__);
+   for (int it = 0; it < timer_num *  sp_num; it++)
+     sct_internal_alloc_event_arrays(&(sp_stats_mem[it]), en);
+-  sct_stats_type (*sp_stats)[sp_num] =  (sct_stats_type (*)[sp_num]) sp_stats_mem;
++  sct_stats_type (*sp_stats)[sp_num] =  (sct_stats_type (*)[]) sp_stats_mem;
+ 
+   //sct_stats_type m_stats[timer_num][m_num];
+   sct_stats_type *m_stats_mem;

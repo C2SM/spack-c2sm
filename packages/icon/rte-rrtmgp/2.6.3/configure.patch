@@ -1,0 +1,45 @@
+--- a/externals/rte-rrtmgp/configure
++++ b/externals/rte-rrtmgp/configure
+@@ -3722,10 +3722,13 @@ fi
+ fi
+ 
+ if test x"$enable_tests" != xno; then :
+-  for acx_python_mod in 'netCDF4' 'xarray' 'dask.array'; do
+-     { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether Python module '$acx_python_mod' is available" >&5
+-$as_echo_n "checking whether Python module '$acx_python_mod' is available... " >&6; }
+-     acx_python_try="$PYTHON -c 'import $acx_python_mod' >&5"
++  set 'netCDF4'           'import netCDF4' \
++       'xarray (v0.12.2+)' 'import xarray; exit(tuple(map(int, xarray.__version__.split("."))) < (0, 12, 2))' \
++       'dask.array'        'import dask.array'
++   while test $# -gt 1; do
++     { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether Python module '$1' is available" >&5
++$as_echo_n "checking whether Python module '$1' is available... " >&6; }
++     acx_python_try="$PYTHON -c '$2' >&5"
+      { { ac_try="$acx_python_try"
+ case "(($ac_try" in
+   *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+@@ -3744,18 +3747,20 @@ else
+   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+ $as_echo "no" >&6; }
+         if test "x$enable_tests" = xauto; then :
+-  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Python module '$acx_python_mod' is not available: unable to run the tests" >&5
+-$as_echo "$as_me: WARNING: Python module '$acx_python_mod' is not available: unable to run the tests" >&2;}
+-         enable_tests=no
++  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Python module '$1' is not available: unable to run the tests" >&5
++$as_echo "$as_me: WARNING: Python module '$1' is not available: unable to run the tests" >&2;}
++           enable_tests=no
+ else
+   { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+ $as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+-as_fn_error $? "Python module '$acx_python_mod' is not available: unable to run the tests
++as_fn_error $? "Python module '$1' is not available: unable to run the tests
+ See \`config.log' for more details" "$LINENO" 5; }
+ fi
+         break
+ fi
++     shift; shift
+    done
++   set dummy; shift
+ fi
+ 
+ if test "x$enable_examples" = xno; then :

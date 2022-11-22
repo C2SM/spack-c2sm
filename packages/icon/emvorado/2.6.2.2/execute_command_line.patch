@@ -1,0 +1,39 @@
+--- a/externals/emvorado/src_emvorado/radar_utilities.f90
++++ b/externals/emvorado/src_emvorado/radar_utilities.f90
+@@ -72,6 +72,7 @@ MODULE radar_utilities
+   PRIVATE :: i8, &
+              pi_dp, degrad_dp, raddeg_dp, &
+              pi_sp, degrad_sp, raddeg_sp
++  PRIVATE :: execute_command_line
+ 
+ !==============================================================================
+ 
+@@ -3694,4 +3695,28 @@ CONTAINS
+ 
+   END SUBROUTINE write_ready_radar
+ 
++  SUBROUTINE execute_command_line( command, wait, exitstat, cmdstat, cmdmsg )
++    CHARACTER(*), INTENT(IN) :: command
++    LOGICAL, INTENT(IN), OPTIONAL :: wait
++    INTEGER, INTENT(OUT), OPTIONAL :: exitstat, cmdstat
++    CHARACTER(*), INTENT(OUT), OPTIONAL :: cmdmsg
++
++    INTEGER :: e, SYSTEM
++    EXTERNAL :: SYSTEM
++
++    IF (PRESENT(wait) .AND. .NOT.wait) THEN
++      IF (PRESENT(exitstat)) exitstat = 1
++      IF (PRESENT(cmdstat)) cmdstat = 1
++      IF (PRESENT(cmdmsg)) cmdmsg = 'asynchronous execution is not supported'
++      RETURN
++    END IF
++
++    e = SYSTEM(command)
++    IF (PRESENT(exitstat)) exitstat = e
++    IF (exitstat /= 0) THEN
++      IF (PRESENT(cmdmsg)) cmdmsg = 'unknown'
++    END IF
++    IF (PRESENT(cmdstat)) cmdstat = 0
++  END SUBROUTINE execute_command_line
++
+ END MODULE radar_utilities
