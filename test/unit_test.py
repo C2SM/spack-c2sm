@@ -8,12 +8,10 @@ spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 sys.path.append(os.path.normpath(spack_c2sm_path))
 from src import machine_name, Markdown
 
-machine_name_from_arg = None
-
 
 class MachineDetection(unittest.TestCase):
 
-    @unittest.skipIf(machine_name_from_arg is None, 'wrong context')
+    @unittest.skipUnless(__name__ == '__main__' and len(sys.argv) > 1, 'needs machine_name_from_arg')
     def test_machine_name(self):
         self.assertEqual(machine_name(), machine_name_from_arg)
 
@@ -54,6 +52,6 @@ class MarkDownTest(unittest.TestCase):
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
-        machine_name_from_arg = sys.argv[1]
-    sys.argv = [sys.argv[0]]  # unittest needs this
-    unittest.main()
+        machine_name_from_arg = sys.argv[-1]
+        sys.argv = sys.argv[:-1]  # unittest needs this
+    unittest.main(verbosity=2)
