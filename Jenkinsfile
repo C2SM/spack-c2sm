@@ -20,7 +20,10 @@ pipeline {
                 stages {
                     stage('Unit Tests') {
                         steps {
-                            sh "python3 test/unit_test.py ${NODENAME} > log/${NODENAME}/unit_test/summary.log 2>&1"
+                            sh """
+                            mkdir -p log/${NODENAME}/unit_test
+                            python3 test/unit_test.py ${NODENAME} > log/${NODENAME}/unit_test/summary.log 2>&1
+                            """
                         }
                     }
                     stage('Integration Tests') {
