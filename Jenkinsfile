@@ -12,7 +12,7 @@ pipeline {
                 }
                 post {
                     always {
-                        archiveArtifacts artifacts: '*.log', allowEmptyArchive: true
+                        archiveArtifacts artifacts: 'log/**/*.log', allowEmptyArchive: true
                         withCredentials([string(credentialsId: 'd976fe24-cabf-479e-854f-587c152644bc', variable: 'GITHUB_AUTH_TOKEN')]) {
                             sh "python3 src/report_tests.py --auth_token ${GITHUB_AUTH_TOKEN} --build_id ${BUILD_ID} --issue_id ${ghprbPullId}"
                         }
