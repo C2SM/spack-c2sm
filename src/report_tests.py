@@ -24,16 +24,19 @@ if __name__ == "__main__":
     parser.add_argument('--build_id', type=str, required=False)
     parser.add_argument('--issue_id', type=str, required=True)
     args = parser.parse_args()
-    
-    repo = GitHubRepo(group='c2sm', repo='spack-c2sm', auth_token=args.auth_token)
-    summary = ResultList(f'https://jenkins-mch.cscs.ch/job/spack_PR/{build_id}/artifact/')
-    
+
+    repo = GitHubRepo(group='c2sm',
+                      repo='spack-c2sm',
+                      auth_token=args.auth_token)
+    summary = ResultList(
+        f'https://jenkins-mch.cscs.ch/job/spack_PR/{build_id}/artifact/')
+
     # Trigger phrases that cause a test to get a yellow circle
     yellow_triggers = [
         'Timed out waiting for a write lock',
         'timed out after 5 seconds',
     ]
-    
+
     for file_name in glob.glob('log/**/*.log', recursive=True):
         file_name = file_name.lstrip('log/')
         with open(file_name, 'r') as file:
@@ -47,7 +50,7 @@ if __name__ == "__main__":
                         break
                 else:
                     summary.append(':red_circle:', file_name)
-    
+
     if summary.text == '':
         comment = f'No tests ran on {machine_name()}.'
     else:

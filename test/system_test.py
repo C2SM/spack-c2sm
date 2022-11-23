@@ -3,7 +3,8 @@ import sys
 import os
 from pathlib import Path
 
-spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
+spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                               '..')
 
 sys.path.append(os.path.normpath(spack_c2sm_path))
 from src import machine_name, log_with_spack
@@ -13,7 +14,8 @@ def test_with_spack(command: str, log_name: str = None):
     if log_name is None:
         log_name = command.replace(' ', '_')
 
-    log = Path(f'{spack_c2sm_path}/log/{machine_name()}/system_test/{log_name}.log')
+    log = Path(
+        f'{spack_c2sm_path}/log/{machine_name()}/system_test/{log_name}.log')
     ret = log_with_spack(command, log)
     ret.check_returncode()
 

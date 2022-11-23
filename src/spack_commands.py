@@ -26,5 +26,5 @@ def log_with_spack(command: str, log_file: Path, cwd=None):
     with log_file.open('a') as f:
         f.write('\n\n')
         f.write('PASS' if ret.returncode == 0 else 'FAIL')
-    
+
     return ret
