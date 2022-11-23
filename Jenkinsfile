@@ -15,7 +15,7 @@ pipeline {
                         archiveArtifacts artifacts: 'log/**/*.log', allowEmptyArchive: true
                         withCredentials([string(credentialsId: 'd976fe24-cabf-479e-854f-587c152644bc', variable: 'GITHUB_AUTH_TOKEN')]) {
                             sh """
-                            src/load_python.sh ${NODENAME}
+                            source env/bin/activate
                             python3 src/report_tests.py --auth_token ${GITHUB_AUTH_TOKEN} --build_id ${BUILD_ID} --issue_id ${ghprbPullId}
                             """
                         }
@@ -23,11 +23,20 @@ pipeline {
                     }
                 }
                 stages {
+                    stage('Create environment') {
+                        steps {
+                            sh """
+                            python3 -m venv env
+                            source env/bin/activate
+                            pip install -r requirements.txt
+                            """
+                        }
+                    }
                     stage('Unit Tests') {
                         steps {
                             sh """
                             mkdir -p log/${NODENAME}/unit_test
-                            src/load_python.sh ${NODENAME}
+                            source env/bin/activate
                             python3 test/unit_test.py ${NODENAME} > log/${NODENAME}/unit_test/summary.log 2>&1
                             """
                         }
