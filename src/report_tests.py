@@ -29,7 +29,7 @@ if __name__ == "__main__":
                       repo='spack-c2sm',
                       auth_token=args.auth_token)
     summary = ResultList(
-        f'https://jenkins-mch.cscs.ch/job/Spack/job/spack_PR/{args.build_id}/artifact/')
+        f'https://jenkins-mch.cscs.ch/job/Spack/job/spack_PR/{args.build_id}/artifact/log/')
 
     # Trigger phrases that cause a test to get a yellow circle
     yellow_triggers = [
