@@ -9,7 +9,7 @@ class GitHubRepo:
         self.auth_token: str = auth_token
 
     def comment(self, issue_id: str, text: str) -> None:
-        url = f'https://api.github.com/repos/{group}/{repo}/issues/{issue_id}/comments'
+        url = f'https://api.github.com/repos/{self.group}/{self.repo}/issues/{issue_id}/comments'
 
         headers = {'Content-Type': 'application/json'}
         if self.auth_token is not None:
