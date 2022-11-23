@@ -1,10 +1,11 @@
-spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                               '..')
-sys.path.append(os.path.normpath(spack_c2sm_path))
 import unittest
 import sys
 import os
 from pathlib import Path
+
+spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                               '..')
+sys.path.append(os.path.normpath(spack_c2sm_path))
 from src import machine_name, Markdown
 
 machine_name_from_arg = None
