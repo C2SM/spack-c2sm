@@ -38,18 +38,18 @@ if __name__ == "__main__":
     ]
 
     for file_name in glob.glob('log/**/*.log', recursive=True):
-        file_name = file_name.lstrip('log/')
+        test_name = file_name.lstrip('log/')
         with open(file_name, 'r') as file:
             content = file.read()
             if content.endswith('PASS'):
-                summary.append(':green_circle:', file_name)
+                summary.append(':green_circle:', test_name)
             else:
                 for trigger in yellow_triggers:
                     if trigger in content:
-                        summary.append(':yellow_circle:', file_name, trigger)
+                        summary.append(':yellow_circle:', test_name, trigger)
                         break
                 else:
-                    summary.append(':red_circle:', file_name)
+                    summary.append(':red_circle:', test_name)
 
     if summary.text == '':
         comment = f'No tests ran on {machine_name()}.'
