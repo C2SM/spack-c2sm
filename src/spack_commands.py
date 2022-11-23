@@ -1,23 +1,30 @@
 import os
 import subprocess
+from pathlib import Path
 
 spack_c2sm_path = os.path.dirname(os.path.realpath(__file__)) + '/..'
 
 
-def spack(command, cwd='.'):
-    subprocess.run(f'. {spack_c2sm_path}/setup-env.sh; spack {command}',
-                   cwd=cwd,
-                   check=True,
-                   shell=True)
+def with_spack(command: str, cwd=None, check=False):
+    return subprocess.run(f'. {spack_c2sm_path}/setup-env.sh; {command}',
+                          cwd=cwd,
+                          check=check,
+                          shell=True,
+                          stdout=subprocess.PIPE,
+                          stderr=subprocess.STDOUT)
 
 
-def spack_info(package):
-    spack(f'info {package}')
+def log_with_spack(command: str, log_file: Path, cwd=None):
+    log_file.parent.mkdir(exist_ok=True, parents=True)
 
+    with log_file.open('w') as f:
+        f.write(command)
+        f.write('\n\n')
 
-def spack_spec(package):
-    spack(f'spec {package}')
+    ret = with_spack(f'{command} >> {log_file}', cwd)
 
-
-def spack_install(package, cwd='.'):
-    spack(f'install --show-log-on-error {package}', cwd)
+    with log_file.open('a') as f:
+        f.write('\n\n')
+        f.write('PASS' if ret.returncode == 0 else 'FAIL')
+    
+    return ret

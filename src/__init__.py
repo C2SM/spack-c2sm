@@ -1,2 +1,3 @@
 from .machine import machine_name
-from .spack_commands import spack, spack_info, spack_spec, spack_install
+from .spack_commands import with_spack, log_with_spack
+from .github import GitHubRepo, Markdown

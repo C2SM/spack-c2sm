@@ -1,11 +1,29 @@
 import unittest
 import sys
 import os
+from pathlib import Path
 
-sys.path.append(
-    os.path.normpath(
-        os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')))
-from src import spack_info, spack_spec
+spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
+
+sys.path.append(os.path.normpath(spack_c2sm_path))
+from src import machine_name, log_with_spack
+
+
+def test_with_spack(command: str, log_name: str = None):
+    if log_name is None:
+        log_name = command.replace(' ', '_')
+
+    log = Path(f'{spack_c2sm_path}/log/{machine_name()}/integration_test/{log_name}.log')
+    ret = log_with_spack(command, log)
+    ret.check_returncode()
+
+
+def spack_info(command: str, log_name: str = None):
+    test_with_spack(f'spack info {command}', log_name)
+
+
+def spack_spec(command: str, log_name: str = None):
+    test_with_spack(f'spack spec {command}', log_name)
 
 
 class InfoTest(unittest.TestCase):
@@ -136,8 +154,7 @@ class ConditionalDependenciesSpecTest(unittest.TestCase):
     def test_cosmo(self):
         spack_spec('cosmo ~eccodes')
         spack_spec('cosmo cosmo_target=gpu ~cppdycore')
-        spack_spec(
-            'cosmo cosmo_target=gpu +serialize +eccodes +claw +zlib_ng +oasis')
+        spack_spec('cosmo cosmo_target=gpu +serialize +eccodes +claw +zlib_ng +oasis')
 
     def test_cosmo_dycore(self):
         spack_spec('cosmo-dycore ~cuda +gt1')

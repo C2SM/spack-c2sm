@@ -13,23 +13,24 @@ pipeline {
                 post {
                     always {
                         archiveArtifacts artifacts: '*.log', allowEmptyArchive: true
+                        sh "python3 src/report_tests.py --auth_token ${GITHUB_AUTH_TOKEN} --build_id ${BUILD_ID} --issue_id ${ghprbPullId}"
                         deleteDir()
                     }
                 }
                 stages {
                     stage('Unit Tests') {
                         steps {
-                            sh "test/test_env_setup_machine.sh ${NODENAME} >> ${NODENAME}_unit_test.log 2>&1"
+                            sh "python3 test/unit_test.py ${NODENAME} >> log/${NODENAME}/unit_test/summary.log 2>&1"
                         }
                     }
                     stage('Integration Tests') {
                         steps {
-                            sh "python3 test/integration_test.py >> ${NODENAME}_integration_test.log 2>&1"
+                            sh "python3 test/integration_test.py"
                         }
                     }
                     stage('System Tests') {
                         steps {
-                            sh "python3 test/system_test.py >> ${NODENAME}_system_test.log 2>&1"
+                            sh "python3 test/system_test.py"
                         }
                     }
                 }

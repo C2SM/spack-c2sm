@@ -1,0 +1,56 @@
+import os
+import argparse
+import glob
+from github import GitHubRepo, Markdown
+from machine import machine_name
+
+spack_c2sm_path = os.path.dirname(os.path.realpath(__file__)) + '/..'
+
+
+class ResultList:
+
+    def __init__(self, artifact_path: str) -> None:
+        self.artifact_path = artifact_path
+        self.text = ''
+
+    def append(self, status: str, test: str, comment: str = '') -> None:
+        link = Markdown.link(test, self.artifact_path + test)
+        self.text += f'{status} {link} {comment}\n'
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--auth_token', type=str, required=False)
+    parser.add_argument('--build_id', type=str, required=False)
+    parser.add_argument('--issue_id', type=str, required=True)
+    args = parser.parse_args()
+    
+    repo = GitHubRepo(group='c2sm', repo='spack-c2sm', auth_token=args.auth_token)
+    summary = ResultList(f'https://jenkins-mch.cscs.ch/job/spack_PR/{build_id}/artifact/')
+    
+    # Trigger phrases that cause a test to get a yellow circle
+    yellow_triggers = [
+        'Timed out waiting for a write lock',
+        'timed out after 5 seconds',
+    ]
+    
+    for file_name in glob.glob('log/**/*.log', recursive=True):
+        file_name = file_name.lstrip('log/')
+        with open(file_name, 'r') as file:
+            content = file.read()
+            if content.endswith('PASS'):
+                summary.append(':green_circle:', file_name)
+            else:
+                for trigger in yellow_triggers:
+                    if trigger in content:
+                        summary.append(':yellow_circle:', file_name, trigger)
+                        break
+                else:
+                    summary.append(':red_circle:', file_name)
+    
+    if summary.text == '':
+        comment = f'No tests ran on {machine_name()}.'
+    else:
+        comment = summary.text
+
+    repo.comment(args.issue_id, comment)
