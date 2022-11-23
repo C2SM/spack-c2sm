@@ -12,7 +12,7 @@ from src import machine_name, log_with_spack
 
 def test_with_spack(command: str, log_name: str = None):
     if log_name is None:
-        log_name = command.replace(' ', '_')
+        log_name = command.replace(' ', '_').replace('%', '')
 
     log = Path(
         f'{spack_c2sm_path}/log/{machine_name()}/integration_test/{log_name}.log'
