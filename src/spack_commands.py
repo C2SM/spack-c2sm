@@ -21,7 +21,7 @@ def log_with_spack(command: str, log_file: Path, cwd=None):
         f.write(command)
         f.write('\n\n')
 
-    ret = with_spack(f'{command} >> {log_file}', cwd)
+    ret = with_spack(f'{command} >> {log_file} 2>&1', cwd)
 
     with log_file.open('a') as f:
         f.write('\n\n')
