@@ -11,7 +11,8 @@ from src import machine_name, Markdown
 
 class MachineDetection(unittest.TestCase):
 
-    @unittest.skipUnless(__name__ == '__main__' and len(sys.argv) > 1, 'needs machine_name_from_arg')
+    @unittest.skipUnless(__name__ == '__main__' and len(sys.argv) > 1,
+                         'needs machine_name_from_arg')
     def test_machine_name(self):
         self.assertEqual(machine_name(), machine_name_from_arg)
 
