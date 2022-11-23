@@ -43,12 +43,18 @@ pipeline {
                     }
                     stage('Integration Tests') {
                         steps {
-                            sh "python3 test/integration_test.py"
+                            sh """
+                            source env/bin/activate
+                            python3 test/integration_test.py
+                            """
                         }
                     }
                     stage('System Tests') {
                         steps {
-                            sh "python3 test/system_test.py"
+                            sh """
+                            source env/bin/activate
+                            python3 test/system_test.py
+                            """
                         }
                     }
                 }
