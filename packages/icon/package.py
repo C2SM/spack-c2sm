@@ -585,10 +585,9 @@ class Icon(AutotoolsPackage):
             with open('spec.yaml', mode='w') as f:
                 f.write(self.spec.to_yaml())
             #try:
-            subprocess.run(
-                ['./scripts/spack/test.py', '--spec', 'spec.yaml'],
-                stderr=subprocess.STDOUT,
-                check=True)
+            subprocess.run(['./scripts/spack/test.py', '--spec', 'spec.yaml'],
+                           stderr=subprocess.STDOUT,
+                           check=True)
             #except:
             #    raise InstallError('Tests failed')
         else:
