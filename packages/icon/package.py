@@ -281,8 +281,7 @@ class Icon(AutotoolsPackage):
             f.writelines(['\n', '\n'.join(rules)])
 
     def configure_args(self):
-        #config_args = ['--disable-rpaths', '--disable-silent-rules']
-        config_args = ['--disable-silent-rules']
+        config_args = ['--disable-rpaths', '--disable-silent-rules']
         config_vars = defaultdict(list)
         libs = LibraryList([])
 
@@ -534,7 +533,7 @@ class Icon(AutotoolsPackage):
 
         # Finalize the LIBS variable (we always put the real collected
         # libraries to the front):
-        #config_vars['LIBS'].extend(['-lnvcpumath -lnvhpcatm'])
+        config_vars['LIBS'].extend(['-lnvcpumath -lnvhpcatm'])
         config_vars['LIBS'].insert(0, libs.link_flags)
 
         # Help the libtool scripts of the bundled libraries find the correct
@@ -584,13 +583,13 @@ class Icon(AutotoolsPackage):
         if os.path.exists('scripts/spack/test.py'):
             with open('spec.yaml', mode='w') as f:
                 f.write(self.spec.to_yaml())
-            #try:
-            subprocess.run(
-                ['./scripts/spack/test.py', '--spec', 'spec.yaml'],
-                stderr=subprocess.STDOUT,
-                check=True)
-            #except:
-            #    raise InstallError('Tests failed')
+            try:
+                subprocess.run(
+                    ['./scripts/spack/test.py', '--spec', 'spec.yaml'],
+                    stderr=subprocess.STDOUT,
+                    check=True)
+            except:
+                raise InstallError('Tests failed')
         else:
             tty.warn('Cannot find test.py -> skipping tests')
 
