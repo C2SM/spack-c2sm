@@ -38,11 +38,11 @@ if __name__ == "__main__":
         'timed out after 5 seconds',
     ]
 
-    for file_name in glob.glob('log/**/*.log', recursive=True):
+    for file_name in sorted(glob.glob('log/**/*.log', recursive=True)):
         test_name = file_name.lstrip('log/')
         with open(file_name, 'r') as file:
             content = file.read()
-            if content.endswith('PASS'):
+            if content.endswith('OK'):
                 summary.append(':green_circle:', test_name)
             else:
                 for trigger in yellow_triggers:
