@@ -66,7 +66,7 @@ def custom_devbuild(source_path, spec, args):
     package = spack.repo.get(spec)
     package.stage = DIYStage(source_path)
 
-    if package.installed:
+    if spec.installed:
         package.do_uninstall(force=True)
 
     if args.things_to_test == 'root':
