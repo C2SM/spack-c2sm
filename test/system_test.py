@@ -28,8 +28,10 @@ def spack_install_and_test(command: str, log_name: str = None):
 
 
 def needs_testing(package: str) -> bool:
+    if 'all' in sys.argv:
+        return True
     if 'jenkins' in sys.argv:
-        return package in sys.argv or 'all' in sys.argv
+        return machine_name() in sys.argv and package in sys.argv
     return True
 
 
