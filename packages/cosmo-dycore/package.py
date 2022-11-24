@@ -99,7 +99,7 @@ class CosmoDycore(CMakePackage):
     depends_on('gridtools@1.1.3 ~cuda', when='~cuda+gt1')
     depends_on('gridtools@1.1.3 +cuda', when='+cuda+gt1')
     depends_on('boost@1.65.1: +program_options +system')
-    depends_on('serialbox@2.6.0', when='+build_tests',type=('run'))
+    depends_on('serialbox@2.6.0', when='+build_tests', type=('run'))
     depends_on('mpi', type=('build', 'link', 'run'), when='~cuda')
     depends_on('mpi +cuda', type=('build', 'link', 'run'), when='+cuda')
     depends_on('slurm', type='run')
@@ -168,15 +168,14 @@ class CosmoDycore(CMakePackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def test(self):
-        cwd = os.path.join(self.root_cmakelists_dir ,'test/tools')
+        cwd = os.path.join(self.root_cmakelists_dir, 'test/tools')
         print(cwd)
         if '+build_tests' in self.spec:
-            with open(os.path.join(cwd,'spec.yaml'), mode='w') as f:
+            with open(os.path.join(cwd, 'spec.yaml'), mode='w') as f:
                 f.write(self.spec.to_yaml())
             try:
                 subprocess.run([
-                    './test_dycore.py', '-s',
-                    'spec.yaml', '-b',
+                    './test_dycore.py', '-s', 'spec.yaml', '-b',
                     str(self.build_directory)
                 ],
                                cwd=cwd,
