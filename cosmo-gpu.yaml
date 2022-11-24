@@ -7,7 +7,7 @@ spack:
           # this leads to a concretize-error in test_cosmo.py
         - cmake%nvhpc
         - cosmo-eccodes-definitions@2.19.0.5
-        - eccodes@2.19.1 +fortran
+        - eccodes@2.19.1
         - libgrib1@22-01-2020
           # if not %nvhpc, spack links against %gcc (coming from Dycore)
           # this is not possible for the .mod files needed to match nvhpc
