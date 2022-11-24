@@ -74,11 +74,11 @@ class CosmoGribApiTest(unittest.TestCase):
 
 class CosmoGribApiDefinitionsTest(unittest.TestCase):
     package_name = 'cosmo-grib-api-definitions'
-    
+
 
 class DawnTest(unittest.TestCase):
     package_name = 'dawn'
-    
+
 
 class Dawn4PyTest(unittest.TestCase):
     package_name = 'dawn4py'
@@ -93,7 +93,8 @@ class GridToolsTest(unittest.TestCase):
 
 
 @unittest.skipUnless(needs_testing('icon'), 'irrelevant')
-@unittest.skipIf(machine_name() in ['tsa', 'manali'], 'config file does not exist for these machines')
+@unittest.skipIf(machine_name() in ['tsa', 'manali'],
+                 'config file does not exist for these machines')
 class IconTest(unittest.TestCase):
     package_name = 'icon'
 
@@ -109,7 +110,8 @@ class IconTest(unittest.TestCase):
     def test_install_nwp_all_deps(self):
         """Triggers conditional dependencies"""
 
-        spack_install_and_test('icon @nwp icon_target=gpu serialize_mode=create +eccodes +claw')
+        spack_install_and_test(
+            'icon @nwp icon_target=gpu serialize_mode=create +eccodes +claw')
 
 
 @unittest.skipUnless(needs_testing('int2lm'), 'irrelevant')
