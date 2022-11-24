@@ -247,10 +247,12 @@ packages:
       prefix: /usr
   python:
     externals:
-    - spec: python@3.9.4+bz2+ctypes+dbm+ensurepip+lzma~nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /opt/python/3.9.4.1
     - spec: python@2.7.18+bz2+ctypes~dbm+ensurepip+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
       prefix: /usr
+  python3:
+    externals:
+    - spec: python@3.9.4+bz2+ctypes+dbm+ensurepip+lzma~nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+      prefix: /opt/python/3.9.4.1
     - spec: python@3.6.15+bz2+ctypes~dbm+ensurepip+lzma+nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
       prefix: /usr
   rsync:
