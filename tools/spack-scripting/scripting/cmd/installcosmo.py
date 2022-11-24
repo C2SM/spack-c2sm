@@ -142,7 +142,7 @@ def installcosmo(self, args):
 
     # Read nodes out of list.  Root spec (cosmo) is the first element;
     # dependencies are the following elements.
-    spec_list = [Spec(node) for node in data["specs"]]
+    spec_list = [Spec.from_node_dict(node) for node in data["spec"]]
     if not spec_list:
         raise spack.error.SpecError("YAML spec contains no nodes.")
 

@@ -135,7 +135,7 @@ def devbuildcosmo(self, args):
 
         # Read nodes out of list.  Root spec (cosmo) is the first element;
         # dependencies are the following elements.
-        spec_list = [Spec(node) for node in data["specs"]]
+        spec_list = [Spec.from_node_dict(node) for node in data["spec"]]
         if not spec_list:
             raise spack.error.SpecError("YAML spec contains no nodes.")
 
@@ -149,7 +149,7 @@ def devbuildcosmo(self, args):
         # 3. the default prescribed by the spack package.
         for dep in cosmo_spec.traverse():
             if dep.name in deps_serialized_dict and not dep.name in user_versioned_deps:
-                dep = deps_serialized_dict[dep.name].copy(deps=False)
+                dep.versions = deps_serialized_dict[dep.name].versions.copy()
             if dep.name == "cosmo-dycore":
                 dep.versions = cosmo_spec.versions.copy()
 
