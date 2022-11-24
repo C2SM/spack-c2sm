@@ -12,7 +12,9 @@ from src import machine_name, log_with_spack
 
 def test_with_spack(command: str, log_name: str = None):
     if log_name is None:
-        log_name = command.replace('--show-log-on-error ', '').replace('--test=root ', '').replace('-v ', '').replace(' ', '_').replace('%', '')
+        log_name = command.replace('--show-log-on-error ', '').replace(
+            '--test=root ', '').replace('-v ',
+                                        '').replace(' ', '_').replace('%', '')
 
     log = Path(
         f'{spack_c2sm_path}/log/{machine_name()}/system_test/{log_name}.log')
@@ -24,7 +26,9 @@ def spack_install_and_test(command: str, log_name: str = None):
     if 'cosmo' in command and 'cosmo-dycore' not in command:
         test_with_spack(f'spack installcosmo -v {command}', log_name)
     else:
-        test_with_spack(f'spack install --show-log-on-error --test=root {command}', log_name)
+        test_with_spack(
+            f'spack install --show-log-on-error --test=root {command}',
+            log_name)
 
 
 def needs_testing(package: str) -> bool:
@@ -70,11 +74,11 @@ class CosmoGribApiTest(unittest.TestCase):
 
 class CosmoGribApiDefinitionsTest(unittest.TestCase):
     package_name = 'cosmo-grib-api-definitions'
-    
+
 
 class DawnTest(unittest.TestCase):
     package_name = 'dawn'
-    
+
 
 class Dawn4PyTest(unittest.TestCase):
     package_name = 'dawn4py'
@@ -89,7 +93,8 @@ class GridToolsTest(unittest.TestCase):
 
 
 @unittest.skipUnless(needs_testing('icon'), 'irrelevant')
-@unittest.skipIf(machine_name() in ['tsa', 'manali'], 'config file does not exist for these machines')
+@unittest.skipIf(machine_name() in ['tsa', 'manali'],
+                 'config file does not exist for these machines')
 class IconTest(unittest.TestCase):
     package_name = 'icon'
 
@@ -105,7 +110,8 @@ class IconTest(unittest.TestCase):
     def test_install_nwp_all_deps(self):
         """Triggers conditional dependencies"""
 
-        spack_install_and_test('icon @nwp icon_target=gpu serialize_mode=create +eccodes +claw')
+        spack_install_and_test(
+            'icon @nwp icon_target=gpu serialize_mode=create +eccodes +claw')
 
 
 @unittest.skipUnless(needs_testing('int2lm'), 'irrelevant')

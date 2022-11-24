@@ -16,7 +16,7 @@ class CosmoDycore(CMakePackage):
 
     version('org-master', branch='master')
     version('6.0', tag='6.0')
-    
+
     version('apn-mch',
             git='ssh://git@github.com/MeteoSwiss-APN/cosmo.git',
             branch='mch')

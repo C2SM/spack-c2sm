@@ -48,7 +48,8 @@ class InfoTest(unittest.TestCase):
     def test_cosmo_dycore(self):
         spack_info('cosmo-dycore')
 
-    @unittest.skipUnless(needs_testing('cosmo-eccodes-definitions'), 'irrelevant')
+    @unittest.skipUnless(needs_testing('cosmo-eccodes-definitions'),
+                         'irrelevant')
     def test_cosmo_eccodes_definitions(self):
         spack_info('cosmo-eccodes-definitions')
 
@@ -56,7 +57,8 @@ class InfoTest(unittest.TestCase):
     def test_cosmo_grib_api(self):
         spack_info('cosmo-grib-api')
 
-    @unittest.skipUnless(needs_testing('cosmo-grib-api-definitions'), 'irrelevant')
+    @unittest.skipUnless(needs_testing('cosmo-grib-api-definitions'),
+                         'irrelevant')
     def test_cosmo_grib_api_definitions(self):
         spack_info('cosmo-grib-api-definitions')
 
@@ -125,7 +127,8 @@ class PlainSpecTest(unittest.TestCase):
         spack_spec('cosmo')
         spack_spec('cosmo ~eccodes')
         spack_spec('cosmo cosmo_target=gpu ~cppdycore')
-        spack_spec('cosmo cosmo_target=gpu +serialize +eccodes +claw +zlib_ng +oasis')
+        spack_spec(
+            'cosmo cosmo_target=gpu +serialize +eccodes +claw +zlib_ng +oasis')
 
     @unittest.skipUnless(needs_testing('cosmo-dycore'), 'irrelevant')
     def test_cosmo_dycore(self):
@@ -133,7 +136,8 @@ class PlainSpecTest(unittest.TestCase):
         spack_spec('cosmo-dycore ~cuda +gt1')
         spack_spec('cosmo-dycore +cuda +gt1 +build_tests')
 
-    @unittest.skipUnless(needs_testing('cosmo-eccodes-definitions'), 'irrelevant')
+    @unittest.skipUnless(needs_testing('cosmo-eccodes-definitions'),
+                         'irrelevant')
     def test_cosmo_eccodes_definitions(self):
         spack_spec('cosmo-eccodes-definitions')
 
@@ -141,7 +145,8 @@ class PlainSpecTest(unittest.TestCase):
     def test_cosmo_grib_api(self):
         spack_spec('cosmo-grib-api')
 
-    @unittest.skipUnless(needs_testing('cosmo-grib-api-definitions'), 'irrelevant')
+    @unittest.skipUnless(needs_testing('cosmo-grib-api-definitions'),
+                         'irrelevant')
     def test_cosmo_grib_api_definitions(self):
         spack_spec('cosmo-grib-api-definitions')
 
