@@ -42,7 +42,7 @@ if __name__ == "__main__":
         test_name = file_name.lstrip('log/')
         with open(file_name, 'r') as file:
             content = file.read()
-            if content.endswith('OK'):
+            if content.endswith('OK\n'):
                 summary.append(':green_circle:', test_name)
             else:
                 for trigger in yellow_triggers:

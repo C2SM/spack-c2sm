@@ -30,10 +30,10 @@ def spack_spec(command: str, log_name: str = None):
 
 
 def needs_testing(package: str) -> bool:
-    if 'all' in commands:
+    if 'all' in sys.argv:
         return True
-    if 'jenkins' in commands:
-        return machine_name() in commands and package in commands
+    if 'jenkins' in sys.argv:
+        return machine_name() in sys.argv and package in sys.argv
     return True
 
 
