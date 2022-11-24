@@ -37,7 +37,7 @@ pipeline {
                             sh """
                             mkdir -p log/${NODENAME}/unit_test
                             source env/bin/activate
-                            python3 test/unit_test.py ${NODENAME} > log/${NODENAME}/unit_test/summary.log
+                            python3 test/unit_test.py ${NODENAME} > log/${NODENAME}/unit_test/summary.log 2>&1
                             """
                         }
                     }
