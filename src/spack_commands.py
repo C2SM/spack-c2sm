@@ -2,7 +2,10 @@ import os
 import subprocess
 from pathlib import Path
 
-spack_c2sm_path = os.path.dirname(os.path.realpath(__file__)) + '/..'
+spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                               '..')
+
+from .machine import machine_name
 
 
 def with_spack(command: str, cwd=None, check=False):
@@ -16,10 +19,7 @@ def with_spack(command: str, cwd=None, check=False):
 
 def log_with_spack(command: str, log_file: Path, cwd=None):
     log_file.parent.mkdir(exist_ok=True, parents=True)
-
-    with log_file.open('w') as f:
-        f.write(command)
-        f.write('\n\n')
+    log_file.write_text(f'{machine_name()}: {command}\n\n')
 
     ret = with_spack(f'{command} >> {log_file} 2>&1', cwd)
 
