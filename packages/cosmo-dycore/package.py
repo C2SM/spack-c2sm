@@ -15,10 +15,13 @@ class CosmoDycore(CMakePackage):
     maintainers = ['elsagermann']
 
     version('org-master', branch='master')
-    version('dev-build', branch='master')
+    version('6.0', tag='6.0')
+    
     version('apn-mch',
             git='ssh://git@github.com/MeteoSwiss-APN/cosmo.git',
             branch='mch')
+    version('5.09a.mch1.2.p2', git=apngit, tag='5.09a.mch1.2.p2')
+
     version('c2sm-master',
             git='ssh://git@github.com/C2SM-RCM/cosmo.git',
             branch='master')
