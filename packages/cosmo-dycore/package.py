@@ -169,7 +169,6 @@ class CosmoDycore(CMakePackage):
     @on_package_attributes(run_tests=True)
     def test(self):
         cwd = os.path.join(self.root_cmakelists_dir, 'test/tools')
-        print(cwd)
         if '+build_tests' in self.spec:
             with open(os.path.join(cwd, 'spec.yaml'), mode='w') as f:
                 f.write(self.spec.to_yaml())
