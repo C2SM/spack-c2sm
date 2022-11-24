@@ -294,11 +294,7 @@ class Cosmo(MakefilePackage):
         # Serialbox library
         if '+serialize' in self.spec:
             env.set('SERIALBOX', self.spec['serialbox'].prefix)
-            env.set(
-                'SERIALBOXL', self.spec['serialbox'].prefix +
-                '/lib/libSerialboxFortran.a ' + self.spec['serialbox'].prefix +
-                '/lib/libSerialboxC.a ' + self.spec['serialbox'].prefix +
-                '/lib/libSerialboxCore.a -lstdc++fs -lpthread -lstdc++')
+            env.set('SERIALBOXL', self.spec['serialbox:fortran,c'].libs.ld_flags)
             env.set('SERIALBOXI',
                     '-I' + self.spec['serialbox'].prefix + '/include')
 
