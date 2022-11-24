@@ -45,7 +45,6 @@ class CosmoEccodesDefinitions(Package):
 
     depends_on('eccodes +fortran')
 
-
     def setup_run_environment(self, env):
         eccodes_definition_path = self.prefix + '/cosmoDefinitions/definitions/:' + self.spec[
             'eccodes'].prefix + '/share/eccodes/definitions/'
