@@ -45,7 +45,7 @@ pipeline {
                         steps {
                             sh """
                             source env/bin/activate
-                            python3 test/integration_test.py
+                            python3 test/integration_test.py ${ghprbTargetBranch}
                             """
                         }
                     }
