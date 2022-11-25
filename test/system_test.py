@@ -12,9 +12,11 @@ from src import machine_name, log_with_spack
 
 def test_with_spack(command: str, log_name: str = None):
     if log_name is None:
-        log_name = command.replace('--show-log-on-error ', '').replace(
-            '--test=root ', '').replace('-v ',
-                                        '').replace(' ', '_').replace('%', '')
+        log_name = command.replace('--show-log-on-error ', '') \
+            .replace('--test=root ', '') \
+            .replace('-v ', '') \
+            .replace(' ', '_') \
+            .replace('%', '')
 
     log = Path(
         f'{spack_c2sm_path}/log/{machine_name()}/system_test/{log_name}.log')
@@ -32,10 +34,12 @@ def spack_install_and_test(command: str, log_name: str = None):
 
 
 def needs_testing(package: str) -> bool:
-    if 'all' in sys.argv:
-        return True
     if 'jenkins' in sys.argv:
-        return machine_name() in sys.argv and package in sys.argv
+        if 'all' in sys.argv:
+            return True
+        package_match: bool = (package in sys.argv) or ('all_packages' in sys.argv)
+        machine_match: bool = (machine_name() in sys.argv) or ('all_machines' in sys.argv)
+        return package_match and machine_match
     return True
 
 
