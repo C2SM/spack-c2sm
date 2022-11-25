@@ -2,6 +2,7 @@ import unittest
 import sys
 import os
 from pathlib import Path
+from context import needs_testing
 
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                '..')
@@ -27,16 +28,6 @@ def spack_info(command: str, log_name: str = None):
 
 def spack_spec(command: str, log_name: str = None):
     test_with_spack(f'spack spec {command}', log_name)
-
-
-def needs_testing(package: str) -> bool:
-    if 'jenkins' in sys.argv:
-        if 'all' in sys.argv:
-            return True
-        package_match: bool = (package in sys.argv) or ('all_packages' in sys.argv)
-        machine_match: bool = (machine_name() in sys.argv) or ('all_machines' in sys.argv)
-        return package_match and machine_match
-    return True
 
 
 class InfoTest(unittest.TestCase):
