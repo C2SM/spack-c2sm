@@ -38,33 +38,47 @@ def spack_install_and_test(command: str, log_name: str = None):
 class CosmoTest(unittest.TestCase):
     package_name = 'cosmo'
 
-    def test_install_version_6_0(self):
-        spack_install_and_test('cosmo @6.0')
+    def test_install_version_6_0_cpu(self):
+        spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=cpu ~cppdycore')
+
+    def test_install_version_6_0_gpu(self):
+        spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=gpu +cppdycore')
+
+    def test_devbuild_version_6_0_cpu(self):
+        #spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=cpu ~cppdycore')
+        pass #TODO
+
+    def test_devbuild_version_6_0_gpu(self):
+        #spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=gpu +cppdycore')
+        pass #TODO
 
     def test_install_version_5_09_mch_1_2_p2(self):
-        spack_install_and_test('cosmo @5.09a.mch1.2.p2')
+        spack_install_and_test('cosmo @5.09a.mch1.2.p2 %nvhpc cosmo_target=gpu +cppdycore')
 
 
 @unittest.skipUnless(needs_testing('cosmo-dycore'), 'irrelevant')
 class CosmoDycoreTest(unittest.TestCase):
     package_name = 'cosmo-dycore'
 
-    def test_install_version_6_0(self):
-        spack_install_and_test('cosmo-dycore @6.0')
+    def test_install_version_6_0_cuda(self):
+        spack_install_and_test('cosmo-dycore @6.0 +cuda')
 
     def test_install_version_6_0_no_cuda(self):
         spack_install_and_test('cosmo-dycore @6.0 ~cuda')
-
-    def test_install_version_5_09_mch_1_2_p2(self):
-        spack_install_and_test('cosmo-dycore @5.09a.mch1.2.p2')
 
 
 class CosmoEccodesDefinitionsTest(unittest.TestCase):
     package_name = 'cosmo-eccodes-definitions'
 
+    def test_install_version_2_19_0_7(self):
+        spack_install_and_test('cosmo-eccodes-definitions @2.19.0.7')
+
 
 class CosmoGribApiTest(unittest.TestCase):
     package_name = 'cosmo-grib-api'
+
+    def test_install_version_1_20_0_3(self):
+        spack_install_and_test('cosmo-grib-api @1.20.0.2')
 
 
 class CosmoGribApiDefinitionsTest(unittest.TestCase):
@@ -86,6 +100,9 @@ class DuskTest(unittest.TestCase):
 class GridToolsTest(unittest.TestCase):
     package_name = 'gridtools'
 
+    def test_install_version_1_1_3(self):
+        spack_install_and_test('gridtools @1.1.3')
+
 
 @unittest.skipUnless(needs_testing('icon'), 'irrelevant')
 @unittest.skipIf(machine_name() in ['tsa', 'manali'],
@@ -93,25 +110,34 @@ class GridToolsTest(unittest.TestCase):
 class IconTest(unittest.TestCase):
     package_name = 'icon'
 
-    def test_install_version_2_6_5(self):
-        spack_install_and_test('icon @2.6.5')
+    def test_install_nwp_gpu(self):
+        spack_install_and_test('icon @nwp %nvhpc icon_target=gpu +claw +eccodes +ocean')
 
     def test_install_nwp_cpu(self):
-        spack_install_and_test('icon @nwp %nvhpc icon_target=cpu')
+        spack_install_and_test('icon @nwp %nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean')
 
-    def test_install_nwp_gpu(self):
-        spack_install_and_test('icon @nwp icon_target=gpu')
+    def test_devbuild_nwp_gpu(self):
+        spack_install_and_test('icon @develop %nvhpc config_dir=./.. icon_target=gpu')
 
-    def test_install_nwp_all_deps(self):
-        """Triggers conditional dependencies"""
+    def test_devbuild_nwp_cpu(self):
+        spack_install_and_test('icon @develop %nvhpc config_dir=./.. icon_target=cpu')
 
-        spack_install_and_test(
-            'icon @nwp icon_target=gpu serialize_mode=create +eccodes +claw')
+    def test_install_exclaim_cpu(self):
+        spack_install_and_test('icon @exclaim-master %nvhpc icon_target=cpu +eccodes +ocean')
+
+    def test_install_exclaim_cpu_gcc(self):
+        spack_install_and_test('icon @exclaim-master %gcc icon_target=gpu +eccodes +ocean +claw')
+
+    def test_install_exclaim_gpu(self):
+        spack_install_and_test('icon @exclaim-master %nvhpc icon_target=gpu +eccodes +ocean +claw')
 
 
 @unittest.skipUnless(needs_testing('int2lm'), 'irrelevant')
 class Int2lmTest(unittest.TestCase):
     package_name = 'int2lm'
+
+    def test_install_nvhpc(self):
+        spack_install_and_test('int2lm @int2lm-3.00 %nvhpc')
 
     def test_install_gcc(self):
         spack_install_and_test('int2lm @c2sm-master %gcc')
@@ -131,6 +157,9 @@ class IconToolsTest(unittest.TestCase):
 class LibGrib1Test(unittest.TestCase):
     package_name = 'libgrib1'
 
+    def test_install_version_22_01_2020(self):
+        spack_install_and_test('libgrib1 @22-01-2020')
+
 
 class OasisTest(unittest.TestCase):
     package_name = 'oasis'
@@ -139,17 +168,29 @@ class OasisTest(unittest.TestCase):
 class OmniXmodPoolTest(unittest.TestCase):
     package_name = 'omni-xmod-pool'
 
+    def test_install_version_0_1(self):
+        spack_install_and_test('omni-xmod-pool @0.1')
+
 
 class OmniCompilerTest(unittest.TestCase):
     package_name = 'omnicompiler'
+
+    def test_install_version_1_3_2(self):
+        spack_install_and_test('omnicompiler @1.3.2')
 
 
 class XcodeMLToolsTest(unittest.TestCase):
     package_name = 'xcodeml-tools'
 
+    def test_install_version_92a35f9(self):
+        spack_install_and_test('xcodeml-tools @92a35f9')
+
 
 class ZLibNGTest(unittest.TestCase):
     package_name = 'zlib_ng'
+
+    def test_install_version_2_0_0(self):
+        spack_install_and_test('xcodeml-tools @2.0.0')
 
 
 if __name__ == '__main__':

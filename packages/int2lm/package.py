@@ -22,22 +22,18 @@ class Int2lm(MakefilePackage):
 
     maintainers = ['morsier']
 
-    version('dev-build', branch='master')
-
     # APN tags
     version('apn-master', git=git, branch='master')
 
     # C2SM tags
     version('c2sm-master', git=c2smgit, branch='master')
     version('c2sm-features', git=c2smgit, branch='c2sm-features')
+    version('c2sm_v2.8.3', git=c2smgit, tag='v2.8.3')
 
     # ORG tags
     version('org-master', git=orggit, branch='master')
+    version('int2lm-3.00', git=orggit, tag='int2lm-3.00')
 
-    # deprecated versions
-    version('apn_master', git=git, branch='master')
-    version('c2sm_master', git=c2smgit, branch='master')
-    version('org_master', git=orggit, branch='master')
 
     depends_on('cosmo-grib-api-definitions',
                type=('build', 'run'),
