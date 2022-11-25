@@ -12,7 +12,9 @@ def needs_testing(package: str) -> bool:
     if 'jenkins' in sys.argv:
         if 'all' in sys.argv:
             return True
-        package_match: bool = (package in sys.argv) or ('all_packages' in sys.argv)
-        machine_match: bool = (machine_name() in sys.argv) or ('all_machines' in sys.argv)
+        package_match: bool = (package in sys.argv) or ('all_packages'
+                                                        in sys.argv)
+        machine_match: bool = (machine_name() in sys.argv) or ('all_machines'
+                                                               in sys.argv)
         return package_match and machine_match
     return True

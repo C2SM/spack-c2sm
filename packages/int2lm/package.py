@@ -34,7 +34,6 @@ class Int2lm(MakefilePackage):
     version('org-master', git=orggit, branch='master')
     version('int2lm-3.00', git=orggit, tag='int2lm-3.00')
 
-
     depends_on('cosmo-grib-api-definitions',
                type=('build', 'run'),
                when='~eccodes')

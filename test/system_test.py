@@ -46,14 +46,15 @@ class CosmoTest(unittest.TestCase):
 
     def test_devbuild_version_6_0_cpu(self):
         #spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=cpu ~cppdycore')
-        pass #TODO
+        pass  #TODO
 
     def test_devbuild_version_6_0_gpu(self):
         #spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=gpu +cppdycore')
-        pass #TODO
+        pass  #TODO
 
     def test_install_version_5_09_mch_1_2_p2(self):
-        spack_install_and_test('cosmo @5.09a.mch1.2.p2 %nvhpc cosmo_target=gpu +cppdycore')
+        spack_install_and_test(
+            'cosmo @5.09a.mch1.2.p2 %nvhpc cosmo_target=gpu +cppdycore')
 
 
 @unittest.skipUnless(needs_testing('cosmo-dycore'), 'irrelevant')
@@ -111,25 +112,34 @@ class IconTest(unittest.TestCase):
     package_name = 'icon'
 
     def test_install_nwp_gpu(self):
-        spack_install_and_test('icon @nwp %nvhpc icon_target=gpu +claw +eccodes +ocean')
+        spack_install_and_test(
+            'icon @nwp %nvhpc icon_target=gpu +claw +eccodes +ocean')
 
     def test_install_nwp_cpu(self):
-        spack_install_and_test('icon @nwp %nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean')
+        spack_install_and_test(
+            'icon @nwp %nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean'
+        )
 
     def test_devbuild_nwp_gpu(self):
-        spack_install_and_test('icon @develop %nvhpc config_dir=./.. icon_target=gpu')
+        spack_install_and_test(
+            'icon @develop %nvhpc config_dir=./.. icon_target=gpu')
 
     def test_devbuild_nwp_cpu(self):
-        spack_install_and_test('icon @develop %nvhpc config_dir=./.. icon_target=cpu')
+        spack_install_and_test(
+            'icon @develop %nvhpc config_dir=./.. icon_target=cpu')
 
     def test_install_exclaim_cpu(self):
-        spack_install_and_test('icon @exclaim-master %nvhpc icon_target=cpu +eccodes +ocean')
+        spack_install_and_test(
+            'icon @exclaim-master %nvhpc icon_target=cpu +eccodes +ocean')
 
     def test_install_exclaim_cpu_gcc(self):
-        spack_install_and_test('icon @exclaim-master %gcc icon_target=gpu +eccodes +ocean +claw')
+        spack_install_and_test(
+            'icon @exclaim-master %gcc icon_target=gpu +eccodes +ocean +claw')
 
     def test_install_exclaim_gpu(self):
-        spack_install_and_test('icon @exclaim-master %nvhpc icon_target=gpu +eccodes +ocean +claw')
+        spack_install_and_test(
+            'icon @exclaim-master %nvhpc icon_target=gpu +eccodes +ocean +claw'
+        )
 
 
 @unittest.skipUnless(needs_testing('int2lm'), 'irrelevant')

@@ -111,7 +111,7 @@ class Icontools(AutotoolsPackage):
     def check(self):
 
         # only c2sm-versions have script for CSCS
-        if self.spec.version in (Version('c2sm-master'),):
+        if self.spec.version in (Version('c2sm-master'), ):
 
             if self.spec.variants['slave'].value == 'daint':
                 test_process = subprocess.run([
