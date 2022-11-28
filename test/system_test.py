@@ -58,6 +58,8 @@ class CosmoTest(unittest.TestCase):
 
 
 @unittest.skipUnless(needs_testing('cosmo-dycore'), 'irrelevant')
+@unittest.skipIf(machine_name() in ['balfrin', 'manali'],
+                 'No suitable cuda backend parameters implemented for cuda_arch=80')
 class CosmoDycoreTest(unittest.TestCase):
     package_name = 'cosmo-dycore'
 
