@@ -71,6 +71,7 @@ class CosmoDycoreTest(unittest.TestCase):
         spack_install_and_test('cosmo-dycore @6.0 ~cuda')
 
 
+@unittest.skipUnless(needs_testing('cosmo-eccodes-definitions'), 'irrelevant')
 class CosmoEccodesDefinitionsTest(unittest.TestCase):
     package_name = 'cosmo-eccodes-definitions'
 
@@ -78,6 +79,7 @@ class CosmoEccodesDefinitionsTest(unittest.TestCase):
         spack_install_and_test('cosmo-eccodes-definitions @2.19.0.7')
 
 
+@unittest.skipUnless(needs_testing('cosmo-grib-api'), 'irrelevant')
 class CosmoGribApiTest(unittest.TestCase):
     package_name = 'cosmo-grib-api'
 
@@ -85,22 +87,27 @@ class CosmoGribApiTest(unittest.TestCase):
         spack_install_and_test('cosmo-grib-api @1.20.0.2')
 
 
+@unittest.skipUnless(needs_testing('cosmo-grib-api-definitions'), 'irrelevant')
 class CosmoGribApiDefinitionsTest(unittest.TestCase):
     package_name = 'cosmo-grib-api-definitions'
 
 
+@unittest.skipUnless(needs_testing('dawn'), 'irrelevant')
 class DawnTest(unittest.TestCase):
     package_name = 'dawn'
 
 
+@unittest.skipUnless(needs_testing('dawn4py'), 'irrelevant')
 class Dawn4PyTest(unittest.TestCase):
     package_name = 'dawn4py'
 
 
+@unittest.skipUnless(needs_testing('dusk'), 'irrelevant')
 class DuskTest(unittest.TestCase):
     package_name = 'dusk'
 
 
+@unittest.skipUnless(needs_testing('gridtools'), 'irrelevant')
 class GridToolsTest(unittest.TestCase):
     package_name = 'gridtools'
 
@@ -167,6 +174,7 @@ class IconToolsTest(unittest.TestCase):
         spack_install_and_test('icontools @c2sm-master %gcc')
 
 
+@unittest.skipUnless(needs_testing('libgrib1'), 'irrelevant')
 class LibGrib1Test(unittest.TestCase):
     package_name = 'libgrib1'
 
@@ -174,10 +182,12 @@ class LibGrib1Test(unittest.TestCase):
         spack_install_and_test('libgrib1 @22-01-2020')
 
 
+@unittest.skipUnless(needs_testing('oasis'), 'irrelevant')
 class OasisTest(unittest.TestCase):
     package_name = 'oasis'
 
 
+@unittest.skipUnless(needs_testing('omni-xmod-pool'), 'irrelevant')
 class OmniXmodPoolTest(unittest.TestCase):
     package_name = 'omni-xmod-pool'
 
@@ -185,6 +195,7 @@ class OmniXmodPoolTest(unittest.TestCase):
         spack_install_and_test('omni-xmod-pool @0.1')
 
 
+@unittest.skipUnless(needs_testing('omnicompiler'), 'irrelevant')
 class OmniCompilerTest(unittest.TestCase):
     package_name = 'omnicompiler'
 
@@ -192,6 +203,7 @@ class OmniCompilerTest(unittest.TestCase):
         spack_install_and_test('omnicompiler @1.3.2')
 
 
+@unittest.skipUnless(needs_testing('xcodeml-tools'), 'irrelevant')
 class XcodeMLToolsTest(unittest.TestCase):
     package_name = 'xcodeml-tools'
 
@@ -199,6 +211,7 @@ class XcodeMLToolsTest(unittest.TestCase):
         spack_install_and_test('xcodeml-tools @92a35f9')
 
 
+@unittest.skipUnless(needs_testing('zlib_ng'), 'irrelevant')
 class ZLibNGTest(unittest.TestCase):
     package_name = 'zlib_ng'
 
