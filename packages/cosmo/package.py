@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-import subprocess, re, itertools, os
+import subprocess, itertools, os
 from spack import *
 
 
@@ -11,7 +11,7 @@ class Cosmo(MakefilePackage):
     """COSMO: Numerical Weather Prediction Model. Needs access to private GitHub."""
 
     homepage = "http://www.cosmo-model.org"
-    url = "https://github.com/MeteoSwiss-APN/cosmo/archive/5.07.mch1.0.p5.tar.gz"
+    url = "https://github.com/COSMO-ORG/cosmo/archive/6.0.tar.gz"
     git = 'ssh://git@github.com/COSMO-ORG/cosmo.git'
     apngit = 'ssh://git@github.com/MeteoSwiss-APN/cosmo.git'
     c2smgit = 'ssh://git@github.com/C2SM-RCM/cosmo.git'
@@ -19,7 +19,11 @@ class Cosmo(MakefilePackage):
     maintainers = ['elsagermann']
 
     version('org-master', branch='master', get_full_repo=True)
+    version('6.0', tag='6.0')
+
     version('apn-mch', git=apngit, branch='mch', get_full_repo=True)
+    version('5.09a.mch1.2.p2', git=apngit, tag='5.09a.mch1.2.p2')
+
     version('c2sm-master', git=c2smgit, branch='master', get_full_repo=True)
     version('c2sm-features',
             git=c2smgit,

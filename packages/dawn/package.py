@@ -16,7 +16,6 @@ class Dawn(CMakePackage):
     maintainers = ['cosunae']
 
     version('master', branch='master')
-    version('dev-build', branch='master')
 
     depends_on('cmake')
     depends_on('llvm@10.0.0 +clang')
