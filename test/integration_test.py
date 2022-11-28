@@ -116,9 +116,10 @@ class PlainSpecTest(unittest.TestCase):
     """Tests that the command 'spack spec <package>' works for all spack-c2sm packages."""
 
     @unittest.skipUnless(needs_testing('cosmo'), 'irrelevant')
-    @unittest.skipIf(
-        machine_name() in ['balfrin', 'manali'],
-        'cosmo-dycore has no suitable cuda backend parameters implemented for cuda_arch=80')
+    @unittest.skipIf(machine_name() in [
+        'balfrin', 'manali'
+    ], 'cosmo-dycore has no suitable cuda backend parameters implemented for cuda_arch=80'
+                     )
     def test_cosmo(self):
         spack_spec('cosmo')
         spack_spec('cosmo ~eccodes')
@@ -127,9 +128,10 @@ class PlainSpecTest(unittest.TestCase):
             'cosmo cosmo_target=gpu +serialize +eccodes +claw +zlib_ng +oasis')
 
     @unittest.skipUnless(needs_testing('cosmo-dycore'), 'irrelevant')
-    @unittest.skipIf(
-        machine_name() in ['balfrin', 'manali'],
-        'cosmo-dycore has no suitable cuda backend parameters implemented for cuda_arch=80')
+    @unittest.skipIf(machine_name() in [
+        'balfrin', 'manali'
+    ], 'cosmo-dycore has no suitable cuda backend parameters implemented for cuda_arch=80'
+                     )
     def test_cosmo_dycore(self):
         spack_spec('cosmo-dycore')
         spack_spec('cosmo-dycore ~cuda +gt1')
