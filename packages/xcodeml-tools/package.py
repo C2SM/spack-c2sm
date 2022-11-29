@@ -1,45 +1,19 @@
-__author__ = "Mikhail Zhigun"
-__copyright__ = "Copyright 2020, MeteoSwiss"
-
 from spack import *
-import os, subprocess
-
-_GIT = 'https://github.com/claw-project/xcodeml-tools.git'
-
-
-def _get_latest_commit_id():  # type: () -> str
-    git_url = _GIT
-    args = ['git', 'ls-remote', git_url, 'HEAD']
-    timeout = 5  # seconds
-    p = subprocess.run(args=args,
-                       timeout=timeout,
-                       stdout=subprocess.PIPE,
-                       stderr=subprocess.STDOUT)
-    s = p.stdout.decode('utf-8')
-    assert p.returncode == 0, f'Failed to connect to {git_url} error: {s}'
-    commit = s.strip().split()[0]
-    return commit
-
-
-_LAST_COMMIT = _get_latest_commit_id()
+import os
 
 
 class XcodemlTools(AutotoolsPackage):
     """Set of tools for translating C and Fortran code to XCodeML and back """
 
-    @property
-    def latest_commit(self):
-        return _LAST_COMMIT
-
     homepage = 'https://omni-compiler.org/manual/en/'
-    git = _GIT
+    git = 'ssh://git@github.com/claw-project/xcodeml-tools.git'
 
     maintainers = ['FrostyMike']
 
+    version('latest', branch='master')
     version('92a35f9',
             branch='master',
             commit='92a35f9dbe3601f6177b099825d318cbc3285945')
-    version('latest', branch='master', commit=_LAST_COMMIT)
 
     depends_on('autoconf@2.69:')
     depends_on('m4')

@@ -13,18 +13,18 @@ class FlexpartIfs(MakefilePackage):
 
     homepage = 'https://github.com/MeteoSwiss-APN/flexpart-ifs'
     url = 'https://github.com/MeteoSwiss-APN/flexpart-ifs/archive/refs/tags/v9.2mch.tar.gz'
-    version('meteoswiss-10',
-            git='git@github.com:MeteoSwiss-APN/flexpart-ifs.git',
-            branch='meteoswiss-10')
+    git = 'ssh://git@github.com/MeteoSwiss-APN/flexpart-ifs.git'
 
-    depends_on('eccodes jp2k=none +fortran', type=('build', 'link'))
-    depends_on('netcdf-fortran', type=('build', 'link'))
+    version('meteoswiss-10', branch='meteoswiss-10')
+
+    depends_on('eccodes jp2k=none +fortran')
+    depends_on('netcdf-fortran')
+
     build_directory = 'src'
 
     @property
     def build_targets(self):
-        build = ['ncf=yes', 'VERBOSE=1', 'serial']
-        return build
+        return ['ncf=yes', 'VERBOSE=1', 'serial']
 
     def edit(self, spec, prefix):
         copy('src/makefile.meteoswiss', 'src/makefile')

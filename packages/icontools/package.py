@@ -31,7 +31,6 @@ class Icontools(AutotoolsPackage):
     maintainers = ['jonasjucker']
 
     version('c2sm-master', git=c2sm, branch='master', submodules=True)
-    version('dev-build', git=c2sm, branch='master', submodules=True)
     version('dkrz-master', git=dkrz, branch='master', submodules=True)
 
     depends_on('autoconf', type='build')
@@ -112,7 +111,7 @@ class Icontools(AutotoolsPackage):
     def check(self):
 
         # only c2sm-versions have script for CSCS
-        if self.spec.version in (Version('c2sm-master'), Version('dev-build')):
+        if self.spec.version in (Version('c2sm-master'), ):
 
             if self.spec.variants['slave'].value == 'daint':
                 test_process = subprocess.run([

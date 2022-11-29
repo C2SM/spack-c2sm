@@ -11,7 +11,7 @@ class CosmoGribApi(AutotoolsPackage):
        C, FORTRAN and Python programs developed for encoding and decoding WMO
        FM-92 GRIB edition 1 and edition 2 messages."""
 
-    homepage = 'https://software.ecmwf.int/wiki/display/GRIB/Home'
+    homepage = 'https://confluence.ecmwf.int/display/GRIB/Home'
     git = 'ssh://git@github.com/C2SM-RCM/libgrib-api-vendor.git'
 
     maintainers = ['egermann']
