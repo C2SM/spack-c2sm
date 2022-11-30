@@ -59,6 +59,9 @@ class Cosmo(MakefilePackage):
     depends_on('cosmo-eccodes-definitions',
                type=('build', 'link', 'run'),
                when='+eccodes')
+    depends_on('eccodes +fortran',
+               type=('build', 'link', 'run'),
+               when='+eccodes')
     depends_on('perl@5.16.3:', type='build')
     depends_on('omni-xmod-pool', when='+claw', type='build')
     depends_on('claw', when='+claw', type='build')
