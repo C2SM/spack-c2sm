@@ -160,7 +160,8 @@ def devbuildcosmo(self, args):
         cosmo_spec.concretize()
 
         # print final spec that is built
-        print("\033[92m" + "==> COSMO spec to be installed: \n" + "\033[0m" + '\t' + cosmo_spec.tree())
+        print("\033[92m" + "==> COSMO spec to be installed: \n" + "\033[0m" +
+              '\t' + cosmo_spec.tree())
 
     # Clean if needed
     if args.clean_build:
