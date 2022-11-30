@@ -35,6 +35,11 @@ class Cosmo(MakefilePackage):
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
 
+    # pass spec from spec to test_cosmo.py in yaml-format
+    # patch required for all COSMO versions after transition to v0.18.1
+    patch('patches/spec_as_yaml/patch.test_cosmo')
+    patch('patches/spec_as_yaml/patch.serialize_cosmo', when='+serialize')
+
     depends_on('netcdf-fortran', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))
     depends_on('slurm', type='run')

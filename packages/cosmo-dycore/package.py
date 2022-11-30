@@ -115,6 +115,10 @@ class CosmoDycore(CMakePackage):
     conflicts('+production', when='build_type=Debug')
     conflicts('+production', when='+pmeters')
 
+    # pass spec from spec to test_dycore.py in yaml-format
+    # patch required for all Dycore versions after transition to v0.18.1
+    patch('patches/spec_as_yaml/patch.test_dycore')
+
     root_cmakelists_dir = 'dycore'
 
     def setup_run_environment(self, env):
