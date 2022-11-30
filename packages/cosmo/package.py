@@ -203,9 +203,9 @@ class Cosmo(MakefilePackage):
 
         # - ML - Dirty conflict check (see above)
         if self.spec.variants['oasis'].value and self.spec.version not in (
-                Version('c2sm-features'), Version('dev-build')):
+                Version('c2sm-features')):
             raise InstallError(
-                '+oasis variant only compatible with the @c2sm-features and @dev-build versions'
+                '+oasis variant only compatible with the @c2sm-features versions'
             )
 
         self.setup_run_environment(env)
