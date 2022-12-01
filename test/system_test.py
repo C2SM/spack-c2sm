@@ -25,13 +25,14 @@ def test_with_spack(command: str, log_name: str = None):
     ret.check_returncode()
 
 
+def spack_installcosmo_and_test(command: str, log_name: str = None):
+    test_with_spack(f'spack installcosmo -v {command}', log_name)
+
+
 def spack_install_and_test(command: str, log_name: str = None):
-    if 'cosmo' in command and 'cosmo-dycore' not in command:
-        test_with_spack(f'spack installcosmo -v {command}', log_name)
-    else:
-        test_with_spack(
-            f'spack install --show-log-on-error --test=root {command}',
-            log_name)
+    test_with_spack(
+        f'spack install --show-log-on-error --test=root {command}',
+        log_name)
 
 
 @if_context_includes('cosmo')
@@ -39,10 +40,10 @@ class CosmoTest(unittest.TestCase):
     package_name = 'cosmo'
 
     def test_install_version_6_0_cpu(self):
-        spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=cpu ~cppdycore')
+        spack_installcosmo_and_test('cosmo @c2sm-master %nvhpc cosmo_target=cpu ~cppdycore')
 
     def test_install_version_6_0_gpu(self):
-        spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=gpu +cppdycore')
+        spack_install_cosmoand_test('cosmo @c2sm-master %nvhpc cosmo_target=gpu +cppdycore mpi%nvhpc')
 
     def test_devbuild_version_6_0_cpu(self):
         #spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=cpu ~cppdycore')
@@ -53,8 +54,9 @@ class CosmoTest(unittest.TestCase):
         pass  #TODO
 
     def test_install_version_5_09_mch_1_2_p2(self):
-        spack_install_and_test(
-            'cosmo @5.09a.mch1.2.p2 %nvhpc cosmo_target=gpu +cppdycore')
+        #spack_install_and_test(
+        #    'cosmo @5.09a.mch1.2.p2 %nvhpc cosmo_target=gpu +cppdycore')
+        pass  #TODO
 
 
 @if_context_includes('cosmo-dycore')
@@ -62,10 +64,10 @@ class CosmoDycoreTest(unittest.TestCase):
     package_name = 'cosmo-dycore'
 
     def test_install_version_6_0_cuda(self):
-        spack_install_and_test('cosmo-dycore @6.0 +cuda')
+        spack_install_and_test('cosmo-dycore @c2sm-master +cuda')
 
     def test_install_version_6_0_no_cuda(self):
-        spack_install_and_test('cosmo-dycore @6.0 ~cuda')
+        spack_install_and_test('cosmo-dycore @c2sm-master ~cuda')
 
 
 @if_context_includes('cosmo-eccodes-definitions')
