@@ -113,7 +113,7 @@ class GridToolsTest(unittest.TestCase):
 
 
 @if_context_includes('icon')
-@skip_machines('tsa') # config file does not exist for these machines
+@skip_machines('tsa')  # config file does not exist for these machines
 class IconTest(unittest.TestCase):
     package_name = 'icon'
 
