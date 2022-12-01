@@ -1,6 +1,6 @@
 #!/bin/sh
 
-parent_dir=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+parent_dir=$( cd "$(dirname "${BASH_SOURCE[0]:-${(%):-%x}}")" ; pwd -P )
 
 if [[ "$#" == 1 ]]; then
     machine="$1"
