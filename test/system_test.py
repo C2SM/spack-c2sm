@@ -30,9 +30,8 @@ def spack_installcosmo_and_test(command: str, log_name: str = None):
 
 
 def spack_install_and_test(command: str, log_name: str = None):
-    test_with_spack(
-        f'spack install --show-log-on-error --test=root {command}',
-        log_name)
+    test_with_spack(f'spack install --show-log-on-error --test=root {command}',
+                    log_name)
 
 
 @if_context_includes('cosmo')
@@ -40,10 +39,12 @@ class CosmoTest(unittest.TestCase):
     package_name = 'cosmo'
 
     def test_install_version_6_0_cpu(self):
-        spack_installcosmo_and_test('cosmo @c2sm-master %nvhpc cosmo_target=cpu ~cppdycore')
+        spack_installcosmo_and_test(
+            'cosmo @c2sm-master %nvhpc cosmo_target=cpu ~cppdycore')
 
     def test_install_version_6_0_gpu(self):
-        spack_install_cosmoand_test('cosmo @c2sm-master %nvhpc cosmo_target=gpu +cppdycore mpi%nvhpc')
+        spack_install_cosmoand_test(
+            'cosmo @c2sm-master %nvhpc cosmo_target=gpu +cppdycore mpi%nvhpc')
 
     def test_devbuild_version_6_0_cpu(self):
         #spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=cpu ~cppdycore')
