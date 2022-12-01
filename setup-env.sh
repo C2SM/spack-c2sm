@@ -2,7 +2,7 @@
 
 parent_dir=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 
-if [ "$#" == 1 ]; then
+if [[ "$#" == 1 ]]; then
     machine="$1"
 else
     machine="$( "$parent_dir"/src/machine.sh )"
