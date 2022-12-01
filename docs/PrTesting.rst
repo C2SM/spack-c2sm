@@ -30,21 +30,17 @@ Supported machines:
 
 * balfrin
 * daint
-* dom
-* manali
 * tsa
 
 Examples:
 ^^^^^^^^^^^^
 ``launch jenkins int2lm daint`` tests int2lm on daint.
 
-``launch jenkins cosmo int2lm daint dom tsa`` tests
+``launch jenkins cosmo int2lm daint tsa`` tests
 
 * cosmo on daint
-* cosmo on dom
 * cosmo on tsa
 * int2lm on daint
-* int2lm on dom
 * int2lm on tsa
 
 ``launch jenkins cosmo icon all_machines`` tests cosmo and icon on all machines.
