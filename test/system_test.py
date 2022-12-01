@@ -106,7 +106,7 @@ class GridToolsTest(unittest.TestCase):
 
 
 @unittest.skipUnless(needs_testing('icon'), 'irrelevant')
-@unittest.skipIf(machine_name() in ['tsa', 'manali'],
+@unittest.skipIf(machine_name() in ['tsa'],
                  'config file does not exist for these machines')
 class IconTest(unittest.TestCase):
     package_name = 'icon'
