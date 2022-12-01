@@ -25,5 +25,5 @@ def if_context_includes(package: str):
     return unittest.skipUnless(needs_testing(package), 'irrelevant')
 
 
-def skip_machines(*machines, reason: str = ''):
-    return unittest.skipIf(machine_name() in machines, reason)
+def skip_machines(*machines):
+    return unittest.skipIf(machine_name() in machines, 'machine in skip list')
