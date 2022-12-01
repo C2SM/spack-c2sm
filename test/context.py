@@ -1,3 +1,4 @@
+import unittest
 import sys
 import os
 
@@ -18,3 +19,11 @@ def needs_testing(package: str) -> bool:
                                                                in sys.argv)
         return package_match and machine_match
     return True
+
+
+def if_context_includes(package: str):
+    return unittest.skipUnless(needs_testing(package), 'irrelevant')
+
+
+def skip_machines(*machines):
+    return unittest.skipIf(machine_name() in machines, 'machine in skip list')
