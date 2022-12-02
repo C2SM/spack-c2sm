@@ -18,19 +18,16 @@ class Cosmo(MakefilePackage):
     empagit = 'ssh://git@github.com/C2SM-RCM/cosmo-ghg.git'
     maintainers = ['elsagermann']
 
-    version('org-master', branch='master', get_full_repo=True)
+    version('org-master', branch='master')
     version('6.0', tag='6.0')
 
-    version('apn-mch', git=apngit, branch='mch', get_full_repo=True)
+    version('apn-mch', git=apngit, branch='mch')
     version('5.09a.mch1.2.p2', git=apngit, tag='5.09a.mch1.2.p2')
 
-    version('c2sm-master', git=c2smgit, branch='master', get_full_repo=True)
-    version('c2sm-test', git=c2smgit, branch='test_spec', get_full_repo=True)
-    version('c2sm-features',
-            git=c2smgit,
-            branch='c2sm-features',
-            get_full_repo=True)
-    version('empa-ghg', git=empagit, branch='c2sm', get_full_repo=True)
+    version('c2sm-master', git=c2smgit, branch='master')
+    version('c2sm-test', git=c2smgit, branch='test_spec')
+    version('c2sm-features', git=c2smgit, branch='c2sm-features')
+    version('empa-ghg', git=empagit, branch='c2sm')
 
     depends_on('netcdf-fortran', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))
@@ -61,30 +58,16 @@ class Cosmo(MakefilePackage):
     depends_on('zlib_ng +compat', when='+zlib_ng', type=('link', 'run'))
     depends_on('oasis', when='+oasis', type=('build', 'link', 'run'))
 
-    # cosmo-dycore dependency
-    types = ['float', 'double']
-    prod = [True, False]
-    cuda = [True, False]
-    testing = [True, False]
-    gt1 = [True, False]
-    comb = list(itertools.product(*[types, prod, cuda, testing, gt1]))
-    for it in comb:
-        real_type = it[0]
-        prod_opt = '+production' if it[1] else '~production'
-        cuda_opt = '+cuda' if it[2] else '~cuda'
-        cuda_dep = 'cosmo_target=gpu' if it[2] else ' cosmo_target=cpu'
-        test_opt = '+build_tests' if it[3] else '~build_tests'
-        test_dep = '+dycoretest' if it[3] else '~dycoretest'
-        gt1_dep = '+gt1' if it[4] else '~gt1'
-
-        dep = f'cosmo-dycore real_type={real_type} {prod_opt} {cuda_opt} {test_opt} {gt1_dep}'
-        condition = f'real_type={real_type} {prod_opt} {cuda_dep} {test_dep} {gt1_dep} +cppdycore'
-        depends_on(dep, when=condition, type='build')
+    with when('+cppdycore'):
+        depends_on('cosmo-dycore', type='build')
+        depends_on('cosmo-dycore real_type=float', when='real_type=float', type='build')
+        depends_on('cosmo-dycore real_type=double', when='real_type=double', type='build')
+        depends_on('cosmo-dycore ~cuda', when='cosmo_target=cpu', type='build')
+        depends_on('cosmo-dycore +cuda', when='cosmo_target=gpu', type='build')
+        depends_on('cosmo-dycore +gt1', when='+gt1', type='build')
+        depends_on('cosmo-dycore ~gt1', when='~gt1', type='build')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
-    variant('dycoretest',
-            default=True,
-            description='Build C++ dycore with testing')
     variant('serialize',
             default=False,
             description='Build with serialization enabled')
@@ -120,11 +103,10 @@ class Cosmo(MakefilePackage):
             description='Build with cuda_arch',
             values=('80', '70', '60', '37'),
             multi=False)
-    variant(
-        'zlib_ng',
-        default=False,
-        description=
-        'Run with faster zlib-implemention for compression of NetCDF output')
+    variant('zlib_ng',
+            default=False,
+            description=
+            'Run with faster zlib-implemention for compression of NetCDF output')
     variant('oasis',
             default=False,
             description='Build with the unified oasis interface')
@@ -162,24 +144,12 @@ class Cosmo(MakefilePackage):
             description='Slurm constraints for nodes requested')
 
     conflicts('+claw', when='cosmo_target=cpu')
-    conflicts('+pollen', when='@5.05:5.06,org-master,master')
+    conflicts('+pollen', when='@5.05:5.06')
     conflicts('cosmo_target=gpu', when='%gcc')
 
     # previous versions contain a bug affecting serialization
     conflicts('+serialize', when='@5.07.mch1.0.p2:5.07.mch1.0.p3')
-    variant('production',
-            default=False,
-            description='Force all variants to be the ones used in production')
-
-    conflicts('+production', when='~cppdycore')
-    conflicts('+production', when='+serialize')
-    conflicts('+production', when='+debug')
-    conflicts('+production', when='~claw')
-    conflicts('+production', when='~parallel')
-    conflicts('+production', when='cosmo_target=cpu')
-    conflicts('+production', when='~pollen')
-    conflicts('+production', when='%gcc')
-    conflicts('+production', when='~eccodes')
+    
     conflicts('~gt1', when='@5.07.mch1.0.p11')
     conflicts('~gt1', when='@5.07a.mch1.0.p1')
     conflicts('~gt1', when='@5.07a.mch1.0.base')
