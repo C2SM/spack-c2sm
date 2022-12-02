@@ -39,12 +39,12 @@ class CosmoTest(unittest.TestCase):
     package_name = 'cosmo'
 
     def test_install_version_6_0_cpu(self):
-        spack_installcosmo_and_test(
-            '--no-checksum cosmo @6.0 %nvhpc cosmo_target=cpu ~cppdycore')
+        spack_install_and_test(
+            'cosmo @6.0 %nvhpc cosmo_target=cpu ~cppdycore')
 
     def test_install_version_6_0_gpu(self):
-        spack_installcosmo_and_test(
-            '--no-checksum cosmo @6.0 %nvhpc cosmo_target=gpu +cppdycore')
+        spack_install_and_test(
+            'cosmo @6.0 %nvhpc cosmo_target=gpu +cppdycore')
 
     def test_devbuild_version_6_0_cpu(self):
         #spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=cpu ~cppdycore')
@@ -55,8 +55,8 @@ class CosmoTest(unittest.TestCase):
         pass  #TODO
 
     def test_install_version_5_09_mch_1_2_p2(self):
-        spack_installcosmo_and_test(
-            '--no-checksum cosmo @5.09a.mch1.2.p2 %nvhpc cosmo_target=gpu +cppdycore')
+        spack_install_and_test(
+            'cosmo @5.09a.mch1.2.p2 %nvhpc cosmo_target=gpu +cppdycore')
 
 
 @if_context_includes('cosmo-dycore')
@@ -64,10 +64,10 @@ class CosmoDycoreTest(unittest.TestCase):
     package_name = 'cosmo-dycore'
 
     def test_install_version_6_0_cuda(self):
-        spack_install_and_test('--no-checksum cosmo-dycore @6.0 +cuda')
+        spack_install_and_test('cosmo-dycore @6.0 +cuda')
 
     def test_install_version_6_0_no_cuda(self):
-        spack_install_and_test('--no-checksum cosmo-dycore @6.0 ~cuda')
+        spack_install_and_test('cosmo-dycore @6.0 ~cuda')
 
 
 @if_context_includes('cosmo-eccodes-definitions')
