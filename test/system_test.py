@@ -39,12 +39,10 @@ class CosmoTest(unittest.TestCase):
     package_name = 'cosmo'
 
     def test_install_version_6_0_cpu(self):
-        spack_install_and_test(
-            'cosmo @6.0 %nvhpc cosmo_target=cpu ~cppdycore')
+        spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=cpu ~cppdycore')
 
     def test_install_version_6_0_gpu(self):
-        spack_install_and_test(
-            'cosmo @6.0 %nvhpc cosmo_target=gpu +cppdycore')
+        spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=gpu +cppdycore')
 
     def test_devbuild_version_6_0_cpu(self):
         #spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=cpu ~cppdycore')

@@ -60,8 +60,12 @@ class Cosmo(MakefilePackage):
 
     with when('+cppdycore'):
         depends_on('cosmo-dycore', type='build')
-        depends_on('cosmo-dycore real_type=float', when='real_type=float', type='build')
-        depends_on('cosmo-dycore real_type=double', when='real_type=double', type='build')
+        depends_on('cosmo-dycore real_type=float',
+                   when='real_type=float',
+                   type='build')
+        depends_on('cosmo-dycore real_type=double',
+                   when='real_type=double',
+                   type='build')
         depends_on('cosmo-dycore ~cuda', when='cosmo_target=cpu', type='build')
         depends_on('cosmo-dycore +cuda', when='cosmo_target=gpu', type='build')
         depends_on('cosmo-dycore +gt1', when='+gt1', type='build')
@@ -103,10 +107,11 @@ class Cosmo(MakefilePackage):
             description='Build with cuda_arch',
             values=('80', '70', '60', '37'),
             multi=False)
-    variant('zlib_ng',
-            default=False,
-            description=
-            'Run with faster zlib-implemention for compression of NetCDF output')
+    variant(
+        'zlib_ng',
+        default=False,
+        description=
+        'Run with faster zlib-implemention for compression of NetCDF output')
     variant('oasis',
             default=False,
             description='Build with the unified oasis interface')
@@ -149,7 +154,7 @@ class Cosmo(MakefilePackage):
 
     # previous versions contain a bug affecting serialization
     conflicts('+serialize', when='@5.07.mch1.0.p2:5.07.mch1.0.p3')
-    
+
     conflicts('~gt1', when='@5.07.mch1.0.p11')
     conflicts('~gt1', when='@5.07a.mch1.0.p1')
     conflicts('~gt1', when='@5.07a.mch1.0.base')
