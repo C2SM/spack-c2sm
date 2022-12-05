@@ -55,8 +55,8 @@ class CosmoTest(unittest.TestCase):
         pass  #TODO
 
     def test_install_version_5_09_mch_1_2_p2(self):
-        #spack_install_and_test(
-        #    'cosmo @5.09a.mch1.2.p2 %nvhpc cosmo_target=gpu +cppdycore')
+        spack_install_and_test(
+            'cosmo @apn-mch %nvhpc cosmo_target=gpu +cppdycore mpi%nvhpc')
         pass  #TODO
 
 
