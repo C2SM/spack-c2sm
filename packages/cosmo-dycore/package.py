@@ -113,11 +113,14 @@ class CosmoDycore(CMakePackage):
     conflicts('+production', when='+pmeters')
 
     # pass spec from spec to test_dycore.py in yaml-format
-    patch('patches/c2sm-master/spec_as_yaml/patch.test_dycore',when='@c2sm-master')
-    patch('patches/org-master/spec_as_yaml/patch.test_dycore',when='@org-master')
+    patch('patches/c2sm-master/spec_as_yaml/patch.test_dycore',
+          when='@c2sm-master')
+    patch('patches/org-master/spec_as_yaml/patch.test_dycore',
+          when='@org-master')
 
-    patch('patches/apn-mch/spec_as_yaml/patch.test_dycore',when='@apn-mch')
-    patch('patches/5.09a.mch1.2.p2/spec_as_yaml/patch.test_dycore',when='@5.09a.mch1.2.p2')
+    patch('patches/apn-mch/spec_as_yaml/patch.test_dycore', when='@apn-mch')
+    patch('patches/5.09a.mch1.2.p2/spec_as_yaml/patch.test_dycore',
+          when='@5.09a.mch1.2.p2')
 
     root_cmakelists_dir = 'dycore'
 
