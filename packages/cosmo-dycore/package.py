@@ -100,10 +100,6 @@ class CosmoDycore(CMakePackage):
     depends_on('cuda', when='+cuda')
 
     conflicts('%nvhpc')
-    
-    # pass spec from spec to test_dycore.py in yaml-format
-    # patch required for all Dycore versions after transition to v0.18.1
-    patch('patches/spec_as_yaml/patch.test_dycore')
 
     root_cmakelists_dir = 'dycore'
 

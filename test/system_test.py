@@ -17,6 +17,7 @@ def test_with_spack(command: str, log_name: str = None):
             .replace('--test=root ', '') \
             .replace('-v ', '') \
             .replace(' ', '_') \
+            .replace('-n', '_') \
             .replace('%', '')
 
     log = Path(
@@ -26,7 +27,8 @@ def test_with_spack(command: str, log_name: str = None):
 
 
 def spack_installcosmo_and_test(command: str, log_name: str = None):
-    test_with_spack(f'spack installcosmo -v {command}', log_name)
+    test_with_spack(f'spack installcosmo --test=root -n -v {command}',
+                    log_name)
 
 
 def spack_install_and_test(command: str, log_name: str = None):
@@ -59,6 +61,7 @@ class CosmoTest(unittest.TestCase):
         #spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=gpu +cppdycore')
         pass  #TODO
 
+    @skip_machines(['tsa', 'balfrin'])
     def test_install_version_5_09_mch_1_2_p2(self):
         spack_install_and_test(
             f'cosmo @5.09a.mch1.2.p2 %nvhpc cosmo_target=gpu +cppdycore ^{mpi()} %nvhpc')

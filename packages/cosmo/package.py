@@ -29,11 +29,6 @@ class Cosmo(MakefilePackage):
     version('c2sm-features', git=c2smgit, branch='c2sm-features')
     version('empa-ghg', git=empagit, branch='c2sm')
 
-    # pass spec from spec to test_cosmo.py in yaml-format
-    # patch required for all COSMO versions after transition to v0.18.1
-    patch('patches/spec_as_yaml/patch.test_cosmo')
-    patch('patches/spec_as_yaml/patch.serialize_cosmo', when='+serialize')
-
     depends_on('netcdf-fortran')
     depends_on('netcdf-c +mpi')
     depends_on('slurm', type='run')
@@ -65,7 +60,7 @@ class Cosmo(MakefilePackage):
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('dycoretest',
-            default=True,
+            default=False,
             description='Build C++ dycore with testing')
     variant('serialize',
             default=False,
@@ -422,12 +417,10 @@ class Cosmo(MakefilePackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def test(self):
-        with open('spec.yaml', mode='w') as f:
-            f.write(self.spec.to_yaml())
         try:
             subprocess.run([
                 self.build_directory + '/test/tools/test_cosmo.py', '-s',
-                'spec.yaml', '-b',
+                str(self.spec), '-b',
                 str('.')
             ],
                            stderr=subprocess.STDOUT,

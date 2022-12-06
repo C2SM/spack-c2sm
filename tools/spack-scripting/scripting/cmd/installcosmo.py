@@ -75,6 +75,13 @@ the dependencies""")
                            default=None,
                            help="phase to stop after when installing")
 
+    subparser.add_argument(
+        '-n',
+        '--no-checksum',
+        dest='no_checksum',
+        action="store_true",
+        help="do not use checksums to verify downloaded files (unsafe)")
+
 
 def custom_install(spec, args):
     package = spack.repo.get(spec)
@@ -96,6 +103,9 @@ def custom_install(spec, args):
         'stop_at': args.until,
         'restage': args.restage
     }
+
+    if args.no_checksum:
+        spack.config.set('config:checksum', False, scope='command_line')
 
     if args.things_to_install == 'dependencies':
         # If we want to only install dependencies and one of them fails,
