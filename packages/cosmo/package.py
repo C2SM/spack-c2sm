@@ -101,7 +101,7 @@ class Cosmo(MakefilePackage):
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('dycoretest',
-            default=True,
+            default=False,
             description='Build C++ dycore with testing')
     variant('serialize',
             default=False,
