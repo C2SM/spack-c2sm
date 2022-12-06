@@ -75,11 +75,12 @@ the dependencies""")
                            default=None,
                            help="phase to stop after when installing")
 
-    subparser.add_argument('-n',
-                           '--no-checksum',
-                           dest='no_checksum',
-                           action="store_true",
-                           help="do not use checksums to verify downloaded files (unsafe)")
+    subparser.add_argument(
+        '-n',
+        '--no-checksum',
+        dest='no_checksum',
+        action="store_true",
+        help="do not use checksums to verify downloaded files (unsafe)")
 
 
 def custom_install(spec, args):
