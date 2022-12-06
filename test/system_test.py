@@ -42,9 +42,10 @@ class CosmoTest(unittest.TestCase):
         spack_installcosmo_and_test(
             'cosmo @c2sm-master %nvhpc cosmo_target=cpu ~cppdycore')
 
+    @skip_machines(['tsa','balfrin'])
     def test_install_version_6_0_gpu(self):
         spack_installcosmo_and_test(
-            'cosmo @c2sm-master %nvhpc cosmo_target=gpu +cppdycore ^mpi%nvhpc')
+            'cosmo @c2sm-master %nvhpc cosmo_target=gpu +cppdycore ^mpich%nvhpc ^cosmo-dycore %gcc')
 
     def test_devbuild_version_6_0_cpu(self):
         #spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=cpu ~cppdycore')
@@ -54,9 +55,10 @@ class CosmoTest(unittest.TestCase):
         #spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=gpu +cppdycore')
         pass  #TODO
 
+    @skip_machines(['tsa','balfrin'])
     def test_install_version_5_09_mch_1_2_p2(self):
         spack_installcosmo_and_test(
-            'cosmo @apn-mch %nvhpc cosmo_target=gpu +cppdycore ^mpi%nvhpc')
+            'cosmo @apn-mch %nvhpc cosmo_target=gpu +cppdycore ^mpich%nvhpc ^cosmo-dycore %gcc')
         pass  #TODO
 
 
