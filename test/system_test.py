@@ -27,7 +27,8 @@ def test_with_spack(command: str, log_name: str = None):
 
 
 def spack_installcosmo_and_test(command: str, log_name: str = None):
-    test_with_spack(f'spack installcosmo --test=root -n -v {command}', log_name)
+    test_with_spack(f'spack installcosmo --test=root -n -v {command}',
+                    log_name)
 
 
 def spack_install_and_test(command: str, log_name: str = None):
