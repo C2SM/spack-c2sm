@@ -34,16 +34,13 @@ class PyIcon4py(PythonPackage):
     # FIXME: ensure the package is not available through PyPI. If it is,
     # re-run `spack create --force` with the PyPI URL.
     url      = "git@github.com:C2SM/icon4py.git"
-#    build_directory = 'atm_dyn_iconam'
 
     # FIXME: Add a list of GitHub accounts to
     # notify when the package is updated.
     # maintainers = ['github_user1', 'github_user2']
 
     # FIXME: Add proper versions here.
-    version('main',
-            branch='main',
-            git='ssh://git@github.com/C2SM/icon4py.git')
+    version('main', branch='main', git='ssh://git@github.com/C2SM/icon4py.git')
 
     # FIXME: Only add the python/pip/wheel dependencies if you need specific versions
     # or need to change the dependency type. Generic python/pip/wheel dependencies are
