@@ -51,6 +51,7 @@ class PyGt4py(PythonPackage):
     # depends_on('py-pip@X.Y:', type='build')
     depends_on('py-wheel', type='build')
     depends_on('py-cython', type='build')
+    depends_on('py-pytest', type='test')
 
     # FIXME: Add a build backend, usually defined in pyproject.toml. If no such file
     # exists, use setuptools.
@@ -72,3 +73,9 @@ class PyGt4py(PythonPackage):
         # FIXME: If not needed, delete this function
         options = []
         return options
+
+    @run_after('install')
+    @on_package_attributes(run_tests=True)
+    def install_test(self):
+        with working_dir('spack-test', create=True):
+            python('-m', 'pytest', '-v','../tests')
