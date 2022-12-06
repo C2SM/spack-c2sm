@@ -51,7 +51,7 @@ class PyIcon4py(PythonPackage):
     # TODO: push new version to Spack official
     depends_on('py-fprettify@0.3.7:', type=('build', 'run'))
 
-    depends_on('py-gt4py', type=('build','run'))
+    depends_on('py-gt4py', type=('build', 'run'))
 
     depends_on('py-pytest', type='test')
 
