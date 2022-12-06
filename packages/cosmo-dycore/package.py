@@ -39,9 +39,10 @@ class CosmoDycore(CMakePackage):
             values=('double', 'float'),
             multi=False)
     variant('slave', default='none', description='Build on slave')
-    variant('pmeters',
-            default=False,
-            description="Enable the performance meters for the dycore stencils")
+    variant(
+        'pmeters',
+        default=False,
+        description="Enable the performance meters for the dycore stencils")
     variant('data_path',
             default='.',
             description='Serialization data path',
@@ -82,9 +83,10 @@ class CosmoDycore(CMakePackage):
             default='g110',
             description='Slurm option to specify account for testing')
 
-    variant('slurm_opt_constraint',
-            default='-C',
-            description='Slurm option to specify constraints for nodes requested')
+    variant(
+        'slurm_opt_constraint',
+        default='-C',
+        description='Slurm option to specify constraints for nodes requested')
     variant('slurm_constraint',
             default='gpu',
             description='Slurm constraints for nodes requested')
