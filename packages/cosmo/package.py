@@ -18,50 +18,36 @@ class Cosmo(MakefilePackage):
     empagit = 'ssh://git@github.com/C2SM-RCM/cosmo-ghg.git'
     maintainers = ['elsagermann']
 
-    version('org-master', branch='master', get_full_repo=True)
+    version('org-master', branch='master')
     version('6.0', tag='6.0')
 
-    version('apn-mch', git=apngit, branch='mch', get_full_repo=True)
+    version('apn-mch', git=apngit, branch='mch')
     version('5.09a.mch1.2.p2', git=apngit, tag='5.09a.mch1.2.p2')
 
-    version('c2sm-master', git=c2smgit, branch='master', get_full_repo=True)
-    version('c2sm-test', git=c2smgit, branch='test_spec', get_full_repo=True)
-    version('c2sm-features',
-            git=c2smgit,
-            branch='c2sm-features',
-            get_full_repo=True)
-    version('empa-ghg', git=empagit, branch='c2sm', get_full_repo=True)
-
-    patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
-    patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
+    version('c2sm-master', git=c2smgit, branch='master')
+    version('c2sm-test', git=c2smgit, branch='test_spec')
+    version('c2sm-features', git=c2smgit, branch='c2sm-features')
+    version('empa-ghg', git=empagit, branch='c2sm')
 
     # pass spec from spec to test_cosmo.py in yaml-format
     # patch required for all COSMO versions after transition to v0.18.1
     patch('patches/spec_as_yaml/patch.test_cosmo')
     patch('patches/spec_as_yaml/patch.serialize_cosmo', when='+serialize')
 
-    depends_on('netcdf-fortran', type=('build', 'link'))
-    depends_on('netcdf-c +mpi', type=('build', 'link'))
+    depends_on('netcdf-fortran')
+    depends_on('netcdf-c +mpi')
     depends_on('slurm', type='run')
-    depends_on('cuda', when='cosmo_target=gpu', type=('build', 'link', 'run'))
+    depends_on('cuda', when='cosmo_target=gpu')
     depends_on('serialbox +fortran',
                when='+serialize',
                type=('build', 'link', 'run'))
-    depends_on('mpi', type=('build', 'link', 'run'), when='cosmo_target=cpu')
-    depends_on('mpi +cuda',
-               type=('build', 'link', 'run'),
-               when='cosmo_target=gpu')
+    depends_on('mpi +fortran')
+    depends_on('mpi +cuda', when='cosmo_target=gpu')
     depends_on('libgrib1', type='build')
-    depends_on('jasper@1.900.1', type=('build', 'link'))
-    depends_on('cosmo-grib-api-definitions',
-               type=('build', 'run'),
-               when='~eccodes')
-    depends_on('cosmo-eccodes-definitions',
-               type=('build', 'link', 'run'),
-               when='+eccodes')
-    depends_on('eccodes +fortran',
-               type=('build', 'link', 'run'),
-               when='+eccodes')
+    depends_on('jasper@1.900.1')
+    depends_on('cosmo-grib-api-definitions', type='run', when='~eccodes')
+    depends_on('cosmo-eccodes-definitions', type='run', when='+eccodes')
+    depends_on('eccodes +fortran', when='+eccodes')
     depends_on('perl@5.16.3:', type='build')
     depends_on('omni-xmod-pool', when='+claw', type='build')
     depends_on('claw', when='+claw', type='build')
@@ -69,25 +55,13 @@ class Cosmo(MakefilePackage):
     depends_on('zlib_ng +compat', when='+zlib_ng', type=('link', 'run'))
     depends_on('oasis', when='+oasis', type=('build', 'link', 'run'))
 
-    # cosmo-dycore dependency
-    types = ['float', 'double']
-    prod = [True, False]
-    cuda = [True, False]
-    testing = [True, False]
-    gt1 = [True, False]
-    comb = list(itertools.product(*[types, prod, cuda, testing, gt1]))
-    for it in comb:
-        real_type = it[0]
-        prod_opt = '+production' if it[1] else '~production'
-        cuda_opt = '+cuda' if it[2] else '~cuda'
-        cuda_dep = 'cosmo_target=gpu' if it[2] else ' cosmo_target=cpu'
-        test_opt = '+build_tests' if it[3] else '~build_tests'
-        test_dep = '+dycoretest' if it[3] else '~dycoretest'
-        gt1_dep = '+gt1' if it[4] else '~gt1'
-
-        dep = f'cosmo-dycore real_type={real_type} {prod_opt} {cuda_opt} {test_opt} {gt1_dep}'
-        condition = f'real_type={real_type} {prod_opt} {cuda_dep} {test_dep} {gt1_dep} +cppdycore'
-        depends_on(dep, when=condition, type='build')
+    with when('+cppdycore'):
+        depends_on('cosmo-dycore', type='build')
+        depends_on('cosmo-dycore real_type=float', when='real_type=float', type='build')
+        depends_on('cosmo-dycore real_type=double', when='real_type=double', type='build')
+        depends_on('cosmo-dycore +cuda', when='cosmo_target=gpu', type='build')
+        depends_on('cosmo-dycore +build_tests', when='+dycoretest', type='build')
+        depends_on('cosmo-dycore +gt1', when='+gt1', type='build')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('dycoretest',
@@ -128,11 +102,10 @@ class Cosmo(MakefilePackage):
             description='Build with cuda_arch',
             values=('80', '70', '60', '37'),
             multi=False)
-    variant(
-        'zlib_ng',
-        default=False,
-        description=
-        'Run with faster zlib-implemention for compression of NetCDF output')
+    variant('zlib_ng',
+            default=False,
+            description=
+            'Run with faster zlib-implemention for compression of NetCDF output')
     variant('oasis',
             default=False,
             description='Build with the unified oasis interface')
@@ -161,37 +134,15 @@ class Cosmo(MakefilePackage):
             default='g110',
             description='Slurm option to specify account for testing')
 
-    variant(
-        'slurm_opt_constraint',
-        default='-C',
-        description='Slurm option to specify constraints for nodes requested')
+    variant('slurm_opt_constraint',
+            default='-C',
+            description='Slurm option to specify constraints for nodes requested')
     variant('slurm_constraint',
             default='gpu',
             description='Slurm constraints for nodes requested')
 
     conflicts('+claw', when='cosmo_target=cpu')
-    conflicts('+pollen', when='@5.05:5.06,org-master,master')
     conflicts('cosmo_target=gpu', when='%gcc')
-
-    # previous versions contain a bug affecting serialization
-    conflicts('+serialize', when='@5.07.mch1.0.p2:5.07.mch1.0.p3')
-    variant('production',
-            default=False,
-            description='Force all variants to be the ones used in production')
-
-    conflicts('+production', when='~cppdycore')
-    conflicts('+production', when='+serialize')
-    conflicts('+production', when='+debug')
-    conflicts('+production', when='~claw')
-    conflicts('+production', when='~parallel')
-    conflicts('+production', when='cosmo_target=cpu')
-    conflicts('+production', when='~pollen')
-    conflicts('+production', when='%gcc')
-    conflicts('+production', when='~eccodes')
-    conflicts('~gt1', when='@5.07.mch1.0.p11')
-    conflicts('~gt1', when='@5.07a.mch1.0.p1')
-    conflicts('~gt1', when='@5.07a.mch1.0.base')
-    conflicts('~gt1', when='@5.07.mch1.0.p10')
     conflicts('+cppdycore', when='%nvhpc cosmo_target=cpu')
     conflicts('+cppdycore', when='%pgi cosmo_target=cpu')
     # - ML - A conflict should be added there if the oasis variant is

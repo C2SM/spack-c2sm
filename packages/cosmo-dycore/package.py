@@ -17,17 +17,13 @@ class CosmoDycore(CMakePackage):
     version('org-master', branch='master')
     version('6.0', tag='6.0')
 
-    version('apn-mch',
-            git='ssh://git@github.com/MeteoSwiss-APN/cosmo.git',
-            branch='mch')
+    version('apn-mch', git=apngit, branch='mch')
     version('5.09a.mch1.2.p2', git=apngit, tag='5.09a.mch1.2.p2')
-    version('c2sm-master',
-            git='ssh://git@github.com/C2SM-RCM/cosmo.git',
-            branch='master')
-    version('c2sm-test', git=c2smgit, branch='test_spec', get_full_repo=True)
-    version('c2sm-features',
-            git='ssh://git@github.com/C2SM-RCM/cosmo.git',
-            branch='c2sm-features')
+
+    version('c2sm-master', git=c2smgit, branch='master')
+    version('c2sm-test', git=c2smgit, branch='test_spec')
+    version('c2sm-features', git=c2smgit, branch='c2sm-features')
+
     version('empa-ghg', git=empagit, branch='c2sm')
 
     variant('build_type',
@@ -43,17 +39,13 @@ class CosmoDycore(CMakePackage):
             values=('double', 'float'),
             multi=False)
     variant('slave', default='none', description='Build on slave')
-    variant(
-        'pmeters',
-        default=False,
-        description="Enable the performance meters for the dycore stencils")
+    variant('pmeters',
+            default=False,
+            description="Enable the performance meters for the dycore stencils")
     variant('data_path',
             default='.',
             description='Serialization data path',
             multi=False)
-    variant('production',
-            default=False,
-            description='Force all variants to be the ones used in production')
     variant('cuda_arch',
             default='none',
             description='Build with cuda_arch',
@@ -90,28 +82,25 @@ class CosmoDycore(CMakePackage):
             default='g110',
             description='Slurm option to specify account for testing')
 
-    variant(
-        'slurm_opt_constraint',
-        default='-C',
-        description='Slurm option to specify constraints for nodes requested')
+    variant('slurm_opt_constraint',
+            default='-C',
+            description='Slurm option to specify constraints for nodes requested')
     variant('slurm_constraint',
             default='gpu',
             description='Slurm constraints for nodes requested')
 
-    depends_on('gridtools@1.1.3 ~cuda', when='~cuda+gt1')
-    depends_on('gridtools@1.1.3 +cuda', when='+cuda+gt1')
+    depends_on('gridtools@1.1.3 ~cuda', when='~cuda +gt1')
+    depends_on('gridtools@1.1.3 +cuda', when='+cuda +gt1')
     depends_on('boost@1.65.1: +program_options +system')
-    depends_on('serialbox@2.6.0', when='+build_tests', type=('run'))
-    depends_on('mpi', type=('build', 'link', 'run'), when='~cuda')
-    depends_on('mpi +cuda', type=('build', 'link', 'run'), when='+cuda')
+    depends_on('serialbox@2.6.0', when='+build_tests', type='run')
+    depends_on('mpi')
+    depends_on('mpi +cuda', when='+cuda')
     depends_on('slurm', type='run')
     depends_on('cmake@3.12:')
-    depends_on('cuda', type=('build', 'link', 'run'), when='+cuda')
+    depends_on('cuda', when='+cuda')
 
     conflicts('%nvhpc')
-    conflicts('+production', when='build_type=Debug')
-    conflicts('+production', when='+pmeters')
-
+    
     # pass spec from spec to test_dycore.py in yaml-format
     # patch required for all Dycore versions after transition to v0.18.1
     patch('patches/spec_as_yaml/patch.test_dycore')
@@ -175,16 +164,14 @@ class CosmoDycore(CMakePackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def test(self):
-        cwd = os.path.join(self.root_cmakelists_dir, 'test/tools')
         if '+build_tests' in self.spec:
-            with open(os.path.join(cwd, 'spec.yaml'), mode='w') as f:
-                f.write(self.spec.to_yaml())
             try:
                 subprocess.run([
-                    './test_dycore.py', '-s', 'spec.yaml', '-b',
+                    './test_dycore.py', '-s',
+                    str(self.spec), '-b',
                     str(self.build_directory)
                 ],
-                               cwd=cwd,
+                               cwd=self.root_cmakelists_dir + '/test/tools',
                                check=True,
                                stderr=subprocess.STDOUT)
             except:
