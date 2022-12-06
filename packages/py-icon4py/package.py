@@ -33,7 +33,7 @@ class PyIcon4py(PythonPackage):
 
     # FIXME: ensure the package is not available through PyPI. If it is,
     # re-run `spack create --force` with the PyPI URL.
-    url      = "git@github.com:C2SM/icon4py.git"
+    url = "git@github.com:C2SM/icon4py.git"
 
     # FIXME: Add a list of GitHub accounts to
     # notify when the package is updated.
@@ -77,20 +77,20 @@ class PyIcon4py(PythonPackage):
         for option in self.global_options(spec, prefix):
             args.append('--global-option=' + option)
 
-        if self.stage.archive_file and self.stage.archive_file.endswith('.whl'):
+        if self.stage.archive_file and self.stage.archive_file.endswith(
+                '.whl'):
             args.append(self.stage.archive_file)
         else:
             args.append('.')
 
         pip = inspect.getmodule(self).pip
-        build_dirs = ['common','pyutils','testutils','atm_dyn_iconam']
+        build_dirs = ['common', 'pyutils', 'testutils', 'atm_dyn_iconam']
         for dir in build_dirs:
-            with working_dir(os.path.join(self.stage.source_path,dir)):
+            with working_dir(os.path.join(self.stage.source_path, dir)):
                 pip(*args)
 
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def install_test(self):
         with working_dir('spack-test', create=True):
-            python('-m', 'pytest', '-v','../pyutils/tests')
-
+            python('-m', 'pytest', '-v', '../pyutils/tests')

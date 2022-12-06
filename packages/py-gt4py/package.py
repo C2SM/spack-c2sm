@@ -31,11 +31,9 @@ class PyGt4py(PythonPackage):
 
     # FIXME: ensure the package is not available through PyPI. If it is,
     # re-run `spack create --force` with the PyPI URL.
-    url      = "ssh://git@github.com/GridTools/gt4py.git"
+    url = "ssh://git@github.com/GridTools/gt4py.git"
 
-    version('functional',
-            branch='functional',
-            git=url)
+    version('functional', branch='functional', git=url)
 
     # FIXME: Add a list of GitHub accounts to
     # notify when the package is updated.
@@ -56,6 +54,7 @@ class PyGt4py(PythonPackage):
     # FIXME: Add a build backend, usually defined in pyproject.toml. If no such file
     # exists, use setuptools.
     depends_on('py-setuptools', type='build')
+
     # depends_on('py-flit-core', type='build')
     # depends_on('py-poetry-core', type='build')
 
