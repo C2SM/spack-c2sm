@@ -52,10 +52,16 @@ class Cosmo(MakefilePackage):
 
     with when('+cppdycore'):
         depends_on('cosmo-dycore', type='build')
-        depends_on('cosmo-dycore real_type=float', when='real_type=float', type='build')
-        depends_on('cosmo-dycore real_type=double', when='real_type=double', type='build')
+        depends_on('cosmo-dycore real_type=float',
+                   when='real_type=float',
+                   type='build')
+        depends_on('cosmo-dycore real_type=double',
+                   when='real_type=double',
+                   type='build')
         depends_on('cosmo-dycore +cuda', when='cosmo_target=gpu', type='build')
-        depends_on('cosmo-dycore +build_tests', when='+dycoretest', type='build')
+        depends_on('cosmo-dycore +build_tests',
+                   when='+dycoretest',
+                   type='build')
         depends_on('cosmo-dycore +gt1', when='+gt1', type='build')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
@@ -97,10 +103,11 @@ class Cosmo(MakefilePackage):
             description='Build with cuda_arch',
             values=('80', '70', '60', '37'),
             multi=False)
-    variant('zlib_ng',
-            default=False,
-            description=
-            'Run with faster zlib-implemention for compression of NetCDF output')
+    variant(
+        'zlib_ng',
+        default=False,
+        description=
+        'Run with faster zlib-implemention for compression of NetCDF output')
     variant('oasis',
             default=False,
             description='Build with the unified oasis interface')
@@ -129,9 +136,10 @@ class Cosmo(MakefilePackage):
             default='g110',
             description='Slurm option to specify account for testing')
 
-    variant('slurm_opt_constraint',
-            default='-C',
-            description='Slurm option to specify constraints for nodes requested')
+    variant(
+        'slurm_opt_constraint',
+        default='-C',
+        description='Slurm option to specify constraints for nodes requested')
     variant('slurm_constraint',
             default='gpu',
             description='Slurm constraints for nodes requested')
