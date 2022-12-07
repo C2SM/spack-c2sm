@@ -32,8 +32,7 @@ def spack_installcosmo_and_test(command: str, log_name: str = None):
 
 
 def spack_install_and_test(command: str, log_name: str = None):
-    test_with_spack(f'spack install -v --test=root {command}',
-                    log_name)
+    test_with_spack(f'spack install -v --test=root {command}', log_name)
 
 
 @if_context_includes('cosmo')
