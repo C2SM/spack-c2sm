@@ -39,52 +39,42 @@ class PyGt4py(PythonPackage):
     # notify when the package is updated.
     # maintainers = ['github_user1', 'github_user2']
 
-    # FIXME: Add proper versions here.
-    # version('1.2.4')
 
-    # FIXME: Only add the python/pip/wheel dependencies if you need specific versions
-    # or need to change the dependency type. Generic python/pip/wheel dependencies are
-    # added implicity by the PythonPackage base class.
     depends_on('python@3.10:', type=('build', 'run'))
     depends_on('py-attrs@20.3:', type=('build', 'run'))
-    # TODO: update version to 22.3
-    depends_on('py-black@21.0:', type=('build', 'run'))
-    # TODO: update version to 20.0
-    depends_on('py-boltons@16.5.1:', type=('build', 'run'))
+
+    depends_on('py-black@22.3.0:', type=('build', 'run'))
+
+    depends_on('py-boltons@20.0.0:', type=('build', 'run'))
     depends_on('py-click@7.1:', type=('build', 'run'))
     depends_on('cmake@3.22:', type=('build', 'run'))
-    #depends_on('py-cytoolz@0.11:', type=('build', 'run'))
-    # TODO: update version to 5.8
-    depends_on('py-deepdiff@5.6:', type=('build', 'run'))
+
+    # TODO: create packages
     #depends_on('py-devtools@0.5:', type=('build', 'run'))
     #depends_on('py-frozendict@2.3:', type=('build', 'run'))
+    #depends_on('py-cytoolz@0.11:', type=('build', 'run'))
+
+    # TODO: update version to 5.8
+    depends_on('py-deepdiff@5.6:', type=('build', 'run'))
+
     depends_on('py-jinja2@2.10:', type=('build', 'run'))
-    #depends_on('py-lark@1.1.2:', type=('build', 'run'))
+    depends_on('py-lark@1.1.2:', type=('build', 'run'))
+
     depends_on('py-mako@1.1:', type=('build', 'run'))
     depends_on('py-networkx@2.4:', type=('build', 'run'))
     depends_on('py-ninja@1.10:', type=('build', 'run'))
     depends_on('py-numpy@1.21:', type=('build', 'run'))
     depends_on('py-packaging@20.0:', type=('build', 'run'))
     depends_on('py-pybind11@2.5:', type=('build', 'run'))
-    # TODO: update version to 0.11
-    depends_on('py-toolz@0.9:', type=('build', 'run'))
-    # TODO: update version to 4.2
-    depends_on('py-typing-extensions@4.1.1:', type=('build', 'run'))
+    depends_on('py-toolz@0.12.0:', type=('build', 'run'))
+    depends_on('py-typing-extensions@4.2:', type=('build', 'run'))
     depends_on('py-xxhash@1.4.4:', type=('build', 'run'))
 
     depends_on('py-wheel', type='build')
     depends_on('py-cython', type='build')
     depends_on('py-pytest', type='test')
 
-    # FIXME: Add a build backend, usually defined in pyproject.toml. If no such file
-    # exists, use setuptools.
     depends_on('py-setuptools', type='build')
-
-    # depends_on('py-flit-core', type='build')
-    # depends_on('py-poetry-core', type='build')
-
-    # FIXME: Add additional dependencies if required.
-    # depends_on('py-foo', type=('build', 'run'))
 
     def global_options(self, spec, prefix):
         # FIXME: Add options to pass to setup.py
