@@ -32,6 +32,7 @@ class CosmoEccodesDefinitions(Package):
 
     maintainers = ['egermann']
 
+    version('2.25.0.1', tag='v2.25.0.1')
     version('2.19.0.7', tag='v2.19.0.7')
     version('2.19.0.6', tag='v2.19.0.6')
     version('2.19.0.5', tag='v2.19.0.5')
@@ -43,10 +44,11 @@ class CosmoEccodesDefinitions(Package):
     version('2.14.1.2', tag='v2.14.1.2')
     version('2.14.1.1', tag='v2.14.1.1')
 
-    depends_on('eccodes', type=('build', 'link', 'run'))
-    depends_on('eccodes@2.19.0', when='@2.19.0.1:')
-    depends_on('eccodes@2.18.0', when='@2.18.0.1')
-    depends_on('eccodes@2.14.1', when='@2.14.1.1:2.14.1.2')
+    depends_on('eccodes', type='run')
+    depends_on('eccodes@2.25.0', when='@2.25.0.1:', type='run')
+    depends_on('eccodes@2.19.0', when='@2.19.0.1:2.19.0.7', type='run')
+    depends_on('eccodes@2.18.0', when='@2.18.0.1', type='run')
+    depends_on('eccodes@2.14.1', when='@2.14.1.1:2.14.1.2', type='run')
 
     def setup_run_environment(self, env):
         eccodes_definition_path = self.prefix + '/cosmoDefinitions/definitions/:' + self.spec[
