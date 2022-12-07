@@ -44,13 +44,13 @@ class CosmoTest(unittest.TestCase):
         spack_installcosmo_and_test(
             'cosmo @c2sm-master %nvhpc cosmo_target=cpu ~cppdycore')
 
-    @skip_machines(['tsa', 'balfrin'])
+    @skip_machines('tsa', 'balfrin')
     def test_install_version_6_0_gpu_mpich(self):
         spack_installcosmo_and_test(
             'cosmo @c2sm-master %nvhpc cosmo_target=gpu +cppdycore ^mpich%nvhpc ^cosmo-dycore %gcc'
         )
 
-    @skip_machines(['daint', 'balfrin'])
+    @skip_machines('daint', 'balfrin')
     def test_install_version_6_0_gpu_openmpi(self):
         spack_installcosmo_and_test(
             'cosmo @c2sm-master %nvhpc cosmo_target=gpu +cppdycore ^openmpi%nvhpc ^cosmo-dycore %gcc'
@@ -64,19 +64,19 @@ class CosmoTest(unittest.TestCase):
         #spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=gpu +cppdycore')
         pass  #TODO
 
-    @skip_machines(['tsa', 'balfrin'])
+    @skip_machines('tsa', 'balfrin')
     def test_install_version_5_09_mch_1_2_p2(self):
         spack_installcosmo_and_test(
             'cosmo @apn-mch %nvhpc cosmo_target=gpu +cppdycore ^mpich%nvhpc ^cosmo-dycore %gcc'
         )
 
-    @skip_machines(['tsa', 'balfrin'])
+    @skip_machines('tsa', 'balfrin')
     def test_install_version_5_09_mch_1_2_p2_mpich(self):
         spack_installcosmo_and_test(
             'cosmo @apn-mch %nvhpc cosmo_target=gpu +cppdycore ^mpich%nvhpc ^cosmo-dycore %gcc'
         )
 
-    @skip_machines(['daint', 'balfrin'])
+    @skip_machines('daint', 'balfrin')
     def test_install_version_5_09_mch_1_2_p2_openmpi(self):
         spack_installcosmo_and_test(
             'cosmo @apn-mch %nvhpc cosmo_target=gpu +cppdycore ^openmpi%nvhpc ^cosmo-dycore %gcc'
