@@ -61,16 +61,15 @@ class CosmoTest(unittest.TestCase):
         #spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=gpu +cppdycore')
         pass  #TODO
 
-    @skip_machines(['tsa', 'balfrin'])
     def test_install_version_5_09_mch_1_2_p2(self):
         spack_install_and_test(
             f'cosmo @5.09a.mch1.2.p2 %nvhpc cosmo_target=gpu +cppdycore ^{mpi()} %nvhpc')
 
-    def test_install_c2sm-master_cpu(self):
+    def test_install_c2sm_master_cpu(self):
         spack_installcosmo_and_test(
             f'cosmo @c2sm-master %nvhpc cosmo_target=cpu ~cppdycore ^{mpi()} %nvhpc')
 
-    def test_install_c2sm-master_gpu(self):
+    def test_install_c2sm_master_gpu(self):
         spack_install_cosmoand_test(
             f'cosmo @c2sm-master %nvhpc cosmo_target=gpu +cppdycore ^{mpi()} %nvhpc')
 
@@ -85,10 +84,10 @@ class CosmoDycoreTest(unittest.TestCase):
     def test_install_version_6_0_no_cuda(self):
         spack_install_and_test(f'cosmo-dycore @6.0 ~cuda')
 
-    def test_install_c2sm-master_cuda(self):
+    def test_install_c2sm_master_cuda(self):
         spack_install_and_test('cosmo-dycore @c2sm-master +cuda')
 
-    def test_install_c2sm-master_no_cuda(self):
+    def test_install_c2sm_master_no_cuda(self):
         spack_install_and_test('cosmo-dycore @c2sm-master ~cuda')
 
 
