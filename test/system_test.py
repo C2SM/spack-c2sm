@@ -64,7 +64,7 @@ class CosmoTest(unittest.TestCase):
         #spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=gpu +cppdycore')
         pass  #TODO
 
-    @skip_machines('tsa', 'balfrin','daint')
+    @skip_machines('tsa', 'balfrin', 'daint')
     def test_install_version_5_09_mch_1_2_p2_mpich(self):
         spack_installcosmo_and_test(
             'cosmo @apn-mch %nvhpc cosmo_target=gpu +cppdycore ^mpich%nvhpc ^cosmo-dycore %gcc'
