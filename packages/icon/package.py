@@ -534,9 +534,6 @@ class Icon(AutotoolsPackage):
         # Finalize the LIBS variable (we always put the real collected
         # libraries to the front):
         config_vars['LIBS'].extend(['-lnvcpumath -lnvhpcatm'])
-        config_vars['LIBS'].extend([
-            '-L/opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/lib -llapack -lblas'
-        ])
         config_vars['LIBS'].insert(0, libs.link_flags)
 
         # Help the libtool scripts of the bundled libraries find the correct
