@@ -57,6 +57,7 @@ and rebuild.
 
 |  | Command |
 | --- | --- |
+| Find | `spack find` lists all installed packages. <br>`spack find <spec>` lists all installed packages that match the spec.
 | Info | `spack info <package>` |
 | Spec | `spack spec <spec>` concretizes abstract spec (unspecfied variant = **any**)<br>*Spack is not required to use the default of an unspecified variant. The default value is only a tiebreaker for the concretizer.* |
 | Install  | `spack install <spec>` |
