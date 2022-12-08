@@ -1,5 +1,5 @@
 from spack.package import *
-from spack.pkg.builtin.pyblack import PyBlack as SpackPyBlack
+from spack.pkg.builtin.py_black import PyBlack as SpackPyBlack
 
 
 class PyBlack(SpackPyBlack):

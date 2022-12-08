@@ -46,7 +46,7 @@ class PyGt4py(PythonPackage):
 
     depends_on('py-boltons@20.0.0:', type=('build', 'run'))
     depends_on('py-click@7.1:', type=('build', 'run'))
-    depends_on('cmake@3.22:', type=('build', 'run'))
+    #depends_on('cmake@3.22:', type=('build', 'run'))
 
     depends_on('py-devtools@0.5:', type=('build', 'run'))
     depends_on('py-frozendict@2.3:', type=('build', 'run'))

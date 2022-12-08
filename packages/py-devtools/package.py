@@ -31,7 +31,8 @@ class PyDevtools(PythonPackage):
 
     # FIXME: ensure the package is not available through PyPI. If it is,
     # re-run `spack create --force` with the PyPI URL.
-    url = "https://pypi.org/project/devtools/"
+    #url = "https://pypi.org/project/devtools/"
+    pypi = "devtools/devtools-0.10.0.tar.gz"
 
     # FIXME: Add a list of GitHub accounts to
     # notify when the package is updated.
@@ -46,6 +47,7 @@ class PyDevtools(PythonPackage):
     # or need to change the dependency type. Generic python/pip/wheel dependencies are
     # added implicity by the PythonPackage base class.
     depends_on('python@3.7:', type=('build', 'run'))
+    depends_on('py-hatchling', type=('build', 'run'))
 
     depends_on('py-setuptools', type='build')
 

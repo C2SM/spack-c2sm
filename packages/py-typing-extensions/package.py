@@ -1,5 +1,5 @@
 from spack.package import *
-from spack.pkg.builtin.pytypingextensions import PyTypingExtensions as SpackPyTypingExtensions
+from spack.pkg.builtin.py_typing_extensions import PyTypingExtensions as SpackPyTypingExtensions
 
 
 class PyTypingExtensions(SpackPyTypingExtensions):

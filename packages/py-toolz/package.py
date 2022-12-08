@@ -1,6 +1,6 @@
 from spack.package import *
 
-from spack.pkg.builtin.pytoolz import PyToolz as SpackPyToolz
+from spack.pkg.builtin.py_toolz import PyToolz as SpackPyToolz
 
 
 class PyToolz(SpackPyToolz):

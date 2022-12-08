@@ -1,5 +1,5 @@
 from spack.package import *
-from spack.pkg.builtin.pyboltons import PyBoltons as SpackPyBoltons
+from spack.pkg.builtin.py_boltons import PyBoltons as SpackPyBoltons
 
 
 class PyBoltons(SpackPyBoltons):
