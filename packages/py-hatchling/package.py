@@ -31,14 +31,16 @@ class PyHatchling(PythonPackage):
 
     # FIXME: ensure the package is not available through PyPI. If it is,
     # re-run `spack create --force` with the PyPI URL.
-    pypi      = "hatchling/hatchling-1.11.1.tar.gz"
+    pypi = "hatchling/hatchling-1.11.1.tar.gz"
 
     # FIXME: Add a list of GitHub accounts to
     # notify when the package is updated.
     # maintainers = ['github_user1', 'github_user2']
 
     # FIXME: Add proper versions here.
-    version('1.11.1',sha256='9f84361f70cf3a7ab9543b0c3ecc64211ed2ba8a606a71eb6a473c1c9b08e1d0')
+    version('1.11.1',
+            sha256=
+            '9f84361f70cf3a7ab9543b0c3ecc64211ed2ba8a606a71eb6a473c1c9b08e1d0')
 
     # FIXME: Only add the python/pip/wheel dependencies if you need specific versions
     # or need to change the dependency type. Generic python/pip/wheel dependencies are
@@ -48,6 +50,7 @@ class PyHatchling(PythonPackage):
     # FIXME: Add a build backend, usually defined in pyproject.toml. If no such file
     # exists, use setuptools.
     depends_on('py-setuptools', type='build')
+
     # depends_on('py-flit-core', type='build')
     # depends_on('py-poetry-core', type='build')
 
