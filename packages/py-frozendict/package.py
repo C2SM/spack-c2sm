@@ -31,14 +31,16 @@ class PyFrozendict(PythonPackage):
 
     # FIXME: ensure the package is not available through PyPI. If it is,
     # re-run `spack create --force` with the PyPI URL.
-    url      = "https://pypi.org/project/frozendict"
+    url = "https://pypi.org/project/frozendict"
 
     # FIXME: Add a list of GitHub accounts to
     # notify when the package is updated.
     # maintainers = ['github_user1', 'github_user2']
 
     # FIXME: Add proper versions and checksums here.
-    version('2.3.4', sha256='15b4b18346259392b0d27598f240e9390fafbff882137a9c48a1e0104fb17f78')
+    version('2.3.4',
+            sha256=
+            '15b4b18346259392b0d27598f240e9390fafbff882137a9c48a1e0104fb17f78')
 
     # FIXME: Only add the python/pip/wheel dependencies if you need specific versions
     # or need to change the dependency type. Generic python/pip/wheel dependencies are

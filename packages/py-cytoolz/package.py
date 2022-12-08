@@ -31,16 +31,18 @@ class PyCytoolz(PythonPackage):
 
     # FIXME: ensure the package is not available through PyPI. If it is,
     # re-run `spack create --force` with the PyPI URL.
-    url      = "https://pypi.org/project/cytoolz/0.12.0/"
+    url = "https://pypi.org/project/cytoolz/0.12.0/"
 
     # FIXME: Add a list of GitHub accounts to
     # notify when the package is updated.
     # maintainers = ['github_user1', 'github_user2']
 
     # FIXME: Add proper versions and checksums here.
-    version('0.12.0', sha256='c105b05f85e03fbcd60244375968e62e44fe798c15a3531c922d531018d22412')
+    version('0.12.0',
+            sha256=
+            'c105b05f85e03fbcd60244375968e62e44fe798c15a3531c922d531018d22412')
 
-    variant('cython',   default=False, description='Build with Cython')
+    variant('cython', default=False, description='Build with Cython')
 
     # FIXME: Only add the python/pip/wheel dependencies if you need specific versions
     # or need to change the dependency type. Generic python/pip/wheel dependencies are
@@ -54,7 +56,6 @@ class PyCytoolz(PythonPackage):
 
     # FIXME: Add additional dependencies if required.
     depends_on('py-toolz@0.8.0:', type=('build', 'run'))
-
 
     def global_options(self, spec, prefix):
         options = []
