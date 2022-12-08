@@ -43,7 +43,7 @@ class PyHatchling(PythonPackage):
     # FIXME: Only add the python/pip/wheel dependencies if you need specific versions
     # or need to change the dependency type. Generic python/pip/wheel dependencies are
     # added implicity by the PythonPackage base class.
-    depends_on('python@3.6:', type=('build', 'run'))
+    depends_on('python@3.7:', type=('build', 'run'))
 
     # FIXME: Add a build backend, usually defined in pyproject.toml. If no such file
     # exists, use setuptools.
@@ -52,7 +52,13 @@ class PyHatchling(PythonPackage):
     # depends_on('py-poetry-core', type='build')
 
     # FIXME: Add additional dependencies if required.
-    # depends_on('py-foo', type=('build', 'run'))
+    depends_on('py-pluggy@1.0.0:', type=('build', 'run'))
+    depends_on('py-pathspec@0.10.1:', type=('build', 'run'))
+    depends_on('py-tomli@1.2.2:', type=('build', 'run'))
+    depends_on('py-packaging@21.3:', type=('build', 'run'))
+    depends_on('py-editables@0.3:', type=('build', 'run'))
+    depends_on('py-importlib-metadata', type=('build', 'run'))
+
 
     def global_options(self, spec, prefix):
         # FIXME: Add options to pass to setup.py
