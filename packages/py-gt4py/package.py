@@ -49,10 +49,9 @@ class PyGt4py(PythonPackage):
     depends_on('py-click@7.1:', type=('build', 'run'))
     depends_on('cmake@3.22:', type=('build', 'run'))
 
-    # TODO: create packages
-    #depends_on('py-devtools@0.5:', type=('build', 'run'))
-    #depends_on('py-frozendict@2.3:', type=('build', 'run'))
-    #depends_on('py-cytoolz@0.11:', type=('build', 'run'))
+    depends_on('py-devtools@0.5:', type=('build', 'run'))
+    depends_on('py-frozendict@2.3:', type=('build', 'run'))
+    depends_on('py-cytoolz@0.11: +cython', type=('build', 'run'))
 
     # TODO: update version to 5.8
     depends_on('py-deepdiff@5.6:', type=('build', 'run'))
