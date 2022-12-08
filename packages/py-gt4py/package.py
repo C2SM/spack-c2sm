@@ -39,7 +39,6 @@ class PyGt4py(PythonPackage):
     # notify when the package is updated.
     # maintainers = ['github_user1', 'github_user2']
 
-
     depends_on('python@3.10:', type=('build', 'run'))
     depends_on('py-attrs@20.3:', type=('build', 'run'))
 
