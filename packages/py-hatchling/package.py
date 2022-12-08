@@ -62,7 +62,6 @@ class PyHatchling(PythonPackage):
     depends_on('py-editables@0.3:', type=('build', 'run'))
     depends_on('py-importlib-metadata', type=('build', 'run'))
 
-
     def global_options(self, spec, prefix):
         # FIXME: Add options to pass to setup.py
         # FIXME: If not needed, delete this function
