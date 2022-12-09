@@ -2,7 +2,7 @@ import unittest
 import sys
 import os
 from pathlib import Path
-from context import needs_testing, if_context_includes, skip_machines
+from test.context import if_context_includes, skip_machines
 
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                '..')
@@ -11,28 +11,22 @@ sys.path.append(os.path.normpath(spack_c2sm_path))
 from src import machine_name, log_with_spack
 
 
-def test_with_spack(command: str, log_name: str = None):
-    if log_name is None:
-        log_name = command.replace('--show-log-on-error ', '') \
-            .replace('--test=root ', '') \
-            .replace('-n', '') \
-            .replace('-v ', '') \
-            .replace('%', '') \
-            .replace(' ', '_')
-
-    log = Path(
-        f'{spack_c2sm_path}/log/{machine_name()}/system_test/{log_name}.log')
-    ret = log_with_spack(command, log)
+def spack_installcosmo_and_test(command: str, log_filename: str = None):
+    """
+    Tests 'spack installcosmo' of the given command and writes the output into the log file.
+    If log_filename is None, command is used to create one.
+    """
+    ret = log_with_spack(f'spack installcosmo --test=root -n -v {command}', 'system_test', log_filename)
     ret.check_returncode()
 
 
-def spack_installcosmo_and_test(command: str, log_name: str = None):
-    test_with_spack(f'spack installcosmo --test=root -n -v {command}',
-                    log_name)
-
-
-def spack_install_and_test(command: str, log_name: str = None):
-    test_with_spack(f'spack install --test=root -n -v {command}', log_name)
+def spack_install_and_test(command: str, log_filename: str = None):
+    """
+    Tests 'spack install' of the given command and writes the output into the log file.
+    If log_filename is None, command is used to create one.
+    """
+    ret = log_with_spack(f'spack install --test=root -n -v {command}', 'system_test', log_filename)
+    ret.check_returncode()
 
 
 mpi: str = {
