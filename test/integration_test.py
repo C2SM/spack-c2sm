@@ -16,7 +16,8 @@ def spack_info(command: str, log_filename: str = None):
     Tests 'spack info' of the given command and writes the output into the log file.
     If log_filename is None, command is used to create one.
     """
-    ret = log_with_spack(f'spack info {command}', 'integration_test', log_filename)
+    ret = log_with_spack(f'spack info {command}', 'integration_test',
+                         log_filename)
     ret.check_returncode()
 
 
@@ -25,7 +26,8 @@ def spack_spec(command: str, log_filename: str = None):
     Tests 'spack info' of the given command and writes the output into the log file.
     If log_filename is None, command is used to create one.
     """
-    ret = log_with_spack(f'spack spec {command}', 'integration_test', log_filename)
+    ret = log_with_spack(f'spack spec {command}', 'integration_test',
+                         log_filename)
     ret.check_returncode()
 
 

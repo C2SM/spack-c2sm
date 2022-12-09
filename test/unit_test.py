@@ -75,7 +75,10 @@ class FilenameSanitizerTest(unittest.TestCase):
 
         self.assertFalse(' ' in sanitized)
         self.assertFalse('%' in sanitized)
-        self.assertEqual(sanitized, 'spack_installcosmo_cosmo_@6.0_nvhpc_cosmo_target=cpu_~cppdycore_^mpich_nvhpc')
+        self.assertEqual(
+            sanitized,
+            'spack_installcosmo_cosmo_@6.0_nvhpc_cosmo_target=cpu_~cppdycore_^mpich_nvhpc'
+        )
 
 
 if __name__ == '__main__':

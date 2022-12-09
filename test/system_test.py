@@ -16,7 +16,8 @@ def spack_installcosmo_and_test(command: str, log_filename: str = None):
     Tests 'spack installcosmo' of the given command and writes the output into the log file.
     If log_filename is None, command is used to create one.
     """
-    ret = log_with_spack(f'spack installcosmo --test=root -n -v {command}', 'system_test', log_filename)
+    ret = log_with_spack(f'spack installcosmo --test=root -n -v {command}',
+                         'system_test', log_filename)
     ret.check_returncode()
 
 
@@ -25,7 +26,8 @@ def spack_install_and_test(command: str, log_filename: str = None):
     Tests 'spack install' of the given command and writes the output into the log file.
     If log_filename is None, command is used to create one.
     """
-    ret = log_with_spack(f'spack install --test=root -n -v {command}', 'system_test', log_filename)
+    ret = log_with_spack(f'spack install --test=root -n -v {command}',
+                         'system_test', log_filename)
     ret.check_returncode()
 
 

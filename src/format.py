@@ -1,4 +1,3 @@
-
 def time_format(seconds) -> str:
     m, s = divmod(seconds, 60)
     h, m = divmod(m, 60)
@@ -15,12 +14,12 @@ def time_format(seconds) -> str:
 
 def sanitized_filename(filename: str) -> str:
     replacements = [
-        (' --show-log-on-error', ''), # irrelevant in filename
-        (' --test=root', ''), # irrelevant in filename
-        (' -n', ''), # irrelevant in filename
-        (' -v', ''), # irrelevant in filename
-        ('%', ''), # causes problems in web browsers
-        (' ', '_'), # causes problems in bash
+        (' --show-log-on-error', ''),  # irrelevant in filename
+        (' --test=root', ''),  # irrelevant in filename
+        (' -n', ''),  # irrelevant in filename
+        (' -v', ''),  # irrelevant in filename
+        ('%', ''),  # causes problems in web browsers
+        (' ', '_'),  # causes problems in bash
     ]
     for old, new in replacements:
         filename = filename.replace(old, new)
