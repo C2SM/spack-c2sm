@@ -103,6 +103,7 @@ class CosmoDycore(CMakePackage):
     depends_on('cmake@3.12:')
     depends_on('cuda', type=('build', 'link', 'run'), when='+cuda')
 
+    conflicts('%nvhpc')
     conflicts('+production', when='build_type=Debug')
     conflicts('+production', when='+pmeters')
 
