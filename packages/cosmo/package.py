@@ -39,7 +39,7 @@ class Cosmo(MakefilePackage):
 
     # There are three different types of test_cosmo.py around:
 
-    # COSMO-ORG 
+    # COSMO-ORG
     patch('patches/c2sm-master/spec_as_yaml/patch.test_cosmo',
           when='@c2sm-master')
     patch('patches/org-master/spec_as_yaml/patch.test_cosmo',
@@ -47,8 +47,7 @@ class Cosmo(MakefilePackage):
     # C2SM-FEATURES
     patch('patches/c2sm-features/spec_as_yaml/patch.test_cosmo',
           when='@c2sm-features')
-    patch('patches/empa-ghg/spec_as_yaml/patch.test_cosmo',
-          when='@empa-ghg')
+    patch('patches/empa-ghg/spec_as_yaml/patch.test_cosmo', when='@empa-ghg')
     # APN-MCH
     patch('patches/apn-mch/spec_as_yaml/patch.test_cosmo', when='@apn-mch')
     patch('patches/5.09a.mch1.2.p2/spec_as_yaml/patch.test_cosmo',
@@ -58,7 +57,7 @@ class Cosmo(MakefilePackage):
 
     # There are two different types of serialize_cosmo.py around:
 
-    # COSMO-ORG 
+    # COSMO-ORG
     patch('patches/c2sm-master/spec_as_yaml/patch.serialize_cosmo',
           when='@c2sm-master +serialize')
     patch('patches/org-master/spec_as_yaml/patch.serialize_cosmo',
@@ -69,7 +68,8 @@ class Cosmo(MakefilePackage):
           when='@empa-ghg +serialize')
 
     # APN-MCH
-    patch('patches/apn-mch/spec_as_yaml/patch.serialize_cosmo', when='@apn-mch +serialize')
+    patch('patches/apn-mch/spec_as_yaml/patch.serialize_cosmo',
+          when='@apn-mch +serialize')
     patch('patches/5.09a.mch1.2.p2/spec_as_yaml/patch.serialize_cosmo',
           when='@5.09a.mch1.2.p2 +serialize')
 
