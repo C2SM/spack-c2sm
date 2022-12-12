@@ -73,6 +73,12 @@ class CosmoDycoreTest(unittest.TestCase):
     def test_install_version_6_0_no_cuda(self):
         spack_install_and_test('cosmo-dycore @6.0 ~cuda')
 
+    def test_install_c2sm_master_cuda(self):
+        spack_install_and_test('cosmo-dycore @c2sm-master +cuda')
+
+    def test_install_c2sm_master_no_cuda(self):
+        spack_install_and_test('cosmo-dycore @c2sm-master ~cuda')
+
 
 class CosmoEccodesDefinitionsTest(unittest.TestCase):
 
