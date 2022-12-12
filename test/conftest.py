@@ -1,3 +1,5 @@
+import os
+import sys
 import pytest
 
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
