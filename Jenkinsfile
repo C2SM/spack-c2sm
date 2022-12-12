@@ -45,14 +45,14 @@ pipeline {
                         steps {
                             sh """
                             source env/bin/activate
-                            pytest --workers auto test/integration_test.py """ + env.ghprbCommentBody
+                            pytest --workers auto -v  --scope \"""" + env.ghprbCommentBody + "\" test/integration_test.py"
                         }
                     }
                     stage('System Tests') {
                         steps {
                             sh """
                             source env/bin/activate
-                            pytest --workers auto test/system_test.py """ + env.ghprbCommentBody
+                            pytest --workers auto -v  --scope \"""" + env.ghprbCommentBody + "\" test/system_test.py"
                         }
                     }
                 }

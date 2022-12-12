@@ -1,4 +1,5 @@
 import unittest
+import pytest
 import sys
 import os
 from pathlib import Path
@@ -6,15 +7,11 @@ from pathlib import Path
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                '..')
 sys.path.append(os.path.normpath(spack_c2sm_path))
-from src import machine_name, Markdown, time_format, sanitized_filename
+from src import machine_name, Markdown, time_format, sanitized_filename, all_machines, all_packages, explicit_scope, package_triggers, machine_skips
 
 
-class MachineDetection(unittest.TestCase):
-
-    @unittest.skipUnless(__name__ == '__main__' and len(sys.argv) > 1,
-                         'needs machine_name_from_arg')
-    def test_machine_name(self):
-        self.assertEqual(machine_name(), machine_name_from_arg)
+def test_machine_detection(machinename):
+    assert(machine_name() == machinename)
 
 
 class MarkDownTest(unittest.TestCase):
@@ -81,8 +78,37 @@ class FilenameSanitizerTest(unittest.TestCase):
         )
 
 
+class ScopeTest(unittest.TestCase):
+
+    def test_explicit_scope_1_machine_1_package(self):
+        scope = explicit_scope('tsa cosmo')
+        self.assertEqual(sorted(scope), sorted(['tsa', 'cosmo']))
+
+    def test_explicit_scope_2_machines_2_packages(self):
+        scope = explicit_scope('tsa cosmo daint icon')
+        self.assertEqual(sorted(scope), sorted(['tsa', 'daint', 'cosmo', 'icon']))
+
+    def test_explicit_scope_0_machines_1_package(self):
+        scope = explicit_scope('cosmo')
+        self.assertEqual(sorted(scope), sorted(all_machines + ['cosmo']))
+
+    def test_explicit_scope_0_machines_0_packages(self):
+        scope = explicit_scope('launch jenkins')
+        self.assertEqual(sorted(scope), sorted(['launch', 'jenkins'] + all_machines + all_packages))
+
+    def test_explicit_scope_allows_unknowns(self):
+        scope = explicit_scope('launch jenkins tsa cosmo')
+        self.assertEqual(sorted(scope), sorted(['launch', 'jenkins', 'tsa', 'cosmo']))
+
+    def test_package_triggers(self):
+        triggers = package_triggers(['cosmo-dycore'])
+        self.assertTrue('CosmoDycoreTest'.lower() in triggers) # Name of TestCase included
+        self.assertTrue('test_cosmo_dycore'.lower() in triggers) # Name of Test included
+
+    def test_machine_skips(self):
+        skips = machine_skips(['tsa'])
+        self.assertTrue('no_daint' in skips)
+
+
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        machine_name_from_arg = sys.argv[-1]
-        sys.argv = sys.argv[:-1]  # unittest needs this
     unittest.main(verbosity=2)
