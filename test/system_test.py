@@ -60,7 +60,12 @@ class CosmoTest(unittest.TestCase):
         #spack_installcosmo_and_test(f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore')
         pass  #TODO
 
-    def test_install_version_5_09_mch_1_2_p2(self):
+    def test_install_version_5_09_mch_1_2_p2_cpu(self):
+        spack_installcosmo_and_test(
+            f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=cpu ~cppdycore')
+
+
+    def test_install_version_5_09_mch_1_2_p2_gpu(self):
         spack_installcosmo_and_test(
             f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=gpu +cppdycore')
 
