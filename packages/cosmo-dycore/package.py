@@ -117,6 +117,8 @@ class CosmoDycore(CMakePackage):
           when='@c2sm-master')
     patch('patches/org-master/spec_as_yaml/patch.test_dycore',
           when='@org-master')
+    patch('patches/c2sm-features/spec_as_yaml/patch.test_dycore',
+          when='@c2sm-features')
 
     patch('patches/apn-mch/spec_as_yaml/patch.test_dycore', when='@apn-mch')
     patch('patches/5.09a.mch1.2.p2/spec_as_yaml/patch.test_dycore',

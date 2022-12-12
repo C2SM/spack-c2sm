@@ -36,25 +36,48 @@ class Cosmo(MakefilePackage):
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
 
     # pass spec from spec to test_cosmo.py in yaml-format
+
+    # There are three different types of test_cosmo.py around:
+
+    # COSMO-ORG 
     patch('patches/c2sm-master/spec_as_yaml/patch.test_cosmo',
           when='@c2sm-master')
     patch('patches/org-master/spec_as_yaml/patch.test_cosmo',
           when='@org-master')
-
+    # C2SM-FEATURES
+    patch('patches/c2sm-features/spec_as_yaml/patch.test_cosmo',
+          when='@c2sm-features')
+    patch('patches/empa-ghg/spec_as_yaml/patch.test_cosmo',
+          when='@empa-ghg')
+    # APN-MCH
     patch('patches/apn-mch/spec_as_yaml/patch.test_cosmo', when='@apn-mch')
     patch('patches/5.09a.mch1.2.p2/spec_as_yaml/patch.test_cosmo',
           when='@5.09a.mch1.2.p2')
 
     # pass spec from spec to serialize_cosmo.py in yaml-format
-    #patch('patches/c2sm-master/spec_as_yaml/patch.serialize_cosmo',when='@c2sm-master +serialize')
-    #patch('patches/org-master/spec_as_yaml/patch.serialize_cosmo',when='@org-master +serialize')
-    #patch('patches/empa-ghg/spec_as_yaml/patch.serialize_cosmo',when='@empa-ghg +serialize')
+
+    # There are two different types of serialize_cosmo.py around:
+
+    # COSMO-ORG 
+    patch('patches/c2sm-master/spec_as_yaml/patch.serialize_cosmo',
+          when='@c2sm-master +serialize')
+    patch('patches/org-master/spec_as_yaml/patch.serialize_cosmo',
+          when='@org-master +serialize')
+    patch('patches/c2sm-features/spec_as_yaml/patch.serialize_cosmo',
+          when='@c2sm-features +serialize')
+    patch('patches/empa-ghg/spec_as_yaml/patch.serialize_cosmo',
+          when='@empa-ghg +serialize')
+
+    # APN-MCH
+    patch('patches/apn-mch/spec_as_yaml/patch.serialize_cosmo', when='@apn-mch +serialize')
+    patch('patches/5.09a.mch1.2.p2/spec_as_yaml/patch.serialize_cosmo',
+          when='@5.09a.mch1.2.p2 +serialize')
 
     depends_on('netcdf-fortran', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))
     depends_on('slurm', type='run')
     depends_on('cuda', when='cosmo_target=gpu', type=('build', 'link', 'run'))
-    depends_on('serialbox +fortran',
+    depends_on('serialbox +fortran ^python@2:2.9',
                when='+serialize',
                type=('build', 'link', 'run'))
     depends_on('mpi', type=('build', 'link', 'run'), when='cosmo_target=cpu')
