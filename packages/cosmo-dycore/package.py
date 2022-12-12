@@ -46,9 +46,6 @@ class CosmoDycore(CMakePackage):
             default='.',
             description='Serialization data path',
             multi=False)
-    variant('production',
-            default=False,
-            description='Force all variants to be the ones used in production')
     variant('cuda_arch',
             default='none',
             description='Build with cuda_arch',
@@ -104,8 +101,6 @@ class CosmoDycore(CMakePackage):
     depends_on('cuda', when='+cuda')
 
     conflicts('%nvhpc')
-    conflicts('+production', when='build_type=Debug')
-    conflicts('+production', when='+pmeters')
 
     root_cmakelists_dir = 'dycore'
 
