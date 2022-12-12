@@ -30,7 +30,8 @@ def pytest_collection_modifyitems(config, items):
     out_of_scope_skip = pytest.mark.skip(reason="not in scope")
     for item in items:
         package_inactive = not any(k.lower() in triggers
-                                for k in item.keywords)
+                                   for k in item.keywords)
         machine_inactive = any(k.lower() in skips for k in item.keywords)
-        if package_inactive or machine_inactive or (machine_name() not in scope):
+        if package_inactive or machine_inactive or (machine_name()
+                                                    not in scope):
             item.add_marker(out_of_scope_skip)
