@@ -10,7 +10,8 @@ from src import machine_name, explicit_scope, package_triggers, machine_skips, a
 
 def pytest_configure(config):
     for machine in all_machines:
-        config.addinivalue_line('markers', f'no_{machine}: mark test to not run on {machine}')
+        config.addinivalue_line(
+            'markers', f'no_{machine}: mark test to not run on {machine}')
 
 
 def pytest_addoption(parser):
