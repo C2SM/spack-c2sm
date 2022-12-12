@@ -5,7 +5,7 @@ import pytest
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                '..')
 sys.path.append(os.path.normpath(spack_c2sm_path))
-from src import explicit_scope, package_triggers, machine_skips
+from src import machine_name, explicit_scope, package_triggers, machine_skips
 
 
 def pytest_addoption(parser):
