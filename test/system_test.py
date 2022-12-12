@@ -69,6 +69,16 @@ class CosmoTest(unittest.TestCase):
         spack_installcosmo_and_test(
             f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=gpu +cppdycore')
 
+    def test_install_c2sm_master_cpu(self):
+        spack_installcosmo_and_test(
+            f'cosmo @c2sm-master %{nvidia_compiler} cosmo_target=cpu ~cppdycore'
+        )
+
+    def test_install_c2sm_master_gpu(self):
+        spack_installcosmo_and_test(
+            f'cosmo @c2sm-master %{nvidia_compiler} cosmo_target=gpu +cppdycore'
+        )
+
 
 class CosmoDycoreTest(unittest.TestCase):
 
