@@ -31,27 +31,40 @@ def spack_install_and_test(command: str, log_filename: str = None):
     ret.check_returncode()
 
 
+mpi: str = {
+    'daint': 'mpich',
+    'tsa': 'openmpi',
+    'balfrin': 'cray-mpich-binary',
+}[machine_name()]
+
+nvidia_compiler: str = {
+    'daint': 'nvhpc',
+    'tsa': 'pgi',
+    'balfrin': 'nvhpc',
+}[machine_name()]
+
+
 @if_context_includes('cosmo')
 class CosmoTest(unittest.TestCase):
     package_name = 'cosmo'
 
     def test_install_version_6_0_cpu(self):
-        spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=cpu ~cppdycore')
+        spack_install_and_test(f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore')
 
     def test_install_version_6_0_gpu(self):
-        spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=gpu +cppdycore')
+        spack_install_and_test(f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore')
 
     def test_devbuild_version_6_0_cpu(self):
-        #spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=cpu ~cppdycore')
+        #spack_install_and_test(f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore')
         pass  #TODO
 
     def test_devbuild_version_6_0_gpu(self):
-        #spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=gpu +cppdycore')
+        #spack_install_and_test(f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore')
         pass  #TODO
 
     def test_install_version_5_09_mch_1_2_p2(self):
         spack_install_and_test(
-            'cosmo @5.09a.mch1.2.p2 %nvhpc cosmo_target=gpu +cppdycore')
+            f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=gpu +cppdycore')
 
 
 @if_context_includes('cosmo-dycore')
@@ -149,14 +162,17 @@ class IconTest(unittest.TestCase):
 class Int2lmTest(unittest.TestCase):
     package_name = 'int2lm'
 
-    def test_install_nvhpc(self):
-        spack_install_and_test('int2lm @int2lm-3.00 %nvhpc')
+    def test_install_version_3_00_gcc(self):
+        spack_install_and_test('int2lm @int2lm-3.00 %gcc')
+        
+    def test_install_version_3_00_nvhpc(self):
+        spack_install_and_test(f'int2lm @int2lm-3.00 %{nvidia_compiler}')
 
-    def test_install_gcc(self):
+    def test_install_c2sm_master_gcc(self):
         spack_install_and_test('int2lm @c2sm-master %gcc')
 
-    def test_install_nvhpc(self):
-        spack_install_and_test('int2lm @c2sm-master %nvhpc')
+    def test_install_c2sm_master_nvhpc(self):
+        spack_install_and_test(f'int2lm @c2sm-master %{nvidia_compiler}')
 
 
 @if_context_includes('icontools')
