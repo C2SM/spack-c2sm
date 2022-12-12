@@ -11,7 +11,7 @@ from src import machine_name, Markdown, time_format, sanitized_filename, all_mac
 
 
 def test_machine_detection(machinename):
-    assert(machine_name() == machinename)
+    assert (machine_name() == machinename)
 
 
 class MarkDownTest(unittest.TestCase):
@@ -86,7 +86,8 @@ class ScopeTest(unittest.TestCase):
 
     def test_explicit_scope_2_machines_2_packages(self):
         scope = explicit_scope('tsa cosmo daint icon')
-        self.assertEqual(sorted(scope), sorted(['tsa', 'daint', 'cosmo', 'icon']))
+        self.assertEqual(sorted(scope),
+                         sorted(['tsa', 'daint', 'cosmo', 'icon']))
 
     def test_explicit_scope_0_machines_1_package(self):
         scope = explicit_scope('cosmo')
@@ -94,16 +95,21 @@ class ScopeTest(unittest.TestCase):
 
     def test_explicit_scope_0_machines_0_packages(self):
         scope = explicit_scope('launch jenkins')
-        self.assertEqual(sorted(scope), sorted(['launch', 'jenkins'] + all_machines + all_packages))
+        self.assertEqual(
+            sorted(scope),
+            sorted(['launch', 'jenkins'] + all_machines + all_packages))
 
     def test_explicit_scope_allows_unknowns(self):
         scope = explicit_scope('launch jenkins tsa cosmo')
-        self.assertEqual(sorted(scope), sorted(['launch', 'jenkins', 'tsa', 'cosmo']))
+        self.assertEqual(sorted(scope),
+                         sorted(['launch', 'jenkins', 'tsa', 'cosmo']))
 
     def test_package_triggers(self):
         triggers = package_triggers(['cosmo-dycore'])
-        self.assertTrue('CosmoDycoreTest'.lower() in triggers) # Name of TestCase included
-        self.assertTrue('test_cosmo_dycore'.lower() in triggers) # Name of Test included
+        self.assertTrue('CosmoDycoreTest'.lower()
+                        in triggers)  # Name of TestCase included
+        self.assertTrue('test_cosmo_dycore'.lower()
+                        in triggers)  # Name of Test included
 
     def test_machine_skips(self):
         skips = machine_skips(['tsa'])

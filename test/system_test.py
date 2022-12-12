@@ -37,7 +37,6 @@ mpi: str = {
     'balfrin': 'cray-mpich-binary',
 }[machine_name()]
 
-
 nvidia_compiler: str = {
     'daint': 'nvhpc',
     'tsa': 'pgi',
@@ -135,7 +134,7 @@ class GridToolsTest(unittest.TestCase):
         spack_install_and_test('gridtools @1.1.3')
 
 
-@pytest.mark.no_tsa # config file does not exist for these machines
+@pytest.mark.no_tsa  # config file does not exist for these machines
 class IconTest(unittest.TestCase):
 
     def test_install_nwp_gpu(self):
@@ -197,7 +196,7 @@ class LibGrib1Test(unittest.TestCase):
 
 
 class OasisTest(unittest.TestCase):
-    pass #TODO
+    pass  #TODO
 
 
 class OmniXmodPoolTest(unittest.TestCase):
