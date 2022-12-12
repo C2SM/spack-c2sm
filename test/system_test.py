@@ -47,21 +47,21 @@ nvidia_compiler: str = {
 class CosmoTest(unittest.TestCase):
 
     def test_install_version_6_0_cpu(self):
-        spack_install_and_test(f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore')
+        spack_installcosmo_and_test(f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore')
 
     def test_install_version_6_0_gpu(self):
-        spack_install_and_test(f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore')
+        spack_installcosmo_and_test(f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore')
 
     def test_devbuild_version_6_0_cpu(self):
-        #spack_install_and_test(f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore')
+        #spack_installcosmo_and_test(f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore')
         pass  #TODO
 
     def test_devbuild_version_6_0_gpu(self):
-        #spack_install_and_test(f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore')
+        #spack_installcosmo_and_test(f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore')
         pass  #TODO
 
     def test_install_version_5_09_mch_1_2_p2(self):
-        spack_install_and_test(
+        spack_installcosmo_and_test(
             f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=gpu +cppdycore')
 
 
