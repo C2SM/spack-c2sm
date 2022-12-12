@@ -10,8 +10,12 @@ sys.path.append(os.path.normpath(spack_c2sm_path))
 from src import machine_name, Markdown, time_format, sanitized_filename, all_machines, all_packages, explicit_scope, package_triggers, machine_skips
 
 
-def test_machine_detection(machinename):
-    assert (machine_name() == machinename)
+class MachineDetection(unittest.TestCase):
+
+    @unittest.skipUnless(__name__ == '__main__' and len(sys.argv) > 1,
+                         'needs machine_name_from_arg')
+    def test_machine_name(self):
+        self.assertEqual(machine_name(), machine_name_from_arg)
 
 
 class MarkDownTest(unittest.TestCase):
@@ -117,4 +121,7 @@ class ScopeTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        machine_name_from_arg = sys.argv[-1]
+        sys.argv = sys.argv[:-1]  # unittest needs this
     unittest.main(verbosity=2)
