@@ -1,0 +1,10 @@
+diff --git a/test/testsuite/src/testsuite.py b/test/testsuite/src/testsuite.py
+index ba56465..3c7b8d0 100755
+--- a/test/testsuite/src/testsuite.py
++++ b/test/testsuite/src/testsuite.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ """
+ COSMO TECHNICAL TESTSUITE
