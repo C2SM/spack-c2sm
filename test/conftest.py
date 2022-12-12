@@ -5,7 +5,12 @@ import pytest
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                '..')
 sys.path.append(os.path.normpath(spack_c2sm_path))
-from src import machine_name, explicit_scope, package_triggers, machine_skips
+from src import machine_name, explicit_scope, package_triggers, machine_skips, all_machines
+
+
+def pytest_configure(config):
+    for machine in all_machines:
+        config.addinivalue_line('markers', f'no_{machine}: mark test to not run on {machine}')
 
 
 def pytest_addoption(parser):
