@@ -17,17 +17,12 @@ class CosmoDycore(CMakePackage):
     version('org-master', branch='master')
     version('6.0', tag='6.0')
 
-    version('apn-mch',
-            git='ssh://git@github.com/MeteoSwiss-APN/cosmo.git',
-            branch='mch')
+    version('apn-mch', git=apngit, branch='mch')
     version('5.09a.mch1.2.p2', git=apngit, tag='5.09a.mch1.2.p2')
 
-    version('c2sm-master',
-            git='ssh://git@github.com/C2SM-RCM/cosmo.git',
-            branch='master')
-    version('c2sm-features',
-            git='ssh://git@github.com/C2SM-RCM/cosmo.git',
-            branch='c2sm-features')
+    version('c2sm-master', git=c2smgit, branch='master')
+    version('c2sm-features', git=c2smgit, branch='c2sm-features')
+
     version('empa-ghg', git=empagit, branch='c2sm')
 
     variant('build_type',
