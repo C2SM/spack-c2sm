@@ -6,7 +6,7 @@ from pathlib import Path
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                '..')
 sys.path.append(os.path.normpath(spack_c2sm_path))
-from src import machine_name, Markdown
+from src import machine_name, Markdown, time_format, sanitized_filename
 
 
 class MachineDetection(unittest.TestCase):
@@ -50,6 +50,35 @@ class MarkDownTest(unittest.TestCase):
             Markdown.collapsible('summary', 'details'),
             '<details><summary>summary</summary>details</details>')
 
+
+class TimeFormatTest(unittest.TestCase):
+
+    def test_seconds_only(self):
+        self.assertEqual(time_format(1), '1.00s')
+
+    def test_minutes_only(self):
+        self.assertEqual(time_format(60), '1m')
+
+    def test_hours_only(self):
+        self.assertEqual(time_format(3600), '1h')
+
+    def test_full_combo(self):
+        self.assertEqual(time_format(3600 + 23 * 60 + 45.67), '1h 23m 45.67s')
+
+
+class FilenameSanitizerTest(unittest.TestCase):
+
+    def test_example(self):
+        example = 'spack installcosmo --test=root --show-log-on-error -n -v cosmo @6.0 %nvhpc cosmo_target=cpu ~cppdycore ^mpich %nvhpc'
+
+        sanitized = sanitized_filename(example)
+
+        self.assertFalse(' ' in sanitized)
+        self.assertFalse('%' in sanitized)
+        self.assertEqual(
+            sanitized,
+            'spack_installcosmo_cosmo_@6.0_nvhpc_cosmo_target=cpu_~cppdycore_^mpich_nvhpc'
+        )
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
