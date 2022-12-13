@@ -171,10 +171,6 @@ class IconTest(unittest.TestCase):
 class Int2lmTest(unittest.TestCase):
     package_name = 'int2lm'
 
-    def test_install_nvhpc_3_00(self):
-        spack_install_and_test(
-            'int2lm @int2lm-3.00 %nvhpc ^eccodes %nvhpc ^libgrib1 %nvhpc')
-
     def test_install_gcc(self):
         spack_install_and_test(
             'int2lm @c2sm-master %gcc ^eccodes %gcc ^libgrib1 %gcc')
