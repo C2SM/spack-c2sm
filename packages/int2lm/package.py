@@ -57,7 +57,8 @@ class Int2lm(MakefilePackage):
     # from Spack v0.18 we don't load a Python module prior sourcing Spack.
     # Therefore #!/usr/bin/env python points to python2.
     # Replace with #!/usr/bin/env python3 instead
-    patch('patches/testsuite/patch.to_python3',when="@apn-master,c2sm-master,c2sm-features")
+    patch('patches/testsuite/patch.to_python3',
+          when="@apn-master,c2sm-master,c2sm-features")
 
     conflicts(
         'pollen=True',
