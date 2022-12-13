@@ -5,7 +5,7 @@
 
 from spack import *
 
-from spack.pkg.builtin.py_fprettify import  PyFprettify as SpackPyFprettify
+from spack.pkg.builtin.py_fprettify import PyFprettify as SpackPyFprettify
 
 
 class PyFprettify(SpackPyFprettify):
@@ -13,4 +13,6 @@ class PyFprettify(SpackPyFprettify):
     and later) that imposes strict whitespace formatting, written in
     Python."""
 
-    version('0.3.7', sha256='1488a813f7e60a9e86c56fd0b82bd9df1b75bfb4bf2ee8e433c12f63b7e54057')
+    version('0.3.7',
+            sha256=
+            '1488a813f7e60a9e86c56fd0b82bd9df1b75bfb4bf2ee8e433c12f63b7e54057')

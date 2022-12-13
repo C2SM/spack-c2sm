@@ -95,4 +95,7 @@ class PyGt4py(PythonPackage):
     @on_package_attributes(run_tests=True)
     def install_test(self):
         with working_dir('spack-test', create=True):
-            python('-m', 'pytest', '-v', '../tests/eve_tests/unit_tests', '../tests/functional_tests/cpp_backend_tests/', '../tests/functional_tests/ffront_tests', '../tests/functional_tests/otf_tests')
+            python('-m', 'pytest', '-v', '../tests/eve_tests/unit_tests',
+                   '../tests/functional_tests/cpp_backend_tests/',
+                   '../tests/functional_tests/ffront_tests',
+                   '../tests/functional_tests/otf_tests')
