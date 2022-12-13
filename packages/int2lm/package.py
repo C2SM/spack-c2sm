@@ -28,7 +28,6 @@ class Int2lm(MakefilePackage):
     # C2SM tags
     version('c2sm-master', git=c2smgit, branch='master')
     version('c2sm-features', git=c2smgit, branch='c2sm-features')
-    version('c2sm_v2.8.3', git=c2smgit, tag='v2.8.3')
 
     # ORG tags
     version('org-master', git=orggit, branch='master')
@@ -58,11 +57,11 @@ class Int2lm(MakefilePackage):
     # from Spack v0.18 we don't load a Python module prior sourcing Spack.
     # Therefore #!/usr/bin/env python points to python2.
     # Replace with #!/usr/bin/env python3 instead
-    patch('patches/testsuite/patch.to_python3')
+    patch('patches/testsuite/patch.to_python3',when="@apn-master,c2sm-master,c2sm-features")
 
     conflicts(
         'pollen=True',
-        when='@org-master,org_master,org_2.05:org_2.08',
+        when='@org-master,int2lm-3.00',
         msg=
         'int2lm-org is currently broken with pollen, set variant pollen=False')
 
