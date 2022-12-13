@@ -172,13 +172,13 @@ class Int2lmTest(unittest.TestCase):
     package_name = 'int2lm'
 
     def test_install_nvhpc(self):
-        spack_install_and_test('int2lm @int2lm-3.00 %nvhpc')
+        spack_install_and_test('int2lm @int2lm-3.00 %nvhpc ^eccodes %nvhpc ^libgrib1 %nvhpc')
 
     def test_install_gcc(self):
-        spack_install_and_test('int2lm @c2sm-master %gcc')
+        spack_install_and_test('int2lm @c2sm-master %gcc ^eccodes %gcc ^libgrib1 %gcc')
 
     def test_install_nvhpc(self):
-        spack_install_and_test('int2lm @c2sm-master %nvhpc')
+        spack_install_and_test('int2lm @c2sm-master %nvhpc ^eccodes %nvhpc ^libgrib1 %nvhpc')
 
 
 @if_context_includes('icontools')
