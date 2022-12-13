@@ -61,18 +61,23 @@ class PyGt4py(PythonPackage):
     depends_on('py-mako@1.1:', type=('build', 'run'))
     depends_on('py-networkx@2.4:', type=('build', 'run'))
     depends_on('py-ninja@1.10:', type=('build', 'run'))
-    depends_on('py-numpy@1.21:', type=('build', 'run'))
+    depends_on('py-numpy@1.21: ~blas ~lapack', type=('build', 'run'))
     depends_on('py-packaging@20.0:', type=('build', 'run'))
     depends_on('py-pybind11@2.5:', type=('build', 'run'))
     depends_on('py-toolz@0.12.0:', type=('build', 'run'))
     depends_on('py-typing-extensions@4.2:', type=('build', 'run'))
     depends_on('py-xxhash@1.4.4:', type=('build', 'run'))
 
+    # test-only dep does not work for dev-build
+    depends_on('py-pytest', type=('build', 'run'))
+
     depends_on('py-wheel', type='build')
     depends_on('py-cython', type='build')
-    depends_on('py-pytest', type='test')
-
     depends_on('py-setuptools', type='build')
+
+    # pytest fails with:
+    #__main__.py: error: unrecognized arguments: --cov-config=setup.cfg
+    patch('patches/functional/rm_cov_config_arg.patch', when='@functional')
 
     def global_options(self, spec, prefix):
         # FIXME: Add options to pass to setup.py
@@ -90,4 +95,4 @@ class PyGt4py(PythonPackage):
     @on_package_attributes(run_tests=True)
     def install_test(self):
         with working_dir('spack-test', create=True):
-            python('-m', 'pytest', '-v', '../tests')
+            python('-m', 'pytest', '-v', '../tests/eve_tests/unit_tests', '../tests/functional_tests/cpp_backend_tests/', '../tests/functional_tests/ffront_tests', '../tests/functional_tests/otf_tests')
