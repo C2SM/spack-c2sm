@@ -1,4 +1,4 @@
-all_machines = ['tsa', 'daint', 'balfrin']
+all_machines = ['balfrin', 'daint', 'tsa']
 
 all_packages = [
     'cosmo',
@@ -24,6 +24,8 @@ all_packages = [
 
 
 def explicit_scope(scope: str) -> list:
+    "Adds all packages if none is listed, and all machines if none is listed."
+
     scope = scope.split(' ')
 
     if not any(x in scope for x in all_machines):
@@ -34,6 +36,11 @@ def explicit_scope(scope: str) -> list:
 
 
 def package_triggers(scope: list) -> list:
+    """
+    Transforms ['package-name'] to ['packagenametest', 'test_package_name']
+    so they match with the naming convenction of testcases and tests.
+    """
+
     active_packages = [x for x in all_packages if x in scope]  # intersection
     active_testcases = [
         x.replace('-', '').replace('_', '') + 'test' for x in active_packages
@@ -43,6 +50,5 @@ def package_triggers(scope: list) -> list:
 
 
 def machine_skips(scope: list) -> list:
-    inactive_machines = [x for x in all_machines
-                         if x not in scope]  # all_machines - scope
-    return ['no_' + x for x in inactive_machines]
+    "Returns a list with 'no_{machine}' for all machines not in scope."
+    return ['no_' + x for x in all_machines if x not in scope]

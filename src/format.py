@@ -1,4 +1,6 @@
 def time_format(seconds) -> str:
+    "Returns a string formatted as 'XXh YYm ZZ.ZZs'."
+
     m, s = divmod(seconds, 60)
     h, m = divmod(m, 60)
 
@@ -13,6 +15,8 @@ def time_format(seconds) -> str:
 
 
 def sanitized_filename(filename: str) -> str:
+    "Removes irrelevant information and replaces problematic chars."
+
     replacements = [
         (' --show-log-on-error', ''),  # irrelevant in filename
         (' --test=root', ''),  # irrelevant in filename
