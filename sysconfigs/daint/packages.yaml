@@ -8,20 +8,10 @@ packages:
     - gcc@11.2.0
     - intel@2021.3.0
     providers:
-      blas: # manually added
-      - cray-libsci_acc
-      - cray-libsci
-      - intel-mkl
-      mkl: # manually added
-      - intel-mkl
       mpi: # manually added
       - mpich
       pkgconfig: # manually added
       - pkg-config
-      scalapack: # manually added
-      - cray-libsci_acc
-      - cray-libsci
-      - intel-mkl
     target: # manually added
     - haswell
   autoconf:
@@ -61,6 +51,7 @@ packages:
   cosmo: # manually added
     variants: slave=daint cuda_arch=60
   cosmo-dycore: # manually added
+    compiler: [gcc@8.3.0]
     variants: slave=daint cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/
       slurm_partition= "normal" slurm_bin= "srun" slurm_gpu= "-" slurm_opt_nodes=
       "-N" slurm_nodes= "{0}"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint=
@@ -68,7 +59,10 @@ packages:
   cuda: # manually added
     buildable: false
     externals:
-    - spec: cuda@11.0
+    - spec: cuda@11.2%nvhpc@21.3
+      modules:
+      - cudatoolkit/21.3_11.2
+    - spec: cuda@11.0%gcc
       modules:
       - cudatoolkit/11.0.2_3.38-8.1__g5b73779
   cpio:
@@ -228,10 +222,10 @@ packages:
       prefix: /usr
   python:
     externals:
-    - spec: python@3.9.4+bz2+ctypes+dbm+ensurepip+lzma~nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /opt/python/3.9.4.1
     - spec: python@2.7.18+bz2+ctypes~dbm+ensurepip+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
       prefix: /usr
+    - spec: python@3.9.4+bz2+ctypes+dbm+ensurepip+lzma~nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+      prefix: /opt/python/3.9.4.1
     - spec: python@3.6.15+bz2+ctypes~dbm+ensurepip+lzma+nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
       prefix: /usr
   rsync:

@@ -17,6 +17,7 @@ def test_with_spack(command: str, log_name: str = None):
             .replace('--test=root ', '') \
             .replace('-v ', '') \
             .replace(' ', '_') \
+            .replace('-n', '_') \
             .replace('%', '')
 
     log = Path(
@@ -25,13 +26,13 @@ def test_with_spack(command: str, log_name: str = None):
     ret.check_returncode()
 
 
+def spack_installcosmo_and_test(command: str, log_name: str = None):
+    test_with_spack(f'spack installcosmo --test=root -n -v {command}',
+                    log_name)
+
+
 def spack_install_and_test(command: str, log_name: str = None):
-    if 'cosmo' in command and 'cosmo-dycore' not in command:
-        test_with_spack(f'spack installcosmo -v {command}', log_name)
-    else:
-        test_with_spack(
-            f'spack install --show-log-on-error --test=root {command}',
-            log_name)
+    test_with_spack(f'spack install -v --test=root {command}', log_name)
 
 
 @if_context_includes('cosmo')
@@ -39,10 +40,20 @@ class CosmoTest(unittest.TestCase):
     package_name = 'cosmo'
 
     def test_install_version_6_0_cpu(self):
-        spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=cpu ~cppdycore')
+        spack_installcosmo_and_test(
+            'cosmo @c2sm-master %nvhpc cosmo_target=cpu ~cppdycore')
 
-    def test_install_version_6_0_gpu(self):
-        spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=gpu +cppdycore')
+    @skip_machines('tsa', 'balfrin')
+    def test_install_version_6_0_gpu_mpich(self):
+        spack_installcosmo_and_test(
+            'cosmo @c2sm-master %nvhpc cosmo_target=gpu +cppdycore ^mpich%nvhpc ^cosmo-dycore %gcc'
+        )
+
+    @skip_machines('daint', 'balfrin')
+    def test_install_version_6_0_gpu_openmpi(self):
+        spack_installcosmo_and_test(
+            'cosmo @c2sm-master %nvhpc cosmo_target=gpu +cppdycore ^openmpi%nvhpc ^cosmo-dycore %gcc'
+        )
 
     def test_devbuild_version_6_0_cpu(self):
         #spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=cpu ~cppdycore')
@@ -52,9 +63,17 @@ class CosmoTest(unittest.TestCase):
         #spack_install_and_test('cosmo @6.0 %nvhpc cosmo_target=gpu +cppdycore')
         pass  #TODO
 
-    def test_install_version_5_09_mch_1_2_p2(self):
-        spack_install_and_test(
-            'cosmo @5.09a.mch1.2.p2 %nvhpc cosmo_target=gpu +cppdycore')
+    @skip_machines('tsa', 'balfrin', 'daint')
+    def test_install_version_5_09_mch_1_2_p2_mpich(self):
+        spack_installcosmo_and_test(
+            'cosmo @apn-mch %nvhpc cosmo_target=gpu +cppdycore ^mpich%nvhpc ^cosmo-dycore %gcc'
+        )
+
+    @skip_machines('daint', 'balfrin')
+    def test_install_version_5_09_mch_1_2_p2_openmpi(self):
+        spack_installcosmo_and_test(
+            'cosmo @apn-mch %nvhpc cosmo_target=gpu +cppdycore ^openmpi%nvhpc ^cosmo-dycore %gcc'
+        )
 
 
 @if_context_includes('cosmo-dycore')
@@ -62,10 +81,10 @@ class CosmoDycoreTest(unittest.TestCase):
     package_name = 'cosmo-dycore'
 
     def test_install_version_6_0_cuda(self):
-        spack_install_and_test('cosmo-dycore @6.0 +cuda')
+        spack_install_and_test('cosmo-dycore @c2sm-master +cuda')
 
     def test_install_version_6_0_no_cuda(self):
-        spack_install_and_test('cosmo-dycore @6.0 ~cuda')
+        spack_install_and_test('cosmo-dycore @c2sm-master ~cuda')
 
 
 @if_context_includes('cosmo-eccodes-definitions')
@@ -152,14 +171,13 @@ class IconTest(unittest.TestCase):
 class Int2lmTest(unittest.TestCase):
     package_name = 'int2lm'
 
-    def test_install_nvhpc(self):
-        spack_install_and_test('int2lm @int2lm-3.00 %nvhpc')
-
     def test_install_gcc(self):
-        spack_install_and_test('int2lm @c2sm-master %gcc')
+        spack_install_and_test(
+            'int2lm @c2sm-master %gcc ^eccodes %gcc ^libgrib1 %gcc')
 
-    def test_install_nvhpc(self):
-        spack_install_and_test('int2lm @c2sm-master %nvhpc')
+    def test_install_nvhpc_c2sm_master(self):
+        spack_install_and_test(
+            'int2lm @c2sm-master %nvhpc ^eccodes %nvhpc ^libgrib1 %nvhpc')
 
 
 @if_context_includes('icontools')

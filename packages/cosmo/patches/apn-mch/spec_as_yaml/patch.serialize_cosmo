@@ -1,0 +1,20 @@
+diff --git a/cosmo/ACC/test/tools/serialize_cosmo.py b/cosmo/ACC/test/tools/serialize_cosmo.py
+index 624fd295..fc15c712 100755
+--- a/cosmo/ACC/test/tools/serialize_cosmo.py
++++ b/cosmo/ACC/test/tools/serialize_cosmo.py
+@@ -15,7 +15,14 @@ def main():
+     parser.add_argument('-b', '--base_directory', type=str, help='Cosmo base directory', required=True)
+     args=parser.parse_args()
+ 
+-    cosmo_spec = spack.cmd.parse_specs(args.spec)[0]
++    try:
++        # assume spec is passed as a yaml-file
++        with open(args.spec,"r") as f:
++          cosmo_spec = Spec.from_yaml(f)
++    except:
++        # assume spec is passed as a string
++        cosmo_spec = Spec(args.spec)
++
+     cosmo_spec.concretize()
+ 
+     serialize_cosmo(cosmo_spec, args.base_directory)

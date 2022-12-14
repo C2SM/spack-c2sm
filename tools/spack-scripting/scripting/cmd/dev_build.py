@@ -102,7 +102,7 @@ def dev_build(self, args):
     spec.concretize()
     package = spack.repo.get(spec)
 
-    if package.installed:
+    if spec.installed:
         tty.error("Already installed in %s" % package.prefix)
         tty.msg("Uninstall or try adding a version suffix for this dev build.")
         sys.exit(1)
