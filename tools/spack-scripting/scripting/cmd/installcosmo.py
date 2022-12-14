@@ -171,7 +171,9 @@ def installcosmo(self, args):
             dep.versions = cosmo_spec.versions.copy()
 
     # re-concretize
-    cosmo_spec = spack.cmd.parse_specs(str(cosmo_spec))[0]
+    # JJ: we use conversion from/to yaml, parsing a string with the builtin
+    # spack command does not work in case spec show up twice, i.e cmake
+    cosmo_spec = Spec.from_yaml(cosmo_spec.to_yaml())
     cosmo_spec.concretize()
 
     # Dev-build cosmo
