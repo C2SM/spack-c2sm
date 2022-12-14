@@ -176,5 +176,9 @@ def installcosmo(self, args):
     cosmo_spec = Spec.from_yaml(cosmo_spec.to_yaml())
     cosmo_spec.concretize()
 
+    # print final spec that is built
+    print("\033[92m" + "==> COSMO spec to be installed: \n" + "\033[0m" +
+          '\t' + cosmo_spec.tree())
+
     # Dev-build cosmo
     custom_install(cosmo_spec, args)
