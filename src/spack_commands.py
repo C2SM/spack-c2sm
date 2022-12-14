@@ -14,9 +14,7 @@ def with_spack(command: str, cwd=None, check=False):
     return subprocess.run(f'. {spack_c2sm_path}/setup-env.sh; {command}',
                           cwd=cwd,
                           check=check,
-                          shell=True,
-                          stdout=subprocess.PIPE,
-                          stderr=subprocess.STDOUT)
+                          shell=True)
 
 
 def log_with_spack(command: str,
