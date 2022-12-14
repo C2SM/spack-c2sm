@@ -66,8 +66,8 @@ class Cosmo(MakefilePackage):
     patch('patches/5.09a.mch1.2.p2/spec_as_yaml/patch.serialize_cosmo',
           when='@5.09a.mch1.2.p2 +serialize')
 
-    depends_on('netcdf-fortran', type=('build', 'link'))
-    depends_on('netcdf-c +mpi', type=('build', 'link'))
+    depends_on('netcdf-fortran')
+    depends_on('netcdf-c +mpi')
     depends_on('slurm', type='run')
     depends_on('cuda', when='cosmo_target=gpu', type=('build', 'link', 'run'))
     depends_on('serialbox +fortran ^python@2:2.9',
@@ -78,7 +78,7 @@ class Cosmo(MakefilePackage):
                type=('build', 'link', 'run'),
                when='cosmo_target=gpu')
     depends_on('libgrib1', type='build')
-    depends_on('jasper@1.900.1', type=('build', 'link'))
+    depends_on('jasper@1.900.1')
     depends_on('cosmo-grib-api-definitions',
                type=('build', 'run'),
                when='~eccodes')
