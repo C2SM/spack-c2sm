@@ -32,7 +32,9 @@ class Cosmo(MakefilePackage):
     depends_on('netcdf-c +mpi')
     depends_on('slurm', type='run')
     depends_on('cuda', when='cosmo_target=gpu', type=('build', 'link', 'run'))
-    depends_on('serialbox', when='+serialize', type='build')
+    depends_on('serialbox +fortran ^python@2:2.9',
+               when='+serialize',
+               type=('build', 'link', 'run'))
     depends_on('mpi', type=('build', 'link', 'run'), when='cosmo_target=cpu')
     depends_on('mpi +cuda',
                type=('build', 'link', 'run'),
