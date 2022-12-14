@@ -34,11 +34,51 @@ class Cosmo(MakefilePackage):
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
 
+    # pass spec from spec to test_cosmo.py in yaml-format
+
+    # There are three different types of test_cosmo.py around:
+
+    # COSMO-ORG
+    patch('patches/c2sm-master/spec_as_yaml/patch.test_cosmo',
+          when='@c2sm-master')
+    patch('patches/org-master/spec_as_yaml/patch.test_cosmo',
+          when='@org-master')
+    # C2SM-FEATURES
+    patch('patches/c2sm-features/spec_as_yaml/patch.test_cosmo',
+          when='@c2sm-features')
+    patch('patches/empa-ghg/spec_as_yaml/patch.test_cosmo', when='@empa-ghg')
+    # APN-MCH
+    patch('patches/apn-mch/spec_as_yaml/patch.test_cosmo', when='@apn-mch')
+    patch('patches/5.09a.mch1.2.p2/spec_as_yaml/patch.test_cosmo',
+          when='@5.09a.mch1.2.p2')
+
+    # pass spec from spec to serialize_cosmo.py in yaml-format
+
+    # There are two different types of serialize_cosmo.py around:
+
+    # COSMO-ORG
+    patch('patches/c2sm-master/spec_as_yaml/patch.serialize_cosmo',
+          when='@c2sm-master +serialize')
+    patch('patches/org-master/spec_as_yaml/patch.serialize_cosmo',
+          when='@org-master +serialize')
+    patch('patches/c2sm-features/spec_as_yaml/patch.serialize_cosmo',
+          when='@c2sm-features +serialize')
+    patch('patches/empa-ghg/spec_as_yaml/patch.serialize_cosmo',
+          when='@empa-ghg +serialize')
+
+    # APN-MCH
+    patch('patches/apn-mch/spec_as_yaml/patch.serialize_cosmo',
+          when='@apn-mch +serialize')
+    patch('patches/5.09a.mch1.2.p2/spec_as_yaml/patch.serialize_cosmo',
+          when='@5.09a.mch1.2.p2 +serialize')
+
     depends_on('netcdf-fortran', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))
     depends_on('slurm', type='run')
     depends_on('cuda', when='cosmo_target=gpu', type=('build', 'link', 'run'))
-    depends_on('serialbox', when='+serialize', type='build')
+    depends_on('serialbox +fortran ^python@2:2.9',
+               when='+serialize',
+               type=('build', 'link', 'run'))
     depends_on('mpi', type=('build', 'link', 'run'), when='cosmo_target=cpu')
     depends_on('mpi +cuda',
                type=('build', 'link', 'run'),
@@ -51,11 +91,13 @@ class Cosmo(MakefilePackage):
     depends_on('cosmo-eccodes-definitions',
                type=('build', 'link', 'run'),
                when='+eccodes')
+    depends_on('eccodes +fortran',
+               type=('build', 'link', 'run'),
+               when='+eccodes')
     depends_on('perl@5.16.3:', type='build')
     depends_on('omni-xmod-pool', when='+claw', type='build')
     depends_on('claw', when='+claw', type='build')
     depends_on('boost', when='cosmo_target=gpu ~cppdycore', type='build')
-    depends_on('cmake', type='build')
     depends_on('zlib_ng +compat', when='+zlib_ng', type=('link', 'run'))
     depends_on('oasis', when='+oasis', type=('build', 'link', 'run'))
 
@@ -75,13 +117,13 @@ class Cosmo(MakefilePackage):
         test_dep = '+dycoretest' if it[3] else '~dycoretest'
         gt1_dep = '+gt1' if it[4] else '~gt1'
 
-        dep = f'cosmo-dycore@8.1.0:8.4.0 real_type={real_type} {prod_opt} {cuda_opt} {test_opt} {gt1_dep}'
+        dep = f'cosmo-dycore real_type={real_type} {prod_opt} {cuda_opt} {test_opt} {gt1_dep}'
         condition = f'real_type={real_type} {prod_opt} {cuda_dep} {test_dep} {gt1_dep} +cppdycore'
         depends_on(dep, when=condition, type='build')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('dycoretest',
-            default=True,
+            default=False,
             description='Build C++ dycore with testing')
     variant('serialize',
             default=False,
@@ -196,9 +238,9 @@ class Cosmo(MakefilePackage):
 
         # - ML - Dirty conflict check (see above)
         if self.spec.variants['oasis'].value and self.spec.version not in (
-                Version('c2sm-features'), Version('dev-build')):
+                Version('c2sm-features')):
             raise InstallError(
-                '+oasis variant only compatible with the @c2sm-features and @dev-build versions'
+                '+oasis variant only compatible with the @c2sm-features versions'
             )
 
         self.setup_run_environment(env)
@@ -217,20 +259,13 @@ class Cosmo(MakefilePackage):
                 self.spec['jasper'].prefix + '/lib64 -ljasper')
         else:
             grib_prefix = self.spec['eccodes'].prefix
-            grib_definition_prefix = self.spec[
-                'cosmo-eccodes-definitions'].prefix
-            # Default installation lib path changed to from lib to lib64 after 2.19.0
-            if self.spec['eccodes'].version >= Version('2.19.0'):
-                eccodes_lib_dir = '/lib64'
-            else:
-                eccodes_lib_dir = '/lib'
             env.set(
-                'GRIBAPIL', '-L' + grib_prefix + eccodes_lib_dir +
-                ' -leccodes_f90 -leccodes -L' + self.spec['jasper'].prefix +
-                '/lib64 -ljasper')
+                'GRIBAPIL',
+                str(self.spec['eccodes:fortran'].libs.ld_flags) + ' ' +
+                str(self.spec['jasper'].libs.ld_flags))
         grib_inc_dir_path = os.path.join(grib_prefix, 'include')
         if os.path.exists(grib_inc_dir_path):
-            env.set('GRIBAPII', '-I' + grib_prefix + '/include')
+            env.set('GRIBAPII', '-I' + grib_inc_dir_path)
         else:
             env.set('GRIBAPII', '')
 
@@ -305,11 +340,8 @@ class Cosmo(MakefilePackage):
         # Serialbox library
         if '+serialize' in self.spec:
             env.set('SERIALBOX', self.spec['serialbox'].prefix)
-            env.set(
-                'SERIALBOXL', self.spec['serialbox'].prefix +
-                '/lib/libSerialboxFortran.a ' + self.spec['serialbox'].prefix +
-                '/lib/libSerialboxC.a ' + self.spec['serialbox'].prefix +
-                '/lib/libSerialboxCore.a -lstdc++fs -lpthread -lstdc++')
+            env.set('SERIALBOXL',
+                    self.spec['serialbox:fortran,c'].libs.ld_flags)
             env.set('SERIALBOXI',
                     '-I' + self.spec['serialbox'].prefix + '/include')
 
@@ -471,10 +503,12 @@ class Cosmo(MakefilePackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def test(self):
+        with open('spec.yaml', mode='w') as f:
+            f.write(self.spec.to_yaml())
         try:
             subprocess.run([
                 self.build_directory + '/test/tools/test_cosmo.py', '-s',
-                str(self.spec), '-b',
+                'spec.yaml', '-b',
                 str('.')
             ],
                            stderr=subprocess.STDOUT,

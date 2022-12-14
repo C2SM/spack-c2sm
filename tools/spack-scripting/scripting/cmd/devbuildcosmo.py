@@ -61,12 +61,19 @@ def setup_parser(subparser):
         default=None,
         help="phase to stop after when installing (only applies to COSMO)")
 
+    subparser.add_argument(
+        '-n',
+        '--no-checksum',
+        dest='no_checksum',
+        action="store_true",
+        help="do not use checksums to verify downloaded files (unsafe)")
+
 
 def custom_devbuild(source_path, spec, args):
     package = spack.repo.get(spec)
     package.stage = DIYStage(source_path)
 
-    if package.installed:
+    if spec.installed:
         package.do_uninstall(force=True)
 
     if args.things_to_test == 'root':
@@ -92,6 +99,9 @@ def custom_devbuild(source_path, spec, args):
         'restage': args.restage,
         'tests': args.things_to_test
     }
+
+    if args.no_checksum:
+        spack.config.set('config:checksum', False, scope='command_line')
 
     # for testing purposes we want to split build and install phase for COSMO
     if package.name == 'cosmo':
@@ -144,8 +154,8 @@ def devbuildcosmo(self, args):
 
         # Selectively substitute the dependencies' versions with those found in the deserialized list of specs
         # The order of precedence in the choice of a dependency's version becomes:
-        # 1. the one specified in spec.yaml,
-        # 2. the one provided by the user in the command,
+        # 1. the one provided by the user in the command,
+        # 2. the one specified in spec.yaml,
         # 3. the default prescribed by the spack package.
         for dep in cosmo_spec.traverse():
             if dep.name in deps_serialized_dict and not dep.name in user_versioned_deps:
@@ -153,12 +163,15 @@ def devbuildcosmo(self, args):
             if dep.name == "cosmo-dycore":
                 dep.versions = cosmo_spec.versions.copy()
 
-        # Re-concretize Spec: to enforce checking of constraints after update of versions.
-        # Note: unfortunately there is no better way to re-concretize a Spec (e.g. via API).
-        #       The only solution seems to be going via string representation and then back
-        #       into a Spec object. It's not elegant but it seems to work very well.
-        cosmo_spec = spack.cmd.parse_specs(str(cosmo_spec))[0]
+        # re-concretize
+        # JJ: we use conversion from/to yaml, parsing a string with the builtin
+        # spack command does not work in case spec show up twice, i.e cmake
+        cosmo_spec = Spec.from_yaml(cosmo_spec.to_yaml())
         cosmo_spec.concretize()
+
+        # print final spec that is built
+        print("\033[92m" + "==> COSMO spec to be installed: \n" + "\033[0m" +
+              '\t' + cosmo_spec.tree())
 
     # Clean if needed
     if args.clean_build:
@@ -177,7 +190,7 @@ def devbuildcosmo(self, args):
 
     if cosmo_spec.satisfies("+cppdycore"):
 
-        dycore_spec = cosmo_spec.get_dependency("cosmo-dycore").spec
+        dycore_spec = cosmo_spec._get_dependency("cosmo-dycore").spec
 
         custom_devbuild(source_path, dycore_spec, args)
 

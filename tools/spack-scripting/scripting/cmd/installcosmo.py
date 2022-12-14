@@ -75,6 +75,13 @@ the dependencies""")
                            default=None,
                            help="phase to stop after when installing")
 
+    subparser.add_argument(
+        '-n',
+        '--no-checksum',
+        dest='no_checksum',
+        action="store_true",
+        help="do not use checksums to verify downloaded files (unsafe)")
+
 
 def custom_install(spec, args):
     package = spack.repo.get(spec)
@@ -96,6 +103,9 @@ def custom_install(spec, args):
         'stop_at': args.until,
         'restage': args.restage
     }
+
+    if args.no_checksum:
+        spack.config.set('config:checksum', False, scope='command_line')
 
     if args.things_to_install == 'dependencies':
         # If we want to only install dependencies and one of them fails,
@@ -161,8 +171,14 @@ def installcosmo(self, args):
             dep.versions = cosmo_spec.versions.copy()
 
     # re-concretize
-    cosmo_spec = spack.cmd.parse_specs(str(cosmo_spec))[0]
+    # JJ: we use conversion from/to yaml, parsing a string with the builtin
+    # spack command does not work in case spec show up twice, i.e cmake
+    cosmo_spec = Spec.from_yaml(cosmo_spec.to_yaml())
     cosmo_spec.concretize()
+
+    # print final spec that is built
+    print("\033[92m" + "==> COSMO spec to be installed: \n" + "\033[0m" +
+          '\t' + cosmo_spec.tree())
 
     # Dev-build cosmo
     custom_install(cosmo_spec, args)
