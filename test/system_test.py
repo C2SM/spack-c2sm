@@ -31,11 +31,6 @@ def spack_install_and_test(command: str, log_filename: str = None):
     ret.check_returncode()
 
 
-def spack_installcosmo_and_test(command: str, log_name: str = None):
-    test_with_spack(f'spack installcosmo --test=root -n -v {command}',
-                    log_name)
-
-
 mpi: str = {
     'daint': 'mpich',
     'tsa': 'openmpi',
