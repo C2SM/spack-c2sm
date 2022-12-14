@@ -35,10 +35,8 @@ class Cosmo(MakefilePackage):
     depends_on('serialbox +fortran ^python@2:2.9',
                when='+serialize',
                type=('build', 'link', 'run'))
-    depends_on('mpi', type=('build', 'link', 'run'), when='cosmo_target=cpu')
-    depends_on('mpi +cuda',
-               type=('build', 'link', 'run'),
-               when='cosmo_target=gpu')
+    depends_on('mpi +fortran')
+    depends_on('mpi +cuda', when='cosmo_target=gpu')
     depends_on('libgrib1', type='build')
     depends_on('jasper@1.900.1')
     depends_on('cosmo-grib-api-definitions',
