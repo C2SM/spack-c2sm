@@ -96,6 +96,8 @@ class PyGt4py(PythonPackage):
     depends_on('py-pytest-cache@1.0:', type=('build', 'run'))
     depends_on('py-pytest-cov@2.8:', type=('build', 'run'))
     depends_on('py-pytest-factoryboy@2.0:', type=('build', 'run'))
+
+    # avoid problems with py-pluggy dep
     depends_on('py-tox@3.14:', type=('build', 'run'))
 
     # pytest-xdist[psutil]>=2.2
@@ -128,7 +130,4 @@ class PyGt4py(PythonPackage):
     @on_package_attributes(run_tests=True)
     def install_test(self):
         with working_dir('spack-test', create=True):
-            python('-m', 'pytest', '-v', '../tests/eve_tests/unit_tests',
-                   '../tests/functional_tests/cpp_backend_tests/',
-                   '../tests/functional_tests/ffront_tests',
-                   '../tests/functional_tests/otf_tests')
+            python('-m', 'pytest', '-v', '../tests')
