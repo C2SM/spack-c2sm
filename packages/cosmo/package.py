@@ -28,9 +28,6 @@ class Cosmo(MakefilePackage):
     version('c2sm-features', git=c2smgit, branch='c2sm-features')
     version('empa-ghg', git=empagit, branch='c2sm')
 
-    patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
-    patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
-
     depends_on('netcdf-fortran', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))
     depends_on('slurm', type='run')
@@ -160,8 +157,6 @@ class Cosmo(MakefilePackage):
     conflicts('+pollen', when='@5.05:5.06,org-master,master')
     conflicts('cosmo_target=gpu', when='%gcc')
 
-    # previous versions contain a bug affecting serialization
-    conflicts('+serialize', when='@5.07.mch1.0.p2:5.07.mch1.0.p3')
     variant('production',
             default=False,
             description='Force all variants to be the ones used in production')
@@ -175,10 +170,6 @@ class Cosmo(MakefilePackage):
     conflicts('+production', when='~pollen')
     conflicts('+production', when='%gcc')
     conflicts('+production', when='~eccodes')
-    conflicts('~gt1', when='@5.07.mch1.0.p11')
-    conflicts('~gt1', when='@5.07a.mch1.0.p1')
-    conflicts('~gt1', when='@5.07a.mch1.0.base')
-    conflicts('~gt1', when='@5.07.mch1.0.p10')
     conflicts('+cppdycore', when='%nvhpc cosmo_target=cpu')
     conflicts('+cppdycore', when='%pgi cosmo_target=cpu')
     # - ML - A conflict should be added there if the oasis variant is
