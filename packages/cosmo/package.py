@@ -18,18 +18,15 @@ class Cosmo(MakefilePackage):
     empagit = 'ssh://git@github.com/C2SM-RCM/cosmo-ghg.git'
     maintainers = ['elsagermann']
 
-    version('org-master', branch='master', get_full_repo=True)
+    version('org-master', branch='master')
     version('6.0', tag='6.0')
 
-    version('apn-mch', git=apngit, branch='mch', get_full_repo=True)
+    version('apn-mch', git=apngit, branch='mch')
     version('5.09a.mch1.2.p2', git=apngit, tag='5.09a.mch1.2.p2')
 
-    version('c2sm-master', git=c2smgit, branch='master', get_full_repo=True)
-    version('c2sm-features',
-            git=c2smgit,
-            branch='c2sm-features',
-            get_full_repo=True)
-    version('empa-ghg', git=empagit, branch='c2sm', get_full_repo=True)
+    version('c2sm-master', git=c2smgit, branch='master')
+    version('c2sm-features', git=c2smgit, branch='c2sm-features')
+    version('empa-ghg', git=empagit, branch='c2sm')
 
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
