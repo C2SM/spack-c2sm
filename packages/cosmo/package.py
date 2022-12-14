@@ -28,8 +28,8 @@ class Cosmo(MakefilePackage):
     version('c2sm-features', git=c2smgit, branch='c2sm-features')
     version('empa-ghg', git=empagit, branch='c2sm')
 
-    depends_on('netcdf-fortran', type=('build', 'link'))
-    depends_on('netcdf-c +mpi', type=('build', 'link'))
+    depends_on('netcdf-fortran')
+    depends_on('netcdf-c +mpi')
     depends_on('slurm', type='run')
     depends_on('cuda', when='cosmo_target=gpu', type=('build', 'link', 'run'))
     depends_on('serialbox', when='+serialize', type='build')
@@ -38,7 +38,7 @@ class Cosmo(MakefilePackage):
                type=('build', 'link', 'run'),
                when='cosmo_target=gpu')
     depends_on('libgrib1', type='build')
-    depends_on('jasper@1.900.1', type=('build', 'link'))
+    depends_on('jasper@1.900.1')
     depends_on('cosmo-grib-api-definitions',
                type=('build', 'run'),
                when='~eccodes')
