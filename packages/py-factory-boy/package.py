@@ -15,6 +15,5 @@ class PyFactoryBoy(PythonPackage):
             "a98d277b0c047c75eb6e4ab8508a7f81fb03d2cb21986f627913546ef7a2a55e")
 
     depends_on("python@3.7:")
-    depends_on('py-faker@0.7.0:',type=('build', 'run'))  
+    depends_on('py-faker@0.7.0:', type=('build', 'run'))
     depends_on("py-setuptools", type="build")
-

@@ -58,7 +58,7 @@ class PyPytestFactoryboy(PythonPackage):
     depends_on('py-importlib-metadata', type=('build', 'run'))
     depends_on('py-coverage +toml', type=('build', 'run'))
 
-    patch('patches/2.5.1/group.patch',when='@2.5.1')
+    patch('patches/2.5.1/group.patch', when='@2.5.1')
 
     # FIXME: Add a build backend, usually defined in pyproject.toml. If no such file
     # exists, use setuptools.

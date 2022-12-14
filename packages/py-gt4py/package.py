@@ -84,7 +84,7 @@ class PyGt4py(PythonPackage):
     # isort~=5.10
     depends_on('py-isort', type=('build', 'run'))
 
-    # jupytext>=1.14 
+    # jupytext>=1.14
     depends_on('py-jupytext', type=('build', 'run'))
 
     # mypy>=0.990
@@ -103,7 +103,6 @@ class PyGt4py(PythonPackage):
 
     depends_on('py-sphinx@3.1:', type=('build', 'run'))
     depends_on('py-sphinx-rtd-theme@0.4:', type=('build', 'run'))
-
 
     depends_on('py-wheel', type='build')
     depends_on('py-cython', type='build')

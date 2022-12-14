@@ -17,4 +17,3 @@ class PyCheckManifest(PythonPackage):
     depends_on("python@3.7:")
     depends_on("py-tomli")
     depends_on("py-setuptools", type="build")
-

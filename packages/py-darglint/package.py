@@ -17,4 +17,3 @@ class PyDarglint(PythonPackage):
     depends_on("python@3.6:")
     depends_on("py-poetry")
     depends_on("py-setuptools", type="build")
-
