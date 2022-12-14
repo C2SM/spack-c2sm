@@ -74,7 +74,7 @@ class PyGt4py(PythonPackage):
     # deps from requirements-dev.txt
     depends_on('py-check-manifest@0.40:', type=('build', 'run'))
     depends_on('py-coverage@5.0:', type=('build', 'run'))
-    #depends_on('py-darglint@1.6:', type=('build', 'run'))
+    depends_on('py-darglint@1.6:', type=('build', 'run'))
     depends_on('py-devtools@0.6:', type=('build', 'run'))
     depends_on('py-factory-boy@3.1:', type=('build', 'run'))
 
