@@ -46,7 +46,7 @@ class PyGt4py(PythonPackage):
 
     depends_on('py-boltons@20.0.0:', type=('build', 'run'))
     depends_on('py-click@7.1:', type=('build', 'run'))
-    #depends_on('cmake@3.22:', type=('build', 'run'))
+    depends_on('cmake@3.18:', type=('build', 'run'))
 
     depends_on('py-devtools@0.5:', type=('build', 'run'))
     depends_on('py-frozendict@2.3:', type=('build', 'run'))
@@ -69,11 +69,45 @@ class PyGt4py(PythonPackage):
     depends_on('py-xxhash@1.4.4:', type=('build', 'run'))
 
     # test-only dep does not work for dev-build
-    depends_on('py-pytest', type=('build', 'run'))
+    depends_on('py-pytest@6.1:', type=('build', 'run'))
+
+    # deps from requirements-dev.txt
+    depends_on('py-check-manifest@0.40:', type=('build', 'run'))
+    depends_on('py-coverage@5.0:', type=('build', 'run'))
+    #depends_on('py-darglint@1.6:', type=('build', 'run'))
+    depends_on('py-devtools@0.6:', type=('build', 'run'))
+    depends_on('py-factory-boy@3.1:', type=('build', 'run'))
+
+    #depends_on('py-flake8@5.0.4:', type=('build', 'run'))
+    depends_on('py-flake8', type=('build', 'run'))
+
+    # isort~=5.10
+    depends_on('py-isort', type=('build', 'run'))
+
+    # jupytext>=1.14 
+    depends_on('py-jupytext', type=('build', 'run'))
+
+    # mypy>=0.990
+    depends_on('py-mypy', type=('build', 'run'))
+
+    depends_on('py-psutil@5.0:', type=('build', 'run'))
+
+    depends_on('py-pygments@2.7:', type=('build', 'run'))
+    depends_on('py-pytest-cache@1.0:', type=('build', 'run'))
+    depends_on('py-pytest-cov@2.8:', type=('build', 'run'))
+    depends_on('py-pytest-factoryboy@2.0:', type=('build', 'run'))
+    depends_on('py-tox@3.14:', type=('build', 'run'))
+
+    # pytest-xdist[psutil]>=2.2
+    depends_on('py-pytest-xdist', type=('build', 'run'))
+
+    depends_on('py-sphinx@3.1:', type=('build', 'run'))
+    depends_on('py-sphinx-rtd-theme@0.4:', type=('build', 'run'))
+
 
     depends_on('py-wheel', type='build')
     depends_on('py-cython', type='build')
-    depends_on('py-setuptools', type='build')
+    depends_on('py-setuptools@40.8.0:', type='build')
 
     # pytest fails with:
     #__main__.py: error: unrecognized arguments: --cov-config=setup.cfg
