@@ -28,9 +28,6 @@ class Cosmo(MakefilePackage):
     version('c2sm-features', git=c2smgit, branch='c2sm-features')
     version('empa-ghg', git=empagit, branch='c2sm')
 
-    patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
-    patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
-
     # pass spec from spec to test_cosmo.py in yaml-format
 
     # There are three different types of test_cosmo.py around:
@@ -198,16 +195,8 @@ class Cosmo(MakefilePackage):
             description='Slurm constraints for nodes requested')
 
     conflicts('+claw', when='cosmo_target=cpu')
-    conflicts('+pollen', when='@5.05:5.06,org-master,master')
+    conflicts('+pollen', when='@org-master,master')
     conflicts('cosmo_target=gpu', when='%gcc')
-
-    # previous versions contain a bug affecting serialization
-    conflicts('+serialize', when='@5.07.mch1.0.p2:5.07.mch1.0.p3')
-
-    conflicts('~gt1', when='@5.07.mch1.0.p11')
-    conflicts('~gt1', when='@5.07a.mch1.0.p1')
-    conflicts('~gt1', when='@5.07a.mch1.0.base')
-    conflicts('~gt1', when='@5.07.mch1.0.p10')
     conflicts('+cppdycore', when='%nvhpc cosmo_target=cpu')
     conflicts('+cppdycore', when='%pgi cosmo_target=cpu')
     # - ML - A conflict should be added there if the oasis variant is
