@@ -53,25 +53,13 @@ class Cosmo(MakefilePackage):
     depends_on('zlib_ng +compat', when='+zlib_ng', type=('link', 'run'))
     depends_on('oasis', when='+oasis', type=('build', 'link', 'run'))
 
-    # cosmo-dycore dependency
-    types = ['float', 'double']
-    prod = [True, False]
-    cuda = [True, False]
-    testing = [True, False]
-    gt1 = [True, False]
-    comb = list(itertools.product(*[types, prod, cuda, testing, gt1]))
-    for it in comb:
-        real_type = it[0]
-        prod_opt = '+production' if it[1] else '~production'
-        cuda_opt = '+cuda' if it[2] else '~cuda'
-        cuda_dep = 'cosmo_target=gpu' if it[2] else ' cosmo_target=cpu'
-        test_opt = '+build_tests' if it[3] else '~build_tests'
-        test_dep = '+dycoretest' if it[3] else '~dycoretest'
-        gt1_dep = '+gt1' if it[4] else '~gt1'
-
-        dep = f'cosmo-dycore@8.1.0:8.4.0 real_type={real_type} {prod_opt} {cuda_opt} {test_opt} {gt1_dep}'
-        condition = f'real_type={real_type} {prod_opt} {cuda_dep} {test_dep} {gt1_dep} +cppdycore'
-        depends_on(dep, when=condition, type='build')
+    with when('+cppdycore'):
+        depends_on('cosmo-dycore', type='build')
+        depends_on('cosmo-dycore real_type=float', when='real_type=float', type='build')
+        depends_on('cosmo-dycore real_type=double', when='real_type=double', type='build')
+        depends_on('cosmo-dycore +cuda', when='cosmo_target=gpu', type='build')
+        depends_on('cosmo-dycore +build_tests', when='+dycoretest', type='build')
+        depends_on('cosmo-dycore +gt1', when='+gt1', type='build')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('dycoretest',
