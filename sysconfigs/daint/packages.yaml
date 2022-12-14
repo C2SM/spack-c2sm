@@ -44,11 +44,6 @@ packages:
     externals:
     - spec: bison@3.0.4
       prefix: /usr
-  blas:
-    externals:
-    - spec: blas%nvhpc@21.3
-      prefix: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers
-    buildable: False
   bzip2:
     externals:
     - spec: bzip2@1.0.6
@@ -164,11 +159,6 @@ packages:
     externals:
     - spec: krb5@1.16.3
       prefix: /usr/lib/mit
-  lapack:
-    externals:
-    - spec: lapack%nvhpc@21.3
-      prefix: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers
-    buildable: False
   libfuse:
     externals:
     - spec: libfuse@2.9.7
