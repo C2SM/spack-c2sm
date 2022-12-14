@@ -52,4 +52,4 @@ def log_with_spack(command: str,
         f.write('OK' if ret.returncode == 0 else 'FAILED')
         f.write('\n')
 
-    return ret
+    ret.check_returncode()

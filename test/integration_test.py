@@ -17,7 +17,6 @@ def spack_info(command: str, log_filename: str = None):
     """
     ret = log_with_spack(f'spack info {command}', 'integration_test',
                          log_filename)
-    ret.check_returncode()
 
 
 def spack_spec(command: str, log_filename: str = None):
@@ -27,7 +26,6 @@ def spack_spec(command: str, log_filename: str = None):
     """
     ret = log_with_spack(f'spack spec {command}', 'integration_test',
                          log_filename)
-    ret.check_returncode()
 
 
 class InfoTest(unittest.TestCase):

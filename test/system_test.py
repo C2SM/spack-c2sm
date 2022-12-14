@@ -18,7 +18,6 @@ def spack_installcosmo_and_test(command: str, log_filename: str = None):
     """
     ret = log_with_spack(f'spack installcosmo --test=root -n -v {command}',
                          'system_test', log_filename)
-    ret.check_returncode()
 
 
 def spack_install_and_test(command: str, log_filename: str = None):
@@ -28,7 +27,6 @@ def spack_install_and_test(command: str, log_filename: str = None):
     """
     ret = log_with_spack(f'spack install --test=root -n -v {command}',
                          'system_test', log_filename)
-    ret.check_returncode()
 
 
 mpi: str = {
