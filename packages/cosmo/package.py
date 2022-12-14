@@ -156,20 +156,6 @@ class Cosmo(MakefilePackage):
     conflicts('+claw', when='cosmo_target=cpu')
     conflicts('+pollen', when='@5.05:5.06,org-master,master')
     conflicts('cosmo_target=gpu', when='%gcc')
-
-    variant('production',
-            default=False,
-            description='Force all variants to be the ones used in production')
-
-    conflicts('+production', when='~cppdycore')
-    conflicts('+production', when='+serialize')
-    conflicts('+production', when='+debug')
-    conflicts('+production', when='~claw')
-    conflicts('+production', when='~parallel')
-    conflicts('+production', when='cosmo_target=cpu')
-    conflicts('+production', when='~pollen')
-    conflicts('+production', when='%gcc')
-    conflicts('+production', when='~eccodes')
     conflicts('+cppdycore', when='%nvhpc cosmo_target=cpu')
     conflicts('+cppdycore', when='%pgi cosmo_target=cpu')
     # - ML - A conflict should be added there if the oasis variant is
