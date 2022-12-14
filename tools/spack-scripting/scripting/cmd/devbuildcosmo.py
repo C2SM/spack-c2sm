@@ -61,6 +61,13 @@ def setup_parser(subparser):
         default=None,
         help="phase to stop after when installing (only applies to COSMO)")
 
+    subparser.add_argument(
+        '-n',
+        '--no-checksum',
+        dest='no_checksum',
+        action="store_true",
+        help="do not use checksums to verify downloaded files (unsafe)")
+
 
 def custom_devbuild(source_path, spec, args):
     package = spack.repo.get(spec)
@@ -92,6 +99,9 @@ def custom_devbuild(source_path, spec, args):
         'restage': args.restage,
         'tests': args.things_to_test
     }
+
+    if args.no_checksum:
+        spack.config.set('config:checksum', False, scope='command_line')
 
     # for testing purposes we want to split build and install phase for COSMO
     if package.name == 'cosmo':
