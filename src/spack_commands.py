@@ -41,7 +41,8 @@ def log_with_spack(command: str,
     log_file = Path(spack_c2sm_path) / 'log' / machine_name(
     ) / test_category / (sanitized_filename(log_filename or command) + '.log')
 
-    if srun and getpass.getuser() == 'jenkins': #  only jenkins should start sruns
+    if srun and getpass.getuser(
+    ) == 'jenkins':  #  only jenkins should start sruns
         command = with_srun(command)
 
     # Make Directory
