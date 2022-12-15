@@ -683,4 +683,3 @@ class Icon(AutotoolsPackage):
 
         from spack.compilers.gcc import Gcc
         return fc_name in Gcc.fc_names
-
