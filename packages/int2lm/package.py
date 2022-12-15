@@ -44,6 +44,12 @@ class Int2lm(MakefilePackage):
     depends_on('netcdf-c', type=('build', 'link'))
     depends_on('netcdf-fortran', type=('build', 'link'))
     depends_on('jasper@1.900.1', type=('build', 'link'))
+    
+    depends_on('eccodes +fortran')
+
+    # This is a workaround for spack's inability to use the same compiler on link dependencies.
+    depends_on('eccodes %nvhpc', when='%nvhpc') 
+    depends_on('eccodes %gcc', when='%gcc')
 
     variant('debug', default=False, description='Build debug INT2LM')
     variant('eccodes',
