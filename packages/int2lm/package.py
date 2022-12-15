@@ -48,6 +48,7 @@ class Int2lm(MakefilePackage):
     depends_on('eccodes +fortran')
 
     # This is a workaround for spack's inability to use the same compiler on link dependencies.
+    depends_on('eccodes %pgi', when='%pgi')
     depends_on('eccodes %nvhpc', when='%nvhpc')
     depends_on('eccodes %gcc', when='%gcc')
 
