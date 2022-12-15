@@ -20,6 +20,8 @@ def sanitized_filename(filename: str) -> str:
     replacements = [
         (' --show-log-on-error', ''),  # irrelevant in filename
         (' --test=root', ''),  # irrelevant in filename
+        (' --until build', ''),  # irrelevant in filename
+        (' --dont-restage', ''),  # irrelevant in filename
         (' -n', ''),  # irrelevant in filename
         (' -v', ''),  # irrelevant in filename
         ('%', ''),  # causes problems in web browsers

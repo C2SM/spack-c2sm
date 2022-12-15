@@ -70,7 +70,7 @@ class TimeFormatTest(unittest.TestCase):
 class FilenameSanitizerTest(unittest.TestCase):
 
     def test_example(self):
-        example = 'spack installcosmo --test=root --show-log-on-error -n -v cosmo @6.0 %nvhpc cosmo_target=cpu ~cppdycore ^mpich %nvhpc'
+        example = 'spack installcosmo --until build --dont-restage --test=root --show-log-on-error -n -v cosmo @6.0 %nvhpc cosmo_target=cpu ~cppdycore ^mpich %nvhpc'
 
         sanitized = sanitized_filename(example)
 

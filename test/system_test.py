@@ -8,7 +8,7 @@ spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                '..')
 
 sys.path.append(os.path.normpath(spack_c2sm_path))
-from src import machine_name, log_with_spack
+from src import machine_name, log_with_spack, sanitized_filename
 
 
 def spack_installcosmo_and_test(command: str, log_filename: str = None):
@@ -16,8 +16,9 @@ def spack_installcosmo_and_test(command: str, log_filename: str = None):
     Tests 'spack installcosmo' of the given command and writes the output into the log file.
     If log_filename is None, command is used to create one.
     """
-    ret = log_with_spack(f'spack installcosmo --test=root -n -v {command}',
-                         'system_test', log_filename)
+    log_filename = sanitized_filename(log_filename or command)
+    log_with_spack(f'spack installcosmo --until build -n -v {command}', 'system_test', log_filename, srun=True)
+    log_with_spack(f'spack installcosmo --dont-restage --test=root -n -v {command}', 'system_test', log_filename, srun=False)
 
 
 def spack_install_and_test(command: str, log_filename: str = None):
@@ -25,8 +26,9 @@ def spack_install_and_test(command: str, log_filename: str = None):
     Tests 'spack install' of the given command and writes the output into the log file.
     If log_filename is None, command is used to create one.
     """
-    ret = log_with_spack(f'spack install --test=root -n -v {command}',
-                         'system_test', log_filename)
+    log_filename = sanitized_filename(log_filename or command)
+    log_with_spack(f'spack install --until build -n -v {command}', 'system_test', log_filename, srun=True)
+    log_with_spack(f'spack install --dont-restage --test=root -n -v {command}', 'system_test', log_filename, srun=False)
 
 
 mpi: str = {
