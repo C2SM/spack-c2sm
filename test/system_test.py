@@ -44,33 +44,31 @@ nvidia_compiler: str = {
 
 class CosmoTest(unittest.TestCase):
 
-    def test_install_version_6_0_cpu(self):
-        spack_installcosmo_and_test(
-            f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
-        )
+    # def test_install_version_6_0_cpu(self):
+    #     spack_installcosmo_and_test(
+    #         f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
+    #     )
 
-    def test_install_version_6_0_gpu(self):
-        spack_installcosmo_and_test(
-            f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
-        )
+    # def test_install_version_6_0_gpu(self):
+    #     spack_installcosmo_and_test(
+    #         f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
+    #     )
 
-    def test_devbuild_version_6_0_cpu(self):
-        #spack_installcosmo_and_test(f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}')
-        pass  #TODO
+    # def test_devbuild_version_6_0_cpu(self):
+    #     spack_installcosmo_and_test(f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}')
 
-    def test_devbuild_version_6_0_gpu(self):
-        #spack_installcosmo_and_test(f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}')
-        pass  #TODO
+    # def test_devbuild_version_6_0_gpu(self):
+    #     spack_installcosmo_and_test(f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}')
 
-    def test_install_version_5_09_mch_1_2_p2_cpu(self):
-        spack_installcosmo_and_test(
-            f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
-        )
+    # def test_install_version_5_09_mch_1_2_p2_cpu(self):
+    #     spack_installcosmo_and_test(
+    #         f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
+    #     )
 
-    def test_install_version_5_09_mch_1_2_p2_gpu(self):
-        spack_installcosmo_and_test(
-            f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
-        )
+    # def test_install_version_5_09_mch_1_2_p2_gpu(self):
+    #     spack_installcosmo_and_test(
+    #         f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
+    #     )
 
     def test_install_c2sm_master_cpu(self):
         spack_installcosmo_and_test(
@@ -85,11 +83,11 @@ class CosmoTest(unittest.TestCase):
 
 class CosmoDycoreTest(unittest.TestCase):
 
-    def test_install_version_6_0_cuda(self):
-        spack_install_and_test('cosmo-dycore @6.0 +cuda')
+    # def test_install_version_6_0_cuda(self):
+    #     spack_install_and_test('cosmo-dycore @6.0 +cuda')
 
-    def test_install_version_6_0_no_cuda(self):
-        spack_install_and_test('cosmo-dycore @6.0 ~cuda')
+    # def test_install_version_6_0_no_cuda(self):
+    #     spack_install_and_test('cosmo-dycore @6.0 ~cuda')
 
     def test_install_c2sm_master_cuda(self):
         spack_install_and_test('cosmo-dycore @c2sm-master +cuda')
@@ -168,17 +166,17 @@ class IconTest(unittest.TestCase):
 
 class Int2lmTest(unittest.TestCase):
 
-    def test_install_version_3_00_gcc(self):
-        spack_install_and_test('int2lm @int2lm-3.00 %gcc')
+    # def test_install_version_3_00_gcc(self):
+    #     spack_install_and_test('int2lm @int2lm-3.00 %gcc')
 
-    def test_install_version_3_00_nvhpc(self):
-        spack_install_and_test(f'int2lm @int2lm-3.00 %{nvidia_compiler}')
+    # def test_install_version_3_00_nvhpc(self):
+    #     spack_install_and_test(f'int2lm @int2lm-3.00 %{nvidia_compiler}')
 
     def test_install_c2sm_master_gcc(self):
-        spack_install_and_test('int2lm @c2sm-master %gcc')
+        spack_install_and_test('int2lm @c2sm-master %gcc ^eccodes %gcc ^libgrib1 %gcc')
 
     def test_install_c2sm_master_nvhpc(self):
-        spack_install_and_test(f'int2lm @c2sm-master %{nvidia_compiler}')
+        spack_install_and_test(f'int2lm @c2sm-master %{nvidia_compiler} ^eccodes %{nvidia_compiler} ^libgrib1 %{nvidia_compiler}')
 
 
 class IconToolsTest(unittest.TestCase):
