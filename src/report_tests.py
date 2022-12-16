@@ -35,7 +35,9 @@ if __name__ == "__main__":
     # Trigger phrases that cause a test to get a yellow circle
     yellow_triggers = [
         'Timed out waiting for a write lock',
+        'Timed out waiting for a read lock',
         'timed out after 5 seconds',
+        'AssertionError exception when releasing read lock',
     ]
 
     for file_name in sorted(glob.glob('log/**/*.log', recursive=True)):
