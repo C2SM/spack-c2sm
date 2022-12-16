@@ -173,10 +173,13 @@ class Int2lmTest(unittest.TestCase):
     #     spack_install_and_test(f'int2lm @int2lm-3.00 %{nvidia_compiler}')
 
     def test_install_c2sm_master_gcc(self):
-        spack_install_and_test('int2lm @c2sm-master %gcc ^eccodes %gcc ^libgrib1 %gcc')
+        spack_install_and_test(
+            'int2lm @c2sm-master %gcc ^eccodes %gcc ^libgrib1 %gcc')
 
     def test_install_c2sm_master_nvhpc(self):
-        spack_install_and_test(f'int2lm @c2sm-master %{nvidia_compiler} ^eccodes %{nvidia_compiler} ^libgrib1 %{nvidia_compiler}')
+        spack_install_and_test(
+            f'int2lm @c2sm-master %{nvidia_compiler} ^eccodes %{nvidia_compiler} ^libgrib1 %{nvidia_compiler}'
+        )
 
 
 class IconToolsTest(unittest.TestCase):
