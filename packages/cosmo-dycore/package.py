@@ -101,6 +101,7 @@ class CosmoDycore(CMakePackage):
     depends_on('cuda', when='+cuda')
 
     conflicts('%nvhpc')
+    conflicts('%pgi')
 
     # pass spec from spec to test_dycore.py in yaml-format
     patch('patches/c2sm-master/spec_as_yaml/patch.test_dycore',
