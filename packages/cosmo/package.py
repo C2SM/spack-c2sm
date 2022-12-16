@@ -110,15 +110,14 @@ class Cosmo(MakefilePackage):
     comb = list(itertools.product(*[types, prod, cuda, testing, gt1]))
     for it in comb:
         real_type = it[0]
-        prod_opt = '+production' if it[1] else '~production'
         cuda_opt = '+cuda' if it[2] else '~cuda'
         cuda_dep = 'cosmo_target=gpu' if it[2] else ' cosmo_target=cpu'
         test_opt = '+build_tests' if it[3] else '~build_tests'
         test_dep = '+dycoretest' if it[3] else '~dycoretest'
         gt1_dep = '+gt1' if it[4] else '~gt1'
 
-        dep = f'cosmo-dycore real_type={real_type} {prod_opt} {cuda_opt} {test_opt} {gt1_dep}'
-        condition = f'real_type={real_type} {prod_opt} {cuda_dep} {test_dep} {gt1_dep} +cppdycore'
+        dep = f'cosmo-dycore real_type={real_type} {cuda_opt} {test_opt} {gt1_dep}'
+        condition = f'real_type={real_type} {cuda_dep} {test_dep} {gt1_dep} +cppdycore'
         depends_on(dep, when=condition, type='build')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
@@ -207,19 +206,7 @@ class Cosmo(MakefilePackage):
 
     # previous versions contain a bug affecting serialization
     conflicts('+serialize', when='@5.07.mch1.0.p2:5.07.mch1.0.p3')
-    variant('production',
-            default=False,
-            description='Force all variants to be the ones used in production')
 
-    conflicts('+production', when='~cppdycore')
-    conflicts('+production', when='+serialize')
-    conflicts('+production', when='+debug')
-    conflicts('+production', when='~claw')
-    conflicts('+production', when='~parallel')
-    conflicts('+production', when='cosmo_target=cpu')
-    conflicts('+production', when='~pollen')
-    conflicts('+production', when='%gcc')
-    conflicts('+production', when='~eccodes')
     conflicts('~gt1', when='@5.07.mch1.0.p11')
     conflicts('~gt1', when='@5.07a.mch1.0.p1')
     conflicts('~gt1', when='@5.07a.mch1.0.base')
