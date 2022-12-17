@@ -13,23 +13,22 @@ class Cosmo(MakefilePackage):
     homepage = "http://www.cosmo-model.org"
     url = "https://github.com/COSMO-ORG/cosmo/archive/6.0.tar.gz"
     git = 'ssh://git@github.com/COSMO-ORG/cosmo.git'
-    apngit = 'ssh://git@github.com/MeteoSwiss-APN/cosmo.git'
-    c2smgit = 'ssh://git@github.com/C2SM-RCM/cosmo.git'
-    empagit = 'ssh://git@github.com/C2SM-RCM/cosmo-ghg.git'
+    apn_git = 'ssh://git@github.com/MeteoSwiss-APN/cosmo.git'
+    c2sm_git = 'ssh://git@github.com/C2SM-RCM/cosmo.git'
+    empa_git = 'ssh://git@github.com/C2SM-RCM/cosmo-ghg.git'
     maintainers = ['elsagermann']
 
     version('org-master', branch='master')
     version('6.0', tag='6.0')
 
-    version('apn-mch', git=apngit, branch='mch')
-    version('5.09a.mch1.2.p2', git=apngit, tag='5.09a.mch1.2.p2')
+    version('apn-mch', git=apn_git, branch='mch')
+    version('5.09a.mch1.2.p2', git=apn_git, tag='5.09a.mch1.2.p2')
 
-    version('c2sm-master', git=c2smgit, branch='master')
-    version('c2sm-features', git=c2smgit, branch='c2sm-features')
-    version('empa-ghg', git=empagit, branch='c2sm')
+    version('c2sm-master', git=c2sm_git, branch='master')
+    version('c2sm-features', git=c2sm_git, branch='c2sm-features')
+    version('empa-ghg', git=empa_git, branch='c2sm')
 
     # pass spec from spec to test_cosmo.py in yaml-format
-
     # There are three different types of test_cosmo.py around:
 
     # COSMO-ORG
@@ -66,24 +65,30 @@ class Cosmo(MakefilePackage):
     patch('patches/5.09a.mch1.2.p2/spec_as_yaml/patch.serialize_cosmo',
           when='@5.09a.mch1.2.p2 +serialize')
 
+    # build dependency
+    depends_on('perl@5.16.3:', type='build')
+    depends_on('boost', when='cosmo_target=gpu ~cppdycore', type='build')
+    depends_on('libgrib1', type='build')
+    depends_on('omni-xmod-pool', when='+claw', type='build')
+    depends_on('claw', when='+claw', type='build')
+
+    # build and link dependency
+    depends_on('mpi +fortran')
+    depends_on('mpi +cuda', when='cosmo_target=gpu')
+    depends_on('cuda', when='cosmo_target=gpu')
     depends_on('netcdf-fortran')
     depends_on('netcdf-c +mpi')
+    depends_on('jasper@1.900.1')
+    depends_on('eccodes +fortran', when='+eccodes')
+
+    # run dependency
+    depends_on('cosmo-grib-api-definitions', type='run', when='~eccodes')
+    depends_on('cosmo-eccodes-definitions', type='run', when='+eccodes')
     depends_on('slurm', type='run')
-    depends_on('cuda', when='cosmo_target=gpu')
+
     depends_on('serialbox +fortran ^python@2:2.9',
                when='+serialize',
                type=('build', 'link', 'run'))
-    depends_on('mpi +fortran')
-    depends_on('mpi +cuda', when='cosmo_target=gpu')
-    depends_on('libgrib1', type='build')
-    depends_on('jasper@1.900.1')
-    depends_on('cosmo-grib-api-definitions', type='run', when='~eccodes')
-    depends_on('cosmo-eccodes-definitions', type='run', when='+eccodes')
-    depends_on('eccodes +fortran', when='+eccodes')
-    depends_on('perl@5.16.3:', type='build')
-    depends_on('omni-xmod-pool', when='+claw', type='build')
-    depends_on('claw', when='+claw', type='build')
-    depends_on('boost', when='cosmo_target=gpu ~cppdycore', type='build')
     depends_on('zlib_ng +compat', when='+zlib_ng', type=('link', 'run'))
     depends_on('oasis', when='+oasis', type=('build', 'link', 'run'))
 
