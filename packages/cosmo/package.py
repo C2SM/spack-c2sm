@@ -79,9 +79,7 @@ class Cosmo(MakefilePackage):
     depends_on('jasper@1.900.1')
     depends_on('cosmo-grib-api-definitions', type='run', when='~eccodes')
     depends_on('cosmo-eccodes-definitions', type='run', when='+eccodes')
-    depends_on('eccodes +fortran',
-               type=('build', 'link', 'run'),
-               when='+eccodes')
+    depends_on('eccodes +fortran', when='+eccodes')
     depends_on('perl@5.16.3:', type='build')
     depends_on('omni-xmod-pool', when='+claw', type='build')
     depends_on('claw', when='+claw', type='build')
