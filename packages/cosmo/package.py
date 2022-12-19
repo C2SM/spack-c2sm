@@ -99,6 +99,7 @@ class Cosmo(MakefilePackage):
         depends_on('cosmo-dycore +cuda', when='cosmo_target=gpu', type='build')
         depends_on('cosmo-dycore ~cuda', when='cosmo_target=cpu', type='build')
         depends_on('cosmo-dycore +build_tests', when='+dycoretest', type='build')
+        depends_on('cosmo-dycore ~build_tests', when='~dycoretest', type='build')
         depends_on('cosmo-dycore +gt1', when='+gt1', type='build')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
