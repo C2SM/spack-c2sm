@@ -96,7 +96,6 @@ class PyGt4py(PythonPackage):
     depends_on('py-devtools@0.6:', type=('build', 'run'))
     depends_on('py-factory-boy@3.1:', type=('build', 'run'))
 
-
     depends_on('py-psutil@5.0:', type=('build', 'run'))
 
     depends_on('py-pytest-cache@1.0:', type=('build', 'run'))
@@ -109,7 +108,6 @@ class PyGt4py(PythonPackage):
 
     # pytest-xdist[psutil]>=2.2
     depends_on('py-pytest-xdist', type=('build', 'run'))
-
 
     depends_on('py-wheel', type='build')
     depends_on('py-cython', type='build')
