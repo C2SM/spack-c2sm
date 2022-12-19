@@ -96,6 +96,7 @@ class PyGt4py(PythonPackage):
     depends_on('py-pytest-cache@1.0:', type=('build', 'run'))
     depends_on('py-pytest-cov@2.8:', type=('build', 'run'))
     depends_on('py-pytest-factoryboy@2.0:', type=('build', 'run'))
+    depends_on('py-gridtools-cpp@2.2.2:', type=('build', 'run'))
 
     # avoid problems with py-pluggy dep
     depends_on('py-tox@3.14:', type=('build', 'run'))
