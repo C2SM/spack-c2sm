@@ -89,6 +89,7 @@ class PyGt4py(PythonPackage):
     #depends_on('py-pygments@2.7:', type=('build', 'run'))
     #depends_on('py-sphinx@3.1:', type=('build', 'run'))
     #depends_on('py-sphinx-rtd-theme@0.4:', type=('build', 'run'))
+    depends_on('boost@1.65.1:', type=('build', 'run'))
 
     # deps from requirements-dev.txt
     depends_on('py-coverage@5.0:', type=('build', 'run'))
