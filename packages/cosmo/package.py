@@ -94,12 +94,20 @@ class Cosmo(MakefilePackage):
 
     with when('+cppdycore'):
         depends_on('cosmo-dycore', type='build')
-        depends_on('cosmo-dycore real_type=float', when='real_type=float', type='build')
-        depends_on('cosmo-dycore real_type=double', when='real_type=double', type='build')
+        depends_on('cosmo-dycore real_type=float',
+                   when='real_type=float',
+                   type='build')
+        depends_on('cosmo-dycore real_type=double',
+                   when='real_type=double',
+                   type='build')
         depends_on('cosmo-dycore +cuda', when='cosmo_target=gpu', type='build')
         depends_on('cosmo-dycore ~cuda', when='cosmo_target=cpu', type='build')
-        depends_on('cosmo-dycore +build_tests', when='+dycoretest', type='build')
-        depends_on('cosmo-dycore ~build_tests', when='~dycoretest', type='build')
+        depends_on('cosmo-dycore +build_tests',
+                   when='+dycoretest',
+                   type='build')
+        depends_on('cosmo-dycore ~build_tests',
+                   when='~dycoretest',
+                   type='build')
         depends_on('cosmo-dycore +gt1', when='+gt1', type='build')
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
