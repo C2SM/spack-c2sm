@@ -22,7 +22,6 @@ class PyHatchling(PythonPackage):
             sha256=
             '9f84361f70cf3a7ab9543b0c3ecc64211ed2ba8a606a71eb6a473c1c9b08e1d0')
 
-
     depends_on('py-setuptools', type='build')
 
     depends_on('python@3.7:', type=('build', 'run'))

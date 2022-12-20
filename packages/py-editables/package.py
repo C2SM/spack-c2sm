@@ -24,4 +24,3 @@ class PyEditables(PythonPackage):
     depends_on('py-setuptools', type='build')
 
     depends_on('python@3.7:', type=('build', 'run'))
-
