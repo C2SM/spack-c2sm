@@ -106,7 +106,7 @@ class InfoTest(unittest.TestCase):
     def test_py_frozendict(self):
         spack_info('py-frozendict')
 
-    def test_py_gridtools-cpp(self):
+    def test_py_gridtools_cpp(self):
         spack_info('py-gridtools')
 
     def test_py_gt4py(self):
