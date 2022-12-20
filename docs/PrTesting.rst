@@ -1,53 +1,37 @@
 PR testing
 ===================================
-To test a PR create a comment ``launch jenkins [--upstream] [--exclusive] [--tsa] [--daint] ...``
-with either
-* a space separated list of predefined commands (see "supported commands")
-or
-* a raw spack command
+To test a PR create a comment ``launch jenkins [<packages>] [<machines>]``.
 
-``--upstream`` links the instance with the upstream spack-admin instance.
-``--exclusive`` invokes only tests from the listed commands.
-``--tsa`` runs tests only on Tsa.
-``--daint`` runs tests only on Piz Daint.
-
-What is tested
-^^^^^^^^^^^^^^^^
-Using predefined commands will trigger a set of packages, plus (if ``--exclusive`` is not set) all packages that depend on them. (See test_spack.py)
+It will test the listed packages on the listed machines.
+No package means all packages. No machine means all machines.
+Order is irrelevant.
 
 Examples:
-^^^^^^^^^^^^
-``launch jenkins atlas cuda zlib_ng``
-No upstream will be used.
-All tests from atlas, cuda and zlib_ng will be run, plus all tests from all packages that depend on them.
+``launch jenkins int2lm daint`` tests int2lm on daint.
 
-``launch jenkins --upstream all``
-Upstream will be used.
-All packages and all use cases will be tested.
+``launch jenkins cosmo int2lm daint tsa`` tests
 
-``launch jenkins spack installcosmo cosmo@master%pgi cosmo_target=gpu +cppdycore``
-No upstream will be used.
-``spack installcosmo cosmo@master%pgi cosmo_target=gpu +cppdycore`` will be executed on all machines.
+* cosmo on daint
+* cosmo on tsa
+* int2lm on daint
+* int2lm on tsa
 
-``launch jenkins --exclusive cosmo-dycore``
-No upstream will be used.
-Only the tests of cosmo-dycore will be run.
+``launch jenkins cosmo icon`` tests cosmo and icon on all machines.
 
-Supported commands
-^^^^^^^^^^^^^^^^^^^^^
-Others:
+``launch jenkins daint`` tests all packages on daint.
 
-* all (tests all use cases)
-* a raw spack command
+``launch jenkins`` tests all packages on all machines.
 
-Package-name based:
+``launch jenkins all`` tests all packages on all machines.
 
-* atlas_utilities
+
+Supported packages:
+
 * cosmo
 * cosmo-dycore
 * cosmo-eccodes-definitions
 * cosmo-grib-api
-* cosmo-grib-api-definitions
+* cosmo-grib-api
 * dawn
 * dawn4py
 * dusk
@@ -59,5 +43,13 @@ Package-name based:
 * libgrib1
 * oasis
 * omni-xmod-pool
+* omnicompiler
 * xcodeml-tools
 * zlib_ng
+
+Supported machines:
+
+* balfrin
+* daint
+* tsa
+

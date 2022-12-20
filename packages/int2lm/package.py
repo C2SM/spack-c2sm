@@ -22,8 +22,6 @@ class Int2lm(MakefilePackage):
 
     maintainers = ['morsier']
 
-    version('dev-build', branch='master')
-
     # APN tags
     version('apn-master', git=git, branch='master')
 
@@ -33,16 +31,12 @@ class Int2lm(MakefilePackage):
 
     # ORG tags
     version('org-master', git=orggit, branch='master')
-
-    # deprecated versions
-    version('apn_master', git=git, branch='master')
-    version('c2sm_master', git=c2smgit, branch='master')
-    version('org_master', git=orggit, branch='master')
+    version('int2lm-3.00', git=orggit, tag='int2lm-3.00')
 
     depends_on('cosmo-grib-api-definitions',
                type=('build', 'run'),
                when='~eccodes')
-    depends_on('cosmo-eccodes-definitions',
+    depends_on('cosmo-eccodes-definitions ^eccodes +fortran',
                type=('build', 'link', 'run'),
                when='+eccodes')
     depends_on('libgrib1@master', type='build')
@@ -60,9 +54,15 @@ class Int2lm(MakefilePackage):
     variant('slave', default='none', description='Build on slave')
     variant('verbose', default=False, description='Build with verbose enabled')
 
+    # from Spack v0.18 we don't load a Python module prior sourcing Spack.
+    # Therefore #!/usr/bin/env python points to python2.
+    # Replace with #!/usr/bin/env python3 instead
+    patch('patches/testsuite/patch.to_python3',
+          when="@apn-master,c2sm-master,c2sm-features")
+
     conflicts(
         'pollen=True',
-        when='@org-master,org_master,org_2.05:org_2.08',
+        when='@org-master,int2lm-3.00',
         msg=
         'int2lm-org is currently broken with pollen, set variant pollen=False')
 
@@ -78,16 +78,15 @@ class Int2lm(MakefilePackage):
             lib_dir = '/lib'
         else:
             grib_prefix = self.spec['eccodes'].prefix
-            grib_lib_names = ' -leccodes_f90 -leccodes'
-            # Default installation lib path changed to from lib to lib64 after 2.19.0
-            if self.spec['eccodes'].version >= Version('2.19.0'):
-                lib_dir = '/lib64'
+            env.set(
+                'GRIBAPIL',
+                str(self.spec['eccodes:fortran'].libs.ld_flags) + ' ' +
+                str(self.spec['jasper'].libs.ld_flags))
+            grib_inc_dir_path = os.path.join(grib_prefix, 'include')
+            if os.path.exists(grib_inc_dir_path):
+                env.set('GRIBAPII', '-I' + grib_inc_dir_path)
             else:
-                lib_dir = '/lib'
-        env.set(
-            'GRIBAPIL', '-L' + grib_prefix + lib_dir + grib_lib_names + ' -L' +
-            self.spec['jasper'].prefix + '/lib64 -ljasper')
-        env.set('GRIBAPII', '-I' + grib_prefix + '/include')
+                env.set('GRIBAPII', '')
 
         # Netcdf library
         if self.spec.variants['slave'].value == 'daint':

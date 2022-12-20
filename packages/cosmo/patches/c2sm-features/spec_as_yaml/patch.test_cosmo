@@ -1,0 +1,21 @@
+diff --git a/cosmo/ACC/test/tools/test_cosmo.py b/cosmo/ACC/test/tools/test_cosmo.py
+index a7dae149..e07835ec 100755
+--- a/cosmo/ACC/test/tools/test_cosmo.py
++++ b/cosmo/ACC/test/tools/test_cosmo.py
+@@ -84,7 +84,15 @@ def main():
+                         to be installed for `--load` to work.""")
+     args=parser.parse_args()
+ 
+-    test_cosmo(Spec(args.spec), args.base_directory, args.job_list,
++    try:
++        # assume spec is passed as a yaml-file
++        with open(args.spec,"r") as f:
++            cosmo_spec = Spec.from_yaml(f)
++     except:
++        # assume spec is passed as a string
++        cosmo_spec = Spec(args.spec)
++
++    test_cosmo(cosmo_spec, args.base_directory, args.job_list,
+                exe_path=args.exe, skip_data=args.skip_data, account=args.account,
+                partition=args.partition, load=args.load)
+     

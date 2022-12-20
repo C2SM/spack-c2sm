@@ -15,10 +15,12 @@ class CosmoDycore(CMakePackage):
     maintainers = ['elsagermann']
 
     version('org-master', branch='master')
-    version('dev-build', branch='master')
+    version('6.0', tag='6.0')
+
     version('apn-mch',
             git='ssh://git@github.com/MeteoSwiss-APN/cosmo.git',
             branch='mch')
+    version('5.09a.mch1.2.p2', git=apngit, tag='5.09a.mch1.2.p2')
     version('c2sm-master',
             git='ssh://git@github.com/C2SM-RCM/cosmo.git',
             branch='master')
@@ -106,8 +108,21 @@ class CosmoDycore(CMakePackage):
     depends_on('cmake@3.12:')
     depends_on('cuda', type=('build', 'link', 'run'), when='+cuda')
 
+    conflicts('%nvhpc')
     conflicts('+production', when='build_type=Debug')
     conflicts('+production', when='+pmeters')
+
+    # pass spec from spec to test_dycore.py in yaml-format
+    patch('patches/c2sm-master/spec_as_yaml/patch.test_dycore',
+          when='@c2sm-master')
+    patch('patches/org-master/spec_as_yaml/patch.test_dycore',
+          when='@org-master')
+    patch('patches/c2sm-features/spec_as_yaml/patch.test_dycore',
+          when='@c2sm-features')
+
+    patch('patches/apn-mch/spec_as_yaml/patch.test_dycore', when='@apn-mch')
+    patch('patches/5.09a.mch1.2.p2/spec_as_yaml/patch.test_dycore',
+          when='@5.09a.mch1.2.p2')
 
     root_cmakelists_dir = 'dycore'
 

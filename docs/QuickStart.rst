@@ -1,7 +1,7 @@
 Quick Start
 ===========
 
-Set up (Daint, Dom, Tsa, Manali, Balfrin)
+Set up (Daint, Tsa, Balfrin)
 -----------------------------------------
 To set up a spack instance, clone the repository
 

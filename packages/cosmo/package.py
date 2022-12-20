@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-import subprocess, re, itertools, os
+import subprocess, itertools, os
 from spack import *
 
 
@@ -11,7 +11,7 @@ class Cosmo(MakefilePackage):
     """COSMO: Numerical Weather Prediction Model. Needs access to private GitHub."""
 
     homepage = "http://www.cosmo-model.org"
-    url = "https://github.com/MeteoSwiss-APN/cosmo/archive/5.07.mch1.0.p5.tar.gz"
+    url = "https://github.com/COSMO-ORG/cosmo/archive/6.0.tar.gz"
     git = 'ssh://git@github.com/COSMO-ORG/cosmo.git'
     apngit = 'ssh://git@github.com/MeteoSwiss-APN/cosmo.git'
     c2smgit = 'ssh://git@github.com/C2SM-RCM/cosmo.git'
@@ -19,9 +19,12 @@ class Cosmo(MakefilePackage):
     maintainers = ['elsagermann']
 
     version('org-master', branch='master', get_full_repo=True)
+    version('6.0', tag='6.0')
+
     version('apn-mch', git=apngit, branch='mch', get_full_repo=True)
+    version('5.09a.mch1.2.p2', git=apngit, tag='5.09a.mch1.2.p2')
+
     version('c2sm-master', git=c2smgit, branch='master', get_full_repo=True)
-    version('c2sm-test', git=c2smgit, branch='test_spec', get_full_repo=True)
     version('c2sm-features',
             git=c2smgit,
             branch='c2sm-features',
@@ -31,11 +34,49 @@ class Cosmo(MakefilePackage):
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p4')
     patch('patches/5.07.mch1.0.p4/patch.Makefile', when='@5.07.mch1.0.p5')
 
+    # pass spec from spec to test_cosmo.py in yaml-format
+
+    # There are three different types of test_cosmo.py around:
+
+    # COSMO-ORG
+    patch('patches/c2sm-master/spec_as_yaml/patch.test_cosmo',
+          when='@c2sm-master')
+    patch('patches/org-master/spec_as_yaml/patch.test_cosmo',
+          when='@org-master')
+    # C2SM-FEATURES
+    patch('patches/c2sm-features/spec_as_yaml/patch.test_cosmo',
+          when='@c2sm-features')
+    patch('patches/empa-ghg/spec_as_yaml/patch.test_cosmo', when='@empa-ghg')
+    # APN-MCH
+    patch('patches/apn-mch/spec_as_yaml/patch.test_cosmo', when='@apn-mch')
+    patch('patches/5.09a.mch1.2.p2/spec_as_yaml/patch.test_cosmo',
+          when='@5.09a.mch1.2.p2')
+
+    # pass spec from spec to serialize_cosmo.py in yaml-format
+
+    # There are two different types of serialize_cosmo.py around:
+
+    # COSMO-ORG
+    patch('patches/c2sm-master/spec_as_yaml/patch.serialize_cosmo',
+          when='@c2sm-master +serialize')
+    patch('patches/org-master/spec_as_yaml/patch.serialize_cosmo',
+          when='@org-master +serialize')
+    patch('patches/c2sm-features/spec_as_yaml/patch.serialize_cosmo',
+          when='@c2sm-features +serialize')
+    patch('patches/empa-ghg/spec_as_yaml/patch.serialize_cosmo',
+          when='@empa-ghg +serialize')
+
+    # APN-MCH
+    patch('patches/apn-mch/spec_as_yaml/patch.serialize_cosmo',
+          when='@apn-mch +serialize')
+    patch('patches/5.09a.mch1.2.p2/spec_as_yaml/patch.serialize_cosmo',
+          when='@5.09a.mch1.2.p2 +serialize')
+
     depends_on('netcdf-fortran', type=('build', 'link'))
     depends_on('netcdf-c +mpi', type=('build', 'link'))
     depends_on('slurm', type='run')
     depends_on('cuda', when='cosmo_target=gpu', type=('build', 'link', 'run'))
-    depends_on('serialbox +fortran',
+    depends_on('serialbox +fortran ^python@2:2.9',
                when='+serialize',
                type=('build', 'link', 'run'))
     depends_on('mpi', type=('build', 'link', 'run'), when='cosmo_target=cpu')
@@ -48,6 +89,9 @@ class Cosmo(MakefilePackage):
                type=('build', 'run'),
                when='~eccodes')
     depends_on('cosmo-eccodes-definitions',
+               type=('build', 'link', 'run'),
+               when='+eccodes')
+    depends_on('eccodes +fortran',
                type=('build', 'link', 'run'),
                when='+eccodes')
     depends_on('perl@5.16.3:', type='build')
@@ -79,7 +123,7 @@ class Cosmo(MakefilePackage):
 
     variant('cppdycore', default=True, description='Build with the C++ DyCore')
     variant('dycoretest',
-            default=True,
+            default=False,
             description='Build C++ dycore with testing')
     variant('serialize',
             default=False,
@@ -194,9 +238,9 @@ class Cosmo(MakefilePackage):
 
         # - ML - Dirty conflict check (see above)
         if self.spec.variants['oasis'].value and self.spec.version not in (
-                Version('c2sm-features'), Version('dev-build')):
+                Version('c2sm-features')):
             raise InstallError(
-                '+oasis variant only compatible with the @c2sm-features and @dev-build versions'
+                '+oasis variant only compatible with the @c2sm-features versions'
             )
 
         self.setup_run_environment(env)

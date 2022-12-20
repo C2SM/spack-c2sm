@@ -21,5 +21,5 @@ echo ">>> SPACK_SYSTEM_CONFIG_PATH <<<"
 echo $SPACK_SYSTEM_CONFIG_PATH
 echo ""
 echo ">>> MACHINE <<<"
-"$parent_dir"/env-setup/machine.sh
+"$parent_dir"/src/machine.sh
 echo ""

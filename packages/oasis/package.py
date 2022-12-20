@@ -19,7 +19,6 @@ class Oasis(MakefilePackage):
     maintainers = ['leclairm']
 
     version('master', branch='OASIS3-MCT_4.0')
-    version('dev-build', branch='OASIS3-MCT_4.0')
 
     depends_on('mpi', type=('build', 'link', 'run'))
     depends_on('netcdf-fortran', type=('build', 'link', 'run'))
