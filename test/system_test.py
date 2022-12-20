@@ -234,10 +234,12 @@ class OmniCompilerTest(unittest.TestCase):
     def test_install_version_1_3_2(self):
         spack_install_and_test('omnicompiler @1.3.2')
 
+
 class PyGt4pyTest(unittest.TestCase):
 
     def test_install_version_functional(self):
         spack_install_and_test_no_phase_splitting('py-gt4py%gcc@8.3.0')
+
 
 class PyIcon4pyTest(unittest.TestCase):
     pass  #TODO once unittests validate
