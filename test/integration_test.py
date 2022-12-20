@@ -233,8 +233,8 @@ class PlainSpecTest(unittest.TestCase):
     def test_py_frozendict(self):
         spack_spec('py-frozendict')
 
-    def test_py_gridtools-cpp(self):
-        spack_spec('py-gridtools')
+    def test_py_gridtools_cpp(self):
+        spack_spec('py-gridtools-cpp')
 
     def test_py_gt4py(self):
         spack_spec('py-gt4py')
