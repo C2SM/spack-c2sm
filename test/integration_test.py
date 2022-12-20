@@ -127,8 +127,8 @@ class InfoTest(unittest.TestCase):
     def test_py_pathspec(self):
         spack_info('py-pathspec')
 
-    def test_py_pytest-factoryboy(self):
-        spack_info('py-pytest')
+    def test_py_pytest_factoryboy(self):
+        spack_info('py-pytest-factoryboy')
 
     def test_py_toolz(self):
         spack_info('py-toolz')
@@ -254,8 +254,8 @@ class PlainSpecTest(unittest.TestCase):
     def test_py_pathspec(self):
         spack_spec('py-pathspec')
 
-    def test_py_pytest-factoryboy(self):
-        spack_spec('py-pytest')
+    def test_py_pytest_factoryboy(self):
+        spack_spec('py-pytest-factoryboy')
 
     def test_py_toolz(self):
         spack_spec('py-toolz')
