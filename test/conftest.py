@@ -29,7 +29,7 @@ def pytest_generate_tests(metafunc):
 
 def pytest_collection_modifyitems(config, items):
     scope = explicit_scope(config.getoption("--scope"))
-    
+
     skips = machine_skips(scope)
     triggers = package_triggers(scope)
 
@@ -39,4 +39,6 @@ def pytest_collection_modifyitems(config, items):
         if not any(k.lower() in triggers for k in item.keywords):
             item.add_marker(pytest.mark.skip(reason="test not in scope"))
         if any(k.lower() in skips for k in item.keywords):
-            item.add_marker(pytest.mark.skip(reason="test is marked to not run on this machine"))
+            item.add_marker(
+                pytest.mark.skip(
+                    reason="test is marked to not run on this machine"))
