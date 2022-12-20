@@ -133,7 +133,7 @@ class InfoTest(unittest.TestCase):
     def test_py_toolz(self):
         spack_info('py-toolz')
 
-    def test_py_typing-extensions(self):
+    def test_py_typing_extensions(self):
         spack_info('py-typing')
 
     def test_xcodeml_tools(self):
@@ -260,7 +260,7 @@ class PlainSpecTest(unittest.TestCase):
     def test_py_toolz(self):
         spack_spec('py-toolz')
 
-    def test_py_typing-extensions(self):
+    def test_py_typing_extensions(self):
         spack_spec('py-typing')
 
     def test_xcodeml_tools(self):
