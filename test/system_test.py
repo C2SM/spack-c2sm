@@ -43,6 +43,16 @@ def spack_install_and_test(command: str, log_filename: str = None):
                    log_filename,
                    srun=False)
 
+def spack_install_and_test_no_phase_splitting(command: str, log_filename: str = None):
+    """
+    Tests 'spack install' of the given command and writes the output into the log file.
+    If log_filename is None, command is used to create one.
+    """
+    log_filename = sanitized_filename(log_filename or command)
+    log_with_spack(f'spack install --test=root -n -v {command}',
+                   'system_test',
+                   log_filename,
+                   srun=True)
 
 mpi: str = {
     'daint': 'mpich',
@@ -227,7 +237,7 @@ class OmniCompilerTest(unittest.TestCase):
 class PyGt4pyTest(unittest.TestCase):
 
     def test_install_version_functional(self):
-        spack_install_and_test('py-gt4py%gcc@8.3.0')
+        spack_install_and_test_no_phase_splitting('py-gt4py%gcc@8.3.0')
 
 class PyIcon4pyTest(unittest.TestCase):
     pass  #TODO once unittests validate
