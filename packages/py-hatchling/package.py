@@ -26,7 +26,12 @@ class PyHatchling(PythonPackage):
     depends_on('py-setuptools', type='build')
 
     depends_on('python@3.7:', type=('build', 'run'))
-    depends_on('py-pluggy@1.0.0:', type=('build', 'run'))
+
+    # Be less strict with py-pluggy, otherwise concretizer
+    # fails due to 0.12 and 1.0 required at the same time
+    #depends_on('py-pluggy@1.0.0:', type=('build', 'run'))
+
+    depends_on('py-pluggy@0.12:1', type=('build', 'run'))
     depends_on('py-pathspec@0.10.1:', type=('build', 'run'))
     depends_on('py-tomli@1.2.2:', type=('build', 'run'))
     depends_on('py-packaging@21.3:', type=('build', 'run'))
