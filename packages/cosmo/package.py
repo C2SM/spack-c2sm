@@ -82,10 +82,10 @@ class Cosmo(MakefilePackage):
     depends_on('eccodes +fortran', when='+eccodes')
 
     # run dependency
-    depends_on('cosmo-grib-api-definitions', type='run', when='~eccodes')
-    depends_on('cosmo-eccodes-definitions', type='run', when='+eccodes')
     depends_on('slurm', type='run')
 
+    depends_on('cosmo-grib-api-definitions', type=('build', 'run'), when='~eccodes')
+    depends_on('cosmo-eccodes-definitions', type=('build', 'run'), when='+eccodes')
     depends_on('serialbox +fortran ^python@2:2.9',
                when='+serialize',
                type=('build', 'link', 'run'))
