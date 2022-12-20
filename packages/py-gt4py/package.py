@@ -26,7 +26,7 @@ class PyGt4py(PythonPackage):
 
     depends_on('cmake@3.18:', type=('build', 'run'))
     depends_on('boost@1.65.1:', type=('build', 'run'))
-    depends_on('llvm', type=('build', 'run'))
+    depends_on('llvm ~omp_as_runtime', type=('build', 'run'))
 
     # Python dependencies from setup.cfg
     depends_on('python@3.10:', type=('build', 'run'))
