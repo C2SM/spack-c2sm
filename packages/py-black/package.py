@@ -3,6 +3,7 @@ from spack.pkg.builtin.py_black import PyBlack as SpackPyBlack
 
 
 class PyBlack(SpackPyBlack):
+    """Black is the uncompromising Python code formatter."""
 
     version("22.3.0",
             sha256=

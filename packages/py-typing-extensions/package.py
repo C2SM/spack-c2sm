@@ -3,6 +3,7 @@ from spack.pkg.builtin.py_typing_extensions import PyTypingExtensions as SpackPy
 
 
 class PyTypingExtensions(SpackPyTypingExtensions):
+    """Backported and Experimental Type Hints for Python 3.7+"""
 
     version("4.2.0",
             sha256=

@@ -3,73 +3,32 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-# ----------------------------------------------------------------------------
-# If you submit this package back to Spack as a pull request,
-# please first remove this boilerplate and all FIXME comments.
-#
-# This is a template package file for Spack.  We've put "FIXME"
-# next to all the things you'll want to change. Once you've handled
-# them, you can save this file and test your package like this:
-#
-#     spack install py-hatchling
-#
-# You can edit this file again by typing:
-#
-#     spack edit py-hatchling
-#
-# See the Spack documentation for more information on packaging.
-# ----------------------------------------------------------------------------
-
 from spack import *
 
 
 class PyHatchling(PythonPackage):
-    """FIXME: Put a proper description of your package here."""
+    """This is the extensible, standards compliant 
+    build backend used by Hatch.
+    """
 
     # FIXME: Add a proper url for your package's homepage here.
-    homepage = "https://www.example.com"
+    homepage = "https://hatch.pypa.io/latest/"
 
-    # FIXME: ensure the package is not available through PyPI. If it is,
-    # re-run `spack create --force` with the PyPI URL.
     pypi = "hatchling/hatchling-1.11.1.tar.gz"
 
-    # FIXME: Add a list of GitHub accounts to
-    # notify when the package is updated.
-    # maintainers = ['github_user1', 'github_user2']
+    maintainers = ['samkellerhals']
 
-    # FIXME: Add proper versions here.
     version('1.11.1',
             sha256=
             '9f84361f70cf3a7ab9543b0c3ecc64211ed2ba8a606a71eb6a473c1c9b08e1d0')
 
-    # FIXME: Only add the python/pip/wheel dependencies if you need specific versions
-    # or need to change the dependency type. Generic python/pip/wheel dependencies are
-    # added implicity by the PythonPackage base class.
-    depends_on('python@3.7:', type=('build', 'run'))
 
-    # FIXME: Add a build backend, usually defined in pyproject.toml. If no such file
-    # exists, use setuptools.
     depends_on('py-setuptools', type='build')
 
-    # depends_on('py-flit-core', type='build')
-    # depends_on('py-poetry-core', type='build')
-
-    # FIXME: Add additional dependencies if required.
+    depends_on('python@3.7:', type=('build', 'run'))
     depends_on('py-pluggy@1.0.0:', type=('build', 'run'))
     depends_on('py-pathspec@0.10.1:', type=('build', 'run'))
     depends_on('py-tomli@1.2.2:', type=('build', 'run'))
     depends_on('py-packaging@21.3:', type=('build', 'run'))
     depends_on('py-editables@0.3:', type=('build', 'run'))
     depends_on('py-importlib-metadata', type=('build', 'run'))
-
-    def global_options(self, spec, prefix):
-        # FIXME: Add options to pass to setup.py
-        # FIXME: If not needed, delete this function
-        options = []
-        return options
-
-    def install_options(self, spec, prefix):
-        # FIXME: Add options to pass to setup.py install
-        # FIXME: If not needed, delete this function
-        options = []
-        return options

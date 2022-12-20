@@ -7,8 +7,13 @@ from spack.package import *
 
 
 class PyGridtoolsCpp(PythonPackage):
+    """Python package for GridTools headers and CMake files"""
+
+    homepage = "https://gridtools.github.io/gridtools/latest/index.html"
 
     pypi = "gridtools-cpp/gridtools-cpp-2.2.2.tar.gz"
+
+    maintainers = ['samkellerhals']
 
     version("2.2.2",
             sha256=

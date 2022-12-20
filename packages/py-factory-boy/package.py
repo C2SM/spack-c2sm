@@ -7,6 +7,7 @@ from spack.package import *
 
 
 class PyFactoryBoy(PythonPackage):
+    """factory_boy is a fixtures replacement based on thoughtbot factory_bot"""
 
     pypi = "factory_boy/factory_boy-3.2.1.tar.gz"
 

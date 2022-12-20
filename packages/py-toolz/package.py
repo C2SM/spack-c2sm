@@ -4,6 +4,7 @@ from spack.pkg.builtin.py_toolz import PyToolz as SpackPyToolz
 
 
 class PyToolz(SpackPyToolz):
+    """A set of utility functions for iterators, functions, and dictionaries."""
 
     version("0.12.0",
             sha256=

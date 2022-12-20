@@ -3,6 +3,8 @@ from spack.pkg.builtin.py_boltons import PyBoltons as SpackPyBoltons
 
 
 class PyBoltons(SpackPyBoltons):
+    """Functionality that should be in the standard library. 
+    Like builtins, but Boltons."""
 
     version('21.0.0',
             sha256=

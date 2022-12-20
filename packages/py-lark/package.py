@@ -6,11 +6,15 @@
 from spack.package import *
 
 
+# TODO: This package is taken from a more recent version of Spack
+#       Remove this package once Spack in spack-c2sm has been updated
 class PyLark(PythonPackage):
     """Lark is a modern general-purpose parsing library for Python."""
 
     homepage = "https://github.com/lark-parser/lark/"
     pypi = "lark/lark-1.0.0.tar.gz"
+
+    maintainers = ['samkellerhals']
 
     version("1.1.2",
             sha256=
