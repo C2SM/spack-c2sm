@@ -5,6 +5,7 @@
 
 from spack import *
 
+
 class PyCytoolz(PythonPackage):
     """Python implementation of the toolz package, 
     which provides high performance utility functions for iterables, 
@@ -27,7 +28,6 @@ class PyCytoolz(PythonPackage):
     depends_on('py-toolz@0.8.0:', type=('build', 'run'))
 
     variant('cython', default=False, description='Build with Cython')
-
 
     def global_options(self, spec, prefix):
         options = []
