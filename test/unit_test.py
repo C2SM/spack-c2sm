@@ -116,8 +116,9 @@ class ScopeTest(unittest.TestCase):
                         in triggers)  # Name of Test included
 
     def test_machine_skips(self):
-        skips = machine_skips(['tsa'])
-        self.assertTrue('no_daint' in skips)
+        skips = machine_skips(['tsa', 'icon'])
+        self.assertTrue('no_tsa' in skips)
+        self.assertTrue('no_icon' not in skips)
 
 
 if __name__ == '__main__':

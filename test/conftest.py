@@ -28,16 +28,15 @@ def pytest_generate_tests(metafunc):
 
 
 def pytest_collection_modifyitems(config, items):
-    scope = config.getoption("--scope")
-    scope = explicit_scope(scope)
-    triggers = package_triggers(scope)
+    scope = explicit_scope(config.getoption("--scope"))
+    
     skips = machine_skips(scope)
+    triggers = package_triggers(scope)
 
-    out_of_scope_skip = pytest.mark.skip(reason="not in scope")
     for item in items:
-        package_inactive = not any(k.lower() in triggers
-                                   for k in item.keywords)
-        machine_inactive = any(k.lower() in skips for k in item.keywords)
-        if package_inactive or machine_inactive or (machine_name()
-                                                    not in scope):
-            item.add_marker(out_of_scope_skip)
+        if machine_name() not in scope:
+            item.add_marker(pytest.mark.skip(reason="machine not in scope"))
+        if not any(k.lower() in triggers for k in item.keywords):
+            item.add_marker(pytest.mark.skip(reason="test not in scope"))
+        if any(k.lower() in skips for k in item.keywords):
+            item.add_marker(pytest.mark.skip(reason="test is marked to not run on this machine"))
