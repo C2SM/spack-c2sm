@@ -73,4 +73,5 @@ class PyGt4py(PythonPackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def install_test(self):
-        python('-m','pytest' ,'-v' ,'-s' ,'-n' ,'auto' ,'--cov','--cov-append','tests')
+        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--cov',
+               '--cov-append', 'tests')
