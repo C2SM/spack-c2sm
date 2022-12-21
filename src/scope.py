@@ -51,4 +51,4 @@ def package_triggers(scope: list) -> list:
 
 def machine_skips(scope: list) -> list:
     "Returns a list with 'no_{machine}' for all machines in scope."
-    return ['no_' + x for x in all_machines if x in scope
+    return ['no_' + x for x in all_machines if x in scope]
