@@ -256,6 +256,8 @@ class OmniCompilerTest(unittest.TestCase):
         spack_install_and_test('omnicompiler @1.3.2')
 
 
+@pytest.mark.no_balfrin
+@pytest.mark.no_tsa
 class PyGt4pyTest(unittest.TestCase):
 
     def test_install_version_functional(self):
