@@ -14,6 +14,8 @@ class PyIcon4py(PythonPackage):
 
     url = "git@github.com:C2SM/icon4py.git"
 
+    homepage = "https://github.com/C2SM/icon4py"
+
     maintainers = ['samkellerhals']
 
     version('main', branch='main', git='ssh://git@github.com/C2SM/icon4py.git')
