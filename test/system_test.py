@@ -150,24 +150,24 @@ class IconTest(unittest.TestCase):
 
     def test_install_nwp_gpu(self):
         spack_install_and_test(
-            'icon @nwp %nvhpc icon_target=gpu +claw +eccodes +ocean')
+            f'icon @nwp %nvhpc icon_target=gpu +claw +eccodes +ocean ^{mpi} %{nvidia_compiler}')
 
     def test_install_nwp_cpu(self):
         spack_install_and_test(
-            'icon @nwp %nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean'
+            f'icon @nwp %nvhpc icon_target=cpu serialize_mode=create +eccodes +ocean ^{mpi} %{nvidia_compiler}'
         )
 
     def test_devbuild_nwp_gpu(self):
         spack_install_and_test(
-            'icon @develop %nvhpc config_dir=./.. icon_target=gpu')
+            f'icon @develop %nvhpc config_dir=./.. icon_target=gpu ^{mpi} %{nvidia_compiler}')
 
     def test_devbuild_nwp_cpu(self):
         spack_install_and_test(
-            'icon @develop %nvhpc config_dir=./.. icon_target=cpu')
+            f'icon @develop %nvhpc config_dir=./.. icon_target=cpu ^{mpi} %{nvidia_compiler}')
 
     def test_install_exclaim_cpu(self):
         spack_install_and_test(
-            'icon @exclaim-master %nvhpc icon_target=cpu +eccodes +ocean')
+            f'icon @exclaim-master %nvhpc icon_target=cpu +eccodes +ocean ^{mpi} %{nvidia_compiler}')
 
     def test_install_exclaim_cpu_gcc(self):
         spack_install_and_test(
@@ -175,7 +175,7 @@ class IconTest(unittest.TestCase):
 
     def test_install_exclaim_gpu(self):
         spack_install_and_test(
-            'icon @exclaim-master %nvhpc icon_target=gpu +eccodes +ocean +claw'
+            f'icon @exclaim-master %nvhpc icon_target=gpu +eccodes +ocean +claw ^{mpi} %{nvidia_compiler}'
         )
 
 
