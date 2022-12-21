@@ -73,5 +73,4 @@ class PyGt4py(PythonPackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def install_test(self):
-        with working_dir('spack-test', create=True):
-            python('-m', 'pytest', '-v', '../tests')
+        python('-m','pytest' ,'-v' ,'-s' ,'-n' ,'auto' ,'--cov','--cov-append','tests')
