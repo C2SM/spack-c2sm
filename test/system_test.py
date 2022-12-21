@@ -43,7 +43,9 @@ def spack_install_and_test(command: str, log_filename: str = None):
                    log_filename,
                    srun=False)
 
-def spack_install_and_test_python_package(command: str, log_filename: str = None):
+
+def spack_install_and_test_python_package(command: str,
+                                          log_filename: str = None):
     """
     Tests 'spack install' of the given command and writes the output into the log file.
     If log_filename is None, command is used to create one.
@@ -60,10 +62,10 @@ def spack_install_and_test_python_package(command: str, log_filename: str = None
 
     # set by the virtual environment
 
-    virtual_env = os.path.join(os.environ['VIRTUAL_ENV'],'bin')
+    virtual_env = os.path.join(os.environ['VIRTUAL_ENV'], 'bin')
     os.environ.pop('VIRTUAL_ENV')
     path = os.environ['PATH']
-    path = path.replace(virtual_env,'')
+    path = path.replace(virtual_env, '')
     os.environ['PATH'] = path
 
     log_filename = sanitized_filename(log_filename or command)
@@ -261,6 +263,7 @@ class PyGt4pyTest(unittest.TestCase):
 
 
 class PyIcon4pyTest(unittest.TestCase):
+
     def test_install_version_main(self):
         spack_install_and_test_python_package('py-icon4py@main%gcc@8.3.0')
 
