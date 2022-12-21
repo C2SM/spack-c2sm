@@ -119,8 +119,8 @@ class Icon(AutotoolsPackage):
     depends_on(default_eccodes, type='build', when='+grib2+cdi-pio')
 
     depends_on('yaxt+fortran', when='+cdi-pio')
-    #depends_on('lapack')
-    #depends_on('blas')
+    depends_on('lapack')
+    depends_on('blas')
     depends_on('netcdf-fortran')
 
     depends_on('netcdf-c', when='~cdi-pio')
@@ -461,8 +461,8 @@ class Icon(AutotoolsPackage):
         if '+rttov' in self.spec:
             libs += self.spec['rttov'].libs
 
-        #libs += self.spec['lapack:fortran'].libs
-        #libs += self.spec['blas:fortran'].libs
+        libs += self.spec['lapack:fortran'].libs
+        libs += self.spec['blas:fortran'].libs
         libs += self.spec['netcdf-fortran'].libs
 
         if '+coupling' in self.spec or '~cdi-pio' in self.spec:
@@ -534,9 +534,6 @@ class Icon(AutotoolsPackage):
         # Finalize the LIBS variable (we always put the real collected
         # libraries to the front):
         config_vars['LIBS'].extend(['-lnvcpumath -lnvhpcatm'])
-        config_vars['LIBS'].extend([
-            '-L/opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/lib -llapack -lblas'
-        ])
         config_vars['LIBS'].insert(0, libs.link_flags)
 
         # Help the libtool scripts of the bundled libraries find the correct
