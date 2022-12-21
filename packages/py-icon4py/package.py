@@ -27,6 +27,7 @@ class PyIcon4py(PythonPackage):
     depends_on('py-fprettify@0.3.7:', type=('build', 'run'))
     depends_on('py-gt4py', type=('build', 'run'))
     depends_on('py-pytest', type=('build', 'run'))
+    depends_on('py-tox@3.14:', type=('build', 'run'))
 
     def install(self, spec, prefix):
         """Install everything from build directory."""
@@ -53,6 +54,4 @@ class PyIcon4py(PythonPackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def install_test(self):
-        with working_dir('spack-test', create=True):
-            python('-m', 'pytest', '-v', '../pyutils/tests',
-                   '../atm_dyn_iconam/tests/')
+        python('-m', 'tox')
