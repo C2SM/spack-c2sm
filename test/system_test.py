@@ -45,17 +45,20 @@ def spack_install_and_test(command: str, log_filename: str = None):
                    srun=False)
 
 
-def spack_devbuildcosmo_and_test(command: str, log_filename: str = None, cwd = None):
+def spack_devbuildcosmo_and_test(command: str,
+                                 log_filename: str = None,
+                                 cwd=None):
     """
     Tests 'spack devbuildcosmo' of the given command and writes the output into the log file.
     If log_filename is None, command is used to create one.
     """
     log_filename = sanitized_filename(log_filename or command)
-    log_with_spack(f'spack devbuildcosmo --until build --test=root -n {command}',
-                   'system_test',
-                   log_filename,
-                   cwd=cwd,
-                   srun=True)
+    log_with_spack(
+        f'spack devbuildcosmo --until build --test=root -n {command}',
+        'system_test',
+        log_filename,
+        cwd=cwd,
+        srun=True)
     log_with_spack(
         f'spack devbuildcosmo --dont-restage --test=root -n {command}',
         'system_test',
@@ -64,7 +67,7 @@ def spack_devbuildcosmo_and_test(command: str, log_filename: str = None, cwd = N
         srun=False)
 
 
-def spack_devbuild_and_test(command: str, log_filename: str = None, cwd = None):
+def spack_devbuild_and_test(command: str, log_filename: str = None, cwd=None):
     """
     Tests 'spack dev-build' of the given command and writes the output into the log file.
     If log_filename is None, command is used to create one.
@@ -75,12 +78,11 @@ def spack_devbuild_and_test(command: str, log_filename: str = None, cwd = None):
                    log_filename,
                    cwd=cwd,
                    srun=True)
-    log_with_spack(
-        f'spack dev-build --dont-restage --test=root -n {command}',
-        'system_test',
-        log_filename,
-        cwd=cwd,
-        srun=False)
+    log_with_spack(f'spack dev-build --dont-restage --test=root -n {command}',
+                   'system_test',
+                   log_filename,
+                   cwd=cwd,
+                   srun=False)
 
 
 mpi: str = {
@@ -109,16 +111,26 @@ class CosmoTest(unittest.TestCase):
         )
 
     def test_devbuild_version_6_0_cpu(self):
-        subprocess.run('git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git', check=True, shell=True)
+        subprocess.run(
+            'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git',
+            check=True,
+            shell=True)
         try:
-            spack_devbuildcosmo_and_test(f'cosmo @6.0_cpu %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}', cwd='cosmo')
+            spack_devbuildcosmo_and_test(
+                f'cosmo @6.0_cpu %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}',
+                cwd='cosmo')
         finally:
             subprocess.run('rm -rf cosmo', shell=True)
 
     def test_devbuild_version_6_0_gpu(self):
-        subprocess.run('git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git', check=True, shell=True)
+        subprocess.run(
+            'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git',
+            check=True,
+            shell=True)
         try:
-            spack_devbuildcosmo_and_test(f'cosmo @6.0_gpu %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}', cwd='cosmo')
+            spack_devbuildcosmo_and_test(
+                f'cosmo @6.0_gpu %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}',
+                cwd='cosmo')
         finally:
             subprocess.run('rm -rf cosmo', shell=True)
 
@@ -205,16 +217,26 @@ class IconTest(unittest.TestCase):
         )
 
     def test_devbuild_nwp_gpu(self):
-        subprocess.run('git clone --depth 1 ssh://git@gitlab.dkrz.de/icon/icon-nwp.git', check=True, shell=True)
+        subprocess.run(
+            'git clone --depth 1 ssh://git@gitlab.dkrz.de/icon/icon-nwp.git',
+            check=True,
+            shell=True)
         try:
-            spack_devbuild_and_test('icon @nwp_gpu %nvhpc config_dir=./.. icon_target=gpu', cwd='icon-nwp')
+            spack_devbuild_and_test(
+                'icon @nwp_gpu %nvhpc config_dir=./.. icon_target=gpu',
+                cwd='icon-nwp')
         finally:
             subprocess.run('rm -rf icon-nwp', shell=True)
 
     def test_devbuild_nwp_cpu(self):
-        subprocess.run('git clone --depth 1 ssh://git@gitlab.dkrz.de/icon/icon-nwp.git', check=True, shell=True)
+        subprocess.run(
+            'git clone --depth 1 ssh://git@gitlab.dkrz.de/icon/icon-nwp.git',
+            check=True,
+            shell=True)
         try:
-            spack_devbuild_and_test('icon @nwp_cpu %nvhpc config_dir=./.. icon_target=cpu', cwd='icon-nwp')
+            spack_devbuild_and_test(
+                'icon @nwp_cpu %nvhpc config_dir=./.. icon_target=cpu',
+                cwd='icon-nwp')
         finally:
             subprocess.run('rm -rf icon-nwp', shell=True)
 
