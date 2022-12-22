@@ -1,7 +1,9 @@
 import unittest
 import pytest
+import subprocess
 import sys
 import os
+import uuid
 from pathlib import Path
 
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
@@ -34,7 +36,7 @@ def spack_install_and_test(command: str, log_filename: str = None):
     If log_filename is None, command is used to create one.
     """
     log_filename = sanitized_filename(log_filename or command)
-    log_with_spack(f'spack install --until build -n -v {command}',
+    log_with_spack(f'spack install --until build --test=root -n -v {command}',
                    'system_test',
                    log_filename,
                    srun=True)
@@ -88,6 +90,44 @@ def spack_install_and_test_python_package(command: str,
                    srun=True)
 
 
+def spack_devbuildcosmo_and_test(command: str, log_filename: str = None, cwd = None):
+    """
+    Tests 'spack devbuildcosmo' of the given command and writes the output into the log file.
+    If log_filename is None, command is used to create one.
+    """
+    log_filename = sanitized_filename(log_filename or command)
+    log_with_spack(f'spack devbuildcosmo --until build --test=root -n {command}',
+                   'system_test',
+                   log_filename,
+                   cwd=cwd,
+                   srun=True)
+    log_with_spack(
+        f'spack devbuildcosmo --dont-restage --test=root -n {command}',
+        'system_test',
+        log_filename,
+        cwd=cwd,
+        srun=False)
+
+
+def spack_devbuild_and_test(command: str, log_filename: str = None, cwd = None):
+    """
+    Tests 'spack dev-build' of the given command and writes the output into the log file.
+    If log_filename is None, command is used to create one.
+    """
+    log_filename = sanitized_filename(log_filename or command)
+    log_with_spack(f'spack dev-build --until build --test=root -n {command}',
+                   'system_test',
+                   log_filename,
+                   cwd=cwd,
+                   srun=True)
+    log_with_spack(
+        f'spack dev-build --dont-restage --test=root -n {command}',
+        'system_test',
+        log_filename,
+        cwd=cwd,
+        srun=False)
+
+
 mpi: str = {
     'daint': 'mpich',
     'tsa': 'openmpi',
@@ -101,33 +141,44 @@ nvidia_compiler: str = {
 }[machine_name()]
 
 
+@pytest.mark.no_balfrin  # cosmo-dycore does not support the cuda arch of balfrin
 class CosmoTest(unittest.TestCase):
 
-    # def test_install_version_6_0_cpu(self):
-    #     spack_installcosmo_and_test(
-    #         f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
-    #     )
+    def test_install_version_6_0_cpu(self):
+        spack_installcosmo_and_test(
+            f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
+        )
 
-    # def test_install_version_6_0_gpu(self):
-    #     spack_installcosmo_and_test(
-    #         f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
-    #     )
+    def test_install_version_6_0_gpu(self):
+        spack_installcosmo_and_test(
+            f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
+        )
 
-    # def test_devbuild_version_6_0_cpu(self):
-    #     spack_installcosmo_and_test(f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}')
+    def test_devbuild_version_6_0_cpu(self):
+        unique_folder = uuid.uuid4().hex  # for multiprocessing-safety reasons
+        subprocess.run(f'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git {unique_folder}', check=True, shell=True)
+        try:
+            spack_devbuildcosmo_and_test(f'cosmo @6.0_cpu %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}', cwd=unique_folder)
+        finally:
+            subprocess.run(f'rm -rf {unique_folder}', shell=True)
 
-    # def test_devbuild_version_6_0_gpu(self):
-    #     spack_installcosmo_and_test(f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}')
+    def test_devbuild_version_6_0_gpu(self):
+        unique_folder = uuid.uuid4().hex  # for multiprocessing-safety reasons
+        subprocess.run(f'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git {unique_folder}', check=True, shell=True)
+        try:
+            spack_devbuildcosmo_and_test(f'cosmo @6.0_gpu %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}', cwd='cosmo')
+        finally:
+            subprocess.run(f'rm -rf {unique_folder}', shell=True)
 
-    # def test_install_version_5_09_mch_1_2_p2_cpu(self):
-    #     spack_installcosmo_and_test(
-    #         f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
-    #     )
+    def test_install_version_5_09_mch_1_2_p2_cpu(self):
+        spack_installcosmo_and_test(
+            f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
+        )
 
-    # def test_install_version_5_09_mch_1_2_p2_gpu(self):
-    #     spack_installcosmo_and_test(
-    #         f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
-    #     )
+    def test_install_version_5_09_mch_1_2_p2_gpu(self):
+        spack_installcosmo_and_test(
+            f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
+        )
 
     def test_install_c2sm_master_cpu(self):
         spack_installcosmo_and_test(
@@ -140,13 +191,14 @@ class CosmoTest(unittest.TestCase):
         )
 
 
+@pytest.mark.no_balfrin  # cuda arch is not supported
 class CosmoDycoreTest(unittest.TestCase):
 
-    # def test_install_version_6_0_cuda(self):
-    #     spack_install_and_test('cosmo-dycore @6.0 +cuda')
+    def test_install_version_6_0_cuda(self):
+        spack_install_and_test('cosmo-dycore @6.0 +cuda')
 
-    # def test_install_version_6_0_no_cuda(self):
-    #     spack_install_and_test('cosmo-dycore @6.0 ~cuda')
+    def test_install_version_6_0_no_cuda(self):
+        spack_install_and_test('cosmo-dycore @6.0 ~cuda')
 
     def test_install_c2sm_master_cuda(self):
         spack_install_and_test('cosmo-dycore @c2sm-master +cuda')
@@ -189,7 +241,7 @@ class GridToolsTest(unittest.TestCase):
         spack_install_and_test('gridtools @1.1.3')
 
 
-@pytest.mark.no_tsa  # config file does not exist for this machines
+@pytest.mark.no_tsa  # config file does not exist for this machine
 class IconTest(unittest.TestCase):
 
     def test_install_nwp_gpu(self):
@@ -228,11 +280,11 @@ class IconTest(unittest.TestCase):
 
 class Int2lmTest(unittest.TestCase):
 
-    # def test_install_version_3_00_gcc(self):
-    #     spack_install_and_test('int2lm @int2lm-3.00 %gcc')
+    def test_install_version_3_00_gcc(self):
+        spack_install_and_test('int2lm @int2lm-3.00 %gcc')
 
-    # def test_install_version_3_00_nvhpc(self):
-    #     spack_install_and_test(f'int2lm @int2lm-3.00 %{nvidia_compiler}')
+    def test_install_version_3_00_nvhpc(self):
+        spack_install_and_test(f'int2lm @int2lm-3.00 %{nvidia_compiler}')
 
     def test_install_c2sm_master_gcc(self):
         spack_install_and_test(
