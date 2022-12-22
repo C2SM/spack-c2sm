@@ -14,7 +14,9 @@ class ClangFormat(Package):
 
     maintainers = ['juckerj']
 
-    version('15.0.6', sha256='38bc7f5563642e73e69ac5626724e206d6d539fbef653541b34cae0ba9c3f036')
+    version('15.0.6',
+            sha256=
+            '38bc7f5563642e73e69ac5626724e206d6d539fbef653541b34cae0ba9c3f036')
 
     phases = ['install']
 
