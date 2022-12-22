@@ -17,16 +17,12 @@ class CosmoDycore(CMakePackage):
     version('org-master', branch='master')
     version('6.0', tag='6.0')
 
-    version('apn-mch',
-            git='ssh://git@github.com/MeteoSwiss-APN/cosmo.git',
-            branch='mch')
+    version('apn-mch', git=apngit, branch='mch')
     version('5.09a.mch1.2.p2', git=apngit, tag='5.09a.mch1.2.p2')
-    version('c2sm-master',
-            git='ssh://git@github.com/C2SM-RCM/cosmo.git',
-            branch='master')
-    version('c2sm-features',
-            git='ssh://git@github.com/C2SM-RCM/cosmo.git',
-            branch='c2sm-features')
+
+    version('c2sm-master', git=c2smgit, branch='master')
+    version('c2sm-features', git=c2smgit, branch='c2sm-features')
+
     version('empa-ghg', git=empagit, branch='c2sm')
 
     variant('build_type',
@@ -50,9 +46,6 @@ class CosmoDycore(CMakePackage):
             default='.',
             description='Serialization data path',
             multi=False)
-    variant('production',
-            default=False,
-            description='Force all variants to be the ones used in production')
     variant('cuda_arch',
             default='none',
             description='Build with cuda_arch',
@@ -97,31 +90,18 @@ class CosmoDycore(CMakePackage):
             default='gpu',
             description='Slurm constraints for nodes requested')
 
-    depends_on('gridtools@1.1.3 ~cuda', when='~cuda+gt1')
-    depends_on('gridtools@1.1.3 +cuda', when='+cuda+gt1')
+    depends_on('gridtools@1.1.3 ~cuda', when='~cuda +gt1')
+    depends_on('gridtools@1.1.3 +cuda', when='+cuda +gt1')
     depends_on('boost@1.65.1: +program_options +system')
-    depends_on('serialbox@2.6.0', when='+build_tests', type=('run'))
-    depends_on('mpi', type=('build', 'link', 'run'), when='~cuda')
-    depends_on('mpi +cuda', type=('build', 'link', 'run'), when='+cuda')
+    depends_on('serialbox@2.6.0', when='+build_tests', type='run')
+    depends_on('mpi')
+    depends_on('mpi +cuda', when='+cuda')
     depends_on('slurm', type='run')
     depends_on('cmake@3.12:')
-    depends_on('cuda', type=('build', 'link', 'run'), when='+cuda')
+    depends_on('cuda', when='+cuda')
 
     conflicts('%nvhpc')
-    conflicts('+production', when='build_type=Debug')
-    conflicts('+production', when='+pmeters')
-
-    # pass spec from spec to test_dycore.py in yaml-format
-    patch('patches/c2sm-master/spec_as_yaml/patch.test_dycore',
-          when='@c2sm-master')
-    patch('patches/org-master/spec_as_yaml/patch.test_dycore',
-          when='@org-master')
-    patch('patches/c2sm-features/spec_as_yaml/patch.test_dycore',
-          when='@c2sm-features')
-
-    patch('patches/apn-mch/spec_as_yaml/patch.test_dycore', when='@apn-mch')
-    patch('patches/5.09a.mch1.2.p2/spec_as_yaml/patch.test_dycore',
-          when='@5.09a.mch1.2.p2')
+    conflicts('%pgi')
 
     root_cmakelists_dir = 'dycore'
 
@@ -182,16 +162,14 @@ class CosmoDycore(CMakePackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def test(self):
-        cwd = os.path.join(self.root_cmakelists_dir, 'test/tools')
         if '+build_tests' in self.spec:
-            with open(os.path.join(cwd, 'spec.yaml'), mode='w') as f:
-                f.write(self.spec.to_yaml())
             try:
                 subprocess.run([
-                    './test_dycore.py', '-s', 'spec.yaml', '-b',
+                    './test_dycore.py', '-s',
+                    str(self.spec), '-b',
                     str(self.build_directory)
                 ],
-                               cwd=cwd,
+                               cwd=self.root_cmakelists_dir + '/test/tools',
                                check=True,
                                stderr=subprocess.STDOUT)
             except:
