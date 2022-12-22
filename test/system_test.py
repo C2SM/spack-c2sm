@@ -1,5 +1,6 @@
 import unittest
 import pytest
+import subprocess
 import sys
 import os
 from pathlib import Path
@@ -44,6 +45,44 @@ def spack_install_and_test(command: str, log_filename: str = None):
                    srun=False)
 
 
+def spack_devbuildcosmo_and_test(command: str, log_filename: str = None, cwd = None):
+    """
+    Tests 'spack devbuildcosmo' of the given command and writes the output into the log file.
+    If log_filename is None, command is used to create one.
+    """
+    log_filename = sanitized_filename(log_filename or command)
+    log_with_spack(f'spack devbuildcosmo --until build --test=root -n {command}',
+                   'system_test',
+                   log_filename,
+                   cwd=cwd,
+                   srun=True)
+    log_with_spack(
+        f'spack devbuildcosmo --dont-restage --test=root -n {command}',
+        'system_test',
+        log_filename,
+        cwd=cwd,
+        srun=False)
+
+
+def spack_devbuild_and_test(command: str, log_filename: str = None, cwd = None):
+    """
+    Tests 'spack dev-build' of the given command and writes the output into the log file.
+    If log_filename is None, command is used to create one.
+    """
+    log_filename = sanitized_filename(log_filename or command)
+    log_with_spack(f'spack dev-build --until build --test=root -n {command}',
+                   'system_test',
+                   log_filename,
+                   cwd=cwd,
+                   srun=True)
+    log_with_spack(
+        f'spack dev-build --dont-restage --test=root -n {command}',
+        'system_test',
+        log_filename,
+        cwd=cwd,
+        srun=False)
+
+
 mpi: str = {
     'daint': 'mpich',
     'tsa': 'openmpi',
@@ -59,31 +98,39 @@ nvidia_compiler: str = {
 
 class CosmoTest(unittest.TestCase):
 
-    # def test_install_version_6_0_cpu(self):
-    #     spack_installcosmo_and_test(
-    #         f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
-    #     )
+    def test_install_version_6_0_cpu(self):
+        spack_installcosmo_and_test(
+            f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
+        )
 
-    # def test_install_version_6_0_gpu(self):
-    #     spack_installcosmo_and_test(
-    #         f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
-    #     )
+    def test_install_version_6_0_gpu(self):
+        spack_installcosmo_and_test(
+            f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
+        )
 
-    # def test_devbuild_version_6_0_cpu(self):
-    #     spack_installcosmo_and_test(f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}')
+    def test_devbuild_version_6_0_cpu(self):
+        subprocess.run('git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git', check=True, shell=True)
+        try:
+            spack_devbuildcosmo_and_test(f'cosmo @6.0_cpu %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}', cwd='cosmo')
+        finally:
+            subprocess.run('rm -rf cosmo', shell=True)
 
-    # def test_devbuild_version_6_0_gpu(self):
-    #     spack_installcosmo_and_test(f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}')
+    def test_devbuild_version_6_0_gpu(self):
+        subprocess.run('git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git', check=True, shell=True)
+        try:
+            spack_devbuildcosmo_and_test(f'cosmo @6.0_gpu %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}', cwd='cosmo')
+        finally:
+            subprocess.run('rm -rf cosmo', shell=True)
 
-    # def test_install_version_5_09_mch_1_2_p2_cpu(self):
-    #     spack_installcosmo_and_test(
-    #         f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
-    #     )
+    def test_install_version_5_09_mch_1_2_p2_cpu(self):
+        spack_installcosmo_and_test(
+            f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
+        )
 
-    # def test_install_version_5_09_mch_1_2_p2_gpu(self):
-    #     spack_installcosmo_and_test(
-    #         f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
-    #     )
+    def test_install_version_5_09_mch_1_2_p2_gpu(self):
+        spack_installcosmo_and_test(
+            f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
+        )
 
     def test_install_c2sm_master_cpu(self):
         spack_installcosmo_and_test(
@@ -98,11 +145,11 @@ class CosmoTest(unittest.TestCase):
 
 class CosmoDycoreTest(unittest.TestCase):
 
-    # def test_install_version_6_0_cuda(self):
-    #     spack_install_and_test('cosmo-dycore @6.0 +cuda')
+    def test_install_version_6_0_cuda(self):
+        spack_install_and_test('cosmo-dycore @6.0 +cuda')
 
-    # def test_install_version_6_0_no_cuda(self):
-    #     spack_install_and_test('cosmo-dycore @6.0 ~cuda')
+    def test_install_version_6_0_no_cuda(self):
+        spack_install_and_test('cosmo-dycore @6.0 ~cuda')
 
     def test_install_c2sm_master_cuda(self):
         spack_install_and_test('cosmo-dycore @c2sm-master +cuda')
@@ -145,7 +192,7 @@ class GridToolsTest(unittest.TestCase):
         spack_install_and_test('gridtools @1.1.3')
 
 
-@pytest.mark.no_tsa  # config file does not exist for these machines
+@pytest.mark.no_tsa  # config file does not exist for this machine
 class IconTest(unittest.TestCase):
 
     def test_install_nwp_gpu(self):
@@ -158,12 +205,18 @@ class IconTest(unittest.TestCase):
         )
 
     def test_devbuild_nwp_gpu(self):
-        spack_install_and_test(
-            'icon @develop %nvhpc config_dir=./.. icon_target=gpu')
+        subprocess.run('git clone --depth 1 ssh://git@gitlab.dkrz.de/icon/icon-nwp.git', check=True, shell=True)
+        try:
+            spack_devbuild_and_test('icon @nwp_gpu %nvhpc config_dir=./.. icon_target=gpu', cwd='icon-nwp')
+        finally:
+            subprocess.run('rm -rf icon-nwp', shell=True)
 
     def test_devbuild_nwp_cpu(self):
-        spack_install_and_test(
-            'icon @develop %nvhpc config_dir=./.. icon_target=cpu')
+        subprocess.run('git clone --depth 1 ssh://git@gitlab.dkrz.de/icon/icon-nwp.git', check=True, shell=True)
+        try:
+            spack_devbuild_and_test('icon @nwp_cpu %nvhpc config_dir=./.. icon_target=cpu', cwd='icon-nwp')
+        finally:
+            subprocess.run('rm -rf icon-nwp', shell=True)
 
     def test_install_exclaim_cpu(self):
         spack_install_and_test(
@@ -181,11 +234,11 @@ class IconTest(unittest.TestCase):
 
 class Int2lmTest(unittest.TestCase):
 
-    # def test_install_version_3_00_gcc(self):
-    #     spack_install_and_test('int2lm @int2lm-3.00 %gcc')
+    def test_install_version_3_00_gcc(self):
+        spack_install_and_test('int2lm @int2lm-3.00 %gcc')
 
-    # def test_install_version_3_00_nvhpc(self):
-    #     spack_install_and_test(f'int2lm @int2lm-3.00 %{nvidia_compiler}')
+    def test_install_version_3_00_nvhpc(self):
+        spack_install_and_test(f'int2lm @int2lm-3.00 %{nvidia_compiler}')
 
     def test_install_c2sm_master_gcc(self):
         spack_install_and_test(
