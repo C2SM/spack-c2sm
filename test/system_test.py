@@ -43,6 +43,16 @@ def spack_install_and_test(command: str, log_filename: str = None):
                    log_filename,
                    srun=False)
 
+def spack_install_and_test_no_phase_splitting(command: str, log_filename: str = None):
+    """
+    Tests 'spack install' of the given command and writes the output into the log file.
+    If log_filename is None, command is used to create one.
+    """
+    log_filename = sanitized_filename(log_filename or command)
+    log_with_spack(f'spack install --test=root -n -v {command}',
+                   'system_test',
+                   log_filename,
+                   srun=False)
 
 mpi: str = {
     'daint': 'mpich',
@@ -216,7 +226,7 @@ class OasisTest(unittest.TestCase):
 class OmniXmodPoolTest(unittest.TestCase):
 
     def test_install_version_0_1(self):
-        spack_install_and_test('omni-xmod-pool @0.1')
+        spack_install_and_test_no_phase_splitting('omni-xmod-pool @0.1')
 
 
 class OmniCompilerTest(unittest.TestCase):
