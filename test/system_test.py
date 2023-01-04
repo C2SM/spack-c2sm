@@ -54,6 +54,37 @@ def spack_install_and_test_no_phase_splitting(command: str, log_filename: str = 
                    log_filename,
                    srun=False)
 
+def spack_install_and_test_python_package(command: str,
+                                          log_filename: str = None):
+    """
+    Tests 'spack install' of the given command and writes the output into the log file.
+    If log_filename is None, command is used to create one.
+
+    Special version for Python packages to run in a clean environment
+    """
+
+    # pytest is run from a virtual environment that breaks the
+    # Python environment setup by Spack. Additionally "deactivate"
+    # is not available here, therefore we manually unset paths like
+
+    # - VIRTUAL_ENV
+    # - PATH
+
+    # set by the virtual environment
+
+    virtual_env = os.path.join(os.environ['VIRTUAL_ENV'], 'bin')
+    os.environ.pop('VIRTUAL_ENV')
+    path = os.environ['PATH']
+    path = path.replace(virtual_env, '')
+    os.environ['PATH'] = path
+
+    log_filename = sanitized_filename(log_filename or command)
+    log_with_spack(f'spack install --test=root -n -v {command}',
+                   'system_test',
+                   log_filename,
+                   srun=True)
+
+
 mpi: str = {
     'daint': 'mpich',
     'tsa': 'openmpi',
@@ -233,6 +264,20 @@ class OmniCompilerTest(unittest.TestCase):
 
     def test_install_version_1_3_2(self):
         spack_install_and_test('omnicompiler @1.3.2')
+
+
+@pytest.mark.no_balfrin
+@pytest.mark.no_tsa
+class PyGt4pyTest(unittest.TestCase):
+
+    def test_install_version_functional(self):
+        spack_install_and_test_python_package('py-gt4py%gcc@8.3.0')
+
+
+class PyIcon4pyTest(unittest.TestCase):
+
+    def test_install_version_main(self):
+        spack_install_and_test_python_package('py-icon4py@main%gcc@8.3.0')
 
 
 class XcodeMLToolsTest(unittest.TestCase):
