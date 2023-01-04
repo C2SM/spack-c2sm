@@ -7,7 +7,7 @@ from pathlib import Path
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                '..')
 sys.path.append(os.path.normpath(spack_c2sm_path))
-from src import machine_name, Markdown, time_format, sanitized_filename, all_machines, all_packages, explicit_scope, package_triggers, machine_skips
+from src import machine_name, Markdown, time_format, sanitized_filename, all_machines, all_packages, explicit_scope, package_triggers
 
 
 class MachineDetection(unittest.TestCase):
@@ -114,11 +114,6 @@ class ScopeTest(unittest.TestCase):
                         in triggers)  # Name of TestCase included
         self.assertTrue('test_cosmo_dycore'.lower()
                         in triggers)  # Name of Test included
-
-    def test_machine_skips(self):
-        skips = machine_skips(['tsa', 'icon'])
-        self.assertTrue('no_tsa' in skips)
-        self.assertTrue('no_icon' not in skips)
 
 
 if __name__ == '__main__':
