@@ -82,6 +82,60 @@ class InfoTest(unittest.TestCase):
     def test_omnicompiler(self):
         spack_info('omnicompiler')
 
+    def test_py_black(self):
+        spack_info('py-black')
+
+    def test_py_boltons(self):
+        spack_info('py-boltons')
+
+    def test_py_cytoolz(self):
+        spack_info('py-cytoolz')
+
+    def test_py_devtools(self):
+        spack_info('py-devtools')
+
+    def test_py_editables(self):
+        spack_info('py-editables')
+
+    def test_py_factory_boy(self):
+        spack_info('py-factory-boy')
+
+    def test_py_fprettify(self):
+        spack_info('py-fprettify')
+
+    def test_py_frozendict(self):
+        spack_info('py-frozendict')
+
+    def test_py_gridtools_cpp(self):
+        spack_info('py-gridtools-cpp')
+
+    def test_py_gt4py(self):
+        spack_info('py-gt4py')
+
+    def test_py_hatchling(self):
+        spack_info('py-hatchling')
+
+    def test_py_icon4py(self):
+        spack_info('py-icon4py')
+
+    def test_py_inflection(self):
+        spack_info('py-inflection')
+
+    def test_py_lark(self):
+        spack_info('py-lark')
+
+    def test_py_pathspec(self):
+        spack_info('py-pathspec')
+
+    def test_py_pytest_factoryboy(self):
+        spack_info('py-pytest-factoryboy')
+
+    def test_py_toolz(self):
+        spack_info('py-toolz')
+
+    def test_py_typing_extensions(self):
+        spack_info('py-typing')
+
     def test_xcodeml_tools(self):
         spack_info('xcodeml-tools')
 
@@ -154,6 +208,60 @@ class PlainSpecTest(unittest.TestCase):
     def test_omnicompiler(self):
         spack_spec('omnicompiler')
         spack_spec('omnicompiler +mod2xmod')
+
+    def test_py_black(self):
+        spack_spec('py-black')
+
+    def test_py_boltons(self):
+        spack_spec('py-boltons')
+
+    def test_py_cytoolz(self):
+        spack_spec('py-cytoolz')
+
+    def test_py_devtools(self):
+        spack_spec('py-devtools')
+
+    def test_py_editables(self):
+        spack_spec('py-editables')
+
+    def test_py_factory_boy(self):
+        spack_spec('py-factory-boy')
+
+    def test_py_fprettify(self):
+        spack_spec('py-fprettify')
+
+    def test_py_frozendict(self):
+        spack_spec('py-frozendict')
+
+    def test_py_gridtools_cpp(self):
+        spack_spec('py-gridtools-cpp')
+
+    def test_py_gt4py(self):
+        spack_spec('py-gt4py')
+
+    def test_py_hatchling(self):
+        spack_spec('py-hatchling')
+
+    def test_py_icon4py(self):
+        spack_spec('py-icon4py')
+
+    def test_py_inflection(self):
+        spack_spec('py-inflection')
+
+    def test_py_lark(self):
+        spack_spec('py-lark')
+
+    def test_py_pathspec(self):
+        spack_spec('py-pathspec')
+
+    def test_py_pytest_factoryboy(self):
+        spack_spec('py-pytest-factoryboy')
+
+    def test_py_toolz(self):
+        spack_spec('py-toolz')
+
+    def test_py_typing_extensions(self):
+        spack_spec('py-typing')
 
     def test_xcodeml_tools(self):
         spack_spec('xcodeml-tools')
