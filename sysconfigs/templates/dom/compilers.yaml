@@ -30,6 +30,23 @@ compilers:
     environment: {}
     extra_rpaths: []
 - compiler:
+    spec: nvhpc@22.5
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: cnl7
+    target: any
+    modules:
+    - PrgEnv-nvidia
+    - cdt-cuda/22.9
+    - nvidia/22.5
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: nvhpc@21.3
     environment: {}
     extra_rpaths: []
     flags:  {}
@@ -44,5 +61,4 @@ compilers:
       cxx: CC
       f77: ftn
       fc: ftn
-    spec: nvhpc@21.3
     target: any

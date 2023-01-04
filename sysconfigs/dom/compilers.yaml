@@ -30,6 +30,22 @@ compilers:
     spec: pgi@21.3.0
     target: any
 - compiler:
+    spec: nvhpc@22.5
+    environment: {}
+    extra_rpaths: []
+    flags: {}
+    modules:
+    - PrgEnv-nvidia
+    - nvidia/22.5
+    - gcc/9.3.0
+    operating_system: cnl7
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    target: any
+- compiler:
     environment: {}
     extra_rpaths: []
     flags: {}

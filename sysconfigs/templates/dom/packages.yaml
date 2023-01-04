@@ -2,7 +2,7 @@ packages:
   all:
         # default compilers defined by the system
         # these reflect the current installed PE
-    compiler: [gcc@9.3.0, gcc@8.3.0, nvhpc@21.3, cce@12.0.3, gcc@11.2.0,intel@2021.3.0]
+    compiler: [gcc@9.3.0, gcc@8.3.0, nvhpc@21.3, nvhpc@22.5, cce@12.0.3, gcc@11.2.0,intel@2021.3.0]
     providers:
       mpi: [mpich]
             # if the mpich package support +cuda in the future it needs to be put there
@@ -30,7 +30,7 @@ packages:
     compiler: [gcc]
   icon:
     variants: host=daint
-    compiler: [nvhpc@21.3, pgi@21.3.0, cce@12.0.3, gcc@9.3.0]
+    compiler: [nvhpc@22.5, pgi@21.3.0, cce@12.0.3, gcc@9.3.0]
   int2lm:
     variants: slave=daint
   netcdf-c:
