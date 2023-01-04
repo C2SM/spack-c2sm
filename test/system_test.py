@@ -52,7 +52,7 @@ def spack_install_and_test_no_phase_splitting(command: str, log_filename: str = 
     log_with_spack(f'spack install --test=root -n -v {command}',
                    'system_test',
                    log_filename,
-                   srun=False)
+                   srun=True)
 
 def spack_install_and_test_python_package(command: str,
                                           log_filename: str = None):
