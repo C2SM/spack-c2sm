@@ -28,43 +28,6 @@ class Cosmo(MakefilePackage):
     version('c2sm-features', git=c2sm_git, branch='c2sm-features')
     version('empa-ghg', git=empa_git, branch='c2sm')
 
-    # pass spec from spec to test_cosmo.py in yaml-format
-    # There are three different types of test_cosmo.py around:
-
-    # COSMO-ORG
-    patch('patches/c2sm-master/spec_as_yaml/patch.test_cosmo',
-          when='@c2sm-master')
-    patch('patches/org-master/spec_as_yaml/patch.test_cosmo',
-          when='@org-master')
-    # C2SM-FEATURES
-    patch('patches/c2sm-features/spec_as_yaml/patch.test_cosmo',
-          when='@c2sm-features')
-    patch('patches/empa-ghg/spec_as_yaml/patch.test_cosmo', when='@empa-ghg')
-    # APN-MCH
-    patch('patches/apn-mch/spec_as_yaml/patch.test_cosmo', when='@apn-mch')
-    patch('patches/5.09a.mch1.2.p2/spec_as_yaml/patch.test_cosmo',
-          when='@5.09a.mch1.2.p2')
-
-    # pass spec from spec to serialize_cosmo.py in yaml-format
-
-    # There are two different types of serialize_cosmo.py around:
-
-    # COSMO-ORG
-    patch('patches/c2sm-master/spec_as_yaml/patch.serialize_cosmo',
-          when='@c2sm-master +serialize')
-    patch('patches/org-master/spec_as_yaml/patch.serialize_cosmo',
-          when='@org-master +serialize')
-    patch('patches/c2sm-features/spec_as_yaml/patch.serialize_cosmo',
-          when='@c2sm-features +serialize')
-    patch('patches/empa-ghg/spec_as_yaml/patch.serialize_cosmo',
-          when='@empa-ghg +serialize')
-
-    # APN-MCH
-    patch('patches/apn-mch/spec_as_yaml/patch.serialize_cosmo',
-          when='@apn-mch +serialize')
-    patch('patches/5.09a.mch1.2.p2/spec_as_yaml/patch.serialize_cosmo',
-          when='@5.09a.mch1.2.p2 +serialize')
-
     # build dependency
     depends_on('perl@5.16.3:', type='build')
     depends_on('boost', when='cosmo_target=gpu ~cppdycore', type='build')
@@ -476,12 +439,10 @@ class Cosmo(MakefilePackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def test(self):
-        with open('spec.yaml', mode='w') as f:
-            f.write(self.spec.to_yaml())
         try:
             subprocess.run([
                 self.build_directory + '/test/tools/test_cosmo.py', '-s',
-                'spec.yaml', '-b',
+                str(self.spec), '-b',
                 str('.')
             ],
                            stderr=subprocess.STDOUT,
