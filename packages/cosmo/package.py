@@ -36,6 +36,8 @@ class Cosmo(MakefilePackage):
           when='@c2sm-master')
     patch('patches/org-master/spec_as_yaml/patch.test_cosmo',
           when='@org-master')
+    patch('patches/org-master/spec_as_yaml/patch.test_cosmo',
+          when='@6.0')
     # C2SM-FEATURES
     patch('patches/c2sm-features/spec_as_yaml/patch.test_cosmo',
           when='@c2sm-features')
@@ -54,6 +56,8 @@ class Cosmo(MakefilePackage):
           when='@c2sm-master +serialize')
     patch('patches/org-master/spec_as_yaml/patch.serialize_cosmo',
           when='@org-master +serialize')
+    patch('patches/org-master/spec_as_yaml/patch.serialize_cosmo',
+          when='@6.0 +serialize')
     patch('patches/c2sm-features/spec_as_yaml/patch.serialize_cosmo',
           when='@c2sm-features +serialize')
     patch('patches/empa-ghg/spec_as_yaml/patch.serialize_cosmo',
