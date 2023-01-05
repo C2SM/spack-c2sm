@@ -43,7 +43,9 @@ def spack_install_and_test(command: str, log_filename: str = None):
                    log_filename,
                    srun=False)
 
-def spack_install_and_test_no_phase_splitting(command: str, log_filename: str = None):
+
+def spack_install_and_test_no_phase_splitting(command: str,
+                                              log_filename: str = None):
     """
     Tests 'spack install' of the given command and writes the output into the log file.
     If log_filename is None, command is used to create one.
@@ -53,6 +55,7 @@ def spack_install_and_test_no_phase_splitting(command: str, log_filename: str = 
                    'system_test',
                    log_filename,
                    srun=True)
+
 
 def spack_install_and_test_python_package(command: str,
                                           log_filename: str = None):
