@@ -1,6 +1,7 @@
 all_machines = ['balfrin', 'daint', 'tsa']
 
 all_packages = [
+    'clang-format',
     'cosmo',
     'cosmo-dycore',
     'cosmo-eccodes-definitions',

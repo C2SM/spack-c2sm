@@ -31,6 +31,9 @@ def spack_spec(command: str, log_filename: str = None):
 class InfoTest(unittest.TestCase):
     """Tests that 'spack spec <spec>' works for all conditional dependencies of all packages in spack-c2sm."""
 
+    def test_clang_format(self):
+        spack_info('clang-format')
+
     def test_cosmo(self):
         spack_info('cosmo')
 
@@ -145,6 +148,9 @@ class InfoTest(unittest.TestCase):
 
 class PlainSpecTest(unittest.TestCase):
     """Tests that the command 'spack spec <package>' works for all spack-c2sm packages."""
+
+    def test_clang_format(self):
+        spack_spec('clang-format')
 
     def test_cosmo(self):
         spack_spec('cosmo')
