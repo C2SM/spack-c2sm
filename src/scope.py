@@ -66,8 +66,3 @@ def package_triggers(scope: list) -> list:
     ]
     active_tests = ['test_' + x.replace('-', '_') for x in active_packages]
     return active_testcases + active_tests
-
-
-def machine_skips(scope: list) -> list:
-    "Returns a list with 'no_{machine}' for all machines in scope."
-    return ['no_' + x for x in all_machines if x in scope]
