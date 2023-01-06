@@ -37,7 +37,6 @@ if __name__ == "__main__":
         'Timed out waiting for a write lock',
         'Timed out waiting for a read lock',
         'timed out after 5 seconds',
-        'AssertionError exception when releasing read lock',
     ]
 
     for file_name in sorted(glob.glob('log/**/*.log', recursive=True)):
@@ -46,6 +45,8 @@ if __name__ == "__main__":
             content = file.read()
             if content.endswith('OK\n'):
                 summary.append(':green_circle:', test_name)
+            elif 'AssertionError exception when releasing read lock' in content:
+                summary.append(':lock:', test_name, trigger)
             else:
                 for trigger in yellow_triggers:
                     if trigger in content:
