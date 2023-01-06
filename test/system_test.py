@@ -251,7 +251,11 @@ class DuskTest(unittest.TestCase):
 class GridToolsTest(unittest.TestCase):
 
     def test_install_version_1_1_3_gcc(self):
-        spack_install_and_test('gridtools @1.1.3')
+        spack_install_and_test(f'gridtools @1.1.3 %gcc')
+
+    @pytest.mark.no_tsa  # Only pgc++ 18 and 19 are supported! nvhpc doesn't work either.
+    def test_install_version_1_1_3_nvhpc(self):
+        spack_install_and_test(f'gridtools @1.1.3 %{nvidia_compiler}')
 
 
 @pytest.mark.no_tsa  # config file does not exist for this machine
