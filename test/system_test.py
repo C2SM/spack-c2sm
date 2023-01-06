@@ -281,7 +281,7 @@ class IconTest(unittest.TestCase):
     @pytest.mark.no_balfrin  # config file does not exist for this machines
     def test_install_exclaim_cpu_gcc(self):
         spack_install_and_test(
-            'icon @exclaim-master %gcc icon_target=cpu +eccodes +ocean +claw')
+            'icon @exclaim-master %gcc icon_target=cpu +eccodes +ocean')
 
     @pytest.mark.no_balfrin  # config file does not exist for this machines
     def test_install_exclaim_gpu(self):
