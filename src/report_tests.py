@@ -47,7 +47,9 @@ if __name__ == "__main__":
             if content.endswith('OK\n'):
                 summary.append(':green_circle:', test_name)
             elif 'AssertionError exception when releasing read lock' in content:
-                summary.append(':lock:', test_name)
+                summary.append(':lock:', test_name, 'spack locking problem')
+            elif 'gzip: stdin: decompression OK, trailing garbage ignored' in content:
+                summary.append(':wastebasket:', test_name, 'spack cached archive problem')
             else:
                 for trigger in yellow_triggers:
                     if trigger in content:
