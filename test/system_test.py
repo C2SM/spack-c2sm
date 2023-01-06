@@ -226,6 +226,8 @@ class CosmoEccodesDefinitionsTest(unittest.TestCase):
             'cosmo-eccodes-definitions @2.19.0.7')
 
 
+@pytest.mark.no_tsa  # It fails with: "This is libtool 2.4.7, but the libtool: definition of this LT_INIT comes from libtool 2.4.2".
+@pytest.mark.no_balfrin  # It fails with: "This is libtool 2.4.7, but the libtool: definition of this LT_INIT comes from libtool 2.4.2".
 class CosmoGribApiTest(unittest.TestCase):
 
     def test_install_version_1_20_0_3(self):
@@ -313,6 +315,9 @@ class Int2lmTest(unittest.TestCase):
         )
 
 
+@pytest.mark.no_balfrin  # This fails with "undefined reference to symbol".
+@pytest.mark.no_daint  # This fails with: "C compiler cannot create executables".
+@pytest.mark.no_tsa  # This fails with: "C compiler cannot create executables".
 class IconToolsTest(unittest.TestCase):
 
     def test_install(self):
@@ -335,6 +340,8 @@ class OmniXmodPoolTest(unittest.TestCase):
         spack_install_and_test_no_phase_splitting('omni-xmod-pool @0.1')
 
 
+@pytest.mark.no_balfrin  # This fails with: "multiple definition of symbols"
+@pytest.mark.no_tsa  # This fails with: "multiple definition of symbols"
 class OmniCompilerTest(unittest.TestCase):
 
     def test_install_version_1_3_2(self):
@@ -349,6 +356,8 @@ class PyGt4pyTest(unittest.TestCase):
         spack_install_and_test_python_package('py-gt4py %gcc')
 
 
+@pytest.mark.no_balfrin  # py-isort install fails with: No module named 'poetry'.
+@pytest.mark.no_tsa # py-isort install fails with: No module named 'poetry'.
 class PyIcon4pyTest(unittest.TestCase):
 
     def test_install_version_main(self):
