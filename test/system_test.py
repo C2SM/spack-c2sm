@@ -359,7 +359,7 @@ class XcodeMLToolsTest(unittest.TestCase):
 class ZLibNGTest(unittest.TestCase):
 
     def test_install_version_2_0_0(self):
-        spack_install_and_test('xcodeml-tools @2.0.0')
+        spack_install_and_test('zlib_ng @2.0.0')
 
 
 if __name__ == '__main__':
