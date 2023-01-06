@@ -341,13 +341,13 @@ class OmniCompilerTest(unittest.TestCase):
 class PyGt4pyTest(unittest.TestCase):
 
     def test_install_version_functional(self):
-        spack_install_and_test_python_package('py-gt4py%gcc@8.3.0')
+        spack_install_and_test_python_package('py-gt4py %gcc')
 
 
 class PyIcon4pyTest(unittest.TestCase):
 
     def test_install_version_main(self):
-        spack_install_and_test_python_package('py-icon4py@main%gcc@8.3.0')
+        spack_install_and_test_python_package('py-icon4py @main %gcc')
 
 
 class XcodeMLToolsTest(unittest.TestCase):
