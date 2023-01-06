@@ -222,7 +222,8 @@ class CosmoDycoreTest(unittest.TestCase):
 class CosmoEccodesDefinitionsTest(unittest.TestCase):
 
     def test_install_version_2_19_0_7(self):
-        spack_install_and_test_no_phase_splitting('cosmo-eccodes-definitions @2.19.0.7')
+        spack_install_and_test_no_phase_splitting(
+            'cosmo-eccodes-definitions @2.19.0.7')
 
 
 class CosmoGribApiTest(unittest.TestCase):
