@@ -17,7 +17,7 @@ def with_srun(command: str) -> str:
     # '-c' should be in sync with sysconfig/<machine>/config.yaml config:build_jobs
     cmd = {
         'balfrin': 'srun -t 02:00:00 -c 12 --partition=normal,postproc',
-        'daint': 'srun -t 02:00:00 -c 12 -C gpu -A g110',
+        'daint': 'srun -t 02:00:00 -C gpu -A g110',
         'tsa': 'srun -t 02:00:00 -c 6',
     }[machine_name()]
     return f'{cmd} {command}'
