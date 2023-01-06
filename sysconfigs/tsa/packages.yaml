@@ -1,7 +1,6 @@
 packages:
   all:
     compiler: # manually added
-      - nvhpc@21.2
       - gcc@8.3.0
       - pgi@20.4
     providers:
