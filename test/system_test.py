@@ -157,7 +157,8 @@ class CosmoTest(unittest.TestCase):
         )
 
     def test_devbuild_version_6_0_cpu(self):
-        unique_folder = uuid.uuid4().hex  # to avoid cloning into the same folder and having race conditions
+        unique_folder = uuid.uuid4(
+        ).hex  # to avoid cloning into the same folder and having race conditions
         subprocess.run(
             f'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git {unique_folder}',
             check=True,
@@ -170,7 +171,8 @@ class CosmoTest(unittest.TestCase):
             subprocess.run(f'rm -rf {unique_folder}', shell=True)
 
     def test_devbuild_version_6_0_gpu(self):
-        unique_folder = uuid.uuid4().hex  # to avoid cloning into the same folder and having race conditions
+        unique_folder = uuid.uuid4(
+        ).hex  # to avoid cloning into the same folder and having race conditions
         subprocess.run(
             f'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git {unique_folder}',
             check=True,
@@ -181,7 +183,7 @@ class CosmoTest(unittest.TestCase):
                 cwd='cosmo')
         finally:
             subprocess.run(f'rm -rf {unique_folder}', shell=True)
-    
+
     @pytest.mark.no_daint  # Testsuite fails
     def test_install_version_5_09_mch_1_2_p2_cpu(self):
         spack_installcosmo_and_test(
@@ -368,7 +370,7 @@ class PyGt4pyTest(unittest.TestCase):
 
 @pytest.mark.no_balfrin  # py-isort install fails with: No module named 'poetry'.
 @pytest.mark.no_daint  # py-isort install fails
-@pytest.mark.no_tsa # py-isort install fails with: No module named 'poetry'.
+@pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 class PyIcon4pyTest(unittest.TestCase):
 
     def test_install_version_main(self):
