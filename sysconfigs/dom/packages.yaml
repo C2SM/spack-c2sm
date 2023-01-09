@@ -73,13 +73,13 @@ packages:
   cosmo:
     compiler:
     - nvhpc@21.3
-    variants: cuda_arch=60 cosmo_target=gpu slave=daint
+    variants: cuda_arch=60 cosmo_target=gpu slave=dom
     version:
     - master
   cosmo-dycore:
     compiler:
     - gcc@8.3.0
-    variants: slave=daint +cuda cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/
+    variants: slave=dom +cuda cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/
       slurm_partition= "normal" slurm_bin= "srun" slurm_gpu= "-" slurm_opt_nodes=
       "-N" slurm_nodes= "{0}"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint=
       "-C" slurm_constraint= "gpu"
@@ -185,13 +185,13 @@ packages:
     - pgi@21.3.0
     - cce@12.0.3
     - gcc@9.3.0
-    variants: host=daint
+    variants: host=dom
   icontools:
     compiler:
     - gcc
-    variants: slave=daint
+    variants: slave=dom
   int2lm:
-    variants: slave=daint
+    variants: slave=dom
   jemalloc:
     externals:
     - modules:
