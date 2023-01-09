@@ -137,6 +137,8 @@ class Icon(Package):
 
         self._config_file_name = _config_file_name
 
+        env.set('NETCDFI', self.spec['netcdf-fortran'].prefix + '/include')
+
         if '+dace' in self.spec:
             env.set('ICON_FCFLAGS', '-O2')
             env.set('ICON_DACE_FCFLAGS', '-O1')
