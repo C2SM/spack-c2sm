@@ -157,36 +157,38 @@ class CosmoTest(unittest.TestCase):
         )
 
     def test_devbuild_version_6_0_cpu(self):
-        unique_folder = uuid.uuid4().hex  # for multiprocessing-safety reasons
+        unique_folder = uuid.uuid4().hex  # to avoid cloning into the same folder and having race conditions
         subprocess.run(
             f'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git {unique_folder}',
             check=True,
             shell=True)
         try:
             spack_devbuildcosmo_and_test(
-                f'cosmo @6.0_cpu %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}',
+                f'cosmo @dev_build_6.0_cpu %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}',
                 cwd=unique_folder)
         finally:
             subprocess.run(f'rm -rf {unique_folder}', shell=True)
 
     def test_devbuild_version_6_0_gpu(self):
-        unique_folder = uuid.uuid4().hex  # for multiprocessing-safety reasons
+        unique_folder = uuid.uuid4().hex  # to avoid cloning into the same folder and having race conditions
         subprocess.run(
             f'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git {unique_folder}',
             check=True,
             shell=True)
         try:
             spack_devbuildcosmo_and_test(
-                f'cosmo @6.0_gpu %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}',
+                f'cosmo @dev_build_6.0_gpu %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}',
                 cwd='cosmo')
         finally:
             subprocess.run(f'rm -rf {unique_folder}', shell=True)
-
+    
+    @pytest.mark.no_daint  # Testsuite fails
     def test_install_version_5_09_mch_1_2_p2_cpu(self):
         spack_installcosmo_and_test(
             f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
+    @pytest.mark.no_daint  # Unable to open MODULE file gt_gcl_bindings.mod
     def test_install_version_5_09_mch_1_2_p2_gpu(self):
         spack_installcosmo_and_test(
             f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
@@ -197,6 +199,7 @@ class CosmoTest(unittest.TestCase):
             f'cosmo @c2sm-master %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
+    @pytest.mark.no_daint  # Unable to open MODULE file gt_gcl_bindings.mod
     def test_install_c2sm_master_gpu(self):
         spack_installcosmo_and_test(
             f'cosmo @c2sm-master %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
@@ -263,10 +266,12 @@ class GridToolsTest(unittest.TestCase):
 @pytest.mark.no_tsa  # config file does not exist for this machine
 class IconTest(unittest.TestCase):
 
+    @pytest.mark.no_daint  # cannot link to libxml2 library
     def test_install_nwp_gpu(self):
         spack_install_and_test(
             f'icon @nwp %nvhpc icon_target=gpu ^{mpi} %{nvidia_compiler}')
 
+    @pytest.mark.no_daint  # cannot link to libxml2 library
     def test_install_nwp_cpu(self):
         spack_install_and_test(
             f'icon @nwp %nvhpc icon_target=cpu ^{mpi} %{nvidia_compiler}')
@@ -280,17 +285,20 @@ class IconTest(unittest.TestCase):
     #         f'icon @develop %nvhpc config_dir=./.. icon_target=cpu ^{mpi} %{nvidia_compiler}')
 
     @pytest.mark.no_balfrin  # config file does not exist for this machines
+    @pytest.mark.no_daint  # unable to link a test program using the Fortran 90 interface of NetCDF library
     def test_install_exclaim_cpu(self):
         spack_install_and_test(
             f'icon @exclaim-master %nvhpc icon_target=cpu +eccodes +ocean ^{mpi} %{nvidia_compiler}'
         )
 
     @pytest.mark.no_balfrin  # config file does not exist for this machines
+    @pytest.mark.no_daint  # Cannot depend on 'cmake' twice
     def test_install_exclaim_cpu_gcc(self):
         spack_install_and_test(
             'icon @exclaim-master %gcc icon_target=cpu +eccodes +ocean')
 
     @pytest.mark.no_balfrin  # config file does not exist for this machines
+    @pytest.mark.no_daint  # unable to link a test program using the Fortran 90 interface of NetCDF library
     def test_install_exclaim_gpu(self):
         spack_install_and_test(
             f'icon @exclaim-master %nvhpc icon_target=gpu +eccodes +ocean +claw ^{mpi} %{nvidia_compiler}'
@@ -341,6 +349,7 @@ class OmniXmodPoolTest(unittest.TestCase):
 
 
 @pytest.mark.no_balfrin  # This fails with: "multiple definition of symbols"
+@pytest.mark.no_daint  # No supported C compiler was found.
 @pytest.mark.no_tsa  # This fails with: "multiple definition of symbols"
 class OmniCompilerTest(unittest.TestCase):
 
@@ -349,6 +358,7 @@ class OmniCompilerTest(unittest.TestCase):
 
 
 @pytest.mark.no_balfrin
+@pytest.mark.no_daint  # py-isort install fails with: No module named 'poetry'.
 @pytest.mark.no_tsa
 class PyGt4pyTest(unittest.TestCase):
 
@@ -357,6 +367,7 @@ class PyGt4pyTest(unittest.TestCase):
 
 
 @pytest.mark.no_balfrin  # py-isort install fails with: No module named 'poetry'.
+@pytest.mark.no_daint  # py-isort install fails
 @pytest.mark.no_tsa # py-isort install fails with: No module named 'poetry'.
 class PyIcon4pyTest(unittest.TestCase):
 
@@ -364,6 +375,7 @@ class PyIcon4pyTest(unittest.TestCase):
         spack_install_and_test_python_package('py-icon4py @main %gcc')
 
 
+@pytest.mark.no_daint  # test fails with warnings
 class XcodeMLToolsTest(unittest.TestCase):
 
     def test_install_version_92a35f9(self):
