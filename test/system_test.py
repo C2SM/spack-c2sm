@@ -163,10 +163,9 @@ class CosmoTest(unittest.TestCase):
             f'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git {unique_folder}',
             check=True,
             shell=True)
-        try:
-            spack_devbuildcosmo_and_test(
-                f'cosmo @dev_build_6.0_cpu %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}',
-                cwd=unique_folder)
+        spack_devbuildcosmo_and_test(
+            f'cosmo @dev_build_6.0_cpu %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}',
+            cwd=unique_folder)
 
     def test_devbuild_version_6_0_gpu(self):
         unique_folder = uuid.uuid4(
@@ -175,10 +174,9 @@ class CosmoTest(unittest.TestCase):
             f'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git {unique_folder}',
             check=True,
             shell=True)
-        try:
-            spack_devbuildcosmo_and_test(
-                f'cosmo @dev_build_6.0_gpu %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}',
-                cwd='cosmo')
+        spack_devbuildcosmo_and_test(
+            f'cosmo @dev_build_6.0_gpu %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}',
+            cwd='cosmo')
 
     @pytest.mark.no_daint  # Testsuite fails
     def test_install_version_5_09_mch_1_2_p2_cpu(self):
