@@ -308,6 +308,7 @@ class Int2lmTest(unittest.TestCase):
     def test_install_version_3_00_gcc(self):
         spack_install_and_test('int2lm @int2lm-3.00 %gcc')
 
+    @pytest.mark.no_balfrin  # fails because libgrib1 master fails
     def test_install_version_3_00_nvhpc(self):
         spack_install_and_test(f'int2lm @int2lm-3.00 %{nvidia_compiler}')
 
@@ -315,6 +316,7 @@ class Int2lmTest(unittest.TestCase):
         spack_install_and_test(
             'int2lm @c2sm-master %gcc ^eccodes %gcc ^libgrib1 %gcc')
 
+    @pytest.mark.no_balfrin  # fails because libgrib1 master fails
     def test_install_c2sm_master_nvhpc(self):
         spack_install_and_test(
             f'int2lm @c2sm-master %{nvidia_compiler} ^eccodes %{nvidia_compiler} ^libgrib1 %{nvidia_compiler}'
@@ -329,7 +331,7 @@ class IconToolsTest(unittest.TestCase):
     def test_install(self):
         spack_install_and_test('icontools @c2sm-master %gcc')
 
-
+@pytest.mark.no_balfrin  # This fails with "BOZ literal constant at (1) cannot appear in an array constructor"
 class LibGrib1Test(unittest.TestCase):
 
     def test_install_version_22_01_2020(self):
@@ -373,6 +375,7 @@ class PyIcon4pyTest(unittest.TestCase):
         spack_install_and_test_python_package('py-icon4py @main %gcc')
 
 
+@pytest.mark.no_balfrin  # test fails with warnings
 @pytest.mark.no_daint  # test fails with warnings
 class XcodeMLToolsTest(unittest.TestCase):
 
