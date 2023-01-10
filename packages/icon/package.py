@@ -61,7 +61,7 @@ class Icon(Package):
     depends_on('netcdf-fortran')
     depends_on('netcdf-c')
     depends_on('cuda', when='icon_target=gpu')
-    depends_on('cdo', type='test')
+    depends_on('cdo')
 
     variant('icon_target',
             default='gpu',
