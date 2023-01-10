@@ -284,9 +284,7 @@ class Cosmo(MakefilePackage):
 
         # manually add libs to linker because of broke modules on Piz Daint for nvidia
         else:
-            env.set(
-                'MPIL', '-L' + self.spec['mpi'].prefix +
-                ' -lmpich')
+            env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich')
 
         env.set('MPII', '-I' + self.mpi_spec.prefix + '/include')
 
