@@ -29,6 +29,8 @@ pipeline {
                             python3 -m venv env
                             source env/bin/activate
                             pip install -r requirements.txt
+                            . setup-env.sh
+                            spack spec spack
                             """
                         }
                     }
