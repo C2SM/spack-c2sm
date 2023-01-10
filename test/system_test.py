@@ -315,6 +315,7 @@ class Int2lmTest(unittest.TestCase):
             'int2lm @c2sm-master %gcc ^eccodes %gcc ^libgrib1 %gcc')
 
     @pytest.mark.no_balfrin  # fails because libgrib1 master fails
+    @pytest.mark.no_tsa  # An error occurred in MPI_Bcast
     def test_install_c2sm_master_nvhpc(self):
         spack_install_and_test(
             f'int2lm @c2sm-master %{nvidia_compiler} ^eccodes %{nvidia_compiler} ^libgrib1 %{nvidia_compiler}'
@@ -355,9 +356,9 @@ class OmniCompilerTest(unittest.TestCase):
         spack_install_and_test('omnicompiler @1.3.2')
 
 
-@pytest.mark.no_balfrin
+@pytest.mark.no_balfrin  # Irrelevant
 @pytest.mark.no_daint  # py-isort install fails with: No module named 'poetry'.
-@pytest.mark.no_tsa
+@pytest.mark.no_tsa  # Irrelevant
 class PyGt4pyTest(unittest.TestCase):
 
     def test_install_version_functional(self):
