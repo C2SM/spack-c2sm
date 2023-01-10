@@ -31,6 +31,7 @@ pipeline {
                             pip install -r requirements.txt
                             """
                             sh """
+                            ls -als
                             . setup-env.sh
                             spack spec spack
                             """
