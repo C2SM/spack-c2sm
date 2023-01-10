@@ -30,11 +30,6 @@ pipeline {
                             source env/bin/activate
                             pip install -r requirements.txt
                             """
-                            sh """
-                            ls -als
-                            . setup-env.sh
-                            spack spec spack
-                            """
                         }
                     }
                     stage('Unit Tests') {
@@ -43,6 +38,15 @@ pipeline {
                             mkdir -p log/${NODENAME}/unit_test
                             source env/bin/activate
                             python3 test/unit_test.py ${NODENAME} > log/${NODENAME}/unit_test/summary.log 2>&1
+                            """
+                        }
+                    }
+                    stage('Bootstrap spack') {
+                        steps {
+                            sh """
+                            source env/bin/activate
+                            . ./setup-env.sh
+                            spack spec spack
                             """
                         }
                     }
