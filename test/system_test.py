@@ -167,8 +167,6 @@ class CosmoTest(unittest.TestCase):
             spack_devbuildcosmo_and_test(
                 f'cosmo @dev_build_6.0_cpu %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}',
                 cwd=unique_folder)
-        finally:
-            subprocess.run(f'rm -rf {unique_folder}', shell=True)
 
     def test_devbuild_version_6_0_gpu(self):
         unique_folder = uuid.uuid4(
@@ -181,8 +179,6 @@ class CosmoTest(unittest.TestCase):
             spack_devbuildcosmo_and_test(
                 f'cosmo @dev_build_6.0_gpu %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}',
                 cwd='cosmo')
-        finally:
-            subprocess.run(f'rm -rf {unique_folder}', shell=True)
 
     @pytest.mark.no_daint  # Testsuite fails
     def test_install_version_5_09_mch_1_2_p2_cpu(self):
