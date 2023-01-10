@@ -62,6 +62,7 @@ class Icon(Package):
     depends_on('netcdf-c')
     depends_on('cuda', when='icon_target=gpu')
     depends_on('cdo')
+    depends_on('python', type='build')
 
     variant('icon_target',
             default='gpu',
