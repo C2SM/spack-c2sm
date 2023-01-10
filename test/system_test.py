@@ -330,6 +330,7 @@ class IconToolsTest(unittest.TestCase):
     def test_install(self):
         spack_install_and_test('icontools @c2sm-master %gcc')
 
+
 @pytest.mark.no_balfrin  # This fails with "BOZ literal constant at (1) cannot appear in an array constructor"
 class LibGrib1Test(unittest.TestCase):
 
