@@ -2,6 +2,7 @@ import unittest
 import pytest
 import sys
 import os
+import uuid
 from pathlib import Path
 
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
