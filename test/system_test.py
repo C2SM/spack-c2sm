@@ -260,17 +260,17 @@ class IconTest(unittest.TestCase):
     @pytest.mark.no_balfrin  # config file does not exist for this machines
     @pytest.mark.no_tsa  # config file does not exist for this machines
     def test_install_exclaim_test_cpu_gcc(self):
-        spack_env_dev_install_and_test('daint_gcc_cpu')
+        spack_env_dev_install_and_test('daint_gcc_cpu', 'spack_v0.18.1')
 
     @pytest.mark.no_tsa  # config file does not exist for this machines
     @pytest.mark.no_balfrin  # config file does not exist for this machines
     def test_install_exclaim_test_cpu(self):
-        spack_env_dev_install_and_test('daint_nvhpc_cpu')
+        spack_env_dev_install_and_test('daint_nvhpc_cpu', 'spack_v0.18.1')
 
     @pytest.mark.no_tsa  # config file does not exist for this machines
     @pytest.mark.no_balfrin  # config file does not exist for this machines
     def test_install_exclaim_test_gpu(self):
-        spack_env_dev_install_and_test('daint_nvhpc_gpu')
+        spack_env_dev_install_and_test('daint_nvhpc_gpu', 'spack_v0.18.1')
 
 
 class Int2lmTest(unittest.TestCase):
