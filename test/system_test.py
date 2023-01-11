@@ -44,6 +44,32 @@ def spack_install_and_test(command: str, log_filename: str = None):
                    srun=False)
 
 
+def spack_env_dev_install_and_test(spack_env: str, log_filename: str = None):
+    """
+    Activates the given spack environment, activates development workflow,
+    tests 'spack install' and writes the output into the log file.
+    If log_filename is None, command is used to create one.
+    """
+    unique_id = uuid.uuid4().hex # TODO: Change env directory name
+    log_filename = sanitized_filename(log_filename or command)
+    log_with_spack(f'spacktivate -d spack-envs/{spack_env}',
+                   'system_test',
+                   log_filename,
+                   srun=False)
+    log_with_spack(f'spack devleop',
+                   'system_test',
+                   log_filename,
+                   srun=False)
+    log_with_spack(f'spack install --until build -n -v',
+                   'system_test',
+                   log_filename,
+                   srun=True)
+    log_with_spack(f'spack install --dont-restage --test=root -n -v',
+                   'system_test',
+                   log_filename,
+                   srun=False)
+
+
 def spack_install_and_test_no_phase_splitting(command: str,
                                               log_filename: str = None):
     """
@@ -228,22 +254,17 @@ class IconTest(unittest.TestCase):
     @pytest.mark.no_balfrin  # config file does not exist for this machines
     @pytest.mark.no_tsa  # config file does not exist for this machines
     def test_install_exclaim_test_cpu_gcc(self):
-        spack_install_and_test(
-            'icon @exclaim-test %gcc icon_target=cpu +eccodes +ocean')
+        spack_env_dev_install_and_test('daint_gcc_cpu')
 
     @pytest.mark.no_tsa  # config file does not exist for this machines
     @pytest.mark.no_balfrin  # config file does not exist for this machines
     def test_install_exclaim_test_cpu(self):
-        spack_install_and_test(
-            f'icon @exclaim-test %nvhpc icon_target=cpu +eccodes +ocean ^{mpi} %{nvidia_compiler}'
-        )
+        spack_env_dev_install_and_test('daint_nvhpc_cpu')
 
     @pytest.mark.no_tsa  # config file does not exist for this machines
     @pytest.mark.no_balfrin  # config file does not exist for this machines
     def test_install_exclaim_test_gpu(self):
-        spack_install_and_test(
-            f'icon @exclaim-test %nvhpc icon_target=gpu +eccodes +ocean +claw ^{mpi} %{nvidia_compiler}'
-        )
+        spack_env_dev_install_and_test('daint_nvhpc_gpu')
 
 
 class Int2lmTest(unittest.TestCase):
