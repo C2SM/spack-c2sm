@@ -225,6 +225,25 @@ class IconTest(unittest.TestCase):
             f'icon @exclaim-master %nvhpc icon_target=gpu +eccodes +ocean +claw ^{mpi} %{nvidia_compiler}'
         )
 
+    @pytest.mark.no_balfrin  # config file does not exist for this machines
+    @pytest.mark.no_tsa  # config file does not exist for this machines
+    def test_install_exclaim_test_cpu_gcc(self):
+        spack_install_and_test(
+            'icon @exclaim-test %gcc icon_target=cpu +eccodes +ocean')
+
+    @pytest.mark.no_tsa  # config file does not exist for this machines
+    @pytest.mark.no_balfrin  # config file does not exist for this machines
+    def test_install_exclaim_test_cpu(self):
+        spack_install_and_test(
+            f'icon @exclaim-test %nvhpc icon_target=cpu +eccodes +ocean ^{mpi} %{nvidia_compiler}'
+        )
+
+    @pytest.mark.no_tsa  # config file does not exist for this machines
+    @pytest.mark.no_balfrin  # config file does not exist for this machines
+    def test_install_exclaim_test_gpu(self):
+        spack_install_and_test(
+            f'icon @exclaim-test %nvhpc icon_target=gpu +eccodes +ocean +claw ^{mpi} %{nvidia_compiler}'
+        )
 
 class Int2lmTest(unittest.TestCase):
 

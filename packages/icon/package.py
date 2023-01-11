@@ -42,6 +42,10 @@ class Icon(Package):
             branch='master',
             git='ssh://git@github.com/C2SM/icon-exclaim.git',
             submodules=True)
+    version('exclaim-test',
+            branch='spack_v0.18.1',
+            git='ssh://git@github.com/C2SM/icon-exclaim.git',
+            submodules=True)
     version('c2sm-master',
             branch='master',
             git='ssh://git@github.com/C2SM/icon.git',
