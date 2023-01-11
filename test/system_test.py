@@ -245,6 +245,7 @@ class IconTest(unittest.TestCase):
             f'icon @exclaim-test %nvhpc icon_target=gpu +eccodes +ocean +claw ^{mpi} %{nvidia_compiler}'
         )
 
+
 class Int2lmTest(unittest.TestCase):
 
     # def test_install_version_3_00_gcc(self):
