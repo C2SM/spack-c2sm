@@ -69,6 +69,9 @@ packages:
       - daint-gpu
       - CMake/3.22.1
       spec: cmake@3.22.1
+    externals:
+      - prefix: /usr
+        spec: cmake@3.17
   cosmo:
     compiler:
     - nvhpc@22.5
