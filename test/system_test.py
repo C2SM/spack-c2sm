@@ -50,16 +50,13 @@ def spack_env_dev_install_and_test(spack_env: str, log_filename: str = None):
     tests 'spack install' and writes the output into the log file.
     If log_filename is None, command is used to create one.
     """
-    unique_id = uuid.uuid4().hex # TODO: Change env directory name
+    unique_id = uuid.uuid4().hex  # TODO: Change env directory name
     log_filename = sanitized_filename(log_filename or command)
     log_with_spack(f'spacktivate -d spack-envs/{spack_env}',
                    'system_test',
                    log_filename,
                    srun=False)
-    log_with_spack(f'spack devleop',
-                   'system_test',
-                   log_filename,
-                   srun=False)
+    log_with_spack(f'spack devleop', 'system_test', log_filename, srun=False)
     log_with_spack(f'spack install --until build -n -v',
                    'system_test',
                    log_filename,
