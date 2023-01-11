@@ -144,6 +144,7 @@ nvidia_compiler: str = {
 
 
 @pytest.mark.no_balfrin  # cosmo-dycore does not support the cuda arch of balfrin
+@pytest.mark.no_tsa  # irrelevant
 class CosmoTest(unittest.TestCase):
 
     def test_install_version_6_0_cpu(self):
@@ -156,6 +157,7 @@ class CosmoTest(unittest.TestCase):
             f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
+    @pytest.mark.no_daint  # Patches are not applied. Therefore the tests fail.
     def test_devbuild_version_6_0_cpu(self):
         unique_folder = uuid.uuid4(
         ).hex  # to avoid cloning into the same folder and having race conditions
@@ -167,6 +169,7 @@ class CosmoTest(unittest.TestCase):
             f'cosmo @dev_build_6.0_cpu %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}',
             cwd=unique_folder)
 
+    @pytest.mark.no_daint  # Patches are not applied. Therefore the tests fail.
     def test_devbuild_version_6_0_gpu(self):
         unique_folder = uuid.uuid4(
         ).hex  # to avoid cloning into the same folder and having race conditions
