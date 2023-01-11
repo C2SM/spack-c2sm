@@ -36,14 +36,16 @@ def spack_install_and_test(command: str, log_filename: str = None):
     If log_filename is None, command is used to create one.
     """
     log_filename = sanitized_filename(log_filename or command)
-    log_with_spack(f'spack -ddd install --until build --test=root -n -v {command}',
-                   'system_test',
-                   log_filename,
-                   srun=True)
-    log_with_spack(f'spack -ddd install --dont-restage --test=root -n -v {command}',
-                   'system_test',
-                   log_filename,
-                   srun=False)
+    log_with_spack(
+        f'spack -ddd install --until build --test=root -n -v {command}',
+        'system_test',
+        log_filename,
+        srun=True)
+    log_with_spack(
+        f'spack -ddd install --dont-restage --test=root -n -v {command}',
+        'system_test',
+        log_filename,
+        srun=False)
 
 
 def spack_install_and_test_no_phase_splitting(command: str,
