@@ -54,10 +54,10 @@ def spack_env_dev_install_and_test(spack_env: str,
     activates development workflow, tests 'spack install' and writes the output 
     into the log file.  If log_filename is None, command is used to create one.
     """
-    unique_folder = 'icon-exclaim' + uuid.uuid4(
+    unique_folder = 'icon-exclaim_' + uuid.uuid4(
     ).hex  # to avoid cloning into the same folder and having race conditions
     subprocess.run(
-        f'git clone --depth 1 --recurse-submodules --shallow-submodules -b {icon_branch} git@github.com:C2SM/icon-exclaim.git {unique_folder}',
+        f'git clone --depth 1 --recurse-submodules -b {icon_branch} git@github.com:C2SM/icon-exclaim.git {unique_folder}',
         check=True,
         shell=True)
     log_filename = sanitized_filename(log_filename or command)
