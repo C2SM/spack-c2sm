@@ -44,26 +44,35 @@ def spack_install_and_test(command: str, log_filename: str = None):
                    srun=False)
 
 
-def spack_env_dev_install_and_test(spack_env: str, log_filename: str = None):
+def spack_env_dev_install_and_test(spack_env: str, icon_branch: str,
+                                   log_filename: str = None):
     """
-    Activates the given spack environment, activates development workflow,
-    tests 'spack install' and writes the output into the log file.
-    If log_filename is None, command is used to create one.
+    Clones ICON in given branch, activates the given spack environment,
+    activates development workflow, tests 'spack install' and writes the output 
+    into the log file.  If log_filename is None, command is used to create one.
     """
-    unique_id = uuid.uuid4().hex  # TODO: Change env directory name
+    unique_folder = 'icon-exclaim' + uuid.uuid4(
+        ).hex  # to avoid cloning into the same folder and having race conditions
+        subprocess.run(
+            f'git clone --depth 1 --recurse-submodules --shallow-submodules -b {icon_branch} git@github.com:C2SM/icon-exclaim.git {unique_folder}',
+            check=True,
+            shell=True)
     log_filename = sanitized_filename(log_filename or command)
     log_with_spack(f'spacktivate -d spack-envs/{spack_env}',
                    'system_test',
                    log_filename,
+                   cwd=unique_folder,
                    srun=False)
     log_with_spack(f'spack devleop', 'system_test', log_filename, srun=False)
     log_with_spack(f'spack install --until build -n -v',
                    'system_test',
                    log_filename,
+                   cwd=unique_folder,
                    srun=True)
     log_with_spack(f'spack install --dont-restage --test=root -n -v',
                    'system_test',
                    log_filename,
+                   cwd=unique_folder,
                    srun=False)
 
 
