@@ -53,10 +53,10 @@ def spack_env_dev_install_and_test(spack_env: str, icon_branch: str,
     """
     unique_folder = 'icon-exclaim' + uuid.uuid4(
         ).hex  # to avoid cloning into the same folder and having race conditions
-        subprocess.run(
-            f'git clone --depth 1 --recurse-submodules --shallow-submodules -b {icon_branch} git@github.com:C2SM/icon-exclaim.git {unique_folder}',
-            check=True,
-            shell=True)
+    subprocess.run(
+        f'git clone --depth 1 --recurse-submodules --shallow-submodules -b {icon_branch} git@github.com:C2SM/icon-exclaim.git {unique_folder}',
+        check=True,
+        shell=True)
     log_filename = sanitized_filename(log_filename or command)
     log_with_spack(f'spacktivate -d spack-envs/{spack_env}',
                    'system_test',
