@@ -223,38 +223,38 @@ class GridToolsTest(unittest.TestCase):
 @pytest.mark.no_tsa  # config file does not exist for this machines
 class IconTest(unittest.TestCase):
 
-#   def test_install_nwp_gpu(self):
-#       spack_install_and_test(
-#           f'icon @nwp %nvhpc icon_target=gpu ^{mpi} %{nvidia_compiler}')
+    #   def test_install_nwp_gpu(self):
+    #       spack_install_and_test(
+    #           f'icon @nwp %nvhpc icon_target=gpu ^{mpi} %{nvidia_compiler}')
 
-#   def test_install_nwp_cpu(self):
-#       spack_install_and_test(
-#           f'icon @nwp %nvhpc icon_target=cpu ^{mpi} %{nvidia_compiler}')
+    #   def test_install_nwp_cpu(self):
+    #       spack_install_and_test(
+    #           f'icon @nwp %nvhpc icon_target=cpu ^{mpi} %{nvidia_compiler}')
 
-#   # def test_devbuild_nwp_gpu(self):
-#   #     spack_install_and_test(
-#   #         f'icon @develop %nvhpc config_dir=./.. icon_target=gpu ^{mpi} %{nvidia_compiler}')
+    #   # def test_devbuild_nwp_gpu(self):
+    #   #     spack_install_and_test(
+    #   #         f'icon @develop %nvhpc config_dir=./.. icon_target=gpu ^{mpi} %{nvidia_compiler}')
 
-#   # def test_devbuild_nwp_cpu(self):
-#   #     spack_install_and_test(
-#   #         f'icon @develop %nvhpc config_dir=./.. icon_target=cpu ^{mpi} %{nvidia_compiler}')
+    #   # def test_devbuild_nwp_cpu(self):
+    #   #     spack_install_and_test(
+    #   #         f'icon @develop %nvhpc config_dir=./.. icon_target=cpu ^{mpi} %{nvidia_compiler}')
 
-#   @pytest.mark.no_balfrin  # config file does not exist for this machines
-#   def test_install_exclaim_cpu(self):
-#       spack_install_and_test(
-#           f'icon @exclaim-master %nvhpc icon_target=cpu +eccodes +ocean ^{mpi} %{nvidia_compiler}'
-#       )
+    #   @pytest.mark.no_balfrin  # config file does not exist for this machines
+    #   def test_install_exclaim_cpu(self):
+    #       spack_install_and_test(
+    #           f'icon @exclaim-master %nvhpc icon_target=cpu +eccodes +ocean ^{mpi} %{nvidia_compiler}'
+    #       )
 
-#   @pytest.mark.no_balfrin  # config file does not exist for this machines
-#   def test_install_exclaim_cpu_gcc(self):
-#       spack_install_and_test(
-#           'icon @exclaim-master %gcc icon_target=gpu +eccodes +ocean +claw')
+    #   @pytest.mark.no_balfrin  # config file does not exist for this machines
+    #   def test_install_exclaim_cpu_gcc(self):
+    #       spack_install_and_test(
+    #           'icon @exclaim-master %gcc icon_target=gpu +eccodes +ocean +claw')
 
-#   @pytest.mark.no_balfrin  # config file does not exist for this machines
-#   def test_install_exclaim_gpu(self):
-#       spack_install_and_test(
-#           f'icon @exclaim-master %nvhpc icon_target=gpu +eccodes +ocean +claw ^{mpi} %{nvidia_compiler}'
-#       )
+    #   @pytest.mark.no_balfrin  # config file does not exist for this machines
+    #   def test_install_exclaim_gpu(self):
+    #       spack_install_and_test(
+    #           f'icon @exclaim-master %nvhpc icon_target=gpu +eccodes +ocean +claw ^{mpi} %{nvidia_compiler}'
+    #       )
 
     @pytest.mark.no_balfrin  # config file does not exist for this machines
     @pytest.mark.no_tsa  # config file does not exist for this machines

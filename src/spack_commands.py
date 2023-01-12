@@ -23,10 +23,11 @@ def with_srun(command: str) -> str:
 
 
 def with_spack_env_dev(command: str, env: str, cwd=None, check=False):
-    return subprocess.run(f'. {spack_c2sm_path}/setup-env.sh; spack env activate -d {env}; spack develop; {command}',
-                          cwd=cwd,
-                          check=check,
-                          shell=True)
+    return subprocess.run(
+        f'. {spack_c2sm_path}/setup-env.sh; spack env activate -d {env}; spack develop; {command}',
+        cwd=cwd,
+        check=check,
+        shell=True)
 
 
 def with_spack(command: str, cwd=None, check=False):
