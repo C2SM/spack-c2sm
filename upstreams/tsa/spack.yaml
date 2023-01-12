@@ -6,10 +6,10 @@ spack:
     +log +math +mpi +program_options +random +regex +serialization +signals +stacktrace
     +system +test +thread +timer +type_erasure +wave
   - eccodes @2.19.0 %gcc +fortran +aec +tools
-  - eccodes @2.19.0 %nvhpc +fortran +aec +tools
+  - eccodes @2.19.0 %pgi +fortran +aec +tools
   - cosmo-eccodes-definitions @2.19.0.7
   - claw @2.0.3 %gcc
-  - claw @2.0.3 %nvhpc
+  - claw @2.0.3 %pgi
   concretizer:
     unify: when_possible
   view: false
