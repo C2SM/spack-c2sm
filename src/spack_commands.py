@@ -22,6 +22,13 @@ def with_srun(command: str) -> str:
     return f'{cmd} {command}'
 
 
+def with_spack_env_dev(command: str, env: str, cwd=None, check=False):
+    return subprocess.run(f'. {spack_c2sm_path}/setup-env.sh; spack env activate -d {env}; spack develop; {command}',
+                          cwd=cwd,
+                          check=check,
+                          shell=True)
+
+
 def with_spack(command: str, cwd=None, check=False):
     return subprocess.run(f'. {spack_c2sm_path}/setup-env.sh; {command}',
                           cwd=cwd,
@@ -33,6 +40,7 @@ def log_with_spack(command: str,
                    test_category: str,
                    log_filename: str = None,
                    cwd=None,
+                   env=None,
                    srun=False) -> None:
     """
     Executes the given command while spack is loaded and writes the output into the log file.
@@ -57,7 +65,10 @@ def log_with_spack(command: str,
     start = time.time()
     # The output of the command is streamed as directly as possible to the log_file to avoid buffering and potentially losing buffered content.
     # '2>&1' redirects stderr to stdout.
-    ret = with_spack(f'({command}) >> {log_file} 2>&1', cwd)
+    if env:
+        ret = with_spack_env_dev(f'({command}) >> {log_file} 2>&1', env, cwd)
+    else:
+        ret = with_spack(f'({command}) >> {log_file} 2>&1', cwd)
     end = time.time()
 
     with log_file.open('a') as f:
