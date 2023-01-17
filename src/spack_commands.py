@@ -20,7 +20,14 @@ def with_srun(command: str) -> str:
         'daint': 'srun -t 02:00:00 -C gpu -A g110',
         'tsa': 'srun -t 02:00:00 -c 6',
     }[machine_name()]
-    return f'{cmd} {command}'
+    return f'{cmd} ({command})'
+
+
+def rnd_delay(command: str):
+    "Delays execution of command."
+    # Randomly delay
+    time = randint(0, 30)
+    return f'sleep {time}; {command}'
 
 
 def with_spack(command: str, cwd=None, check=False):
@@ -39,11 +46,13 @@ def log_with_spack(command: str,
     Executes the given command while spack is loaded and writes the output into the log file.
     If log_filename is None, command is used to create one.
     """
-    log_file = Path(spack_c2sm_path) / 'log' / machine_name(
-    ) / test_category / (sanitized_filename(log_filename or command) + '.log')
+    log_file = Path(spack_c2sm_path) / 'log' / machine_name() / test_category / (sanitized_filename(log_filename or command) + '.log')
 
-    if srun and getpass.getuser(
-    ) == 'jenkins':  #  only jenkins should start sruns
+    # WORKAROUND: To avoid race conditions on spack locks.
+    command = rnd_delay(command)
+    
+    # Only jenkins starts sruns
+    if srun and getpass.getuser() == 'jenkins':
         command = with_srun(command)
 
     # Make Directory
