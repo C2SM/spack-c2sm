@@ -11,25 +11,6 @@ from .machine import machine_name
 from .format import time_format, sanitized_filename
 
 
-def with_srun(command: str) -> str:
-    "Wraps command in 'srun' with machine specific arguments."
-
-    # '-c' should be in sync with sysconfig/<machine>/config.yaml config:build_jobs
-    cmd = {
-        'balfrin': 'srun -t 02:00:00 -c 12 --partition=normal,postproc',
-        'daint': 'srun -t 02:00:00 -C gpu -A g110',
-        'tsa': 'srun -t 02:00:00 -c 6',
-    }[machine_name()]
-    return f'{cmd} {command}'
-
-
-def with_spack(command: str, cwd=None, check=False):
-    return subprocess.run(f'. {spack_c2sm_path}/setup-env.sh; {command}',
-                          cwd=cwd,
-                          check=check,
-                          shell=True)
-
-
 def log_with_spack(command: str,
                    test_category: str,
                    log_filename: str = None,
@@ -39,16 +20,31 @@ def log_with_spack(command: str,
     Executes the given command while spack is loaded and writes the output into the log file.
     If log_filename is None, command is used to create one.
     """
-    log_file = Path(spack_c2sm_path) / 'log' / machine_name(
-    ) / test_category / (sanitized_filename(log_filename or command) + '.log')
+    filename = sanitized_filename(log_filename or command) + '.log'
+    log_file = Path(spack_c2sm_path) / 'log' / machine_name() / test_category / filename
 
-    if srun and getpass.getuser(
-    ) == 'jenkins':  #  only jenkins should start sruns
-        command = with_srun(command)
+    # Setup spack env
+    spack_env = f'. {spack_c2sm_path}/setup-env.sh'
+
+    # 'srun' part
+    if srun and getpass.getuser() == 'jenkins':
+        # The '-c' argument should be in sync with
+        # sysconfig/<machine>/config.yaml config:build_jobs for max efficiency
+        srun_cmd = {
+            'balfrin': 'srun -t 02:00:00 -c 12 --partition=normal,postproc',
+            'daint': 'srun -t 02:00:00 -C gpu -A g110',
+            'tsa': 'srun -t 02:00:00 -c 6',
+        }[machine_name()]
+    else:
+        srun_cmd = ''
+        
+    # Randomly delay
+    delay = f'sleep {randint(0, 30)}'
 
     # Make Directory
     log_file.parent.mkdir(exist_ok=True, parents=True)
 
+    # Log machine name and command
     with log_file.open('a') as f:
         f.write(machine_name())
         f.write('\n')
@@ -56,11 +52,15 @@ def log_with_spack(command: str,
         f.write('\n\n')
 
     start = time.time()
-    # The output of the command is streamed as directly as possible to the log_file to avoid buffering and potentially losing buffered content.
+    # The output is streamed as directly as possible to the log_file to avoid buffering and potentially losing buffered content.
     # '2>&1' redirects stderr to stdout.
-    ret = with_spack(f'({command}) >> {log_file} 2>&1', cwd)
+    ret = subprocess.run(f'{spack_env}; ({srun} sh -c "{delay}; {command}") >> {log_file} 2>&1',
+                          cwd=cwd,
+                          check=False,
+                          shell=True)
     end = time.time()
 
+    # Log time and success
     with log_file.open('a') as f:
         f.write('\n\n')
         f.write(time_format(end - start))
