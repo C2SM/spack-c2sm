@@ -32,13 +32,13 @@ def log_with_spack(command: str,
     if srun and getpass.getuser() == 'jenkins':
         # The '-c' argument should be in sync with
         # sysconfig/<machine>/config.yaml config:build_jobs for max efficiency
-        srun_cmd = {
+        srun = {
             'balfrin': 'srun -t 02:00:00 -c 12 --partition=normal,postproc',
             'daint': 'srun -t 02:00:00 -C gpu -A g110',
             'tsa': 'srun -t 02:00:00 -c 6',
         }[machine_name()]
     else:
-        srun_cmd = ''
+        srun = ''
 
     # Randomly delay
     delay = f'sleep {randint(0, 30)}'
