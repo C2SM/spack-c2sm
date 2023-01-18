@@ -21,7 +21,7 @@ def with_srun(command: str) -> str:
         'daint': 'srun -t 02:00:00 -C gpu -A g110',
         'tsa': 'srun -t 02:00:00 -c 6',
     }[machine_name()]
-    return f'{cmd} sh -c"{command}"'
+    return f'{cmd} sh -c "{command}"'
 
 
 def rnd_delay(command: str):
