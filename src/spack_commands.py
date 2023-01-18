@@ -22,7 +22,8 @@ def log_with_spack(command: str,
     If log_filename is None, command is used to create one.
     """
     filename = sanitized_filename(log_filename or command) + '.log'
-    log_file = Path(spack_c2sm_path) / 'log' / machine_name() / test_category / filename
+    log_file = Path(
+        spack_c2sm_path) / 'log' / machine_name() / test_category / filename
 
     # Setup spack env
     spack_env = f'. {spack_c2sm_path}/setup-env.sh'
@@ -38,7 +39,7 @@ def log_with_spack(command: str,
         }[machine_name()]
     else:
         srun_cmd = ''
-        
+
     # Randomly delay
     delay = f'sleep {randint(0, 30)}'
 
@@ -55,10 +56,11 @@ def log_with_spack(command: str,
     start = time.time()
     # The output is streamed as directly as possible to the log_file to avoid buffering and potentially losing buffered content.
     # '2>&1' redirects stderr to stdout.
-    ret = subprocess.run(f'{spack_env}; ({srun} sh -c "{delay}; {command}") >> {log_file} 2>&1',
-                          cwd=cwd,
-                          check=False,
-                          shell=True)
+    ret = subprocess.run(
+        f'{spack_env}; ({srun} sh -c "{delay}; {command}") >> {log_file} 2>&1',
+        cwd=cwd,
+        check=False,
+        shell=True)
     end = time.time()
 
     # Log time and success
