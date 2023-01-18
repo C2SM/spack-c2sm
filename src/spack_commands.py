@@ -3,7 +3,6 @@ import os
 import subprocess
 import time
 from pathlib import Path
-from random import randint
 
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                '..')
@@ -33,15 +32,12 @@ def log_with_spack(command: str,
         # The '-c' argument should be in sync with
         # sysconfig/<machine>/config.yaml config:build_jobs for max efficiency
         srun = {
-            'balfrin': 'srun -t 02:00:00 -c 12 --partition=normal,postproc',
+            'balfrin': '',
             'daint': 'srun -t 02:00:00 -C gpu -A g110',
             'tsa': 'srun -t 02:00:00 -c 6',
         }[machine_name()]
     else:
         srun = ''
-
-    # Randomly delay
-    delay = f'sleep {randint(0, 30)}'
 
     # Make Directory
     log_file.parent.mkdir(exist_ok=True, parents=True)
@@ -57,7 +53,7 @@ def log_with_spack(command: str,
     # The output is streamed as directly as possible to the log_file to avoid buffering and potentially losing buffered content.
     # '2>&1' redirects stderr to stdout.
     ret = subprocess.run(
-        f'{spack_env}; ({srun} sh -c "{delay}; {command}") >> {log_file} 2>&1',
+        f'{spack_env}; ({srun} {command}) >> {log_file} 2>&1',
         cwd=cwd,
         check=False,
         shell=True)
