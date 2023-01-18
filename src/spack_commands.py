@@ -47,11 +47,12 @@ def log_with_spack(command: str,
     Executes the given command while spack is loaded and writes the output into the log file.
     If log_filename is None, command is used to create one.
     """
-    log_file = Path(spack_c2sm_path) / 'log' / machine_name() / test_category / (sanitized_filename(log_filename or command) + '.log')
+    log_file = Path(spack_c2sm_path) / 'log' / machine_name(
+    ) / test_category / (sanitized_filename(log_filename or command) + '.log')
 
     # WORKAROUND: To avoid race conditions on spack locks.
     command = rnd_delay(command)
-    
+
     # Only jenkins starts sruns
     if srun and getpass.getuser() == 'jenkins':
         command = with_srun(command)
