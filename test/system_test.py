@@ -13,123 +13,87 @@ sys.path.append(os.path.normpath(spack_c2sm_path))
 from src import machine_name, log_with_spack, sanitized_filename
 
 
-def spack_installcosmo_and_test(command: str, log_filename: str = None):
-    """
-    Tests 'spack installcosmo' of the given command and writes the output into the log file.
-    If log_filename is None, command is used to create one.
-    """
-    log_filename = sanitized_filename(log_filename or command)
-    log_with_spack(f'spack installcosmo --until build -n -v {command}',
-                   'system_test',
-                   log_filename,
-                   srun=True)
-    log_with_spack(
-        f'spack installcosmo --dont-restage --test=root -n -v {command}',
-        'system_test',
-        log_filename,
-        srun=False)
-
-
-def spack_install_and_test(command: str, log_filename: str = None):
-    """
-    Tests 'spack install' of the given command and writes the output into the log file.
-    If log_filename is None, command is used to create one.
-    """
-    log_filename = sanitized_filename(log_filename or command)
-    log_with_spack(
-        f'spack -ddd install --until build --test=root -n -v {command}',
-        'system_test',
-        log_filename,
-        srun=True)
-    log_with_spack(
-        f'spack -ddd install --dont-restage --test=root -n -v {command}',
-        'system_test',
-        log_filename,
-        srun=False)
-
-
-def spack_install_and_test_no_phase_splitting(command: str,
-                                              log_filename: str = None):
-    """
-    Tests 'spack install' of the given command and writes the output into the log file.
-    If log_filename is None, command is used to create one.
-    """
-    log_filename = sanitized_filename(log_filename or command)
-    log_with_spack(f'spack install --test=root -n -v {command}',
-                   'system_test',
-                   log_filename,
-                   srun=True)
-
-
-def spack_install_and_test_python_package(command: str,
-                                          log_filename: str = None):
-    """
-    Tests 'spack install' of the given command and writes the output into the log file.
-    If log_filename is None, command is used to create one.
-
-    Special version for Python packages to run in a clean environment
-    """
-
+def devirtualize_env():
     # pytest is run from a virtual environment that breaks the
     # Python environment setup by Spack. Additionally "deactivate"
-    # is not available here, therefore we manually unset paths like
+    # is not available here, therefore we manually unset
+    # VIRTUAL_ENV and PATH
 
-    # - VIRTUAL_ENV
-    # - PATH
-
-    # set by the virtual environment
-
-    virtual_env = os.path.join(os.environ['VIRTUAL_ENV'], 'bin')
+    # Remove 'VIRTUAL_ENV/bin'
+    virtual_env_bin = os.path.join(os.environ['VIRTUAL_ENV'], 'bin')
     os.environ.pop('VIRTUAL_ENV')
-    path = os.environ['PATH']
-    path = path.replace(virtual_env, '')
-    os.environ['PATH'] = path
-
-    log_filename = sanitized_filename(log_filename or command)
-    log_with_spack(f'spack install --test=root -n -v {command}',
-                   'system_test',
-                   log_filename,
-                   srun=True)
+    os.environ['PATH'] = os.environ['PATH'].replace(virtual_env_bin, '')
 
 
-def spack_devbuildcosmo_and_test(command: str,
-                                 log_filename: str = None,
-                                 cwd=None):
+def spack_install_and_test(spec: str, log_filename: str = None, test_on_login_node = False, python_package = False):
     """
-    Tests 'spack devbuildcosmo' of the given command and writes the output into the log file.
-    If log_filename is None, command is used to create one.
+    Tests 'spack install' of the given spec and writes the output into the log file.
+    If log_filename is None, spec is used to create one.
     """
-    log_filename = sanitized_filename(log_filename or command)
-    log_with_spack(
-        f'spack devbuildcosmo --until build --test=root -n {command}',
-        'system_test',
-        log_filename,
-        cwd=cwd,
-        srun=True)
-    log_with_spack(
-        f'spack devbuildcosmo --dont-restage --test=root -n {command}',
-        'system_test',
-        log_filename,
-        cwd=cwd,
-        srun=False)
+
+    log_filename = sanitized_filename(log_filename or spec)
+
+    if spec.startswith('cosmo '):
+        command = 'installcosmo'
+    else:
+        command = 'install'
+
+    if spec.startswith('py-'):
+       python_package = True 
+
+    if python_package:
+        devirtualize_env()
+        log_with_spack(
+            f'spack -ddd {command} --test=root -n -v {spec}',
+            'system_test',
+            log_filename,
+            srun=True)
+    else:
+        log_with_spack(
+            f'spack -ddd {command} --until build --test=root -n -v {spec}',
+            'system_test',
+            log_filename,
+            srun=True)
+        log_with_spack(
+            f'spack -ddd {command} --dont-restage --test=root -n -v {spec}',
+            'system_test',
+            log_filename,
+            srun=False)
 
 
-def spack_devbuild_and_test(command: str, log_filename: str = None, cwd=None):
+def spack_devbuild_and_test(spec: str, log_filename: str = None, cwd = None, python_package = False):
     """
-    Tests 'spack dev-build' of the given command and writes the output into the log file.
-    If log_filename is None, command is used to create one.
+    Tests 'spack dev-build' of the given spec and writes the output into the log file.
+    If log_filename is None, spec is used to create one.
     """
-    log_filename = sanitized_filename(log_filename or command)
-    log_with_spack(f'spack dev-build --until build --test=root -n {command}',
-                   'system_test',
-                   log_filename,
-                   cwd=cwd,
-                   srun=True)
-    log_with_spack(f'spack dev-build --dont-restage --test=root -n {command}',
-                   'system_test',
-                   log_filename,
-                   cwd=cwd,
-                   srun=False)
+    log_filename = sanitized_filename(log_filename or spec)
+
+    if spec.startswith('cosmo '):
+        command = 'devbuildcosmo'
+    else:
+        command = 'dev-build'
+
+    if spec.startswith('py-'):
+       python_package = True 
+
+    if python_package:
+        devirtualize_env()
+        log_with_spack(f'spack {command} --test=root -n {spec}',
+            'system_test',
+            log_filename,
+            cwd=cwd,
+            srun=True)
+    else:
+        log_with_spack(f'spack {command} --until build --test=root -n {spec}',
+            'system_test',
+            log_filename,
+            cwd=cwd,
+            srun=True)
+        log_with_spack(f'spack {command} --dont-restage --test=root -n {spec}',
+            'system_test',
+            log_filename,
+            cwd=cwd,
+            srun=False)
 
 
 mpi: str = {
@@ -150,59 +114,61 @@ nvidia_compiler: str = {
 class CosmoTest(unittest.TestCase):
 
     def test_install_version_6_0_cpu(self):
-        spack_installcosmo_and_test(
+        spack_install_and_test(
             f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
     def test_install_version_6_0_gpu(self):
-        spack_installcosmo_and_test(
+        spack_install_and_test(
             f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
     @pytest.mark.no_daint  # Patches are not applied. Therefore the tests fail.
     def test_devbuild_version_6_0_cpu(self):
-        unique_folder = uuid.uuid4(
-        ).hex  # to avoid cloning into the same folder and having race conditions
+        # to avoid cloning into the same folder and having race conditions
+        unique_folder = uuid.uuid4().hex
+
         subprocess.run(
             f'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git {unique_folder}',
             check=True,
             shell=True)
-        spack_devbuildcosmo_and_test(
+        spack_devbuild_and_test(
             f'cosmo @dev_build_6.0_cpu %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}',
             cwd=unique_folder)
 
     @pytest.mark.no_daint  # Patches are not applied. Therefore the tests fail.
     def test_devbuild_version_6_0_gpu(self):
-        unique_folder = uuid.uuid4(
-        ).hex  # to avoid cloning into the same folder and having race conditions
+        # to avoid cloning into the same folder and having race conditions
+        unique_folder = uuid.uuid4().hex
+
         subprocess.run(
             f'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git {unique_folder}',
             check=True,
             shell=True)
-        spack_devbuildcosmo_and_test(
+        spack_devbuild_and_test(
             f'cosmo @dev_build_6.0_gpu %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}',
             cwd='cosmo')
 
     @pytest.mark.no_daint  # Testsuite fails
     def test_install_version_5_09_mch_1_2_p2_cpu(self):
-        spack_installcosmo_and_test(
+        spack_install_and_test(
             f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
     @pytest.mark.no_daint  # Unable to open MODULE file gt_gcl_bindings.mod
     def test_install_version_5_09_mch_1_2_p2_gpu(self):
-        spack_installcosmo_and_test(
+        spack_install_and_test(
             f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
     def test_install_c2sm_master_cpu(self):
-        spack_installcosmo_and_test(
+        spack_install_and_test(
             f'cosmo @c2sm-master %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
     @pytest.mark.no_daint  # Unable to open MODULE file gt_gcl_bindings.mod
     def test_install_c2sm_master_gpu(self):
-        spack_installcosmo_and_test(
+        spack_install_and_test(
             f'cosmo @c2sm-master %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
@@ -344,7 +310,7 @@ class LibGrib1Test(unittest.TestCase):
 
 
 class OasisTest(unittest.TestCase):
-    pass  #TODO
+    pass
 
 
 class OmniXmodPoolTest(unittest.TestCase):
@@ -368,7 +334,7 @@ class OmniCompilerTest(unittest.TestCase):
 class PyGt4pyTest(unittest.TestCase):
 
     def test_install_version_functional(self):
-        spack_install_and_test_python_package('py-gt4py %gcc')
+        spack_install_and_test('py-gt4py %gcc')
 
 
 @pytest.mark.no_balfrin  # py-isort install fails with: No module named 'poetry'.
@@ -377,7 +343,7 @@ class PyGt4pyTest(unittest.TestCase):
 class PyIcon4pyTest(unittest.TestCase):
 
     def test_install_version_main(self):
-        spack_install_and_test_python_package('py-icon4py @main %gcc')
+        spack_install_and_test('py-icon4py @main %gcc')
 
 
 @pytest.mark.no_balfrin  # test fails with warnings
