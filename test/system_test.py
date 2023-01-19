@@ -277,6 +277,7 @@ class IconTest(unittest.TestCase):
         )
 
 
+@pytest.mark.no_balfrin #  int2lm depends on 'libgrib1 @master', which fails.
 class Int2lmTest(unittest.TestCase):
 
     def test_install_version_3_00_gcc(self):
@@ -307,11 +308,15 @@ class IconToolsTest(unittest.TestCase):
         spack_install_and_test('icontools @c2sm-master %gcc')
 
 
-@pytest.mark.no_balfrin  # This fails with "BOZ literal constant at (1) cannot appear in an array constructor"
+@pytest.mark.no_balfrin  # This fails with "BOZ literal constant at (1) cannot appear in an array constructor". https://gcc.gnu.org/onlinedocs/gfortran/BOZ-literal-constants.html
 class LibGrib1Test(unittest.TestCase):
 
     def test_install_version_22_01_2020(self):
         spack_install_and_test('libgrib1 @22-01-2020')
+
+    def test_install_master(self):
+        # int2lm depends on 'libgrib1 @master'
+        spack_install_and_test('libgrib1 @master')
 
 
 class OasisTest(unittest.TestCase):
