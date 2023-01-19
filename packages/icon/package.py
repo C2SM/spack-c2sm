@@ -230,12 +230,15 @@ class Icon(Package):
     @run_before('install')
     @on_package_attributes(run_tests=True)
     def check(self):
+        python = self.spec['python'].prefix + '/bin/python'
         if os.path.exists('scripts/spack/test.py'):
+            with open('spec.yaml', mode='w') as f:
+                f.write(self.spec.to_yaml())
             try:
-                subprocess.run(
-                    ['./scripts/spack/test.py', '--spec',
-                     str(self.spec)],
-                    check=True)
+                process = subprocess.run(
+                    [f'{python} ./scripts/spack/test.py', '--spec', 'spec.yaml'],
+                    check=True,
+                )
             except:
                 raise InstallError('Tests failed')
         else:
