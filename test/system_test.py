@@ -277,7 +277,7 @@ class IconTest(unittest.TestCase):
         )
 
 
-@pytest.mark.no_balfrin  #  int2lm depends on 'libgrib1 @master', which fails.
+@pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
 class Int2lmTest(unittest.TestCase):
 
     def test_install_version_3_00_gcc(self):
