@@ -25,7 +25,10 @@ def devirtualize_env():
     os.environ['PATH'] = os.environ['PATH'].replace(virtual_env_bin, '')
 
 
-def spack_install_and_test(spec: str, log_filename: str = None, test_on_login_node = False, python_package = False):
+def spack_install_and_test(spec: str,
+                           log_filename: str = None,
+                           test_on_login_node=False,
+                           python_package=False):
     """
     Tests 'spack install' of the given spec and writes the output into the log file.
     If log_filename is None, spec is used to create one.
@@ -39,15 +42,14 @@ def spack_install_and_test(spec: str, log_filename: str = None, test_on_login_no
         command = 'install'
 
     if spec.startswith('py-'):
-       python_package = True 
+        python_package = True
 
     if python_package:
         devirtualize_env()
-        log_with_spack(
-            f'spack -ddd {command} --test=root -n -v {spec}',
-            'system_test',
-            log_filename,
-            srun=True)
+        log_with_spack(f'spack -ddd {command} --test=root -n -v {spec}',
+                       'system_test',
+                       log_filename,
+                       srun=True)
     else:
         log_with_spack(
             f'spack -ddd {command} --until build --test=root -n -v {spec}',
@@ -61,7 +63,10 @@ def spack_install_and_test(spec: str, log_filename: str = None, test_on_login_no
             srun=False)
 
 
-def spack_devbuild_and_test(spec: str, log_filename: str = None, cwd = None, python_package = False):
+def spack_devbuild_and_test(spec: str,
+                            log_filename: str = None,
+                            cwd=None,
+                            python_package=False):
     """
     Tests 'spack dev-build' of the given spec and writes the output into the log file.
     If log_filename is None, spec is used to create one.
@@ -74,26 +79,26 @@ def spack_devbuild_and_test(spec: str, log_filename: str = None, cwd = None, pyt
         command = 'dev-build'
 
     if spec.startswith('py-'):
-       python_package = True 
+        python_package = True
 
     if python_package:
         devirtualize_env()
         log_with_spack(f'spack {command} --test=root -n {spec}',
-            'system_test',
-            log_filename,
-            cwd=cwd,
-            srun=True)
+                       'system_test',
+                       log_filename,
+                       cwd=cwd,
+                       srun=True)
     else:
         log_with_spack(f'spack {command} --until build --test=root -n {spec}',
-            'system_test',
-            log_filename,
-            cwd=cwd,
-            srun=True)
+                       'system_test',
+                       log_filename,
+                       cwd=cwd,
+                       srun=True)
         log_with_spack(f'spack {command} --dont-restage --test=root -n {spec}',
-            'system_test',
-            log_filename,
-            cwd=cwd,
-            srun=False)
+                       'system_test',
+                       log_filename,
+                       cwd=cwd,
+                       srun=False)
 
 
 mpi: str = {
