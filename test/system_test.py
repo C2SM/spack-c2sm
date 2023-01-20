@@ -118,12 +118,10 @@ nvidia_compiler: str = {
 @pytest.mark.no_tsa  # irrelevant
 class CosmoTest(unittest.TestCase):
 
-    def test_install_version_6_0_cpu(self):
+    def test_install_version_6_0(self):
         spack_install_and_test(
             f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
         )
-
-    def test_install_version_6_0_gpu(self):
         spack_install_and_test(
             f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
         )
@@ -181,10 +179,8 @@ class CosmoTest(unittest.TestCase):
 @pytest.mark.no_balfrin  # cuda arch is not supported
 class CosmoDycoreTest(unittest.TestCase):
 
-    def test_install_version_6_0_cuda(self):
+    def test_install_version_6_0(self):
         spack_install_and_test('cosmo-dycore @6.0 +cuda')
-
-    def test_install_version_6_0_no_cuda(self):
         spack_install_and_test('cosmo-dycore @6.0 ~cuda')
 
     def test_install_c2sm_master_cuda(self):
