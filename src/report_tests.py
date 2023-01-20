@@ -34,10 +34,7 @@ if __name__ == "__main__":
 
     # Trigger phrases that cause a test to get a yellow circle
     yellow_triggers = [
-        'Timed out waiting for a write lock',
-        'Timed out waiting for a read lock',
         'timed out after 5 seconds',
-        'DUE TO TIME LIMIT',  # slurm
     ]
 
     for file_name in sorted(glob.glob('log/**/*.log', recursive=True)):
@@ -48,9 +45,15 @@ if __name__ == "__main__":
                 summary.append(':green_circle:', test_name)
             elif 'AssertionError exception when releasing read lock' in content:
                 summary.append(':lock:', test_name, 'spack locking problem')
+            elif 'Timed out waiting for a write lock' in content:
+                summary.append(':lock:', test_name, 'spack write lock problem')
+            elif 'Timed out waiting for a read lock' in content:
+                summary.append(':lock:', test_name, 'spack read lock problem')
             elif 'gzip: stdin: decompression OK, trailing garbage ignored' in content:
                 summary.append(':wastebasket:', test_name,
                                'spack cached archive problem')
+            elif 'DUE TO TIME LIMIT' in content:
+                summary.append(':hourglass:', test_name, 'slurm time limit')
             else:
                 for trigger in yellow_triggers:
                     if trigger in content:
