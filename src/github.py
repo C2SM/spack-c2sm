@@ -106,6 +106,33 @@ class Markdown:
             ' | '.join(str(cell) for cell in row)
             for row in [data[0], ['---' for d in data[0]], *data[1:]])
 
+
+class HTML:
+
+    @staticmethod
+    def link(text: str, url: str) -> str:
+        return f'<a href="{url}">{text}</a>'
+
+    @staticmethod
+    def table(data) -> str:        
+        table = '<table>'
+        table += '<thead>'
+        table += '<tr>'
+        for cell in data[0]:
+            print(cell)
+            table += f'<th>{cell}</th>'
+        table += '</tr>'
+        table += '</thead>'
+        table += '<tbody>'
+        for row in data[1:]:
+            table += '<tr>'
+            for cell in row:
+                table += f'<td>{cell}</td>'
+            table += '</tr>'
+        table += '</tbody>'
+        table += '</table>'
+        return table
+
     @staticmethod
     def collapsible(summary: str, details: str) -> str:
         return f'<details><summary>{summary}</summary>{details}</details>'

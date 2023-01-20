@@ -7,7 +7,7 @@ from pathlib import Path
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                '..')
 sys.path.append(os.path.normpath(spack_c2sm_path))
-from src import machine_name, Markdown, time_format, sanitized_filename, all_machines, all_packages, explicit_scope, package_triggers
+from src import machine_name, Markdown, HTML, time_format, sanitized_filename, all_machines, all_packages, explicit_scope, package_triggers
 
 
 class MachineDetection(unittest.TestCase):
@@ -46,9 +46,21 @@ class MarkDownTest(unittest.TestCase):
                             ['data3', 'data4']]),
             'title1 | title2\n--- | ---\ndata1 | data2\ndata3 | data4')
 
+
+class HTMLTest(unittest.TestCase):
+
+    def test_link(self):
+        self.assertEqual(HTML.link('text', 'url'), '<a href="url">text</a>')
+
+    def test_table(self):
+        self.assertEqual(
+            HTML.table([['title1', 'title2'], ['data1', 'data2'],
+                            ['data3', 'data4']]),
+            '<table><thead><tr><th>title1</th><th>title2</th></tr></thead><tbody><tr><td>data1</td><td>data2</td></tr><tr><td>data3</td><td>data4</td></tr></tbody></table>')
+
     def test_collapsible(self):
         self.assertEqual(
-            Markdown.collapsible('summary', 'details'),
+            HTML.collapsible('summary', 'details'),
             '<details><summary>summary</summary>details</details>')
 
 
