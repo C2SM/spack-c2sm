@@ -129,6 +129,7 @@ class CosmoTest(unittest.TestCase):
         )
 
     @pytest.mark.no_daint  # Patches are not applied. Therefore the tests fail.
+    @pytest.mark.no_tsa  # Patches are not applied. Therefore the tests fail.
     def test_devbuild_version_6_0_cpu(self):
         # to avoid cloning into the same folder and having race conditions
         unique_folder = uuid.uuid4().hex
@@ -142,6 +143,7 @@ class CosmoTest(unittest.TestCase):
             cwd=unique_folder)
 
     @pytest.mark.no_daint  # Patches are not applied. Therefore the tests fail.
+    @pytest.mark.no_tsa  # Patches are not applied. Therefore the tests fail.
     def test_devbuild_version_6_0_gpu(self):
         # to avoid cloning into the same folder and having race conditions
         unique_folder = uuid.uuid4().hex
@@ -154,14 +156,11 @@ class CosmoTest(unittest.TestCase):
             f'cosmo @dev_build_6.0_gpu %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}',
             cwd='cosmo')
 
-    @pytest.mark.no_daint  # Testsuite fails
-    def test_install_version_5_09_mch_1_2_p2_cpu(self):
+    @pytest.mark.no_daint  # Testsuite fails on CPU. Unable to open MODULE file gt_gcl_bindings.mod on GPU.
+    def test_install_version_5_09_mch_1_2_p2(self):
         spack_install_and_test(
             f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
         )
-
-    @pytest.mark.no_daint  # Unable to open MODULE file gt_gcl_bindings.mod
-    def test_install_version_5_09_mch_1_2_p2_gpu(self):
         spack_install_and_test(
             f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
         )
