@@ -118,7 +118,6 @@ nvidia_compiler: str = {
 
 
 @pytest.mark.no_balfrin  # cosmo-dycore does not support the cuda arch of balfrin
-@pytest.mark.no_tsa  # irrelevant
 class CosmoTest(unittest.TestCase):
 
     def test_install_version_6_0(self):
