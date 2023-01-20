@@ -50,17 +50,17 @@ def spack_install_and_test(spec: str,
 
     if split_phases:
         log_with_spack(
-            f'spack -ddd {command} --until build --test=root -n -v {spec}',
+            f'spack {command} --until build --test=root -n -v {spec}',
             'system_test',
             log_filename,
             srun=True)
         log_with_spack(
-            f'spack -ddd {command} --dont-restage --test=root -n -v {spec}',
+            f'spack {command} --dont-restage --test=root -n -v {spec}',
             'system_test',
             log_filename,
             srun=False)
     else:
-        log_with_spack(f'spack -ddd {command} --test=root -n -v {spec}',
+        log_with_spack(f'spack {command} --test=root -n -v {spec}',
                        'system_test',
                        log_filename,
                        srun=True)
