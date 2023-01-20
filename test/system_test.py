@@ -27,7 +27,7 @@ def devirtualize_env():
 
 def spack_install_and_test(spec: str,
                            log_filename: str = None,
-                           test_on_login_node=False,
+                           split_phases=True,
                            python_package=False):
     """
     Tests 'spack install' of the given spec and writes the output into the log file.
@@ -45,12 +45,10 @@ def spack_install_and_test(spec: str,
         python_package = True
 
     if python_package:
+        split_phases = True
         devirtualize_env()
-        log_with_spack(f'spack -ddd {command} --test=root -n -v {spec}',
-                       'system_test',
-                       log_filename,
-                       srun=True)
-    else:
+
+    if split_phases:
         log_with_spack(
             f'spack -ddd {command} --until build --test=root -n -v {spec}',
             'system_test',
@@ -61,6 +59,11 @@ def spack_install_and_test(spec: str,
             'system_test',
             log_filename,
             srun=False)
+    else:
+        log_with_spack(f'spack -ddd {command} --test=root -n -v {spec}',
+                       'system_test',
+                       log_filename,
+                       srun=True)
 
 
 def spack_devbuild_and_test(spec: str,
@@ -193,8 +196,7 @@ class CosmoDycoreTest(unittest.TestCase):
 class CosmoEccodesDefinitionsTest(unittest.TestCase):
 
     def test_install_version_2_19_0_7(self):
-        spack_install_and_test_no_phase_splitting(
-            'cosmo-eccodes-definitions @2.19.0.7')
+        spack_install_and_test('cosmo-eccodes-definitions @2.19.0.7', split_phases=False)
 
 
 @pytest.mark.no_tsa  # It fails with: "This is libtool 2.4.7, but the libtool: definition of this LT_INIT comes from libtool 2.4.2".
@@ -322,7 +324,7 @@ class OasisTest(unittest.TestCase):
 class OmniXmodPoolTest(unittest.TestCase):
 
     def test_install_version_0_1(self):
-        spack_install_and_test_no_phase_splitting('omni-xmod-pool @0.1')
+        spack_install_and_test('omni-xmod-pool @0.1', split_phases=False)
 
 
 @pytest.mark.no_balfrin  # This fails with: "multiple definition of symbols"
