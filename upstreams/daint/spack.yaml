@@ -9,9 +9,8 @@ spack:
   - eccodes @2.19.0 %nvhpc +fortran +aec +tools
   - eccodes @2.19.0 %cce +fortran +aec +tools
   - cosmo-eccodes-definitions @2.19.0.7
-  - claw @2.0.3 %gcc
-  - claw @2.0.3 %nvhpc
-  - claw @2.0.3 %cce
+  - claw @2.0.1 %gcc # for cosmo @5.09a.mch1.2.p2 +claw
+  - claw @2.1 %gcc # for cosmo @6.0mch1.0 +claw
   concretizer:
     unify: when_possible
   view: false
