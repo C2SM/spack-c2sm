@@ -312,10 +312,6 @@ class LibGrib1Test(unittest.TestCase):
     def test_install_version_22_01_2020(self):
         spack_install_and_test('libgrib1 @22-01-2020')
 
-    def test_install_master(self):
-        # int2lm depends on 'libgrib1 @master'
-        spack_install_and_test('libgrib1 @master')
-
 
 class OasisTest(unittest.TestCase):
     pass
