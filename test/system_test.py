@@ -196,7 +196,8 @@ class CosmoDycoreTest(unittest.TestCase):
 class CosmoEccodesDefinitionsTest(unittest.TestCase):
 
     def test_install_version_2_19_0_7(self):
-        spack_install_and_test('cosmo-eccodes-definitions @2.19.0.7', split_phases=False)
+        spack_install_and_test('cosmo-eccodes-definitions @2.19.0.7',
+                               split_phases=False)
 
 
 @pytest.mark.no_tsa  # It fails with: "This is libtool 2.4.7, but the libtool: definition of this LT_INIT comes from libtool 2.4.2".
