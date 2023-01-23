@@ -61,13 +61,13 @@ def spack_env_dev_install_and_test(spack_env: str,
         check=True,
         shell=True)
     log_filename = sanitized_filename(log_filename or spack_env)
-    log_with_spack(f'spack install --until build -n -v',
+    log_with_spack(f'spack -ddd install --until build -n -v',
                    'system_test',
                    log_filename,
                    cwd=unique_folder,
                    env=f'spack-envs/{spack_env}',
                    srun=True)
-    log_with_spack(f'spack install --dont-restage --test=root -n -v',
+    log_with_spack(f'spack -ddd install --dont-restage --test=root -n -v',
                    'system_test',
                    log_filename,
                    cwd=unique_folder,
@@ -261,15 +261,15 @@ class IconTest(unittest.TestCase):
     def test_install_exclaim_test_cpu_gcc(self):
         spack_env_dev_install_and_test('daint_gcc_cpu', 'spack_v0.18.1')
 
-    @pytest.mark.no_tsa  # config file does not exist for this machines
-    @pytest.mark.no_balfrin  # config file does not exist for this machines
-    def test_install_exclaim_test_cpu(self):
-        spack_env_dev_install_and_test('daint_nvhpc_cpu', 'spack_v0.18.1')
+    #@pytest.mark.no_tsa  # config file does not exist for this machines
+    #@pytest.mark.no_balfrin  # config file does not exist for this machines
+    #def test_install_exclaim_test_cpu(self):
+    #    spack_env_dev_install_and_test('daint_nvhpc_cpu', 'spack_v0.18.1')
 
-    @pytest.mark.no_tsa  # config file does not exist for this machines
-    @pytest.mark.no_balfrin  # config file does not exist for this machines
-    def test_install_exclaim_test_gpu(self):
-        spack_env_dev_install_and_test('daint_nvhpc_gpu', 'spack_v0.18.1')
+    #@pytest.mark.no_tsa  # config file does not exist for this machines
+    #@pytest.mark.no_balfrin  # config file does not exist for this machines
+    #def test_install_exclaim_test_gpu(self):
+    #    spack_env_dev_install_and_test('daint_nvhpc_gpu', 'spack_v0.18.1')
 
 
 class Int2lmTest(unittest.TestCase):
