@@ -32,7 +32,7 @@ def log_with_spack(command: str,
         # The '-c' argument should be in sync with
         # sysconfig/<machine>/config.yaml config:build_jobs for max efficiency
         srun = {
-            'balfrin': 'srun -t 02:00:00 -c 12 --partition=normal,postproc',
+            'balfrin': '',
             'daint': 'srun -t 02:00:00 -C gpu -A g110',
             'tsa': 'srun -t 02:00:00 -c 6',
         }[machine_name()]
