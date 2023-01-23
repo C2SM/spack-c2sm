@@ -41,6 +41,15 @@ pipeline {
                             """
                         }
                     }
+                    stage('Bootstrap spack') {
+                        steps {
+                            sh """
+                            source env/bin/activate
+                            . ./setup-env.sh
+                            spack spec spack
+                            """
+                        }
+                    }
                     stage('Integration Tests') {
                         steps {
                             sh """
