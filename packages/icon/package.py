@@ -235,10 +235,7 @@ class Icon(Package):
                 f.write(self.spec.to_yaml())
             try:
                 process = subprocess.run(
-                    [
-                        f'./scripts/spack/test.py', '--spec',
-                        'spec.yaml'
-                    ],
+                    [f'./scripts/spack/test.py', '--spec', 'spec.yaml'],
                     check=True,
                 )
             except:
