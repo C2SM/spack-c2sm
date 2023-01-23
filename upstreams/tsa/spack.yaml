@@ -2,7 +2,7 @@ spack:
   specs:
   - jasper @1.900.1 %gcc
   - boost @1.79.0 %gcc +atomic +chrono +container +contract +coroutine +date_time
-    +exception +fiber +filesystem +graph +graph_parallel +iostreams +json +locale
+    +exception +fiber +filesystem +graph +graph_parallel +iostreams +locale
     +log +math +mpi +program_options +random +regex +serialization +signals +stacktrace
     +system +test +thread +timer +type_erasure +wave
   - eccodes @2.19.0 %gcc +fortran +aec +tools
