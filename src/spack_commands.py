@@ -55,10 +55,11 @@ def log_with_spack(command: str,
     # 'bash -c' reads commands from string, to not run into character escaping problems.
     # 'bash -l' makes it a login shell. So the packages sees a clean login shell.
     # '2>&1' redirects stderr to stdout.
-    ret = subprocess.run(f'env -i bash -l -c "{spack_env}; ({srun} {command}) >> {log_file} 2>&1"',
-                         cwd=cwd,
-                         check=False,
-                         shell=True)
+    ret = subprocess.run(
+        f'env -i bash -l -c "{spack_env}; ({srun} {command}) >> {log_file} 2>&1"',
+        cwd=cwd,
+        check=False,
+        shell=True)
     end = time.time()
 
     # Log time and success
