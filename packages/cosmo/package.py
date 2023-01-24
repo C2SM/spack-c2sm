@@ -82,17 +82,12 @@ class Cosmo(MakefilePackage):
     depends_on('netcdf-fortran')
     depends_on('netcdf-c +mpi')
     depends_on('jasper@1.900.1')
-    depends_on('eccodes +fortran', when='+eccodes')
+    depends_on('eccodes +fortran')
 
     # run dependency
     depends_on('slurm', type='run')
 
-    depends_on('cosmo-grib-api-definitions',
-               type=('build', 'run'),
-               when='~eccodes')
-    depends_on('cosmo-eccodes-definitions',
-               type=('build', 'run'),
-               when='+eccodes')
+    depends_on('cosmo-eccodes-definitions', type=('build', 'run')
     depends_on('serialbox +fortran ^python@2:2.9',
                when='+serialize',
                type=('build', 'link', 'run'))
@@ -133,9 +128,6 @@ class Cosmo(MakefilePackage):
             multi=False)
     variant('claw', default=False, description='Build with claw-compiler')
     variant('slave', default='none', description='Build on slave')
-    variant('eccodes',
-            default=True,
-            description='Build with eccodes instead of grib-api')
     variant('pollen', default=False, description='Build with pollen enabled')
     variant('cosmo_target',
             default='gpu',
@@ -224,21 +216,11 @@ class Cosmo(MakefilePackage):
         # Check mpi provider
         self.mpi_spec = self.spec['mpi']
 
-        # Grib-api. eccodes library
-        if '~eccodes' in self.spec:
-            grib_prefix = self.spec['cosmo-grib-api'].prefix
-            grib_definition_prefix = self.spec[
-                'cosmo-grib-api-definitions'].prefix
-            env.set(
-                'GRIBAPIL',
-                '-L' + grib_prefix + '/lib -lgrib_api_f90 -lgrib_api -L' +
-                self.spec['jasper'].prefix + '/lib64 -ljasper')
-        else:
-            grib_prefix = self.spec['eccodes'].prefix
-            env.set(
-                'GRIBAPIL',
-                str(self.spec['eccodes:fortran'].libs.ld_flags) + ' ' +
-                str(self.spec['jasper'].libs.ld_flags))
+        grib_prefix = self.spec['eccodes'].prefix
+        env.set(
+            'GRIBAPIL',
+            str(self.spec['eccodes:fortran'].libs.ld_flags) + ' ' +
+            str(self.spec['jasper'].libs.ld_flags))
         grib_inc_dir_path = os.path.join(grib_prefix, 'include')
         if os.path.exists(grib_inc_dir_path):
             env.set('GRIBAPII', '-I' + grib_inc_dir_path)
