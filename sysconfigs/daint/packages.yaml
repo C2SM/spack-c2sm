@@ -268,6 +268,10 @@ packages:
     externals:
     - spec: zip@3.0
       prefix: /usr
+  openjdk:
+    externals:
+    - spec: openjdk@11.0.13
+      prefix: /usr/lib64/jvm/java-openjdk
   cdo:
     externals:
     - spec: cdo@1.9.5
