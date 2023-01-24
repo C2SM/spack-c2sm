@@ -82,9 +82,6 @@ class InfoTest(unittest.TestCase):
     def test_omni_xmod_pool(self):
         spack_info('omni-xmod-pool')
 
-    def test_omnicompiler(self):
-        spack_info('omnicompiler')
-
     def test_py_black(self):
         spack_info('py-black')
 
@@ -210,10 +207,6 @@ class PlainSpecTest(unittest.TestCase):
 
     def test_omni_xmod_pool(self):
         spack_spec('omni-xmod-pool')
-
-    def test_omnicompiler(self):
-        spack_spec('omnicompiler')
-        spack_spec('omnicompiler +mod2xmod')
 
     def test_py_black(self):
         spack_spec('py-black')
