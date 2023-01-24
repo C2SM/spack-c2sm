@@ -5,8 +5,6 @@ all_packages = [
     'cosmo',
     'cosmo-dycore',
     'cosmo-eccodes-definitions',
-    'cosmo-grib-api',
-    'cosmo-grib-api-definitions',
     'dawn',
     'dawn4py',
     'dusk',
