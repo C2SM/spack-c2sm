@@ -18,7 +18,6 @@ all_packages = [
     'libgrib1',
     'oasis',
     'omni-xmod-pool',
-    'omnicompiler',
     'py-black',
     'py-boltons',
     'py-cytoolz',
