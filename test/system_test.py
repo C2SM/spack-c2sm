@@ -324,15 +324,6 @@ class OmniXmodPoolTest(unittest.TestCase):
         spack_install_and_test('omni-xmod-pool @0.1', split_phases=False)
 
 
-@pytest.mark.no_balfrin  # This fails with: "multiple definition of symbols"
-@pytest.mark.no_daint  # No supported C compiler was found.
-@pytest.mark.no_tsa  # This fails with: "multiple definition of symbols"
-class OmniCompilerTest(unittest.TestCase):
-
-    def test_install_version_1_3_2(self):
-        spack_install_and_test('omnicompiler @1.3.2')
-
-
 @pytest.mark.no_balfrin  # Irrelevant
 @pytest.mark.no_daint  # py-isort install fails with: No module named 'poetry'.
 @pytest.mark.no_tsa  # Irrelevant

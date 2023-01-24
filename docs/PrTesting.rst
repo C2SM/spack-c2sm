@@ -43,7 +43,6 @@ Supported packages:
 * libgrib1
 * oasis
 * omni-xmod-pool
-* omnicompiler
 * xcodeml-tools
 * zlib_ng
 
