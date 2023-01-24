@@ -4,3 +4,6 @@
 **.swo
 log/
 env/
+spack-build_stage/
+spack-test_stage/
+spack-misc_cache/

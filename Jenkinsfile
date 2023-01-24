@@ -41,18 +41,27 @@ pipeline {
                             """
                         }
                     }
+                    stage('Bootstrap spack') {
+                        steps {
+                            sh """
+                            source env/bin/activate
+                            . ./setup-env.sh
+                            spack spec spack
+                            """
+                        }
+                    }
                     stage('Integration Tests') {
                         steps {
                             sh """
                             source env/bin/activate
-                            python3 test/integration_test.py """ + env.ghprbCommentBody
+                            pytest -n auto -q --scope \"""" + env.ghprbCommentBody + "\" test/integration_test.py"
                         }
                     }
                     stage('System Tests') {
                         steps {
                             sh """
                             source env/bin/activate
-                            python3 test/system_test.py """ + env.ghprbCommentBody
+                            pytest -n auto -q --scope \"""" + env.ghprbCommentBody + "\" test/system_test.py"
                         }
                     }
                 }

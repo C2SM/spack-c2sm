@@ -154,10 +154,6 @@ packages:
     - spec: hdf5@1.12.0.4 +mpi +hl # manually added
       modules:
       - cray-hdf5-parallel/1.12.0.4
-  hwloc:
-    externals:
-    - spec: hwloc@1.11.8
-      prefix: /usr
   icon: # manually added
     variants: host=daint
   icontools: # manually added
@@ -212,10 +208,6 @@ packages:
       - cray-netcdf-hdf5parallel/4.7.4.4
     - spec: netcdf-fortran@4.5.3%gcc # manually added
       prefix: /opt/cray/pe/netcdf/4.7.4.4/GNU/8.2
-  ncurses:
-    externals:
-    - spec: ncurses@6.1.20180317+termlib abi=6
-      prefix: /usr
   openssh:
     externals:
     - spec: openssh@8.1p1
