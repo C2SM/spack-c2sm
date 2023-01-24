@@ -200,18 +200,6 @@ class CosmoEccodesDefinitionsTest(unittest.TestCase):
                                split_phases=False)
 
 
-@pytest.mark.no_tsa  # It fails with: "This is libtool 2.4.7, but the libtool: definition of this LT_INIT comes from libtool 2.4.2".
-@pytest.mark.no_balfrin  # It fails with: "This is libtool 2.4.7, but the libtool: definition of this LT_INIT comes from libtool 2.4.2".
-class CosmoGribApiTest(unittest.TestCase):
-
-    def test_install_version_1_20_0_3(self):
-        spack_install_and_test('cosmo-grib-api @1.20.0.2')
-
-
-class CosmoGribApiDefinitionsTest(unittest.TestCase):
-    pass
-
-
 class DawnTest(unittest.TestCase):
     pass
 
