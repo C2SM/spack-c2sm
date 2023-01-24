@@ -33,7 +33,7 @@ def spack_install_and_test(spec: str,
         python_package = True
 
     if python_package:
-        split_phases = True
+        split_phases = False
 
     if split_phases:
         log_with_spack(
