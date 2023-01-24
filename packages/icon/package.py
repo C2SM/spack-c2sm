@@ -445,6 +445,8 @@ class Icon(AutotoolsPackage):
                 'SB2PP={0}'.format(self.spec['serialbox'].pp_ser)
             ])
             libs += self.spec['serialbox:fortran'].libs
+            # static libs from serialbox need libstdc++ to link
+            config_vars['LIBS'].extend(['-lstdc++ -lstdc++fs'])
 
         if '+cdi-pio' in self.spec:
             libs += self.spec['libcdi-pio:fortran'].libs
