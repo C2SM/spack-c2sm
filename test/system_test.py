@@ -13,18 +13,6 @@ sys.path.append(os.path.normpath(spack_c2sm_path))
 from src import machine_name, log_with_spack, sanitized_filename
 
 
-def devirtualize_env():
-    # pytest is run from a virtual environment that breaks the
-    # Python environment setup by Spack. Additionally "deactivate"
-    # is not available here, therefore we manually unset
-    # VIRTUAL_ENV and PATH
-
-    # Remove 'VIRTUAL_ENV/bin'
-    virtual_env_bin = os.path.join(os.environ['VIRTUAL_ENV'], 'bin')
-    os.environ.pop('VIRTUAL_ENV')
-    os.environ['PATH'] = os.environ['PATH'].replace(virtual_env_bin, '')
-
-
 def spack_install_and_test(spec: str,
                            log_filename: str = None,
                            split_phases=True,
@@ -46,7 +34,6 @@ def spack_install_and_test(spec: str,
 
     if python_package:
         split_phases = True
-        devirtualize_env()
 
     if split_phases:
         log_with_spack(
