@@ -314,8 +314,13 @@ class LibGrib1Test(unittest.TestCase):
         spack_install_and_test('libgrib1 @22-01-2020')
 
 
+@pytest.mark.no_balfrin # Coupling only needed on Daint
+@pytest.mark.no_tsa # Coupling only needed on Daint
 class OasisTest(unittest.TestCase):
-    pass
+    def test_install_master_gcc(self):
+        spack_install_and_test('oasis@master%gcc', split_phases=False)
+    def test_install_master_gcc(self):
+        spack_install_and_test('oasis@master%nvhpc', split_phases=False)
 
 
 class OmniXmodPoolTest(unittest.TestCase):
