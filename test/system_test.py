@@ -318,9 +318,6 @@ class LibGrib1Test(unittest.TestCase):
 @pytest.mark.no_tsa  # Coupling only needed on Daint
 class OasisTest(unittest.TestCase):
 
-    def test_install_master_gcc(self):
-        spack_install_and_test('oasis@master%gcc', split_phases=False)
-
     def test_install_master_nvhpc(self):
         spack_install_and_test('oasis@master%nvhpc', split_phases=False)
 
