@@ -120,16 +120,18 @@ def spack_env_dev_install_and_test(spack_env: str,
         shell=True)
     log_filename = sanitized_filename(log_filename or spack_env)
     log_with_spack(
-        f'spack env activate -d {spack_env} && spack develop && spack -d install --until build -n -v',
+        'spack -d install --until build -n -v',
         'system_test',
         log_filename,
         cwd=unique_folder,
+        env=spack_env,
         srun=True)
     log_with_spack(
-        f'spack env activate -d {spack_env} && spack develop && spack -d install --dont-restage --test=root -n -v',
+        'spack -d install --dont-restage --test=root -n -v',
         'system_test',
         log_filename,
         cwd=unique_folder,
+        env=spack_env,
         srun=False)
 
 
