@@ -87,7 +87,7 @@ class Cosmo(MakefilePackage):
     # run dependency
     depends_on('slurm', type='run')
 
-    depends_on('cosmo-eccodes-definitions', type=('build', 'run')
+    depends_on('cosmo-eccodes-definitions', type=('build', 'run'))
     depends_on('serialbox +fortran ^python@2:2.9',
                when='+serialize',
                type=('build', 'link', 'run'))
