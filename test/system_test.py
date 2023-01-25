@@ -298,7 +298,7 @@ class Int2lmTest(unittest.TestCase):
         )
 
 
-#@pytest.mark.no_balfrin  # This fails with "undefined reference to symbol".
+@pytest.mark.no_balfrin  # This fails with "undefined reference to symbol".
 class IconToolsTest(unittest.TestCase):
 
     def test_install(self):
