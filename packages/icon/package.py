@@ -584,16 +584,25 @@ class Icon(AutotoolsPackage):
     @run_before('install')
     @on_package_attributes(run_tests=True)
     def check(self):
-        if os.path.exists('scripts/spack/test.py'):
+        test_script = 'scripts/spack/test.py'
+        if os.path.exists(test_script):
+            test_py = Executable(test_script)
+
+            # test.py fails if PYTHONHOME has any value,
+            # even '' or ' ' is failing, therefore delete
+            # it temporary from env
+            PYTHONHOME = os.environ['PYTHONHOME']
+            os.environ.pop('PYTHONHOME')
+
             with open('spec.yaml', mode='w') as f:
                 f.write(self.spec.to_yaml())
             try:
-                subprocess.run(
-                    ['./scripts/spack/test.py', '--spec', 'spec.yaml'],
-                    stderr=subprocess.STDOUT,
-                    check=True)
+                test_py('--spec','spec.yaml')
             except:
                 raise InstallError('Tests failed')
+
+            # restore PYTHONHOME after test.py
+            os.environ['PYTHONHOME'] = PYTHONHOME
         else:
             tty.warn('Cannot find test.py -> skipping tests')
 
