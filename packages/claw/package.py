@@ -1,5 +1,5 @@
 from spack import *
-from spack.pkg.builtin.Claw import Claw as SpackClaw
+from spack.pkg.builtin.claw import Claw as SpackClaw
 
 
 class Claw(SpackClaw):
