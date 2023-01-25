@@ -34,6 +34,9 @@ class InfoTest(unittest.TestCase):
     def test_clang_format(self):
         spack_info('clang-format')
 
+    def test_claw(self):
+        spack_info('claw')
+
     def test_cosmo(self):
         spack_info('cosmo')
 
@@ -151,6 +154,9 @@ class PlainSpecTest(unittest.TestCase):
 
     def test_clang_format(self):
         spack_spec('clang-format')
+
+    def test_claw(self):
+        spack_spec('claw')
 
     def test_cosmo(self):
         spack_spec('cosmo')
