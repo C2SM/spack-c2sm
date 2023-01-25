@@ -350,8 +350,6 @@ class Int2lmTest(unittest.TestCase):
 
 
 @pytest.mark.no_balfrin  # This fails with "undefined reference to symbol".
-@pytest.mark.no_daint  # This fails with: "C compiler cannot create executables".
-@pytest.mark.no_tsa  # This fails with: "C compiler cannot create executables".
 class IconToolsTest(unittest.TestCase):
 
     def test_install(self):
@@ -365,8 +363,12 @@ class LibGrib1Test(unittest.TestCase):
         spack_install_and_test('libgrib1 @22-01-2020')
 
 
+@pytest.mark.no_balfrin  # Coupling only needed on Daint
+@pytest.mark.no_tsa  # Coupling only needed on Daint
 class OasisTest(unittest.TestCase):
-    pass
+
+    def test_install_master_nvhpc(self):
+        spack_install_and_test('oasis@master%nvhpc', split_phases=False)
 
 
 class OmniXmodPoolTest(unittest.TestCase):

@@ -45,7 +45,7 @@ class Icontools(AutotoolsPackage):
         'mpi',
         type=('build', 'link', 'run'),
     )
-    depends_on('eccodes ~aec', type=('build', 'link', 'run'))
+    depends_on('eccodes@2.19.0 +fortran ~aec', type=('build', 'link', 'run'))
     depends_on('jasper@1.900.1', type=('build', 'link'))
 
     variant('slave',

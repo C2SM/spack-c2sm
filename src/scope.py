@@ -1,44 +1,12 @@
-all_machines = ['balfrin', 'daint', 'tsa']
+import os
 
+spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                               '..')
+
+all_machines = ['balfrin', 'daint', 'tsa']
 all_packages = [
-    'clang-format',
-    'cosmo',
-    'cosmo-dycore',
-    'cosmo-eccodes-definitions',
-    'cosmo-grib-api',
-    'cosmo-grib-api-definitions',
-    'dawn',
-    'dawn4py',
-    'dusk',
-    'flexpart-ifs',
-    'gridtools',
-    'icon',
-    'icontools',
-    'int2lm',
-    'libgrib1',
-    'oasis',
-    'omni-xmod-pool',
-    'omnicompiler',
-    'py-black',
-    'py-boltons',
-    'py-cytoolz',
-    'py-devtools',
-    'py-editables',
-    'py-factory-boy',
-    'py-fprettify',
-    'py-frozendict',
-    'py-gridtools-cpp',
-    'py-gt4py',
-    'py-hatchling',
-    'py-icon4py',
-    'py-inflection',
-    'py-lark',
-    'py-pathspec',
-    'py-pytest-factoryboy',
-    'py-toolz',
-    'py-typing-extensions',
-    'xcodeml-tools',
-    'zlib_ng',
+    name for name in os.listdir(os.path.join(spack_c2sm_path, 'packages'))
+    if os.path.isdir(os.path.join(spack_c2sm_path, 'packages', name))
 ]
 
 
