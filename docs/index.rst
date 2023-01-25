@@ -17,10 +17,7 @@ mostly at the Swiss Super Computing Center (CSCS).
    Install
    C2SMGuidelines
    SpackCommands
-   Problems
    CodeDev
-   SpackManagement
-   CI
    SpackChoice
    PrTesting
 
