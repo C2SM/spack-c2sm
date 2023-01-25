@@ -298,9 +298,9 @@ class Int2lmTest(unittest.TestCase):
         )
 
 
-@pytest.mark.no_balfrin  # This fails with "undefined reference to symbol".
-@pytest.mark.no_daint  # This fails with: "C compiler cannot create executables".
-@pytest.mark.no_tsa  # This fails with: "C compiler cannot create executables".
+#@pytest.mark.no_balfrin  # This fails with "undefined reference to symbol".
+#@pytest.mark.no_daint  # This fails with: "C compiler cannot create executables".
+#@pytest.mark.no_tsa  # This fails with: "C compiler cannot create executables".
 class IconToolsTest(unittest.TestCase):
 
     def test_install(self):
