@@ -597,7 +597,7 @@ class Icon(AutotoolsPackage):
             with open('spec.yaml', mode='w') as f:
                 f.write(self.spec.to_yaml())
             try:
-                test_py('--spec','spec.yaml')
+                test_py('--spec', 'spec.yaml')
             except:
                 raise InstallError('Tests failed')
 
