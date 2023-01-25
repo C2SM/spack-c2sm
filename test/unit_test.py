@@ -84,6 +84,9 @@ class FilenameSanitizerTest(unittest.TestCase):
 
 class ScopeTest(unittest.TestCase):
 
+    def test_all_packages(self):
+        self.assertTrue('icon' in all_packages)
+
     def test_explicit_scope_1_machine_1_package(self):
         scope = explicit_scope('tsa cosmo')
         self.assertEqual(sorted(scope), sorted(['tsa', 'cosmo']))

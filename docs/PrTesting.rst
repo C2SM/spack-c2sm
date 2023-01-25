@@ -25,30 +25,10 @@ Examples:
 ``launch jenkins all`` tests all packages on all machines.
 
 
-Supported packages:
-
-* cosmo
-* cosmo-dycore
-* cosmo-eccodes-definitions
-* cosmo-grib-api
-* cosmo-grib-api
-* dawn
-* dawn4py
-* dusk
-* flexpart-ifs
-* gridtools
-* icon
-* icontools
-* int2lm
-* libgrib1
-* oasis
-* omni-xmod-pool
-* xcodeml-tools
-* zlib_ng
+Supported packages: all folder names in folder 'packages'.
 
 Supported machines:
 
 * balfrin
 * daint
 * tsa
-

@@ -14,6 +14,7 @@ To load it into your command line, execute
 .. code-block:: bash
 
   . spack-c2sm/setup-env.sh
+
 This auto-detects your machine and configures your instance for it.
 You can force a machine with an argument. The name has to match a folder in sysconfigs.
 
@@ -68,6 +69,7 @@ To see what 'spack install' would install, ask for a spec
   spack spec <variant>
   e.g.
   spack spec icon @master +ocean
+
 An unspecfied variant (e.g. 'ocean') can be concretized to ANY of its values. Spack isn't required to use the default value when a variant is unspecified. The default value only serves as a tiebreaker.
 
 To install a package
@@ -83,6 +85,7 @@ To locate your install, query spack
 .. code-block:: bash
 
   spack location --install-dir <variant>
+
 This prints a list of all installs that satisfy the restrictions in your variant.
 
 To run it, you may need to load environment variables
@@ -104,6 +107,7 @@ We assume that developers of a package are familiar with its build system. There
   # Use the package's build system! (e.g. 'make')
   # Use the package's testing infrastructure!
   exit # to exit the nested bash
+
 If you want multiple dev-builds at the same time, label them with separate '@<your-label>'.
 The identifier '@develop' is common in the spack documentation but you can use any string.
 
