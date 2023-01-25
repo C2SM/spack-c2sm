@@ -192,7 +192,7 @@ class PlainSpecTest(unittest.TestCase):
 
     def test_icon(self):
         spack_spec('icon')
-        spack_spec('icon serialize_mode=create +eccodes +claw icon_target=gpu')
+        spack_spec('icon serialization=create +eccodes claw=std gpu=60')
 
     def test_icontools(self):
         spack_spec('icontools')
