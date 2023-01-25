@@ -33,7 +33,6 @@ class Icontools(AutotoolsPackage):
     version('c2sm-master', git=c2sm, branch='master', submodules=True)
     version('dkrz-master', git=dkrz, branch='master', submodules=True)
 
-    depends_on('gcc@11.2.0')
     depends_on('autoconf', type='build')
     depends_on('automake', type='build')
     depends_on('libtool', type='build')
@@ -46,7 +45,7 @@ class Icontools(AutotoolsPackage):
         'mpi',
         type=('build', 'link', 'run'),
     )
-    depends_on('eccodes@2.19.0 ~aec', type=('build', 'link', 'run'))
+    depends_on('eccodes@2.19.0 +fortran ~aec', type=('build', 'link', 'run'))
     depends_on('jasper@1.900.1', type=('build', 'link'))
 
     variant('slave',
