@@ -54,9 +54,12 @@ class CosmoEccodesDefinitions(Package):
                when='@2.18.0.1')
 
     def setup_run_environment(self, env):
-        eccodes_definition_path = self.prefix + '/cosmoDefinitions/definitions/:' + self.spec[
-            'eccodes'].prefix + '/share/eccodes/definitions/'
+        eccodes_definition_path = ':'.join([
+            self.prefix + '/cosmoDefinitions/definitions/',
+            self.spec['eccodes'].prefix + '/share/eccodes/definitions/'
+        ])
         env.prepend_path('GRIB_DEFINITION_PATH', eccodes_definition_path)
+
         eccodes_samples_path = self.prefix + '/cosmoDefinitions/samples/'
         env.prepend_path('GRIB_SAMPLES_PATH', eccodes_samples_path)
 
