@@ -4,12 +4,18 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 class NvidiaBlas(Package):
-    """The Cray Scientific Libraries package, LibSci, is a collection of
-    numerical routines optimized for best performance on Cray systems."""
+    """
+    There is no module 'cray-libsci' available for Nvidia on Daint to
+    provide blas/lapack. Instead Nvidia comes with its own implementation.
+    This package helps Spack to detect the libraries and prevents it
+    from building blas/lapack from i.e. netlib-lapack instead
+    """
+
+    maintainers = ['juckerj']
 
     has_code = False    # Skip attempts to fetch source that is not available
 
-    version("21.3")
+    version("dummy-version")
 
     provides("blas")
 
@@ -20,7 +26,7 @@ class NvidiaBlas(Package):
 
         return find_libraries(
             lib,
-            root='/opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/lib',
+            root=self.prefix,
             shared=True,
             recursive=True)
 
