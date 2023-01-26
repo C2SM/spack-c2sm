@@ -14,8 +14,10 @@ packages:
       - pkg-config
       blas: # manually added
       - cray-libsci
+      - nvidia-blas
       lapack: # manually added
       - cray-libsci
+      - nvidia-lapack
     target: # manually added
     - haswell
   autoconf:
@@ -286,3 +288,11 @@ packages:
     - spec: cray-libsci@20.06.1%cce
       modules:
       - cray-libsci/20.06.1
+  nvidia-blas:
+    externals:
+    - spec: nvidia-blas@21.3%nvhpc@21.3
+      prefix: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/lib
+  nvidia-lapack:
+    externals:
+    - spec: nvidia-lapack@21.3%nvhpc@21.3
+      prefix: /opt/nvidia/hpc_sdk/Linux_x86_64/21.3/compilers/lib
