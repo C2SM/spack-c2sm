@@ -58,6 +58,9 @@ class Gridtools(CMakePackage):
     depends_on('mpi +cuda', type=('build', 'link', 'run'), when='+cuda')
     depends_on('cuda', type=('build', 'link', 'run'), when='+cuda')
 
+    conflicts('%pgi@20:')
+    conflicts('%pgi@:17')
+
     def cmake_args(self):
         spec = self.spec
         args = []
