@@ -311,17 +311,20 @@ class IconTest(unittest.TestCase):
 
     @pytest.mark.no_balfrin  # config file does not exist for this machines
     @pytest.mark.no_tsa  # config file does not exist for this machines
+    @pytest.mark.no_daint  # debug
     def test_install_exclaim_test_cpu_cce(self):
         spack_env_dev_install_and_test('spack-envs/daint_cce_cpu', 'test_spec')
 
     @pytest.mark.no_tsa  # config file does not exist for this machines
     @pytest.mark.no_balfrin  # config file does not exist for this machines
+    @pytest.mark.no_daint  # debug
     def test_install_exclaim_test_cpu(self):
         spack_env_dev_install_and_test('spack-envs/daint_nvhpc_cpu',
                                        'test_spec')
 
     @pytest.mark.no_tsa  # config file does not exist for this machines
     @pytest.mark.no_balfrin  # config file does not exist for this machines
+    @pytest.mark.no_daint  # debug
     def test_install_exclaim_test_gpu(self):
         spack_env_dev_install_and_test('spack-envs/daint_nvhpc_gpu',
                                        'test_spec')
