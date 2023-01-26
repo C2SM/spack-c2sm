@@ -3,6 +3,7 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+
 class NvidiaBlas(Package):
     """
     There is no module 'cray-libsci' available for Nvidia on Daint to
@@ -13,7 +14,7 @@ class NvidiaBlas(Package):
 
     maintainers = ['juckerj']
 
-    has_code = False    # Skip attempts to fetch source that is not available
+    has_code = False  # Skip attempts to fetch source that is not available
 
     version("dummy-version")
 
@@ -24,14 +25,12 @@ class NvidiaBlas(Package):
 
         lib = ["libblas"]
 
-        return find_libraries(
-            lib,
-            root=self.prefix,
-            shared=True,
-            recursive=True)
+        return find_libraries(lib,
+                              root=self.prefix,
+                              shared=True,
+                              recursive=True)
 
     def install(self, spec, prefix):
         raise InstallError(
             self.spec.format('{name} is not installable, you need to specify '
                              'it as an external package in packages.yaml'))
-
