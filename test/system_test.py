@@ -172,7 +172,6 @@ class CosmoTest(unittest.TestCase):
             f'cosmo @c2sm-master %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
-    @pytest.mark.no_daint  # Unable to open MODULE file gt_gcl_bindings.mod
     def test_install_c2sm_master_gpu(self):
         spack_install_and_test(
             f'cosmo @c2sm-master %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
@@ -198,18 +197,6 @@ class CosmoEccodesDefinitionsTest(unittest.TestCase):
     def test_install_version_2_19_0_7(self):
         spack_install_and_test('cosmo-eccodes-definitions @2.19.0.7',
                                split_phases=False)
-
-
-@pytest.mark.no_tsa  # It fails with: "This is libtool 2.4.7, but the libtool: definition of this LT_INIT comes from libtool 2.4.2".
-@pytest.mark.no_balfrin  # It fails with: "This is libtool 2.4.7, but the libtool: definition of this LT_INIT comes from libtool 2.4.2".
-class CosmoGribApiTest(unittest.TestCase):
-
-    def test_install_version_1_20_0_3(self):
-        spack_install_and_test('cosmo-grib-api @1.20.0.2')
-
-
-class CosmoGribApiDefinitionsTest(unittest.TestCase):
-    pass
 
 
 class DawnTest(unittest.TestCase):
@@ -299,8 +286,6 @@ class Int2lmTest(unittest.TestCase):
 
 
 @pytest.mark.no_balfrin  # This fails with "undefined reference to symbol".
-@pytest.mark.no_daint  # This fails with: "C compiler cannot create executables".
-@pytest.mark.no_tsa  # This fails with: "C compiler cannot create executables".
 class IconToolsTest(unittest.TestCase):
 
     def test_install(self):
@@ -314,23 +299,18 @@ class LibGrib1Test(unittest.TestCase):
         spack_install_and_test('libgrib1 @22-01-2020')
 
 
+@pytest.mark.no_balfrin  # Coupling only needed on Daint
+@pytest.mark.no_tsa  # Coupling only needed on Daint
 class OasisTest(unittest.TestCase):
-    pass
+
+    def test_install_master_nvhpc(self):
+        spack_install_and_test('oasis@master%nvhpc', split_phases=False)
 
 
 class OmniXmodPoolTest(unittest.TestCase):
 
     def test_install_version_0_1(self):
         spack_install_and_test('omni-xmod-pool @0.1', split_phases=False)
-
-
-@pytest.mark.no_balfrin  # This fails with: "multiple definition of symbols"
-@pytest.mark.no_daint  # No supported C compiler was found.
-@pytest.mark.no_tsa  # This fails with: "multiple definition of symbols"
-class OmniCompilerTest(unittest.TestCase):
-
-    def test_install_version_1_3_2(self):
-        spack_install_and_test('omnicompiler @1.3.2')
 
 
 @pytest.mark.no_balfrin  # Irrelevant

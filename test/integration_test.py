@@ -34,6 +34,9 @@ class InfoTest(unittest.TestCase):
     def test_clang_format(self):
         spack_info('clang-format')
 
+    def test_claw(self):
+        spack_info('claw')
+
     def test_cosmo(self):
         spack_info('cosmo')
 
@@ -42,12 +45,6 @@ class InfoTest(unittest.TestCase):
 
     def test_cosmo_eccodes_definitions(self):
         spack_info('cosmo-eccodes-definitions')
-
-    def test_cosmo_grib_api(self):
-        spack_info('cosmo-grib-api')
-
-    def test_cosmo_grib_api_definitions(self):
-        spack_info('cosmo-grib-api-definitions')
 
     def test_dawn(self):
         spack_info('dawn')
@@ -81,9 +78,6 @@ class InfoTest(unittest.TestCase):
 
     def test_omni_xmod_pool(self):
         spack_info('omni-xmod-pool')
-
-    def test_omnicompiler(self):
-        spack_info('omnicompiler')
 
     def test_py_black(self):
         spack_info('py-black')
@@ -152,12 +146,13 @@ class PlainSpecTest(unittest.TestCase):
     def test_clang_format(self):
         spack_spec('clang-format')
 
+    def test_claw(self):
+        spack_spec('claw')
+
     def test_cosmo(self):
         spack_spec('cosmo')
-        spack_spec('cosmo ~eccodes')
         spack_spec('cosmo cosmo_target=gpu ~cppdycore')
-        spack_spec(
-            'cosmo cosmo_target=gpu +serialize +eccodes +claw +zlib_ng +oasis')
+        spack_spec('cosmo cosmo_target=gpu +serialize +claw +zlib_ng +oasis')
 
     def test_cosmo_dycore(self):
         spack_spec('cosmo-dycore')
@@ -166,12 +161,6 @@ class PlainSpecTest(unittest.TestCase):
 
     def test_cosmo_eccodes_definitions(self):
         spack_spec('cosmo-eccodes-definitions')
-
-    def test_cosmo_grib_api(self):
-        spack_spec('cosmo-grib-api')
-
-    def test_cosmo_grib_api_definitions(self):
-        spack_spec('cosmo-grib-api-definitions')
 
     def test_dawn(self):
         spack_spec('dawn')
@@ -199,8 +188,7 @@ class PlainSpecTest(unittest.TestCase):
 
     def test_int2lm(self):
         spack_spec('int2lm')
-        spack_spec('int2lm ~eccodes')
-        spack_spec('int2lm +eccodes +parallel')
+        spack_spec('int2lm +parallel')
 
     def test_libgrib1(self):
         spack_spec('libgrib1')
@@ -210,10 +198,6 @@ class PlainSpecTest(unittest.TestCase):
 
     def test_omni_xmod_pool(self):
         spack_spec('omni-xmod-pool')
-
-    def test_omnicompiler(self):
-        spack_spec('omnicompiler')
-        spack_spec('omnicompiler +mod2xmod')
 
     def test_py_black(self):
         spack_spec('py-black')
