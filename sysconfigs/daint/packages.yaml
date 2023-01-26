@@ -12,6 +12,10 @@ packages:
       - mpich
       pkgconfig: # manually added
       - pkg-config
+      blas: # manually added
+      - cray-libsci
+      lapack: # manually added
+      - cray-libsci
     target: # manually added
     - haswell
   autoconf:
@@ -277,3 +281,8 @@ packages:
     externals:
     - spec: cdo@1.9.5
       prefix: /project/d56/daint/local.gcc/bin
+  cray-libsci:
+    externals:
+    - spec: cray-libsci@20.06.1%cce
+      modules:
+      - cray-libsci/20.06.1
