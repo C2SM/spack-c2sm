@@ -288,6 +288,9 @@ packages:
     - spec: cray-libsci@20.06.1%cce
       modules:
       - cray-libsci/20.06.1
+    - spec: cray-libsci@20.06.1%gcc
+      modules:
+      - cray-libsci/20.06.1
   nvidia-blas:
     externals:
     - spec: nvidia-blas@21.3%nvhpc@21.3
