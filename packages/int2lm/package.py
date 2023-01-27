@@ -34,9 +34,6 @@ class Int2lm(MakefilePackage):
     version('int2lm-3.00', git=orggit, tag='int2lm-3.00')
 
     depends_on('eccodes +fortran', when='+eccodes')
-    depends_on('cosmo-grib-api-definitions',
-               type=('build', 'run'),
-               when='~eccodes')
     depends_on('cosmo-eccodes-definitions',
                type=('build', 'run'),
                when='+eccodes')
