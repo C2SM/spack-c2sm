@@ -45,6 +45,8 @@ def spack_install_and_test(spec: str,
         python_package = True
 
     if python_package:
+        # python packages don't necessarily have a build phase.
+        # Thus splitting on build doesn't work in general
         split_phases = False
         devirtualize_env()
 
