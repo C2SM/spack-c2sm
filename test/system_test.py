@@ -161,7 +161,7 @@ class CosmoTest(unittest.TestCase):
         spack_install_and_test(
             f'cosmo @c2sm-master %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
         )
-    
+
     @pytest.mark.no_daint  # Unable to open MODULE file gt_gcl_bindings.mod
     def test_install_c2sm_master_gpu(self):
         spack_install_and_test(
