@@ -8,7 +8,6 @@ spack:
   - eccodes @2.19.0 %gcc +fortran +aec +tools
   - eccodes @2.19.0 %pgi +fortran +aec +tools
   - cosmo-eccodes-definitions @2.19.0.7
-  - claw @2.0.1 %gcc
   - claw @2.1 %gcc
   concretizer:
     unify: when_possible
