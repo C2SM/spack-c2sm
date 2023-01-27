@@ -33,10 +33,8 @@ class Int2lm(MakefilePackage):
     version('org-master', git=orggit, branch='master')
     version('int2lm-3.00', git=orggit, tag='int2lm-3.00')
 
-    depends_on('eccodes +fortran', when='+eccodes')
-    depends_on('cosmo-eccodes-definitions',
-               type=('build', 'run'),
-               when='+eccodes')
+    depends_on('eccodes +fortran')
+    depends_on('cosmo-eccodes-definitions', type=('build', 'run'))
     depends_on('libgrib1 @22-01-2020', type='build')
     depends_on('mpi', type=('build', 'link', 'run'), when='+parallel')
     depends_on('netcdf-c', type=('build', 'link'))
