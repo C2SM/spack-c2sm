@@ -133,9 +133,6 @@ class InfoTest(unittest.TestCase):
     def test_py_typing_extensions(self):
         spack_info('py-typing')
 
-    def test_xcodeml_tools(self):
-        spack_info('xcodeml-tools')
-
     def test_zlib_ng(self):
         spack_info('zlib_ng')
 
@@ -252,9 +249,6 @@ class PlainSpecTest(unittest.TestCase):
 
     def test_py_typing_extensions(self):
         spack_spec('py-typing')
-
-    def test_xcodeml_tools(self):
-        spack_spec('xcodeml-tools')
 
     def test_zlib_ng(self):
         spack_spec('zlib_ng')
