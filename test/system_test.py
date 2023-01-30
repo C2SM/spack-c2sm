@@ -112,7 +112,9 @@ def spack_env_dev_install_and_test(spack_env: str,
     activates development workflow, tests 'spack install' and writes the output 
     into the log file. If log_filename is None, spack_env is used to create one.
     """
+    # in case we use serialbox or another python preprocessor
     devirtualize_env()
+
     unique_folder = 'icon-exclaim_' + uuid.uuid4(
     ).hex  # to avoid cloning into the same folder and having race conditions
     subprocess.run(
@@ -120,13 +122,16 @@ def spack_env_dev_install_and_test(spack_env: str,
         check=True,
         shell=True)
     log_filename = sanitized_filename(log_filename or spack_env)
-    log_with_spack('spack -d install --until build -n -v',
+
+    # limit number of build-jobs to 4 because no srun used
+    log_with_spack('spack install -j 4 --until build -n -v',
                    'system_test',
                    log_filename,
                    cwd=unique_folder,
                    env=spack_env,
                    srun=False)
-    log_with_spack('spack -d install --dont-restage --test=root -n -v',
+
+    log_with_spack('spack install --test=root -n -v',
                    'system_test',
                    log_filename,
                    cwd=unique_folder,
@@ -311,9 +316,9 @@ class IconTest(unittest.TestCase):
         spack_env_dev_install_and_test('spack-envs/daint_gcc_cpu', 'test_spec')
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
-    #@pytest.mark.no_tsa  # config file does not exist for this machine
-    #def test_install_exclaim_test_cpu_cce(self):
-    #    spack_env_dev_install_and_test('spack-envs/daint_cce_cpu', 'test_spec')
+    @pytest.mark.no_tsa  # config file does not exist for this machine
+    def test_install_exclaim_test_cpu_cce(self):
+        spack_env_dev_install_and_test('spack-envs/daint_cce_cpu', 'test_spec')
 
     @pytest.mark.no_tsa  # config file does not exist for this machine
     @pytest.mark.no_balfrin  # config file does not exist for this machine
@@ -321,11 +326,11 @@ class IconTest(unittest.TestCase):
         spack_env_dev_install_and_test('spack-envs/daint_nvhpc_cpu',
                                        'test_spec')
 
-    #@pytest.mark.no_tsa  # config file does not exist for this machine
-    #@pytest.mark.no_balfrin  # config file does not exist for this machine
-    #def test_install_exclaim_test_gpu(self):
-    #    spack_env_dev_install_and_test('spack-envs/daint_nvhpc_gpu',
-    #                                   'test_spec')
+    @pytest.mark.no_tsa  # config file does not exist for this machine
+    @pytest.mark.no_balfrin  # config file does not exist for this machine
+    def test_install_exclaim_test_gpu(self):
+        spack_env_dev_install_and_test('spack-envs/daint_nvhpc_gpu',
+                                       'test_spec')
 
 
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
