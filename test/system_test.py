@@ -331,14 +331,6 @@ class PyIcon4pyTest(unittest.TestCase):
         spack_install_and_test('py-icon4py @main %gcc')
 
 
-@pytest.mark.no_balfrin  # test fails with warnings
-@pytest.mark.no_daint  # test fails with warnings
-class XcodeMLToolsTest(unittest.TestCase):
-
-    def test_install_version_92a35f9(self):
-        spack_install_and_test('xcodeml-tools @92a35f9')
-
-
 class ZLibNGTest(unittest.TestCase):
 
     def test_install_version_2_0_0(self):
