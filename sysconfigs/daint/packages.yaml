@@ -191,7 +191,6 @@ packages:
       - cray-netcdf/4.7.4.4
     - spec: netcdf-c@4.7.4.4%gcc+parallel-netcdf+mpi # manually added
       prefix: /opt/cray/pe/netcdf-hdf5parallel/4.7.4.4/GNU/8.2
-    externals:
     - spec: netcdf-c@4.7.4.4%cce+parallel-netcdf+mpi # manually added
       modules:
       - cray-netcdf-hdf5parallel/4.7.4.4
