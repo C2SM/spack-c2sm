@@ -274,11 +274,11 @@ class IconTest(unittest.TestCase):
 
     def test_install_nwp_gpu(self):
         spack_install_and_test(
-            f'icon @nwp-master %nvhpc gpu=80 +ecrad +rte-rrtmgp claw=std ^eccodes@2.19.0%nvhpc ^libxml2@2.9.13%gcc ^claw@2.0.3%nvhpc')
+            f'icon @nwp-master %nvhpc gpu=80 +ecrad +rte-rrtmgp claw=std ^eccodes@2.19.0%nvhpc ^libxml2@2.9.13%gcc ^claw@2.0.3%nvhpc ^{mpi}')
 
     def test_install_nwp_cpu(self):
         spack_install_and_test(
-            f'icon @nwp-master %nvhpc +ecrad +rte-rrtmgp ^eccodes@2.19.0%nvhpc ^libxml2@2.9.13%gcc')
+            f'icon @nwp-master %nvhpc +ecrad +rte-rrtmgp ^eccodes@2.19.0%nvhpc ^libxml2@2.9.13%gcc ^{mpi}')
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_exclaim_test_cpu_gcc(self):
