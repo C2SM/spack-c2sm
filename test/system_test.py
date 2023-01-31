@@ -272,11 +272,13 @@ class GridToolsTest(unittest.TestCase):
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 class IconTest(unittest.TestCase):
 
+    @pytest.mark.no_daint # On Daint we build with envs only
     def test_install_nwp_gpu(self):
         spack_install_and_test(
             f'icon @nwp-master %nvhpc gpu=80 +ecrad +rte-rrtmgp claw=std ^eccodes@2.19.0%nvhpc ^libxml2@2.9.13%gcc ^claw@2.0.3%nvhpc ^{mpi}'
         )
 
+    @pytest.mark.no_daint  # On Daint we build with envs only
     def test_install_nwp_cpu(self):
         spack_install_and_test(
             f'icon @nwp-master %nvhpc +ecrad +rte-rrtmgp ^eccodes@2.19.0%nvhpc ^libxml2@2.9.13%gcc ^{mpi}'
