@@ -45,7 +45,9 @@ def spack_install_and_test(spec: str,
         python_package = True
 
     if python_package:
-        split_phases = True
+        # python packages don't necessarily have a build phase.
+        # Thus splitting on build doesn't work in general
+        split_phases = False
         devirtualize_env()
 
     if split_phases:
@@ -69,6 +71,7 @@ def spack_install_and_test(spec: str,
 def spack_devbuild_and_test(spec: str,
                             log_filename: str = None,
                             cwd=None,
+                            split_phases=True,
                             python_package=False):
     """
     Tests 'spack dev-build' of the given spec and writes the output into the log file.
@@ -81,17 +84,13 @@ def spack_devbuild_and_test(spec: str,
     else:
         command = 'dev-build'
 
-    if spec.startswith('py-'):
-        python_package = True
-
     if python_package:
+        # python packages don't necessarily have a build phase.
+        # Thus splitting on build doesn't work in general
+        split_phases = False
         devirtualize_env()
-        log_with_spack(f'spack {command} --test=root -n {spec}',
-                       'system_test',
-                       log_filename,
-                       cwd=cwd,
-                       srun=True)
-    else:
+
+    if split_phases:
         log_with_spack(f'spack {command} --until build --test=root -n {spec}',
                        'system_test',
                        log_filename,
@@ -102,6 +101,12 @@ def spack_devbuild_and_test(spec: str,
                        log_filename,
                        cwd=cwd,
                        srun=False)
+    else:
+        log_with_spack(f'spack {command} --test=root -n {spec}',
+                       'system_test',
+                       log_filename,
+                       cwd=cwd,
+                       srun=True)
 
 
 mpi: str = {
@@ -129,31 +134,16 @@ class CosmoTest(unittest.TestCase):
             f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
-    @pytest.mark.no_daint  # Patches are not applied. Therefore the tests fail.
-    def test_devbuild_version_6_0_cpu(self):
-        # to avoid cloning into the same folder and having race conditions
-        unique_folder = uuid.uuid4().hex
-
+    def test_devbuildcosmo(self):
         subprocess.run(
-            f'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git {unique_folder}',
+            'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git',
             check=True,
             shell=True)
+        spec = f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
         spack_devbuild_and_test(
-            f'cosmo @dev_build_6.0_cpu %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}',
-            cwd=unique_folder)
-
-    @pytest.mark.no_daint  # Patches are not applied. Therefore the tests fail.
-    def test_devbuild_version_6_0_gpu(self):
-        # to avoid cloning into the same folder and having race conditions
-        unique_folder = uuid.uuid4().hex
-
-        subprocess.run(
-            f'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git {unique_folder}',
-            check=True,
-            shell=True)
-        spack_devbuild_and_test(
-            f'cosmo @dev_build_6.0_gpu %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}',
-            cwd='cosmo')
+            spec,
+            cwd='cosmo',
+            log_filename=sanitized_filename('devbuildcosmo ' + spec))
 
     @pytest.mark.no_daint  # Testsuite fails
     def test_install_version_5_09_mch_1_2_p2_cpu(self):
@@ -172,6 +162,7 @@ class CosmoTest(unittest.TestCase):
             f'cosmo @c2sm-master %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
+    @pytest.mark.no_daint  # Unable to open MODULE file gt_gcl_bindings.mod
     def test_install_c2sm_master_gpu(self):
         spack_install_and_test(
             f'cosmo @c2sm-master %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
