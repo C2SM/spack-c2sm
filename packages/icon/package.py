@@ -414,8 +414,10 @@ class Icon(AutotoolsPackage):
                 config_vars['ICON_YAC_CFLAGS'].append('-O2')
             config_vars['FCFLAGS'].extend([
                 '-hadd_paren', '-r am', '-Ktrap=divz,ovf,inv',
-                '-hflex_mp=intolerant', '-hfp1', '-O1,cache0'
+                '-hflex_mp=intolerant', '-hfp0', '-O0'
             ])
+            if gpu != 'none':
+                config_vars['FCFLAGS'].extend(['-hnoacc'])
         elif self.compiler.name == 'aocc':
             config_vars['CFLAGS'].extend(['-g', '-O2'])
             config_vars['FCFLAGS'].extend(['-g', '-O2'])
