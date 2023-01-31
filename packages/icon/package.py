@@ -158,7 +158,7 @@ class Icon(AutotoolsPackage):
     conflicts('+dace', when='~mpi')
     conflicts('+emvorado', when='~mpi')
 
-    # path_libtool is a function from Autotoolspackage.
+    # patch_libtool is a function from Autotoolspackage.
     # For BB we cannot use it because it finds all files
     # named "libtool". spack-c2sm is cloned into icon-repo,
     # therefore this function detects not only "libtool" files, but
