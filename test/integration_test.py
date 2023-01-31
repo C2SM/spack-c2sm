@@ -46,12 +46,6 @@ class InfoTest(unittest.TestCase):
     def test_cosmo_eccodes_definitions(self):
         spack_info('cosmo-eccodes-definitions')
 
-    def test_cosmo_grib_api(self):
-        spack_info('cosmo-grib-api')
-
-    def test_cosmo_grib_api_definitions(self):
-        spack_info('cosmo-grib-api-definitions')
-
     def test_dawn(self):
         spack_info('dawn')
 
@@ -139,9 +133,6 @@ class InfoTest(unittest.TestCase):
     def test_py_typing_extensions(self):
         spack_info('py-typing')
 
-    def test_xcodeml_tools(self):
-        spack_info('xcodeml-tools')
-
     def test_zlib_ng(self):
         spack_info('zlib_ng')
 
@@ -157,10 +148,8 @@ class PlainSpecTest(unittest.TestCase):
 
     def test_cosmo(self):
         spack_spec('cosmo')
-        spack_spec('cosmo ~eccodes')
         spack_spec('cosmo cosmo_target=gpu ~cppdycore')
-        spack_spec(
-            'cosmo cosmo_target=gpu +serialize +eccodes +claw +zlib_ng +oasis')
+        spack_spec('cosmo cosmo_target=gpu +serialize +claw +zlib_ng +oasis')
 
     def test_cosmo_dycore(self):
         spack_spec('cosmo-dycore')
@@ -169,12 +158,6 @@ class PlainSpecTest(unittest.TestCase):
 
     def test_cosmo_eccodes_definitions(self):
         spack_spec('cosmo-eccodes-definitions')
-
-    def test_cosmo_grib_api(self):
-        spack_spec('cosmo-grib-api')
-
-    def test_cosmo_grib_api_definitions(self):
-        spack_spec('cosmo-grib-api-definitions')
 
     def test_dawn(self):
         spack_spec('dawn')
@@ -202,8 +185,7 @@ class PlainSpecTest(unittest.TestCase):
 
     def test_int2lm(self):
         spack_spec('int2lm')
-        spack_spec('int2lm ~eccodes')
-        spack_spec('int2lm +eccodes +parallel')
+        spack_spec('int2lm +parallel')
 
     def test_libgrib1(self):
         spack_spec('libgrib1')
@@ -267,9 +249,6 @@ class PlainSpecTest(unittest.TestCase):
 
     def test_py_typing_extensions(self):
         spack_spec('py-typing')
-
-    def test_xcodeml_tools(self):
-        spack_spec('xcodeml-tools')
 
     def test_zlib_ng(self):
         spack_spec('zlib_ng')

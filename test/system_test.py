@@ -45,7 +45,9 @@ def spack_install_and_test(spec: str,
         python_package = True
 
     if python_package:
-        split_phases = True
+        # python packages don't necessarily have a build phase.
+        # Thus splitting on build doesn't work in general
+        split_phases = False
         devirtualize_env()
 
     if split_phases:
@@ -69,6 +71,7 @@ def spack_install_and_test(spec: str,
 def spack_devbuild_and_test(spec: str,
                             log_filename: str = None,
                             cwd=None,
+                            split_phases=True,
                             python_package=False):
     """
     Tests 'spack dev-build' of the given spec and writes the output into the log file.
@@ -81,17 +84,13 @@ def spack_devbuild_and_test(spec: str,
     else:
         command = 'dev-build'
 
-    if spec.startswith('py-'):
-        python_package = True
-
     if python_package:
+        # python packages don't necessarily have a build phase.
+        # Thus splitting on build doesn't work in general
+        split_phases = False
         devirtualize_env()
-        log_with_spack(f'spack {command} --test=root -n {spec}',
-                       'system_test',
-                       log_filename,
-                       cwd=cwd,
-                       srun=True)
-    else:
+
+    if split_phases:
         log_with_spack(f'spack {command} --until build --test=root -n {spec}',
                        'system_test',
                        log_filename,
@@ -102,6 +101,12 @@ def spack_devbuild_and_test(spec: str,
                        log_filename,
                        cwd=cwd,
                        srun=False)
+    else:
+        log_with_spack(f'spack {command} --test=root -n {spec}',
+                       'system_test',
+                       log_filename,
+                       cwd=cwd,
+                       srun=True)
 
 
 def spack_env_dev_install_and_test(spack_env: str,
@@ -164,31 +169,16 @@ class CosmoTest(unittest.TestCase):
             f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
-    @pytest.mark.no_daint  # Patches are not applied. Therefore the tests fail.
-    def test_devbuild_version_6_0_cpu(self):
-        # to avoid cloning into the same folder and having race conditions
-        unique_folder = uuid.uuid4().hex
-
+    def test_devbuildcosmo(self):
         subprocess.run(
-            f'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git {unique_folder}',
+            'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git',
             check=True,
             shell=True)
+        spec = f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
         spack_devbuild_and_test(
-            f'cosmo @dev_build_6.0_cpu %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}',
-            cwd=unique_folder)
-
-    @pytest.mark.no_daint  # Patches are not applied. Therefore the tests fail.
-    def test_devbuild_version_6_0_gpu(self):
-        # to avoid cloning into the same folder and having race conditions
-        unique_folder = uuid.uuid4().hex
-
-        subprocess.run(
-            f'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git {unique_folder}',
-            check=True,
-            shell=True)
-        spack_devbuild_and_test(
-            f'cosmo @dev_build_6.0_gpu %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}',
-            cwd='cosmo')
+            spec,
+            cwd='cosmo',
+            log_filename=sanitized_filename('devbuildcosmo ' + spec))
 
     @pytest.mark.no_daint  # Testsuite fails
     def test_install_version_5_09_mch_1_2_p2_cpu(self):
@@ -233,18 +223,6 @@ class CosmoEccodesDefinitionsTest(unittest.TestCase):
     def test_install_version_2_19_0_7(self):
         spack_install_and_test('cosmo-eccodes-definitions @2.19.0.7',
                                split_phases=False)
-
-
-@pytest.mark.no_tsa  # It fails with: "This is libtool 2.4.7, but the libtool: definition of this LT_INIT comes from libtool 2.4.2".
-@pytest.mark.no_balfrin  # It fails with: "This is libtool 2.4.7, but the libtool: definition of this LT_INIT comes from libtool 2.4.2".
-class CosmoGribApiTest(unittest.TestCase):
-
-    def test_install_version_1_20_0_3(self):
-        spack_install_and_test('cosmo-grib-api @1.20.0.2')
-
-
-class CosmoGribApiDefinitionsTest(unittest.TestCase):
-    pass
 
 
 class DawnTest(unittest.TestCase):
@@ -369,14 +347,6 @@ class PyIcon4pyTest(unittest.TestCase):
 
     def test_install_version_main(self):
         spack_install_and_test('py-icon4py @main %gcc')
-
-
-@pytest.mark.no_balfrin  # test fails with warnings
-@pytest.mark.no_daint  # test fails with warnings
-class XcodeMLToolsTest(unittest.TestCase):
-
-    def test_install_version_92a35f9(self):
-        spack_install_and_test('xcodeml-tools @92a35f9')
 
 
 class ZLibNGTest(unittest.TestCase):

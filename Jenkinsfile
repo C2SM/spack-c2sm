@@ -61,7 +61,7 @@ pipeline {
                         steps {
                             sh """
                             source env/bin/activate
-                            pytest -n auto -q --scope \"""" + env.ghprbCommentBody + "\" test/system_test.py"
+                            pytest -q --scope \"""" + env.ghprbCommentBody + "\" test/system_test.py"
                         }
                     }
                 }

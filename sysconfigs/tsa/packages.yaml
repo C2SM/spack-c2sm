@@ -140,8 +140,8 @@ packages:
       prefix: /usr
   openjdk:
     externals:
-    - spec: openjdk@1.8.0_302-b08
-      prefix: /usr
+    - spec: openjdk@1.8.0_302-b08 # manually added
+      prefix: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.302.b08-0.el7_9.x86_64
   krb5:
     externals:
     - spec: krb5@1.15.1

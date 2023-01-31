@@ -33,12 +33,8 @@ class Int2lm(MakefilePackage):
     version('org-master', git=orggit, branch='master')
     version('int2lm-3.00', git=orggit, tag='int2lm-3.00')
 
-    depends_on('cosmo-grib-api-definitions',
-               type=('build', 'run'),
-               when='~eccodes')
-    depends_on('cosmo-eccodes-definitions ^eccodes +fortran',
-               type=('build', 'link', 'run'),
-               when='+eccodes')
+    depends_on('eccodes +fortran')
+    depends_on('cosmo-eccodes-definitions', type=('build', 'run'))
     depends_on('libgrib1 @22-01-2020', type='build')
     depends_on('mpi', type=('build', 'link', 'run'), when='+parallel')
     depends_on('netcdf-c', type=('build', 'link'))
@@ -46,9 +42,6 @@ class Int2lm(MakefilePackage):
     depends_on('jasper@1.900.1', type=('build', 'link'))
 
     variant('debug', default=False, description='Build debug INT2LM')
-    variant('eccodes',
-            default=True,
-            description='Build with eccodes instead of grib-api')
     variant('parallel', default=True, description='Build parallel INT2LM')
     variant('pollen', default=True, description='Build with pollen enabled')
     variant('slave', default='none', description='Build on slave')
@@ -71,22 +64,17 @@ class Int2lm(MakefilePackage):
     def setup_build_environment(self, env):
         self.setup_run_environment(env)
 
-        # Grib-api. Eccodes libraries
-        if '~eccodes' in self.spec:
-            grib_prefix = self.spec['cosmo-grib-api'].prefix
-            grib_lib_names = ' -lgrib_api_f90 -lgrib_api'
-            lib_dir = '/lib'
+        # Eccodes libraries
+        grib_prefix = self.spec['eccodes'].prefix
+        env.set(
+            'GRIBAPIL',
+            str(self.spec['eccodes:fortran'].libs.ld_flags) + ' ' +
+            str(self.spec['jasper'].libs.ld_flags))
+        grib_inc_dir_path = os.path.join(grib_prefix, 'include')
+        if os.path.exists(grib_inc_dir_path):
+            env.set('GRIBAPII', '-I' + grib_inc_dir_path)
         else:
-            grib_prefix = self.spec['eccodes'].prefix
-            env.set(
-                'GRIBAPIL',
-                str(self.spec['eccodes:fortran'].libs.ld_flags) + ' ' +
-                str(self.spec['jasper'].libs.ld_flags))
-            grib_inc_dir_path = os.path.join(grib_prefix, 'include')
-            if os.path.exists(grib_inc_dir_path):
-                env.set('GRIBAPII', '-I' + grib_inc_dir_path)
-            else:
-                env.set('GRIBAPII', '')
+            env.set('GRIBAPII', '')
 
         # Netcdf library
         if self.spec.variants['slave'].value == 'daint':
