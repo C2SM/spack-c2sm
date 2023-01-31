@@ -22,6 +22,9 @@ class Icon(AutotoolsPackage):
             branch='test_spec',
             git='ssh://git@github.com/C2SM/icon-exclaim.git',
             submodules=True)
+    version('nwp-master',
+            git='ssh://git@gitlab.dkrz.de/icon/icon-nwp.git',
+            submodules=True)
 
     # Model Features:
     variant('atmo',
