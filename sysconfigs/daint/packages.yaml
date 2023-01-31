@@ -164,10 +164,6 @@ packages:
       prefix: /usr
     - spec: libfuse@3.6.1
       prefix: /usr
-  libtool:
-    externals:
-    - spec: libtool@2.4.6
-      prefix: /usr
   lustre:
     externals:
     - spec: lustre@2.12.4.3_cray_148_ga7edc4b
@@ -192,8 +188,7 @@ packages:
     - spec: netcdf-c@4.7.4.4%gcc+parallel-netcdf+mpi # manually added
       prefix: /opt/cray/pe/netcdf-hdf5parallel/4.7.4.4/GNU/8.2
     - spec: netcdf-c@4.7.4.4%cce+parallel-netcdf+mpi # manually added
-      modules:
-      - cray-netcdf-hdf5parallel/4.7.4.4
+      prefix: /opt/cray/pe/netcdf-hdf5parallel/4.7.4.4/CRAYCLANG/10.0
     - spec: netcdf-c@4.7.4.4%cce~parallel-netcdf~mpi # manually added
       modules:
       - cray-netcdf/4.7.4.4
@@ -205,8 +200,7 @@ packages:
     - spec: netcdf-fortran@4.5.3%gcc # manually added
       prefix: /opt/cray/pe/netcdf/4.7.4.4/GNU/8.2
     - spec: netcdf-fortran@4.5.3%cce # manually added
-      modules:
-      - cray-netcdf-hdf5parallel/4.7.4.4
+      prefix: /opt/cray/pe/netcdf-hdf5parallel/4.7.4.4/CRAYCLANG/10.0
   openssh:
     externals:
     - spec: openssh@8.1p1
