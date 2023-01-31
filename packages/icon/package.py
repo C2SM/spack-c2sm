@@ -53,6 +53,9 @@ class Icon(Package):
     depends_on('serialbox +fortran', when='serialize_mode=read')
     depends_on('serialbox +fortran', when='serialize_mode=perturb')
     depends_on('eccodes +aec +fortran', when='+eccodes')
+    depends_on('cosmo-eccodes-definitions',
+               type=('build', 'run'),
+               when='+eccodes')
     # depends_on('hdf5 +szip +hl +fortran')
     depends_on('zlib')
     depends_on('mpi +wrappers')
