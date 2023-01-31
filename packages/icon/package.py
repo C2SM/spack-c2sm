@@ -158,6 +158,13 @@ class Icon(AutotoolsPackage):
     conflicts('+dace', when='~mpi')
     conflicts('+emvorado', when='~mpi')
 
+    # path_libtool is a function from Autotoolspackage.
+    # For BB we cannot use it because it finds all files 
+    # named "libtool". spack-c2sm is cloned into icon-repo,
+    # therefore this function detects not only "libtool" files, but
+    # also the folder where libtool package itself is installed.   
+    patch_libtool = False
+
     # We need an existing gcc compiler when '+cuda-gcc'. Taking one from the
     # PATH is not an option because we cannot always make sure that it will be
     # a particular installation of gcc. For example, we might want to build icon
