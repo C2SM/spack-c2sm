@@ -54,21 +54,21 @@ pipeline {
                         steps {
                             sh """
                             source env/bin/activate
-                            pytest -n auto -q --scope \"""" + env.ghprbCommentBody + parallel "\" ptest/integration_test.py"
+                            pytest -n auto -q --scope \"""" + env.ghprbCommentBody + " parallel\" ptest/integration_test.py"
                         }
                     }
                     stage('System Tests Parallel') {
                         steps {
                             sh """
                             source env/bin/activate
-                            pytest -q -n auto --scope parallel \"""" + env.ghprbCommentBody + "\"  test/system_test.py"
+                            pytest -q -n auto --scope \"""" + env.ghprbCommentBody + " parallel\"  test/system_test.py"
                         }
                     }
                     stage('System Tests Serial') {
                         steps {
                             sh """
                             source env/bin/activate
-                            pytest -q --scope serial \"""" + env.ghprbCommentBody + "\" test/system_test.py"
+                            pytest -q --scope \"""" + env.ghprbCommentBody + " serial\" test/system_test.py"
                         }
                     }
                 }
