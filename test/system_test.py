@@ -270,17 +270,17 @@ class IconTest(unittest.TestCase):
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_exclaim_test_cpu_cce(self):
         spack_env_dev_install_and_test('config/cscs/spack-envs/daint_cpu_cce',
-                                        'test_spec')
+                                       'test_spec')
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_exclaim_test_cpu(self):
-        spack_env_dev_install_and_test('config/cscs/spack-envs/daint_cpu_nvhpc',
-                                       'test_spec')
+        spack_env_dev_install_and_test(
+            'config/cscs/spack-envs/daint_cpu_nvhpc', 'test_spec')
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_exclaim_test_gpu(self):
-        spack_env_dev_install_and_test('config/cscs/spack-envs/daint_gpu_nvhpc',
-                                       'test_spec')
+        spack_env_dev_install_and_test(
+            'config/cscs/spack-envs/daint_gpu_nvhpc', 'test_spec')
 
 
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
