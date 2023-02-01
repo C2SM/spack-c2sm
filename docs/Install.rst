@@ -3,10 +3,6 @@ Spack Installation
 
 Preinstalled Instance
 ----------------------
-Let's see if this can be seen in preview.
-
-**Let's see if *this* can be seen in preview.**
-
 For the CSCS users a spack instance including the mch packages and the mch machine 
 configuration files will be maintained for both tsa and daint 
 under */project/g110/spack/user/<machine>/spack*. 
