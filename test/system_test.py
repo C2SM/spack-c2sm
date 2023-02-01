@@ -113,9 +113,9 @@ def spack_env_dev_install_and_test(spack_env: str,
                                    icon_branch: str,
                                    log_filename: str = None):
     """
-    Clones ICON with given branch, activates the given spack environment,
-    activates development workflow, tests 'spack install' and writes the output 
-    into the log file. If log_filename is None, spack_env is used to create one.
+    Clones ICON with given branch into unique folder, activates the given spack
+    environment, tests 'spack install' and writes the output into the log file.
+    If log_filename is None, spack_env is used to create one.
     """
     # in case we use serialbox or another python preprocessor
     devirtualize_env()
@@ -264,20 +264,22 @@ class IconTest(unittest.TestCase):
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_exclaim_test_cpu_gcc(self):
-        spack_env_dev_install_and_test('spack-envs/daint_gcc_cpu', 'test_spec')
+        spack_env_dev_install_and_test('config/cscs/spack-envs/daint_cpu_gcc',
+                                       'test_spec')
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_exclaim_test_cpu_cce(self):
-        spack_env_dev_install_and_test('spack-envs/daint_cce_cpu', 'test_spec')
+        spack_env_dev_install_and_test('config/cscs/spack-envs/daint_cpu_cce',
+                                        'test_spec')
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_exclaim_test_cpu(self):
-        spack_env_dev_install_and_test('spack-envs/daint_nvhpc_cpu',
+        spack_env_dev_install_and_test('config/cscs/spack-envs/daint_cpu_nvhpc',
                                        'test_spec')
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_exclaim_test_gpu(self):
-        spack_env_dev_install_and_test('spack-envs/daint_nvhpc_gpu',
+        spack_env_dev_install_and_test('config/cscs/spack-envs/daint_gpu_nvhpc',
                                        'test_spec')
 
 
