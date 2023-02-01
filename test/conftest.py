@@ -24,7 +24,7 @@ def pytest_collection_modifyitems(config, items):
     scope = explicit_scope(config.getoption("--scope"))
 
     triggers = package_triggers(scope)
-    
+
     for item in items:
         keywords = [k.lower() for k in item.keywords]
         if machine_name() not in scope:
