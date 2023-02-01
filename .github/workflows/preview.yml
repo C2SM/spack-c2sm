@@ -9,9 +9,6 @@ on:
       - closed
     paths:
       - 'docs/**'
-  push:
-    paths:
-      - 'docs/**'
 
 concurrency: preview-${{ github.ref }}
 
