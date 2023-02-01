@@ -126,12 +126,15 @@ nvidia_compiler: str = {
 @pytest.mark.no_tsa  # irrelevant
 class CosmoTest(unittest.TestCase):
 
-    def test_install_version_6_0(self):
-        spack_install_and_test(
-            f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
-        )
+    @pytest.mark.serial_only
+    def test_install_version_6_0_gpu(self):
         spack_install_and_test(
             f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
+        )
+
+    def test_install_version_6_0_cpu(self):
+        spack_install_and_test(
+            f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
     def test_devbuildcosmo(self):
@@ -157,15 +160,15 @@ class CosmoTest(unittest.TestCase):
             f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
-    def test_install_c2sm_master_cpu(self):
+    def test_install_c2sm_features_cpu(self):
         spack_install_and_test(
-            f'cosmo @c2sm-master %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
+            f'cosmo @c2sm-features %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
-    @pytest.mark.no_daint  # Unable to open MODULE file gt_gcl_bindings.mod
-    def test_install_c2sm_master_gpu(self):
+    @pytest.mark.serial_only
+    def test_install_c2sm_features_gpu(self):
         spack_install_and_test(
-            f'cosmo @c2sm-master %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
+            f'cosmo @c2sm-features %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
 
