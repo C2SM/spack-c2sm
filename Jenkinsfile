@@ -54,7 +54,7 @@ pipeline {
                         steps {
                             sh """
                             source env/bin/activate
-                            pytest -n auto -q --scope \"""" + env.ghprbCommentBody + " parallel\" ptest/integration_test.py"
+                            pytest -n auto -q --scope \"""" + env.ghprbCommentBody + " parallel\" test/integration_test.py"
                         }
                     }
                     stage('System Tests Parallel') {
