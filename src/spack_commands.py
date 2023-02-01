@@ -61,7 +61,7 @@ def log_with_spack(command: str,
             shell=True)
     else:
         ret = subprocess.run(
-            f'{spack_env}; spack env activate -d {env}; spack develop; ({srun} {command}) >> {log_file} 2>&1',
+            f'{spack_env}; spack env activate -d {env}; ({srun} {command}) >> {log_file} 2>&1',
             cwd=cwd,
             check=False,
             shell=True)
