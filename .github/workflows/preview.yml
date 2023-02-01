@@ -1,0 +1,32 @@
+# .github/workflows/preview.yml
+name: Deploy PR previews
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+
+concurrency: preview-${{ github.ref }}
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build docs
+        uses: C2SM/sphinx-action@sphinx-latest
+        with:
+          build-command: "sphinx-build -b html . _build"
+          docs-folder: "docs/"
+
+      - name: Deploy preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: docs/_build
+          preview-branch: gh-pages
+          umbrella-dir: pr-preview
+          action: auto
