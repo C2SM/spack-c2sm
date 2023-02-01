@@ -8,6 +8,9 @@ on:
       - reopened
       - synchronize
       - closed
+  push:
+    paths:
+      - 'docs/*'
 
 concurrency: preview-${{ github.ref }}
 
