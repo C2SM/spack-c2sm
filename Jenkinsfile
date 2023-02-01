@@ -61,9 +61,7 @@ pipeline {
                         steps {
                             sh """
                             source env/bin/activate
-                            # parallel suite
                             pytest -q -n auto --scope \"""" + env.ghprbCommentBody parallel "\" test/system_test.py"
-                            # serial suite
                             pytest -q --scope \"""" + env.ghprbCommentBody serial "\" test/system_test.py"
                         }
                     }
