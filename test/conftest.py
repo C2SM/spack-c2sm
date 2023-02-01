@@ -12,8 +12,8 @@ def pytest_configure(config):
     for machine in all_machines:
         config.addinivalue_line(
             'markers', f'no_{machine}: mark test to not run on {machine}')
-    config.addinivalue_line(
-        'markers', 'serial_only: mark test to only run serial')
+    config.addinivalue_line('markers',
+                            'serial_only: mark test to only run serial')
 
 
 def pytest_addoption(parser):
@@ -47,7 +47,8 @@ def pytest_collection_modifyitems(config, items):
                     pytest.mark.skip(
                         reason="test is marked to run in serial mode only"))
         else:
-            raise ValueError('please define "parallel" or "serial" in your scope')
+            raise ValueError(
+                'please define "parallel" or "serial" in your scope')
 
         if not any(k in triggers for k in keywords):
             item.add_marker(pytest.mark.skip(reason="test not in scope"))
