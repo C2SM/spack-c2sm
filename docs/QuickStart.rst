@@ -1,5 +1,7 @@
 Quick Start for Spack
 =====================
+Hello World!
+
 It is recommended to read the entire documentation to get familiar with Spack.
 For those of you with lack of time or interest the following short manuals do the job as well.
 
