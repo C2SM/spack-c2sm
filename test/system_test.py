@@ -20,9 +20,14 @@ def devirtualize_env():
     # VIRTUAL_ENV and PATH
 
     # Remove 'VIRTUAL_ENV/bin'
-    virtual_env_bin = os.path.join(os.environ['VIRTUAL_ENV'], 'bin')
-    os.environ.pop('VIRTUAL_ENV')
-    os.environ['PATH'] = os.environ['PATH'].replace(virtual_env_bin, '')
+    try:
+        virtual_env_bin = os.path.join(os.environ['VIRTUAL_ENV'], 'bin')
+        os.environ.pop('VIRTUAL_ENV')
+        os.environ['PATH'] = os.environ['PATH'].replace(virtual_env_bin, '')
+
+    # happens if test are run in serial-mode because cannot unset var twice
+    except KeyError:
+        pass
 
 
 def spack_install_and_test(spec: str,
