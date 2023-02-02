@@ -14,7 +14,7 @@ class Icon(AutotoolsPackage):
     git = 'ssh://git@gitlab.dkrz.de/icon/icon.git'
 
     version('develop', submodules=True)
-    version('2.6.4', tag='master', submodules=True)
+    version('2.6.5.1', tag='icon-2.6.5.1', submodules=True)
     version('exclaim-master',
             branch='master',
             git='ssh://git@github.com/C2SM/icon-exclaim.git',
@@ -238,15 +238,6 @@ class Icon(AutotoolsPackage):
                 file_flags.append(
                     ('src/data_assimilation/interfaces/radar_interface.f90',
                      '$(ICON_FCFLAGS) -O1'))
-            if self.spec.satisfies('@:2.6.4+dace'):
-                if self.compiler.name == 'nvhpc':
-                    file_flags.append(
-                        ('externals/dace_icon/src_for_icon/mo_rad.f90',
-                         '$(ICON_FCFLAGS) -O1'))
-                if '~rttov' in self.spec:
-                    file_flags.append(
-                        ('externals/dace_icon/src_for_icon/mo_t_enkf.f90',
-                         '$(ICON_FCFLAGS) -O1'))
         elif self.compiler.name == 'cce':
             if self.compiler.version == ver('12.0.2'):
                 file_flags.append(
@@ -260,11 +251,6 @@ class Icon(AutotoolsPackage):
                 file_flags.append(
                     ('externals/jsbach/src/base/mo_jsb_process_factory.f90',
                      '$(ICON_FCFLAGS) -O0'))
-        elif self.compiler.name == 'aocc':
-            if self.spec.satisfies('@:2.6.4+dace'):
-                file_flags.append(
-                    ('externals/dace_icon/src_for_icon/mo_cosmo_obs_data.f90',
-                     '$(ICON_FCFLAGS) -O1'))
 
         if not file_flags:
             return
@@ -327,19 +313,13 @@ class Icon(AutotoolsPackage):
             fc_version = (ver(self.compiler.fc_version(self.compiler.fc))
                           if self._compiler_is_mixed_gfortran() else
                           self.compiler.version)
-            if fc_version < ver(10):
-                if '+emvorado' in self.spec or '+dace' in self.spec:
-                    # For externals/dace_icon/src_for_icon/mo_mpi_dace.f90:
-                    if self.version <= ver('2.6.4'):
-                        config_vars['ICON_FCFLAGS'].append('-fno-range-check')
-            else:
-                config_vars['ICON_FCFLAGS'].append('-fallow-argument-mismatch')
-                config_vars['ICON_OCEAN_FCFLAGS'].append(
-                    '-fallow-argument-mismatch')
-                if '+ecrad' in self.spec:
-                    # For externals/ecrad/ifsaux/random_numbers_mix.F90:
-                    config_vars['ICON_ECRAD_FCFLAGS'].append(
-                        '-fallow-invalid-boz')
+            config_vars['ICON_FCFLAGS'].append('-fallow-argument-mismatch')
+            config_vars['ICON_OCEAN_FCFLAGS'].append(
+                '-fallow-argument-mismatch')
+            if '+ecrad' in self.spec:
+                # For externals/ecrad/ifsaux/random_numbers_mix.F90:
+                config_vars['ICON_ECRAD_FCFLAGS'].append(
+                    '-fallow-invalid-boz')
         elif self.compiler.name == 'intel':
             config_vars['CFLAGS'].extend(
                 ['-g', '-gdwarf-4', '-O3', '-qno-opt-dynamic-align', '-ftz'])
@@ -383,11 +363,6 @@ class Icon(AutotoolsPackage):
                 '-C=recursion'
             ])
             config_vars['ICON_BUNDLED_FCFLAGS'] = []
-            # Help NAG compiler locate radar_elevations_precipscan.incf:
-            if '+dace' in self.spec:
-                # DACE uses 'NAG' instead of 'NAGFOR':
-                if self.version <= ver('2.6.4'):
-                    config_vars['ICON_FCFLAGS'].append('-DNAG')
         elif self.compiler.name in ['pgi', 'nvhpc']:
             config_vars['CFLAGS'].extend(['-g', '-O2'])
             config_vars['FCFLAGS'].extend(
@@ -398,12 +373,6 @@ class Icon(AutotoolsPackage):
                     '-ta=nvidia:cc{0}'.format(gpu)
                 ])
                 config_vars['ICON_FCFLAGS'].append('-D__SWAPDIM')
-                if self.spec.satisfies('+dace'):
-                    # Different implementation of link and acc declare between
-                    # cray and pgi (see
-                    # externals/dace_icon/src_for_icon/parallel_utilities.f90):
-                    if self.version <= ver('2.6.4'):
-                        config_vars['ICON_FCFLAGS'].append('-DPGI_FIX_ACCLINK')
         elif self.compiler.name == 'cce':
             config_vars['CFLAGS'].append('-g')
             config_vars['ICON_CFLAGS'].append('-O3')
