@@ -56,16 +56,16 @@ class Infero(CMakePackage):
 
     @property
     def libs(self):
-        libraries = ['libinfero','libinferof']
+        libraries = ['libinfero', 'libinferof']
 
-        libs = find_libraries(
-            libraries, root=self.prefix, shared=True, recursive=True
-        )
+        libs = find_libraries(libraries,
+                              root=self.prefix,
+                              shared=True,
+                              recursive=True)
 
         if libs and len(libs) == len(libraries):
             return libs
 
         msg = 'Unable to recursively locate shared {0} libraries in {1}'
         raise spack.error.NoLibrariesError(
-            msg.format(self.spec.name,
-                       self.spec.prefix))
+            msg.format(self.spec.name, self.spec.prefix))

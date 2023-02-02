@@ -28,5 +28,11 @@ class Tensorflowc(Package):
         # can't use Spack convenience-function 'install_tree' because it uses
         # shutil.copy2 under the hood. For an unknown reason installing from
         # the unzipped tarbal only works using shutil.copy.
-        shutil.copytree('lib', prefix.lib, symlinks=True, copy_function=shutil.copy)
-        shutil.copytree('include', prefix.include, symlinks=True, copy_function=shutil.copy)
+        shutil.copytree('lib',
+                        prefix.lib,
+                        symlinks=True,
+                        copy_function=shutil.copy)
+        shutil.copytree('include',
+                        prefix.include,
+                        symlinks=True,
+                        copy_function=shutil.copy)
