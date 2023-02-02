@@ -131,8 +131,6 @@ class Icon(AutotoolsPackage):
     depends_on('netcdf-c', when='~cdi-pio')
     depends_on('netcdf-c', when='+coupling')
     depends_on('netcdf-c+mpi', when='+parallel-netcdf~cdi-pio')
-    # Excessive statements to help the concretizer:
-    depends_on('netcdf-c+mpi', type='build', when='+parallel-netcdf+cdi-pio')
 
     depends_on('hdf5 +szip +hl +fortran', when='+emvorado')
     depends_on('hdf5 +szip', when='+sct')
