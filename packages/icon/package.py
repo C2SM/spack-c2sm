@@ -134,12 +134,8 @@ class Icon(AutotoolsPackage):
     # Excessive statements to help the concretizer:
     depends_on('netcdf-c+mpi', type='build', when='+parallel-netcdf+cdi-pio')
 
-    default_hdf5 = 'hdf5+szip'
-    depends_on(default_hdf5 + ' +hl+fortran', when='+emvorado')
-    depends_on(default_hdf5, when='+sct')
-    # Excessive statements to help the concretizer:
-    depends_on(default_hdf5, type='build')
-    depends_on(default_hdf5 + ' +mpi', type='build', when='+parallel-netcdf')
+    depends_on('hdf5 +szip +hl +fortran', when='+emvorado')
+    depends_on('hdf5 +szip', when='+sct')
 
     depends_on('zlib', when='+emvorado')
     depends_on('mpi', when='+mpi')
