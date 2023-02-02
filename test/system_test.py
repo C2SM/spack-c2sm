@@ -282,6 +282,13 @@ class IconToolsTest(unittest.TestCase):
     def test_install(self):
         spack_install_and_test('icontools @c2sm-master %gcc')
 
+@pytest.mark.no_tsa  # Not supported on Tsa
+@pytest.mark.no_balfrin  # Not supported on Balfrin
+class InferoTest(unittest.TestCase):
+
+    def test_install(self):
+        spack_install_and_test('infero@0.1.2 %gcc')
+
 
 @pytest.mark.no_balfrin  # This fails with "BOZ literal constant at (1) cannot appear in an array constructor". https://gcc.gnu.org/onlinedocs/gfortran/BOZ-literal-constants.html
 class LibGrib1Test(unittest.TestCase):
