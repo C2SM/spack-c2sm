@@ -318,8 +318,7 @@ class Icon(AutotoolsPackage):
                 '-fallow-argument-mismatch')
             if '+ecrad' in self.spec:
                 # For externals/ecrad/ifsaux/random_numbers_mix.F90:
-                config_vars['ICON_ECRAD_FCFLAGS'].append(
-                    '-fallow-invalid-boz')
+                config_vars['ICON_ECRAD_FCFLAGS'].append('-fallow-invalid-boz')
         elif self.compiler.name == 'intel':
             config_vars['CFLAGS'].extend(
                 ['-g', '-gdwarf-4', '-O3', '-qno-opt-dynamic-align', '-ftz'])
