@@ -1,3 +1,0 @@
-upstreams:
-  system:
-    install_tree: /project/g110/spack/upstream/tsa_v1
