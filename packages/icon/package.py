@@ -120,11 +120,8 @@ class Icon(AutotoolsPackage):
     # only available in icon-exclaim so far
     depends_on('cdo', when='@exclaim-master,exclaim-test')
 
-    default_eccodes = 'eccodes+aec jp2k=openjpeg'
-    depends_on(default_eccodes + ' +fortran', when='+emvorado')
-    depends_on(default_eccodes, when='+grib2~cdi-pio')
-    # Excessive statements to help the concretizer:
-    depends_on(default_eccodes, type='build', when='+grib2+cdi-pio')
+    depends_on('eccodes +fortran', when='+emvorado')
+    depends_on('eccodes', when='+grib2 ~cdi-pio')
 
     depends_on('yaxt+fortran', when='+cdi-pio')
     depends_on('lapack')
