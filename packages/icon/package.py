@@ -9,8 +9,9 @@ from spack.util.executable import which_string
 class Icon(AutotoolsPackage):
     """Icosahedral Nonhydrostatic Weather and Climate Model."""
 
-    homepage = "https://code.mpimet.mpg.de/projects/iconpublic"
-    git = "git@github.com:C2SM/icon-exclaim.git"
+    homepage = 'https://code.mpimet.mpg.de/projects/iconpublic'
+    url = 'https://gitlab.dkrz.de/icon/icon/-/archive/icon-2.6.5.1/icon-icon-2.6.5.1.tar.gz'
+    git = 'ssh://git@gitlab.dkrz.de/icon/icon.git'
 
     version('develop', submodules=True)
     version('2.6.4', tag='master', submodules=True)
