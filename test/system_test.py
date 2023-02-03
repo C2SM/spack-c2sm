@@ -20,9 +20,14 @@ def devirtualize_env():
     # VIRTUAL_ENV and PATH
 
     # Remove 'VIRTUAL_ENV/bin'
-    virtual_env_bin = os.path.join(os.environ['VIRTUAL_ENV'], 'bin')
-    os.environ.pop('VIRTUAL_ENV')
-    os.environ['PATH'] = os.environ['PATH'].replace(virtual_env_bin, '')
+    try:
+        virtual_env_bin = os.path.join(os.environ['VIRTUAL_ENV'], 'bin')
+        os.environ.pop('VIRTUAL_ENV')
+        os.environ['PATH'] = os.environ['PATH'].replace(virtual_env_bin, '')
+
+    # happens if test are run in serial-mode because cannot unset var twice
+    except KeyError:
+        pass
 
 
 def spack_install_and_test(spec: str,
@@ -117,6 +122,9 @@ def spack_env_dev_install_and_test(spack_env: str,
     environment, tests 'spack install' and writes the output into the log file.
     If log_filename is None, spack_env is used to create one.
     """
+
+    # in case we use serialbox or another python preprocessor
+    devirtualize_env()
 
     unique_folder = 'icon-exclaim_' + uuid.uuid4(
     ).hex  # to avoid cloning into the same folder and having race conditions
