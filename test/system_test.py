@@ -104,6 +104,7 @@ def spack_env_dev_install_and_test(spack_env: str,
     environment, tests 'spack install' and writes the output into the log file.
     If log_filename is None, spack_env is used to create one.
     """
+
     # in case we use serialbox or another python preprocessor
     devirtualize_env()
 
