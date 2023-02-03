@@ -563,21 +563,12 @@ class Icon(AutotoolsPackage):
         if os.path.exists(test_script):
             test_py = Executable(test_script)
 
-            # test.py fails if PYTHONHOME has any value,
-            # even '' or ' ' is failing, therefore delete
-            # it temporary from env
-            PYTHONHOME = os.environ['PYTHONHOME']
-            os.environ.pop('PYTHONHOME')
-
             with open('spec.yaml', mode='w') as f:
                 f.write(self.spec.to_yaml())
             try:
                 test_py('--spec', 'spec.yaml')
             except:
                 raise InstallError('Tests failed')
-
-            # restore PYTHONHOME after test.py
-            os.environ['PYTHONHOME'] = PYTHONHOME
         else:
             tty.warn('Cannot find test.py -> skipping tests')
 
