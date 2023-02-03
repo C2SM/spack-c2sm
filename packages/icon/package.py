@@ -26,6 +26,9 @@ class Icon(AutotoolsPackage, CudaPackage):
     version('nwp-master',
             git='ssh://git@gitlab.dkrz.de/icon/icon-nwp.git',
             submodules=True)
+            
+    # Optional Features:
+    variant('rpaths', default=True, description='Add directories specified with -L flags in LDFLAGS and LIBS to the runtime library search paths (RPATH)')
 
     # Model Features:
     variant('atmo',
@@ -88,9 +91,13 @@ class Icon(AutotoolsPackage, CudaPackage):
             description='Enable the Serialbox2 serialization')
 
     # Optimization Features:
+    variant('loop-exchange', default=True, description='Enable loop exchange')
+    variant('vectorized-lrtm', default=False, description='Enable the parallelization-invariant version of LRTM')
     variant('mixed-precision',
             default=False,
             description='Enable mixed precision dycore')
+    variant('pgi-inlib', default=False, description='Enable PGI/NVIDIA cross-file function inlining via an inline library')
+    variant('nccl', default=False, description='Ennable NCCL for communication')
 
     depends_on('libxml2', when='+coupling')
     depends_on('libxml2', when='+art')
@@ -259,14 +266,15 @@ class Icon(AutotoolsPackage, CudaPackage):
             f.writelines(['\n', '\n'.join(rules)])
 
     def configure_args(self):
-        config_args = ['--disable-rpaths', '--disable-silent-rules']
+        config_args = ['--disable-silent-rules']
         config_vars = defaultdict(list)
         libs = LibraryList([])
 
         for x in [
-                'atmo', 'ocean', 'jsbach', 'coupling', 'ecrad', 'rte-rrtmgp',
+                'rpaths', 'atmo', 'ocean', 'jsbach', 'coupling', 'ecrad', 'rte-rrtmgp',
                 'rttov', 'dace', 'emvorado', 'art', 'mpi', 'openmp', 'grib2',
-                'parallel-netcdf', 'sct', 'yaxt', 'mixed-precision'
+                'parallel-netcdf', 'sct', 'yaxt', 'loop-exchange',
+                'vectorized-lrtm', 'mixed-precision', 'pgi-inlib', 'nccl', 
         ]:
             config_args += self.enable_or_disable(x)
 
