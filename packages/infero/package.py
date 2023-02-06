@@ -61,7 +61,7 @@ class Infero(CMakePackage):
         # limit build-jobs to 1, otherwise test fail
         # on compute nodes with Jenkins
         make.jobs = 1
-        targets = ['check','test']
+        targets = ['check', 'test']
         with working_dir(self.build_directory):
             for target in targets:
                 if self._has_make_target(target):
