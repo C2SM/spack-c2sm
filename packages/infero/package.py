@@ -54,6 +54,19 @@ class Infero(CMakePackage):
         ]
         return args
 
+    def check(self):
+        """Searches the Makefile for targets ``test`` and ``check``
+        and runs them if found.
+        """
+        # limit build-jobs to 1, otherwise test fail
+        # on compute nodes with Jenkins
+        make.jobs = 1
+        targets = ['check','test']
+        with working_dir(self.build_directory):
+            for target in targets:
+                if self._has_make_target(target):
+                    make(target)
+
     @property
     def libs(self):
         libraries = ['libinfero','libinferof']
