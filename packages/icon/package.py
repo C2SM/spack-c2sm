@@ -313,12 +313,13 @@ class Icon(AutotoolsPackage):
             fc_version = (ver(self.compiler.fc_version(self.compiler.fc))
                           if self._compiler_is_mixed_gfortran() else
                           self.compiler.version)
-            config_vars['ICON_FCFLAGS'].append('-fallow-argument-mismatch')
-            config_vars['ICON_OCEAN_FCFLAGS'].append(
-                '-fallow-argument-mismatch')
-            if '+ecrad' in self.spec:
-                # For externals/ecrad/ifsaux/random_numbers_mix.F90:
-                config_vars['ICON_ECRAD_FCFLAGS'].append('-fallow-invalid-boz')
+            if fc_version >= ver(10):
+                config_vars['ICON_FCFLAGS'].append('-fallow-argument-mismatch')
+                config_vars['ICON_OCEAN_FCFLAGS'].append(
+                    '-fallow-argument-mismatch')
+                if '+ecrad' in self.spec:
+                    # For externals/ecrad/ifsaux/random_numbers_mix.F90:
+                    config_vars['ICON_ECRAD_FCFLAGS'].append('-fallow-invalid-boz')
         elif self.compiler.name == 'intel':
             config_vars['CFLAGS'].extend(
                 ['-g', '-gdwarf-4', '-O3', '-qno-opt-dynamic-align', '-ftz'])
