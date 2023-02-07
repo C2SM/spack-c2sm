@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PR testing &mdash; C2SM Spack  documentation</title>
+  <title>Testing &mdash; C2SM Spack  documentation</title>
   
 
   
@@ -30,7 +30,8 @@
   <link rel="stylesheet" href="_static/css/theme.min.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Why was spack chosen by MeteoSwiss?" href="SpackChoice.html" /> 
+    <link rel="next" title="Why was spack chosen by MeteoSwiss?" href="SpackChoice.html" />
+    <link rel="prev" title="Important Spack Commands" href="SpackCommands.html" /> 
 
 </head>
 
@@ -69,13 +70,13 @@
     
       <li><a href="index.html">Docs</a></li>
         
-      <li>PR testing</li>
+      <li>Testing</li>
     
     
       <li class="breadcrumbs-aside">
         
             
-            <a href="_sources/PrTesting.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/Testing.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -114,14 +115,12 @@
 <li class="toctree-l2"><a class="reference internal" href="QuickStart.html#use-packages">Use packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="QuickStart.html#develop-packages">Develop packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="QuickStart.html#environments">Environments</a></li>
-<li class="toctree-l2"><a class="reference internal" href="QuickStart.html#test-packages-pr-mr-ci-cd">Test packages (PR/MR/CI/CD)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="QuickStart.html#cosmo">COSMO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="QuickStart.html#icon">ICON</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Install.html">Spack Instance</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="Install.html#machine-specific-config-files">Machine specific config files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Install.html#spack-instance-on-dom">Spack instance on Dom</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="C2SMGuidelines.html">C2SM Guidelines for Spack</a><ul>
@@ -146,8 +145,12 @@
 <li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-load">Spack load</a></li>
 </ul>
 </li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Testing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#test-packages-pr-mr-ci-cd">Test packages (PR/MR/CI/CD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pull-request-testing-for-spack-c2sm-on-github">Pull Request Testing for spack-c2sm on GitHub</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="SpackChoice.html">Why was spack chosen by MeteoSwiss?</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">PR testing</a></li>
 </ul>
 
                             
@@ -158,8 +161,26 @@
                     <div class="document">
                         
                             
-  <section id="pr-testing">
-<h1>PR testing<a class="headerlink" href="#pr-testing" title="Permalink to this heading">¶</a></h1>
+  <section id="testing">
+<h1>Testing<a class="headerlink" href="#testing" title="Permalink to this heading">¶</a></h1>
+<section id="test-packages-pr-mr-ci-cd">
+<h2>Test packages (PR/MR/CI/CD)<a class="headerlink" href="#test-packages-pr-mr-ci-cd" title="Permalink to this heading">¶</a></h2>
+<p>You can use spack to test a PR/MR in your CI pipeline.
+This is a common way to do it.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># cd into the packages repo!</span>
+git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
+. spack-c2sm/setup-env.sh
+spack dev-build --test<span class="o">=</span>root --show-log-on-error &lt;package&gt; @develop &lt;variant&gt;
+</pre></div>
+</div>
+<p>You can also use spack in your end-to-end tests.
+This is a common way to do it.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack install --test<span class="o">=</span>root --show-log-on-error &lt;package&gt; @&lt;version&gt; &lt;variant&gt;
+</pre></div>
+</div>
+</section>
+<section id="pull-request-testing-for-spack-c2sm-on-github">
+<h2>Pull Request Testing for spack-c2sm on GitHub<a class="headerlink" href="#pull-request-testing-for-spack-c2sm-on-github" title="Permalink to this heading">¶</a></h2>
 <p>To test a PR create a comment <code class="docutils literal notranslate"><span class="pre">launch</span> <span class="pre">jenkins</span> <span class="pre">[&lt;packages&gt;]</span> <span class="pre">[&lt;machines&gt;]</span></code>.</p>
 <p>It will test the listed packages on the listed machines.
 No package means all packages. No machine means all machines.
@@ -184,6 +205,7 @@ Order is irrelevant.</p>
 <li><p>daint</p></li>
 <li><p>tsa</p></li>
 </ul>
+</section>
 </section>
 
 

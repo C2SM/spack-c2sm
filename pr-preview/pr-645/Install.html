@@ -115,14 +115,12 @@
 <li class="toctree-l2"><a class="reference internal" href="QuickStart.html#use-packages">Use packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="QuickStart.html#develop-packages">Develop packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="QuickStart.html#environments">Environments</a></li>
-<li class="toctree-l2"><a class="reference internal" href="QuickStart.html#test-packages-pr-mr-ci-cd">Test packages (PR/MR/CI/CD)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="QuickStart.html#cosmo">COSMO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="QuickStart.html#icon">ICON</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Spack Instance</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#machine-specific-config-files">Machine specific config files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#spack-instance-on-dom">Spack instance on Dom</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="C2SMGuidelines.html">C2SM Guidelines for Spack</a><ul>
@@ -147,8 +145,12 @@
 <li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-load">Spack load</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Testing.html#test-packages-pr-mr-ci-cd">Test packages (PR/MR/CI/CD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Testing.html#pull-request-testing-for-spack-c2sm-on-github">Pull Request Testing for spack-c2sm on GitHub</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="SpackChoice.html">Why was spack chosen by MeteoSwiss?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="PrTesting.html">PR testing</a></li>
 </ul>
 
                             
@@ -183,23 +185,6 @@ and more.</p>
 <li><p>upstreams.yaml: specifies where to find the pre-installed software, that are under /project/g110/spack-install/</p></li>
 <li><p>repos.yaml: specifies where to find the only mch packages that are stored in spack-c2sm repository</p></li>
 </ul>
-</section>
-<section id="spack-instance-on-dom">
-<h2>Spack instance on Dom<a class="headerlink" href="#spack-instance-on-dom" title="Permalink to this heading">¶</a></h2>
-<p>In order to allow preliminary testing on Dom for users, an instance of Spack is installed on Dom.
-Dom, as a system under constant change, cannot provide the stability of Daint or Tsa.
-Therefore a weekly Jenkins plan <a class="reference external" href="https://jenkins-mch.cscs.ch/view/C2SM/job/spack-config/">spack-config</a> collects the required configurations in an automatic fashion. Subsequently the following packages are tested:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>Cosmo</p></li>
-<li><p>Int2lm</p></li>
-<li><p>Icontools</p></li>
-<li><p>Icon</p></li>
-</ul>
-</div></blockquote>
-<p>In case of passing tests, another Jenkins plan <a class="reference external" href="https://jenkins-mch.cscs.ch/view/C2SM/job/publish-spack-config/">publish-spack-config</a> is triggered to commit and push the most recent config for Dom.
-The procedure above obtains the latest state of Dom and provides it to our users as fast a possible.
-<strong>Careful: According to CSCS, Dom’s state can change at any time up to the date of any possible upgrade of Piz Daint.</strong></p>
 </section>
 </section>
 

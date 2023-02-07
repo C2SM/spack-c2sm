@@ -17,8 +17,8 @@ mostly at the Swiss Super Computing Center (CSCS).
    Install
    C2SMGuidelines
    SpackCommands
+   Testing
    SpackChoice
-   PrTesting
 
 Indices and tables
 ==================
