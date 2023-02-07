@@ -14,6 +14,8 @@ class GitHubRepo:
         headers = {'Content-Type': 'application/json'}
         if self.auth_token is not None:
             headers['Authorization'] = 'token ' + self.auth_token
+
+
 # Add comment to enable merge request
 #        requests.post(url, headers=headers, json={'body': text})
 
