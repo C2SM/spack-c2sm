@@ -1,5 +1,29 @@
-PR testing
+Testing
 ===================================
+
+Test packages (PR/MR/CI/CD)
+---------------------------
+You can use spack to test a PR/MR in your CI pipeline.
+This is a common way to do it.
+
+.. code-block:: bash
+
+  # cd into the packages repo!
+  git clone --depth 1 --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
+  . spack-c2sm/setup-env.sh
+  spack dev-build --test=root --show-log-on-error <package> @develop <variant>
+
+You can also use spack in your end-to-end tests.
+This is a common way to do it.
+
+.. code-block:: bash
+
+  spack install --test=root --show-log-on-error <package> @<version> <variant>
+
+
+
+Pull Request Testing for spack-c2sm on GitHub
+-----------------------------------------------
 To test a PR create a comment ``launch jenkins [<packages>] [<machines>]``.
 
 It will test the listed packages on the listed machines.
