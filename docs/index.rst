@@ -18,6 +18,7 @@ mostly at the Swiss Super Computing Center (CSCS).
    InstanceManagement
    SpackCommands
    Testing
+   CodeDevelopment
    SpackChoice
 
 Indices and tables

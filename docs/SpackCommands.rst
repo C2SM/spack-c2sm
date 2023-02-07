@@ -196,6 +196,7 @@ Options (spack installcosmo)
 * \--force_uninstall: Force uninstall if COSMO-package is already installed
 * \--dont-restage: If a partial install is detected, don't delete prior
 * -u, \--until: Phase to stop after when installing
+* -n, \--no-checksum: Do not use checksums to verify downloaded files (unsafe)
 
 Spack dev-build
 ---------------
@@ -257,14 +258,14 @@ Options (spack devbuildcosmo)
 * -c --clean_build: Clean build
 * -j <JOBS>, \--jobs <JOBS>: Explicitly set number of parallel jobs
 
-* \--test {root,dycore,all}: If root is chosen, run COSMO testsuite before installation
-                            (but skip tests for dependencies). If dycore is chosen,
-                            run test for Dycore and COSMO testsuite.
-                            If all is chosen,
-                            run package tests during installation for all packages.
+* \--test {root,all}: If root is chosen, run COSMO testsuite before installation
+                      (but skip tests for dependencies).
+                      If all is chosen,
+                      run package tests during installation for all packages.
 * -c, \--clean_build: Clean dev-build
 * \--dont-restage: If a partial install is detected, don't delete prior
 * -u, \--until: Phase to stop after when installing
+* -n, \--no-checksum: Do not use checksums to verify downloaded files (unsafe)
 
 Spack location
 --------------

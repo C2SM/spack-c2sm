@@ -78,40 +78,6 @@ To run it, you may need to load environment variables
 
   spack load <variant>
 
-Develop packages
-----------------
-We assume that developers of a package are familiar with its build system. Therefor we reccomend to use spack to set up the environment for the package. Building and testing should be done with the package's build system and test system.
-
-.. code-block:: bash
-
-  # Load spack!
-  spack dev-build --before build <package> @develop <variant> # stops dev-build before executing the phase 'build'
-  spack build-env <package> @develop <variant> -- bash # nests a bash shell with the build env vars loaded
-  # Work on the package!
-  # Use the package's build system! (e.g. 'make')
-  # Use the package's testing infrastructure!
-  exit # to exit the nested bash
-
-If you want multiple dev-builds at the same time, label them with separate '@<your-label>'.
-The identifier '@develop' is common in the spack documentation but you can use any string.
-
-Environments
-------------
-Environments sit in a folder with a name. That's the name of the environment.
-
-To activate a spack environment
-
-.. code-block:: bash
-
-  spack env activate -p <env_name>
-
-To deactivate a spack environment
-
-.. code-block:: bash
-
-  spack env deactivate
-
-Most of the spack commands are sensitive to environments see `spack docs <https://spack.readthedocs.io/en/latest/environments.html#environment-sensitive-commands>`__.
 
 COSMO
 -----
