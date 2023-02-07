@@ -3,10 +3,11 @@
 <!DOCTYPE html>
 <head>
   <meta charset="utf-8">
-  
+  <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Search &mdash; C2SM Spack  documentation</title>
+  <title>Develop packages &mdash; C2SM Spack  documentation</title>
   
 
   
@@ -28,7 +29,9 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/css/theme.min.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Why was spack chosen by MeteoSwiss?" href="SpackChoice.html" />
+    <link rel="prev" title="Testing" href="Testing.html" /> 
 
 </head>
 
@@ -67,12 +70,14 @@
     
       <li><a href="index.html">Docs</a></li>
         
-      <li>Search</li>
+      <li>Develop packages</li>
     
     
       <li class="breadcrumbs-aside">
         
             
+            <a href="_sources/CodeDevelopment.rst.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
     
@@ -86,7 +91,7 @@
                 <div class="col-12 col-lg-3 site-nav">
                     
 <div role="search">
-    <form class="search" action="#" method="get">
+    <form class="search" action="search.html" method="get">
         <div class="icon-input">
             <input type="text" name="q" placeholder="Search" />
             <span class="icon-search"></span>
@@ -101,7 +106,7 @@
                             
                             
                                 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="QuickStart.html">Quick Start</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="QuickStart.html#at-cscs-daint-tsa-balfrin">At CSCS (Daint, Tsa, Balfrin)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="QuickStart.html#local-machines-and-containers">Local machines and Containers</a></li>
@@ -142,10 +147,10 @@
 <li class="toctree-l2"><a class="reference internal" href="Testing.html#pull-request-testing-for-spack-c2sm-on-github">Pull Request Testing for spack-c2sm on GitHub</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="CodeDevelopment.html">Develop packages</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="CodeDevelopment.html#plain-dev-build">Plain dev-build</a></li>
-<li class="toctree-l2"><a class="reference internal" href="CodeDevelopment.html#dev-build-in-combination-with-build-env">Dev-build in combination with build-env</a></li>
-<li class="toctree-l2"><a class="reference internal" href="CodeDevelopment.html#environments-with-spack-develop">Environments with Spack develop</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Develop packages</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#plain-dev-build">Plain dev-build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dev-build-in-combination-with-build-env">Dev-build in combination with build-env</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#environments-with-spack-develop">Environments with Spack develop</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="SpackChoice.html">Why was spack chosen by MeteoSwiss?</a></li>
@@ -159,19 +164,90 @@
                     <div class="document">
                         
                             
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search
-      functionality.
-    </p>
-  </div>
-  </noscript>
+  <section id="develop-packages">
+<h1>Develop packages<a class="headerlink" href="#develop-packages" title="Permalink to this heading">¶</a></h1>
+<p>Spack provides multiple ways of developing packages.
+Depending on your workflow one or another option is preferred.
+Also some packages like ICON or COSMO come with its own custom
+development workflow maintained by C2SM.</p>
+<section id="plain-dev-build">
+<h2>Plain dev-build<a class="headerlink" href="#plain-dev-build" title="Permalink to this heading">¶</a></h2>
+<p>This is the easiest way to build local sources.
+Enter the root of your source-repo and execute:</p>
+<p>This will install the package as is. The downside of this approach is that
+you need to go through all phases of a package build.</p>
+</section>
+<section id="dev-build-in-combination-with-build-env">
+<h2>Dev-build in combination with build-env<a class="headerlink" href="#dev-build-in-combination-with-build-env" title="Permalink to this heading">¶</a></h2>
+<p>We assume that developers of a package are familiar with its build system. Therefor we reccomend to use spack to set up the environment for the package. Building and testing should be done with the package’s build system and test system.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load spack!</span>
+spack dev-build --before build &lt;package&gt; @develop &lt;variant&gt; <span class="c1"># stops dev-build before executing the phase &#39;build&#39;</span>
+spack build-env &lt;package&gt; @develop &lt;variant&gt; -- bash <span class="c1"># nests a bash shell with the build env vars loaded</span>
+<span class="c1"># Work on the package!</span>
+<span class="c1"># Use the package&#39;s build system! (e.g. &#39;make&#39;)</span>
+<span class="c1"># Use the package&#39;s testing infrastructure!</span>
+<span class="nb">exit</span> <span class="c1"># to exit the nested bash</span>
+</pre></div>
+</div>
+<p>If you want multiple dev-builds at the same time, label them with separate ‘&#64;&lt;your-label&gt;’.
+The identifier <a class="reference external" href="mailto:'&#37;&#52;&#48;develop">‘<span>&#64;</span>develop</a>’ is common in the spack documentation but you can use any string.</p>
+</section>
+<section id="environments-with-spack-develop">
+<h2>Environments with Spack develop<a class="headerlink" href="#environments-with-spack-develop" title="Permalink to this heading">¶</a></h2>
+<p>Environments sit in a folder with a name and are defined in a <strong>spack.yaml</strong>
+file. For more infos about environments in
+general read the <a class="reference external" href="https://spack.readthedocs.io/en/latest/environments.html">official spack docs</a>.</p>
+<p><strong>Environment defined in ICON</strong>
+.. code-block:: yaml</p>
+<blockquote>
+<div><p># This is a Spack Environment file.
+#
+# It describes a set of packages to be installed, along with
+# configuration settings.
+spack:</p>
+<blockquote>
+<div><p># add package specs to the <cite>specs</cite> list
+specs:
+- <a class="reference external" href="mailto:icon&#37;&#52;&#48;develop%nvhpc">icon<span>&#64;</span>develop%nvhpc</a> +ecrad +rte-rrtmgp claw=std gpu=60
+- <a class="reference external" href="mailto:eccodes&#37;&#52;&#48;2&#46;19&#46;0%nvhpc">eccodes<span>&#64;</span>2<span>&#46;</span>19<span>&#46;</span>0%nvhpc</a>
+- <a class="reference external" href="mailto:claw&#37;&#52;&#48;2&#46;0&#46;3%nvhpc">claw<span>&#64;</span>2<span>&#46;</span>0<span>&#46;</span>3%nvhpc</a>
+- nvidia-blas%nvhpc
+- nvidia-lapack%nvhpc
+- <a class="reference external" href="mailto:libxml2&#37;&#52;&#48;2&#46;9&#46;13%gcc">libxml2<span>&#64;</span>2<span>&#46;</span>9<span>&#46;</span>13%gcc</a>
+view: true
+concretizer:</p>
+<blockquote>
+<div><p>unify: true</p>
+</div></blockquote>
+<dl class="simple">
+<dt>develop:</dt><dd><dl class="simple">
+<dt>icon:</dt><dd><p>spec: <a class="reference external" href="mailto:icon&#37;&#52;&#48;develop%nvhpc">icon<span>&#64;</span>develop%nvhpc</a> +ecrad +rte-rrtmgp claw=std gpu=60
+path: ../../../../</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+</div></blockquote>
+<p>The key part of the environments is the <strong>develop</strong> keyword.
+This tells spack to look for a certain spec in <strong>path</strong>.
+It is possible to specify multiple packages under <strong>develop</strong>.</p>
+<p>To activate a spack environment</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack env activate -p &lt;path_to_spack_yaml&gt;
+</pre></div>
+</div>
+<p>To install the environment</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack install
+</pre></div>
+</div>
+<p>To deactivate a spack environment</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack env deactivate
+</pre></div>
+</div>
+<p>Most of the spack commands are sensitive to environments see <a class="reference external" href="https://spack.readthedocs.io/en/latest/environments.html#environment-sensitive-commands">spack docs</a>.</p>
+</section>
+</section>
 
-  
-  <div id="search-results">
-  
-  </div>
 
                         
                     </div>
@@ -200,22 +276,14 @@
     <script type="text/javascript" src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/sphinx_highlight.js"></script>
-    <script type="text/javascript" src="_static/searchtools.js"></script>
     <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
   
     <div class="footer" role="contentinfo">
         <div class="container">
             &#169; Copyright 2023, C2SM.
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.
         </div>
-    </div>
-  
+    </div>  
 
 </body>
 </html>

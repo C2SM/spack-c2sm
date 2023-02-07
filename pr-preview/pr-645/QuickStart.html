@@ -111,8 +111,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#at-cscs-daint-tsa-balfrin">At CSCS (Daint, Tsa, Balfrin)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#local-machines-and-containers">Local machines and Containers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-packages">Use packages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#develop-packages">Develop packages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#environments">Environments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#cosmo">COSMO</a></li>
 </ul>
 </li>
@@ -147,6 +145,12 @@
 <li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="Testing.html#test-packages-pr-mr-ci-cd">Test packages (PR/MR/CI/CD)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Testing.html#pull-request-testing-for-spack-c2sm-on-github">Pull Request Testing for spack-c2sm on GitHub</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CodeDevelopment.html">Develop packages</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="CodeDevelopment.html#plain-dev-build">Plain dev-build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CodeDevelopment.html#dev-build-in-combination-with-build-env">Dev-build in combination with build-env</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CodeDevelopment.html#environments-with-spack-develop">Environments with Spack develop</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="SpackChoice.html">Why was spack chosen by MeteoSwiss?</a></li>
@@ -218,34 +222,6 @@ spack install icon @master %gcc +ocean
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack load &lt;variant&gt;
 </pre></div>
 </div>
-</section>
-<section id="develop-packages">
-<h2>Develop packages<a class="headerlink" href="#develop-packages" title="Permalink to this heading">¶</a></h2>
-<p>We assume that developers of a package are familiar with its build system. Therefor we reccomend to use spack to set up the environment for the package. Building and testing should be done with the package’s build system and test system.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load spack!</span>
-spack dev-build --before build &lt;package&gt; @develop &lt;variant&gt; <span class="c1"># stops dev-build before executing the phase &#39;build&#39;</span>
-spack build-env &lt;package&gt; @develop &lt;variant&gt; -- bash <span class="c1"># nests a bash shell with the build env vars loaded</span>
-<span class="c1"># Work on the package!</span>
-<span class="c1"># Use the package&#39;s build system! (e.g. &#39;make&#39;)</span>
-<span class="c1"># Use the package&#39;s testing infrastructure!</span>
-<span class="nb">exit</span> <span class="c1"># to exit the nested bash</span>
-</pre></div>
-</div>
-<p>If you want multiple dev-builds at the same time, label them with separate ‘&#64;&lt;your-label&gt;’.
-The identifier <a class="reference external" href="mailto:'&#37;&#52;&#48;develop">‘<span>&#64;</span>develop</a>’ is common in the spack documentation but you can use any string.</p>
-</section>
-<section id="environments">
-<h2>Environments<a class="headerlink" href="#environments" title="Permalink to this heading">¶</a></h2>
-<p>Environments sit in a folder with a name. That’s the name of the environment.</p>
-<p>To activate a spack environment</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack env activate -p &lt;env_name&gt;
-</pre></div>
-</div>
-<p>To deactivate a spack environment</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack env deactivate
-</pre></div>
-</div>
-<p>Most of the spack commands are sensitive to environments see <a class="reference external" href="https://spack.readthedocs.io/en/latest/environments.html#environment-sensitive-commands">spack docs</a>.</p>
 </section>
 <section id="cosmo">
 <h2>COSMO<a class="headerlink" href="#cosmo" title="Permalink to this heading">¶</a></h2>
