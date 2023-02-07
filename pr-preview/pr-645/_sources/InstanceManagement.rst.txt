@@ -27,6 +27,9 @@ At CSCS setup-env.sh automatically detects the machine. You may simply execute
 
     source spack-c2sm/setup-env.sh
 
+It is recommended to clone spack-c2sm in a location that does **NOT** undergo a
+regular cleanup. On Piz Daint ``$SCRATCH`` enforces deletion of all files older than 30 days. This may corrupt your Spack instance, therefore ``/project/XYZ/`` is a safer location.
+
 Update Spack instance
 ----------------------
 To update a spack instance, pull the latest version from the repository and update the submodule
@@ -62,5 +65,5 @@ They are available under spack/etc/spack. Their structure is:
 * **packages.yaml**: all info about the already installed dependencies, i.e their module names or paths
 * **modules.yaml**: all info about the created modules, i.e which env variable or modules should be set once loaded
 * **config.yaml**: specifies the main installation path and the main module installation path, where to find thebinaries etc.
-* upstreams.yaml: specifies where to find the pre-installed software, that are under /project/g110/spack-install/
+* **upstreams.yaml**: specifies where to find the pre-installed software, that are under /project/g110/spack-install/
 * **repos.yaml**: specifies where to find the only mch packages that are stored in spack-c2sm repository

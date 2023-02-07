@@ -118,7 +118,6 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="C2SMGuidelines.html">C2SM Guidelines for Spack</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="C2SMGuidelines.html#building">Building</a></li>
-<li class="toctree-l2"><a class="reference internal" href="C2SMGuidelines.html#installation">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="C2SMGuidelines.html#running">Running</a></li>
 <li class="toctree-l2"><a class="reference internal" href="C2SMGuidelines.html#spack-in-scripts">Spack in scripts</a></li>
 </ul>
@@ -182,6 +181,8 @@ with using software installed by Spack.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span> spack-c2sm/setup-env.sh
 </pre></div>
 </div>
+<p>It is recommended to clone spack-c2sm in a location that does <strong>NOT</strong> undergo a
+regular cleanup. On Piz Daint <code class="docutils literal notranslate"><span class="pre">$SCRATCH</span></code> enforces deletion of all files older than 30 days. This may corrupt your Spack instance, therefore <code class="docutils literal notranslate"><span class="pre">/project/XYZ/</span></code> is a safer location.</p>
 </section>
 <section id="update-spack-instance">
 <h2>Update Spack instance<a class="headerlink" href="#update-spack-instance" title="Permalink to this heading">¶</a></h2>
@@ -213,7 +214,7 @@ and more.</p>
 <li><p><strong>packages.yaml</strong>: all info about the already installed dependencies, i.e their module names or paths</p></li>
 <li><p><strong>modules.yaml</strong>: all info about the created modules, i.e which env variable or modules should be set once loaded</p></li>
 <li><p><strong>config.yaml</strong>: specifies the main installation path and the main module installation path, where to find thebinaries etc.</p></li>
-<li><p>upstreams.yaml: specifies where to find the pre-installed software, that are under /project/g110/spack-install/</p></li>
+<li><p><strong>upstreams.yaml</strong>: specifies where to find the pre-installed software, that are under /project/g110/spack-install/</p></li>
 <li><p><strong>repos.yaml</strong>: specifies where to find the only mch packages that are stored in spack-c2sm repository</p></li>
 </ul>
 </section>
@@ -251,7 +252,7 @@ and more.</p>
   
     <div class="footer" role="contentinfo">
         <div class="container">
-            &#169; Copyright 2020, Carlos Osuna.
+            &#169; Copyright 2023, C2SM.
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.
         </div>
     </div>  

@@ -118,7 +118,6 @@
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">C2SM Guidelines for Spack</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#building">Building</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#running">Running</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#spack-in-scripts">Spack in scripts</a></li>
 </ul>
@@ -235,26 +234,6 @@ into the source-folder.</p>
 the same location!</strong></p>
 </section>
 </section>
-<section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h2>
-<p>Per default, Spack installs software under <code class="docutils literal notranslate"><span class="pre">/$SCRATCH/spack-install</span></code>.
-On Piz Daint <code class="docutils literal notranslate"><span class="pre">$SCRATCH</span></code> undergoes regular cleanup with deletion of
-files older than 30 days. This may corrupt the internal Spack database
-and lead to unexpected behaviour of Spack.</p>
-<section id="change-location-for-package-installations">
-<h3>Change location for package installations<a class="headerlink" href="#change-location-for-package-installations" title="Permalink to this heading">¶</a></h3>
-<p>Spack offers the possibility to overwrite the default installation
-directory. To do so create the file <em>~/.spack/config.yaml</em> and
-specify there an install directory that is not deleted regularly like
-<em>/project</em> or <em>/store</em> in the following way:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">config</span><span class="p">:</span><span class="w"></span>
-<span class="w">   </span><span class="nt">install_tree</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/project/s903/juckerj/spack-install/</span><span class="w"></span>
-</pre></div>
-</div>
-<p><strong>Always change the installation directory to a location that is not
-wiped-out regularly!</strong></p>
-</section>
-</section>
 <section id="running">
 <h2>Running<a class="headerlink" href="#running" title="Permalink to this heading">¶</a></h2>
 <p>When used properly, Spack is able to manage many different
@@ -332,7 +311,7 @@ submission time.</p>
   
     <div class="footer" role="contentinfo">
         <div class="container">
-            &#169; Copyright 2020, Carlos Osuna.
+            &#169; Copyright 2023, C2SM.
         Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.
         </div>
     </div>  
