@@ -1,7 +1,8 @@
 Quick Start
 ===========
 
-Set up (Daint, Tsa, Balfrin)
+
+At CSCS (Daint, Tsa, Balfrin)
 -----------------------------------------
 To set up a spack instance, clone the repository
 
@@ -22,8 +23,8 @@ You can force a machine with an argument. The name has to match a folder in sysc
 
   . spack-c2sm/setup-env.sh tsa
 
-Set up (local machines)
------------------------
+Local machines and Containers
+------------------------------
 Same as above, but probably you want spack to auto detect compilers and preinstalled packages
 
 .. code-block:: bash
@@ -154,11 +155,3 @@ Example variants:
   spack installcosmo cosmo @org-master cosmo_target=cpu # CPU variant of https://github.com/COSMO-ORG/cosmo master
   spack installcosmo cosmo @org-master cosmo_target=gpu # GPU variant of https://github.com/COSMO-ORG/cosmo master
   spack installcosmo cosmo @apn_5.09a.mch1.2.p1 cosmo_target=gpu # GPU variant of https://github.com/MeteoSwiss-APN/cosmo/releases/tag/5.09a.mch1.2.p1
-
-ICON
-----
-ICON currently needs a workaround when dev-building. Spack refuses to build in an empty folder. So you need to populate it with something
-
-.. code-block:: bash
-
-  touch .not_empty
