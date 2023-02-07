@@ -17,8 +17,8 @@ class GitHubRepo:
 
 
 # Add comment to enable merge request
-#        requests.post(url, headers=headers, json={'body': text})
-
+        requests.post(url, headers=headers, json={'body': text})
+#        print(text)
 
 class Markdown:
     # Source: https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
