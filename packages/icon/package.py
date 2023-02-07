@@ -27,7 +27,9 @@ class Icon(AutotoolsPackage, CudaPackage):
             git='ssh://git@gitlab.dkrz.de/icon/icon-nwp.git',
             submodules=True)
 
-    
+    # The variants' default follow those of ICON
+    # as described here
+    # https://gitlab.dkrz.de/icon/icon/-/blob/icon-2.6.5.1/configure#L1454-1557
 
     # Model Features:
     variant('atmo',
