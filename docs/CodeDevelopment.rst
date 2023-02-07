@@ -41,28 +41,29 @@ file. For more infos about environments in
 general read the `official spack docs <https://spack.readthedocs.io/en/latest/environments.html>`__.
 
 **Environment defined in ICON**
+
 .. code-block:: yaml
 
-    # This is a Spack Environment file.
-    #
-    # It describes a set of packages to be installed, along with
-    # configuration settings.
-    spack:
-      # add package specs to the `specs` list
-      specs:
-      - icon@develop%nvhpc +ecrad +rte-rrtmgp claw=std gpu=60
-      - eccodes@2.19.0%nvhpc
-      - claw@2.0.3%nvhpc
-      - nvidia-blas%nvhpc
-      - nvidia-lapack%nvhpc
-      - libxml2@2.9.13%gcc
-      view: true
-      concretizer:
-        unify: true
-      develop:
-        icon:
-          spec: icon@develop%nvhpc +ecrad +rte-rrtmgp claw=std gpu=60
-          path: ../../../../
+  # This is a Spack Environment file.
+  #
+  # It describes a set of packages to be installed, along with
+  # configuration settings.
+  spack:
+    # add package specs to the `specs` list
+    specs:
+    - icon@develop%nvhpc +ecrad +rte-rrtmgp claw=std gpu=60
+    - eccodes@2.19.0%nvhpc
+    - claw@2.0.3%nvhpc
+    - nvidia-blas%nvhpc
+    - nvidia-lapack%nvhpc
+    - libxml2@2.9.13%gcc
+    view: true
+    concretizer:
+      unify: true
+    develop:
+      icon:
+        spec: icon@develop%nvhpc +ecrad +rte-rrtmgp claw=std gpu=60
+        path: ../../../../
 
 The key part of the environments is the **develop** keyword.
 This tells spack to look for a certain spec in **path**.
