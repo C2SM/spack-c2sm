@@ -197,28 +197,31 @@ The identifier <a class="reference external" href="mailto:'&#37;&#52;&#48;develo
 <p>Environments sit in a folder with a name and are defined in a <strong>spack.yaml</strong>
 file. For more infos about environments in
 general read the <a class="reference external" href="https://spack.readthedocs.io/en/latest/environments.html">official spack docs</a>.</p>
-<p><strong>Environment defined in ICON</strong></p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># This is a Spack Environment file.</span><span class="w"></span>
-<span class="c1">#</span><span class="w"></span>
-<span class="c1"># It describes a set of packages to be installed, along with</span><span class="w"></span>
-<span class="c1"># configuration settings.</span><span class="w"></span>
-<span class="nt">spack</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="c1"># add package specs to the `specs` list</span><span class="w"></span>
-<span class="w">  </span><span class="nt">specs</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">icon@develop%nvhpc +ecrad +rte-rrtmgp claw=std gpu=60</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eccodes@2.19.0%nvhpc</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claw@2.0.3%nvhpc</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-blas%nvhpc</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-lapack%nvhpc</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">libxml2@2.9.13%gcc</span><span class="w"></span>
-<span class="w">  </span><span class="nt">view</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">  </span><span class="nt">concretizer</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">unify</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">  </span><span class="nt">develop</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">spec</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">icon@develop%nvhpc +ecrad +rte-rrtmgp claw=std gpu=60</span><span class="w"></span>
-<span class="w">      </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">../../../../</span><span class="w"></span>
+<p><strong>Environment defined in ICON:</strong></p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Environment defined in ICON</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># This is a Spack Environment file.</span>
+<span class="c1">#</span>
+<span class="c1"># It describes a set of packages to be installed, along with</span>
+<span class="c1"># configuration settings.</span>
+spack:
+  <span class="c1"># add package specs to the `specs` list</span>
+  specs:
+  - icon@develop%nvhpc +ecrad +rte-rrtmgp <span class="nv">claw</span><span class="o">=</span>std <span class="nv">gpu</span><span class="o">=</span><span class="m">60</span>
+  - eccodes@2.19.0%nvhpc
+  - claw@2.0.3%nvhpc
+  - nvidia-blas%nvhpc
+  - nvidia-lapack%nvhpc
+  - libxml2@2.9.13%gcc
+  view: <span class="nb">true</span>
+  concretizer:
+    unify: <span class="nb">true</span>
+  develop:
+    icon:
+      spec: icon@develop%nvhpc +ecrad +rte-rrtmgp <span class="nv">claw</span><span class="o">=</span>std <span class="nv">gpu</span><span class="o">=</span><span class="m">60</span>
+      path: ../../../../
 </pre></div>
+</div>
 </div>
 <p>The key part of the environments is the <strong>develop</strong> keyword.
 This tells spack to look for a certain spec in <strong>path</strong>.
