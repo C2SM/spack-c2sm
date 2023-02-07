@@ -331,15 +331,11 @@ Versions of dependencies can be overwritten with user input. The precedence is t
 <section id="options-spack-installcosmo">
 <h3>Options (spack installcosmo)<a class="headerlink" href="#options-spack-installcosmo" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
-<li><dl class="simple">
-<dt>--test={root,all}: If root is chosen, run COSMO testsuite before installation</dt><dd><p>(but skip tests for dependencies). If all is chosen,
-run package tests during installation for all packages.</p>
-</dd>
-</dl>
-</li>
+<li><p>--test=root: Run COSMO testsuite before installation</p></li>
+<li><p>--test=all: Run package tests during installation for all packages</p></li>
 <li><p>-j --jobs: Explicitly set number of parallel jobs</p></li>
 <li><dl class="simple">
-<dt>--only {package,dependencies}: Select the mode of installation.</dt><dd><p>the default is to install the package along with all its dependencies.
+<dt>--only: Select the mode of installation.</dt><dd><p>the default is to install the package along with all its dependencies.
 alternatively one can decide to install only the package or only
 the dependencies.</p>
 </dd>
@@ -409,13 +405,8 @@ spack devbuildcosmo &lt;cosmo&gt;@&lt;version&gt;%&lt;compiler&gt; +&lt;variants
 <li><p>--no_specyaml: Ignore <em>spec.yaml</em></p></li>
 <li><p>-c –clean_build: Clean build</p></li>
 <li><p>-j &lt;JOBS&gt;, --jobs &lt;JOBS&gt;: Explicitly set number of parallel jobs</p></li>
-<li><dl class="simple">
-<dt>--test={root,all}: If root is chosen, run COSMO testsuite before installation</dt><dd><p>(but skip tests for dependencies).
-If all is chosen,
-run package tests during installation for all packages.</p>
-</dd>
-</dl>
-</li>
+<li><p>--test=root: Run COSMO testsuite before installation</p></li>
+<li><p>--test=all: Run package tests during installation for all packages</p></li>
 <li><p>-c, --clean_build: Clean dev-build</p></li>
 <li><p>--dont-restage: If a partial install is detected, don’t delete prior</p></li>
 <li><p>-u, --until: Phase to stop after when installing</p></li>
