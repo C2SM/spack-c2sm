@@ -32,7 +32,7 @@ It is recommended to clean the instance afterwards, for more infos
 see below.
 
 Clean Spack instance
------
+-----------------------
 To clean a spack instance, empty the caches, uninstall everything and remove misc caches
 
 .. code-block:: bash
