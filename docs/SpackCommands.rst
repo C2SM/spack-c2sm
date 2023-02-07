@@ -186,10 +186,6 @@ Options (spack installcosmo)
 * \--test=root: Run COSMO testsuite before installation
 * \--test=all: Run package tests during installation for all packages
 * -j \--jobs: Explicitly set number of parallel jobs
-* \--only: Select the mode of installation.
-           the default is to install the package along with all its dependencies.
-           alternatively one can decide to install only the package or only
-           the dependencies.
 * \--keep-stage: Don't remove the build after compilation
 * -v, \--verbose: Verbose installation
 * \--force_uninstall: Force uninstall if COSMO-package is already installed
