@@ -183,14 +183,13 @@ Usage (spack installcosmo)
 
 Options (spack installcosmo)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* \--test={root,all}: If root is chosen, run COSMO testsuite before installation 
-                     (but skip tests for dependencies). If all is chosen, 
-                     run package tests during installation for all packages.
+* \--test=root: Run COSMO testsuite before installation
+* \--test=all: Run package tests during installation for all packages
 * -j \--jobs: Explicitly set number of parallel jobs
-* \--only \{package,dependencies}: Select the mode of installation.
-                                 the default is to install the package along with all its dependencies.
-                                 alternatively one can decide to install only the package or only
-                                 the dependencies.
+* \--only: Select the mode of installation.
+           the default is to install the package along with all its dependencies.
+           alternatively one can decide to install only the package or only
+           the dependencies.
 * \--keep-stage: Don't remove the build after compilation
 * -v, \--verbose: Verbose installation
 * \--force_uninstall: Force uninstall if COSMO-package is already installed
@@ -258,10 +257,8 @@ Options (spack devbuildcosmo)
 * -c --clean_build: Clean build
 * -j <JOBS>, \--jobs <JOBS>: Explicitly set number of parallel jobs
 
-* \--test=\{root,all}: If root is chosen, run COSMO testsuite before installation
-                      (but skip tests for dependencies).
-                      If all is chosen,
-                      run package tests during installation for all packages.
+* \--test=root: Run COSMO testsuite before installation
+* \--test=all: Run package tests during installation for all packages
 * -c, \--clean_build: Clean dev-build
 * \--dont-restage: If a partial install is detected, don't delete prior
 * -u, \--until: Phase to stop after when installing
