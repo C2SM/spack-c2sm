@@ -1,0 +1,351 @@
+
+
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Quick Start &mdash; C2SM Spack  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.min.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.min.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Spack Instance" href="Install.html" />
+    <link rel="prev" title="Welcome to C2SM Spack Documentation!" href="index.html" /> 
+
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <a class="site-nav-toggle hidden-lg-up"><i class="icon-menu"></i></a>
+            <a class="site-title" href="index.html">
+                C2SM Spack
+            </a>
+        </div>
+    </header>
+
+
+<div class="breadcrumbs-outer hidden-xs-down">
+    <div class="container">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="breadcrumbs">
+    
+      <li><a href="index.html">Docs</a></li>
+        
+      <li>Quick Start</li>
+    
+    
+      <li class="breadcrumbs-aside">
+        
+            
+            <a href="_sources/QuickStart.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+</div>
+    </div>
+</div>
+    <div class="main-outer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-3 site-nav">
+                    
+<div role="search">
+    <form class="search" action="search.html" method="get">
+        <div class="icon-input">
+            <input type="text" name="q" placeholder="Search" />
+            <span class="icon-search"></span>
+        </div>
+        <input type="submit" value="Go" class="d-hidden" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+                    <div class="site-nav-tree">
+                        
+                            
+                            
+                                <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#set-up-daint-tsa-balfrin">Set up (Daint, Tsa, Balfrin)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#set-up-local-machines">Set up (local machines)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#update">Update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#clean">Clean</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-packages">Use packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#develop-packages">Develop packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#environments">Environments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-packages-pr-mr-ci-cd">Test packages (PR/MR/CI/CD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cosmo">COSMO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#icon">ICON</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Install.html">Spack Instance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Install.html#machine-specific-config-files">Machine specific config files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Install.html#spack-instance-on-dom">Spack instance on Dom</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="C2SMGuidelines.html">C2SM Guidelines for Spack</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="C2SMGuidelines.html#building">Building</a></li>
+<li class="toctree-l2"><a class="reference internal" href="C2SMGuidelines.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="C2SMGuidelines.html#running">Running</a></li>
+<li class="toctree-l2"><a class="reference internal" href="C2SMGuidelines.html#spack-in-scripts">Spack in scripts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SpackCommands.html">Important Spack Commands</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-find">Spack find</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-list">Spack list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-info">Spack info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-spec">Spack spec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-install">Spack install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-installcosmo">Spack installcosmo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-dev-build">Spack dev-build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-devbuildcosmo">Spack devbuildcosmo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-location">Spack location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-build-env">Spack build-env</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-edit">Spack edit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-load">Spack load</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SpackChoice.html">Why was spack chosen by MeteoSwiss?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PrTesting.html">PR testing</a></li>
+</ul>
+
+                            
+                        
+                    </div>
+                </div>
+                <div class="col-12 col-lg-9">
+                    <div class="document">
+                        
+                            
+  <section id="quick-start">
+<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading">¶</a></h1>
+<section id="set-up-daint-tsa-balfrin">
+<h2>Set up (Daint, Tsa, Balfrin)<a class="headerlink" href="#set-up-daint-tsa-balfrin" title="Permalink to this heading">¶</a></h2>
+<p>To set up a spack instance, clone the repository</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
+</pre></div>
+</div>
+<p>To load it into your command line, execute</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>. spack-c2sm/setup-env.sh
+</pre></div>
+</div>
+<p>This auto-detects your machine and configures your instance for it.
+You can force a machine with an argument. The name has to match a folder in sysconfigs.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>. spack-c2sm/setup-env.sh tsa
+</pre></div>
+</div>
+</section>
+<section id="set-up-local-machines">
+<h2>Set up (local machines)<a class="headerlink" href="#set-up-local-machines" title="Permalink to this heading">¶</a></h2>
+<p>Same as above, but probably you want spack to auto detect compilers and preinstalled packages</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
+. spack-c2sm/setup-env.sh
+spack compiler find
+spack external find --all
+</pre></div>
+</div>
+</section>
+<section id="update">
+<h2>Update<a class="headerlink" href="#update" title="Permalink to this heading">¶</a></h2>
+<p>To update a spack instance, pull the latest version from the repository and update the submodule</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git pull
+git submodule update --recursive
+</pre></div>
+</div>
+</section>
+<section id="clean">
+<h2>Clean<a class="headerlink" href="#clean" title="Permalink to this heading">¶</a></h2>
+<p>To clean a spack instance, empty the caches, uninstall everything and remove misc caches</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack clean -a
+spack uninstall -a
+rm -rf ~/.spack
+</pre></div>
+</div>
+</section>
+<section id="use-packages">
+<h2>Use packages<a class="headerlink" href="#use-packages" title="Permalink to this heading">¶</a></h2>
+<p>To get information about a package, query spack</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack info &lt;package&gt;
+e.g.
+spack info icon
+</pre></div>
+</div>
+<p>To see what ‘spack install’ would install, ask for a spec</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack spec &lt;variant&gt;
+e.g.
+spack spec icon @master +ocean
+</pre></div>
+</div>
+<p>An unspecfied variant (e.g. ‘ocean’) can be concretized to ANY of its values. Spack isn’t required to use the default value when a variant is unspecified. The default value only serves as a tiebreaker.</p>
+<p>To install a package</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack install &lt;variant&gt;
+e.g.
+spack install icon @master %gcc +ocean
+</pre></div>
+</div>
+<p>To locate your install, query spack</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack location --install-dir &lt;variant&gt;
+</pre></div>
+</div>
+<p>This prints a list of all installs that satisfy the restrictions in your variant.</p>
+<p>To run it, you may need to load environment variables</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack load &lt;variant&gt;
+</pre></div>
+</div>
+</section>
+<section id="develop-packages">
+<h2>Develop packages<a class="headerlink" href="#develop-packages" title="Permalink to this heading">¶</a></h2>
+<p>We assume that developers of a package are familiar with its build system. Therefor we reccomend to use spack to set up the environment for the package. Building and testing should be done with the package’s build system and test system.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load spack!</span>
+spack dev-build --before build &lt;package&gt; @develop &lt;variant&gt; <span class="c1"># stops dev-build before executing the phase &#39;build&#39;</span>
+spack build-env &lt;package&gt; @develop &lt;variant&gt; -- bash <span class="c1"># nests a bash shell with the build env vars loaded</span>
+<span class="c1"># Work on the package!</span>
+<span class="c1"># Use the package&#39;s build system! (e.g. &#39;make&#39;)</span>
+<span class="c1"># Use the package&#39;s testing infrastructure!</span>
+<span class="nb">exit</span> <span class="c1"># to exit the nested bash</span>
+</pre></div>
+</div>
+<p>If you want multiple dev-builds at the same time, label them with separate ‘&#64;&lt;your-label&gt;’.
+The identifier <a class="reference external" href="mailto:'&#37;&#52;&#48;develop">‘<span>&#64;</span>develop</a>’ is common in the spack documentation but you can use any string.</p>
+</section>
+<section id="environments">
+<h2>Environments<a class="headerlink" href="#environments" title="Permalink to this heading">¶</a></h2>
+<p>Environments sit in a folder with a name. That’s the name of the environment.</p>
+<p>To activate a spack environment</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack env activate -p &lt;env_name&gt;
+</pre></div>
+</div>
+<p>To deactivate a spack environment</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack env deactivate
+</pre></div>
+</div>
+<p>Most of the spack commands are sensitive to environments (<a href="#id1"><span class="problematic" id="id2">`see spack doc&lt;https://spack.readthedocs.io/en/latest/environments.html#environment-sensitive-commands&gt;`__</span></a>).</p>
+</section>
+<section id="test-packages-pr-mr-ci-cd">
+<h2>Test packages (PR/MR/CI/CD)<a class="headerlink" href="#test-packages-pr-mr-ci-cd" title="Permalink to this heading">¶</a></h2>
+<p>You can use spack to test a PR/MR in your CI pipeline.
+This is a common way to do it.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># cd into the packages repo!</span>
+git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
+. spack-c2sm/setup-env.sh
+spack dev-build --test<span class="o">=</span>root --show-log-on-error &lt;package&gt; @develop &lt;variant&gt;
+</pre></div>
+</div>
+<p>You can also use spack in your end-to-end tests.
+This is a common way to do it.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
+. spack-c2sm/setup-env.sh
+spack install --test<span class="o">=</span>root --show-log-on-error &lt;package&gt; @&lt;version&gt; &lt;variant&gt;
+</pre></div>
+</div>
+</section>
+<section id="cosmo">
+<h2>COSMO<a class="headerlink" href="#cosmo" title="Permalink to this heading">¶</a></h2>
+<p>COSMO is currently treated specially. It has its own commands in spack-c2sm.
+The reason for this is that the optional depencendy on the C++ dycore lives in the same repository as COSMO.</p>
+<p>To install COSMO</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack installcosmo cosmo @&lt;version&gt; %&lt;compiler&gt; &lt;variants&gt;
+</pre></div>
+</div>
+<p>To develop COSMO</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;/path/to/package&gt;
+spack devbuildcosmo cosmo @&lt;version&gt; %&lt;compiler&gt; &lt;variants&gt;
+</pre></div>
+</div>
+<p>Example variants:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack installcosmo cosmo @org-master <span class="nv">cosmo_target</span><span class="o">=</span>cpu <span class="c1"># CPU variant of https://github.com/COSMO-ORG/cosmo master</span>
+spack installcosmo cosmo @org-master <span class="nv">cosmo_target</span><span class="o">=</span>gpu <span class="c1"># GPU variant of https://github.com/COSMO-ORG/cosmo master</span>
+spack installcosmo cosmo @apn_5.09a.mch1.2.p1 <span class="nv">cosmo_target</span><span class="o">=</span>gpu <span class="c1"># GPU variant of https://github.com/MeteoSwiss-APN/cosmo/releases/tag/5.09a.mch1.2.p1</span>
+</pre></div>
+</div>
+</section>
+<section id="icon">
+<h2>ICON<a class="headerlink" href="#icon" title="Permalink to this heading">¶</a></h2>
+<p>ICON currently needs a workaround when dev-building. Spack refuses to build in an empty folder. So you need to populate it with something</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>touch .not_empty
+</pre></div>
+</div>
+</section>
+</section>
+
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            LANGUAGE:'en',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+    <div class="footer" role="contentinfo">
+        <div class="container">
+            &#169; Copyright 2020, Carlos Osuna.
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.
+        </div>
+    </div>  
+
+</body>
+</html>
