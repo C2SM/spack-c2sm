@@ -40,9 +40,10 @@ Environments sit in a folder with a name and are defined in a **spack.yaml**
 file. For more infos about environments in 
 general read the `official spack docs <https://spack.readthedocs.io/en/latest/environments.html>`__.
 
-**Environment defined in ICON**
+**Environment defined in ICON:**
 
-.. code-block:: yaml
+.. code-block:: bash
+  :caption: Environment defined in ICON
 
   # This is a Spack Environment file.
   #
