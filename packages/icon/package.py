@@ -26,9 +26,8 @@ class Icon(AutotoolsPackage, CudaPackage):
     version('nwp-master',
             git='ssh://git@gitlab.dkrz.de/icon/icon-nwp.git',
             submodules=True)
-            
-    # Optional Features:
-    variant('rpaths', default=True, description='Add directories specified with -L flags in LDFLAGS and LIBS to the runtime library search paths (RPATH)')
+
+    
 
     # Model Features:
     variant('atmo',
