@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Spack Instance &mdash; C2SM Spack  documentation</title>
+  <title>How to manage your own Spack instance &mdash; C2SM Spack  documentation</title>
   
 
   
@@ -70,7 +70,7 @@
     
       <li><a href="index.html">Docs</a></li>
         
-      <li>Spack Instance</li>
+      <li>How to manage your own Spack instance</li>
     
     
       <li class="breadcrumbs-aside">
@@ -110,16 +110,17 @@
 <li class="toctree-l1"><a class="reference internal" href="QuickStart.html">Quick Start</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="QuickStart.html#at-cscs-daint-tsa-balfrin">At CSCS (Daint, Tsa, Balfrin)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="QuickStart.html#local-machines-and-containers">Local machines and Containers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="QuickStart.html#update">Update</a></li>
-<li class="toctree-l2"><a class="reference internal" href="QuickStart.html#clean">Clean</a></li>
 <li class="toctree-l2"><a class="reference internal" href="QuickStart.html#use-packages">Use packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="QuickStart.html#develop-packages">Develop packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="QuickStart.html#environments">Environments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="QuickStart.html#cosmo">COSMO</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Spack Instance</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#machine-specific-config-files">Machine specific config files</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">How to manage your own Spack instance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#create-new-spack-instance">Create new Spack instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#update-spack-instance">Update Spack instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#clean-spack-instance">Clean Spack instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#spack-instance-config-files">Spack instance config files</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="C2SMGuidelines.html">C2SM Guidelines for Spack</a><ul>
@@ -160,8 +161,10 @@
                     <div class="document">
                         
                             
-  <section id="spack-instance">
-<h1>Spack Instance<a class="headerlink" href="#spack-instance" title="Permalink to this heading">¶</a></h1>
+  <section id="how-to-manage-your-own-spack-instance">
+<h1>How to manage your own Spack instance<a class="headerlink" href="#how-to-manage-your-own-spack-instance" title="Permalink to this heading">¶</a></h1>
+<section id="create-new-spack-instance">
+<h2>Create new Spack instance<a class="headerlink" href="#create-new-spack-instance" title="Permalink to this heading">¶</a></h2>
 <p>To get an instance, git clone spack-c2sm and its submodule spack.
 ‘–depth 1’ and ‘–shallow-submodules’ are optional, but they reduce the amount of downloaded data.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
@@ -171,8 +174,29 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span> spack-c2sm/setup-env.sh
 </pre></div>
 </div>
-<section id="machine-specific-config-files">
-<h2>Machine specific config files<a class="headerlink" href="#machine-specific-config-files" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="update-spack-instance">
+<h2>Update Spack instance<a class="headerlink" href="#update-spack-instance" title="Permalink to this heading">¶</a></h2>
+<p>To update a spack instance, pull the latest version from the repository and update the submodule</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git pull
+git submodule update --recursive
+</pre></div>
+</div>
+<p>This is required after upgrades at CSCS or if you need new features of a package.
+It is recommended to clean the instance afterwards, for more infos
+see below.</p>
+</section>
+<section id="clean-spack-instance">
+<h2>Clean Spack instance<a class="headerlink" href="#clean-spack-instance" title="Permalink to this heading">¶</a></h2>
+<p>To clean a spack instance, empty the caches, uninstall everything and remove misc caches</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack clean -a
+spack uninstall -a
+rm -rf ~/.spack
+</pre></div>
+</div>
+</section>
+<section id="spack-instance-config-files">
+<h2>Spack instance config files<a class="headerlink" href="#spack-instance-config-files" title="Permalink to this heading">¶</a></h2>
 <p>There is a set of .yaml files that define machine specific things like compilers, modules, preinstalled packages
 and more.</p>
 <p>They are available under spack/etc/spack. Their structure is:</p>

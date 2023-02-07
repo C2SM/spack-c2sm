@@ -30,7 +30,7 @@
   <link rel="stylesheet" href="_static/css/theme.min.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Spack Instance" href="Install.html" />
+    <link rel="next" title="How to manage your own Spack instance" href="Install.html" />
     <link rel="prev" title="Welcome to C2SM Spack Documentation!" href="index.html" /> 
 
 </head>
@@ -110,16 +110,17 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#at-cscs-daint-tsa-balfrin">At CSCS (Daint, Tsa, Balfrin)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#local-machines-and-containers">Local machines and Containers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#update">Update</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#clean">Clean</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-packages">Use packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#develop-packages">Develop packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#environments">Environments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#cosmo">COSMO</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Install.html">Spack Instance</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Install.html#machine-specific-config-files">Machine specific config files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Install.html">How to manage your own Spack instance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Install.html#create-new-spack-instance">Create new Spack instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Install.html#update-spack-instance">Update Spack instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Install.html#clean-spack-instance">Clean Spack instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Install.html#spack-instance-config-files">Spack instance config files</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="C2SMGuidelines.html">C2SM Guidelines for Spack</a><ul>
@@ -185,23 +186,6 @@ You can force a machine with an argument. The name has to match a folder in sysc
 . spack-c2sm/setup-env.sh
 spack compiler find
 spack external find --all
-</pre></div>
-</div>
-</section>
-<section id="update">
-<h2>Update<a class="headerlink" href="#update" title="Permalink to this heading">¶</a></h2>
-<p>To update a spack instance, pull the latest version from the repository and update the submodule</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git pull
-git submodule update --recursive
-</pre></div>
-</div>
-</section>
-<section id="clean">
-<h2>Clean<a class="headerlink" href="#clean" title="Permalink to this heading">¶</a></h2>
-<p>To clean a spack instance, empty the caches, uninstall everything and remove misc caches</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack clean -a
-spack uninstall -a
-rm -rf ~/.spack
 </pre></div>
 </div>
 </section>
