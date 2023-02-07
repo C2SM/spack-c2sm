@@ -14,8 +14,8 @@ mostly at the Swiss Super Computing Center (CSCS).
    :caption: Contents:
 
    QuickStart
-   Install
    C2SMGuidelines
+   InstanceManagement
    SpackCommands
    Testing
    SpackChoice

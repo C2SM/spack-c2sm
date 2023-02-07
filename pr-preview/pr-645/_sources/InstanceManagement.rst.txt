@@ -1,5 +1,15 @@
 How to manage your own Spack instance
 ========================================
+Users are responsible for their own instance instead of relying
+on an instance installed by C2SM. The main advantage is that the users
+won't have any change in their Spack instance, unless they actively
+decide to pull upstream changes from GitHub.
+Therefore your workflow is not interupted i.e. during a production phase
+with using software installed by Spack.
+
+**But with more power comes more responsability!**
+
+This page collects best practices for a safe and reliable Spack instance management.
 
 Create new Spack instance
 ----------------------------------
@@ -11,7 +21,7 @@ To get an instance, git clone spack-c2sm and its submodule spack.
 
     git clone --depth 1 --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
 
-On **Daint, Dom, Tsa and Arolla** setup-env.sh automatically detects the machine. You may simply execute
+At CSCS setup-env.sh automatically detects the machine. You may simply execute
 
 .. code-block:: bash
 
@@ -48,9 +58,9 @@ and more.
 
 They are available under spack/etc/spack. Their structure is:
 
-* compilers.yaml: all info about available compilers, machine specific compiler flags, module to load (PrgEnv) before compiling
-* packages.yaml: all info about the already installed dependencies, i.e their module names or paths
-* modules.yaml: all info about the created modules, i.e which env variable or modules should be set once loaded
-* config.yaml: specifies the main installation path and the main module installation path, where to find thebinaries etc.
+* **compilers.yaml**: all info about available compilers, machine specific compiler flags, module to load (PrgEnv) before compiling
+* **packages.yaml**: all info about the already installed dependencies, i.e their module names or paths
+* **modules.yaml**: all info about the created modules, i.e which env variable or modules should be set once loaded
+* **config.yaml**: specifies the main installation path and the main module installation path, where to find thebinaries etc.
 * upstreams.yaml: specifies where to find the pre-installed software, that are under /project/g110/spack-install/
-* repos.yaml: specifies where to find the only mch packages that are stored in spack-c2sm repository
+* **repos.yaml**: specifies where to find the only mch packages that are stored in spack-c2sm repository
