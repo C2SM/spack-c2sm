@@ -296,7 +296,7 @@ class IconToolsTest(unittest.TestCase):
 @pytest.mark.no_balfrin  # This fails with "BOZ literal constant at (1) cannot appear in an array constructor". https://gcc.gnu.org/onlinedocs/gfortran/BOZ-literal-constants.html
 class LibGrib1Test(unittest.TestCase):
 
-    @pytest.mark.serial_only # locking problem on Tsa in combination with int2lm
+    @pytest.mark.serial_only  # locking problem on Tsa in combination with int2lm
     def test_install_version_22_01_2020(self):
         spack_install_and_test('libgrib1 @22-01-2020')
 
