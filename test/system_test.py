@@ -270,9 +270,7 @@ class Int2lmTest(unittest.TestCase):
 
     @pytest.mark.no_balfrin  # fails because libgrib1 master fails
     def test_install_version_3_00_nvhpc(self):
-        spack_install_and_test(
-            f'int2lm @int2lm-3.00 %{nvidia_compiler}'
-        )
+        spack_install_and_test(f'int2lm @int2lm-3.00 %{nvidia_compiler}')
 
     @pytest.mark.no_balfrin  # fails because libgrib1 master fails
     def test_install_version_3_00_nvhpc_fixed_definitions(self):
