@@ -1,5 +1,8 @@
-Spack Instance
-==============
+How to manage your own Spack instance
+========================================
+
+Create new Spack instance
+----------------------------------
 
 To get an instance, git clone spack-c2sm and its submodule spack.
 '--depth 1' and '--shallow-submodules' are optional, but they reduce the amount of downloaded data.
@@ -14,7 +17,31 @@ On **Daint, Dom, Tsa and Arolla** setup-env.sh automatically detects the machine
 
     source spack-c2sm/setup-env.sh
 
-Machine specific config files
+Update Spack instance
+----------------------
+To update a spack instance, pull the latest version from the repository and update the submodule
+
+.. code-block:: bash
+
+
+  git pull
+  git submodule update --recursive
+
+This is required after upgrades at CSCS or if you need new features of a package.
+It is recommended to clean the instance afterwards, for more infos
+see below.
+
+Clean Spack instance
+-----
+To clean a spack instance, empty the caches, uninstall everything and remove misc caches
+
+.. code-block:: bash
+
+  spack clean -a
+  spack uninstall -a
+  rm -rf ~/.spack
+
+Spack instance config files
 ------------------------------
 There is a set of .yaml files that define machine specific things like compilers, modules, preinstalled packages
 and more.

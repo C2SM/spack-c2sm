@@ -34,24 +34,7 @@ Same as above, but probably you want spack to auto detect compilers and preinsta
   spack compiler find
   spack external find --all
 
-Update
-------
-To update a spack instance, pull the latest version from the repository and update the submodule
 
-.. code-block:: bash
-
-  git pull
-  git submodule update --recursive
-
-Clean
------
-To clean a spack instance, empty the caches, uninstall everything and remove misc caches
-
-.. code-block:: bash
-
-  spack clean -a
-  spack uninstall -a
-  rm -rf ~/.spack
 
 Use packages
 ------------
