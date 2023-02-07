@@ -108,15 +108,14 @@
                                 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#set-up-daint-tsa-balfrin">Set up (Daint, Tsa, Balfrin)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#set-up-local-machines">Set up (local machines)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#at-cscs-daint-tsa-balfrin">At CSCS (Daint, Tsa, Balfrin)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#local-machines-and-containers">Local machines and Containers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#update">Update</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#clean">Clean</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-packages">Use packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#develop-packages">Develop packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#environments">Environments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#cosmo">COSMO</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#icon">ICON</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Install.html">Spack Instance</a><ul>
@@ -163,8 +162,8 @@
                             
   <section id="quick-start">
 <h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading">¶</a></h1>
-<section id="set-up-daint-tsa-balfrin">
-<h2>Set up (Daint, Tsa, Balfrin)<a class="headerlink" href="#set-up-daint-tsa-balfrin" title="Permalink to this heading">¶</a></h2>
+<section id="at-cscs-daint-tsa-balfrin">
+<h2>At CSCS (Daint, Tsa, Balfrin)<a class="headerlink" href="#at-cscs-daint-tsa-balfrin" title="Permalink to this heading">¶</a></h2>
 <p>To set up a spack instance, clone the repository</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
 </pre></div>
@@ -179,8 +178,8 @@ You can force a machine with an argument. The name has to match a folder in sysc
 </pre></div>
 </div>
 </section>
-<section id="set-up-local-machines">
-<h2>Set up (local machines)<a class="headerlink" href="#set-up-local-machines" title="Permalink to this heading">¶</a></h2>
+<section id="local-machines-and-containers">
+<h2>Local machines and Containers<a class="headerlink" href="#local-machines-and-containers" title="Permalink to this heading">¶</a></h2>
 <p>Same as above, but probably you want spack to auto detect compilers and preinstalled packages</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
 . spack-c2sm/setup-env.sh
@@ -282,13 +281,6 @@ spack devbuildcosmo cosmo @&lt;version&gt; %&lt;compiler&gt; &lt;variants&gt;
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack installcosmo cosmo @org-master <span class="nv">cosmo_target</span><span class="o">=</span>cpu <span class="c1"># CPU variant of https://github.com/COSMO-ORG/cosmo master</span>
 spack installcosmo cosmo @org-master <span class="nv">cosmo_target</span><span class="o">=</span>gpu <span class="c1"># GPU variant of https://github.com/COSMO-ORG/cosmo master</span>
 spack installcosmo cosmo @apn_5.09a.mch1.2.p1 <span class="nv">cosmo_target</span><span class="o">=</span>gpu <span class="c1"># GPU variant of https://github.com/MeteoSwiss-APN/cosmo/releases/tag/5.09a.mch1.2.p1</span>
-</pre></div>
-</div>
-</section>
-<section id="icon">
-<h2>ICON<a class="headerlink" href="#icon" title="Permalink to this heading">¶</a></h2>
-<p>ICON currently needs a workaround when dev-building. Spack refuses to build in an empty folder. So you need to populate it with something</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>touch .not_empty
 </pre></div>
 </div>
 </section>
