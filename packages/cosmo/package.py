@@ -265,8 +265,7 @@ class Cosmo(MakefilePackage):
             env.set('MPIL', '-L' + self.mpi_spec.prefix + ' -lmpi_cxx')
 
         else:
-            env.set(
-                'MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich')
+            env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich')
 
         env.set('MPII', '-I' + self.mpi_spec.prefix + '/include')
 
