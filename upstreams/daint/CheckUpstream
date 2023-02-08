@@ -1,0 +1,51 @@
+pipeline {
+    agent {
+        node {
+            label 'daint'
+        }
+    }
+    stages {
+        stage('Clone icon-nwp') {
+            steps {
+                sh"""
+                git clone git@gitlab.dkrz.de:icon/icon-nwp.git
+                cd icon-nwp
+                git switch spack-envs
+                git submodule init
+                git submodule update
+                """
+            }
+        }
+        stage('Check availablity of upstream') {
+            matrix {
+                axes {
+                    axis {
+                        name 'BUILDER'
+                        values 'daint_cpu_nvhpc', 'daint_gpu_nvhpc'
+                    }
+                }
+                stages {
+                    stage('Check upstream "${BUILDER}"') {
+                        steps {
+                            sh"""
+                            . ./setup-env.sh
+                            cd icon-nwp
+                            spack env activate config/cscs/spack-envs/${BUILDER}
+                            spack install --only package --until configure
+                            """
+                        }
+                    }
+                    }
+                }
+            }
+        }
+    }
+    post {
+        always {
+            echo 'Cleaning up workspace'
+            deleteDir()
+        }
+    }
+}
+
+
