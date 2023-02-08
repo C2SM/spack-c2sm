@@ -33,4 +33,4 @@ spack:
   view: false
   config:
     install_tree:
-      root: /scratch/snx3000/juckerj/upstreams/bb_stable
+      root: /project/g110/spack/upstream/daint_v1_test
