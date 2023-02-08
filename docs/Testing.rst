@@ -47,7 +47,7 @@ Examples
 *   ``launch jenkins all`` tests all packages on all machines.
 
 
-Supported packages: all folder names in folder `packages <../packages>`.
+Supported packages: all folder names in folder `packages <../packages>`__.
 
 Supported machines:
 
