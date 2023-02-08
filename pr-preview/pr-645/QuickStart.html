@@ -168,7 +168,7 @@
 <h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading">¶</a></h1>
 <section id="at-cscs-daint-tsa-balfrin">
 <h2>At CSCS (Daint, Tsa, Balfrin)<a class="headerlink" href="#at-cscs-daint-tsa-balfrin" title="Permalink to this heading">¶</a></h2>
-<p>To set up a spack instance, clone the repository</p>
+<p>To set up a Spack instance, clone the repository</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
 </pre></div>
 </div>
@@ -184,36 +184,34 @@ You can force a machine with an argument. The name has to match a folder in sysc
 </section>
 <section id="local-machines-and-containers">
 <h2>Local machines and Containers<a class="headerlink" href="#local-machines-and-containers" title="Permalink to this heading">¶</a></h2>
-<p>Same as above, but probably you want spack to auto detect compilers and preinstalled packages</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
-. spack-c2sm/setup-env.sh
-spack compiler find
+<p>Spack can autodetect compilers and preinstalled packages with</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack compiler find
 spack external find --all
 </pre></div>
 </div>
 </section>
 <section id="use-packages">
 <h2>Use packages<a class="headerlink" href="#use-packages" title="Permalink to this heading">¶</a></h2>
-<p>To get information about a package, query spack</p>
+<p>To get information about a package, query Spack</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack info &lt;package&gt;
-e.g.
+<span class="c1"># e.g.</span>
 spack info icon
 </pre></div>
 </div>
-<p>To see what ‘spack install’ would install, ask for a spec</p>
+<p>To see what <cite>spack install</cite> would install, ask for a spec</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack spec &lt;variant&gt;
-e.g.
+<span class="c1"># e.g.</span>
 spack spec icon @master +ocean
 </pre></div>
 </div>
-<p>An unspecfied variant (e.g. ‘ocean’) can be concretized to ANY of its values. Spack isn’t required to use the default value when a variant is unspecified. The default value only serves as a tiebreaker.</p>
+<p>An unspecfied variant (e.g. <cite>ocean</cite>) can be concretized to ANY of its values. Spack isn’t required to use the default value when a variant is unspecified. The default value only serves as a tiebreaker.</p>
 <p>To install a package</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack install &lt;variant&gt;
-e.g.
+<span class="c1"># e.g.</span>
 spack install icon @master %gcc +ocean
 </pre></div>
 </div>
-<p>To locate your install, query spack</p>
+<p>To locate your install, query Spack</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack location --install-dir &lt;variant&gt;
 </pre></div>
 </div>
@@ -225,7 +223,7 @@ spack install icon @master %gcc +ocean
 </section>
 <section id="cosmo">
 <h2>COSMO<a class="headerlink" href="#cosmo" title="Permalink to this heading">¶</a></h2>
-<p>COSMO is currently treated specially. It has its own commands in spack-c2sm.
+<p>COSMO is currently receiving special treatment. It has its own commands in spack-c2sm.
 The reason for this is that the optional depencendy on the C++ dycore lives in the same repository as COSMO.</p>
 <p>To install COSMO</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack installcosmo cosmo @&lt;version&gt; %&lt;compiler&gt; &lt;variants&gt;
