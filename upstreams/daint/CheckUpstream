@@ -3,17 +3,6 @@ pipeline {
         node {label 'daint'}
     }
     stages {
-        stage('Clone icon-nwp') {
-            steps {
-                sh"""
-                git clone git@gitlab.dkrz.de:icon/icon-nwp.git
-                cd icon-nwp
-                git switch spack-envs
-                git submodule init
-                git submodule update
-                """
-            }
-        }
         stage('Check availablity of upstream') {
             matrix {
                 axes {
@@ -23,11 +12,22 @@ pipeline {
                     }
                 }
                 stages {
-                    stage('Check upstream "${BUILDER}"') {
+                    stage('Clone icon-nwp') {
+                        steps {
+                            sh"""
+                            git clone git@gitlab.dkrz.de:icon/icon-nwp.git ${BUILDER}
+                            cd ${BUILDER}
+                            git switch spack-envs
+                            git submodule init
+                            git submodule update
+                            """
+                        }
+                    }
+                    stage('${BUILDER}') {
                         steps {
                             sh"""
                             . ./setup-env.sh
-                            cd icon-nwp
+                            cd ${BUILDER}
                             spack env activate config/cscs/spack-envs/${BUILDER}
                             spack install --only package --until configure
                             """
@@ -35,6 +35,12 @@ pipeline {
                     }
                 }
             }
+        }
+    }
+    post {
+        always {
+            echo 'Cleaning up workspace'
+            deleteDir()
         }
     }
 }
