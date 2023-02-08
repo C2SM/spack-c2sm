@@ -50,6 +50,7 @@ Examples
 Supported packages: all folder names in folder `packages <../packages>`.
 
 Supported machines:
+
 *   balfrin
 *   daint
 *   tsa
