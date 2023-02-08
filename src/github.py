@@ -22,7 +22,7 @@ class GitHubRepo:
                     test_col = ':yellow_circle:'
         return (test_exist, test_col)
 
-    def add_test_to_text(test, test_exist, test_col, details, col, text):
+    def add_test_to_text(test, test_exist, test_col, details, col, logfiles, text):
         if test_exist:
             text = text + '<details>\n<summary>' + test_col + ' ' + test + ' test</summary>\n<table>\n<tbody>\n'
             for i in range(len(details)):
@@ -30,7 +30,7 @@ class GitHubRepo:
                     test_name = details[i][2].replace('_', ' ')
                     test_name = test_name.replace('.log', '')
                     text = text + '<tr><td>' + col[i]
-                    text = text + '</td><td>' + test_name + '</td></tr>\n'
+                    text = text + '</td><td><a href="' + logfiles[i] + '">' + test_name + '</a></td></tr>\n'
             text = text + '</tbody>\n</table>\n</details>'
         return (text)
 
@@ -45,9 +45,11 @@ class GitHubRepo:
         text_lines = list(f)
 
         details = []
+        logfiles = []
         col = []
         for item in text_lines:
             details.append(item[item.find('[') + 1:item.rfind(']')])
+            logfiles.append(item[item.find('(') + 1:item.rfind(')')])
             col.append(item.split()[0])
 
         for i, item in enumerate(details):
@@ -57,13 +59,13 @@ class GitHubRepo:
 
         [unit, unit_col] = GitHubRepo.get_color('unit', details, col)
         text_new = GitHubRepo.add_test_to_text('unit', unit, unit_col, details,
-                                               col, text_new)
+                                               col, logfiles, text_new)
         [int, int_col] = GitHubRepo.get_color('integration', details, col)
         text_new = GitHubRepo.add_test_to_text('integration', int, int_col,
-                                               details, col, text_new)
+                                               details, col, logfiles, text_new)
         [sys, sys_col] = GitHubRepo.get_color('system', details, col)
         text_new = GitHubRepo.add_test_to_text('system', sys, sys_col, details,
-                                               col, text_new)
+                                               col, logfiles, text_new)
 
         requests.post(url, headers=headers, json={'body': text_new})
 
