@@ -30,6 +30,7 @@ author = 'Spack Administrators'
 extensions = [
     'sphinx.ext.autosectionlabel',
     'sphinx.ext.todo',
+    'sphinx_rtd_theme',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -47,7 +48,8 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 #
 #html_theme = 'groundwork'
 #html_theme_path, html_theme, needs_sphinx = set_psphinxtheme('p-green')
-html_theme = 'karma_sphinx_theme'
+#html_theme = 'karma_sphinx_theme'
+html_theme = 'sphinx_rtd_theme'
 #html_theme = 'p-main_theme'
 
 # Add any paths that contain custom static files (such as style sheets) here,
