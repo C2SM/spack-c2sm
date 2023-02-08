@@ -89,60 +89,63 @@
              
   <section id="how-to-manage-your-own-spack-instance">
 <h1>How to manage your own Spack instance<a class="headerlink" href="#how-to-manage-your-own-spack-instance" title="Permalink to this heading"></a></h1>
-<p>Users are responsible for their own instance instead of relying
-on an instance installed by C2SM. The main advantage is that the users
-won’t have any change in their Spack instance, unless they actively
-decide to pull upstream changes from GitHub.
-Therefore your workflow is not interupted i.e. during a production phase
-with using software installed by Spack.</p>
-<p><strong>But with more power comes more responsability!</strong></p>
+<p>Users are responsible for their own instance, rather than relying on an
+instance installed by C2SM. The main advantage is that users do not make
+changes to their Spack instance unless they actively choose to pull upstream
+changes from GitHub. Therefore, your workflow is not interrupted, for example,
+during a production phase with software installed from Spack.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>With more power comes more responsability!</p>
+</div>
 <p>This page collects best practices for a safe and reliable Spack instance management.</p>
 <section id="create-new-spack-instance">
 <h2>Create new Spack instance<a class="headerlink" href="#create-new-spack-instance" title="Permalink to this heading"></a></h2>
-<p>To get an instance, git clone spack-c2sm and its submodule spack.
-‘–depth 1’ and ‘–shallow-submodules’ are optional, but they reduce the amount of downloaded data.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
+<p>To get an instance, clone spack-c2sm and its submodule spack.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
 </pre></div>
 </div>
-<p>At CSCS setup-env.sh automatically detects the machine. You may simply execute</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span> spack-c2sm/setup-env.sh
+<p>The arguments <code class="docutils literal notranslate"><span class="pre">--depth</span> <span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">--shallow-submodules</span></code> are optional,
+but they reduce the amount of downloaded data.</p>
+<p>At CSCS, <code class="docutils literal notranslate"><span class="pre">setup-env.sh</span></code> automatically detects the machine. You may simply execute</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">source</span> spack-c2sm/setup-env.sh
 </pre></div>
 </div>
-<p>It is recommended to clone spack-c2sm in a location that does <strong>NOT</strong> undergo a
-regular cleanup. On Piz Daint <code class="docutils literal notranslate"><span class="pre">$SCRATCH</span></code> enforces deletion of all files older than 30 days. This may corrupt your Spack instance, therefore <code class="docutils literal notranslate"><span class="pre">/project/XYZ/</span></code> is a safer location.</p>
+<p>It is recommended to clone <code class="docutils literal notranslate"><span class="pre">spack-c2sm</span></code> in a location that does <strong>not</strong> undergo a
+regular cleanup. On Piz Daint, <code class="docutils literal notranslate"><span class="pre">$SCRATCH</span></code> enforces the deletion of all files older than 30 days.
+This may corrupt your Spack instance, therefore <code class="docutils literal notranslate"><span class="pre">/project/XYZ/</span></code> is a safer location.</p>
 </section>
 <section id="update-spack-instance">
 <h2>Update Spack instance<a class="headerlink" href="#update-spack-instance" title="Permalink to this heading"></a></h2>
-<p>To update a spack instance, pull the latest version from the repository and update the submodule</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git pull
-git submodule update --recursive
+<p>To update a Spack instance, pull the latest version from the repository and update the submodules:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git pull
+<span class="gp">$ </span>git submodule update --recursive
 </pre></div>
 </div>
 <p>This is required after upgrades at CSCS or if you need new features of a package.
-It is recommended to clean the instance afterwards, for more infos
-see below.</p>
+It is recommended to clean the instance afterwards. For more infos, see below.</p>
 </section>
 <section id="clean-spack-instance">
 <h2>Clean Spack instance<a class="headerlink" href="#clean-spack-instance" title="Permalink to this heading"></a></h2>
-<p>To clean a spack instance, empty the caches, uninstall everything and remove misc caches</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack clean -a
-spack uninstall -a
-rm -rf ~/.spack
+<p>To clean a Spack instance, empty the caches, uninstall everything and remove misc caches:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack clean -a
+<span class="gp">$ </span>spack uninstall -a
+<span class="gp">$ </span>rm -rf ~/.spack
 </pre></div>
 </div>
 </section>
 <section id="spack-instance-config-files">
 <h2>Spack instance config files<a class="headerlink" href="#spack-instance-config-files" title="Permalink to this heading"></a></h2>
-<p>There is a set of .yaml files that define machine specific things like compilers, modules, preinstalled packages
-and more.</p>
-<p>They are available under spack/etc/spack. Their structure is:</p>
+<p>There is a set of <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> files that define machine specific things like
+compilers, modules, pre-installed packages and more.</p>
+<p>They are available under <code class="docutils literal notranslate"><span class="pre">spack/etc/spack</span></code>. Their structure is:</p>
 <ul class="simple">
-<li><p><strong>compilers.yaml</strong>: all info about available compilers, machine specific compiler flags, module to load (PrgEnv) before compiling</p></li>
-<li><p><strong>packages.yaml</strong>: all info about the already installed dependencies, i.e their module names or paths</p></li>
-<li><p><strong>modules.yaml</strong>: all info about the created modules, i.e which env variable or modules should be set once loaded</p></li>
-<li><p><strong>config.yaml</strong>: specifies the main installation path and the main module installation path, where to find binaries etc.</p></li>
-<li><p><strong>upstreams.yaml</strong>: specifies where to find the pre-installed software</p></li>
-<li><p><strong>repos.yaml</strong>: specifies where to find the only mch packages that are stored in spack-c2sm repository</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">compilers.yaml</span></code>: all information about available compilers, machine specific compiler flags, module to load (<code class="docutils literal notranslate"><span class="pre">PrgEnv</span></code>) before compiling</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">packages.yaml</span></code>: all information about the already installed dependencies, i.e their module names or paths</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">modules.yaml</span></code>: all information about the modules created, i.e which env variable or modules should be set once loaded</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">config.yaml</span></code>: specifies the main installation path and the main module installation path, where to find binaries etc.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">upstreams.yaml</span></code>: specifies where to find the pre-installed software</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">repos.yaml</span></code>: specifies where to find the only MCH packages that are stored in spack-c2sm repository</p></li>
 </ul>
 <p><strong>Unless your are a Spack developer you don’t need to modify any of the yaml-files listed!</strong></p>
 </section>
