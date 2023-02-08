@@ -63,10 +63,8 @@ if not 'READTHEDOCS' in os.environ:
     html_js_files = ['debug.js']
 
     # Add fake versions for local QA of the menu
-    html_context['test_versions'] = list(map(
-        lambda x: str(x / 10),
-        range(1, 100)
-    ))
+    html_context['test_versions'] = list(
+        map(lambda x: str(x / 10), range(1, 100)))
 
 html_logo = "demo/static/logo-wordmark-light.svg"
 html_show_sourcelink = True
@@ -74,17 +72,14 @@ html_favicon = "demo/static/favicon.ico"
 
 htmlhelp_basename = slug
 
-
 latex_documents = [
-  ('index', '{0}.tex'.format(slug), project, author, 'manual'),
+    ('index', '{0}.tex'.format(slug), project, author, 'manual'),
 ]
 
-man_pages = [
-    ('index', slug, project, [author], 1)
-]
+man_pages = [('index', slug, project, [author], 1)]
 
 texinfo_documents = [
-  ('index', slug, project, author, slug, project, 'Miscellaneous'),
+    ('index', slug, project, author, slug, project, 'Miscellaneous'),
 ]
 
 
@@ -93,24 +88,20 @@ def setup(app):
     from sphinx.domains.python import PyField
     from sphinx.util.docfields import Field
 
-    app.add_object_type(
-        'confval',
-        'confval',
-        objname='configuration value',
-        indextemplate='pair: %s; configuration value',
-        doc_field_types=[
-            PyField(
-                'type',
-                label=_('Type'),
-                has_arg=False,
-                names=('type',),
-                bodyrolename='class'
-            ),
-            Field(
-                'default',
-                label=_('Default'),
-                has_arg=False,
-                names=('default',),
-            ),
-        ]
-    )
+    app.add_object_type('confval',
+                        'confval',
+                        objname='configuration value',
+                        indextemplate='pair: %s; configuration value',
+                        doc_field_types=[
+                            PyField('type',
+                                    label=_('Type'),
+                                    has_arg=False,
+                                    names=('type', ),
+                                    bodyrolename='class'),
+                            Field(
+                                'default',
+                                label=_('Default'),
+                                has_arg=False,
+                                names=('default', ),
+                            ),
+                        ])
