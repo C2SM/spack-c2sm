@@ -12,13 +12,15 @@ libraries and executables.
 
 Building 
 ^^^^^^^^
+
 There are two possible ways of building software with Spack.
 ``spack install`` and  ``spack dev-build``.
 Both of them are fine, but have some specialties one needs to take
 into account.
 
-Spack install (C2SM Guidelines)
--------------------------------
+Spack install
+-------------
+
 Every ``spack-install`` needs a version suffix, i.e ``spack install <package>@<version-suffix>``
 This version-suffix can have different meanings:
 
@@ -64,13 +66,12 @@ info package_name`` Note that tagged versions for COSMO on the
 soon. We thus recommend using the ``spack devbuildcosmo`` command for
 now.
 
-So long story short:
+..  attention::
+    Always use a valid git tag as a version-suffix when building
+    software with ``spack install`` for production!
 
-**Always use a valid git tag as a version-suffix when building
-software with** ``spack install`` **for production!**
-
-Spack dev-build (C2SM Guidelines)
----------------------------------
+Spack dev-build
+---------------
 
 In order to install software with ``spack dev-build`` one needs a
 local source code.  Spack will compile the code as it is locally
@@ -79,10 +80,9 @@ any effect on the code version compiled.
 To be safe always use ``@mdev-build`` and copy the executable after installation
 into the source-folder.
 
-So long story short:
-
-**Always store the local sources and the corresponding executable in
-the same location!**
+..  attention::
+    Always store the local sources and the corresponding executable in
+    the same location!
 
 Running
 ^^^^^^^
@@ -121,8 +121,9 @@ An example output of ``spack load -sh`` for COSMO could look as follows:
     export GRIB_SAMPLES_PATH=/project/s903/juckerj/spack-install/daint/cosmo-eccodes-definitions/2.19.0.5/pgi/egf6fp466u2cl3ckkmhpemzf4hz7loqr/cosmoDefinitions/samples;
     export GRIB_DEFINITION_PATH=/project/s903/juckerj/spack-install/daint/cosmo-eccodes-definitions/2.19.0.5/pgi/egf6fp466u2cl3ckkmhpemzf4hz7loqr/cosmoDefinitions/definitions/:/project/s903/juckerj/spack-install/daint/eccodes/2.19.0/pgi/ccigv3uvkdl5h3d2jtb6blxvvv4qsdpc/share/eccodes/definitions;
 
-**Always load the run-environment provided by Spack prior to any
-executions of an executable installed by Spack!**
+..  tip::
+    Always load the run-environment provided by Spack prior to any
+    executions of an executable installed by Spack!
 
 Spack in scripts
 ^^^^^^^^^^^^^^^^
