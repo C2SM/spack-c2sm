@@ -23,7 +23,9 @@ class WebpackBuildCommand(distutils.cmd.Command):
     def run(self):
         if not 'CI' in os.environ and not 'TOX_ENV_NAME' in os.environ:
             subprocess.run(['npm', 'install'], check=True)
-            subprocess.run(['node_modules/.bin/webpack', '--config', 'webpack.prod.js'], check=True)
+            subprocess.run(
+                ['node_modules/.bin/webpack', '--config', 'webpack.prod.js'],
+                check=True)
 
 
 class WebpackDevelopCommand(distutils.cmd.Command):
@@ -39,10 +41,11 @@ class WebpackDevelopCommand(distutils.cmd.Command):
         pass
 
     def run(self):
-        subprocess.run(
-            ["node_modules/.bin/webpack-dev-server", "--open", "--config", "webpack.dev.js"],
-            check=True
-        )
+        subprocess.run([
+            "node_modules/.bin/webpack-dev-server", "--open", "--config",
+            "webpack.dev.js"
+        ],
+                       check=True)
 
 
 class UpdateTranslationsCommand(distutils.cmd.Command):
@@ -82,7 +85,8 @@ class TransifexCommand(distutils.cmd.Command):
 
     def run(self):
         subprocess.run(['tx', 'push', '--source'], check=True)
-        subprocess.run(['tx', 'pull', '--mode', 'onlyreviewed', '-f', '-a'], check=True)
+        subprocess.run(['tx', 'pull', '--mode', 'onlyreviewed', '-f', '-a'],
+                       check=True)
 
 
 setup(

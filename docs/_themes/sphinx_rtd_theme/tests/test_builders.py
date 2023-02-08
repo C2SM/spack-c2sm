@@ -33,8 +33,7 @@ def test_basic():
                 '</ul>\n'
                 '</li>\n'
                 '</ul>\n'
-                '</div>'
-            )
+                '</div>')
             assert search in content
         elif isinstance(app.builder, SingleFileHTMLBuilder):
             search = (
@@ -42,8 +41,7 @@ def test_basic():
                 '<li class="toctree-l1">'
                 '<a class="reference internal" href="index.html#document-foo">foo</a>'
                 '</li>\n'
-                '</ul>'
-            )
+                '</ul>')
             assert search in content
         else:
             search = (
@@ -57,10 +55,9 @@ def test_basic():
                 '</ul>\n'
                 '</li>\n'
                 '</ul>\n'
-                '</div>'
-            )
-            assert search in content, ('Missing search with builder {0}'
-                                       .format(app.builder.name))
+                '</div>')
+            assert search in content, (
+                'Missing search with builder {0}'.format(app.builder.name))
 
 
 def test_empty():
@@ -72,8 +69,7 @@ def test_empty():
         local_toc = (
             '<div class="local-toc"><ul>\n'
             '<li><a class="reference internal" href="#">test-empty</a></li>'
-            '</ul>\n</div>'
-        )
+            '</ul>\n</div>')
         assert global_toc in content
         assert local_toc not in content
 

@@ -55,7 +55,9 @@ def build(root, builder='html', **kwargs):
 
 
 def build_all(root, **kwargs):
-    for builder in ['html', 'singlehtml', 'readthedocs', 'readthedocsdirhtml',
-                    'readthedocssinglehtml', 'readthedocssinglehtmllocalmedia']:
+    for builder in [
+            'html', 'singlehtml', 'readthedocs', 'readthedocsdirhtml',
+            'readthedocssinglehtml', 'readthedocssinglehtmllocalmedia'
+    ]:
         with build(root, builder, **kwargs) as ret:
             yield ret
