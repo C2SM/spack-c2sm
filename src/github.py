@@ -8,6 +8,17 @@ class GitHubRepo:
         self.repo: str = repo
         self.auth_token: str = auth_token
 
+    def get_color(test,details,col):
+        test_col = ':green_circle:'
+        for i in range(len(details)):
+            if test in details[i][1]:
+                test_exist = True
+                if col[i] == ':red_circle:' or ':lock:' or ':wastebasket:' or ':hourglass:':
+                    test_col = ':red_circle:'
+                elif col[i] == ':yellow_circle:' and not test_col == ':red_circle:':
+                    test_col = ':yellow_circle:'
+        return(test_exist,test_col)
+
     def comment(self, issue_id: str, text: str) -> None:
         url = f'https://api.github.com/repos/{self.group}/{self.repo}/issues/{issue_id}/comments'
 
@@ -29,15 +40,7 @@ class GitHubRepo:
 
         text_new = '### ' + details[0][0] + '\n' + '<details>\n<summary>'
 
-        int_col = ':green_circle:'
-        for i in range(len(details)):
-            if 'integration' in details[i][1]:
-                int = True
-                if col[i] == ':red_circle:' or ':lock:' or ':wastebasket:' or ':hourglass:':
-                    int_col = ':red_circle:'
-                elif col[
-                        i] == ':yellow_circle:' and not int_col == ':red_circle:':
-                    int_col = ':yellow_circle:'
+        [int, int_col] = GitHubRepo.get_color('integration',details,col)
 
         if int:
             text_new = text_new + int_col + ' Integration test</summary>\n<table>\n<tbody>\n'
