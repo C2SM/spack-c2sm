@@ -1,12 +1,12 @@
 C2SM Guidelines for Spack
 =========================
 
-Spack enables the users to install pieces of software in a very
-user-friendly way, allowing e.g. different versions or specifications
-of the same package to be installed simultaneously or installing
+Spack enables users to install software in a very user-friendly way,
+for example by allowing different versions or specifications
+of the same package to be installed simultaneously, or installing
 without having to "manually" download the source code. This comes at
 the expense of potentially losing control over the exact
-version/specification being installed. That's why C2SM came up with
+version/specification being installed. For this reason, C2SM has
 the following guidelines for building, running and installing your
 libraries and executables.
 
