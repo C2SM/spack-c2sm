@@ -24,13 +24,14 @@ class GitHubRepo:
 
     def add_test_to_text(test, test_exist, test_col, details, col, text):
         if test_exist:
-            text = text + test_col + ' ' + test + ' test</summary>\n<table>\n<tbody>\n'
+            text = text + '<details>\n<summary>' + test_col + ' ' + test + ' test</summary>\n<table>\n<tbody>\n'
             for i in range(len(details)):
                 if test in details[i][1]:
                     test_name = details[i][2].replace('_', ' ')
                     test_name = test_name.replace('.log', '')
                     text = text + '<tr><td>' + col[i]
                     text = text + '</td><td>' + test_name + '</td></tr>\n'
+            text = text + '</tbody>\n</table>\n</details>'
         return (text)
 
     def comment(self, issue_id: str, text: str) -> None:
@@ -52,7 +53,7 @@ class GitHubRepo:
         for i, item in enumerate(details):
             details[i] = item.split('/')
 
-        text_new = '### ' + details[0][0] + '\n' + '<details>\n<summary>'
+        text_new = '### ' + details[0][0] + '\n'
 
         [unit, unit_col] = GitHubRepo.get_color('unit', details, col)
         text_new = GitHubRepo.add_test_to_text('unit', unit, unit_col, details,
@@ -64,7 +65,6 @@ class GitHubRepo:
         text_new = GitHubRepo.add_test_to_text('system', sys, sys_col, details,
                                                col, text_new)
 
-        text_new = text_new + '</tbody>\n</table>\n</details>'
         requests.post(url, headers=headers, json={'body': text_new})
 
 
