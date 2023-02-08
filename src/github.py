@@ -14,7 +14,8 @@ class GitHubRepo:
         for i in range(len(details)):
             if test in details[i][1]:
                 test_exist = True
-                if col[i] == ':red_circle:' or col[i] == ':lock:' or col[i] == ':wastebasket:' or col[i] == ':hourglass:':
+                if col[i] == ':red_circle:' or col[i] == ':lock:' or col[
+                        i] == ':wastebasket:' or col[i] == ':hourglass:':
                     test_col = ':red_circle:'
                 elif col[
                         i] == ':yellow_circle:' and not test_col == ':red_circle:':
