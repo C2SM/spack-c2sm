@@ -14,14 +14,14 @@ To load it into your command line, execute
 
 .. code-block:: console
 
-  . spack-c2sm/setup-env.sh
+  $ . spack-c2sm/setup-env.sh
 
 This auto-detects your machine and configures your instance for it.
 You can force a machine with an argument. The name has to match a folder in sysconfigs.
 
 .. code-block:: console
 
-  . spack-c2sm/setup-env.sh tsa
+  $ . spack-c2sm/setup-env.sh tsa
 
 
 Local machines and Containers
@@ -30,8 +30,8 @@ Spack can autodetect compilers and preinstalled packages with
 
 .. code-block:: console
 
-  spack compiler find
-  spack external find --all
+  $ spack compiler find
+  $ spack external find --all
 
 
 Use packages
@@ -40,17 +40,17 @@ To get information about a package, query Spack
 
 .. code-block:: console
 
-  spack info <package>
+  $ spack info <package>
   # e.g.
-  spack info icon
+  $ spack info icon
 
 To see what ``spack install`` would install, ask for a spec
 
 .. code-block:: console
 
-  spack spec <variant>
+  $ spack spec <variant>
   # e.g.
-  spack spec icon @master +ocean
+  $ spack spec icon @master +ocean
 
 An unspecfied variant (e.g. ``ocean``) can be concretized to ANY of its values. Spack isn't required to use the default value when a variant is unspecified. The default value only serves as a tiebreaker.
 
@@ -58,15 +58,15 @@ To install a package
 
 .. code-block:: console
 
-  spack install <variant>
+  $ spack install <variant>
   # e.g.
-  spack install icon @master %gcc +ocean
+  $ spack install icon @master %gcc +ocean
 
 To locate your install, query Spack
 
 .. code-block:: console
 
-  spack location --install-dir <variant>
+  $ spack location --install-dir <variant>
 
 This prints a list of all installs that satisfy the restrictions in your variant.
 
@@ -74,7 +74,7 @@ To run it, you may need to load environment variables
 
 .. code-block:: console
 
-  spack load <variant>
+  $ spack load <variant>
 
 
 COSMO
@@ -86,19 +86,19 @@ To install COSMO
 
 .. code-block:: console
 
-  spack installcosmo cosmo @<version> %<compiler> <variants>
+  $ spack installcosmo cosmo @<version> %<compiler> <variants>
 
 To develop COSMO
 
 .. code-block:: console
 
-  cd </path/to/package>
-  spack devbuildcosmo cosmo @<version> %<compiler> <variants>
+  $ cd </path/to/package>
+  $ spack devbuildcosmo cosmo @<version> %<compiler> <variants>
 
 Example variants:
 
 .. code-block:: console
 
-  spack installcosmo cosmo @org-master cosmo_target=cpu # CPU variant of https://github.com/COSMO-ORG/cosmo master
-  spack installcosmo cosmo @org-master cosmo_target=gpu # GPU variant of https://github.com/COSMO-ORG/cosmo master
-  spack installcosmo cosmo @apn_5.09a.mch1.2.p1 cosmo_target=gpu # GPU variant of https://github.com/MeteoSwiss-APN/cosmo/releases/tag/5.09a.mch1.2.p1
+  $ spack installcosmo cosmo @org-master cosmo_target=cpu # CPU variant of https://github.com/COSMO-ORG/cosmo master
+  $ spack installcosmo cosmo @org-master cosmo_target=gpu # GPU variant of https://github.com/COSMO-ORG/cosmo master
+  $ spack installcosmo cosmo @apn_5.09a.mch1.2.p1 cosmo_target=gpu # GPU variant of https://github.com/MeteoSwiss-APN/cosmo/releases/tag/5.09a.mch1.2.p1
