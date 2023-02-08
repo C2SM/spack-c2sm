@@ -9,6 +9,7 @@ class GitHubRepo:
         self.auth_token: str = auth_token
 
     def get_color(test, details, col):
+        test_exist = False
         test_col = ':green_circle:'
         for i in range(len(details)):
             if test in details[i][1]:
@@ -52,8 +53,14 @@ class GitHubRepo:
 
         text_new = '### ' + details[0][0] + '\n' + '<details>\n<summary>'
 
+        [unit, unit_col] = GitHubRepo.get_color('unit', details, col)
+        text_new = GitHubRepo.add_test_to_text('unit', unit, unit_col,
+                                               details, col, text_new)
         [int, int_col] = GitHubRepo.get_color('integration', details, col)
         text_new = GitHubRepo.add_test_to_text('integration', int, int_col,
+                                               details, col, text_new)
+        [sys, sys_col] = GitHubRepo.get_color('system', details, col)
+        text_new = GitHubRepo.add_test_to_text('system', sys, sys_col,
                                                details, col, text_new)
 
         text_new = text_new + '</tbody>\n</table>\n</details>'
