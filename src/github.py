@@ -20,6 +20,17 @@ class GitHubRepo:
                     test_col = ':yellow_circle:'
         return (test_exist, test_col)
 
+    def add_test_to_text(test, test_exist, test_col, details, col, text):
+        if test_exist:
+            text = text + test_col + ' ' + test + ' test</summary>\n<table>\n<tbody>\n'
+            for i in range(len(details)):
+                if test in details[i][1]:
+                    test_name = details[i][2].replace('_', ' ')
+                    test_name = test_name.replace('.log', '')
+                    text = text + '<tr><td>' + col[i]
+                    text = text + '</td><td>' + test_name + '</td></tr>\n'
+        return(text)
+
     def comment(self, issue_id: str, text: str) -> None:
         url = f'https://api.github.com/repos/{self.group}/{self.repo}/issues/{issue_id}/comments'
 
@@ -42,15 +53,7 @@ class GitHubRepo:
         text_new = '### ' + details[0][0] + '\n' + '<details>\n<summary>'
 
         [int, int_col] = GitHubRepo.get_color('integration', details, col)
-
-        if int:
-            text_new = text_new + int_col + ' Integration test</summary>\n<table>\n<tbody>\n'
-            for i in range(len(details)):
-                if 'integration' in details[i][1]:
-                    test_name = details[i][2].replace('_', ' ')
-                    test_name = test_name.replace('.log', '')
-                    text_new = text_new + '<tr><td>' + col[i]
-                    text_new = text_new + '</td><td>' + test_name + '</td></tr>\n'
+        text_new = GitHubRepo.add_test_to_text('integration', int, int_col, details, col, text_new)
 
         text_new = text_new + '</tbody>\n</table>\n</details>'
         requests.post(url, headers=headers, json={'body': text_new})
