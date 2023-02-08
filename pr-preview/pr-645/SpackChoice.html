@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Why was spack chosen by MeteoSwiss? &mdash; C2SM Spack  documentation</title>
+  <title>Why was Spack chosen by MeteoSwiss? &mdash; C2SM Spack  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
@@ -53,7 +53,7 @@
 <li class="toctree-l1"><a class="reference internal" href="SpackCommands.html">Important Spack Commands</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CodeDevelopment.html">Develop packages</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Why was spack chosen by MeteoSwiss?</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Why was Spack chosen by MeteoSwiss?</a></li>
 </ul>
 
         </div>
@@ -70,7 +70,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Why was spack chosen by MeteoSwiss?</li>
+      <li class="breadcrumb-item active">Why was Spack chosen by MeteoSwiss?</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/SpackChoice.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -81,8 +81,9 @@
            <div itemprop="articleBody">
              
   <section id="why-was-spack-chosen-by-meteoswiss">
-<h1>Why was spack chosen by MeteoSwiss?<a class="headerlink" href="#why-was-spack-chosen-by-meteoswiss" title="Permalink to this heading"></a></h1>
-<p>So the question came up why spack was chosen as the package manager for MeteoSwiss
+<h1>Why was Spack chosen by MeteoSwiss?<a class="headerlink" href="#why-was-spack-chosen-by-meteoswiss" title="Permalink to this heading"></a></h1>
+<p><em>by Carlos Osuna, MeteoSwiss</em></p>
+<p>So the question came up why Spack was chosen as the package manager for MeteoSwiss
 and I wanted to try to answer this here so that others can see this as well
 (my account may be incomplete, but should hopefully give a decent view on the whole topic):</p>
 <p>The main issue is that MCH has some hefty requirements when it comes to building software.</p>
@@ -107,10 +108,10 @@ and Accelerators/GPUs  (MCH alone needs tsa &amp; daint, but we used to also hav
 and our collaborators have a whole lot of other machines as well)</p></li>
 </ul>
 <p>These requirements are very common in HPC and they rule out a lot of popular solutions
-(e.g., <cite>apt-get</cite>, <cite>pacman</cite>, <cite>rpm</cite>, etc). There are still quite a few package managers left
-that could fullfill all the requirements. But of all of those spack has by far the
-biggest adoption within HPC (just google “HPC package manager” and the first few pages
-are dominated by spack).</p>
+(e.g., <code class="docutils literal notranslate"><span class="pre">apt-get</span></code>, <code class="docutils literal notranslate"><span class="pre">pacman</span></code>, <code class="docutils literal notranslate"><span class="pre">rpm</span></code>, etc). There are still quite a few package managers left
+that could fulfill all the requirements.But of all these, Spack has by far the
+widest adoption within HPC (just google “HPC package manager” and the first few pages
+are dominated by Spack).</p>
 <p>Spack is adopted by:</p>
 <ul class="simple">
 <li><p>The US Department of Energy (which includes Aurora (1 exaFLOPS), Frontier
@@ -119,32 +120,32 @@ are dominated by spack).</p>
 <li><p>CERN</p></li>
 <li><p>EPFL</p></li>
 <li><p>Fermilab</p></li>
-<li><p>CSCS provides some support for spack
-( <a class="reference external" href="https://user.cscs.ch/computing/compilation/spack/">https://user.cscs.ch/computing/compilation/spack/</a> )</p></li>
+<li><p>CSCS provides some support for Spack
+(<a class="reference external" href="https://user.cscs.ch/computing/compilation/spack/">https://user.cscs.ch/computing/compilation/spack/</a>)</p></li>
 </ul>
 <p>This strong dominance sets it apart from all other viable options. It only makes
 sense for MCH to follow the rest of the industry.</p>
-<p>A comparison of various tools (including spack) can be found
+<p>A comparison of various tools (including Spack) can be found
 <a class="reference external" href="https://easybuilders.github.io/easybuild-tutorial/comparison_other_tools/">here</a>
 and
 <a class="reference external" href="https://archive.fosdem.org/2018/schedule/event/installing_software_for_scientists/attachments/slides/2437/export/events/attachments/installing_software_for_scientists/slides/2437/20180204_installing_software_for_scientists.pdf">here</a>.</p>
-<p>I believe the timeline of spack at MCH was roughly:</p>
+<p>I believe the timeline of Spack at MCH was roughly:</p>
 <ul class="simple">
-<li><p>Sometime 2018 Valentin and Hannes gave a presentation about spack at MCH</p></li>
+<li><p>Sometime 2018 Valentin and Hannes gave a presentation about Spack at MCH</p></li>
 <li><p>Summer 2019 an evaluation of possible solutions was done and it was determined
-that spack was the best option (probably same or similar reasons as above)</p></li>
+that Spack was the best option (probably same or similar reasons as above)</p></li>
 <li><p>November 2019 Elsa started her build &amp; devops internship and until November 2020
-most software builds at MCH were ported to spack</p></li>
+most software builds at MCH were ported to Spack</p></li>
 <li><p>September/October/November 2020 was when most of the migration happened</p></li>
 </ul>
-<p>Of course we regularly have issues with spack and these issues are time consuming
+<p>Of course we regularly have issues with Spack and these issues are time consuming
 and frustrating. However, building, package management &amp; dependencies is a very very
-hard problem. While we regularly encounter bugs in spack and spack is still far away
+hard problem. While we regularly encounter bugs in Spack and Spack is still far away
 from an optimal solution, there are also unavoidable issues when it comes to building
-HPC software. You can’t expect spack to solve unsolvable issues. Spack is only a tool.
-If you misuse your tool, it’s not fair to blame the tool for issues. Because spack
+HPC software. You can’t expect Spack to solve unsolvable issues. Spack is only a tool.
+If you misuse your tool, it’s not fair to blame the tool for issues. Because Spack
 is trying to solve a complex problem, it also contains quite a bit of complexity
-itself. If you’re not willing to learn spack and ensure you’re using it right,
+itself. If you’re not willing to learn Spack and ensure you’re using it right,
 you will have a bad time. But you will also have a bad time with any other solution
 in this case. The idea that there is a magical tool that will automatically make
 all our build requirements work is unfortunately not realistic at this point.
