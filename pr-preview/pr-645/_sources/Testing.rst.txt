@@ -47,7 +47,7 @@ Examples
 *   ``launch jenkins all`` tests all packages on all machines.
 
 
-Supported packages: all folder names in folder `packages <../packages>`__.
+Supported packages: all folder names in folder `packages <https://github.com/C2SM/spack-c2sm/tree/dev_v0.18.1/packages>`__.
 
 Supported machines:
 
