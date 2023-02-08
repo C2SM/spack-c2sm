@@ -6,6 +6,10 @@ spack:
     - ['%nvhpc', '%cce', '%gcc']
   - libxml2@2.9.13%gcc
   - claw@2.0.3%nvhpc
+  - boost@1.79.0%gcc +atomic +chrono +container +contract +coroutine +date_time
+    +exception +fiber +filesystem +graph +graph_parallel +iostreams +json +locale
+    +log +math +mpi +program_options +random +regex +serialization +signals +stacktrace
+    cxxstd=11
 
   # COSMO
   - jasper @1.900.1 %nvhpc
@@ -17,10 +21,6 @@ spack:
     ~regex~serialization+shared~signals~singlethreaded~stacktrace+system~taggedlayout
     ~test~thread~timer~type_erasure~versionedlayout~wave cxxstd=98 visibility=hidden
 
-  # GENERAL
-  - boost @1.79.0 %gcc +atomic +chrono +container +contract +coroutine +date_time
-    +exception +fiber +filesystem +graph +graph_parallel +iostreams +json +locale
-    +log +math +mpi +program_options +random +regex +serialization +signals +stacktrace
   concretizer:
     unify: when_possible
   view: false
