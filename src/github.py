@@ -15,11 +15,38 @@ class GitHubRepo:
         if self.auth_token is not None:
             headers['Authorization'] = 'token ' + self.auth_token
 
-# Add comment to enable merge request
-        requests.post(url, headers=headers, json={'body': text})
+        f = filter(None, text.split('\n'))
+        text_lines = list(f)
 
+        details = []
+        col = []
+        for item in text_lines:
+            details.append(item[item.find('[')+1:item.rfind(']')])
+            col.append(item.split()[0])
 
-#        print(text)
+        for i, item in enumerate(details): details[i] = item.split('/')
+
+        text_new = '### ' + details[0][0] + '\n' + '<details>\n<summary>'
+
+        integration_col = ':green_circle:'
+        for i in range(len(details)):
+            if 'integration' in details[i][1]:
+                integration = True
+                if col[i] == ':red_circle:' or ':lock:' or ':wastebasket:' or ':hourglass:':
+                    integration_col = ':red_circle:'
+                elif col[i] == ':yellow_circle:' and not integration_col == ':red_circle:':
+                    integration_col = ':yellow_circle:'
+
+        if integration:
+            text_new = text_new + integration_col + ' Integration test</summary>\n<table>\n<tbody>\n<tr>\n'
+            for i in range(len(details)):
+                test_name = details[i][2].replace('_',' ')
+                test_name = test_name.replace('.log','')
+                text_new = text_new + '<td>' +  col[i] + test_name + '</td>\n'
+            text_new = text_new + '</tr>\n'
+        text_new = text_new + '</tbody>\n</table>\n</details>'
+        print(text_new)
+        requests.post(url, headers=headers, json={'body': text_new})
 
 
 class Markdown:
