@@ -35,7 +35,8 @@ class GitHubRepo:
                 int = True
                 if col[i] == ':red_circle:' or ':lock:' or ':wastebasket:' or ':hourglass:':
                     int_col = ':red_circle:'
-                elif col[i] == ':yellow_circle:' and not int_col == ':red_circle:':
+                elif col[
+                        i] == ':yellow_circle:' and not int_col == ':red_circle:':
                     int_col = ':yellow_circle:'
 
         if int:
@@ -49,6 +50,7 @@ class GitHubRepo:
 
         text_new = text_new + '</tbody>\n</table>\n</details>'
         requests.post(url, headers=headers, json={'body': text_new})
+
 
 class Markdown:
     # Source: https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
