@@ -47,8 +47,10 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 #
 #html_theme = 'groundwork'
 #html_theme_path, html_theme, needs_sphinx = set_psphinxtheme('p-green')
-html_theme = 'karma_sphinx_theme'
+#html_theme = 'karma_sphinx_theme'
 #html_theme = 'p-main_theme'
+html_theme = "sphinx_rtd_theme"
+html_theme_path = ["_themes", ]
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
