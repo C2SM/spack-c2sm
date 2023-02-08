@@ -87,12 +87,12 @@ To install the environment, type
     
     $ spack install
 
-To deactivate a spack environment, type
+To deactivate a Spack environment, type
 
 .. code-block:: console
 
     $ spack env deactivate
 
 Most of the Spack commands are sensitive to environments, see 
-`spack docs <https://spack.readthedocs.io/en/latest/environments.html#environment-sensitive-commands>`__.
+`Spack docs <https://spack.readthedocs.io/en/latest/environments.html#environment-sensitive-commands>`__.
 
