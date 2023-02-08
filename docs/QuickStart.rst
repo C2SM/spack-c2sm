@@ -4,7 +4,7 @@ Quick Start
 
 At CSCS (Daint, Tsa, Balfrin)
 -----------------------------------------
-To set up a spack instance, clone the repository
+To set up a Spack instance, clone the repository
 
 .. code-block:: bash
 
@@ -23,48 +23,46 @@ You can force a machine with an argument. The name has to match a folder in sysc
 
   . spack-c2sm/setup-env.sh tsa
 
+
 Local machines and Containers
 ------------------------------
-Same as above, but probably you want spack to auto detect compilers and preinstalled packages
+Spack can autodetect compilers and preinstalled packages with
 
 .. code-block:: bash
 
-  git clone --depth 1 --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
-  . spack-c2sm/setup-env.sh
   spack compiler find
   spack external find --all
 
 
-
 Use packages
 ------------
-To get information about a package, query spack
+To get information about a package, query Spack
 
 .. code-block:: bash
 
   spack info <package>
-  e.g.
+  # e.g.
   spack info icon
 
-To see what 'spack install' would install, ask for a spec
+To see what `spack install` would install, ask for a spec
 
 .. code-block:: bash
 
   spack spec <variant>
-  e.g.
+  # e.g.
   spack spec icon @master +ocean
 
-An unspecfied variant (e.g. 'ocean') can be concretized to ANY of its values. Spack isn't required to use the default value when a variant is unspecified. The default value only serves as a tiebreaker.
+An unspecfied variant (e.g. `ocean`) can be concretized to ANY of its values. Spack isn't required to use the default value when a variant is unspecified. The default value only serves as a tiebreaker.
 
 To install a package
 
 .. code-block:: bash
 
   spack install <variant>
-  e.g.
+  # e.g.
   spack install icon @master %gcc +ocean
 
-To locate your install, query spack
+To locate your install, query Spack
 
 .. code-block:: bash
 
@@ -81,7 +79,7 @@ To run it, you may need to load environment variables
 
 COSMO
 -----
-COSMO is currently treated specially. It has its own commands in spack-c2sm.
+COSMO is currently receiving special treatment. It has its own commands in spack-c2sm.
 The reason for this is that the optional depencendy on the C++ dycore lives in the same repository as COSMO.
 
 To install COSMO
