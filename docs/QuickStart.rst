@@ -44,7 +44,7 @@ To get information about a package, query Spack
   # e.g.
   spack info icon
 
-To see what :bash:`spack install` would install, ask for a spec
+To see what `spack install` would install, ask for a spec
 
 .. code-block:: bash
 
@@ -52,7 +52,7 @@ To see what :bash:`spack install` would install, ask for a spec
   # e.g.
   spack spec icon @master +ocean
 
-An unspecfied variant (e.g. :bash:`ocean`) can be concretized to ANY of its values. Spack isn't required to use the default value when a variant is unspecified. The default value only serves as a tiebreaker.
+An unspecfied variant (e.g. `ocean`) can be concretized to ANY of its values. Spack isn't required to use the default value when a variant is unspecified. The default value only serves as a tiebreaker.
 
 To install a package
 
