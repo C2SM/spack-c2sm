@@ -167,8 +167,8 @@
 <section id="options-spack-find">
 <h3>Options (spack find)<a class="headerlink" href="#options-spack-find" title="Permalink to this heading"></a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">\--paths,</span> <span class="pre">-p</span></code>: show paths to package install directories</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">\--variants,</span> <span class="pre">-v</span></code>: show variants in output (can be long)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--paths,</span> <span class="pre">-p</span></code>: show paths to package install directories</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--variants,</span> <span class="pre">-v</span></code>: show variants in output (can be long)</p></li>
 </ul>
 </section>
 <section id="machine-processing-spack-find">
@@ -290,9 +290,9 @@ you need to install our own spack instance.</p>
 <h3>Options (spack install)<a class="headerlink" href="#options-spack-install" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">-v</span></code>: print output of configuration and compilation for all dependencies to terminal</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">\--test=root</span></code>: run package tests during installation for top-level packages
+<li><p><code class="docutils literal notranslate"><span class="pre">--test=root</span></code>: run package tests during installation for top-level packages
 (but skip tests for dependencies)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">\--keep-stage</span></code>: keep all source needed to build the package</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--keep-stage</span></code>: keep all source needed to build the package</p></li>
 </ul>
 </section>
 </section>
@@ -385,15 +385,15 @@ to allow builds of older COSMO versions.</p>
 <section id="options-spack-devbuildcosmo">
 <h3>Options (spack devbuildcosmo)<a class="headerlink" href="#options-spack-devbuildcosmo" title="Permalink to this heading"></a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">\--no_specyaml</span></code>: Ignore <em>spec.yaml</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--no_specyaml</span></code>: Ignore <em>spec.yaml</em></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-c</span> <span class="pre">--clean_build</span></code>: Clean build</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">-j</span> <span class="pre">&lt;JOBS&gt;,</span> <span class="pre">\--jobs</span> <span class="pre">&lt;JOBS&gt;:</span></code> Explicitly set number of parallel jobs</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">\--test=root</span></code>: Run COSMO testsuite before installation</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">\--test=all</span></code>: Run package tests during installation for all packages</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">-c,</span> <span class="pre">\--clean_build</span></code>: Clean dev-build</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">\--dont-restage</span></code>: If a partial install is detected, don’t delete prior</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">-u,</span> <span class="pre">\--until</span></code>: Phase to stop after when installing</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">-n,</span> <span class="pre">\--no-checksum</span></code>: Do not use checksums to verify downloaded files (unsafe)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-j</span> <span class="pre">&lt;JOBS&gt;,</span> <span class="pre">--jobs</span> <span class="pre">&lt;JOBS&gt;:</span></code> Explicitly set number of parallel jobs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--test=root</span></code>: Run COSMO testsuite before installation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--test=all</span></code>: Run package tests during installation for all packages</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-c,</span> <span class="pre">--clean_build</span></code>: Clean dev-build</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--dont-restage</span></code>: If a partial install is detected, don’t delete prior</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-u,</span> <span class="pre">--until</span></code>: Phase to stop after when installing</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-n,</span> <span class="pre">--no-checksum</span></code>: Do not use checksums to verify downloaded files (unsafe)</p></li>
 </ul>
 </section>
 </section>
@@ -434,7 +434,7 @@ in the install environment.</p>
 <section id="options-spack-build-env">
 <h3>Options (spack build-env)<a class="headerlink" href="#options-spack-build-env" title="Permalink to this heading"></a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">\--dump</span> <span class="pre">&lt;filename&gt;</span></code>: dump environment to <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code> to be sourced at some point</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--dump</span> <span class="pre">&lt;filename&gt;</span></code>: dump environment to <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code> to be sourced at some point</p></li>
 </ul>
 </section>
 </section>
@@ -465,7 +465,7 @@ compiled by Spack.</p>
 <section id="options-spack-load">
 <h3>Options (spack load)<a class="headerlink" href="#options-spack-load" title="Permalink to this heading"></a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">\--first</span></code>: load the first match if multiple packages match the spec</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--first</span></code>: load the first match if multiple packages match the spec</p></li>
 </ul>
 </section>
 </section>
