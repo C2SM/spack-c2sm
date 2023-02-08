@@ -17,10 +17,11 @@ There are two possible ways of building software with Spack:
 ``spack install`` and  ``spack dev-build``.
 Both are good, but have some special features that need to be taken into account.
 
-Spack install
--------------
+Option 1: spack install
+-----------------------
 
-Every ``spack-install`` needs a version suffix, i.e., ``spack install <package>@<version-suffix>``
+Every ``spack install`` command needs a version suffix, 
+i.e. ``spack install <package>@<version-suffix>``
 This version-suffix can have different meanings:
 
 * branch in the git repository
@@ -69,8 +70,8 @@ now.
     Always use a valid git tag as a version-suffix when building
     software with ``spack install`` for production!
 
-Spack dev-build
----------------
+Option 2: spack dev-build
+-------------------------
 
 In order to install software with ``spack dev-build``, one needs a
 local source code.  Spack will then compile the code as it is locally
