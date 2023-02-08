@@ -32,8 +32,8 @@ Building and testing should be done with the package's build and test system.
     $ spack dev-build --before build <package> @develop <variant> # stops dev-build before executing the phase 'build'
     $ spack build-env <package> @develop <variant> -- bash # nests a bash shell with the build env vars loaded
     # Work on the package!
-    # Use the package's build system! (e.g. 'make')
-    # Use the package's testing infrastructure!
+    # Use the build system of the package! (e.g. 'make')
+    # Use the testing infrastructure of the package!
     $ exit # to exit the nested bash
 
 If you want multiple dev-builds at the same time, label them with separate ``@<your-label>``.
