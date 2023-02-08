@@ -29,28 +29,26 @@ class GitHubRepo:
 
         text_new = '### ' + details[0][0] + '\n' + '<details>\n<summary>'
 
-        integration_col = ':green_circle:'
+        int_col = ':green_circle:'
         for i in range(len(details)):
             if 'integration' in details[i][1]:
-                integration = True
+                int = True
                 if col[i] == ':red_circle:' or ':lock:' or ':wastebasket:' or ':hourglass:':
-                    integration_col = ':red_circle:'
-                elif col[
-                        i] == ':yellow_circle:' and not integration_col == ':red_circle:':
-                    integration_col = ':yellow_circle:'
+                    int_col = ':red_circle:'
+                elif col[i] == ':yellow_circle:' and not int_col == ':red_circle:':
+                    int_col = ':yellow_circle:'
 
-        if integration:
-            text_new = text_new + integration_col + ' Integration test</summary>\n<table>\n<tbody>\n'
+        if int:
+            text_new = text_new + int_col + ' Integration test</summary>\n<table>\n<tbody>\n'
             for i in range(len(details)):
                 if 'integration' in details[i][1]:
                     test_name = details[i][2].replace('_', ' ')
                     test_name = test_name.replace('.log', '')
-                    text_new = text_new + '<tr><td>' + col[
-                        i] + '</td><td>' + test_name + '</td></tr>\n'
+                    text_new = text_new + '<tr><td>' + col[i]
+                    text_new = text_new + '</td><td>' + test_name + '</td></tr>\n'
 
         text_new = text_new + '</tbody>\n</table>\n</details>'
         requests.post(url, headers=headers, json={'body': text_new})
-
 
 class Markdown:
     # Source: https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
