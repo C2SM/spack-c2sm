@@ -40,12 +40,11 @@ class GitHubRepo:
                     integration_col = ':yellow_circle:'
 
         if integration:
-            text_new = text_new + integration_col + ' Integration test</summary>\n<table>\n<tbody>\n<tr>\n'
+            text_new = text_new + integration_col + ' Integration test</summary>\n<table>\n<tbody>\n'
             for i in range(len(details)):
                 test_name = details[i][2].replace('_', ' ')
                 test_name = test_name.replace('.log', '')
-                text_new = text_new + '<td>' + col[i] + test_name + '</td>\n'
-            text_new = text_new + '</tr>\n'
+                text_new = text_new + '<tr><td>' + col[i] + '</td><td>'+ test_name + '</td></tr>\n'
         text_new = text_new + '</tbody>\n</table>\n</details>'
         print(text_new)
         requests.post(url, headers=headers, json={'body': text_new})
