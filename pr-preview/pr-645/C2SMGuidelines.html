@@ -51,8 +51,8 @@
 <li class="toctree-l1"><a class="reference internal" href="QuickStart.html">Quick Start</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">C2SM Guidelines for Spack</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#building">Building</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#spack-install">Spack install</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#spack-dev-build">Spack dev-build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spack-install"><code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spack-dev-build"><code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">dev-build</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#running">Running</a><ul>
@@ -105,13 +105,12 @@ the following guidelines for building, running and installing your
 libraries and executables.</p>
 <section id="building">
 <h2>Building<a class="headerlink" href="#building" title="Permalink to this heading"></a></h2>
-<p>There are two possible ways of building software with Spack.
+<p>There are two possible ways of building software with Spack:
 <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span></code> and  <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">dev-build</span></code>.
-Both of them are fine, but have some specialties one needs to take
-into account.</p>
+Both are good, but have some special features that need to be taken into account.</p>
 <section id="spack-install">
-<h3>Spack install<a class="headerlink" href="#spack-install" title="Permalink to this heading"></a></h3>
-<p>Every <code class="docutils literal notranslate"><span class="pre">spack-install</span></code> needs a version suffix, i.e <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span> <span class="pre">&lt;package&gt;&#64;&lt;version-suffix&gt;</span></code>
+<h3><code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span></code><a class="headerlink" href="#spack-install" title="Permalink to this heading"></a></h3>
+<p>Every <code class="docutils literal notranslate"><span class="pre">spack-install</span></code> needs a version suffix, i.e., <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span> <span class="pre">&lt;package&gt;&#64;&lt;version-suffix&gt;</span></code>
 This version-suffix can have different meanings:</p>
 <ul class="simple">
 <li><p>branch in the git repository</p></li>
@@ -119,11 +118,11 @@ This version-suffix can have different meanings:</p>
 <li><p>a specifc version (git-tag) with a corresponding git-hash hardcoded in the package</p></li>
 </ul>
 <p>Only for the last item in the list above you will always fetch and
-compile the same code.  The two other items can lead to different
-codes in case the <code class="docutils literal notranslate"><span class="pre">HEAD</span></code> of this specific branch/repository got some
+compile the same code. The two other items can lead to different
+codes in case the <code class="docutils literal notranslate"><span class="pre">HEAD</span></code> of this specific branch/repository has received some
 additional commits in the meantime.</p>
-<p>Especially for production it is very important to now which version of a code is actually used.</p>
-<p>The variety of different version-suffix for the cosmo-package:</p>
+<p>Especially for production it is very important to know which version of a code is actually used.</p>
+<p>For example, there is a variety of different version suffixes for the <code class="docutils literal notranslate"><span class="pre">cosmo</span></code> package:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">git</span>      <span class="o">=</span> <span class="s1">&#39;ssh://git@github.com/COSMO-ORG/cosmo.git&#39;</span>
 <span class="n">apngit</span>   <span class="o">=</span> <span class="s1">&#39;ssh://git@github.com/MeteoSwiss-APN/cosmo.git&#39;</span>
 <span class="n">c2smgit</span>  <span class="o">=</span> <span class="s1">&#39;ssh://git@github.com/C2SM-RCM/cosmo.git&#39;</span>
@@ -135,7 +134,7 @@ additional commits in the meantime.</p>
 <span class="n">version</span><span class="p">(</span><span class="mf">5.09</span><span class="p">,</span> <span class="n">git</span><span class="o">=</span><span class="n">c2sm</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="mf">5.09</span><span class="p">,</span> <span class="n">get_full_repo</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>There are three different git repositories available for the cosmo-package:</p>
+<p>Here, there are three different git repositories available for the <code class="docutils literal notranslate"><span class="pre">cosmo</span></code> package:</p>
 <ul class="simple">
 <li><p>COSMO-ORG/cosmo.git: version-suffix <code class="docutils literal notranslate"><span class="pre">org-master</span></code></p></li>
 <li><p>MeteoSwiss-APN/cosmo.git: version-suffix <code class="docutils literal notranslate"><span class="pre">apn-mch</span></code></p></li>
@@ -146,7 +145,7 @@ additional commits in the meantime.</p>
 always result in the same code, all other version only point to a
 <code class="docutils literal notranslate"><span class="pre">HEAD</span></code> of a git branch.</p>
 <p>The list of versions, including tagged versions, is provided by <code class="docutils literal notranslate"><span class="pre">spack</span>
-<span class="pre">info</span> <span class="pre">package_name</span></code> Note that tagged versions for COSMO on the
+<span class="pre">info</span> <span class="pre">&lt;package_name&gt;</span></code>. Note that tagged versions for COSMO on the
 <code class="docutils literal notranslate"><span class="pre">c2sm-features</span></code> branch are not yet provided but will be offered
 soon. We thus recommend using the <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">devbuildcosmo</span></code> command for
 now.</p>
@@ -157,13 +156,13 @@ software with <code class="docutils literal notranslate"><span class="pre">spack
 </div>
 </section>
 <section id="spack-dev-build">
-<h3>Spack dev-build<a class="headerlink" href="#spack-dev-build" title="Permalink to this heading"></a></h3>
-<p>In order to install software with <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">dev-build</span></code> one needs a
-local source code.  Spack will compile the code as it is locally
-present. Contrary to <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span></code> version-suffix (&#64;master, &#64;v2.7.9, etc,) does not have
-any effect on the code version compiled.
-To be safe always use <code class="docutils literal notranslate"><span class="pre">&#64;mdev-build</span></code> and copy the executable after installation
-into the source-folder.</p>
+<h3><code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">dev-build</span></code><a class="headerlink" href="#spack-dev-build" title="Permalink to this heading"></a></h3>
+<p>In order to install software with <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">dev-build</span></code>, one needs a
+local source code.  Spack will then compile the code as it is locally
+present. Contrary to <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span></code>, the version suffix
+(<code class="docutils literal notranslate"><span class="pre">&#64;master</span></code>, <code class="docutils literal notranslate"><span class="pre">&#64;v2.7.9</span></code>, etc.) does not have any effect on the code version compiled.
+To be safe, always use <code class="docutils literal notranslate"><span class="pre">dev-build</span></code> and copy the executable after installation
+into the source folder.</p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
 <p>Always store the local sources and the corresponding executable in
@@ -175,12 +174,12 @@ the same location!</p>
 <h2>Running<a class="headerlink" href="#running" title="Permalink to this heading"></a></h2>
 <p>When used properly, Spack is able to manage many different
 configurations of a package along with the corresponding
-run-environment.</p>
+run environment.</p>
 <section id="load-run-environment-of-a-package">
 <h3>Load run-environment of a package<a class="headerlink" href="#load-run-environment-of-a-package" title="Permalink to this heading"></a></h3>
 <p>Spack provides the command <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">load</span></code> to load the environment
 needed to run a binary into your current shell. There are two
-different ways of using it and both of them are fine.</p>
+different ways of using it (both of them are fine).</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack load &lt;package&gt;@&lt;version&gt;%&lt;compiler&gt; +&lt;variants&gt;
 </pre></div>
 </div>
@@ -200,22 +199,21 @@ stage:</p>
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Always load the run-environment provided by Spack prior to any
+<p>Always load the run environment provided by Spack prior to any
 executions of an executable installed by Spack!</p>
 </div>
 </section>
 </section>
 <section id="spack-in-scripts">
 <h2>Spack in scripts<a class="headerlink" href="#spack-in-scripts" title="Permalink to this heading"></a></h2>
-<p>The Spack commands are rather tailored for interacive use. It is for
-instance very possible that commands like <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">find</span></code> or <code class="docutils literal notranslate"><span class="pre">spack</span>
-<span class="pre">location</span></code> complain about several potential installed <code class="docutils literal notranslate"><span class="pre">SPECS</span></code> meeting
-the command line input. For this reason it’s rather recommended to
-avoid spack commands in scripts. This shouldn’t be too problematic for
-<code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">find</span></code> and <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">location</span></code>. For <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">load</span></code> we rather
-advise to use it from the login nodes before submitting jobs, the
-environment of the running job being inherited from the environment at
-submission time.</p>
+<p>The Spack commands are rather tailored for interacive use. For example,
+it is very possible for commands such as <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">find</span></code> or <code class="docutils literal notranslate"><span class="pre">spack</span>
+<span class="pre">location</span></code> to complain about multiple potential installed <code class="docutils literal notranslate"><span class="pre">SPECS</span></code> satisfying
+the command line input. For this reason, it is advisable to
+avoid spack commands in scripts. However, for <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">find</span></code> and
+<code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">location</span></code>, this should not be aproblem. For <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">load</span></code>, we rather
+recommend to use it from the login nodes before submitting jobs, inheriting
+the environment of the running job from the environment at submission time.</p>
 </section>
 </section>
 
