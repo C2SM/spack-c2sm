@@ -21,9 +21,3 @@ mostly at the Swiss Super Computing Center (CSCS).
    CodeDevelopment
    SpackChoice
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
