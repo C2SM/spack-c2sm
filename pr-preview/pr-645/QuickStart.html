@@ -89,55 +89,55 @@
 <section id="at-cscs-daint-tsa-balfrin">
 <h2>At CSCS (Daint, Tsa, Balfrin)<a class="headerlink" href="#at-cscs-daint-tsa-balfrin" title="Permalink to this heading"></a></h2>
 <p>To set up a Spack instance, clone the repository</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone --depth 1 --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git</span>
 </pre></div>
 </div>
 <p>To load it into your command line, execute</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>. spack-c2sm/setup-env.sh
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">. spack-c2sm/setup-env.sh</span>
 </pre></div>
 </div>
 <p>This auto-detects your machine and configures your instance for it.
 You can force a machine with an argument. The name has to match a folder in sysconfigs.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>. spack-c2sm/setup-env.sh tsa
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">. spack-c2sm/setup-env.sh tsa</span>
 </pre></div>
 </div>
 </section>
 <section id="local-machines-and-containers">
 <h2>Local machines and Containers<a class="headerlink" href="#local-machines-and-containers" title="Permalink to this heading"></a></h2>
 <p>Spack can autodetect compilers and preinstalled packages with</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack compiler find
-spack external find --all
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">spack compiler find</span>
+<span class="go">spack external find --all</span>
 </pre></div>
 </div>
 </section>
 <section id="use-packages">
 <h2>Use packages<a class="headerlink" href="#use-packages" title="Permalink to this heading"></a></h2>
 <p>To get information about a package, query Spack</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack info &lt;package&gt;
-<span class="c1"># e.g.</span>
-spack info icon
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">spack info &lt;package&gt;</span>
+<span class="gp"># </span>e.g.
+<span class="go">spack info icon</span>
 </pre></div>
 </div>
 <p>To see what <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span></code> would install, ask for a spec</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack spec &lt;variant&gt;
-<span class="c1"># e.g.</span>
-spack spec icon @master +ocean
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">spack spec &lt;variant&gt;</span>
+<span class="gp"># </span>e.g.
+<span class="go">spack spec icon @master +ocean</span>
 </pre></div>
 </div>
 <p>An unspecfied variant (e.g. <code class="docutils literal notranslate"><span class="pre">ocean</span></code>) can be concretized to ANY of its values. Spack isn’t required to use the default value when a variant is unspecified. The default value only serves as a tiebreaker.</p>
 <p>To install a package</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack install &lt;variant&gt;
-<span class="c1"># e.g.</span>
-spack install icon @master %gcc +ocean
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">spack install &lt;variant&gt;</span>
+<span class="gp"># </span>e.g.
+<span class="go">spack install icon @master %gcc +ocean</span>
 </pre></div>
 </div>
 <p>To locate your install, query Spack</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack location --install-dir &lt;variant&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">spack location --install-dir &lt;variant&gt;</span>
 </pre></div>
 </div>
 <p>This prints a list of all installs that satisfy the restrictions in your variant.</p>
 <p>To run it, you may need to load environment variables</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack load &lt;variant&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">spack load &lt;variant&gt;</span>
 </pre></div>
 </div>
 </section>
@@ -146,18 +146,18 @@ spack install icon @master %gcc +ocean
 <p>COSMO is currently receiving special treatment. It has its own commands in spack-c2sm.
 The reason for this is that the optional depencendy on the C++ dycore lives in the same repository as COSMO.</p>
 <p>To install COSMO</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack installcosmo cosmo @&lt;version&gt; %&lt;compiler&gt; &lt;variants&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">spack installcosmo cosmo @&lt;version&gt; %&lt;compiler&gt; &lt;variants&gt;</span>
 </pre></div>
 </div>
 <p>To develop COSMO</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;/path/to/package&gt;
-spack devbuildcosmo cosmo @&lt;version&gt; %&lt;compiler&gt; &lt;variants&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cd &lt;/path/to/package&gt;</span>
+<span class="go">spack devbuildcosmo cosmo @&lt;version&gt; %&lt;compiler&gt; &lt;variants&gt;</span>
 </pre></div>
 </div>
 <p>Example variants:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack installcosmo cosmo @org-master <span class="nv">cosmo_target</span><span class="o">=</span>cpu <span class="c1"># CPU variant of https://github.com/COSMO-ORG/cosmo master</span>
-spack installcosmo cosmo @org-master <span class="nv">cosmo_target</span><span class="o">=</span>gpu <span class="c1"># GPU variant of https://github.com/COSMO-ORG/cosmo master</span>
-spack installcosmo cosmo @apn_5.09a.mch1.2.p1 <span class="nv">cosmo_target</span><span class="o">=</span>gpu <span class="c1"># GPU variant of https://github.com/MeteoSwiss-APN/cosmo/releases/tag/5.09a.mch1.2.p1</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">spack installcosmo cosmo @org-master cosmo_target=cpu # CPU variant of https://github.com/COSMO-ORG/cosmo master</span>
+<span class="go">spack installcosmo cosmo @org-master cosmo_target=gpu # GPU variant of https://github.com/COSMO-ORG/cosmo master</span>
+<span class="go">spack installcosmo cosmo @apn_5.09a.mch1.2.p1 cosmo_target=gpu # GPU variant of https://github.com/MeteoSwiss-APN/cosmo/releases/tag/5.09a.mch1.2.p1</span>
 </pre></div>
 </div>
 </section>
