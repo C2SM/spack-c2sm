@@ -35,19 +35,18 @@ class GitHubRepo:
                 integration = True
                 if col[i] == ':red_circle:' or ':lock:' or ':wastebasket:' or ':hourglass:':
                     integration_col = ':red_circle:'
-                elif col[
-                        i] == ':yellow_circle:' and not integration_col == ':red_circle:':
+                elif col[i] == ':yellow_circle:' and not integration_col == ':red_circle:':
                     integration_col = ':yellow_circle:'
 
         if integration:
             text_new = text_new + integration_col + ' Integration test</summary>\n<table>\n<tbody>\n'
             for i in range(len(details)):
-                test_name = details[i][2].replace('_', ' ')
-                test_name = test_name.replace('.log', '')
-                text_new = text_new + '<tr><td>' + col[
-                    i] + '</td><td>' + test_name + '</td></tr>\n'
+                if 'integration' in details[i][1]:
+                    test_name = details[i][2].replace('_', ' ')
+                    test_name = test_name.replace('.log', '')
+                    text_new = text_new + '<tr><td>' + col[i] + '</td><td>'+ test_name + '</td></tr>\n'
+
         text_new = text_new + '</tbody>\n</table>\n</details>'
-        print(text_new)
         requests.post(url, headers=headers, json={'body': text_new})
 
 
