@@ -13,13 +13,13 @@ libraries and executables.
 Building 
 ^^^^^^^^
 There are two possible ways of building software with Spack.
-*spack install* and  *spack dev-build*.
+``spack install`` and  ``spack dev-build``.
 Both of them are fine, but have some specialties one needs to take
 into account.
 
 Spack install (C2SM Guidelines)
 -------------------------------
-Every *spack-install* needs a version suffix, i.e *spack install <package>@<version-suffix>*.
+Every ``spack-install`` needs a version suffix, i.e ``spack install <package>@<version-suffix>``
 This version-suffix can have different meanings:
 
 * branch in the git repository
@@ -28,7 +28,7 @@ This version-suffix can have different meanings:
 
 Only for the last item in the list above you will always fetch and
 compile the same code.  The two other items can lead to different
-codes in case the *HEAD* of this specific branch/repository got some
+codes in case the ``HEAD`` of this specific branch/repository got some
 additional commits in the meantime.
 
 Especially for production it is very important to now which version of a code is actually used.
@@ -49,34 +49,34 @@ The variety of different version-suffix for the cosmo-package:
 
 There are three different git repositories available for the cosmo-package:
 
-* COSMO-ORG/cosmo.git: version-suffix *org-master*
-* MeteoSwiss-APN/cosmo.git: version-suffix *apn-mch*
-* C2SM-RCM/cosmo.git: version-suffix *c2sm-master*
-* C2SM-RCM/cosmo.git: version-suffix *c2sm-features* 
+* COSMO-ORG/cosmo.git: version-suffix ``org-master``
+* MeteoSwiss-APN/cosmo.git: version-suffix ``apn-mch``
+* C2SM-RCM/cosmo.git: version-suffix ``c2sm-master``
+* C2SM-RCM/cosmo.git: version-suffix ``c2sm-features`` 
 
-It is clear that only using *spack install <package>@5.09* will
+It is clear that only using ``spack install <package>@5.09`` will
 always result in the same code, all other version only point to a
-*HEAD* of a git branch.
+``HEAD`` of a git branch.
 
-The list of versions, including tagged versions, is provided by *spack
-info package_name*. Note that tagged versions for COSMO on the
-*c2sm-features* branch are not yet provided but will be offered
-soon. We thus recommend using the *spack devbuildcosmo* command for
+The list of versions, including tagged versions, is provided by ``spack
+info package_name`` Note that tagged versions for COSMO on the
+``c2sm-features`` branch are not yet provided but will be offered
+soon. We thus recommend using the ``spack devbuildcosmo`` command for
 now.
 
 So long story short:
 
 **Always use a valid git tag as a version-suffix when building
-software with** *spack install* **for production!**
+software with** ``spack install`` **for production!**
 
 Spack dev-build (C2SM Guidelines)
 ---------------------------------
 
-In order to install software with *spack dev-build* one needs a
+In order to install software with ``spack dev-build`` one needs a
 local source code.  Spack will compile the code as it is locally
-present. Contrary to *spack install*, version-suffix (@master, @v2.7.9, etc,) does not have
+present. Contrary to ``spack install`` version-suffix (@master, @v2.7.9, etc,) does not have
 any effect on the code version compiled.
-To be safe always use *@mdev-build* and copy the executable after installation
+To be safe always use ``@mdev-build`` and copy the executable after installation
 into the source-folder.
 
 So long story short:
@@ -94,7 +94,7 @@ run-environment.
 Load run-environment of a package
 ---------------------------------
 
-Spack provides the command *spack load* to load the environment
+Spack provides the command ``spack load`` to load the environment
 needed to run a binary into your current shell. There are two
 different ways of using it and both of them are fine.
 
@@ -104,7 +104,7 @@ different ways of using it and both of them are fine.
 
 The executable now has the correct environment to run in your current shell.
 
-The other possibility is use *spack load* to print the required
+The other possibility is use ``spack load`` to print the required
 shell commands and store them in a file that can be sourced at a later
 stage:
 
@@ -112,7 +112,7 @@ stage:
 
     spack load --sh <package>@<version>%<compiler> +<variants> > run_package.env
 
-An example output of *spack load -sh* for COSMO could look as follows:
+An example output of ``spack load -sh`` for COSMO could look as follows:
 
 .. code-block:: bash
 
@@ -128,11 +128,11 @@ Spack in scripts
 ^^^^^^^^^^^^^^^^
 
 The Spack commands are rather tailored for interacive use. It is for
-instance very possible that commands like *spack find* or *spack
-location* complain about several potential installed *SPECS* meeting
+instance very possible that commands like ``spack find`` or ``spack
+location`` complain about several potential installed ``SPECS`` meeting
 the command line input. For this reason it's rather recommended to
 avoid spack commands in scripts. This shouldn't be too problematic for
-*spack find* and *spack location*. For *spack load* we rather
+``spack find`` and ``spack location``. For ``spack load`` we rather
 advise to use it from the login nodes before submitting jobs, the
 environment of the running job being inherited from the environment at
 submission time.
