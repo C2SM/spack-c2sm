@@ -44,7 +44,8 @@ class GitHubRepo:
             for i in range(len(details)):
                 test_name = details[i][2].replace('_', ' ')
                 test_name = test_name.replace('.log', '')
-                text_new = text_new + '<tr><td>' + col[i] + '</td><td>'+ test_name + '</td></tr>\n'
+                text_new = text_new + '<tr><td>' + col[
+                    i] + '</td><td>' + test_name + '</td></tr>\n'
         text_new = text_new + '</tbody>\n</table>\n</details>'
         print(text_new)
         requests.post(url, headers=headers, json={'body': text_new})
