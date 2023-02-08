@@ -1,3 +1,3 @@
 upstreams:
   system:
-    install_tree: /project/g110/spack/upstream/daint_v1
+    install_tree: /scratch/snx3000/juckerj/upstreams/bb_stable

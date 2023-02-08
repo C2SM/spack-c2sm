@@ -1,18 +1,30 @@
 spack:
   specs:
+  
+   # ICON 
+  - matrix:
+    - [eccodes@2.19.0+fortran+aec+tools, cosmo-eccodes-definitions@2.19.0.7]
+    - ['%nvhpc', '%cce', '%gcc']
+  - libxml2@2.9.13%gcc
+  - claw@2.0.3%nvhpc
+
+  # COSMO
   - jasper @1.900.1 %gcc
+  
+    # boost as needed to compile COSMO-Dycore
+  - boost@1.79.0%gcc@8.3.0~atomic~chrono~clanglibcpp~container~context~contract~coroutine
+    ~date_time~debug~exception~fiber~filesystem~graph~graph_parallel~icu~iostreams~json
+    ~locale~log~math~mpi+multithreaded~nowide~numpy~pic+program_options~python~random
+    ~regex~serialization+shared~signals~singlethreaded~stacktrace+system~taggedlayout
+    ~test~thread~timer~type_erasure~versionedlayout~wave cxxstd=98 visibility=hidden
+
+  # General installations
   - boost @1.79.0 %gcc +atomic +chrono +container +contract +coroutine +date_time
     +exception +fiber +filesystem +graph +graph_parallel +iostreams +json +locale
     +log +math +mpi +program_options +random +regex +serialization +signals +stacktrace
-    +system +test +thread +timer +type_erasure +wave
-  - eccodes @2.19.0 %gcc +fortran +aec +tools
-  - eccodes @2.19.0 %nvhpc +fortran +aec +tools
-  - eccodes @2.19.0 %cce +fortran +aec +tools
-  - cosmo-eccodes-definitions @2.19.0.7
-  - claw @2.1 %gcc
   concretizer:
     unify: when_possible
   view: false
   config:
     install_tree:
-      root: /project/g110/spack/upstream/daint_v1
+      root: /scratch/snx3000/juckerj/upstreams/bb_stable
