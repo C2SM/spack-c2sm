@@ -32,8 +32,8 @@ Example output:
 Options (spack find)
 ^^^^^^^^^^^^^^^^^^^^^
 
-*   ``\--paths, -p``: show paths to package install directories
-*   ``\--variants, -v``: show variants in output (can be long)
+*   ``--paths, -p``: show paths to package install directories
+*   ``--variants, -v``: show variants in output (can be long)
 
 
 Machine processing (spack find)
@@ -173,9 +173,9 @@ Options (spack install)
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 *   ``-v``: print output of configuration and compilation for all dependencies to terminal
-*   ``\--test=root``: run package tests during installation for top-level packages
+*   ``--test=root``: run package tests during installation for top-level packages
     (but skip tests for dependencies)
-*   ``\--keep-stage``: keep all source needed to build the package
+*   ``--keep-stage``: keep all source needed to build the package
 
 Spack installcosmo
 ------------------
@@ -274,15 +274,15 @@ Usage (spack devbuildcosmo)
 Options (spack devbuildcosmo)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-*   ``\--no_specyaml``: Ignore *spec.yaml*
+*   ``--no_specyaml``: Ignore *spec.yaml*
 *   ``-c --clean_build``: Clean build
-*   ``-j <JOBS>, \--jobs <JOBS>:`` Explicitly set number of parallel jobs
-*   ``\--test=root``: Run COSMO testsuite before installation
-*   ``\--test=all``: Run package tests during installation for all packages
-*   ``-c, \--clean_build``: Clean dev-build
-*   ``\--dont-restage``: If a partial install is detected, don't delete prior
-*   ``-u, \--until``: Phase to stop after when installing
-*   ``-n, \--no-checksum``: Do not use checksums to verify downloaded files (unsafe)
+*   ``-j <JOBS>, --jobs <JOBS>:`` Explicitly set number of parallel jobs
+*   ``--test=root``: Run COSMO testsuite before installation
+*   ``--test=all``: Run package tests during installation for all packages
+*   ``-c, --clean_build``: Clean dev-build
+*   ``--dont-restage``: If a partial install is detected, don't delete prior
+*   ``-u, --until``: Phase to stop after when installing
+*   ``-n, --no-checksum``: Do not use checksums to verify downloaded files (unsafe)
 
 Spack location
 --------------
@@ -331,7 +331,7 @@ in the install environment.
 Options (spack build-env)
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-*   ``\--dump <filename>``: dump environment to ``<filename>`` to be sourced at some point
+*   ``--dump <filename>``: dump environment to ``<filename>`` to be sourced at some point
 
 Spack edit
 ----------
@@ -366,4 +366,4 @@ Usage (spack load)
 Options (spack load)
 ^^^^^^^^^^^^^^^^^^^^
 
-*   ``\--first``: load the first match if multiple packages match the spec
+*   ``--first``: load the first match if multiple packages match the spec
