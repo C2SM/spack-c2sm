@@ -73,4 +73,5 @@ They are available under ``spack/etc/spack``. Their structure is:
 * ``upstreams.yaml``: specifies where to find the pre-installed software
 * ``repos.yaml``: specifies where to find the only MCH packages that are stored in spack-c2sm repository
 
-**Unless your are a Spack developer you don't need to modify any of the yaml-files listed!**
+..  note::
+    Unless your are a Spack developer, there is no need to modify any of the yaml files listed here.
