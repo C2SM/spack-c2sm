@@ -1,8 +1,6 @@
 pipeline {
     agent {
-        node {
-            label 'daint'
-        }
+        node {label 'daint'}
     }
     stages {
         stage('Clone icon-nwp') {
@@ -37,12 +35,6 @@ pipeline {
                     }
                 }
             }
-        }
-    }
-    post {
-        always {
-            echo 'Cleaning up workspace'
-            deleteDir()
         }
     }
 }
