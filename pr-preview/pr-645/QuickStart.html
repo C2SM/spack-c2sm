@@ -118,13 +118,13 @@ spack external find --all
 spack info icon
 </pre></div>
 </div>
-<p>To see what <cite>spack install</cite> would install, ask for a spec</p>
+<p>To see what <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span></code> would install, ask for a spec</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack spec &lt;variant&gt;
 <span class="c1"># e.g.</span>
 spack spec icon @master +ocean
 </pre></div>
 </div>
-<p>An unspecfied variant (e.g. <cite>ocean</cite>) can be concretized to ANY of its values. Spack isn’t required to use the default value when a variant is unspecified. The default value only serves as a tiebreaker.</p>
+<p>An unspecfied variant (e.g. <code class="docutils literal notranslate"><span class="pre">ocean</span></code>) can be concretized to ANY of its values. Spack isn’t required to use the default value when a variant is unspecified. The default value only serves as a tiebreaker.</p>
 <p>To install a package</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack install &lt;variant&gt;
 <span class="c1"># e.g.</span>
