@@ -74,4 +74,5 @@ They are available under ``spack/etc/spack``. Their structure is:
 * ``repos.yaml``: specifies where to find the only MCH packages that are stored in spack-c2sm repository
 
 ..  note::
-    Unless your are a Spack developer, there is no need to modify any of the yaml files listed here.
+    Unless your are a Spack developer, there is no need to modify any of the
+    ``.yaml`` files listed here.
