@@ -98,9 +98,9 @@ Spack provides the command ``spack load`` to load the environment
 needed to run a binary into your current shell. There are two
 different ways of using it and both of them are fine.
 
-.. code-block:: bash
+.. code-block:: console
 
-    spack load <package>@<version>%<compiler> +<variants>
+    $ spack load <package>@<version>%<compiler> +<variants>
 
 The executable now has the correct environment to run in your current shell.
 
@@ -108,13 +108,13 @@ The other possibility is use ``spack load`` to print the required
 shell commands and store them in a file that can be sourced at a later
 stage:
 
-.. code-block:: bash
+.. code-block:: console
 
-    spack load --sh <package>@<version>%<compiler> +<variants> > run_package.env
+    $ spack load --sh <package>@<version>%<compiler> +<variants> > run_package.env
 
 An example output of ``spack load -sh`` for COSMO could look as follows:
 
-.. code-block:: bash
+.. code-block:: console
 
     export LIBRARY_PATH=/opt/cray/pe/mpt/7.7.15/gni/mpich-pgi/20.1/lib:/project/s903/juckerj/spack-install/daint/eccodes/2.19.0/pgi/ccigv3uvkdl5h3d2jtb6blxvvv4qsdpc/lib64:/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/lib64:/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/lib;
     export LD_LIBRARY_PATH=/opt/cray/pe/mpt/7.7.15/gni/mpich-pgi/20.1/lib:/project/s903/juckerj/spack-install/daint/eccodes/2.19.0/pgi/ccigv3uvkdl5h3d2jtb6blxvvv4qsdpc/lib64:/opt/cray/pe/gcc-libs:/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/lib64:/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/lib:/opt/cray/pe/papi/6.0.0.4/lib64:/opt/cray/job/2.2.4-7.0.2.1_2.86__g36b56f4.ari/lib64;

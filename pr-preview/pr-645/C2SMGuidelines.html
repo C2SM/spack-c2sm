@@ -181,21 +181,21 @@ run-environment.</p>
 <p>Spack provides the command <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">load</span></code> to load the environment
 needed to run a binary into your current shell. There are two
 different ways of using it and both of them are fine.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack load &lt;package&gt;@&lt;version&gt;%&lt;compiler&gt; +&lt;variants&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack load &lt;package&gt;@&lt;version&gt;%&lt;compiler&gt; +&lt;variants&gt;
 </pre></div>
 </div>
 <p>The executable now has the correct environment to run in your current shell.</p>
 <p>The other possibility is use <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">load</span></code> to print the required
 shell commands and store them in a file that can be sourced at a later
 stage:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack load --sh &lt;package&gt;@&lt;version&gt;%&lt;compiler&gt; +&lt;variants&gt; &gt; run_package.env
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack load --sh &lt;package&gt;@&lt;version&gt;%&lt;compiler&gt; +&lt;variants&gt; &gt; run_package.env
 </pre></div>
 </div>
 <p>An example output of <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">load</span> <span class="pre">-sh</span></code> for COSMO could look as follows:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">LIBRARY_PATH</span><span class="o">=</span>/opt/cray/pe/mpt/7.7.15/gni/mpich-pgi/20.1/lib:/project/s903/juckerj/spack-install/daint/eccodes/2.19.0/pgi/ccigv3uvkdl5h3d2jtb6blxvvv4qsdpc/lib64:/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/lib64:/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/lib<span class="p">;</span>
-<span class="nb">export</span> <span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span>/opt/cray/pe/mpt/7.7.15/gni/mpich-pgi/20.1/lib:/project/s903/juckerj/spack-install/daint/eccodes/2.19.0/pgi/ccigv3uvkdl5h3d2jtb6blxvvv4qsdpc/lib64:/opt/cray/pe/gcc-libs:/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/lib64:/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/lib:/opt/cray/pe/papi/6.0.0.4/lib64:/opt/cray/job/2.2.4-7.0.2.1_2.86__g36b56f4.ari/lib64<span class="p">;</span>
-<span class="nb">export</span> <span class="nv">GRIB_SAMPLES_PATH</span><span class="o">=</span>/project/s903/juckerj/spack-install/daint/cosmo-eccodes-definitions/2.19.0.5/pgi/egf6fp466u2cl3ckkmhpemzf4hz7loqr/cosmoDefinitions/samples<span class="p">;</span>
-<span class="nb">export</span> <span class="nv">GRIB_DEFINITION_PATH</span><span class="o">=</span>/project/s903/juckerj/spack-install/daint/cosmo-eccodes-definitions/2.19.0.5/pgi/egf6fp466u2cl3ckkmhpemzf4hz7loqr/cosmoDefinitions/definitions/:/project/s903/juckerj/spack-install/daint/eccodes/2.19.0/pgi/ccigv3uvkdl5h3d2jtb6blxvvv4qsdpc/share/eccodes/definitions<span class="p">;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export LIBRARY_PATH=/opt/cray/pe/mpt/7.7.15/gni/mpich-pgi/20.1/lib:/project/s903/juckerj/spack-install/daint/eccodes/2.19.0/pgi/ccigv3uvkdl5h3d2jtb6blxvvv4qsdpc/lib64:/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/lib64:/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/lib;</span>
+<span class="go">export LD_LIBRARY_PATH=/opt/cray/pe/mpt/7.7.15/gni/mpich-pgi/20.1/lib:/project/s903/juckerj/spack-install/daint/eccodes/2.19.0/pgi/ccigv3uvkdl5h3d2jtb6blxvvv4qsdpc/lib64:/opt/cray/pe/gcc-libs:/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/lib64:/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/lib:/opt/cray/pe/papi/6.0.0.4/lib64:/opt/cray/job/2.2.4-7.0.2.1_2.86__g36b56f4.ari/lib64;</span>
+<span class="go">export GRIB_SAMPLES_PATH=/project/s903/juckerj/spack-install/daint/cosmo-eccodes-definitions/2.19.0.5/pgi/egf6fp466u2cl3ckkmhpemzf4hz7loqr/cosmoDefinitions/samples;</span>
+<span class="go">export GRIB_DEFINITION_PATH=/project/s903/juckerj/spack-install/daint/cosmo-eccodes-definitions/2.19.0.5/pgi/egf6fp466u2cl3ckkmhpemzf4hz7loqr/cosmoDefinitions/definitions/:/project/s903/juckerj/spack-install/daint/eccodes/2.19.0/pgi/ccigv3uvkdl5h3d2jtb6blxvvv4qsdpc/share/eccodes/definitions;</span>
 </pre></div>
 </div>
 <div class="admonition tip">
