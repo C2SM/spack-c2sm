@@ -511,8 +511,6 @@ class Icon(AutotoolsPackage):
             # the value to the config_flags directly.
             config_vars['LIBS'].extend(cuda_host_compiler_stdcxx_libs)
 
-        if self.compiler.name == 'nvhpc':
-            config_vars['LIBS'].extend(['-lnvcpumath -lnvhpcatm'])
         # Finalize the LIBS variable (we always put the real collected
         # libraries to the front):
         config_vars['LIBS'].insert(0, libs.link_flags)
