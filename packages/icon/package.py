@@ -1,7 +1,7 @@
 import os, subprocess
 from collections import defaultdict
 
-from llnl.util import lang, filesystem
+from llnl.util import lang, filesystem, tty
 from spack.util.environment import is_system_path, dump_environment
 from spack.util.executable import which_string
 
@@ -582,21 +582,12 @@ class Icon(AutotoolsPackage, CudaPackage):
         if os.path.exists(test_script):
             test_py = Executable(test_script)
 
-            # test.py fails if PYTHONHOME has any value,
-            # even '' or ' ' is failing, therefore delete
-            # it temporary from env
-            PYTHONHOME = os.environ['PYTHONHOME']
-            os.environ.pop('PYTHONHOME')
-
             with open('spec.yaml', mode='w') as f:
                 f.write(self.spec.to_yaml())
             try:
                 test_py('--spec', 'spec.yaml')
             except:
                 raise InstallError('Tests failed')
-
-            # restore PYTHONHOME after test.py
-            os.environ['PYTHONHOME'] = PYTHONHOME
         else:
             tty.warn('Cannot find test.py -> skipping tests')
 

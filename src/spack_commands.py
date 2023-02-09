@@ -28,6 +28,9 @@ def log_with_spack(command: str,
     # Setup spack env
     spack_env = f'. {spack_c2sm_path}/setup-env.sh'
 
+    # Setup package's spack env
+    package_env = f'spack env activate -d {env};'
+
     # Distribute work with 'srun'
     if srun and getpass.getuser() == 'jenkins':
         # The '-c' argument should be in sync with
@@ -52,19 +55,15 @@ def log_with_spack(command: str,
 
     start = time.time()
     # The output is streamed as directly as possible to the log_file to avoid buffering and potentially losing buffered content.
+    # 'env -i' starts a clean environment, to separate spack-c2sm's venv from package's venvs.
+    # 'bash -c' reads commands from string, to not run into character escaping problems.
+    # 'bash -l' makes it a login shell. So the packages sees a clean login shell.
     # '2>&1' redirects stderr to stdout.
-    if env is None:
-        ret = subprocess.run(
-            f'{spack_env}; ({srun} {command}) >> {log_file} 2>&1',
-            cwd=cwd,
-            check=False,
-            shell=True)
-    else:
-        ret = subprocess.run(
-            f'{spack_env}; spack env activate -d {env}; ({srun} {command}) >> {log_file} 2>&1',
-            cwd=cwd,
-            check=False,
-            shell=True)
+    ret = subprocess.run(
+        f'env -i bash -l -c "{spack_env}; {package_env} ({srun} {command}) >> {log_file} 2>&1"',
+        cwd=cwd,
+        check=False,
+        shell=True)
     end = time.time()
 
     # Log time and success
