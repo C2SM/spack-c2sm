@@ -91,7 +91,7 @@ When used properly, Spack is able to manage many different
 configurations of a package along with the corresponding
 run environment.
 
-Load run-environment of a package
+Load run environment of a package
 ---------------------------------
 
 Spack provides the command ``spack load`` to load the environment
@@ -112,7 +112,7 @@ stage:
 
     $ spack load --sh <package>@<version>%<compiler> +<variants> > run_package.env
 
-An example output of ``spack load -sh`` for COSMO could look as follows:
+An example output of ``spack load --sh`` for COSMO could look as follows:
 
 .. code-block:: console
 
