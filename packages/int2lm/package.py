@@ -110,18 +110,7 @@ class Int2lm(MakefilePackage):
         else:
             env.set('MPII', '-I' + self.spec['mpi'].prefix + '/include')
             if self.compiler.name != 'gcc':
-
-                # manually add libs to linker because of broke modules on Piz Daint for nvidia
-                if self.spec.variants[
-                        'slave'].value == 'daint' and self.compiler.name in (
-                            'pgi', 'nvhpc'):
-                    env.set(
-                        'MPIL', '-L' + self.spec['mpi'].prefix +
-                        ' -lmpich -lnvcpumath -lnvhpcatm')
-
-                else:
-                    env.set('MPIL',
-                            '-L' + self.spec['mpi'].prefix + ' -lmpich')
+                env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich')
 
         # Compiler & linker variables
         if self.compiler.name == 'pgi':

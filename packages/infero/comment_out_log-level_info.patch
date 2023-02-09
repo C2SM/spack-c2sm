@@ -1,0 +1,169 @@
+diff --git a/src/infero/models/InferenceModel.cc b/src/infero/models/InferenceModel.cc
+index 9bc7dc3..cd8f3f0 100644
+--- a/src/infero/models/InferenceModel.cc
++++ b/src/infero/models/InferenceModel.cc
+@@ -48,7 +48,7 @@ void InferenceModel::open()  {
+ 
+     // soft check: multiple open() allowed
+     if (isOpen_){
+-        Log::info() << "INFO: Inference model already open.. " << std::endl;
++        //Log::info() << "INFO: Inference model already open.. " << std::endl;
+     } else {
+         isOpen_ = true;
+     }
+@@ -62,8 +62,8 @@ void InferenceModel::infer(linalg::TensorFloat& tIn, linalg::TensorFloat& tOut,
+     eckit::linalg::TensorFloat input_tensor;
+ 
+     if (tIn.isRight()) {
+-        Log::info() << "Input Tensor has right-layout, but left-layout is needed. "
+-                    << "Transforming to left.." << std::endl;
++        //Log::info() << "Input Tensor has right-layout, but left-layout is needed. "
++        //            << "Transforming to left.." << std::endl;
+         input_tensor = tIn.transformRightToLeftLayout();
+     } else {
+ 
+@@ -110,8 +110,8 @@ void InferenceModel::infer_mimo(std::vector<eckit::linalg::TensorFloat*> &tIn, s
+     for (int i = 0; i < inputTensors.size(); ++i) {
+         if (inputTensors[i]->isRight()) {
+ 
+-            Log::info() << i << "-th Input Tensor has right-layout, "
+-                        << "but left-layout is needed. Transforming to left.." << std::endl;
++            //Log::info() << i << "-th Input Tensor has right-layout, "
++            //            << "but left-layout is needed. Transforming to left.." << std::endl;
+ 
+             temporaryCopies.emplace_back(new eckit::linalg::TensorFloat(inputTensors[i]->transformRightToLeftLayout()));
+             inputTensors[i] = temporaryCopies.back().get();
+@@ -121,7 +121,7 @@ void InferenceModel::infer_mimo(std::vector<eckit::linalg::TensorFloat*> &tIn, s
+ 
+     // do the actual inference..
+     eckit::Timing start_infer(statistics_.timer());
+-    Log::info() << "doing inference.." << std::endl;
++    //Log::info() << "doing inference.." << std::endl;
+     infer_mimo_impl(inputTensors, input_names, tOut, output_names);
+     statistics_.inferenceTiming_ += eckit::Timing{statistics_.timer()} - start_infer;
+ 
+@@ -138,7 +138,7 @@ void InferenceModel::close() {
+ 
+     // soft check: multiple close() allowed
+     if (!isOpen_){
+-        Log::info() << "INFO: Inference model already closed.. " << std::endl;
++        //Log::info() << "INFO: Inference model already closed.. " << std::endl;
+     } else {
+         isOpen_ = false;
+     }
+diff --git a/src/infero/models/InferenceModelTFC.cc b/src/infero/models/InferenceModelTFC.cc
+index d54ba37..45912d8 100644
+--- a/src/infero/models/InferenceModelTFC.cc
++++ b/src/infero/models/InferenceModelTFC.cc
+@@ -68,7 +68,7 @@ InferenceModelTFC::InferenceModelTFC(const eckit::Configuration& conf) :
+     // if not null, use the model buffer
+     if (modelBuffer_.size()){
+ 
+-        Log::info() << "Constructing TFC model from buffer not implemented" << std::endl;
++        //Log::info() << "Constructing TFC model from buffer not implemented" << std::endl;
+ 
+         NOTIMP;
+ 
+@@ -169,7 +169,7 @@ void InferenceModelTFC::infer_impl(eckit::linalg::TensorFloat& tIn, eckit::linal
+     int OutputNdims = TF_GraphGetTensorNumDims(network_graph, *Output, err_status);
+     check_status(err_status, "TF_GraphGetTensorNumDims");
+ 
+-    Log::info() << "N output dims: " << OutputNdims << std::endl;
++    //Log::info() << "N output dims: " << OutputNdims << std::endl;
+ 
+     int64_t* OutputDims = static_cast<int64_t*>(malloc(sizeof(int64_t) * OutputNdims));
+     TF_GraphGetTensorShape(network_graph,
+@@ -182,11 +182,11 @@ void InferenceModelTFC::infer_impl(eckit::linalg::TensorFloat& tIn, eckit::linal
+     INFERO_CHECK(OutputDims)
+ 
+     for (int i=0; i<OutputNdims; i++){
+-        Log::info() << "N output dims: " << OutputDims[i] << std::endl;
++        //Log::info() << "N output dims: " << OutputDims[i] << std::endl;
+     }
+ 
+     // copy output data
+-    Log::info() << "Copying output..." << std::endl;
++    //Log::info() << "Copying output..." << std::endl;
+     void* buff = TF_TensorData(OutputValues[0]);
+     float* offsets = static_cast<float*>(buff);
+ 
+@@ -201,7 +201,7 @@ void InferenceModelTFC::infer_impl(eckit::linalg::TensorFloat& tIn, eckit::linal
+     } else {
+ 
+         // TFC uses Left (C) tensor layouts, so we can copy straight into memory of tOut
+-        Log::info() << "output size " << tOut.size() << std::endl;
++        //Log::info() << "output size " << tOut.size() << std::endl;
+         memcpy(tOut.data(), offsets, tOut.size() * sizeof(float));
+     }
+     statistics_.oTensorLayoutTiming_ += eckit::Timing{statistics_.timer()} - t_start;
+@@ -227,7 +227,7 @@ void InferenceModelTFC::infer_mimo_impl(std::vector<eckit::linalg::TensorFloat*>
+     // array of outputs for output-operations
+     TF_Output* Output = static_cast<TF_Output*>(malloc(sizeof(TF_Output) * NOutputs));
+ 
+-    std::cout << "NOutputs: " << NOutputs << std::endl;
++    //std::cout << "NOutputs: " << NOutputs << std::endl;
+     for (size_t i=0; i<NOutputs; i++){
+         Output[i] = GetOutputOperationBuffer_(output_names[i]);
+     }
+@@ -273,8 +273,8 @@ void InferenceModelTFC::infer_mimo_impl(std::vector<eckit::linalg::TensorFloat*>
+ 
+         if (tOut[i]->isRight()) {
+ 
+-            Log::info() << i << "-th Output Tensor needs right-layout. "
+-                        << "Transforming left to right.." << std::endl;
++            //Log::info() << i << "-th Output Tensor needs right-layout. "
++            //            << "Transforming left to right.." << std::endl;
+ 
+             // TFC uses Left (C) tensor layouts, so we need to convert
+             TensorFloat tLeft(offsets, tOut[i]->shape(), false);  // wrap data
+@@ -316,7 +316,7 @@ void InferenceModelTFC::print(std::ostream &os) const
+ void InferenceModelTFC::check_status(const TF_Status* s, std::string name){
+ 
+     if(TF_GetCode(s) == TF_OK) {
+-        Log::info() << name << " OK" << std::endl;
++        //Log::info() << name << " OK" << std::endl;
+     }
+     else {
+         Log::error() << name << " NOT OK" << std::endl;
+@@ -332,10 +332,10 @@ TF_Output InferenceModelTFC::GetOperationBuffer_(std::string name, int op_id)
+ 
+     int t0_ndims = TF_GraphGetTensorNumDims(network_graph, t0, err_status);
+     check_status(err_status, "TF_GraphGetTensorNumDims");
+-    Log::info() << "Layer " << name
+-                << " [id=" << op_id << "]"
+-                << " has " << t0_ndims
+-                << " dims." << std::endl;
++    //Log::info() << "Layer " << name
++    //            << " [id=" << op_id << "]"
++    //            << " has " << t0_ndims
++    //            << " dims." << std::endl;
+ 
+     int64_t* t0_dims = static_cast<int64_t*>(malloc(sizeof(int64_t) * t0_ndims));
+     TF_GraphGetTensorShape(network_graph,
+@@ -345,7 +345,7 @@ TF_Output InferenceModelTFC::GetOperationBuffer_(std::string name, int op_id)
+                            err_status);
+ 
+     for (int i=0; i<t0_ndims; i++){
+-        Log::info() << "N output dims: " << t0_dims[i] << std::endl;
++        //Log::info() << "N output dims: " << t0_dims[i] << std::endl;
+     }
+ 
+     check_status(err_status, "TF_GraphGetTensorShape");
+@@ -373,7 +373,7 @@ TF_Output InferenceModelTFC::GetInputOperationBuffer_(std::string name)
+         TF_Output t1 = {TF_GraphOperationByName(network_graph, inputLayerName.c_str()), 0};
+ 
+         if(!t1.oper){
+-            Log::info() << "Model input layer name : " << inputLayerName << " not valid, trying again.." << std::endl;
++            //Log::info() << "Model input layer name : " << inputLayerName << " not valid, trying again.." << std::endl;
+             inputLayerName = "serving_default_input_1";
+             t1 = {TF_GraphOperationByName(network_graph, inputLayerName.c_str()), 0};
+             if(!t1.oper){
+@@ -386,7 +386,7 @@ TF_Output InferenceModelTFC::GetInputOperationBuffer_(std::string name)
+     } else {
+         inputLayerName = name;
+     }
+-    Log::info() << "Input layer: " << inputLayerName << std::endl;
++    //Log::info() << "Input layer: " << inputLayerName << std::endl;
+ 
+     // input tensor buffer
+     TF_Output t1 = {TF_GraphOperationByName(network_graph, inputLayerName.c_str()), 0};
