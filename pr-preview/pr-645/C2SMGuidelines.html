@@ -146,10 +146,7 @@ additional commits in the meantime.</p>
 always result in the same code, all other version only point to a
 <code class="docutils literal notranslate"><span class="pre">HEAD</span></code> of a git branch.</p>
 <p>The list of versions, including tagged versions, is provided by <code class="docutils literal notranslate"><span class="pre">spack</span>
-<span class="pre">info</span> <span class="pre">&lt;package_name&gt;</span></code>. Note that tagged versions for COSMO on the
-<code class="docutils literal notranslate"><span class="pre">c2sm-features</span></code> branch are not yet provided but will be offered
-soon. We thus recommend using the <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">devbuildcosmo</span></code> command for
-now.</p>
+<span class="pre">info</span> <span class="pre">&lt;package_name&gt;</span></code>.</p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
 <p>Always use a valid git tag as a version-suffix when building
@@ -161,13 +158,17 @@ software with <code class="docutils literal notranslate"><span class="pre">spack
 <p>In order to install software with <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">dev-build</span></code>, one needs a
 local source code.  Spack will then compile the code as it is locally
 present. Contrary to <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span></code>, the version suffix
-(<code class="docutils literal notranslate"><span class="pre">&#64;master</span></code>, <code class="docutils literal notranslate"><span class="pre">&#64;v2.7.9</span></code>, etc.) does not have any effect on the code version compiled.
-To be safe, always use <code class="docutils literal notranslate"><span class="pre">dev-build</span></code> and copy the executable after installation
-into the source folder.</p>
+(<code class="docutils literal notranslate"><span class="pre">&#64;master</span></code>, <code class="docutils literal notranslate"><span class="pre">&#64;v2.7.9</span></code>, etc.) does not have any effect on the code version compiled,
+since spack will always use the local source.
+Nonetheless it is important to use the correct version suffix i.e <code class="docutils literal notranslate"><span class="pre">c2sm-master</span></code>
+for all your COSMO-versions building on top of branch <code class="docutils literal notranslate"><span class="pre">c2sm-master</span></code>. Same is for <code class="docutils literal notranslate"><span class="pre">c2sm-features</span></code> etc.
+The reason is that there are some patches spack applies based on the version suffix. Using the
+wrong version suffix may break your code.</p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>Always store the local sources and the corresponding executable in
-the same location!</p>
+<p>You may run into a conflict if you try to install the same spec using <code class="docutils literal notranslate"><span class="pre">dev-build</span></code>. Spack
+will tell you this particular spec is already installed. You can circumvent this conflict by keeping your
+executable alive in your src folder, but uninstall it with Spack using <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">uninstall</span> <span class="pre">&lt;your</span> <span class="pre">cosmo</span> <span class="pre">spec&gt;</span></code>.</p>
 </div>
 </section>
 </section>
@@ -178,9 +179,12 @@ configurations of a package along with the corresponding
 run environment.</p>
 <section id="load-run-environment-of-a-package">
 <h3>Load run environment of a package<a class="headerlink" href="#load-run-environment-of-a-package" title="Permalink to this heading"></a></h3>
-<p>Spack provides the command <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">load</span></code> to load the environment
-needed to run a binary into your current shell. There are two
-different ways of using it (both of them are fine).</p>
+<p>Spack provides the command <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">load</span></code> to load an installation into your environment.
+This could either be an installation of Python or required variables
+a specific binary needs in order to run correct. There are two
+different ways of using it (both of them are fine).
+For more information consider reading the
+<a class="reference external" href="https://spack.readthedocs.io/en/latest/command_index.html#spack-load">official Spack docs</a>.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack load &lt;package&gt;@&lt;version&gt;%&lt;compiler&gt; +&lt;variants&gt;
 </pre></div>
 </div>

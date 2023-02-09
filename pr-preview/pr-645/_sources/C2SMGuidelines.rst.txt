@@ -61,10 +61,7 @@ always result in the same code, all other version only point to a
 ``HEAD`` of a git branch.
 
 The list of versions, including tagged versions, is provided by ``spack
-info <package_name>``. Note that tagged versions for COSMO on the
-``c2sm-features`` branch are not yet provided but will be offered
-soon. We thus recommend using the ``spack devbuildcosmo`` command for
-now.
+info <package_name>``.
 
 ..  attention::
     Always use a valid git tag as a version-suffix when building
@@ -76,13 +73,17 @@ Option 2: spack dev-build
 In order to install software with ``spack dev-build``, one needs a
 local source code.  Spack will then compile the code as it is locally
 present. Contrary to ``spack install``, the version suffix
-(``@master``, ``@v2.7.9``, etc.) does not have any effect on the code version compiled.
-To be safe, always use ``dev-build`` and copy the executable after installation
-into the source folder.
+(``@master``, ``@v2.7.9``, etc.) does not have any effect on the code version compiled,
+since spack will always use the local source.
+Nonetheless it is important to use the correct version suffix i.e ``c2sm-master``
+for all your COSMO-versions building on top of branch ``c2sm-master``. Same is for ``c2sm-features`` etc.
+The reason is that there are some patches spack applies based on the version suffix. Using the 
+wrong version suffix may break your code.
 
 ..  attention::
-    Always store the local sources and the corresponding executable in
-    the same location!
+    You may run into a conflict if you try to install the same spec using ``dev-build``. Spack
+    will tell you this particular spec is already installed. You can circumvent this conflict by keeping your
+    executable alive in your src folder, but uninstall it with Spack using ``spack uninstall <your cosmo spec>``.
 
 Running
 ^^^^^^^
@@ -94,9 +95,12 @@ run environment.
 Load run environment of a package
 ---------------------------------
 
-Spack provides the command ``spack load`` to load the environment
-needed to run a binary into your current shell. There are two
+Spack provides the command ``spack load`` to load an installation into your environment.
+This could either be an installation of Python or required variables
+a specific binary needs in order to run correct. There are two
 different ways of using it (both of them are fine).
+For more information consider reading the
+`official Spack docs <https://spack.readthedocs.io/en/latest/command_index.html#spack-load>`__.
 
 .. code-block:: console
 
