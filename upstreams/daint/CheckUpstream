@@ -23,7 +23,7 @@ pipeline {
                             """
                         }
                     }
-                    stage('${BUILDER}') {
+                    stage(${BUILDER}) {
                         steps {
                             sh"""
                             . ./setup-env.sh
