@@ -56,7 +56,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#running">Running</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#load-run-environment-of-a-package">Load run-environment of a package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-run-environment-of-a-package">Load run environment of a package</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#spack-in-scripts">Spack in scripts</a></li>
@@ -177,7 +177,7 @@ the same location!</p>
 configurations of a package along with the corresponding
 run environment.</p>
 <section id="load-run-environment-of-a-package">
-<h3>Load run-environment of a package<a class="headerlink" href="#load-run-environment-of-a-package" title="Permalink to this heading"></a></h3>
+<h3>Load run environment of a package<a class="headerlink" href="#load-run-environment-of-a-package" title="Permalink to this heading"></a></h3>
 <p>Spack provides the command <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">load</span></code> to load the environment
 needed to run a binary into your current shell. There are two
 different ways of using it (both of them are fine).</p>
@@ -191,7 +191,7 @@ stage:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack load --sh &lt;package&gt;@&lt;version&gt;%&lt;compiler&gt; +&lt;variants&gt; &gt; run_package.env
 </pre></div>
 </div>
-<p>An example output of <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">load</span> <span class="pre">-sh</span></code> for COSMO could look as follows:</p>
+<p>An example output of <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">load</span> <span class="pre">--sh</span></code> for COSMO could look as follows:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">export LIBRARY_PATH=/opt/cray/pe/mpt/7.7.15/gni/mpich-pgi/20.1/lib:/project/s903/juckerj/spack-install/daint/eccodes/2.19.0/pgi/ccigv3uvkdl5h3d2jtb6blxvvv4qsdpc/lib64:/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/lib64:/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/lib;</span>
 <span class="go">export LD_LIBRARY_PATH=/opt/cray/pe/mpt/7.7.15/gni/mpich-pgi/20.1/lib:/project/s903/juckerj/spack-install/daint/eccodes/2.19.0/pgi/ccigv3uvkdl5h3d2jtb6blxvvv4qsdpc/lib64:/opt/cray/pe/gcc-libs:/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/lib64:/apps/daint/UES/xalt/xalt2/software/xalt/2.8.10/lib:/opt/cray/pe/papi/6.0.0.4/lib64:/opt/cray/job/2.2.4-7.0.2.1_2.86__g36b56f4.ari/lib64;</span>
 <span class="go">export GRIB_SAMPLES_PATH=/project/s903/juckerj/spack-install/daint/cosmo-eccodes-definitions/2.19.0.5/pgi/egf6fp466u2cl3ckkmhpemzf4hz7loqr/cosmoDefinitions/samples;</span>

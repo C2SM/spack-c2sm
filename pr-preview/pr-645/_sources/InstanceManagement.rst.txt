@@ -28,7 +28,7 @@ At CSCS, ``setup-env.sh`` automatically detects the machine. You may simply exec
 
 .. code-block:: console
 
-    $ source spack-c2sm/setup-env.sh
+    $ . spack-c2sm/setup-env.sh
 
 It is recommended to clone ``spack-c2sm`` in a location that does **not** undergo a
 regular cleanup. On Piz Daint, ``$SCRATCH`` enforces the deletion of all files older than 30 days.
@@ -58,21 +58,3 @@ To clean a Spack instance, empty the caches, uninstall everything and remove mis
     $ spack uninstall -a
     $ rm -rf ~/.spack
 
-Spack instance config files
----------------------------
-
-There is a set of ``.yaml`` files that define machine specific things like
-compilers, modules, pre-installed packages and more.
-
-They are available under ``spack/etc/spack``. Their structure is:
-
-* ``compilers.yaml``: all information about available compilers, machine specific compiler flags, module to load (``PrgEnv``) before compiling
-* ``packages.yaml``: all information about the already installed dependencies, i.e their module names or paths
-* ``modules.yaml``: all information about the modules created, i.e which env variable or modules should be set once loaded
-* ``config.yaml``: specifies the main installation path and the main module installation path, where to find binaries etc.
-* ``upstreams.yaml``: specifies where to find the pre-installed software
-* ``repos.yaml``: specifies where to find the only MCH packages that are stored in spack-c2sm repository
-
-..  note::
-    Unless your are a Spack developer, there is no need to modify any of the
-    ``.yaml`` files listed here.
