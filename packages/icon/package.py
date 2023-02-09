@@ -280,7 +280,6 @@ class Icon(AutotoolsPackage, CudaPackage):
         libs = LibraryList([])
 
         for x in [
-                'rpaths',
                 'atmo',
                 'ocean',
                 'jsbach',
