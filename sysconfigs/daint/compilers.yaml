@@ -139,7 +139,8 @@ compilers:
 - compiler:
     environment: {}
     extra_rpaths: []
-    flags:  {}
+    flags:
+      fflags: -lnvcpumath -lnvhpcatm
     modules:
     - PrgEnv-nvidia
     - nvidia/21.3

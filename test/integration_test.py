@@ -168,6 +168,12 @@ class PlainSpecTest(unittest.TestCase):
     def test_dusk(self):
         spack_spec('dusk')
 
+    def test_eckit(self):
+        spack_spec('eckit')
+
+    def test_fckit(self):
+        spack_spec('fckit')
+
     def test_flexpart_ifs(self):
         spack_spec('flexpart-ifs')
 
@@ -182,6 +188,9 @@ class PlainSpecTest(unittest.TestCase):
 
     def test_icontools(self):
         spack_spec('icontools')
+
+    def test_infero(self):
+        spack_spec('infero')
 
     def test_int2lm(self):
         spack_spec('int2lm')
@@ -249,6 +258,9 @@ class PlainSpecTest(unittest.TestCase):
 
     def test_py_typing_extensions(self):
         spack_spec('py-typing')
+
+    def test_tensorflowc(self):
+        spack_spec('tensorflowc')
 
     def test_zlib_ng(self):
         spack_spec('zlib_ng')

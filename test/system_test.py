@@ -167,12 +167,15 @@ nvidia_compiler: str = {
 @pytest.mark.no_tsa  # irrelevant
 class CosmoTest(unittest.TestCase):
 
-    def test_install_version_6_0(self):
-        spack_install_and_test(
-            f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
-        )
+    @pytest.mark.serial_only
+    def test_install_version_6_0_gpu(self):
         spack_install_and_test(
             f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
+        )
+
+    def test_install_version_6_0_cpu(self):
+        spack_install_and_test(
+            f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
     def test_devbuildcosmo(self):
@@ -198,15 +201,15 @@ class CosmoTest(unittest.TestCase):
             f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
-    def test_install_c2sm_master_cpu(self):
+    def test_install_c2sm_features_cpu(self):
         spack_install_and_test(
-            f'cosmo @c2sm-master %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
+            f'cosmo @c2sm-features %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
-    @pytest.mark.no_daint  # Unable to open MODULE file gt_gcl_bindings.mod
-    def test_install_c2sm_master_gpu(self):
+    @pytest.mark.serial_only
+    def test_install_c2sm_features_gpu(self):
         spack_install_and_test(
-            f'cosmo @c2sm-master %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
+            f'cosmo @c2sm-features %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
 
@@ -299,6 +302,12 @@ class Int2lmTest(unittest.TestCase):
     def test_install_version_3_00_nvhpc(self):
         spack_install_and_test(f'int2lm @int2lm-3.00 %{nvidia_compiler}')
 
+    @pytest.mark.no_balfrin  # fails because libgrib1 master fails
+    def test_install_version_3_00_nvhpc_fixed_definitions(self):
+        spack_install_and_test(
+            f'int2lm @int2lm-3.00 %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler}'
+        )
+
     def test_install_c2sm_master_gcc(self):
         spack_install_and_test(
             'int2lm @c2sm-master %gcc ^eccodes %gcc ^libgrib1 %gcc')
@@ -307,7 +316,7 @@ class Int2lmTest(unittest.TestCase):
     @pytest.mark.no_tsa  # An error occurred in MPI_Bcast
     def test_install_c2sm_master_nvhpc(self):
         spack_install_and_test(
-            f'int2lm @c2sm-master %{nvidia_compiler} ^eccodes %{nvidia_compiler} ^libgrib1 %{nvidia_compiler}'
+            f'int2lm @c2sm-master %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler} ^libgrib1 %{nvidia_compiler}'
         )
 
 
@@ -318,9 +327,18 @@ class IconToolsTest(unittest.TestCase):
         spack_install_and_test('icontools @c2sm-master %gcc')
 
 
+@pytest.mark.no_tsa  # Not supported on Tsa
+@pytest.mark.no_balfrin  # Not supported on Balfrin
+class InferoTest(unittest.TestCase):
+
+    def test_install(self):
+        spack_install_and_test('infero@0.1.2 %gcc')
+
+
 @pytest.mark.no_balfrin  # This fails with "BOZ literal constant at (1) cannot appear in an array constructor". https://gcc.gnu.org/onlinedocs/gfortran/BOZ-literal-constants.html
 class LibGrib1Test(unittest.TestCase):
 
+    @pytest.mark.serial_only  # locking problem on Tsa in combination with int2lm
     def test_install_version_22_01_2020(self):
         spack_install_and_test('libgrib1 @22-01-2020')
 
