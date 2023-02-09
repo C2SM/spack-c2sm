@@ -3,12 +3,12 @@ pipeline {
         node {label 'daint'}
     }
     stages {
-        stage('Check availablity of upstream') {
+        stage('Check upstream installation for ICON') {
             matrix {
                 axes {
                     axis {
                         name 'BUILDER'
-                        values 'daint_cpu_nvhpc', 'daint_gpu_nvhpc'
+                        values 'daint_cpu_nvhpc', 'daint_gpu_nvhpc','daint_gpu_nvhpc_mixed','daint_cpu_nvhpc_mixed','daint_cpu_cce'
                     }
                 }
                 stages {
@@ -23,7 +23,7 @@ pipeline {
                             """
                         }
                     }
-                    stage(${BUILDER}) {
+                    stage('Check completeness for Builder') {
                         steps {
                             sh"""
                             . ./setup-env.sh
