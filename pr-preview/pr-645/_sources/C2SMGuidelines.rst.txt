@@ -89,8 +89,8 @@ Using the wrong version suffix may break your code.
     To circumvent the above conflict, you can keep your executable alive in your source folder,
     but uninstall it with Spack using ``spack uninstall <your cosmo spec>``.
     Another option is to use a different string in ``@<string>`` for every flavor you build.
-    For example, ``spack dev-build icon @cpu ...``, ``spack dev-build icon @gpu``,
-    ``spack dev-build icon @my-new-feature ...`` etc. 
+    For example, ``spack dev-build icon @cpu``, ``spack dev-build icon @gpu``,
+    ``spack dev-build icon @my-new-feature`` etc. 
     Then, they will all coexist and you can individually `spack load icon @my-new-feature
     or uninstall and rebuild them.
 
