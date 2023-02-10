@@ -252,7 +252,7 @@ class IconTest(unittest.TestCase):
 
     @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
     def test_install_nwp_gpu(self):
-        spack_install_and_test(f'icon @nwp-master %nvhpc')
+        spack_install_and_test(f'icon @nwp-master %nvhpc gpu=80')
 
     @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
     def test_install_nwp_cpu(self):
