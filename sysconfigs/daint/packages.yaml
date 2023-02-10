@@ -149,7 +149,7 @@ packages:
       modules:
       - cray-hdf5-parallel/1.12.0.4
   icon: # manually added
-    variants: host=daint
+    variants: gpu=60
   icontools: # manually added
     variants: slave=daint
   int2lm: # manually added

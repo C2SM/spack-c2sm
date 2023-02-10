@@ -129,7 +129,7 @@ packages:
     - spec: hwloc@1.11.8
       prefix: /usr
   icon: # manually added
-    variants: host=tsa
+    variants: gpu=70
   icontools: # manually added
     variants: slave=tsa
   int2lm: # manually added
