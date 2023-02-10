@@ -75,15 +75,24 @@ local source code.  Spack will then compile the code as it is locally
 present. Contrary to ``spack install``, the version suffix
 (``@master``, ``@v2.7.9``, etc.) does not have any effect on the code version compiled,
 since spack will always use the local source.
-Nonetheless it is important to use the correct version suffix i.e ``c2sm-master``
-for all your COSMO-versions building on top of branch ``c2sm-master``. Same is for ``c2sm-features`` etc.
-The reason is that there are some patches spack applies based on the version suffix. Using the 
-wrong version suffix may break your code.
+Nonetheless, it is important to use the correct version suffix, i.e. ``c2sm-master``
+for all your COSMO versions that build on top of the ``c2sm-master`` branch.
+The same applies to ``c2sm-features`` etc.
+The reason for this is that there are some patches Spack applies based on the version suffix. 
+Using the wrong version suffix may break your code.
 
 ..  attention::
-    You may run into a conflict if you try to install the same spec using ``dev-build``. Spack
-    will tell you this particular spec is already installed. You can circumvent this conflict by keeping your
-    executable alive in your src folder, but uninstall it with Spack using ``spack uninstall <your cosmo spec>``.
+    You may run into a conflict if you try to install the same spec using ``dev-build``.
+    Spack will tell you that this particular spec is already installed. 
+
+..  tip::
+    To circumvent the above conflict, you can keep your executable alive in your source folder,
+    but uninstall it with Spack using ``spack uninstall <your cosmo spec>``.
+    Another option is to use a different string in ``@<string>`` for every flavor you build.
+    For example, ``spack dev-build icon @cpu ...``, ``spack dev-build icon @gpu``,
+    ``spack dev-build icon @my-new-feature ...`` etc. 
+    Then, they will all coexist and you can individually `spack load icon @my-new-feature
+    or uninstall and rebuild them.
 
 Running
 ^^^^^^^
@@ -96,9 +105,9 @@ Load run environment of a package
 ---------------------------------
 
 Spack provides the command ``spack load`` to load an installation into your environment.
-This could either be an installation of Python or required variables
-a specific binary needs in order to run correct. There are two
-different ways of using it (both of them are fine).
+This could either be a Python installation or required variables that
+a specific binary needs to run correctly. There are two different ways of using it
+(both of them are fine), which are presented here.
 For more information consider reading the
 `official Spack docs <https://spack.readthedocs.io/en/latest/command_index.html#spack-load>`__.
 
