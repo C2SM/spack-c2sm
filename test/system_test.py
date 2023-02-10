@@ -75,7 +75,6 @@ def spack_devbuild_and_test(spec: str,
         # python packages don't necessarily have a build phase.
         # Thus splitting on build doesn't work in general
         split_phases = False
-        devirtualize_env()
 
     if split_phases:
         log_with_spack(f'spack {command} --until build --test=root -n {spec}',
@@ -104,9 +103,6 @@ def spack_env_dev_install_and_test(spack_env: str,
     environment, tests 'spack install' and writes the output into the log file.
     If log_filename is None, spack_env is used to create one.
     """
-
-    # in case we use serialbox or another python preprocessor
-    devirtualize_env()
 
     unique_folder = 'icon-exclaim_' + uuid.uuid4(
     ).hex  # to avoid cloning into the same folder and having race conditions
@@ -238,9 +234,11 @@ class GridToolsTest(unittest.TestCase):
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 class IconTest(unittest.TestCase):
 
+    @pytest.mark.no_daint  # Fails to build libxml2 %nvhpc
     def test_install_nwp_cuda(self):
         spack_install_and_test(f'icon @nwp-master %nvhpc +cuda')
 
+    @pytest.mark.no_daint  # Fails to build libxml2 %nvhpc
     def test_install_nwp_no_cuda(self):
         spack_install_and_test(f'icon @nwp-master %nvhpc ~cuda')
 
