@@ -8,6 +8,8 @@ packages:
     variants: slave=balfrin cuda_arch=80 slurm_bin= "srun" slurm_partition="debug" slurm_gpu="--gres=gpu:{0}" slurm_opt_nodes="-n" slurm_nodes= "{0}" slurm_opt_account= "-" slurm_account= "-" slurm_opt_constraint="-" slurm_constraint= "-" data_path=/scratch/jenkins/data/cosmo/
   gridtools: # manually added
     variants: +cuda cuda_arch=80
+  icon: # manually added
+    variants: cuda_arch=80
   icontools: # manually added
     variants: slave=balfrin
   int2lm: # manually added

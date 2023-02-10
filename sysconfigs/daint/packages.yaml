@@ -148,6 +148,8 @@ packages:
     - spec: hdf5@1.12.0.4 +mpi +hl # manually added
       modules:
       - cray-hdf5-parallel/1.12.0.4
+  icon: # manually added
+    variants: cuda_arch=60
   icontools: # manually added
     variants: slave=daint
   int2lm: # manually added
