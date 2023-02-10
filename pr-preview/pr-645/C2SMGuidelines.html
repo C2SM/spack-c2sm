@@ -160,15 +160,25 @@ local source code.  Spack will then compile the code as it is locally
 present. Contrary to <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span></code>, the version suffix
 (<code class="docutils literal notranslate"><span class="pre">&#64;master</span></code>, <code class="docutils literal notranslate"><span class="pre">&#64;v2.7.9</span></code>, etc.) does not have any effect on the code version compiled,
 since spack will always use the local source.
-Nonetheless it is important to use the correct version suffix i.e <code class="docutils literal notranslate"><span class="pre">c2sm-master</span></code>
-for all your COSMO-versions building on top of branch <code class="docutils literal notranslate"><span class="pre">c2sm-master</span></code>. Same is for <code class="docutils literal notranslate"><span class="pre">c2sm-features</span></code> etc.
-The reason is that there are some patches spack applies based on the version suffix. Using the
-wrong version suffix may break your code.</p>
+Nonetheless, it is important to use the correct version suffix, i.e. <code class="docutils literal notranslate"><span class="pre">c2sm-master</span></code>
+for all your COSMO versions that build on top of the <code class="docutils literal notranslate"><span class="pre">c2sm-master</span></code> branch.
+The same applies to <code class="docutils literal notranslate"><span class="pre">c2sm-features</span></code> etc.
+The reason for this is that there are some patches Spack applies based on the version suffix.
+Using the wrong version suffix may break your code.</p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>You may run into a conflict if you try to install the same spec using <code class="docutils literal notranslate"><span class="pre">dev-build</span></code>. Spack
-will tell you this particular spec is already installed. You can circumvent this conflict by keeping your
-executable alive in your src folder, but uninstall it with Spack using <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">uninstall</span> <span class="pre">&lt;your</span> <span class="pre">cosmo</span> <span class="pre">spec&gt;</span></code>.</p>
+<p>You may run into a conflict if you try to install the same spec using <code class="docutils literal notranslate"><span class="pre">dev-build</span></code>.
+Spack will tell you that this particular spec is already installed.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>To circumvent the above conflict, you can keep your executable alive in your source folder,
+but uninstall it with Spack using <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">uninstall</span> <span class="pre">&lt;your</span> <span class="pre">cosmo</span> <span class="pre">spec&gt;</span></code>.
+Another option is to use a different string in <code class="docutils literal notranslate"><span class="pre">&#64;&lt;string&gt;</span></code> for every flavor you build.
+For example, <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">dev-build</span> <span class="pre">icon</span> <span class="pre">&#64;cpu</span> <span class="pre">...</span></code>, <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">dev-build</span> <span class="pre">icon</span> <span class="pre">&#64;gpu</span></code>,
+<code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">dev-build</span> <span class="pre">icon</span> <span class="pre">&#64;my-new-feature</span> <span class="pre">...</span></code> etc.
+Then, they will all coexist and you can individually <a href="#id1"><span class="problematic" id="id2">`</span></a>spack load icon &#64;my-new-feature
+or uninstall and rebuild them.</p>
 </div>
 </section>
 </section>
@@ -180,9 +190,9 @@ run environment.</p>
 <section id="load-run-environment-of-a-package">
 <h3>Load run environment of a package<a class="headerlink" href="#load-run-environment-of-a-package" title="Permalink to this heading"></a></h3>
 <p>Spack provides the command <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">load</span></code> to load an installation into your environment.
-This could either be an installation of Python or required variables
-a specific binary needs in order to run correct. There are two
-different ways of using it (both of them are fine).
+This could either be a Python installation or required variables that
+a specific binary needs to run correctly. There are two different ways of using it
+(both of them are fine), which are presented here.
 For more information consider reading the
 <a class="reference external" href="https://spack.readthedocs.io/en/latest/command_index.html#spack-load">official Spack docs</a>.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack load &lt;package&gt;@&lt;version&gt;%&lt;compiler&gt; +&lt;variants&gt;
