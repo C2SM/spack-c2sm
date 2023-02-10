@@ -34,7 +34,6 @@ def log_with_spack(command: str,
     else:
         package_env = ''
 
-
     # Distribute work with 'srun'
     if srun and getpass.getuser() == 'jenkins':
         # The '-c' argument should be in sync with
