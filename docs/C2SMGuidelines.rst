@@ -91,7 +91,7 @@ Using the wrong version suffix may break your code.
     Another option is to use a different string in ``@<string>`` for every flavor you build.
     For example, ``spack dev-build icon @cpu``, ``spack dev-build icon @gpu``,
     ``spack dev-build icon @my-new-feature`` etc. 
-    Then, they will all coexist and you can individually `spack load icon @my-new-feature
+    Then, they will all coexist and you can individually ``spack load icon @my-new-feature``
     or uninstall and rebuild them.
 
 Running
