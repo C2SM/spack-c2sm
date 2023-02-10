@@ -103,12 +103,20 @@ class Icon(AutotoolsPackage):
 
     # Optimization Features:
     variant('loop-exchange', default=True, description='Enable loop exchange')
-    variant('vectorized-lrtm', default=False, description='Enable the parallelization-invariant version of LRTM')
+    variant('vectorized-lrtm',
+            default=False,
+            description='Enable the parallelization-invariant version of LRTM')
     variant('mixed-precision',
             default=False,
             description='Enable mixed precision dycore')
-    variant('pgi-inlib', default=False, description='Enable PGI/NVIDIA cross-file function inlining via an inline library')
-    variant('nccl', default=False, description='Ennable NCCL for communication')
+    variant(
+        'pgi-inlib',
+        default=False,
+        description=
+        'Enable PGI/NVIDIA cross-file function inlining via an inline library')
+    variant('nccl',
+            default=False,
+            description='Ennable NCCL for communication')
 
     depends_on('libxml2', when='+coupling')
     depends_on('libxml2', when='+art')
