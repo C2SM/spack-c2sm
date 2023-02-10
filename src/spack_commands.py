@@ -29,7 +29,11 @@ def log_with_spack(command: str,
     spack_env = f'. {spack_c2sm_path}/setup-env.sh'
 
     # Setup package's spack env
-    package_env = f'spack env activate -d {env};'
+    if env:
+        package_env = f'spack env activate -d {env};'
+    else:
+        package_env = ''
+
 
     # Distribute work with 'srun'
     if srun and getpass.getuser() == 'jenkins':
