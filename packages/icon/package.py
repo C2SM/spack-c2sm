@@ -387,7 +387,8 @@ class Icon(AutotoolsPackage, CudaPackage):
             if '+cuda' in self.spec:
                 config_vars['FCFLAGS'].extend([
                     '-acc=verystrict', '-Minfo=accel,inline',
-                    '-ta=nvidia:cc{0}'.format(self.spec.variants['cuda_arch'].value[0])
+                    '-ta=nvidia:cc{0}'.format(
+                        self.spec.variants['cuda_arch'].value[0])
                 ])
                 config_vars['ICON_FCFLAGS'].append('-D__SWAPDIM')
         elif self.compiler.name == 'cce':
