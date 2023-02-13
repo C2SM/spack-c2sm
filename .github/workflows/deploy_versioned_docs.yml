@@ -1,0 +1,36 @@
+name: Deploy versioned docs
+env:
+  DOCS_VERSION: v0.18.1.1
+
+on:
+  push:
+    branches:    
+      - multiple-docs
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    # Example of using a custom build-command.
+    # this commit SHA corresponds to tag `0.4`
+    - uses: C2SM/sphinx-action@sphinx-latest
+      with:
+        build-command: "sphinx-build -b html . _build"
+        docs-folder: "docs/"
+    # Great extra actions to compose with:
+    # Create an artifact of the html output.
+    - uses: actions/upload-artifact@v1
+      with:
+        name: DocumentationHTML
+        path: docs/_build/
+
+    - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/_build
+          destination_dir: ${{ env.DOCS_VERSION }}
+          allow_empty_commit: true
