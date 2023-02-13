@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Develop packages &mdash; C2SM Spack  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Why was Spack chosen by MeteoSwiss?" href="SpackChoice.html" />
+    <link rel="prev" title="Testing" href="Testing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            C2SM Spack
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="QuickStart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="C2SMGuidelines.html">C2SM Guidelines for Spack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="InstanceManagement.html">How to manage your own Spack instance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpackCommands.html">Important Spack Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Develop packages</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#plain-dev-build">Plain dev-build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dev-build-in-combination-with-build-env">Dev-build in combination with build-env</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#environments-with-spack-develop">Environments with Spack develop</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SpackChoice.html">Why was Spack chosen by MeteoSwiss?</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">C2SM Spack</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Develop packages</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/CodeDevelopment.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="develop-packages">
+<h1>Develop packages<a class="headerlink" href="#develop-packages" title="Permalink to this heading"></a></h1>
+<p>Spack offers several options for package development.
+Depending on your workflow, one or the other option is preferred.
+Also some packages like ICON or COSMO have their own
+development workflow which is maintained by C2SM.</p>
+<section id="plain-dev-build">
+<h2>Plain dev-build<a class="headerlink" href="#plain-dev-build" title="Permalink to this heading"></a></h2>
+<p>This is the easiest way to build local sources.
+Enter the root of your source repository and execute:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack dev-build  &lt;package&gt; @develop &lt;variant&gt;
+</pre></div>
+</div>
+<p>This will install the package as is. The downside of this approach is that
+you need to go through all phases of a package build.</p>
+</section>
+<section id="dev-build-in-combination-with-build-env">
+<h2>Dev-build in combination with build-env<a class="headerlink" href="#dev-build-in-combination-with-build-env" title="Permalink to this heading"></a></h2>
+<p>We assume that developers of a package are familiar with its build system.
+Therefore, we reccomend to use Spack to set up the environment for the package.
+Building and testing should be done with the package’s build and test system.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>Load Spack!
+<span class="gp">$ </span>spack dev-build --before build &lt;package&gt; @develop &lt;variant&gt; <span class="c1"># stops dev-build before executing the phase &#39;build&#39;</span>
+<span class="gp">$ </span>spack build-env &lt;package&gt; @develop &lt;variant&gt; -- bash <span class="c1"># nests a bash shell with the build env vars loaded</span>
+<span class="gp"># </span>Work on the package!
+<span class="gp"># </span>Use the build system of the package! <span class="o">(</span>e.g. <span class="s1">&#39;make&#39;</span><span class="o">)</span>
+<span class="gp"># </span>Use the testing infrastructure of the package!
+<span class="gp">$ </span><span class="nb">exit</span> <span class="c1"># to exit the nested bash</span>
+</pre></div>
+</div>
+<p>If you want multiple dev-builds at the same time, label them with separate <code class="docutils literal notranslate"><span class="pre">&#64;&lt;your-label&gt;</span></code>.
+The identifier <code class="docutils literal notranslate"><span class="pre">&#64;develop</span></code> is common in the Spack documentation but you can use any string.</p>
+</section>
+<section id="environments-with-spack-develop">
+<h2>Environments with Spack develop<a class="headerlink" href="#environments-with-spack-develop" title="Permalink to this heading"></a></h2>
+<p>Environments sit in a folder with a name and are defined in a <code class="docutils literal notranslate"><span class="pre">spack.yaml</span></code> file.
+For more information about environments in general, consider reading the
+<a class="reference external" href="https://spack.readthedocs.io/en/latest/environments.html">official Spack docs</a>.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Example environment for ICON</span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># This is a Spack Environment file.</span><span class="w"></span>
+<span class="c1">#</span><span class="w"></span>
+<span class="c1"># It describes a set of packages to be installed, along with</span><span class="w"></span>
+<span class="c1"># configuration settings.</span><span class="w"></span>
+<span class="nt">spack</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># add package specs to the `specs` list</span><span class="w"></span>
+<span class="w">  </span><span class="nt">specs</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">icon@develop%nvhpc +ecrad +rte-rrtmgp claw=std gpu=60</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eccodes@2.19.0%nvhpc</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claw@2.0.3%nvhpc</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-blas%nvhpc</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-lapack%nvhpc</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">libxml2@2.9.13%gcc</span><span class="w"></span>
+<span class="w">  </span><span class="nt">view</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">  </span><span class="nt">concretizer</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">unify</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">  </span><span class="nt">develop</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">spec</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">icon@develop%nvhpc +ecrad +rte-rrtmgp claw=std gpu=60</span><span class="w"></span>
+<span class="w">      </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">../../../../</span><span class="w"></span>
+</pre></div>
+</div>
+</div>
+<p>The key part of the environments is the <code class="docutils literal notranslate"><span class="pre">develop</span></code> keyword.
+This tells Spack to look for a certain spec in <code class="docutils literal notranslate"><span class="pre">path</span></code>.
+It is possible to specify multiple packages under <code class="docutils literal notranslate"><span class="pre">develop</span></code>.</p>
+<p>To activate a Spack environment, type</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack env activate -p &lt;path_to_spack_yaml&gt;
+</pre></div>
+</div>
+<p>To install the environment, type</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack install
+</pre></div>
+</div>
+<p>To deactivate a Spack environment, type</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack env deactivate
+</pre></div>
+</div>
+<p>Most of the Spack commands are sensitive to environments, see
+<a class="reference external" href="https://spack.readthedocs.io/en/latest/environments.html#environment-sensitive-commands">Spack docs</a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Testing.html" class="btn btn-neutral float-left" title="Testing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="SpackChoice.html" class="btn btn-neutral float-right" title="Why was Spack chosen by MeteoSwiss?" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2023, C2SM.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
