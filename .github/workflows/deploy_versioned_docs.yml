@@ -1,11 +1,13 @@
 name: Deploy versioned docs
 env:
+  # will be the subfolder of deployment in gh-pages
   DOCS_VERSION: v0.18.1.1
 
 on:
   push:
     branches:    
-      - multiple-docs
+    # should point to a stable branch, ideally identical to DOCS_VERSION
+      - v0.18.1.1
 
 jobs:
   deploy-docs:
