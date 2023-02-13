@@ -128,8 +128,6 @@ packages:
     externals:
     - spec: hwloc@1.11.8
       prefix: /usr
-  icon: # manually added
-    variants: host=tsa
   icontools: # manually added
     variants: slave=tsa
   int2lm: # manually added
