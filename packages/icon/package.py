@@ -1,7 +1,7 @@
 import os, subprocess
 from collections import defaultdict
 
-from llnl.util import lang, filesystem
+from llnl.util import lang, filesystem, tty
 from spack.util.environment import is_system_path, dump_environment
 from spack.util.executable import which_string
 
@@ -26,6 +26,10 @@ class Icon(AutotoolsPackage):
     version('nwp-master',
             git='ssh://git@gitlab.dkrz.de/icon/icon-nwp.git',
             submodules=True)
+
+    # The variants' default follow those of ICON
+    # as described here
+    # https://gitlab.dkrz.de/icon/icon/-/blob/icon-2.6.5.1/configure#L1454-1557
 
     # Model Features:
     variant('atmo',
@@ -98,9 +102,21 @@ class Icon(AutotoolsPackage):
             description='Enable the Serialbox2 serialization')
 
     # Optimization Features:
+    variant('loop-exchange', default=True, description='Enable loop exchange')
+    variant('vectorized-lrtm',
+            default=False,
+            description='Enable the parallelization-invariant version of LRTM')
     variant('mixed-precision',
             default=False,
             description='Enable mixed precision dycore')
+    variant(
+        'pgi-inlib',
+        default=False,
+        description=
+        'Enable PGI/NVIDIA cross-file function inlining via an inline library')
+    variant('nccl',
+            default=False,
+            description='Ennable NCCL for communication')
 
     depends_on('libxml2', when='+coupling')
     depends_on('libxml2', when='+art')
@@ -278,9 +294,27 @@ class Icon(AutotoolsPackage):
         libs = LibraryList([])
 
         for x in [
-                'atmo', 'ocean', 'jsbach', 'coupling', 'ecrad', 'rte-rrtmgp',
-                'rttov', 'dace', 'emvorado', 'art', 'mpi', 'openmp', 'grib2',
-                'parallel-netcdf', 'sct', 'yaxt', 'mixed-precision'
+                'atmo',
+                'ocean',
+                'jsbach',
+                'coupling',
+                'ecrad',
+                'rte-rrtmgp',
+                'rttov',
+                'dace',
+                'emvorado',
+                'art',
+                'mpi',
+                'openmp',
+                'grib2',
+                'parallel-netcdf',
+                'sct',
+                'yaxt',
+                'loop-exchange',
+                'vectorized-lrtm',
+                'mixed-precision',
+                'pgi-inlib',
+                'nccl',
         ]:
             config_args += self.enable_or_disable(x)
 
@@ -511,8 +545,6 @@ class Icon(AutotoolsPackage):
             # the value to the config_flags directly.
             config_vars['LIBS'].extend(cuda_host_compiler_stdcxx_libs)
 
-        if self.compiler.name == 'nvhpc':
-            config_vars['LIBS'].extend(['-lnvcpumath -lnvhpcatm'])
         # Finalize the LIBS variable (we always put the real collected
         # libraries to the front):
         config_vars['LIBS'].insert(0, libs.link_flags)
