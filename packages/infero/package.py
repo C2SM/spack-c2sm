@@ -5,6 +5,7 @@
 
 #
 from spack import *
+import os
 
 
 class Infero(CMakePackage):
@@ -82,3 +83,11 @@ class Infero(CMakePackage):
         msg = 'Unable to recursively locate shared {0} libraries in {1}'
         raise spack.error.NoLibrariesError(
             msg.format(self.spec.name, self.spec.prefix))
+
+    @run_after('install')
+    def link_fmod_into_include(self):
+        mod = 'inferof.mod'
+        src = os.path.join(self.prefix,'module/infero',mod)
+        dest = os.path.join(self.prefix.include,mod)
+        os.symlink(src,dest)
+
