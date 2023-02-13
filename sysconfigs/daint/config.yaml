@@ -6,6 +6,6 @@ config:
   misc_cache: '$spack/../spack-misc_cache'
   install_tree:
     projections:
-      all: '{name}/{version}/{compiler.name}/{hash}'
+      all: '{name}-{version}/{compiler.name}-{compiler.version}/{hash}'
   build_jobs: 12
   db_lock_timeout: 120

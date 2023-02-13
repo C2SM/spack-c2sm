@@ -1,3 +1,1 @@
-upstreams:
-  system:
-    install_tree: /mch-environment/v2
+/mch-environment/v2/config/upstreams.yaml
