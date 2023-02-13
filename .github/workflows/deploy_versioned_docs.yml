@@ -1,12 +1,14 @@
 name: Deploy versioned docs
 env:
   # will be the subfolder of deployment in gh-pages
+  # change for each new version of spack-c2sm
   DOCS_VERSION: v0.18.1.1
 
 on:
   push:
     branches:    
     # should point to a stable branch, ideally identical to DOCS_VERSION
+    # change for each new version of spack-c2sm
       - v0.18.1.1
 
 jobs:
