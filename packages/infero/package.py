@@ -87,7 +87,6 @@ class Infero(CMakePackage):
     @run_after('install')
     def link_fmod_into_include(self):
         mod = 'inferof.mod'
-        src = os.path.join(self.prefix,'module/infero',mod)
-        dest = os.path.join(self.prefix.include,mod)
-        os.symlink(src,dest)
-
+        src = os.path.join(self.prefix, 'module/infero', mod)
+        dest = os.path.join(self.prefix.include, mod)
+        os.symlink(src, dest)

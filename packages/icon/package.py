@@ -120,7 +120,8 @@ class Icon(AutotoolsPackage):
 
     variant(
         'infero',
-        description='Build with Infero to replace ecRad with ML implementation. Experimental, needs non-standard codebase!',
+        description=
+        'Build with Infero to replace ecRad with ML implementation. Experimental, needs non-standard codebase!',
         default=False)
 
     depends_on('infero +quiet', when='+infero')
