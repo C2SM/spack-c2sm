@@ -80,18 +80,25 @@ ICON
 -----
 ICON is built using environments.
 Environments sit in a folder with a name and are defined in a ``spack.yaml`` file.
-For ICON they are located in `config/cscs/spack-envs/<machine><target><compiler>``.
+For ICON they are located in ``config/cscs/spack-envs/<machine><target><compiler>``.
 
 To activate the Spack environment, type
 
 .. code-block:: console
 
-    $ spack env activate -p <path_to_folder_with_spack_yaml>
+    $ spack env activate <path_to_folder_with_spack_yaml>
 
 To install the environment and so ICON, type
 
 .. code-block:: console
     
+    $ spack install
+
+Example to build ICON for CPU with NVHPC:
+
+.. code-block:: console
+
+    $ spack env activate config/cscs/spack-envs/daint_cpu_nvhpc
     $ spack install
 
 COSMO
