@@ -52,6 +52,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#at-cscs-daint-tsa-balfrin">At CSCS (Daint, Tsa, Balfrin)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#local-machines-and-containers">Local machines and Containers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-packages">Use packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#icon">ICON</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#cosmo">COSMO</a></li>
 </ul>
 </li>
@@ -144,17 +145,36 @@ You can force a machine with an argument. The name has to match a folder in sysc
 </pre></div>
 </div>
 </section>
+<section id="icon">
+<h2>ICON<a class="headerlink" href="#icon" title="Permalink to this heading"></a></h2>
+<p>ICON is built using environments.
+Environments sit in a folder with a name and are defined in a <code class="docutils literal notranslate"><span class="pre">spack.yaml</span></code> file.
+For ICON they are located in <code class="docutils literal notranslate"><span class="pre">config/cscs/spack-envs/&lt;machine&gt;&lt;target&gt;&lt;compiler&gt;</span></code>.</p>
+<p>To activate the Spack environment, type</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack env activate &lt;path_to_folder_with_spack_yaml&gt;
+</pre></div>
+</div>
+<p>To install the environment and so ICON, type</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack install
+</pre></div>
+</div>
+<p>Example to build ICON for CPU with NVHPC:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack env activate config/cscs/spack-envs/daint_cpu_nvhpc
+<span class="gp">$ </span>spack install
+</pre></div>
+</div>
+</section>
 <section id="cosmo">
 <h2>COSMO<a class="headerlink" href="#cosmo" title="Permalink to this heading"></a></h2>
 <p>COSMO is currently receiving special treatment. It has its own commands in spack-c2sm.
 The reason for this is that the optional depencendy on the C++ dycore lives in the same repository as COSMO.</p>
 <p>To install COSMO</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack installcosmo cosmo @&lt;version&gt; %&lt;compiler&gt; &lt;variants&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack installcosmo cosmo @&lt;version&gt; %nvhpc &lt;variants&gt; ^mpich%nvhpc
 </pre></div>
 </div>
 <p>To develop COSMO</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> &lt;/path/to/package&gt;
-<span class="gp">$ </span>spack devbuildcosmo cosmo @&lt;version&gt; %&lt;compiler&gt; &lt;variants&gt;
+<span class="gp">$ </span>spack devbuildcosmo cosmo @&lt;version&gt; %nvhpc &lt;variants&gt; ^mpich%nvhpc
 </pre></div>
 </div>
 <p>Example variants:</p>
