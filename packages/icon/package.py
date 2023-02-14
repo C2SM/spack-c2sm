@@ -118,6 +118,14 @@ class Icon(AutotoolsPackage):
             default=False,
             description='Ennable NCCL for communication')
 
+    variant(
+        'infero',
+        description=
+        'Build with Infero to replace ecRad with ML implementation. Experimental, needs non-standard codebase!',
+        default=False)
+
+    depends_on('infero +quiet', when='+infero')
+
     depends_on('libxml2', when='+coupling')
     depends_on('libxml2', when='+art')
 
@@ -498,6 +506,9 @@ class Icon(AutotoolsPackage):
                 # we have to disable the MPI checks:
                 '--disable-mpi-checks'
             ])
+
+        if '+infero' in self.spec:
+            libs += self.spec['infero'].libs
 
         claw = self.spec.variants['claw'].value
         if claw == 'none':
