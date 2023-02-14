@@ -79,7 +79,7 @@ To activate a Spack environment, type
 
 .. code-block:: console
 
-    $ spack env activate -p <path_to_spack_yaml>
+    $ spack env activate <path_to_folder_with_spack_yaml>
 
 To install the environment, type
 
