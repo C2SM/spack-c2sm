@@ -1,5 +1,4 @@
 String[] BuilderList = ['daint_cpu_nvhpc','daint_gpu_nvhpc','daint_gpu_nvhpc_mixed','daint_cpu_nvhpc_mixed','daint_cpu_cce']
-]
 pipeline {
     agent {
         node {label 'daint'}
