@@ -9,8 +9,7 @@ pipeline {
                 script { 
                     for(BUILDER in BuilderList){
                         stage('Clone icon-nwp') {
-                            steps {
-                                sh"""
+                            sh label: '', script:"""
                                 git clone git@gitlab.dkrz.de:icon/icon-nwp.git ${BUILDER}
                                 cd ${BUILDER}
                                 git switch spack-envs
