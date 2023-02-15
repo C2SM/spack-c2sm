@@ -132,4 +132,4 @@ Changelog to v0.17.1
 * Users manage their own instance instead of sourcing a preinstalled instance.
 * Users decide on their own when they would like to update their instance (i.e. after upgrades at CSCS).
 * Due to new concretizer COSMO needs an explicit ``^mpich%nvhpc`` (Daint) or ``openmpi%nvhpc`` (Tsa) in spec, otherwise build fails.
-* ICON is built using environments, ``dev-build`` is not supported anymore.
+* On Daint ICON is built using environments and ``dev-build`` is not supported anymore. On Balfrin ICON can still be built using ``dev-build``.
