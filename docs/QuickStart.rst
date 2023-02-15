@@ -126,3 +126,10 @@ Example variants:
   $ spack installcosmo cosmo @org-master cosmo_target=cpu # CPU variant of https://github.com/COSMO-ORG/cosmo master
   $ spack installcosmo cosmo @org-master cosmo_target=gpu # GPU variant of https://github.com/COSMO-ORG/cosmo master
   $ spack installcosmo cosmo @apn_5.09a.mch1.2.p1 cosmo_target=gpu # GPU variant of https://github.com/MeteoSwiss-APN/cosmo/releases/tag/5.09a.mch1.2.p1
+
+Changelog to v0.17.1
+---------------------
+* Users manage their own instance instead of sourcing a preinstalled instance.
+* Users decide on their own when they would like to update their instance (i.e. after upgrades at CSCS).
+* Due to new concretizer COSMO needs an explicit ``^mpich%nvhpc`` (Daint) or ``openmpi%nvhpc`` (Tsa) in spec, otherwise build fails.
+* ICON is built using environments, ``dev-build`` is not supported anymore.
