@@ -56,7 +56,7 @@ class Icontools(AutotoolsPackage):
             default='g110',
             description=
             'Slurm account used for mandatory testing during installation')
-            
+
     conflicts('%pgi')
     conflicts('%nvhpc')
 
