@@ -20,7 +20,7 @@ pipeline {
                             sh label: '', script:"""
                                 . ./setup-env.sh
                                 cd ${BUILDER}
-                                spack env activate config/cscs/spack-envs/${BUILDER}
+                                spack env activate config/cscs/spack/v0.18.1.1/${BUILDER}
                                 spack install --only package --until configure
                                 """
                         } 
