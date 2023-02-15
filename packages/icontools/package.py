@@ -27,7 +27,7 @@ class Icontools(AutotoolsPackage):
 
     homepage = 'https://wiki.c2sm.ethz.ch/MODELS/ICONDwdIconTools'
     c2sm = 'ssh://git@github.com/C2SM/icontools.git'
-    dkrz = 'ssh://git@gitlab.dkrz.de:dwd-sw/dwd_icon_tools.git'
+    dkrz = 'ssh://git@gitlab.dkrz.de/dwd-sw/dwd_icon_tools.git'
 
     maintainers = ['jonasjucker']
 
