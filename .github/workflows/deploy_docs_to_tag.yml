@@ -1,0 +1,30 @@
+name: Deploy docs to tag
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  deploy-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.3.2
+        env:
+         GITHUB_TOKEN: ${{ github.token }}
+      - name: Build docs
+        uses: C2SM/sphinx-action@sphinx-latest
+        with:
+          pre-build-command: "pip install sphinx_rtd_theme && pip install sphinx-copybutton"
+          build-command: "sphinx-build -b html . _build"
+          docs-folder: "docs/"
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/_build
+          destination_dir: ${{ steps.get_release.outputs.tag_name }}
+          allow_empty_commit: true
