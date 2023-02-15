@@ -8,28 +8,26 @@ pipeline {
             steps {
                 script { 
                     for(BUILDER in BuilderList){
-                        stages {
-                            stage('Clone icon-nwp') {
-                                steps {
-                                    sh"""
-                                    git clone git@gitlab.dkrz.de:icon/icon-nwp.git ${BUILDER}
-                                    cd ${BUILDER}
-                                    git switch spack-envs
-                                    git submodule update --init --recursive
-                                    """
-                                }
+                        stage('Clone icon-nwp') {
+                            steps {
+                                sh"""
+                                git clone git@gitlab.dkrz.de:icon/icon-nwp.git ${BUILDER}
+                                cd ${BUILDER}
+                                git switch spack-envs
+                                git submodule update --init --recursive
+                                """
                             }
-                            stage('Check completeness for Builder') {
-                                steps {
-                                    sh"""
-                                    . ./setup-env.sh
-                                    cd ${BUILDER}
-                                    spack env activate config/cscs/spack-envs/${BUILDER}
-                                    spack install --only package --until configure
-                                    """
-                                } 
-                            }
-                        }    
+                        }
+                        stage('Check completeness for Builder') {
+                            steps {
+                                sh"""
+                                . ./setup-env.sh
+                                cd ${BUILDER}
+                                spack env activate config/cscs/spack-envs/${BUILDER}
+                                spack install --only package --until configure
+                                """
+                            } 
+                        }
                     }
                 }
             }
