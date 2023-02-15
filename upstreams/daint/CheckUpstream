@@ -16,7 +16,6 @@ pipeline {
                                 git submodule update --init --recursive
                                 """
                             }
-                        }
                         stage('Check completeness for Builder') {
                             steps {
                                 sh"""
