@@ -5,8 +5,8 @@ env:
 on:
   push:
     branches:    
-      - deploy_docs
       - master
+      - main
 
 jobs:
   deploy-docs:
