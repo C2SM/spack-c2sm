@@ -51,7 +51,9 @@
 <li class="toctree-l1"><a class="reference internal" href="QuickStart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="C2SMGuidelines.html">C2SM Guidelines for Spack</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">How to manage your own Spack instance</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#create-new-spack-instance">Create new Spack instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#versions">Versions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-a-new-spack-instance">Create a new Spack instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setup-spack-environment">Setup Spack environment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#update-spack-instance">Update Spack instance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#clean-spack-instance">Clean Spack instance</a></li>
 </ul>
@@ -98,38 +100,49 @@ during a production phase with software installed from Spack.</p>
 <p>With more power comes more responsability!</p>
 </div>
 <p>This page collects best practices for a safe and reliable Spack instance management.</p>
-<section id="create-new-spack-instance">
-<h2>Create new Spack instance<a class="headerlink" href="#create-new-spack-instance" title="Permalink to this heading"></a></h2>
+<section id="versions">
+<h2>Versions<a class="headerlink" href="#versions" title="Permalink to this heading"></a></h2>
+<p>Generally, we recommend to host a released version of spack-c2sm and upgrade to newer versions when you see fit.
+But if you fancy the latest developments before they are released, you may follow the branch <code class="docutils literal notranslate"><span class="pre">main</span></code>.
+For automated systems that regularly set up a new Spack instance, using a fixed version and updating on demand, is more robust and limits the dependencies of your project. Following <code class="docutils literal notranslate"><span class="pre">main</span></code> on the other hand automatically updates to the newest features but breaks upon API chaning commits in spack-c2sm.</p>
+</section>
+<section id="create-a-new-spack-instance">
+<h2>Create a new Spack instance<a class="headerlink" href="#create-a-new-spack-instance" title="Permalink to this heading"></a></h2>
 <p>To get an instance, clone spack-c2sm and its submodule spack.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b &lt;branch/tag&gt; https://github.com/C2SM/spack-c2sm.git
 </pre></div>
 </div>
-<p>The arguments <code class="docutils literal notranslate"><span class="pre">--depth</span> <span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">--shallow-submodules</span></code> are optional,
-but they reduce the amount of downloaded data.</p>
-<p>At CSCS, <code class="docutils literal notranslate"><span class="pre">setup-env.sh</span></code> automatically detects the machine. You may simply execute</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>. spack-c2sm/setup-env.sh
-</pre></div>
-</div>
-<p>It is recommended to clone <code class="docutils literal notranslate"><span class="pre">spack-c2sm</span></code> in a location that does <strong>not</strong> undergo a
+<p>The arguments <code class="docutils literal notranslate"><span class="pre">--depth</span> <span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">--shallow-submodules</span></code> are optional, but they reduce the amount of downloaded data.
+It is recommended to clone <code class="docutils literal notranslate"><span class="pre">spack-c2sm</span></code> in a location that does <strong>not</strong> undergo a
 regular cleanup. On Piz Daint, <code class="docutils literal notranslate"><span class="pre">$SCRATCH</span></code> enforces the deletion of all files older than 30 days.
 This may corrupt your Spack instance, therefore <code class="docutils literal notranslate"><span class="pre">/project/XYZ/</span></code> is a safer location.</p>
 </section>
+<section id="setup-spack-environment">
+<h2>Setup Spack environment<a class="headerlink" href="#setup-spack-environment" title="Permalink to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">setup-env.sh</span></code> automatically detects the machine it is running on, or falls back to a generic configuration called ‘unknown’.
+<code class="docutils literal notranslate"><span class="pre">setup-env.sh</span> <span class="pre">&lt;machine&gt;</span></code> forces a machine. This also works with ‘unknown’ as a machine, which is useful in a container.
+It prints which machine it detected. Currently it’s able to detect Balfrin, Piz Daint and Tsa.
+You may simply execute</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>. spack-c2sm/setup-env.sh
+</pre></div>
+</div>
+</section>
 <section id="update-spack-instance">
 <h2>Update Spack instance<a class="headerlink" href="#update-spack-instance" title="Permalink to this heading"></a></h2>
-<p>To update a Spack instance, pull the latest version from the repository and update the submodules:</p>
+<p>Before updating, we recommend to clean the instance, as this avoids occasional, hard to debug problems. For more infos, see below.
+To update a Spack instance, pull the latest version from the repository and update the submodules:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git pull
 <span class="gp">$ </span>git submodule update --recursive
 </pre></div>
 </div>
-<p>This is required after upgrades at CSCS or if you need new features of a package.
-It is recommended to clean the instance afterwards. For more infos, see below.</p>
+<p>This is required after upgrades at CSCS or if you need new features of a package.</p>
 </section>
 <section id="clean-spack-instance">
 <h2>Clean Spack instance<a class="headerlink" href="#clean-spack-instance" title="Permalink to this heading"></a></h2>
 <p>To clean a Spack instance, empty the caches, uninstall everything and remove misc caches:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack clean -a
-<span class="gp">$ </span>spack uninstall -a
-<span class="gp">$ </span>rm -rf ~/.spack
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack clean -a <span class="c1">#[cleans all misc caches](https://spack.readthedocs.io/en/v0.18.1/command_index.html?highlight=spack%20load#spack-clean)</span>
+<span class="gp">$ </span>spack uninstall -a <span class="c1">#[uninstalls all packages](https://spack.readthedocs.io/en/v0.18.1/command_index.html?highlight=spack%20load#spack-uninstall)</span>
+<span class="gp">$ </span>rm -rf ~/.spack <span class="c1">#removes user scope data</span>
 </pre></div>
 </div>
 </section>
