@@ -32,6 +32,7 @@ class Icontools(AutotoolsPackage):
 
     version('c2sm-master', git=c2sm, branch='master', submodules=True)
     version('dkrz-master', git=dkrz, branch='master', submodules=True)
+    version('2.5.2', git=dkrz, tag='icontools-2.5.2', submodules=True)
 
     depends_on('autoconf', type='build')
     depends_on('automake', type='build')
@@ -55,6 +56,9 @@ class Icontools(AutotoolsPackage):
             default='g110',
             description=
             'Slurm account used for mandatory testing during installation')
+
+    conflicts('%pgi')
+    conflicts('%nvhpc')
 
     def configure_args(self):
         args = []
@@ -105,8 +109,7 @@ class Icontools(AutotoolsPackage):
         # jasper needs to be after eccodes, otherwise linking error
         env.append_flags('LIBS', '-ljasper')
 
-        if self.spec.variants['slave'].value == 'tsa':
-            env.append_flags('LIBS', '-lgfortran')
+        env.append_flags('LIBS', '-lgfortran')
 
     def check(self):
 

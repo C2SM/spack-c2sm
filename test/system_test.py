@@ -290,11 +290,10 @@ class Int2lmTest(unittest.TestCase):
         )
 
 
-@pytest.mark.no_balfrin  # This fails with "undefined reference to symbol".
 class IconToolsTest(unittest.TestCase):
 
     def test_install(self):
-        spack_install_and_test('icontools @c2sm-master %gcc')
+        spack_install_and_test('icontools @2.5.2')
 
 
 @pytest.mark.no_tsa  # Not supported on Tsa
