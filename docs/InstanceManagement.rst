@@ -17,7 +17,7 @@ Versions
 
 Generally, we recommend to host a released version of spack-c2sm and upgrade to newer versions when you see fit.
 But if you fancy the latest developments before they are released, you may follow the branch ``main``.
-For automated systems that regularly set up a new Spack instance, using a fixed version and updating on demand, is more robust and limits the dependencies of your project. Following 'main' on the other hand automatically updates to the newest features but breaks upon API chaning commits in spack-c2sm.
+For automated systems that regularly set up a new Spack instance, using a fixed version and updating on demand, is more robust and limits the dependencies of your project. Following ``main`` on the other hand automatically updates to the newest features but breaks upon API chaning commits in spack-c2sm.
 
 Create a new Spack instance
 ---------------------------
