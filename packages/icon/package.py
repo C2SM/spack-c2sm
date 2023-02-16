@@ -146,6 +146,7 @@ class Icon(AutotoolsPackage):
 
     depends_on('eccodes +fortran', when='+emvorado')
     depends_on('eccodes', when='+grib2 ~cdi-pio')
+    depends_on('cosmo-eccodes-definitions', type=('build', 'run'))
 
     depends_on('yaxt+fortran', when='+cdi-pio')
     depends_on('lapack')
