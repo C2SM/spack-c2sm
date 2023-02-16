@@ -12,7 +12,7 @@ With spack v0.18 we suggest local/individual spack instances and the use of spac
 
 A user clones the spack repo
 ```bash
-git clone --depth 1 --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
+git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.18.1.1 https://github.com/C2SM/spack-c2sm.git
 ```
 gets spack in the command line
 ```bash
