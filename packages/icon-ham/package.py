@@ -11,7 +11,7 @@ class IconHam(Icon):
                 make()
 
     def configure_args(self):
-        args = Icon.configure_args()
+        args = Icon.configure_args(self)
 
         if '+ham' in self.spec:
             args.append('--enable-atm-phy-echam-submodels')
