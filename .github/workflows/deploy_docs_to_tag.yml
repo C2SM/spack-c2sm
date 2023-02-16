@@ -1,15 +1,9 @@
-name: Deploy versioned docs
-env:
-  # will be the subfolder of deployment in gh-pages
-  # change for each new version of spack-c2sm
-  DOCS_VERSION: v0.18.1.1
+name: Deploy docs to tag
 
 on:
   push:
-    branches:    
-    # should point to a stable branch, ideally identical to DOCS_VERSION
-    # change for each new version of spack-c2sm
-      - v0.18.1.1
+    tags:
+      - '*'
 
 jobs:
   deploy-docs:
@@ -17,6 +11,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.3.2
+        env:
+         GITHUB_TOKEN: ${{ github.token }}
       - name: Build docs
         uses: C2SM/sphinx-action@sphinx-latest
         with:
@@ -27,5 +26,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/_build
-          destination_dir: ${{ env.DOCS_VERSION }}
+          destination_dir: ${{ steps.get_release.outputs.tag_name }}
           allow_empty_commit: true
