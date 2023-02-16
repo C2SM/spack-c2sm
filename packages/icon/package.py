@@ -118,11 +118,18 @@ class Icon(AutotoolsPackage):
             default=False,
             description='Ennable NCCL for communication')
 
+    # C2SM specific Features:
     variant(
         'infero',
         description=
         'Build with Infero to replace ecRad with ML implementation. Experimental, needs non-standard codebase!',
         default=False)
+
+    variant(
+        'eccodes-definitions',
+        default=False,
+        description=
+        'Enable extension of eccodes with center specific definition files')
 
     depends_on('infero +quiet', when='+infero')
 
@@ -146,6 +153,9 @@ class Icon(AutotoolsPackage):
 
     depends_on('eccodes +fortran', when='+emvorado')
     depends_on('eccodes', when='+grib2 ~cdi-pio')
+    depends_on('cosmo-eccodes-definitions',
+               type=('build', 'run'),
+               when='+eccodes-definitions')
 
     depends_on('yaxt+fortran', when='+cdi-pio')
     depends_on('lapack')
