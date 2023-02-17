@@ -54,7 +54,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#use-packages">Use packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#icon">ICON</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#cosmo">COSMO</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#changelog-to-v0-17-1">Changelog to v0.17.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#changelog-to-v0-17-0">Changelog to v0.17.0</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="C2SMGuidelines.html">C2SM Guidelines for Spack</a></li>
@@ -150,9 +150,9 @@ You can force a machine with an argument. The name has to match a folder in sysc
 <h2>ICON<a class="headerlink" href="#icon" title="Permalink to this heading"></a></h2>
 <p>ICON is built using environments.
 Environments sit in a folder with a name and are defined in a <code class="docutils literal notranslate"><span class="pre">spack.yaml</span></code> file.
-For ICON they are located in <code class="docutils literal notranslate"><span class="pre">config/cscs/spack-envs/&lt;machine&gt;&lt;target&gt;&lt;compiler&gt;</span></code>.</p>
+For ICON, they are located in <code class="docutils literal notranslate"><span class="pre">config/cscs/spack-envs/&lt;machine&gt;_&lt;target&gt;_&lt;compiler&gt;</span></code>.</p>
 <p>To activate the Spack environment, type</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack env activate &lt;path_to_folder_with_spack_yaml&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack env activate -p -d &lt;path_to_folder_with_spack_yaml&gt;
 </pre></div>
 </div>
 <p>To install the environment and so ICON, type</p>
@@ -160,7 +160,7 @@ For ICON they are located in <code class="docutils literal notranslate"><span cl
 </pre></div>
 </div>
 <p>Example to build ICON for CPU with NVHPC:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack env activate config/cscs/spack-envs/daint_cpu_nvhpc
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack env activate -p -d config/cscs/spack-envs/daint_cpu_nvhpc
 <span class="gp">$ </span>spack install
 </pre></div>
 </div>
@@ -185,13 +185,13 @@ The reason for this is that the optional depencendy on the C++ dycore lives in t
 </pre></div>
 </div>
 </section>
-<section id="changelog-to-v0-17-1">
-<h2>Changelog to v0.17.1<a class="headerlink" href="#changelog-to-v0-17-1" title="Permalink to this heading"></a></h2>
+<section id="changelog-to-v0-17-0">
+<h2>Changelog to v0.17.0<a class="headerlink" href="#changelog-to-v0-17-0" title="Permalink to this heading"></a></h2>
 <ul class="simple">
-<li><p>Users manage their own instance instead of sourcing a preinstalled instance.</p></li>
+<li><p>Users manage their own instance instead of sourcing a pr-einstalled instance.</p></li>
 <li><p>Users decide on their own when they would like to update their instance (i.e. after upgrades at CSCS).</p></li>
-<li><p>Due to new concretizer COSMO needs an explicit <code class="docutils literal notranslate"><span class="pre">^mpich%nvhpc</span></code> (Daint) or <code class="docutils literal notranslate"><span class="pre">openmpi%nvhpc</span></code> (Tsa) in spec, otherwise build fails.</p></li>
-<li><p>On Daint ICON is built using environments and <code class="docutils literal notranslate"><span class="pre">dev-build</span></code> is not supported anymore. On Balfrin ICON can still be built using <code class="docutils literal notranslate"><span class="pre">dev-build</span></code>.</p></li>
+<li><p>Due to the new concretizer, COSMO needs an explicit <code class="docutils literal notranslate"><span class="pre">^mpich%nvhpc</span></code> (Daint) or <code class="docutils literal notranslate"><span class="pre">openmpi%nvhpc</span></code> (Tsa) in the spec, otherwise the build fails.</p></li>
+<li><p>On Daint, ICON is built using environments and <code class="docutils literal notranslate"><span class="pre">dev-build</span></code> no longer supported. On Balfrin, ICON can still be built using <code class="docutils literal notranslate"><span class="pre">dev-build</span></code>.</p></li>
 </ul>
 </section>
 </section>
