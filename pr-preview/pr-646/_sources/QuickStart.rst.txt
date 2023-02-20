@@ -28,7 +28,7 @@ You can force a machine with an argument. The name has to match a folder in sysc
 Local machines and Containers
 -----------------------------
 
-Spack can autodetect compilers and preinstalled packages with
+Spack can autodetect compilers and pre-installed packages with
 
 .. code-block:: console
 
@@ -138,7 +138,7 @@ Example variants:
 Changelog to v0.17.0
 --------------------
 
-* Users manage their own instance instead of sourcing a pr-einstalled instance.
+* Users manage their own instance instead of sourcing a pre-installed instance.
 * Users decide on their own when they would like to update their instance (i.e. after upgrades at CSCS).
 * Due to the new concretizer, COSMO needs an explicit ``^mpich%nvhpc`` (Daint) or ``openmpi%nvhpc`` (Tsa) in the spec, otherwise the build fails.
 * On Daint, ICON is built using environments and ``dev-build`` no longer supported. On Balfrin, ICON can still be built using ``dev-build``.

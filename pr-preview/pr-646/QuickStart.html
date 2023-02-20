@@ -109,7 +109,7 @@ You can force a machine with an argument. The name has to match a folder in sysc
 </section>
 <section id="local-machines-and-containers">
 <h2>Local machines and Containers<a class="headerlink" href="#local-machines-and-containers" title="Permalink to this heading"></a></h2>
-<p>Spack can autodetect compilers and preinstalled packages with</p>
+<p>Spack can autodetect compilers and pre-installed packages with</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack compiler find
 <span class="gp">$ </span>spack external find --all
 </pre></div>
@@ -188,7 +188,7 @@ The reason for this is that the optional depencendy on the C++ dycore lives in t
 <section id="changelog-to-v0-17-0">
 <h2>Changelog to v0.17.0<a class="headerlink" href="#changelog-to-v0-17-0" title="Permalink to this heading"></a></h2>
 <ul class="simple">
-<li><p>Users manage their own instance instead of sourcing a pr-einstalled instance.</p></li>
+<li><p>Users manage their own instance instead of sourcing a pre-installed instance.</p></li>
 <li><p>Users decide on their own when they would like to update their instance (i.e. after upgrades at CSCS).</p></li>
 <li><p>Due to the new concretizer, COSMO needs an explicit <code class="docutils literal notranslate"><span class="pre">^mpich%nvhpc</span></code> (Daint) or <code class="docutils literal notranslate"><span class="pre">openmpi%nvhpc</span></code> (Tsa) in the spec, otherwise the build fails.</p></li>
 <li><p>On Daint, ICON is built using environments and <code class="docutils literal notranslate"><span class="pre">dev-build</span></code> no longer supported. On Balfrin, ICON can still be built using <code class="docutils literal notranslate"><span class="pre">dev-build</span></code>.</p></li>
