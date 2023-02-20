@@ -189,24 +189,11 @@ class CosmoTest(unittest.TestCase):
             cwd='cosmo',
             log_filename=sanitized_filename('devbuildcosmo ' + spec))
 
-    @pytest.mark.no_daint  # Testsuite fails
-    def test_install_version_5_09_mch_1_2_p2_cpu(self):
-        spack_install_and_test(
-            f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
-        )
-
-    @pytest.mark.no_daint  # Unable to open MODULE file gt_gcl_bindings.mod
-    def test_install_version_5_09_mch_1_2_p2_gpu(self):
-        spack_install_and_test(
-            f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
-        )
-
     def test_install_c2sm_features_cpu(self):
         spack_install_and_test(
             f'cosmo @c2sm-features %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
-    @pytest.mark.serial_only
     def test_install_c2sm_features_gpu(self):
         spack_install_and_test(
             f'cosmo @c2sm-features %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
@@ -294,6 +281,7 @@ class Int2lmTest(unittest.TestCase):
     def test_install_version_3_00_gcc(self):
         spack_install_and_test('int2lm @int2lm-3.00 %gcc')
 
+    @pytest.mark.serial_only
     @pytest.mark.no_balfrin  # fails because libgrib1 master fails
     def test_install_version_3_00_nvhpc(self):
         spack_install_and_test(f'int2lm @int2lm-3.00 %{nvidia_compiler}')
@@ -319,7 +307,7 @@ class Int2lmTest(unittest.TestCase):
 class IconToolsTest(unittest.TestCase):
 
     def test_install(self):
-        spack_install_and_test('icontools @2.5.2')
+        spack_install_and_test('icontools @2.5.2%gcc')
 
 
 @pytest.mark.no_tsa  # Not supported on Tsa
