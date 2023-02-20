@@ -28,9 +28,11 @@ class GitHubRepo:
             for i in range(len(logfiles)):
                 if test in logfiles[i]:
                     details = details + '<tr><td>' + col[i]
-                    details = details + '</td><td>' + logfiles[i] + '</td></tr>\n'
+                    details = details + '</td><td>' + logfiles[
+                        i] + '</td></tr>\n'
             details = details + '</tbody>\n</table>'
-            text = text + HTML.collapsible(test_col + ' ' + test + ' test', details)
+            text = text + HTML.collapsible(test_col + ' ' + test + ' test',
+                                           details)
         return (text)
 
     def comment(self, issue_id: str, text: str) -> None:
