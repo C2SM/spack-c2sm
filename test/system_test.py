@@ -184,7 +184,7 @@ class CosmoTest(unittest.TestCase):
             'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git',
             check=True,
             shell=True)
-        spec = f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
+        spec = f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
         spack_devbuild_and_test(
             spec,
             cwd='cosmo',
