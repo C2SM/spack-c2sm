@@ -43,33 +43,6 @@ class GitHubRepo:
         if self.auth_token is not None:
             headers['Authorization'] = 'token ' + self.auth_token
 
-        f = filter(None, text.split('\n'))
-        text_lines = list(f)
-
-        details = []
-        logfiles = []
-        col = []
-        for item in text_lines:
-            details.append(item[item.find('[') + 1:item.rfind(']')])
-            logfiles.append(item[item.find('(') + 1:item.rfind(')')])
-            col.append(item.split()[0])
-
-        for i, item in enumerate(details):
-            details[i] = item.split('/')
-
-        text_new = '### ' + details[0][0] + '\n'
-
-        [unit, unit_col] = GitHubRepo.get_color('unit', details, col)
-        text_new = GitHubRepo.add_test_to_text('unit', unit, unit_col, details,
-                                               col, logfiles, text_new)
-        [int, int_col] = GitHubRepo.get_color('integration', details, col)
-        text_new = GitHubRepo.add_test_to_text('integration', int, int_col,
-                                               details, col, logfiles,
-                                               text_new)
-        [sys, sys_col] = GitHubRepo.get_color('system', details, col)
-        text_new = GitHubRepo.add_test_to_text('system', sys, sys_col, details,
-                                               col, logfiles, text_new)
-
         requests.post(url, headers=headers, json={'body': text_new})
 
 
