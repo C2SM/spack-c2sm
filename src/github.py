@@ -114,7 +114,7 @@ class HTML:
         return f'<a href="{url}">{text}</a>'
 
     @staticmethod
-    def table(data) -> str:        
+    def table(data) -> str:
         table = '<table>'
         table += '<thead>'
         table += '<tr>'
