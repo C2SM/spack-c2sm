@@ -22,8 +22,7 @@ class GitHubRepo:
                     test_col = ':yellow_circle:'
         return (test_exist, test_col)
 
-    def add_test_to_text(test, test_exist, test_col, col, logfiles,
-                         text):
+    def add_test_to_text(test, test_exist, test_col, col, logfiles, text):
         if test_exist:
             text = text + '<details>\n<summary>' + test_col + ' ' + test + ' test</summary>\n<table>\n<tbody>\n'
             for i in range(len(logfiles)):

@@ -14,7 +14,7 @@ class ResultList:
         self.text = ''
 
     def append(self, status: str, test: str, comment: str = '') -> None:
-        name = test[test.rfind('/')+1:test.rfind('.log')]
+        name = test[test.rfind('/') + 1:test.rfind('.log')]
         name = name.replace('_', ' ')
         link = HTML.link(name, self.artifact_path + test)
         self.text += f'{status} {link} {comment}\n'
@@ -73,21 +73,20 @@ if __name__ == "__main__":
         logfiles = []
         col = []
         for item in text_lines:
-            logfiles.append(item[item.find('<a'):item.rfind('a>')+2])
+            logfiles.append(item[item.find('<a'):item.rfind('a>') + 2])
             col.append(item.split()[0])
 
         text_new = f'###  {machine_name()}\n'
 
         [unit, unit_col] = GitHubRepo.get_color('unit', logfiles, col)
-        text_new = GitHubRepo.add_test_to_text('unit', unit, unit_col,
-                                               col, logfiles, text_new)
+        text_new = GitHubRepo.add_test_to_text('unit', unit, unit_col, col,
+                                               logfiles, text_new)
         [int, int_col] = GitHubRepo.get_color('integration', logfiles, col)
         text_new = GitHubRepo.add_test_to_text('integration', int, int_col,
-                                               col, logfiles,
-                                               text_new)
-        [sys, sys_col] = GitHubRepo.get_color('system', logfiles, col)
-        text_new = GitHubRepo.add_test_to_text('system', sys, sys_col,
                                                col, logfiles, text_new)
+        [sys, sys_col] = GitHubRepo.get_color('system', logfiles, col)
+        text_new = GitHubRepo.add_test_to_text('system', sys, sys_col, col,
+                                               logfiles, text_new)
         comment = text_new
 
     repo.comment(args.issue_id, comment)
