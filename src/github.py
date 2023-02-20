@@ -8,11 +8,11 @@ class GitHubRepo:
         self.repo: str = repo
         self.auth_token: str = auth_token
 
-    def get_color(test, details, col):
+    def get_color(test, logfiles, col):
         test_exist = False
         test_col = ':green_circle:'
-        for i in range(len(details)):
-            if test in details[i][1]:
+        for i in range(len(logfiles)):
+            if test in logfiles[i]:
                 test_exist = True
                 if col[i] == ':red_circle:' or col[i] == ':lock:' or col[
                         i] == ':wastebasket:' or col[i] == ':hourglass:':
@@ -22,17 +22,14 @@ class GitHubRepo:
                     test_col = ':yellow_circle:'
         return (test_exist, test_col)
 
-    def add_test_to_text(test, test_exist, test_col, details, col, logfiles,
+    def add_test_to_text(test, test_exist, test_col, col, logfiles,
                          text):
         if test_exist:
             text = text + '<details>\n<summary>' + test_col + ' ' + test + ' test</summary>\n<table>\n<tbody>\n'
-            for i in range(len(details)):
-                if test in details[i][1]:
-                    test_name = details[i][2].replace('_', ' ')
-                    test_name = test_name.replace('.log', '')
+            for i in range(len(logfiles)):
+                if test in logfiles[i]:
                     text = text + '<tr><td>' + col[i]
-                    text = text + '</td><td><a href="' + logfiles[
-                        i] + '">' + test_name + '</a></td></tr>\n'
+                    text = text + '</td><td>' + logfiles[i] + '</td></tr>\n'
             text = text + '</tbody>\n</table>\n</details>'
         return (text)
 
@@ -43,7 +40,7 @@ class GitHubRepo:
         if self.auth_token is not None:
             headers['Authorization'] = 'token ' + self.auth_token
 
-        requests.post(url, headers=headers, json={'body': text_new})
+        requests.post(url, headers=headers, json={'body': text})
 
 
 class Markdown:

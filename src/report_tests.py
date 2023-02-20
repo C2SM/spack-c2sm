@@ -1,7 +1,7 @@
 import os
 import argparse
 import glob
-from github import GitHubRepo, Markdown
+from github import GitHubRepo, Markdown, HTML
 from machine import machine_name
 
 spack_c2sm_path = os.path.dirname(os.path.realpath(__file__)) + '/..'
@@ -14,7 +14,9 @@ class ResultList:
         self.text = ''
 
     def append(self, status: str, test: str, comment: str = '') -> None:
-        link = Markdown.link(test, self.artifact_path + test)
+        name = test[test.rfind('/')+1:test.rfind('.log')]
+        name = name.replace('_', ' ')
+        link = HTML.link(name, self.artifact_path + test)
         self.text += f'{status} {link} {comment}\n'
 
 
@@ -68,28 +70,23 @@ if __name__ == "__main__":
         f = filter(None, summary.text.split('\n'))
         text_lines = list(f)
 
-        details = []
         logfiles = []
         col = []
         for item in text_lines:
-            details.append(item[item.find('[') + 1:item.rfind(']')])
-            logfiles.append(item[item.find('(') + 1:item.rfind(')')])
+            logfiles.append(item[item.find('<a'):item.rfind('a>')+2])
             col.append(item.split()[0])
 
-        for i, item in enumerate(details):
-            details[i] = item.split('/')
+        text_new = f'###  {machine_name()}\n'
 
-        text_new = '### ' + details[0][0] + '\n'
-
-        [unit, unit_col] = GitHubRepo.get_color('unit', details, col)
-        text_new = GitHubRepo.add_test_to_text('unit', unit, unit_col, details,
+        [unit, unit_col] = GitHubRepo.get_color('unit', logfiles, col)
+        text_new = GitHubRepo.add_test_to_text('unit', unit, unit_col,
                                                col, logfiles, text_new)
-        [int, int_col] = GitHubRepo.get_color('integration', details, col)
+        [int, int_col] = GitHubRepo.get_color('integration', logfiles, col)
         text_new = GitHubRepo.add_test_to_text('integration', int, int_col,
-                                               details, col, logfiles,
+                                               col, logfiles,
                                                text_new)
-        [sys, sys_col] = GitHubRepo.get_color('system', details, col)
-        text_new = GitHubRepo.add_test_to_text('system', sys, sys_col, details,
+        [sys, sys_col] = GitHubRepo.get_color('system', logfiles, col)
+        text_new = GitHubRepo.add_test_to_text('system', sys, sys_col,
                                                col, logfiles, text_new)
         comment = text_new
 
