@@ -152,8 +152,6 @@ packages:
     externals:
     - spec: hwloc@1.11.8
       prefix: /usr
-  icon: # manually added
-    variants: host=daint
   icontools: # manually added
     variants: slave=daint
   int2lm: # manually added

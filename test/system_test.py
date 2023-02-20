@@ -114,6 +114,42 @@ def spack_devbuild_and_test(spec: str,
                        srun=True)
 
 
+def spack_env_dev_install_and_test(spack_env: str,
+                                   icon_branch: str,
+                                   log_filename: str = None):
+    """
+    Clones ICON with given branch into unique folder, activates the given spack
+    environment, tests 'spack install' and writes the output into the log file.
+    If log_filename is None, spack_env is used to create one.
+    """
+
+    # in case we use serialbox or another python preprocessor
+    devirtualize_env()
+
+    unique_folder = 'icon-exclaim_' + uuid.uuid4(
+    ).hex  # to avoid cloning into the same folder and having race conditions
+    subprocess.run(
+        f'git clone --depth 1 --recurse-submodules -b {icon_branch} git@github.com:C2SM/icon-exclaim.git {unique_folder}',
+        check=True,
+        shell=True)
+    log_filename = sanitized_filename(log_filename or spack_env)
+
+    # limit number of build-jobs to 4 because no srun used
+    log_with_spack('spack install -j 4 --until build -n -v',
+                   'system_test',
+                   log_filename,
+                   cwd=unique_folder,
+                   env=spack_env,
+                   srun=False)
+
+    log_with_spack('spack install --test=root -n -v',
+                   'system_test',
+                   log_filename,
+                   cwd=unique_folder,
+                   env=spack_env,
+                   srun=False)
+
+
 mpi: str = {
     'daint': 'mpich',
     'tsa': 'openmpi',
@@ -220,46 +256,36 @@ class GridToolsTest(unittest.TestCase):
         spack_install_and_test(f'gridtools @1.1.3 %{nvidia_compiler}')
 
 
-@pytest.mark.no_tsa  # config file does not exist for this machine
+@pytest.mark.no_tsa  # Icon does not run on Tsa
 class IconTest(unittest.TestCase):
 
-    @pytest.mark.no_daint  # cannot link to libxml2 library
+    @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
     def test_install_nwp_gpu(self):
-        spack_install_and_test(
-            f'icon @nwp %nvhpc icon_target=gpu ^{mpi} %{nvidia_compiler}')
+        spack_install_and_test(f'icon @nwp-master %nvhpc gpu=80')
 
-    @pytest.mark.no_daint  # cannot link to libxml2 library
+    @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
     def test_install_nwp_cpu(self):
-        spack_install_and_test(
-            f'icon @nwp %nvhpc icon_target=cpu ^{mpi} %{nvidia_compiler}')
+        spack_install_and_test(f'icon @nwp-master %nvhpc')
 
-    # def test_devbuild_nwp_gpu(self):
-    #     spack_install_and_test(
-    #         f'icon @develop %nvhpc config_dir=./.. icon_target=gpu ^{mpi} %{nvidia_compiler}')
+    @pytest.mark.no_balfrin  # config file does not exist for this machine
+    def test_install_exclaim_test_cpu_gcc(self):
+        spack_env_dev_install_and_test('config/cscs/spack-envs/daint_cpu_gcc',
+                                       'test_spec')
 
-    # def test_devbuild_nwp_cpu(self):
-    #     spack_install_and_test(
-    #         f'icon @develop %nvhpc config_dir=./.. icon_target=cpu ^{mpi} %{nvidia_compiler}')
+    @pytest.mark.no_balfrin  # config file does not exist for this machine
+    def test_install_exclaim_test_cpu_cce(self):
+        spack_env_dev_install_and_test('config/cscs/spack-envs/daint_cpu_cce',
+                                       'test_spec')
 
-    @pytest.mark.no_balfrin  # config file does not exist for this machines
-    @pytest.mark.no_daint  # unable to link a test program using the Fortran 90 interface of NetCDF library
-    def test_install_exclaim_cpu(self):
-        spack_install_and_test(
-            f'icon @exclaim-master %nvhpc icon_target=cpu +eccodes +ocean ^{mpi} %{nvidia_compiler}'
-        )
+    @pytest.mark.no_balfrin  # config file does not exist for this machine
+    def test_install_exclaim_test_cpu(self):
+        spack_env_dev_install_and_test(
+            'config/cscs/spack-envs/daint_cpu_nvhpc', 'test_spec')
 
-    @pytest.mark.no_balfrin  # config file does not exist for this machines
-    @pytest.mark.no_daint  # Cannot depend on 'cmake' twice
-    def test_install_exclaim_cpu_gcc(self):
-        spack_install_and_test(
-            'icon @exclaim-master %gcc icon_target=cpu +eccodes +ocean')
-
-    @pytest.mark.no_balfrin  # config file does not exist for this machines
-    @pytest.mark.no_daint  # unable to link a test program using the Fortran 90 interface of NetCDF library
-    def test_install_exclaim_gpu(self):
-        spack_install_and_test(
-            f'icon @exclaim-master %nvhpc icon_target=gpu +eccodes +ocean +claw ^{mpi} %{nvidia_compiler}'
-        )
+    @pytest.mark.no_balfrin  # config file does not exist for this machine
+    def test_install_exclaim_test_gpu(self):
+        spack_env_dev_install_and_test(
+            'config/cscs/spack-envs/daint_gpu_nvhpc', 'test_spec')
 
 
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.

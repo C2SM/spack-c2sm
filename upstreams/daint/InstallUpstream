@@ -1,0 +1,27 @@
+pipeline {
+
+    agent {
+        node {
+            label 'daint'
+        }
+    }
+    stages {
+            stage('Install Upstream') {
+                steps {
+                    sh"""
+                    . ./setup-env.sh
+                    spack env activate upstreams/daint
+                    spack install -v
+                    """
+                }
+            }
+    }
+    post {
+        always {
+            echo 'Cleaning up workspace'
+            deleteDir()
+        }
+    }
+
+}
+
