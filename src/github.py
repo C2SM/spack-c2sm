@@ -88,7 +88,6 @@ class HTML:
         table += '<thead>'
         table += '<tr>'
         for cell in data[0]:
-            print(cell)
             table += f'<th>{cell}</th>'
         table += '</tr>'
         table += '</thead>'
