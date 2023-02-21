@@ -59,6 +59,7 @@ class Icontools(AutotoolsPackage):
 
     conflicts('%pgi')
     conflicts('%nvhpc')
+    conflicts('%cce')
 
     def configure_args(self):
         args = []
