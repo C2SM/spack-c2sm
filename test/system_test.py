@@ -114,6 +114,42 @@ def spack_devbuild_and_test(spec: str,
                        srun=True)
 
 
+def spack_env_dev_install_and_test(spack_env: str,
+                                   icon_branch: str,
+                                   log_filename: str = None):
+    """
+    Clones ICON with given branch into unique folder, activates the given spack
+    environment, tests 'spack install' and writes the output into the log file.
+    If log_filename is None, spack_env is used to create one.
+    """
+
+    # in case we use serialbox or another python preprocessor
+    devirtualize_env()
+
+    unique_folder = 'icon-exclaim_' + uuid.uuid4(
+    ).hex  # to avoid cloning into the same folder and having race conditions
+    subprocess.run(
+        f'git clone --depth 1 --recurse-submodules -b {icon_branch} git@github.com:C2SM/icon-exclaim.git {unique_folder}',
+        check=True,
+        shell=True)
+    log_filename = sanitized_filename(log_filename or spack_env)
+
+    # limit number of build-jobs to 4 because no srun used
+    log_with_spack('spack install -j 4 --until build -n -v',
+                   'system_test',
+                   log_filename,
+                   cwd=unique_folder,
+                   env=spack_env,
+                   srun=False)
+
+    log_with_spack('spack install --test=root -n -v',
+                   'system_test',
+                   log_filename,
+                   cwd=unique_folder,
+                   env=spack_env,
+                   srun=False)
+
+
 mpi: str = {
     'daint': 'mpich',
     'tsa': 'openmpi',
@@ -131,7 +167,6 @@ nvidia_compiler: str = {
 @pytest.mark.no_tsa  # irrelevant
 class CosmoTest(unittest.TestCase):
 
-    @pytest.mark.serial_only
     def test_install_version_6_0_gpu(self):
         spack_install_and_test(
             f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
@@ -142,39 +177,17 @@ class CosmoTest(unittest.TestCase):
             f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
+    @pytest.mark.serial_only  # devbuildcosmo does a forced uninstall
     def test_devbuildcosmo(self):
         subprocess.run(
             'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git',
             check=True,
             shell=True)
-        spec = f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
+        spec = f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
         spack_devbuild_and_test(
             spec,
             cwd='cosmo',
             log_filename=sanitized_filename('devbuildcosmo ' + spec))
-
-    @pytest.mark.no_daint  # Testsuite fails
-    def test_install_version_5_09_mch_1_2_p2_cpu(self):
-        spack_install_and_test(
-            f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
-        )
-
-    @pytest.mark.no_daint  # Unable to open MODULE file gt_gcl_bindings.mod
-    def test_install_version_5_09_mch_1_2_p2_gpu(self):
-        spack_install_and_test(
-            f'cosmo @5.09a.mch1.2.p2 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
-        )
-
-    def test_install_c2sm_features_cpu(self):
-        spack_install_and_test(
-            f'cosmo @c2sm-features %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
-        )
-
-    @pytest.mark.serial_only
-    def test_install_c2sm_features_gpu(self):
-        spack_install_and_test(
-            f'cosmo @c2sm-features %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
-        )
 
 
 @pytest.mark.no_balfrin  # cuda arch is not supported
@@ -220,46 +233,36 @@ class GridToolsTest(unittest.TestCase):
         spack_install_and_test(f'gridtools @1.1.3 %{nvidia_compiler}')
 
 
-@pytest.mark.no_tsa  # config file does not exist for this machine
+@pytest.mark.no_tsa  # Icon does not run on Tsa
 class IconTest(unittest.TestCase):
 
-    @pytest.mark.no_daint  # cannot link to libxml2 library
+    @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
     def test_install_nwp_gpu(self):
-        spack_install_and_test(
-            f'icon @nwp %nvhpc icon_target=gpu ^{mpi} %{nvidia_compiler}')
+        spack_install_and_test(f'icon @nwp-master %nvhpc gpu=80')
 
-    @pytest.mark.no_daint  # cannot link to libxml2 library
+    @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
     def test_install_nwp_cpu(self):
-        spack_install_and_test(
-            f'icon @nwp %nvhpc icon_target=cpu ^{mpi} %{nvidia_compiler}')
+        spack_install_and_test(f'icon @nwp-master %nvhpc')
 
-    # def test_devbuild_nwp_gpu(self):
-    #     spack_install_and_test(
-    #         f'icon @develop %nvhpc config_dir=./.. icon_target=gpu ^{mpi} %{nvidia_compiler}')
+    @pytest.mark.no_balfrin  # config file does not exist for this machine
+    def test_install_exclaim_test_cpu_gcc(self):
+        spack_env_dev_install_and_test('config/cscs/spack-envs/daint_cpu_gcc',
+                                       'test_spec')
 
-    # def test_devbuild_nwp_cpu(self):
-    #     spack_install_and_test(
-    #         f'icon @develop %nvhpc config_dir=./.. icon_target=cpu ^{mpi} %{nvidia_compiler}')
+    @pytest.mark.no_balfrin  # config file does not exist for this machine
+    def test_install_exclaim_test_cpu_cce(self):
+        spack_env_dev_install_and_test('config/cscs/spack-envs/daint_cpu_cce',
+                                       'test_spec')
 
-    @pytest.mark.no_balfrin  # config file does not exist for this machines
-    @pytest.mark.no_daint  # unable to link a test program using the Fortran 90 interface of NetCDF library
-    def test_install_exclaim_cpu(self):
-        spack_install_and_test(
-            f'icon @exclaim-master %nvhpc icon_target=cpu +eccodes +ocean ^{mpi} %{nvidia_compiler}'
-        )
+    @pytest.mark.no_balfrin  # config file does not exist for this machine
+    def test_install_exclaim_test_cpu(self):
+        spack_env_dev_install_and_test(
+            'config/cscs/spack-envs/daint_cpu_nvhpc', 'test_spec')
 
-    @pytest.mark.no_balfrin  # config file does not exist for this machines
-    @pytest.mark.no_daint  # Cannot depend on 'cmake' twice
-    def test_install_exclaim_cpu_gcc(self):
-        spack_install_and_test(
-            'icon @exclaim-master %gcc icon_target=cpu +eccodes +ocean')
-
-    @pytest.mark.no_balfrin  # config file does not exist for this machines
-    @pytest.mark.no_daint  # unable to link a test program using the Fortran 90 interface of NetCDF library
-    def test_install_exclaim_gpu(self):
-        spack_install_and_test(
-            f'icon @exclaim-master %nvhpc icon_target=gpu +eccodes +ocean +claw ^{mpi} %{nvidia_compiler}'
-        )
+    @pytest.mark.no_balfrin  # config file does not exist for this machine
+    def test_install_exclaim_test_gpu(self):
+        spack_env_dev_install_and_test(
+            'config/cscs/spack-envs/daint_gpu_nvhpc', 'test_spec')
 
 
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
@@ -268,6 +271,7 @@ class Int2lmTest(unittest.TestCase):
     def test_install_version_3_00_gcc(self):
         spack_install_and_test('int2lm @int2lm-3.00 %gcc')
 
+    @pytest.mark.serial_only
     @pytest.mark.no_balfrin  # fails because libgrib1 master fails
     def test_install_version_3_00_nvhpc(self):
         spack_install_and_test(f'int2lm @int2lm-3.00 %{nvidia_compiler}')
