@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 C2SM Spack
-==========
+============
 
 Spack is the package manager used by `C2SM <https://c2sm.ethz.ch/>`__
 and `MeteoSwiss <https://www.meteoswiss.admin.ch/>`__ to install 
