@@ -177,7 +177,7 @@ class CosmoTest(unittest.TestCase):
             f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
-    @pytest.mark.serial_only # devbuildcosmo does a forced uninstall
+    @pytest.mark.serial_only  # devbuildcosmo does a forced uninstall
     def test_devbuildcosmo(self):
         subprocess.run(
             'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git',
