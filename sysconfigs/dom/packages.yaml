@@ -3,25 +3,21 @@ packages:
     compiler: # manually added
     - gcc@9.3.0
     - gcc@8.3.0
-    - nvhpc@21.3
+    - nvhpc@22.5
     - cce@12.0.3
     - gcc@11.2.0
     - intel@2021.3.0
     providers:
-      blas: # manually added
-      - cray-libsci_acc
-      - cray-libsci
-      - intel-mkl
-      mkl: # manually added
-      - intel-mkl
       mpi: # manually added
       - mpich
       pkgconfig: # manually added
       - pkg-config
-      scalapack: # manually added
-      - cray-libsci_acc
+      blas: # manually added
       - cray-libsci
-      - intel-mkl
+      - nvidia-blas
+      lapack: # manually added
+      - cray-libsci
+      - nvidia-lapack
     target: # manually added
     - haswell
   autoconf:
@@ -61,6 +57,7 @@ packages:
   cosmo: # manually added
     variants: slave=daint cuda_arch=60
   cosmo-dycore: # manually added
+    compiler: [gcc@8.3.0]
     variants: slave=daint cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/
       slurm_partition= "normal" slurm_bin= "srun" slurm_gpu= "-" slurm_opt_nodes=
       "-N" slurm_nodes= "{0}"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint=
@@ -68,7 +65,10 @@ packages:
   cuda: # manually added
     buildable: false
     externals:
-    - spec: cuda@11.0
+    - spec: cuda@11.2%nvhpc@21.3
+      modules:
+      - cudatoolkit/21.3_11.2
+    - spec: cuda@11.0%gcc
       modules:
       - cudatoolkit/11.0.2_3.38-8.1__g5b73779
   cpio:
@@ -148,10 +148,6 @@ packages:
     - spec: hdf5@1.12.0.4 +mpi +hl # manually added
       modules:
       - cray-hdf5-parallel/1.12.0.4
-  hwloc:
-    externals:
-    - spec: hwloc@1.11.8
-      prefix: /usr
   icontools: # manually added
     variants: slave=daint
   int2lm: # manually added
@@ -165,14 +161,6 @@ packages:
     - spec: libfuse@2.9.7
       prefix: /usr
     - spec: libfuse@3.6.1
-      prefix: /usr
-  libtool:
-    externals:
-    - spec: libtool@2.4.6
-      prefix: /usr
-  libxml2:
-    externals:
-    - spec: libxml2@2.9.7 # manually added
       prefix: /usr
   lustre:
     externals:
@@ -197,17 +185,20 @@ packages:
       - cray-netcdf/4.7.4.4
     - spec: netcdf-c@4.7.4.4%gcc+parallel-netcdf+mpi # manually added
       prefix: /opt/cray/pe/netcdf-hdf5parallel/4.7.4.4/GNU/8.2
+    - spec: netcdf-c@4.7.4.4%cce+parallel-netcdf+mpi # manually added
+      prefix: /opt/cray/pe/netcdf-hdf5parallel/4.7.4.4/CRAYCLANG/10.0
+    - spec: netcdf-c@4.7.4.4%cce~parallel-netcdf~mpi # manually added
+      modules:
+      - cray-netcdf/4.7.4.4
   netcdf-fortran:
     externals:
-    - spec: netcdf-fortran@4.7.4.4%nvhpc # manually added
+    - spec: netcdf-fortran@4.5.3%nvhpc # manually added
       modules:
       - cray-netcdf-hdf5parallel/4.7.4.4
-    - spec: netcdf-fortran@4.7.4.4%gcc # manually added
+    - spec: netcdf-fortran@4.5.3%gcc # manually added
       prefix: /opt/cray/pe/netcdf/4.7.4.4/GNU/8.2
-  ncurses:
-    externals:
-    - spec: ncurses@6.1.20180317+termlib abi=6
-      prefix: /usr
+    - spec: netcdf-fortran@4.5.3%cce # manually added
+      prefix: /opt/cray/pe/netcdf-hdf5parallel/4.7.4.4/CRAYCLANG/10.0
   openssh:
     externals:
     - spec: openssh@8.1p1
@@ -226,10 +217,10 @@ packages:
       prefix: /usr
   python:
     externals:
-    - spec: python@3.9.4+bz2+ctypes+dbm+ensurepip+lzma~nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /opt/python/3.9.4.1
     - spec: python@2.7.18+bz2+ctypes~dbm+ensurepip+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
       prefix: /usr
+    - spec: python@3.9.4+bz2+ctypes+dbm+ensurepip+lzma~nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+      prefix: /opt/python/3.9.4.1
     - spec: python@3.6.15+bz2+ctypes~dbm+ensurepip+lzma+nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
       prefix: /usr
   rsync:
@@ -280,3 +271,28 @@ packages:
     externals:
     - spec: zip@3.0
       prefix: /usr
+  openjdk:
+    buildable: false
+    externals:
+    - spec: openjdk@11.0.13
+      prefix: /usr/lib64/jvm/java-openjdk
+  cdo:
+    externals:
+    - spec: cdo@1.9.5
+      prefix: /project/d56/daint/local.gcc/bin
+  cray-libsci:
+    externals:
+    - spec: cray-libsci@20.06.1%cce
+      modules:
+      - cray-libsci/20.06.1
+    - spec: cray-libsci@20.06.1%gcc
+      modules:
+      - cray-libsci/20.06.1
+  nvidia-blas:
+    externals:
+    - spec: nvidia-blas@22.5%nvhpc@22.5
+      prefix: /opt/nvidia/hpc_sdk/Linux_x86_64/22.5/compilers/lib
+  nvidia-lapack:
+    externals:
+    - spec: nvidia-lapack@22.5%nvhpc@22.5
+      prefix: /opt/nvidia/hpc_sdk/Linux_x86_64/22.5/compilers/lib
