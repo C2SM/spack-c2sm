@@ -297,7 +297,7 @@ class Int2lmTest(unittest.TestCase):
 class IconToolsTest(unittest.TestCase):
 
     def test_install(self):
-        spack_install_and_test('icontools @2.5.2%gcc')
+        spack_install_and_test('icontools @2.5.2')
 
 
 @pytest.mark.no_tsa  # Not supported on Tsa
