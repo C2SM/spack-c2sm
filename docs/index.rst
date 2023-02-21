@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-C2SM Spack v0.18.1.1
-======================
+C2SM Spack
+============
 
 Spack is the package manager used by `C2SM <https://c2sm.ethz.ch/>`__
 and `MeteoSwiss <https://www.meteoswiss.admin.ch/>`__ to install 

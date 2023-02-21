@@ -1,0 +1,29 @@
+spack:
+  specs:
+   # ICON 
+  - matrix:
+    - [eccodes@2.19.0+fortran+aec+tools, cosmo-eccodes-definitions@2.19.0.7, serialbox@2.6.1+fortran]
+    - ['%nvhpc', '%cce', '%gcc']
+  - libxml2@2.9.13%gcc
+  - claw@2.0.3%nvhpc
+  - boost@1.79.0%gcc +atomic +chrono +container +contract +coroutine +date_time
+    +exception +fiber +filesystem +graph +graph_parallel +iostreams +json +locale
+    +log +math +mpi +program_options +random +regex +serialization +signals +stacktrace
+    cxxstd=11
+
+  # COSMO
+  - jasper @1.900.1 %nvhpc
+  
+    # boost as needed to compile COSMO-Dycore
+  - boost@1.79.0%gcc@8.3.0~atomic~chrono~clanglibcpp~container~context~contract~coroutine
+    ~date_time~debug~exception~fiber~filesystem~graph~graph_parallel~icu~iostreams~json
+    ~locale~log~math~mpi+multithreaded~nowide~numpy~pic+program_options~python~random
+    ~regex~serialization+shared~signals~singlethreaded~stacktrace+system~taggedlayout
+    ~test~thread~timer~type_erasure~versionedlayout~wave cxxstd=98 visibility=hidden
+
+  concretizer:
+    unify: when_possible
+  view: false
+  config:
+    install_tree:
+      root: /project/g110/spack/upstream/daint_v0.18.1.1
