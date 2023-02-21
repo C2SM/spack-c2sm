@@ -167,7 +167,6 @@ nvidia_compiler: str = {
 @pytest.mark.no_tsa  # irrelevant
 class CosmoTest(unittest.TestCase):
 
-    @pytest.mark.serial_only
     def test_install_version_6_0_gpu(self):
         spack_install_and_test(
             f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
@@ -178,7 +177,7 @@ class CosmoTest(unittest.TestCase):
             f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
-    @pytest.mark.serial_only
+    @pytest.mark.serial_only  # devbuildcosmo does a forced uninstall
     def test_devbuildcosmo(self):
         subprocess.run(
             'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git',
@@ -189,16 +188,6 @@ class CosmoTest(unittest.TestCase):
             spec,
             cwd='cosmo',
             log_filename=sanitized_filename('devbuildcosmo ' + spec))
-
-    def test_install_c2sm_features_cpu(self):
-        spack_install_and_test(
-            f'cosmo @c2sm-features %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
-        )
-
-    def test_install_c2sm_features_gpu(self):
-        spack_install_and_test(
-            f'cosmo @c2sm-features %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
-        )
 
 
 @pytest.mark.no_balfrin  # cuda arch is not supported

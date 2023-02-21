@@ -37,10 +37,6 @@ class Cosmo(MakefilePackage):
     patch('patches/org-master/spec_as_yaml/patch.test_cosmo',
           when='@org-master')
     patch('patches/org-master/spec_as_yaml/patch.test_cosmo', when='@6.0')
-    # C2SM-FEATURES
-    patch('patches/c2sm-features/spec_as_yaml/patch.test_cosmo',
-          when='@c2sm-features')
-    patch('patches/empa-ghg/spec_as_yaml/patch.test_cosmo', when='@empa-ghg')
     # APN-MCH
     patch('patches/apn-mch/spec_as_yaml/patch.test_cosmo', when='@apn-mch')
     patch('patches/5.09a.mch1.2.p2/spec_as_yaml/patch.test_cosmo',
