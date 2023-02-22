@@ -80,12 +80,13 @@ if __name__ == "__main__":
 
         [unit, unit_col] = GitHubRepo.get_test_result('unit', logfiles, col)
         comment = GitHubRepo.add_test_to_text('unit', unit, unit_col, col,
-                                               logfiles, comment)
-        [int, int_col] = GitHubRepo.get_test_result('integration', logfiles, col)
-        comment = GitHubRepo.add_test_to_text('integration', int, int_col,
-                                               col, logfiles, comment)
+                                              logfiles, comment)
+        [int, int_col] = GitHubRepo.get_test_result('integration', logfiles,
+                                                    col)
+        comment = GitHubRepo.add_test_to_text('integration', int, int_col, col,
+                                              logfiles, comment)
         [sys, sys_col] = GitHubRepo.get_test_result('system', logfiles, col)
         comment = GitHubRepo.add_test_to_text('system', sys, sys_col, col,
-                                               logfiles, comment)
+                                              logfiles, comment)
 
     repo.comment(args.issue_id, comment)
