@@ -24,7 +24,7 @@ class GitHubRepo:
 
     def add_test_to_text(test, test_exist, test_col, col, logfiles, text):
         if test_exist:
-            details = [['','Test']]
+            details = [['', 'Test']]
             for i in range(len(logfiles)):
                 if test in logfiles[i]:
                     details.append([col[i], logfiles[i]])
