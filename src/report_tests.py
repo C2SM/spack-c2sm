@@ -67,7 +67,7 @@ if __name__ == "__main__":
     if summary.text == '':
         comment = f'No tests ran on {machine_name()}.'
     else:
-        summary_rows= list(filter(None, summary.text.split('\n')))
+        summary_rows = list(filter(None, summary.text.split('\n')))
         logfiles = []
         col = []
         for item in summary_rows:
