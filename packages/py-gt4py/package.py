@@ -15,7 +15,8 @@ class PyGt4py(PythonPackage):
 
     url = "ssh://git@github.com/GridTools/gt4py.git"
 
-    version('functional', branch='functional', git=url)
+    version('main', branch='main', git=url)
+    version('1.0.1',tag='v1.0.1', git=url)
 
     maintainers = ['samkellerhals']
 
@@ -68,7 +69,7 @@ class PyGt4py(PythonPackage):
 
     # pytest fails with:
     #__main__.py: error: unrecognized arguments: --cov-config=setup.cfg
-    patch('patches/functional/rm_cov_config_arg.patch', when='@functional')
+    patch('patches/functional/rm_cov_config_arg.patch', when='@main')
 
     @run_after('install')
     @on_package_attributes(run_tests=True)

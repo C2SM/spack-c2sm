@@ -13,12 +13,14 @@ class PyIcon4py(PythonPackage):
     components for weather and climate models."""
 
     url = "git@github.com:C2SM/icon4py.git"
+    git = 'ssh://git@github.com:C2SM/icon4py.git'
 
     homepage = "https://github.com/C2SM/icon4py"
 
     maintainers = ['samkellerhals']
 
     version('main', branch='main', git='ssh://git@github.com/C2SM/icon4py.git')
+    version('0.0.1', tag='v0.0.1')
 
     depends_on('py-wheel', type='build')
     depends_on('py-setuptools', type='build')
@@ -27,7 +29,7 @@ class PyIcon4py(PythonPackage):
     depends_on('py-tabulate@0.8.9:', type=('build', 'run'))
     # TODO: push new version to Spack official
     depends_on('py-fprettify@0.3.7:', type=('build', 'run'))
-    depends_on('py-gt4py', type=('build', 'run'))
+    depends_on('py-gt4py@1.0.1', type=('build', 'run'))
     depends_on('py-pytest', type=('build', 'run'))
 
     def install(self, spec, prefix):
