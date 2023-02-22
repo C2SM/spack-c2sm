@@ -76,17 +76,16 @@ if __name__ == "__main__":
             logfiles.append(item[item.find('<a'):item.rfind('a>') + 2])
             col.append(item.split()[0])
 
-        text_new = f'###  {machine_name()}\n'
+        comment = f'###  {machine_name()}\n'
 
-        [unit, unit_col] = GitHubRepo.get_color('unit', logfiles, col)
-        text_new = GitHubRepo.add_test_to_text('unit', unit, unit_col, col,
-                                               logfiles, text_new)
-        [int, int_col] = GitHubRepo.get_color('integration', logfiles, col)
-        text_new = GitHubRepo.add_test_to_text('integration', int, int_col,
-                                               col, logfiles, text_new)
-        [sys, sys_col] = GitHubRepo.get_color('system', logfiles, col)
-        text_new = GitHubRepo.add_test_to_text('system', sys, sys_col, col,
-                                               logfiles, text_new)
-        comment = text_new
+        [unit, unit_col] = GitHubRepo.get_test_result('unit', logfiles, col)
+        comment = GitHubRepo.add_test_to_text('unit', unit, unit_col, col,
+                                               logfiles, comment)
+        [int, int_col] = GitHubRepo.get_test_result('integration', logfiles, col)
+        comment = GitHubRepo.add_test_to_text('integration', int, int_col,
+                                               col, logfiles, comment)
+        [sys, sys_col] = GitHubRepo.get_test_result('system', logfiles, col)
+        comment = GitHubRepo.add_test_to_text('system', sys, sys_col, col,
+                                               logfiles, comment)
 
     repo.comment(args.issue_id, comment)

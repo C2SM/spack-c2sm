@@ -8,7 +8,7 @@ class GitHubRepo:
         self.repo: str = repo
         self.auth_token: str = auth_token
 
-    def get_color(test, logfiles, col):
+    def get_test_result(test, logfiles, col):
         test_exist = False
         test_col = ':green_circle:'
         for i in range(len(logfiles)):
