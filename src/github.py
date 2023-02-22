@@ -24,15 +24,12 @@ class GitHubRepo:
 
     def add_test_to_text(test, test_exist, test_col, col, logfiles, text):
         if test_exist:
-            details = '<table><tbody><tr><td>'
+            details = [['','Test']]
             for i in range(len(logfiles)):
                 if test in logfiles[i]:
-                    details = details + '<tr><td>' + col[i]
-                    details = details + '</td><td>' + logfiles[
-                        i] + '</td></tr>\n'
-            details = details + '</tbody>\n</table>'
+                    details.append([col[i], logfiles[i]])
             text = text + HTML.collapsible(test_col + ' ' + test + ' test',
-                                           details)
+                                           HTML.table(details))
         return (text)
 
     def comment(self, issue_id: str, text: str) -> None:
