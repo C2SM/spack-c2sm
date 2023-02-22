@@ -67,17 +67,14 @@ if __name__ == "__main__":
     if summary.text == '':
         comment = f'No tests ran on {machine_name()}.'
     else:
-        f = filter(None, summary.text.split('\n'))
-        text_lines = list(f)
-
+        summary_rows= list(filter(None, summary.text.split('\n')))
         logfiles = []
         col = []
-        for item in text_lines:
+        for item in summary_rows:
             logfiles.append(item[item.find('<a'):item.rfind('a>') + 2])
             col.append(item.split()[0])
 
         comment = f'###  {machine_name()}\n'
-
         [unit, unit_col] = GitHubRepo.get_test_result('unit', logfiles, col)
         comment = GitHubRepo.add_test_to_text('unit', unit, unit_col, col,
                                               logfiles, comment)
