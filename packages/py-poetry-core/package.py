@@ -10,4 +10,5 @@ class PyPoetryCore(SpackPyPoetryCore):
         env.set("GIT_DIR", join_path(self.stage.source_path, ".git"))
 
     def setup_dependent_build_environment(self, env, dependent_spec):
-        env.set("GIT_DIR", join_path(dependent_spec.package.stage.source_path, ".git"))
+        env.set("GIT_DIR",
+                join_path(dependent_spec.package.stage.source_path, ".git"))
