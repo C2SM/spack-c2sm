@@ -337,7 +337,6 @@ class PyGt4pyTest(unittest.TestCase):
         spack_install_and_test('py-gt4py @ 1.0.1 %gcc')
 
 
-
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 class PyIcon4pyTest(unittest.TestCase):
 
