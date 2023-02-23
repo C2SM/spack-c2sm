@@ -76,14 +76,13 @@ if __name__ == "__main__":
 
         comment = f'###  {machine_name()}\n'
         unit_col = GitHubRepo.get_test_result('unit', logfiles, col)
-        comment = GitHubRepo.add_test_to_text('unit', unit_col, col,
-                                              logfiles, comment)
-        int_col = GitHubRepo.get_test_result('integration', logfiles,
-                                                    col)
+        comment = GitHubRepo.add_test_to_text('unit', unit_col, col, logfiles,
+                                              comment)
+        int_col = GitHubRepo.get_test_result('integration', logfiles, col)
         comment = GitHubRepo.add_test_to_text('integration', int_col, col,
                                               logfiles, comment)
         sys_col = GitHubRepo.get_test_result('system', logfiles, col)
-        comment = GitHubRepo.add_test_to_text('system', sys_col, col,
-                                              logfiles, comment)
+        comment = GitHubRepo.add_test_to_text('system', sys_col, col, logfiles,
+                                              comment)
 
     repo.comment(args.issue_id, comment)
