@@ -55,6 +55,7 @@ class PyGt4py(PythonPackage):
     depends_on('py-astunparse@1.6.3:', type=('build', 'run'))
     depends_on('py-toolz@0.12.0:', type=('build', 'run'))
     depends_on('py-xxhash@1.4.4:', type=('build', 'run'))
+    depends_on('py-hypothesis@4.14:', type=('build', 'run'))
 
     # Python dependencies from requirements-dev.txt
     # Convert to type=('test') ?
@@ -66,6 +67,7 @@ class PyGt4py(PythonPackage):
     depends_on('py-pytest-cov@2.8:', type=('build', 'run'))
     depends_on('py-pytest-factoryboy@2.0:', type=('build', 'run'))
     depends_on('py-pytest@6.1:', type=('build', 'run'))
+    # setup.cfg requires newer version, but not available yet
     depends_on('py-tox@3.14:', type=('build', 'run'))
 
     # missing version constraint: pytest-xdist[psutil]>=2.2
@@ -79,4 +81,4 @@ class PyGt4py(PythonPackage):
     @on_package_attributes(run_tests=True)
     def install_test(self):
         python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--cov',
-               '--cov-append', 'tests')
+               '--cov-append', 'tests/next_tests', 'tests/eve_tests')
