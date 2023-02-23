@@ -11,14 +11,12 @@ class GitHubRepo:
     def get_test_result(test, logfiles, col):
         test_exist = False
         test_col = ':green_circle:'
-        for i in range(len(logfiles)):
-            if test in logfiles[i]:
+        for c, logfile in zip(col, logfiles):
+            if test in logfile:
                 test_exist = True
-                if col[i] == ':red_circle:' or col[i] == ':lock:' or col[
-                        i] == ':wastebasket:' or col[i] == ':hourglass:':
+                if c == ':red_circle:' or c == ':lock:' or c == ':wastebasket:' or c == ':hourglass:':
                     test_col = ':red_circle:'
-                elif col[
-                        i] == ':yellow_circle:' and not test_col == ':red_circle:':
+                elif c == ':yellow_circle:' and not test_col == ':red_circle:':
                     test_col = ':yellow_circle:'
         return (test_exist, test_col)
 
