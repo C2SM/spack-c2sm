@@ -19,6 +19,15 @@ class ResultList:
         link = HTML.link(name, self.artifact_path + test)
         self.text += f'{status} {link} {comment}\n'
 
+    def get_test_result(test, logfiles, col):
+        if any(test in l for l in logfiles):
+            if all(c == ':green_circle:' for c in col):
+                test_col = ':green_circle:'
+            else:
+                test_col = ':red_circle:'
+        else:
+            test_col = None
+        return (test_col)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -75,13 +84,13 @@ if __name__ == "__main__":
             col.append(item.split()[0])
 
         comment = f'###  {machine_name()}\n'
-        unit_col = GitHubRepo.get_test_result('unit', logfiles, col)
+        unit_col = ResultList.get_test_result('unit', logfiles, col)
         comment = GitHubRepo.add_test_to_text('unit', unit_col, col, logfiles,
                                               comment)
-        int_col = GitHubRepo.get_test_result('integration', logfiles, col)
+        int_col = ResultList.get_test_result('integration', logfiles, col)
         comment = GitHubRepo.add_test_to_text('integration', int_col, col,
                                               logfiles, comment)
-        sys_col = GitHubRepo.get_test_result('system', logfiles, col)
+        sys_col = ResultList.get_test_result('system', logfiles, col)
         comment = GitHubRepo.add_test_to_text('system', sys_col, col, logfiles,
                                               comment)
 

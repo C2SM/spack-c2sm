@@ -8,16 +8,6 @@ class GitHubRepo:
         self.repo: str = repo
         self.auth_token: str = auth_token
 
-    def get_test_result(test, logfiles, col):
-        if any(test in l for l in logfiles):
-            if all(c == ':green_circle:' for c in col):
-                test_col = ':green_circle:'
-            else:
-                test_col = ':red_circle:'
-        else:
-            test_col = None
-        return (test_col)
-
     def add_test_to_text(test, test_col, col, logfiles, text):
         if test_col:
             details = [['', 'Test']]
