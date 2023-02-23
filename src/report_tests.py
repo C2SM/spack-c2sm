@@ -29,6 +29,7 @@ class ResultList:
             test_col = None
         return (test_col)
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--auth_token', type=str, required=False)
