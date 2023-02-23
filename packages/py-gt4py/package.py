@@ -73,10 +73,6 @@ class PyGt4py(PythonPackage):
     # missing version constraint: pytest-xdist[psutil]>=2.2
     depends_on('py-pytest-xdist', type=('build', 'run'))
 
-    # pytest fails with:
-    #__main__.py: error: unrecognized arguments: --cov-config=setup.cfg
-    patch('patches/functional/rm_cov_config_arg.patch', when='@main')
-
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def install_test(self):
