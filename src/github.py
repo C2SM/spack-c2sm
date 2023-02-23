@@ -9,19 +9,17 @@ class GitHubRepo:
         self.auth_token: str = auth_token
 
     def get_test_result(test, logfiles, col):
-        test_exist = False
-        test_col = ':green_circle:'
-        for c, logfile in zip(col, logfiles):
-            if test in logfile:
-                test_exist = True
-                if c == ':red_circle:' or c == ':lock:' or c == ':wastebasket:' or c == ':hourglass:':
-                    test_col = ':red_circle:'
-                elif c == ':yellow_circle:' and not test_col == ':red_circle:':
-                    test_col = ':yellow_circle:'
-        return (test_exist, test_col)
+        if any(test in l for l in logfiles):
+            if all(c == ':green_circle:' for c in col):
+                test_col = ':green_circle:'
+            else:
+                test_col = ':red_circle:'
+        else:
+            test_col = None
+        return (test_col)
 
-    def add_test_to_text(test, test_exist, test_col, col, logfiles, text):
-        if test_exist:
+    def add_test_to_text(test, test_col, col, logfiles, text):
+        if test_col:
             details = [['', 'Test']]
             for i in range(len(logfiles)):
                 if test in logfiles[i]:
