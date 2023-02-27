@@ -19,8 +19,8 @@ class PyIcon4py(PythonPackage):
 
     maintainers = ['samkellerhals']
 
-    version('main', branch='main', git='ssh://git@github.com/C2SM/icon4py.git')
-    version('0.0.1', tag='v0.0.1', git='ssh://git@github.com/C2SM/icon4py.git')
+    version('main', branch='main', git=git)
+    version('0.0.1', tag='v0.0.1', git=git)
 
     depends_on('py-wheel', type='build')
     depends_on('py-setuptools', type='build')
