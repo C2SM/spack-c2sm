@@ -78,3 +78,6 @@ class PyGt4py(PythonPackage):
     def install_test(self):
         python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--cov',
                '--cov-append', 'tests/next_tests', 'tests/eve_tests')
+
+    def setup_dependent_build_environment(self, env, dependent_spec):
+        env.set("CMAKE_INCLUDE_PATH", self.spec['boost'].prefix.include)

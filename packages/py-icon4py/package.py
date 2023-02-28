@@ -13,7 +13,7 @@ class PyIcon4py(PythonPackage):
     components for weather and climate models."""
 
     url = "git@github.com:C2SM/icon4py.git"
-    git = 'ssh://git@github.com:C2SM/icon4py.git'
+    git = 'ssh://git@github.com/C2SM/icon4py.git'
 
     homepage = "https://github.com/C2SM/icon4py"
 
@@ -21,7 +21,7 @@ class PyIcon4py(PythonPackage):
 
     version('main', branch='main', git=git)
     version('0.0.1', tag='v0.0.1', git=git)
-
+    version('0.0.2', tag='v0.0.2', git=git)
     depends_on('py-wheel', type='build')
     depends_on('py-setuptools', type='build')
 
