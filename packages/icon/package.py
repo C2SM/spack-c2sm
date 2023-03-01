@@ -3,7 +3,6 @@ import inspect
 import glob
 from collections import defaultdict
 
-
 from llnl.util import lang, filesystem, tty
 from spack.util.environment import is_system_path, dump_environment
 from spack.util.executable import which_string
@@ -355,10 +354,17 @@ class Icon(AutotoolsPackage):
             config_vars['ICON_CFLAGS'].append('-O3')
             config_vars['ICON_BUNDLED_CFLAGS'].append('-O2')
             config_vars['FCFLAGS'].extend([
-                '-g', '-fmodule-private', '-fimplicit-none',
-                '-fmax-identifier-length=63', '-Wall',
-                '-Wcharacter-truncation', '-Wconversion', '-Wunderflow',
-                '-Wunused-parameter', '-Wno-surprising', '-fall-intrinsics',
+                '-g',
+                '-fmodule-private',
+                '-fimplicit-none',
+                '-fmax-identifier-length=63',
+                '-Wall',
+                '-Wcharacter-truncation',
+                '-Wconversion',
+                '-Wunderflow',
+                '-Wunused-parameter',
+                '-Wno-surprising',
+                '-fall-intrinsics',
             ])
             config_vars['ICON_FCFLAGS'].extend([
                 '-O2', '-fbacktrace', '-fbounds-check',
@@ -738,7 +744,8 @@ class Icon(AutotoolsPackage):
         """
 
         Git = which('git', required=True)
-        git_root = Git('rev-parse', '--show-toplevel',output=str).replace("\n", "")
+        git_root = Git('rev-parse', '--show-toplevel',
+                       output=str).replace("\n", "")
         if git_root != self.stage.source_path:
             self.out_of_source_build = True
             return git_root
@@ -755,7 +762,7 @@ class Icon(AutotoolsPackage):
         :meth:`~spack.build_systems.autotools.AutotoolsPackage.configure_args`
         and an appropriately set prefix.
         """
-        if os.path.exists(os.path.join(self.build_directory,'icon.mk')):
+        if os.path.exists(os.path.join(self.build_directory, 'icon.mk')):
             tty.warn('icon.mk already present -> skip configure stage',
                      '\t run "make distclean" to not skip configure')
             return
@@ -774,13 +781,17 @@ class Icon(AutotoolsPackage):
             with working_dir(self.build_directory):
                 Rsync = which('rsync', required=True)
                 icon_dir = self.configure_directory
-                Rsync("-uavz", f"{icon_dir}/run", ".","--exclude=*.in", "--exclude=.*", "--exclude=standard_*")
-                Rsync("-uavz", f"{icon_dir}/externals", ".", "--exclude=.git", "--exclude=*.f90" ,"--exclude=*.F90", "--exclude=*.c", "--exclude=*.h", "--exclude=*.Po", "--exclude=tests", "--exclude=*.mod","--exclude=*.o")
-                Rsync("-uavz",f"{icon_dir}/make_runscripts", ".")
-            
+                Rsync("-uavz", f"{icon_dir}/run", ".", "--exclude=*.in",
+                      "--exclude=.*", "--exclude=standard_*")
+                Rsync("-uavz", f"{icon_dir}/externals", ".", "--exclude=.git",
+                      "--exclude=*.f90", "--exclude=*.F90", "--exclude=*.c",
+                      "--exclude=*.h", "--exclude=*.Po", "--exclude=tests",
+                      "--exclude=*.mod", "--exclude=*.o")
+                Rsync("-uavz", f"{icon_dir}/make_runscripts", ".")
+
                 Ln = which('ln', required=True)
                 dirs = glob.glob(f"{icon_dir}/run/standard_*")
                 for dir in dirs:
-                    Ln("-sf", "-t","run/", f"{dir}")
+                    Ln("-sf", "-t", "run/", f"{dir}")
                 Ln("-sf", f"{icon_dir}/data")
                 Ln("-sf", f"{icon_dir}/vertical_coord_tables")
