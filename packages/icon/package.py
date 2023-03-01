@@ -3,7 +3,7 @@ from collections import defaultdict
 
 from llnl.util import lang, filesystem, tty
 from spack.util.environment import is_system_path, dump_environment
-from spack.util.executable import which_string,which
+from spack.util.executable import which_string, which
 
 
 class Icon(AutotoolsPackage):
@@ -768,7 +768,6 @@ class Icon(AutotoolsPackage):
         else:
             return self.stage.source_path
 
-
     def configure(self, spec, prefix):
         """Runs configure with the arguments specified in
         :meth:`~spack.build_systems.autotools.AutotoolsPackage.configure_args`
@@ -780,8 +779,7 @@ class Icon(AutotoolsPackage):
             return
 
         # use configure provided by Spack
-        AutotoolsPackage.configure(self,spec,prefix)
-
+        AutotoolsPackage.configure(self, spec, prefix)
 
     @run_after('configure')
     def copy_runscript_related_input_files(self):
