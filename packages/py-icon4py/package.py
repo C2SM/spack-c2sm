@@ -22,6 +22,7 @@ class PyIcon4py(PythonPackage):
     version('main', branch='main', git=git)
     version('0.0.1', tag='v0.0.1', git=git)
     version('0.0.2', tag='v0.0.2', git=git)
+
     depends_on('py-wheel', type='build')
     depends_on('py-setuptools', type='build')
 
@@ -29,8 +30,13 @@ class PyIcon4py(PythonPackage):
     depends_on('py-tabulate@0.8.9:', type=('build', 'run'))
     # TODO: push new version to Spack official
     depends_on('py-fprettify@0.3.7:', type=('build', 'run'))
-    depends_on('py-gt4py@1.0.1', type=('build', 'run'))
+    depends_on('py-gt4py@1.0.1:', type=('build', 'run'))
     depends_on('py-pytest', type=('build', 'run'))
+    depends_on('boost@1.65.1:', type=('build', 'run'))
+
+    # cmake in unit-tests needs this path
+    def setup_build_environment(self, env):
+        env.set("CMAKE_INCLUDE_PATH", self.spec['boost'].prefix.include)
 
     def install(self, spec, prefix):
         """Install everything from build directory."""
