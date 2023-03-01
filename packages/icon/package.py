@@ -1,9 +1,13 @@
 import os, subprocess
+import inspect
+import glob
 from collections import defaultdict
+
 
 from llnl.util import lang, filesystem, tty
 from spack.util.environment import is_system_path, dump_environment
 from spack.util.executable import which_string
+from spack.util.executable import which
 
 
 class Icon(AutotoolsPackage):
@@ -190,6 +194,8 @@ class Icon(AutotoolsPackage):
     conflicts('+dace', when='~mpi')
     conflicts('+emvorado', when='~mpi')
 
+    out_of_source_build = False
+
     # patch_libtool is a function from Autotoolspackage.
     # For BB we cannot use it because it finds all files
     # named "libtool". spack-c2sm is cloned into icon-repo,
@@ -352,7 +358,7 @@ class Icon(AutotoolsPackage):
                 '-g', '-fmodule-private', '-fimplicit-none',
                 '-fmax-identifier-length=63', '-Wall',
                 '-Wcharacter-truncation', '-Wconversion', '-Wunderflow',
-                '-Wunused-parameter', '-Wno-surprising', '-fall-intrinsics'
+                '-Wunused-parameter', '-Wno-surprising', '-fall-intrinsics',
             ])
             config_vars['ICON_FCFLAGS'].extend([
                 '-O2', '-fbacktrace', '-fbounds-check',
@@ -723,3 +729,58 @@ class Icon(AutotoolsPackage):
 
         from spack.compilers.gcc import Gcc
         return fc_name in Gcc.fc_names
+
+    @property
+    def configure_directory(self):
+        """Returns the directory where 'configure' resides.
+
+        :return: directory where to find configure
+        """
+
+        Git = which('git', required=True)
+        git_root = Git('rev-parse', '--show-toplevel',output=str).replace("\n", "")
+        if git_root != self.stage.source_path:
+            self.out_of_source_build = True
+            return git_root
+        else:
+            return self.stage.source_path
+
+    @property
+    def build_directory(self):
+        """Override to provide another place to build the package"""
+        return self.stage.source_path
+
+    def configure(self, spec, prefix):
+        """Runs configure with the arguments specified in
+        :meth:`~spack.build_systems.autotools.AutotoolsPackage.configure_args`
+        and an appropriately set prefix.
+        """
+        if os.path.exists(os.path.join(self.build_directory,'icon.mk')):
+            tty.warn('icon.mk already present -> skip configure stage',
+                     '\t run "make distclean" to not skip configure')
+            return
+
+        else:
+            options = getattr(self, 'configure_flag_args', [])
+            options += ['--prefix={0}'.format(prefix)]
+            options += self.configure_args()
+
+            with working_dir(self.build_directory, create=True):
+                inspect.getmodule(self).configure(*options)
+
+    @run_after('configure')
+    def copy_runscript_related_input_files(self):
+        if self.out_of_source_build:
+            with working_dir(self.build_directory):
+                Rsync = which('rsync', required=True)
+                icon_dir = self.configure_directory
+                Rsync("-uavz", f"{icon_dir}/run", ".","--exclude=*.in", "--exclude=.*", "--exclude=standard_*")
+                Rsync("-uavz", f"{icon_dir}/externals", ".", "--exclude=.git", "--exclude=*.f90" ,"--exclude=*.F90", "--exclude=*.c", "--exclude=*.h", "--exclude=*.Po", "--exclude=tests", "--exclude=*.mod","--exclude=*.o")
+                Rsync("-uavz",f"{icon_dir}/make_runscripts", ".")
+            
+                Ln = which('ln', required=True)
+                dirs = glob.glob(f"{icon_dir}/run/standard_*")
+                for dir in dirs:
+                    Ln("-sf", "-t","run/", f"{dir}")
+                Ln("-sf", f"{icon_dir}/data")
+                Ln("-sf", f"{icon_dir}/vertical_coord_tables")
