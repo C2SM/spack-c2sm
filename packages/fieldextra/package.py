@@ -32,13 +32,27 @@ class Fieldextra(MakefilePackage):
     def edit(self, spec, prefix):
         with working_dir(self.build_directory):
             makefile = FileFilter('Makefile')
-            makefile.filter(r'^\s*laecdir\s*=.*', 'laecdir = ' + ':'.join(spec['libaec'].libs.directories))
-            makefile.filter(r'^\s*ljasperdir\s*=.*', 'ljasperdir = ' + ':'.join(spec['jasper'].libs.directories))
-            makefile.filter(r'^\s*leccdir\s*=.*', 'leccdir = ' + ':'.join(spec['eccodes'].libs.directories))
-            makefile.filter(r'^\s*lzdir\s*=.*', 'lzdir = ' + ':'.join(spec['zlib'].libs.directories))
-            makefile.filter(r'^\s*lhdf5dir\s*=.*', 'lhdf5dir = ' + ':'.join(spec['hdf5'].libs.directories))
-            makefile.filter(r'^\s*lnetcdfcdir\s*=.*', 'lnetcdfcdir = ' + ':'.join(spec['netcdf-c'].libs.directories))
-            makefile.filter(r'^\s*lnetcdffortrandir\s*=.*', 'lnetcdffortrandir = ' + ':'.join(spec['netcdf-fortran'].libs.directories))
+            makefile.filter(
+                r'^\s*laecdir\s*=.*',
+                'laecdir = ' + ':'.join(spec['libaec'].libs.directories))
+            makefile.filter(
+                r'^\s*ljasperdir\s*=.*',
+                'ljasperdir = ' + ':'.join(spec['jasper'].libs.directories))
+            makefile.filter(
+                r'^\s*leccdir\s*=.*',
+                'leccdir = ' + ':'.join(spec['eccodes'].libs.directories))
+            makefile.filter(
+                r'^\s*lzdir\s*=.*',
+                'lzdir = ' + ':'.join(spec['zlib'].libs.directories))
+            makefile.filter(
+                r'^\s*lhdf5dir\s*=.*',
+                'lhdf5dir = ' + ':'.join(spec['hdf5'].libs.directories))
+            makefile.filter(
+                r'^\s*lnetcdfcdir\s*=.*',
+                'lnetcdfcdir = ' + ':'.join(spec['netcdf-c'].libs.directories))
+            makefile.filter(
+                r'^\s*lnetcdffortrandir\s*=.*', 'lnetcdffortrandir = ' +
+                ':'.join(spec['netcdf-fortran'].libs.directories))
             # makefile.filter(r'^\s*lrttovdir\s*=.*', 'lrttovdir = ' + ':'.join(spec['rttov'].libs.directories))
             # makefile.filter(r'^\s*licontoolsdir\s*=.*', 'licontoolsdir = ' + ':'.join(spec['icontools'].libs.directories))
 
@@ -55,4 +69,7 @@ class Fieldextra(MakefilePackage):
         # os.symlink(spec['hdf5'].prefix, 'hdf5')
         # os.symlink(spec['zlib'].prefix, 'zlib')
 
-        subprocess.run(['tools/build_fieldextra.sh', '--target=' + self.spec.variants['target'].value])
+        subprocess.run([
+            'tools/build_fieldextra.sh',
+            '--target=' + self.spec.variants['target'].value
+        ])

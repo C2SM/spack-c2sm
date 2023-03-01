@@ -20,10 +20,13 @@ class FieldextraIcontools(MakefilePackage):
 
     def edit(self, spec, prefix):
         makefile = FileFilter('Makefile')
-        makefile.filter(r'^\s*lnetcdfdir\s*=.*', 'lnetcdfcdir = ' + ':'.join(spec['netcdf-c'].libs.directories))
-        makefile.filter(r'^\s*lnetcdffortrandir\s*=.*', 'lnetcdffortrandir = ' + ':'.join(spec['netcdf-fortran'].libs.directories))
+        makefile.filter(
+            r'^\s*lnetcdfdir\s*=.*',
+            'lnetcdfcdir = ' + ':'.join(spec['netcdf-c'].libs.directories))
+        makefile.filter(
+            r'^\s*lnetcdffortrandir\s*=.*', 'lnetcdffortrandir = ' +
+            ':'.join(spec['netcdf-fortran'].libs.directories))
 
-        
     # @run_after('install')
     # def add_include_files(self):
     #     with working_dir(os.path.join(self.stage.source_path, 'libicontools', 'src')):

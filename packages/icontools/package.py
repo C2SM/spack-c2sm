@@ -33,7 +33,9 @@ class Icontools(AutotoolsPackage):
     depends_on('jasper')
 
     variant('fxtr', default=False)
-    variant('slave', default='none', description='Build on described slave (e.g daint)')
+    variant('slave',
+            default='none',
+            description='Build on described slave (e.g daint)')
 
     conflicts('%pgi')
     conflicts('%nvhpc')
@@ -94,7 +96,8 @@ class Icontools(AutotoolsPackage):
 
     @run_after('install')
     def add_include_files(self):
-        with working_dir(os.path.join(self.stage.source_path, 'libicontools', 'src')):
+        with working_dir(
+                os.path.join(self.stage.source_path, 'libicontools', 'src')):
             for file in os.listdir('.'):
                 if file.startswith('mo_') and file.endswith('.mod'):
                     shutil.copy(file, self.prefix.include)
