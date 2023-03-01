@@ -769,13 +769,9 @@ class Icon(AutotoolsPackage):
             return self.stage.source_path
 
     def configure(self, spec, prefix):
-        """Runs configure with the arguments specified in
-        :meth:`~spack.build_systems.autotools.AutotoolsPackage.configure_args`
-        and an appropriately set prefix.
-        """
         if os.path.exists(os.path.join(self.build_directory, 'icon.mk')):
             tty.warn('icon.mk already present -> skip configure stage',
-                     '\t run "make distclean" to not skip configure')
+                     '\t delete "icon.mk to not skip configure')
             return
 
         # use configure provided by Spack
