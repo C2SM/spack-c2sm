@@ -1,13 +1,10 @@
-import os, subprocess
-import inspect
-import glob
+import os, subprocess, glob, inspect
 from collections import defaultdict
 
 
 from llnl.util import lang, filesystem, tty
 from spack.util.environment import is_system_path, dump_environment
-from spack.util.executable import which_string
-from spack.util.executable import which
+from spack.util.executable import which_string,which
 
 
 class Icon(AutotoolsPackage):
@@ -194,6 +191,8 @@ class Icon(AutotoolsPackage):
     conflicts('+dace', when='~mpi')
     conflicts('+emvorado', when='~mpi')
 
+    # Flag to mark if we build out-of-source
+    # Needed to trigger sync of input files for experiments
     out_of_source_build = False
 
     # patch_libtool is a function from Autotoolspackage.
@@ -731,24 +730,37 @@ class Icon(AutotoolsPackage):
         return fc_name in Gcc.fc_names
 
     @property
+    def build_directory(self):
+        """Overrides function from spack.build_system.autotools
+        
+        By default build_directory is identical as configure_directory
+        To enable out-of-source builds this is not the case anymore
+        """
+
+        return self.stage.source_path
+
+    @property
     def configure_directory(self):
         """Returns the directory where 'configure' resides.
 
-        :return: directory where to find configure
+        Overides function from spack.build_systems.autotools
+
+        CAUTION: Does only work if Spack is inside the git-repo
+                 of ICON, otherwise "git rev-pars --show-toplevel"
+                 fails!
+
         """
 
         Git = which('git', required=True)
         git_root = Git('rev-parse', '--show-toplevel',output=str).replace("\n", "")
         if git_root != self.stage.source_path:
+            # mark out-of-source build for function
+            # copy_runscript_related_input_files
             self.out_of_source_build = True
             return git_root
         else:
             return self.stage.source_path
 
-    @property
-    def build_directory(self):
-        """Override to provide another place to build the package"""
-        return self.stage.source_path
 
     def configure(self, spec, prefix):
         """Runs configure with the arguments specified in
@@ -760,13 +772,9 @@ class Icon(AutotoolsPackage):
                      '\t run "make distclean" to not skip configure')
             return
 
-        else:
-            options = getattr(self, 'configure_flag_args', [])
-            options += ['--prefix={0}'.format(prefix)]
-            options += self.configure_args()
+        # use configure provided by Spack
+        AutotoolsPackage.configure(self,spec,prefix)
 
-            with working_dir(self.build_directory, create=True):
-                inspect.getmodule(self).configure(*options)
 
     @run_after('configure')
     def copy_runscript_related_input_files(self):
