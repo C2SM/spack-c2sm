@@ -334,14 +334,14 @@ class OmniXmodPoolTest(unittest.TestCase):
 class PyGt4pyTest(unittest.TestCase):
 
     def test_install_version_1_0_1(self):
-        spack_install_and_test('py-gt4py @ 1.0.1 %gcc ^python@10.4')
+        spack_install_and_test('py-gt4py @ 1.0.1 %gcc ^python@3.10.4')
 
 
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 class PyIcon4pyTest(unittest.TestCase):
 
     def test_install_version_0_0_1(self):
-        spack_install_and_test('py-icon4py @ 0.0.1 %gcc ^py-gt4py@1.0.1 ^python@10.4')
+        spack_install_and_test('py-icon4py @ 0.0.1 %gcc ^py-gt4py@1.0.1 ^python@3.10.4')
 
 
 class ZLibNGTest(unittest.TestCase):
