@@ -572,10 +572,12 @@ class Icon(AutotoolsPackage):
             config_vars['LIBS'].extend(cuda_host_compiler_stdcxx_libs)
 
             config_vars['LOC_GT4PY'].append(self.spec['py-gt4py'].prefix)
-            config_vars['LOC_ICON4PY'].append(os.path.join(self.spec['py-icon4py'].prefix, 'lib/python3.10/site-packages/icon4py'))
+            config_vars['LOC_ICON4PY'].append(
+                os.path.join(self.spec['py-icon4py'].prefix,
+                             'lib/python3.10/site-packages/icon4py'))
             config_vars['LOC_GRIDTOOLS'].append(self.spec['gridtools'].prefix)
 
-            config_vars['GT4PYNVCFLAGS']=config_vars['NVCFLAGS']
+            config_vars['GT4PYNVCFLAGS'] = config_vars['NVCFLAGS']
 
         # Finalize the LIBS variable (we always put the real collected
         # libraries to the front):
