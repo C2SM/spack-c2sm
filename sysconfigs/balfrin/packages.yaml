@@ -12,6 +12,10 @@ packages:
     variants: slave=balfrin
   int2lm: # manually added
     variants: slave=balfrin
+  cray-mpich-binary:
+    externals:
+    - spec: cray-mpich-binary@8.1.18.4-nvhpc%nvhpc@22.7
+      prefix: /mch-environment/v2/linux-sles15-zen3/nvhpc-22.7/cray-mpich-binary-8.1.18.4-nvhpc-rdpiutkeowmqpd32gg4mpe65p7xkm6sj
   autoconf:
     externals:
     - spec: autoconf@2.69
