@@ -8,7 +8,6 @@ from spack.directives import depends_on, version
 from llnl.util.filesystem import working_dir, FileFilter, install_tree
 import os
 import stat
-# from subprocess import check_call
 import re
 from pathlib import Path
 from typing import Dict
@@ -123,72 +122,7 @@ class Oasis(MakefilePackage):
         for src_file in Path(f'lib/psmile/src').glob('*90'):
             mod_file(src_file, {re_mct_mod: r'\g<begining>mct_mod_oasis\g<end>'})
 
-        
 
-#     @run_before('build')
-#     def fix_mct(self):
-    
-#         # Rename all USE mct_xxx with USE mct_xxx_oasis
-#         with working_dir(os.path.join(self.build_directory, '../..')):
-#             with open('sh_cesm_compliance', mode='w') as f:
-#                 f.write("""
-# #!/bin/bash
-# #
-# # Modify MCT libraries
-# #
-# echo
-# echo Modify MCT libraries 
-# echo
-# cd lib/mct
-# for direc in mct mpeu
-# do
-#   if [ ! -d ${direc}_release ]; then
-#     mkdir ${direc}_release
-#     cp -f ${direc}/* ${direc}_release
-#   else
-#     cp -f ${direc}_release/* ${direc}
-#   fi
-#   cd ${direc}
-#   for file in *90
-#   do
-#     chmod u+w $file
-#     echo $file
-#     sed -e s/'use *m_[A-Za-z0-9 _\t]*$/&egard'/ -e s/'use *m_[A-Za-z0-9 _\t]*\,/&eperdu'/ -e s/'use *m_[A-Za-z0-9 _\t]*\!/&voltige'/ -e s/'[ \t]*\,eperdu/_oasis\,'/ -e s/'[ \t]*'egard/_oasis/ -e s/'[ \t]*\!voltige/_oasis \!'/ $file > toto
-#     sed -e s/' *module *m[A-Za-z0-9_\t]*/&_oasis'/ toto > $file
-#   done
-#   rm -f toto
-#   cd ..
-# done
-# #
-# # Modify psmile library
-# #
-# echo
-# echo Modify psmile library
-# echo
-# cd ../psmile
-# if [ ! -d src_release ]; then
-#   mkdir src_release
-#   cp -f src/* src_release
-# else
-#   cp -f src_release/* src
-# fi
-# cd src
-# for file in *90
-# do
-#   echo $file
-#   sed s/mct_mod/mct_mod_oasis/ $file > toto
-#   mv toto $file
-# done
-#         """)
-
-#             check_call('source ./sh_cesm_compliance', shell=True)
-            
-#             # st = os.stat('sh_cesm_compliance')
-#             # os.chmod('sh_cesm_compliance', st.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
-#             # script = Executable('sh_cesm_compliance')
-#             # script()
-
-            
     def build(self, spec, prefix):
 
         with working_dir(self.build_directory):
