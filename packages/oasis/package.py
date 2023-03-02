@@ -100,7 +100,7 @@ class Oasis(MakefilePackage):
         re_mct_mod = re.compile(r'^(?P<begining>.*)mct_mod(?P<end>.*)$', re.IGNORECASE)
 
         # File modification function
-        def mod_file(file:Path, regex_subs:Dict[re.Pattern,str], indent=3) -> None:
+        def mod_file(file:Path, regex_subs:Dict, indent=3) -> None:
 
             print(' '*indent + file.name)
             data = file.read_text()
