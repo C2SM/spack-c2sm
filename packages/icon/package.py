@@ -1,4 +1,4 @@
-import os, subprocess, glob, inspect
+import os, subprocess, glob
 from collections import defaultdict
 
 from llnl.util import lang, filesystem, tty
@@ -769,13 +769,47 @@ class Icon(AutotoolsPackage):
             return self.stage.source_path
 
     def configure(self, spec, prefix):
-        if os.path.exists(os.path.join(self.build_directory, 'icon.mk')):
+        if os.path.exists(os.path.join(self.build_directory, 'icon.mk')) and self.build_uses_same_spec():
             tty.warn('icon.mk already present -> skip configure stage',
-                     '\t delete "icon.mk to not skip configure')
+                     '\t delete "icon.mk" or run "make distclean" to not skip configure')
             return
 
         # use configure provided by Spack
         AutotoolsPackage.configure(self, spec, prefix)
+
+    def build_uses_same_spec(self):
+        """
+        Ensure that configure is rerun in case spec has changed,
+        otherwise for the case below
+
+            $ spack dev-build icon @develop gpu=none ~dace
+            $ spack dev-build icon @develop gpu=none +dace
+        
+        configure is skipped for the latter.
+        """
+        
+        is_same_spec = False
+
+        previous_spec = os.path.join(self.build_directory,'.previous_spec.yaml')
+
+        # not the first build in self.build_directory
+        if os.path.exists(previous_spec):
+            with open(previous_spec, mode='r') as f:
+                if self.spec == Spec.from_yaml(f):
+                    is_same_spec = True
+                else:
+                    is_same_spec = False
+                    tty.warn('Cannot skip configure phase because spec changed')
+
+        # first build in self.build_directory, no worries
+        else:
+            is_same_spec = True
+
+        # dump spec of new build
+        with open(previous_spec, mode='w') as f:
+            f.write(self.spec.to_yaml())
+
+        return is_same_spec
 
     @run_after('configure')
     def copy_runscript_related_input_files(self):
