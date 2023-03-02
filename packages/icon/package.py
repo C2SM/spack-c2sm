@@ -769,9 +769,13 @@ class Icon(AutotoolsPackage):
             return self.stage.source_path
 
     def configure(self, spec, prefix):
-        if os.path.exists(os.path.join(self.build_directory, 'icon.mk')) and self.build_uses_same_spec():
-            tty.warn('icon.mk already present -> skip configure stage',
-                     '\t delete "icon.mk" or run "make distclean" to not skip configure')
+        if os.path.exists(
+                os.path.join(self.build_directory,
+                             'icon.mk')) and self.build_uses_same_spec():
+            tty.warn(
+                'icon.mk already present -> skip configure stage',
+                '\t delete "icon.mk" or run "make distclean" to not skip configure'
+            )
             return
 
         # use configure provided by Spack
@@ -787,10 +791,11 @@ class Icon(AutotoolsPackage):
         
         configure is skipped for the latter.
         """
-        
+
         is_same_spec = False
 
-        previous_spec = os.path.join(self.build_directory,'.previous_spec.yaml')
+        previous_spec = os.path.join(self.build_directory,
+                                     '.previous_spec.yaml')
 
         # not the first build in self.build_directory
         if os.path.exists(previous_spec):
@@ -799,7 +804,8 @@ class Icon(AutotoolsPackage):
                     is_same_spec = True
                 else:
                     is_same_spec = False
-                    tty.warn('Cannot skip configure phase because spec changed')
+                    tty.warn(
+                        'Cannot skip configure phase because spec changed')
 
         # first build in self.build_directory, no worries
         else:
