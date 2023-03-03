@@ -233,7 +233,6 @@ class GridToolsTest(unittest.TestCase):
         spack_install_and_test(f'gridtools @1.1.3 %{nvidia_compiler}')
 
 
-@pytest.mark.no_tsa  # Icon does not run on Tsa
 class IconTest(unittest.TestCase):
 
     @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
@@ -244,22 +243,18 @@ class IconTest(unittest.TestCase):
     def test_install_nwp_cpu(self):
         spack_install_and_test(f'icon @nwp-master %nvhpc')
 
-    @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_exclaim_test_cpu_gcc(self):
         spack_env_dev_install_and_test('config/cscs/spack-envs/daint_cpu_gcc',
                                        'test_spec')
 
-    @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_exclaim_test_cpu_cce(self):
         spack_env_dev_install_and_test('config/cscs/spack-envs/daint_cpu_cce',
                                        'test_spec')
 
-    @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_exclaim_test_cpu(self):
         spack_env_dev_install_and_test(
             'config/cscs/spack-envs/daint_cpu_nvhpc', 'test_spec')
 
-    @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_exclaim_test_gpu(self):
         spack_env_dev_install_and_test(
             'config/cscs/spack-envs/daint_gpu_nvhpc', 'test_spec')
