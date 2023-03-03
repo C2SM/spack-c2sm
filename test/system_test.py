@@ -236,13 +236,11 @@ class GridToolsTest(unittest.TestCase):
 @pytest.mark.no_tsa  # openjpeg: The C compiler is not able to compile a simple test program.
 class IconTest(unittest.TestCase):
 
-    @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
-    def test_install_nwp_gpu(self):
+    def test_install_nwp_cuda(self):
         spack_install_and_test(f'icon @nwp-master %nvhpc +cuda')
 
-    @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
-    def test_install_nwp_cpu(self):
-        spack_install_and_test(f'icon @nwp-master %nvhpc')
+    def test_install_nwp_no_cuda(self):
+        spack_install_and_test(f'icon @nwp-master %nvhpc ~cuda')
 
     @pytest.mark.no_daint  # cray-libsci is not installable
     @pytest.mark.no_balfrin  # cray-libsci is not installable
