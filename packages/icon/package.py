@@ -35,12 +35,20 @@ class Icon(AutotoolsPackage):
     variant('atmo',
             default=True,
             description='Enable the atmosphere component')
-    variant('edmf', default=True, description='Enable the EDMF turbulence component') #
-    variant('les', default=True, description='Enable the Large-Eddy Simulation component') #
-    variant('upatmo', default=True, description='Enable the upper atmosphere component') #
+    variant('edmf',
+            default=True,
+            description='Enable the EDMF turbulence component')  #
+    variant('les',
+            default=True,
+            description='Enable the Large-Eddy Simulation component')  #
+    variant('upatmo',
+            default=True,
+            description='Enable the upper atmosphere component')  #
     variant('ocean', default=True, description='Enable the ocean component')
     variant('jsbach', default=True, description='Enable the land component')
-    variant('waves', default=False, description='Enable the surface wave component') #
+    variant('waves',
+            default=False,
+            description='Enable the surface wave component')  #
     variant('coupling', default=True, description='Enable the coupling')
     variant('aes', default=True, description='Enable the AES physics package')
     variant('ecrad',
@@ -50,9 +58,10 @@ class Icon(AutotoolsPackage):
             default=False,
             description='Enable usage of the RTE+RRTMGP toolbox '
             'for radiation calculations')
-    variant('rttov',
-            default=False,
-            description='Enable usage of the radiative transfer model for TOVS')
+    variant(
+        'rttov',
+        default=False,
+        description='Enable usage of the radiative transfer model for TOVS')
     variant('dace',
             default=False,
             description='Enable the DACE modules for data assimilation')
@@ -67,7 +76,12 @@ class Icon(AutotoolsPackage):
     variant('mpi',
             default=True,
             description='Enable MPI (parallelization) support')
-    variant('active-target-sync', default=False, description='Enable MPI active target mode (otherwise, passive target mode is used)')
+    variant(
+        'active-target-sync',
+        default=False,
+        description=
+        'Enable MPI active target mode (otherwise, passive target mode is used)'
+    )
     variant('openmp', default=False, description='Enable OpenMP support')
 
     # https://en.wikipedia.org/wiki/CUDA#GPUs_supported
@@ -114,10 +128,11 @@ class Icon(AutotoolsPackage):
     variant('mixed-precision',
             default=False,
             description='Enable mixed precision dycore')
-    variant('pgi-inlib',
-            default=False,
-            description=
-            'Enable PGI/NVIDIA cross-file function inlining via an inline library')
+    variant(
+        'pgi-inlib',
+        default=False,
+        description=
+        'Enable PGI/NVIDIA cross-file function inlining via an inline library')
     variant('nccl',
             default=False,
             description='Ennable NCCL for communication')
