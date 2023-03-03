@@ -6,7 +6,7 @@ from spack.util.environment import is_system_path, dump_environment
 from spack.util.executable import which_string
 
 
-class Icon(AutotoolsPackage):
+class Icon(AutotoolsPackage, CudaPackage):
     """Icosahedral Nonhydrostatic Weather and Climate Model."""
 
     homepage = 'https://code.mpimet.mpg.de/projects/iconpublic'
@@ -64,16 +64,6 @@ class Icon(AutotoolsPackage):
             default=True,
             description='Enable MPI (parallelization) support')
     variant('openmp', default=False, description='Enable OpenMP support')
-
-    # https://en.wikipedia.org/wiki/CUDA#GPUs_supported
-    gpu_values = ('10', '11', '12', '13', '20', '21', '30', '32', '35', '37',
-                  '50', '52', '53', '60', '61', '62', '70', '72', '75', '80',
-                  '86')
-    variant('gpu',
-            default='none',
-            values=('none', ) + gpu_values,
-            description='Enable GPU support with the specified compute '
-            'capability version')
 
     variant('cuda-gcc',
             default=False,
@@ -171,10 +161,7 @@ class Icon(AutotoolsPackage):
 
     depends_on('zlib', when='+emvorado')
     depends_on('mpi', when='+mpi')
-
-    for x in gpu_values:
-        depends_on('cuda', when='gpu={0}'.format(x))
-
+    depends_on('cuda', when='+cuda')
     depends_on('python', type='build')
     depends_on('perl', type='build')
 
@@ -182,7 +169,7 @@ class Icon(AutotoolsPackage):
         depends_on('claw', type='build', when='claw={0}'.format(x))
 
     conflicts('claw=validate', when='serialization=none')
-    conflicts('+cuda-gcc', when='gpu=none')
+    conflicts('+cuda-gcc', when='~cuda')
 
     for x in claw_values:
         conflicts('+sct', when='claw={0}'.format(x))
@@ -342,8 +329,6 @@ class Icon(AutotoolsPackage):
                 '--with-external-yaxt'
             ])
 
-        gpu = self.spec.variants['gpu'].value
-
         if self.compiler.name == 'gcc' or self._compiler_is_mixed_gfortran():
             config_vars['CFLAGS'].append('-g')
             config_vars['ICON_CFLAGS'].append('-O3')
@@ -420,10 +405,11 @@ class Icon(AutotoolsPackage):
             config_vars['CFLAGS'].extend(['-g', '-O2'])
             config_vars['FCFLAGS'].extend(
                 ['-g', '-O', '-Mrecursive', '-Mallocatable=03', '-Mbackslash'])
-            if gpu != 'none':
+            if '+cuda' in self.spec:
                 config_vars['FCFLAGS'].extend([
                     '-acc=verystrict', '-Minfo=accel,inline',
-                    '-ta=nvidia:cc{0}'.format(gpu)
+                    '-ta=nvidia:cc{0}'.format(
+                        self.spec.variants['cuda_arch'].value[0])
                 ])
                 config_vars['ICON_FCFLAGS'].append('-D__SWAPDIM')
         elif self.compiler.name == 'cce':
@@ -436,7 +422,7 @@ class Icon(AutotoolsPackage):
                 '-hadd_paren', '-r am', '-Ktrap=divz,ovf,inv',
                 '-hflex_mp=intolerant', '-hfp0', '-O0'
             ])
-            if gpu != 'none':
+            if '+cuda' in self.spec:
                 config_vars['FCFLAGS'].extend(['-hnoacc'])
         elif self.compiler.name == 'aocc':
             config_vars['CFLAGS'].extend(['-g', '-O2'])
@@ -534,7 +520,7 @@ class Icon(AutotoolsPackage):
                 config_vars['CLAWFLAGS'].append(
                     self.spec['libcdi-pio'].headers.include_flags)
 
-        if gpu == 'none':
+        if '~cuda' in self.spec:
             config_args.append('--disable-gpu')
         else:
             config_args.extend([
@@ -559,13 +545,15 @@ class Icon(AutotoolsPackage):
 
             config_vars['NVCFLAGS'].extend([
                 '-ccbin {0}'.format(cuda_host_compiler), '-g', '-O3',
-                '-arch=sm_{0}'.format(gpu)
+                '-arch=sm_{0}'.format(self.spec.variants['cuda_arch'].value[0])
             ])
             # cuda_host_compiler_stdcxx_libs might contain compiler-specific
             # flags (i.e. not the linker -l<library> flags), therefore we put
             # the value to the config_flags directly.
             config_vars['LIBS'].extend(cuda_host_compiler_stdcxx_libs)
 
+        if self.compiler.name == 'nvhpc':
+            config_vars['LIBS'].extend(['-lnvcpumath -lnvhpcatm'])
         # Finalize the LIBS variable (we always put the real collected
         # libraries to the front):
         config_vars['LIBS'].insert(0, libs.link_flags)
