@@ -236,25 +236,38 @@ class GridToolsTest(unittest.TestCase):
 class IconTest(unittest.TestCase):
 
     @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
+    @pytest.mark.no_tsa  # openjpeg: The C compiler is not able to compile a simple test program.
     def test_install_nwp_gpu(self):
-        spack_install_and_test(f'icon @nwp-master %nvhpc gpu=80')
+        spack_install_and_test(f'icon @nwp-master %nvhpc +cuda')
 
     @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
     def test_install_nwp_cpu(self):
         spack_install_and_test(f'icon @nwp-master %nvhpc')
 
+    @pytest.mark.no_daint  # cray-libsci is not installable
+    @pytest.mark.no_tsa  # cray-libsci is not installable
+    @pytest.mark.no_balfrin  # cray-libsci is not installable
     def test_install_exclaim_test_cpu_gcc(self):
         spack_env_dev_install_and_test('config/cscs/spack-envs/daint_cpu_gcc',
                                        'test_spec')
 
+    @pytest.mark.no_daint  # No compilers with spec cce@12.0.3 found
+    @pytest.mark.no_tsa  # No compilers with spec cce@12.0.3 found
+    @pytest.mark.no_balfrin  # No compilers with spec cce@12.0.3 found
     def test_install_exclaim_test_cpu_cce(self):
         spack_env_dev_install_and_test('config/cscs/spack-envs/daint_cpu_cce',
                                        'test_spec')
 
+    @pytest.mark.no_daint  # nvidia-blas is not installable
+    @pytest.mark.no_tsa
+    @pytest.mark.no_balfrin  # nvidia-blas is not installable
     def test_install_exclaim_test_cpu(self):
         spack_env_dev_install_and_test(
             'config/cscs/spack-envs/daint_cpu_nvhpc', 'test_spec')
 
+    @pytest.mark.no_daint  # env uses old variant 'gpu'.
+    @pytest.mark.no_tsa  # env uses old variant 'gpu'.
+    @pytest.mark.no_balfrin  # env uses old variant 'gpu'.
     def test_install_exclaim_test_gpu(self):
         spack_env_dev_install_and_test(
             'config/cscs/spack-envs/daint_gpu_nvhpc', 'test_spec')
