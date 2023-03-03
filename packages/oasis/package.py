@@ -7,7 +7,6 @@ from spack.build_systems.makefile import MakefilePackage
 from spack.directives import depends_on, version
 from llnl.util.filesystem import working_dir, FileFilter, install_tree
 import os
-import stat
 import re
 from pathlib import Path
 from typing import Dict
