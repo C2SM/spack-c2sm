@@ -106,7 +106,7 @@ class Oasis(MakefilePackage):
             for line in data.splitlines():
                 for regex, sub_str in regex_subs.items():
                     line = regex.sub(sub_str, line)
-                data_oasis += [line]
+                data_oasis.append(line)
             file.write_text('\n'.join(data_oasis)+'\n')
 
         # Modify mct and mpeu source files
