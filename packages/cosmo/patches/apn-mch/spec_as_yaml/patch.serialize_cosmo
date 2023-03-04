@@ -10,7 +10,7 @@ index 624fd295..fc15c712 100755
 +    try:
 +        # assume spec is passed as a yaml-file
 +        with open(args.spec,"r") as f:
-+          cosmo_spec = Spec.from_yaml(f)
++            cosmo_spec = Spec.from_yaml(f)
 +    except:
 +        # assume spec is passed as a string
 +        cosmo_spec = Spec(args.spec)

@@ -10,10 +10,11 @@ index 624fd295..e93b96f6 100755
 +    try:
 +        # assume spec is passed as a yaml-file
 +        with open(args.spec,"r") as f:
-+          cosmo_spec = Spec.from_yaml(f)
++            cosmo_spec = Spec.from_yaml(f)
 +    except:
 +        # assume spec is passed as a string
 +        cosmo_spec = Spec(args.spec)
++
      cosmo_spec.concretize()
  
      serialize_cosmo(cosmo_spec, args.base_directory)
