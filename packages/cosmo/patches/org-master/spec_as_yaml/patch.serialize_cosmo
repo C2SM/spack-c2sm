@@ -2,7 +2,7 @@ diff --git a/cosmo/ACC/test/tools/serialize_cosmo.py b/cosmo/ACC/test/tools/seri
 index 624fd295..e93b96f6 100755
 --- a/cosmo/ACC/test/tools/serialize_cosmo.py
 +++ b/cosmo/ACC/test/tools/serialize_cosmo.py
-@@ -15,7 +15,13 @@ def main():
+@@ -15,7 +15,14 @@ def main():
      parser.add_argument('-b', '--base_directory', type=str, help='Cosmo base directory', required=True)
      args=parser.parse_args()
  
