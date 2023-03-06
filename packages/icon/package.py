@@ -59,6 +59,10 @@ class Icon(AutotoolsPackage):
             default=False,
             description='Enable the aerosols and reactive trace component ART')
 
+    variant('dsl-verify',
+            default=False,
+            description='Enable DSL verification')
+
     # Infrastructural Features:
     variant('mpi',
             default=True,
@@ -435,7 +439,7 @@ class Icon(AutotoolsPackage):
         elif self.compiler.name in ['pgi', 'nvhpc']:
             config_vars['CFLAGS'].extend(['-g', '-O2'])
             config_vars['FCFLAGS'].extend(
-                ['-g', '-O', '-Mrecursive', '-Mallocatable=03', '-Mbackslash'])
+                ['-g', '-O0', '-Mrecursive', '-Mallocatable=03', '-Mbackslash'])
             if gpu != 'none':
                 config_vars['FCFLAGS'].extend([
                     '-acc=verystrict', '-Minfo=accel,inline',
@@ -493,6 +497,16 @@ class Icon(AutotoolsPackage):
             libs += self.spec['serialbox:fortran'].libs
             # static libs from serialbox need libstdc++ to link
             config_vars['LIBS'].extend(['-lstdc++ -lstdc++fs'])
+
+        if '+dsl-verify' in self.spec:
+            config_args.append('--enable-dsl-verify')           
+            config_vars['LIBS'].extend(['-lnvToolsExt'])
+
+        # no idea why, but this was required all of a sudden after a make distclean (?!)
+        config_vars['LIBS'].extend(['-lnvToolsExt'])
+
+        if '+ecrad' in self.spec:
+            config_args.append('--enable-ecrad')           
 
         if '+cdi-pio' in self.spec:
             libs += self.spec['libcdi-pio:fortran'].libs
