@@ -59,9 +59,7 @@ class Icon(AutotoolsPackage):
             default=False,
             description='Enable the aerosols and reactive trace component ART')
 
-    variant('dsl-verify',
-            default=False,
-            description='Enable DSL verification')
+    variant('dsl-verify', default=False, description='Enable DSL verification')
 
     # Infrastructural Features:
     variant('mpi',
@@ -438,8 +436,9 @@ class Icon(AutotoolsPackage):
             config_vars['ICON_BUNDLED_FCFLAGS'] = []
         elif self.compiler.name in ['pgi', 'nvhpc']:
             config_vars['CFLAGS'].extend(['-g', '-O2'])
-            config_vars['FCFLAGS'].extend(
-                ['-g', '-O0', '-Mrecursive', '-Mallocatable=03', '-Mbackslash'])
+            config_vars['FCFLAGS'].extend([
+                '-g', '-O0', '-Mrecursive', '-Mallocatable=03', '-Mbackslash'
+            ])
             if gpu != 'none':
                 config_vars['FCFLAGS'].extend([
                     '-acc=verystrict', '-Minfo=accel,inline',
@@ -499,14 +498,14 @@ class Icon(AutotoolsPackage):
             config_vars['LIBS'].extend(['-lstdc++ -lstdc++fs'])
 
         if '+dsl-verify' in self.spec:
-            config_args.append('--enable-dsl-verify')           
+            config_args.append('--enable-dsl-verify')
             config_vars['LIBS'].extend(['-lnvToolsExt'])
 
         # no idea why, but this was required all of a sudden after a make distclean (?!)
         config_vars['LIBS'].extend(['-lnvToolsExt'])
 
         if '+ecrad' in self.spec:
-            config_args.append('--enable-ecrad')           
+            config_args.append('--enable-ecrad')
 
         if '+cdi-pio' in self.spec:
             libs += self.spec['libcdi-pio:fortran'].libs
