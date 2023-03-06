@@ -177,6 +177,26 @@ class CosmoTest(unittest.TestCase):
             f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
         )
 
+    def test_install_version_c2sm_master_gpu(self):
+        spack_install_and_test(
+            f'cosmo @c2sm-master %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
+        )
+
+    def test_install_version_c2sm_master_cpu(self):
+        spack_install_and_test(
+            f'cosmo @c2sm-master %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
+        )
+
+    def test_install_version_c2sm_features_gpu(self):
+        spack_install_and_test(
+            f'cosmo @c2sm-master %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
+        )
+
+    def test_install_version_c2sm_features_cpu(self):
+        spack_install_and_test(
+            f'cosmo @c2sm-master %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
+        )
+
     @pytest.mark.serial_only  # devbuildcosmo does a forced uninstall
     def test_devbuildcosmo(self):
         subprocess.run(
