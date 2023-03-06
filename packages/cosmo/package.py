@@ -41,8 +41,7 @@ class Cosmo(MakefilePackage):
     # C2SM Features
     patch('patches/c2sm-features/spec_as_yaml/patch.test_cosmo',
           when='@c2sm-features')
-    patch('patches/empa-ghg/spec_as_yaml/patch.test_cosmo',
-          when='@empa-ghg')
+    patch('patches/empa-ghg/spec_as_yaml/patch.test_cosmo', when='@empa-ghg')
 
     # APN-MCH
     patch('patches/apn-mch/spec_as_yaml/patch.test_cosmo', when='@apn-mch')
