@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Code Development [MCH] &mdash; C2SM Spack  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.min.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.min.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Spack Instance Management [admin]" href="SpackManagement.html" />
+    <link rel="prev" title="Known Problems with Spack" href="Problems.html" /> 
+
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <a class="site-nav-toggle hidden-lg-up"><i class="icon-menu"></i></a>
+            <a class="site-title" href="index.html">
+                C2SM Spack
+            </a>
+        </div>
+    </header>
+
+
+<div class="breadcrumbs-outer hidden-xs-down">
+    <div class="container">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="breadcrumbs">
+    
+      <li><a href="index.html">Docs</a></li>
+        
+      <li>Code Development [MCH]</li>
+    
+    
+      <li class="breadcrumbs-aside">
+        
+            
+            <a href="_sources/CodeDev.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+</div>
+    </div>
+</div>
+    <div class="main-outer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-3 site-nav">
+                    
+<div role="search">
+    <form class="search" action="search.html" method="get">
+        <div class="icon-input">
+            <input type="text" name="q" placeholder="Search" />
+            <span class="icon-search"></span>
+        </div>
+        <input type="submit" value="Go" class="d-hidden" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+                    <div class="site-nav-tree">
+                        
+                            
+                            
+                                <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="QuickStart.html">Quick Start for Spack</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="QuickStart.html#source-spack-instance-on-piz-daint">Source Spack instance on Piz Daint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="QuickStart.html#source-spack-instance-on-tsa">Source Spack instance on Tsa</a></li>
+<li class="toctree-l2"><a class="reference internal" href="QuickStart.html#cosmo-model">COSMO-Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="QuickStart.html#int2lm">Int2lm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="QuickStart.html#icon">ICON</a></li>
+<li class="toctree-l2"><a class="reference internal" href="QuickStart.html#accessing-executables">Accessing executables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="QuickStart.html#running-executables-from-spack">Running executables from Spack</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Install.html">Spack Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Install.html#preinstalled-instance">Preinstalled Instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Install.html#your-own-spack-instance">Your own Spack instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Install.html#machine-specific-config-files">Machine specific config files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Install.html#spack-instance-on-dom">Spack instance on Dom</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="C2SMGuidelines.html">C2SM Guidelines for Spack</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="C2SMGuidelines.html#building">Building</a></li>
+<li class="toctree-l2"><a class="reference internal" href="C2SMGuidelines.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="C2SMGuidelines.html#running">Running</a></li>
+<li class="toctree-l2"><a class="reference internal" href="C2SMGuidelines.html#spack-in-scripts">Spack in scripts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SpackCommands.html">Important Spack Commands</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-find">Spack find</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-list">Spack list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-info">Spack info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-spec">Spack spec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-install">Spack install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-installcosmo">Spack installcosmo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-dev-build">Spack dev-build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-devbuildcosmo">Spack devbuildcosmo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-location">Spack location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-build-env">Spack build-env</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-edit">Spack edit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-load">Spack load</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Problems.html">Known Problems with Spack</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Problems.html#error-init-got-an-unexpected-keyword-argument-capture-output">Error: __init__() got an unexpected keyword argument ‘capture_output’</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Problems.html#error-initialization-hangs">Error: Initialization hangs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Problems.html#error-could-not-determine-host">Error: Could not determine host</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Problems.html#error-broken-cache">Error: Broken cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Problems.html#error-multiple-definitions-of-compiler">Error: Multiple definitions of compiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Problems.html#delete-entire-spack">Delete entire Spack</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Problems.html#known-problems-with-spack-icon">Known Problems with Spack &amp; ICON</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Problems.html#error-fetcherror-archive-was-empty-for-icon">Error: FetchError: Archive was empty for icon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Problems.html#error-processerror-config-cscs-machine-target-compiler-no-such-file-or-directory">Error: ProcessError: ./config/cscs/&lt;machine&gt;.&lt;target&gt;.&lt;compiler&gt;: No such file or directory</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Code Development [MCH]</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#cosmo">COSMO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cosmo-c-dycore">COSMO C++ Dycore</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SpackManagement.html">Spack Instance Management [admin]</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SpackManagement.html#how-to-re-create-the-spack-instance">How to re-create the spack instance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CI.html">Using the Jenkins Continuous Integration Executables [outdated]</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpackChoice.html">Why was spack chosen by MeteoSwiss?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PrTesting.html">PR testing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="PrTesting.html#what-is-tested">What is tested</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PrTesting.html#examples">Examples:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PrTesting.html#supported-commands">Supported commands</a></li>
+</ul>
+</li>
+</ul>
+
+                            
+                        
+                    </div>
+                </div>
+                <div class="col-12 col-lg-9">
+                    <div class="document">
+                        
+                            
+  <section id="code-development-mch">
+<h1>Code Development [MCH]<a class="headerlink" href="#code-development-mch" title="Permalink to this heading">¶</a></h1>
+<section id="cosmo">
+<h2>COSMO<a class="headerlink" href="#cosmo" title="Permalink to this heading">¶</a></h2>
+<section id="testing-cosmo-with-the-testsuite">
+<h3>Testing COSMO with the Testsuite<a class="headerlink" href="#testing-cosmo-with-the-testsuite" title="Permalink to this heading">¶</a></h3>
+<p>The following commands demonstrates how to launch the testsuite for a COSMO
+executable compiled using spack. Assuming the user starts from the root folder
+of cosmo.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># copy executable to the testsuite folder</span>
+cp -f cosmo/ACC/cosmo_gpu cosmo/test/testsuite <span class="c1"># cosmo_cpu for cpu</span>
+
+<span class="c1"># source the run environment</span>
+spack load <span class="nv">$COSMO_SPEC</span>
+
+<span class="c1"># launch tests</span>
+
+./cosmo/ACC/test/tools/test_cosmo.py -s <span class="nv">$COSMO_SPEC</span> -b .
+</pre></div>
+</div>
+</section>
+<section id="serialized-unittest-data">
+<h3>Serialized unittest data<a class="headerlink" href="#serialized-unittest-data" title="Permalink to this heading">¶</a></h3>
+<p>In order to run test the C++ dycore, the regression tests require a set of serialized data files from COSMO.
+Jenkins runs periodically the serialization (<a class="reference external" href="https://jenkins-mch.cscs.ch/job/cosmo_serialize/">https://jenkins-mch.cscs.ch/job/cosmo_serialize/</a>), which installs all the serialized data set corresponding to the latest master in the g110 project space. In order to find the location of the jenkins serialized data follow the steps described in <a class="reference internal" href="#locate-jenkins-serialized-data"><span class="std std-ref">Locate jenkins serialized data</span></a>.</p>
+<p>In a different development situation where you are modifying the FORTRAN COSMO dycore, the master serialized data by jenkins will not be compatible with your modifications.
+In that case you need to serialize your own data (see <a class="reference internal" href="#serialize-your-own-data"><span class="std std-ref">Serialize your own data</span></a>).</p>
+<section id="locate-jenkins-serialized-data">
+<h4>Locate jenkins serialized data<a class="headerlink" href="#locate-jenkins-serialized-data" title="Permalink to this heading">¶</a></h4>
+<p>This section describes how to find the location of the serialized data by jenkins for the master version of COSMO.</p>
+<p>Set the spack spec of COSMO for serialization mode:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">COSMO_SERIALIZE_SPEC</span><span class="o">=</span><span class="s2">&quot;cosmo@dev-build%pgi real_type=float cosmo_target=cpu +serialize ~cppdycore&quot;</span>
+</pre></div>
+</div>
+<p>Find the spack install location of the serialized data</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">SERIALIZE_DATA</span><span class="o">=</span><span class="k">$(</span>spack location -i <span class="si">${</span><span class="nv">COSMO_SERIALIZE_SPEC</span><span class="si">}</span><span class="k">)</span>/data
+</pre></div>
+</div>
+</section>
+<section id="serialize-your-own-data">
+<h4>Serialize your own data<a class="headerlink" href="#serialize-your-own-data" title="Permalink to this heading">¶</a></h4>
+<p>Set the spack spec (for dev-build version) of COSMO for serialization mode:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">COSMO_SERIALIZE_SPEC</span><span class="o">=</span><span class="s2">&quot;cosmo@dev-build%pgi real_type=float cosmo_target=cpu +serialize ~cppdycore&quot;</span>
+</pre></div>
+</div>
+<p>In your working directory of cosmo, build a spack COSMO executable for serialization</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;/path/to/cosmo&gt;
+spack dev-build --until<span class="o">=</span>build <span class="si">${</span><span class="nv">COSMO_SERIALIZE_SPEC</span><span class="si">}</span>
+</pre></div>
+</div>
+<p>Load the correct run environment</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack load <span class="si">${</span><span class="nv">COSMO_SERIALIZE_SPEC</span><span class="si">}</span>
+</pre></div>
+</div>
+<p>Launch the serialization script</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./cosmo/ACC/test/tools/serialize_cosmo.py -s <span class="si">${</span><span class="nv">COSMO_SERIALIZE_SPEC</span><span class="si">}</span> -b .
+</pre></div>
+</div>
+<p>Set the path to the serialized data (later it will be used in this guide)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">SERIALIZE_DATA</span><span class="o">=</span>&lt;/path/to/cosmo&gt;/cosmo/ACC/test/serialize/data/
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="cosmo-c-dycore">
+<h2>COSMO C++ Dycore<a class="headerlink" href="#cosmo-c-dycore" title="Permalink to this heading">¶</a></h2>
+<p>This section describes how to compile and test a version of the COSMO C++ dycore from your working directory.</p>
+<p>Set a COSMO C++ dycore spec</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">DYCORE_SPEC</span><span class="o">=</span><span class="s2">&quot;cosmo-dycore@dev-build real_type=float build_type=Release&quot;</span>
+</pre></div>
+</div>
+<p>In your working directory of cosmo, build a C++ dycore executable</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;/path/to/cosmo&gt;
+spack dev-build --until<span class="o">=</span>build cosmo-dycore@dev-build <span class="nv">real_type</span><span class="o">=</span>float <span class="nv">build_type</span><span class="o">=</span>Release +cuda
+</pre></div>
+</div>
+<p>Load the correct run environment</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>spack load <span class="si">${</span><span class="nv">DYCORE_SPEC</span><span class="si">}</span>
+</pre></div>
+</div>
+<p>Launch the dycore test script</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./dycore/test/tools/test_dycore.py -s <span class="si">${</span><span class="nv">DYCORE_SPEC</span><span class="si">}</span> -b spack-build -d <span class="si">${</span><span class="nv">SERIALIZE_DATA</span><span class="si">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            LANGUAGE:'en',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+    <div class="footer" role="contentinfo">
+        <div class="container">
+            &#169; Copyright 2020, Carlos Osuna.
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.
+        </div>
+    </div>  
+
+</body>
+</html>
