@@ -185,6 +185,7 @@ class Cosmo(MakefilePackage):
             default='gpu',
             description='Slurm constraints for nodes requested')
 
+    conflicts('@dev-build')
     conflicts('+claw', when='cosmo_target=cpu')
     conflicts('+pollen', when='@org-master,master')
     conflicts('cosmo_target=gpu', when='%gcc')
