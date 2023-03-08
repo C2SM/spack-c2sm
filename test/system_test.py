@@ -238,11 +238,11 @@ class IconTest(unittest.TestCase):
 
     @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
     def test_install_nwp_gpu(self):
-        spack_install_and_test(f'icon @nwp-master %nvhpc gpu=80 ^cdo%gcc')
+        spack_install_and_test(f'icon @nwp-master %nvhpc gpu=80')
 
     @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
     def test_install_nwp_cpu(self):
-        spack_install_and_test(f'icon @nwp-master %nvhpc ^cdo%gcc')
+        spack_install_and_test(f'icon @nwp-master %nvhpc')
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_exclaim_test_cpu_gcc(self):
