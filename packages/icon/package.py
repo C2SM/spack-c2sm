@@ -167,8 +167,7 @@ class Icon(AutotoolsPackage):
     depends_on('libcdi-pio+mpi', when='+cdi-pio+mpi')
 
     # needed to mimick BB in test.py
-    # only available in icon-exclaim so far
-    depends_on('cdo', when='@exclaim-master,exclaim-test')
+    depends_on('cdo')
 
     depends_on('eccodes +fortran', when='+emvorado')
     depends_on('eccodes', when='+grib2 ~cdi-pio')
