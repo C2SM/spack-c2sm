@@ -167,7 +167,7 @@ class Icon(AutotoolsPackage):
     depends_on('libcdi-pio+mpi', when='+cdi-pio+mpi')
 
     # needed to mimick BB in test.py
-    depends_on('cdo', type='test')
+    depends_on('cdo', type='run')
 
     depends_on('eccodes +fortran', when='+emvorado')
     depends_on('eccodes', when='+grib2 ~cdi-pio')
