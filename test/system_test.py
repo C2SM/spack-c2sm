@@ -223,6 +223,12 @@ class DuskTest(unittest.TestCase):
     pass
 
 
+class FlexpartIfsTest(unittest.TestCase):
+
+    def test_install(self):
+        spack_install_and_test('flexpart-ifs')
+
+
 class GridToolsTest(unittest.TestCase):
 
     def test_install_version_1_1_3_gcc(self):
