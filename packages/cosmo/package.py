@@ -185,7 +185,9 @@ class Cosmo(MakefilePackage):
             default='gpu',
             description='Slurm constraints for nodes requested')
 
-    conflicts('@dev-build')
+    conflicts('@dev-build',msg=
+            "Please use only official versions listed with 'spack info cosmo'. Even when using 'devbuildcosmo'. C2SM introduced 'dev-build' to avoid name conflicts with the upstream instance. Since spack-c2sm v0.18.1.0 this is not relevant anymore."
+               )
     conflicts('+claw', when='cosmo_target=cpu')
     conflicts('+pollen', when='@org-master,master')
     conflicts('cosmo_target=gpu', when='%gcc')
