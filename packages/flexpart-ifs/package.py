@@ -20,6 +20,9 @@ class FlexpartIfs(MakefilePackage):
     depends_on('eccodes jp2k=none +fortran')
     depends_on('netcdf-fortran')
 
+    conflicts('%nvhpc')
+    conflicts('%pgi')
+
     build_directory = 'src'
 
     @property
