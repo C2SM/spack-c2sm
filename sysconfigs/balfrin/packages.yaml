@@ -185,7 +185,3 @@ packages:
     externals:
     - spec: zip@3.0
       prefix: /usr
-  cdo:
-    externals:
-    - spec: cdo@2.0.5
-      prefix: /mch-environment/v2/linux-sles15-zen3/gcc-11.3.0/cdo-2.0.5-3jujp4g4tmo7ebayy5xg2tqj2qiivyyy
