@@ -137,18 +137,21 @@ class Icon(AutotoolsPackage):
             default=False,
             description='Ennable NCCL for communication')
 
+    variant(
+        'eccodes-definitions',
+        default=False,
+        description=
+        'Enable extension of eccodes with center specific definition files')
+
     # C2SM specific Features:
     variant(
         'infero',
         description=
         'Build with Infero to replace ecRad with ML implementation. Experimental, needs non-standard codebase!',
         default=False)
-
-    variant(
-        'eccodes-definitions',
-        default=False,
-        description=
-        'Enable extension of eccodes with center specific definition files')
+    
+    # Exclaim specific Features:
+    variant('cdo', default=False, description='Adds cdo dependency. Experimental, needs non-standard codebase!')
 
     depends_on('infero +quiet', when='+infero')
 
@@ -167,7 +170,8 @@ class Icon(AutotoolsPackage):
     depends_on('libcdi-pio+mpi', when='+cdi-pio+mpi')
 
     # needed to mimick BB in test.py
-    depends_on('cdo', type='run')
+    # only available in icon-exclaim so far
+    depends_on('cdo', type='run', when='cdo')
 
     depends_on('eccodes +fortran', when='+emvorado')
     depends_on('eccodes', when='+grib2 ~cdi-pio')
