@@ -149,9 +149,12 @@ class Icon(AutotoolsPackage):
         description=
         'Build with Infero to replace ecRad with ML implementation. Experimental, needs non-standard codebase!',
         default=False)
-    
+
     # Exclaim specific Features:
-    variant('cdo', default=False, description='Adds cdo dependency. Experimental, needs non-standard codebase!')
+    variant('cdo',
+            default=False,
+            description=
+            'Adds cdo dependency. Experimental, needs non-standard codebase!')
 
     depends_on('infero +quiet', when='+infero')
 
