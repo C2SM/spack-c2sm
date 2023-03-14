@@ -10,11 +10,12 @@ class Icon(AutotoolsPackage):
     """Icosahedral Nonhydrostatic Weather and Climate Model."""
 
     homepage = 'https://code.mpimet.mpg.de/projects/iconpublic'
-    url = 'https://gitlab.dkrz.de/icon/icon/-/archive/icon-2.6.5.1/icon-icon-2.6.5.1.tar.gz'
+    url = 'https://gitlab.dkrz.de/icon/icon/-/archive/icon-2.6.6/icon-icon-2.6.6.tar.gz'
     git = 'ssh://git@gitlab.dkrz.de/icon/icon.git'
 
     version('develop', submodules=True)
     version('2.6.5.1', tag='icon-2.6.5.1', submodules=True)
+    version('2.6.6', tag='icon-2.6.6', submodules=True)
     version('exclaim-master',
             branch='master',
             git='ssh://git@github.com/C2SM/icon-exclaim.git',
@@ -29,7 +30,7 @@ class Icon(AutotoolsPackage):
 
     # The variants' default follow those of ICON
     # as described here
-    # https://gitlab.dkrz.de/icon/icon/-/blob/icon-2.6.5.1/configure#L1454-1557
+    # https://gitlab.dkrz.de/icon/icon/-/blob/icon-2.6.6/configure#L1454-1557
 
     # Model Features:
     variant('atmo',
@@ -37,18 +38,18 @@ class Icon(AutotoolsPackage):
             description='Enable the atmosphere component')
     variant('edmf',
             default=True,
-            description='Enable the EDMF turbulence component')  #
+            description='Enable the EDMF turbulence component')
     variant('les',
             default=True,
-            description='Enable the Large-Eddy Simulation component')  #
+            description='Enable the Large-Eddy Simulation component')
     variant('upatmo',
             default=True,
-            description='Enable the upper atmosphere component')  #
+            description='Enable the upper atmosphere component')
     variant('ocean', default=True, description='Enable the ocean component')
     variant('jsbach', default=True, description='Enable the land component')
     variant('waves',
             default=False,
-            description='Enable the surface wave component')  #
+            description='Enable the surface wave component')
     variant('coupling', default=True, description='Enable the coupling')
     variant('aes', default=True, description='Enable the AES physics package')
     variant('ecrad',
