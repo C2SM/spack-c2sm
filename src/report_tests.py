@@ -84,7 +84,7 @@ if __name__ == "__main__":
             logfiles.append(item[item.find('<a'):item.rfind('a>') + 2])
             col.append(item.split()[0])
 
-        comment = f'###  {machine_name()}\n'
+        comment = Markdown.header(f'{machine_name()}',3)
         unit_col = ResultList.get_test_result('unit', logfiles, col)
         comment = GitHubRepo.add_test_to_text('unit', unit_col, col, logfiles,
                                               comment)

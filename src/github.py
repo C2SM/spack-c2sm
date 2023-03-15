@@ -61,6 +61,11 @@ class Markdown:
             ' | '.join(str(cell) for cell in row)
             for row in [data[0], ['---' for d in data[0]], *data[1:]])
 
+    @staticmethod
+    def header(text: str, level: int=1) -> str:
+        if (level<1) or (level>6):
+            raise Exception('Invalid header level')
+        return ('#'*level + ' ' +  text + '\n')
 
 class HTML:
 
