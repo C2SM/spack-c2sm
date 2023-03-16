@@ -88,12 +88,15 @@ if __name__ == "__main__":
 
         unit_col = ResultList.get_test_result('unit', logfiles, col)
         if unit_col:
-            comment = comment + GitHubRepo.add_test('unit', unit_col, col, logfiles)
+            comment = comment + GitHubRepo.add_test('unit', unit_col, col,
+                                                    logfiles)
         int_col = ResultList.get_test_result('integration', logfiles, col)
         if int_col:
-            comment = comment + GitHubRepo.add_test('integration', int_col, col, logfiles)
+            comment = comment + GitHubRepo.add_test('integration', int_col,
+                                                    col, logfiles)
         sys_col = ResultList.get_test_result('system', logfiles, col)
         if sys_col:
-            comment = comment + GitHubRepo.add_test('system', sys_col, col, logfiles)
+            comment = comment + GitHubRepo.add_test('system', sys_col, col,
+                                                    logfiles)
 
     repo.comment(args.issue_id, comment)

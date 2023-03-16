@@ -14,7 +14,7 @@ class GitHubRepo:
             if test in logfiles[i]:
                 details.append([col[i], logfiles[i]])
         text = HTML.collapsible(test_col + ' ' + test + ' test',
-                                       HTML.table(details))
+                                HTML.table(details))
         return (text)
 
     def comment(self, issue_id: str, text: str) -> None:
