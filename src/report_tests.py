@@ -85,14 +85,15 @@ if __name__ == "__main__":
             col.append(item.split()[0])
 
         comment = Markdown.header(f'{machine_name()}', 3)
+
         unit_col = ResultList.get_test_result('unit', logfiles, col)
-        comment = GitHubRepo.add_test_to_text('unit', unit_col, col, logfiles,
-                                              comment)
+        if unit_col:
+            comment = comment + GitHubRepo.add_test('unit', unit_col, col, logfiles)
         int_col = ResultList.get_test_result('integration', logfiles, col)
-        comment = GitHubRepo.add_test_to_text('integration', int_col, col,
-                                              logfiles, comment)
+        if int_col:
+            comment = comment + GitHubRepo.add_test('integration', int_col, col, logfiles)
         sys_col = ResultList.get_test_result('system', logfiles, col)
-        comment = GitHubRepo.add_test_to_text('system', sys_col, col, logfiles,
-                                              comment)
+        if sys_col:
+            comment = comment + GitHubRepo.add_test('system', sys_col, col, logfiles)
 
     repo.comment(args.issue_id, comment)

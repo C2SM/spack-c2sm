@@ -8,14 +8,13 @@ class GitHubRepo:
         self.repo: str = repo
         self.auth_token: str = auth_token
 
-    def add_test_to_text(test, test_col, col, logfiles, text):
-        if test_col:
-            details = [['', 'Test']]
-            for i in range(len(logfiles)):
-                if test in logfiles[i]:
-                    details.append([col[i], logfiles[i]])
-            text = text + HTML.collapsible(test_col + ' ' + test + ' test',
-                                           HTML.table(details))
+    def add_test(test: str, test_col: str, col: list, logfiles: list) -> str:
+        details = [['', 'Test']]
+        for i in range(len(logfiles)):
+            if test in logfiles[i]:
+                details.append([col[i], logfiles[i]])
+        text = HTML.collapsible(test_col + ' ' + test + ' test',
+                                       HTML.table(details))
         return (text)
 
     def comment(self, issue_id: str, text: str) -> None:
