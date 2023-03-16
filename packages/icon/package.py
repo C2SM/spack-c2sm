@@ -14,7 +14,6 @@ class Icon(AutotoolsPackage):
     git = 'ssh://git@gitlab.dkrz.de/icon/icon.git'
 
     version('develop', submodules=True)
-    version('2.6.5.1', tag='icon-2.6.5.1', submodules=True)
     version('2.6.6', tag='icon-2.6.6', submodules=True)
     version('exclaim-master',
             branch='master',

@@ -242,9 +242,6 @@ class GridToolsTest(unittest.TestCase):
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 class IconTest(unittest.TestCase):
 
-    def test_install_version_2_6_5_1(self):
-        spack_install_and_test(f'icon @2.6.5.1')
-
     def test_install_version_2_6_6(self):
         spack_install_and_test(f'icon @2.6.6')
 
