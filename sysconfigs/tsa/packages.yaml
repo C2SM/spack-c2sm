@@ -154,10 +154,6 @@ packages:
     externals:
     - spec: libtool@2.4.2
       prefix: /usr
-  libxml2:
-    externals:
-    - spec: libxml2@2.9.9 # manually added
-      prefix: /usr
   llvm:
     externals:
     - spec: llvm@10.0.0 # manually added
