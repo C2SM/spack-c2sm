@@ -159,14 +159,12 @@ class CosmoTest(unittest.TestCase):
     def test_install_version_6_0_gpu(self):
         spack_install_and_test(
             f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}',
-            split_phases=True
-        )
+            split_phases=True)
 
     def test_install_version_6_0_cpu(self):
         spack_install_and_test(
             f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}',
-            split_phases=True
-        )
+            split_phases=True)
 
     @pytest.mark.serial_only  # devbuildcosmo does a forced uninstall
     def test_devbuildcosmo(self):
@@ -190,10 +188,12 @@ class CosmoDycoreTest(unittest.TestCase):
         spack_install_and_test('cosmo-dycore @6.0 ~cuda', split_phases=True)
 
     def test_install_c2sm_master_cuda(self):
-        spack_install_and_test('cosmo-dycore @c2sm-master +cuda', split_phases=True)
+        spack_install_and_test('cosmo-dycore @c2sm-master +cuda',
+                               split_phases=True)
 
     def test_install_c2sm_master_no_cuda(self):
-        spack_install_and_test('cosmo-dycore @c2sm-master ~cuda', split_phases=True)
+        spack_install_and_test('cosmo-dycore @c2sm-master ~cuda',
+                               split_phases=True)
 
 
 class CosmoEccodesDefinitionsTest(unittest.TestCase):
