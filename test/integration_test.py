@@ -218,8 +218,12 @@ class PlainSpecTest(unittest.TestCase):
         # The dependency on cuda is caused by gpu=80.
         # The dependency on claw is caused by claw=std.
 
-        spack_spec(f'icon %gcc +coupling +rttov +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions gpu={cuda_arch} claw=std')
-        spack_spec(f'icon %{nvidia_compiler} +coupling +rttov +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions gpu={cuda_arch} claw=std')
+        spack_spec(
+            f'icon %gcc +coupling +rttov +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions gpu={cuda_arch} claw=std'
+        )
+        spack_spec(
+            f'icon %{nvidia_compiler} +coupling +rttov +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions gpu={cuda_arch} claw=std'
+        )
 
     def test_icontools(self):
         spack_spec('icontools')

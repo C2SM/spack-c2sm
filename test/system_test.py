@@ -250,15 +250,20 @@ class IconTest(unittest.TestCase):
 
     def test_all_deps_gcc(self):
         "This tests the latest version of icon with as much dependencies as possible for gcc"
-        spack_install_and_test(f'icon %gcc +coupling +rttov +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions gpu={cuda_arch} claw=std')
+        spack_install_and_test(
+            f'icon %gcc +coupling +rttov +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions gpu={cuda_arch} claw=std'
+        )
 
     def test_all_deps_nvhpc(self):
         "This tests the latest version of icon with as much dependencies as possible for nvhpc"
-        spack_install_and_test(f'icon %{nvidia_compiler} +coupling +rttov +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions gpu={cuda_arch} claw=std')
+        spack_install_and_test(
+            f'icon %{nvidia_compiler} +coupling +rttov +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions gpu={cuda_arch} claw=std'
+        )
 
     @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
     def test_install_nwp_gpu(self):
-        spack_install_and_test(f'icon @nwp-master %{nvidia_compiler} gpu={cuda_arch}')
+        spack_install_and_test(
+            f'icon @nwp-master %{nvidia_compiler} gpu={cuda_arch}')
 
     @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
     def test_install_nwp_cpu(self):
