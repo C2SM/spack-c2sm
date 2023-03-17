@@ -12,6 +12,8 @@ class Icon(AutotoolsPackage):
     homepage = 'https://code.mpimet.mpg.de/projects/iconpublic'
     url = 'https://gitlab.dkrz.de/icon/icon/-/archive/icon-2.6.5.1/icon-icon-2.6.5.1.tar.gz'
     git = 'ssh://git@gitlab.dkrz.de/icon/icon.git'
+    #url = "git@github.com/C2SM/icon-exclaim.git"
+    #git = 'ssh://git@github.com/C2SM/icon-exclaim.git'
 
     version('develop', submodules=True)
     version('2.6.5.1', tag='icon-2.6.5.1', submodules=True)
@@ -21,6 +23,10 @@ class Icon(AutotoolsPackage):
             submodules=True)
     version('exclaim-test',
             branch='test_spec',
+            git='ssh://git@github.com/C2SM/icon-exclaim.git',
+            submodules=True)
+    version('gt4py',
+            branch='icon-dsl',
             git='ssh://git@github.com/C2SM/icon-exclaim.git',
             submodules=True)
     version('nwp-master',
@@ -131,7 +137,7 @@ class Icon(AutotoolsPackage):
         description=
         'Enable extension of eccodes with center specific definition files')
 
-    depends_on('py-icon4py@0.0.1%gcc')
+    depends_on('py-icon4py@main%gcc')
     depends_on('gridtools@master%gcc')
 
     depends_on('infero +quiet', when='+infero')
@@ -563,7 +569,7 @@ class Icon(AutotoolsPackage):
                 cuda_host_compiler_stdcxx_libs = self.compiler.stdcxx_libs
 
             config_vars['NVCFLAGS'].extend([
-                '-ccbin {0}'.format(cuda_host_compiler), '-g', '-O3',
+                 '-g', '-O3',
                 '-arch=sm_{0}'.format(gpu)
             ])
             # cuda_host_compiler_stdcxx_libs might contain compiler-specific
