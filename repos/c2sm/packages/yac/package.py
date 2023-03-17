@@ -6,7 +6,7 @@ class Yac(AutotoolsPackage):
 
     homepage = 'https://dkrz-sw.gitlab-pages.dkrz.de/yac/'
     url = 'https://gitlab.dkrz.de/dkrz-sw/yac'
-    git = 'git@gitlab.dkrz.de:dkrz-sw/yac.git'
+    git = 'ssh://git@gitlab.dkrz.de/dkrz-sw/yac.git'
 
     version('2.1.1', tag='v2.1.1')
     version('1.5.5', tag='v1.5.5', preferred=True)
