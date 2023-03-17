@@ -85,7 +85,7 @@ ICON
 
 ICON is built using environments.
 Environments sit in a folder with a name and are defined in a ``spack.yaml`` file.
-For ICON, they are located in ``config/cscs/spack-envs/<machine>_<target>_<compiler>``.
+For ICON, they are located in ``config/cscs/spack/<version>/<machine>_<target>_<compiler>``.
 
 To activate the Spack environment, type
 
@@ -103,7 +103,7 @@ Example to build ICON for CPU with NVHPC:
 
 .. code-block:: console
 
-    $ spack env activate -p -d config/cscs/spack-envs/daint_cpu_nvhpc
+    $ spack env activate -p -d config/cscs/spack/v0.18.1.1/daint_cpu_nvhpc
     $ spack install
 
 
