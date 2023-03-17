@@ -250,14 +250,16 @@ class IconTest(unittest.TestCase):
 
     def test_all_deps_gcc(self):
         "This tests the latest version of icon with as much dependencies as possible for gcc"
+        # +rttov is omitted, because it needs manual downloading.
         spack_install_and_test(
-            f'icon %gcc +coupling +rttov +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions gpu={cuda_arch} claw=std'
+            f'icon %gcc +coupling +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions gpu={cuda_arch} claw=std'
         )
 
     def test_all_deps_nvhpc(self):
         "This tests the latest version of icon with as much dependencies as possible for nvhpc"
+        # +rttov is omitted, because it needs manual downloading.
         spack_install_and_test(
-            f'icon %{nvidia_compiler} +coupling +rttov +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions gpu={cuda_arch} claw=std'
+            f'icon %{nvidia_compiler} +coupling +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions gpu={cuda_arch} claw=std'
         )
 
     @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
