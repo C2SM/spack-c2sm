@@ -248,51 +248,13 @@ class GridToolsTest(unittest.TestCase):
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 class IconTest(unittest.TestCase):
 
-    def test_plain(self):
-        spack_install_and_test(f'icon @2.6.6')
-
-    def test_min_deps_1(self):
-        "This tests the latest version of icon with as little dependencies as possible"
-        # To avoid a dependency on infero, ~infero is required.
-        # To avoid a dependency on libxml2, ~coupling ~art is required.
-        # To avoid a dependency on rttov, ~rttov is required.
-        # To avoid a dependency on serialbox, serialization=none is required.
-        # To avoid a dependency on libcdi-pio, ~cdi-pio is required.
-        # To avoid a dependency on yaxt, ~cdi-pio is required.
-        # ~cdi-pio causes a dependency on netcdf-c. It's a trade off.
-        # To avoid a dependency on eccodes, ~emvorado ~grib2 is required.
-        # To avoid a dependency on cosmo-eccodes-definitions, ~eccodes-definitions is required.
-        # To avoid a dependency on hdf5, ~emvorado ~sct is required.
-        # To avoid a dependency on zlib, ~emvorado is required.
-        # To avoid a dependency on mpi, ~mpi is required.
-        # To avoid a dependency on cuda, gpu=none is required.
-        # To avoid a dependency on claw, claw=none is required.
-        spack_install_and_test(f'icon @2.6.6 ~infero ~coupling ~art ~rttov serialization=none ~cdi-pio ~emvorado ~grib2 ~eccodes-definitions ~sct ~mpi gpu=none claw=none')
-
-    def test_min_deps_2(self):
-        "This tests the latest version of icon without netcdf-c, because test_install_min_deps_1 couldn't do it"
-        # To avoid a dependency on netcdf-c, +cdi-pio ~coupling is required.
-        spack_install_and_test(f'icon @2.6.6 ~infero ~coupling ~art ~rttov serialization=none +cdi-pio ~emvorado ~grib2 ~eccodes-definitions ~sct ~mpi gpu=none claw=none')
-
-    def test_max_deps_gcc(self):
+    def test_all_deps_gcc(self):
         "This tests the latest version of icon with as much dependencies as possible for gcc"
-        # The dependency on libxml2 is caused by +coupling.
-        # The dependency on rttov is caused by +rttov.
-        # The dependency on libcdi-pio +fortran +netcdf +mpi grib2=eccodes is caused by +cdi-pio +grib2 +mpi.
-        # The dependency on eccodes +fortran is caused by +emvorado.
-        # The dependency on cosmo-eccodes-definitions is caused by +eccodes-definitions.
-        # The dependency on yaxt is caused by +cdi-pio.
-        # The dependency on netcdf-c is caused by +coupling.
-        # The dependency on hdf5 +szip +hl +fortran is caused by +emvorado.
-        # The dependency on zlib is caused by +emvorado.
-        # The dependency on mpi is caused by +mpi.
-        # The dependency on cuda is caused by gpu=80.
-        # The dependency on claw is caused by claw=std.
-        spack_install_and_test(f'icon @2.6.6 %gcc +coupling +rttov +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions gpu={cuda_arch} claw=std')
+        spack_install_and_test(f'icon %gcc +coupling +rttov +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions gpu={cuda_arch} claw=std')
 
-    def test_max_deps_nvhpc(self):
+    def test_all_deps_nvhpc(self):
         "This tests the latest version of icon with as much dependencies as possible for nvhpc"
-        spack_install_and_test(f'icon @2.6.6 %{nvidia_compiler} +coupling +rttov +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions gpu={cuda_arch} claw=std')
+        spack_install_and_test(f'icon %{nvidia_compiler} +coupling +rttov +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions gpu={cuda_arch} claw=std')
 
     @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
     def test_install_nwp_gpu(self):

@@ -28,6 +28,25 @@ def spack_spec(spec: str, log_filename: str = None):
                          log_filename)
 
 
+mpi: str = {
+    'daint': 'mpich',
+    'tsa': 'openmpi',
+    'balfrin': 'cray-mpich-binary',
+}[machine_name()]
+
+nvidia_compiler: str = {
+    'daint': 'nvhpc',
+    'tsa': 'pgi',
+    'balfrin': 'nvhpc',
+}[machine_name()]
+
+cuda_arch: str = {
+    'daint': '60',
+    'tsa': '70',
+    'balfrin': '80',
+}[machine_name()]
+
+
 class InfoTest(unittest.TestCase):
     """Tests that 'spack spec <spec>' works for all conditional dependencies of all packages in spack-c2sm."""
 
@@ -184,7 +203,23 @@ class PlainSpecTest(unittest.TestCase):
 
     def test_icon(self):
         spack_spec('icon')
-        spack_spec('icon serialization=create claw=std')
+
+        # For icon there is a way to trigger all dependencies at once. This is how and why:
+        # The dependency on libxml2 is caused by +coupling.
+        # The dependency on rttov is caused by +rttov.
+        # The dependency on libcdi-pio +fortran +netcdf +mpi grib2=eccodes is caused by +cdi-pio +grib2 +mpi.
+        # The dependency on eccodes +fortran is caused by +emvorado.
+        # The dependency on cosmo-eccodes-definitions is caused by +eccodes-definitions.
+        # The dependency on yaxt is caused by +cdi-pio.
+        # The dependency on netcdf-c is caused by +coupling.
+        # The dependency on hdf5 +szip +hl +fortran is caused by +emvorado.
+        # The dependency on zlib is caused by +emvorado.
+        # The dependency on mpi is caused by +mpi.
+        # The dependency on cuda is caused by gpu=80.
+        # The dependency on claw is caused by claw=std.
+
+        spack_spec(f'icon %gcc +coupling +rttov +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions gpu={cuda_arch} claw=std')
+        spack_spec(f'icon %{nvidia_compiler} +coupling +rttov +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions gpu={cuda_arch} claw=std')
 
     def test_icontools(self):
         spack_spec('icontools')
