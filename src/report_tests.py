@@ -15,16 +15,15 @@ class ResultList:
 
     def append(self, status: str, test: str, comment: str = '') -> None:
         name = test[test.rfind('/') + 1:test.rfind('.log')]
-        name = name.replace('_', ' ')
         link = HTML.link(name, self.artifact_path + test)
         self.text += f'{status} {link} {comment}\n'
 
     def get_test_result(test, logfiles, col):
         if any(test in l for l in logfiles):
-            if all(c == ':green_circle:' for c in col):
-                test_col = ':green_circle:'
-            else:
-                test_col = ':red_circle:'
+            test_col = ':green_circle:'
+            for l,c in zip(logfiles,col):
+                if test in l and c != ':green_circle:':
+                    test_col = ':red_circle:'
         else:
             test_col = None
         return (test_col)

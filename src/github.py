@@ -10,9 +10,9 @@ class GitHubRepo:
 
     def add_test(test: str, test_col: str, col: list, logfiles: list) -> str:
         details = [['', 'Test']]
-        for i in range(len(logfiles)):
-            if test in logfiles[i]:
-                details.append([col[i], logfiles[i]])
+        for l,c in zip(logfiles,col):
+            if test in l:
+                details.append([c, l])
         text = HTML.collapsible(test_col + ' ' + test + ' test',
                                 HTML.table(details))
         return (text)
