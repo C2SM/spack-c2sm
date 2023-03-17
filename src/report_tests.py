@@ -21,7 +21,7 @@ class ResultList:
     def get_test_result(test, logfiles, col):
         if any(test in l for l in logfiles):
             test_col = ':green_circle:'
-            for l,c in zip(logfiles,col):
+            for l, c in zip(logfiles, col):
                 if test in l and c != ':green_circle:':
                     test_col = ':red_circle:'
         else:
