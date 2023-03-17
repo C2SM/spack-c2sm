@@ -32,12 +32,10 @@ class NvidiaBlas(Package):
 
     @property
     def headers(self):
-        
-        headers =["cblas.h"]
 
-        return find_headers(headers,
-                              root=self.prefix,
-                              recursive=True)
+        headers = ["cblas.h"]
+
+        return find_headers(headers, root=self.prefix, recursive=True)
 
     def install(self, spec, prefix):
         raise InstallError(
