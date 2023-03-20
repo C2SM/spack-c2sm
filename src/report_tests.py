@@ -98,7 +98,8 @@ if __name__ == "__main__":
             comment = comment + GitHubRepo.add_test('system', sys_col, col,
                                                     logfiles)
             path_to_sys = f'https://jenkins-mch.cscs.ch/job/Spack/job/spack_PR/{args.build_id}/artifact/log/{machine_name()}/system_test/'
-            if not os.path.isfile(os.path.join(path_to_sys, 'serial_test_run')):
+            if not os.path.isfile(os.path.join(path_to_sys,
+                                               'serial_test_run')):
                 comment = comment + '\n \n **WARNING**: Serial tests did not run for system tests'
 
     repo.comment(args.issue_id, comment)
