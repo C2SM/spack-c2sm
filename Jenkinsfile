@@ -67,9 +67,9 @@ pipeline {
                     stage('System Tests Serial') {
                         steps {
                             sh """
+                            touch log/${NODENAME}/system_test/serial_test_run
                             source env/bin/activate
                             pytest -q --scope \"""" + env.ghprbCommentBody + " serial\" test/system_test.py"
-                            touch log/${NODENAME}/system_test/serial_test_run
                         }
                     }
                 }
