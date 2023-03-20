@@ -150,7 +150,7 @@ You can force a machine with an argument. The name has to match a folder in sysc
 <h2>ICON<a class="headerlink" href="#icon" title="Permalink to this heading"></a></h2>
 <p>ICON is built using environments.
 Environments sit in a folder with a name and are defined in a <code class="docutils literal notranslate"><span class="pre">spack.yaml</span></code> file.
-For ICON, they are located in <code class="docutils literal notranslate"><span class="pre">config/cscs/spack-envs/&lt;machine&gt;_&lt;target&gt;_&lt;compiler&gt;</span></code>.</p>
+For ICON, they are located in <code class="docutils literal notranslate"><span class="pre">config/cscs/spack/&lt;version&gt;/&lt;machine&gt;_&lt;target&gt;_&lt;compiler&gt;</span></code>.</p>
 <p>To activate the Spack environment, type</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack env activate -p -d &lt;path_to_folder_with_spack_yaml&gt;
 </pre></div>
@@ -160,7 +160,7 @@ For ICON, they are located in <code class="docutils literal notranslate"><span c
 </pre></div>
 </div>
 <p>Example to build ICON for CPU with NVHPC:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack env activate -p -d config/cscs/spack-envs/daint_cpu_nvhpc
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack env activate -p -d config/cscs/spack/v0.18.1.1/daint_cpu_nvhpc
 <span class="gp">$ </span>spack install
 </pre></div>
 </div>
