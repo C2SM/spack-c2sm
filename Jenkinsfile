@@ -69,7 +69,7 @@ pipeline {
                             sh """
                             source env/bin/activate
                             pytest -q --scope \"""" + env.ghprbCommentBody + " serial\" test/system_test.py"
-                            touch serial_test_run
+                            touch log/${NODENAME}/system_test/serial_test_run
                         }
                     }
                 }
