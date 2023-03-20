@@ -4,8 +4,6 @@ import glob
 from github import GitHubRepo, Markdown, HTML
 from machine import machine_name
 
-spack_c2sm_path = os.path.dirname(os.path.realpath(__file__)) + '/..'
-
 
 class ResultList:
 
@@ -97,7 +95,7 @@ if __name__ == "__main__":
         if sys_col:
             comment = comment + GitHubRepo.add_test('system', sys_col, col,
                                                     logfiles)
-            path_to_sys = f'https://jenkins-mch.cscs.ch/job/Spack/job/spack_PR/{args.build_id}/artifact/log/{machine_name()}/system_test/'
+            path_to_sys = f'log/{machine_name()}/system_test/'
             if not os.path.isfile(os.path.join(path_to_sys,
                                                'serial_test_run')):
                 comment = comment + '\n \n **WARNING**: Serial tests did not run for system tests'
