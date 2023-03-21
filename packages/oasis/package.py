@@ -26,6 +26,10 @@ class Oasis(MakefilePackage):
     depends_on('mpi', type=('build', 'link', 'run'))
     depends_on('netcdf-fortran', type=('build', 'link', 'run'))
 
+    variant('fix_mct_conflict',
+            default=False,
+            description='rename mct modules xxx as xxx_oasis to solve conflict with other mct instance at runtime')
+
     build_directory = 'util/make_dir'
 
     makefile_file = 'TopMakefileOasis3'
@@ -85,9 +89,13 @@ class Oasis(MakefilePackage):
 
 
     @run_before('build')
-    def fix_mct(self):
+    def fix_mct_conflict(self):
         """Rename modules mct_xxx as mct_xxx_oasis"""
 
+        # Only do something when the fix_mct_conflict variant is set to True
+        if not self.spec.variants['fix_mct_conflict'].value:
+            return
+        
         # Define regexps
         re_module = re.compile(r'^(?P<indent>\s*)(?P<statement>module|end\s+module)'
                                r'(?P<space>\s*)(?P<name>m\w*)(?P<rest>.*)$',
