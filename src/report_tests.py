@@ -8,13 +8,13 @@ from machine import machine_name
 
 class ResultTable:
 
-    def __init__(self, artifact_path: Path) -> None:
+    def __init__(self, artifact_path: str) -> None:
         self.artifact_path = artifact_path
         self.head = ['', 'Test']
         self.body = []
 
     def append(self, status: str, log_file: Path, comment: str = '') -> None:
-        link = HTML.link(log_file.stem, self.artifact_path / log_file)
+        link = HTML.link(log_file.stem, self.artifact_path + log_file)
         self.body.append([status, f'{link} {comment}'])
 
     def __str__(self) -> str:
