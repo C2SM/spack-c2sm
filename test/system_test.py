@@ -115,10 +115,10 @@ def spack_env_dev_install_and_test(spack_env: str,
     # in case we use serialbox or another python preprocessor
     devirtualize_env()
 
-    unique_folder = 'icon-exclaim_' + uuid.uuid4(
+    unique_folder = 'icon_' + uuid.uuid4(
     ).hex  # to avoid cloning into the same folder and having race conditions
     subprocess.run(
-        f'git clone --depth 1 --recurse-submodules -b {icon_branch} git@github.com:C2SM/icon-exclaim.git {unique_folder}',
+        f'git clone --depth 1 --recurse-submodules -b {icon_branch} git@github.com:C2SM/icon.git {unique_folder}',
         check=True,
         shell=True)
     log_filename = sanitized_filename(log_filename or spack_env)
@@ -242,24 +242,19 @@ class IconTest(unittest.TestCase):
         spack_install_and_test(f'icon @nwp-master %nvhpc')
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
-    def test_install_exclaim_test_cpu_gcc(self):
-        spack_env_dev_install_and_test('config/cscs/spack-envs/daint_cpu_gcc',
-                                       'test_spec')
-
-    @pytest.mark.no_balfrin  # config file does not exist for this machine
-    def test_install_exclaim_test_cpu_cce(self):
-        spack_env_dev_install_and_test('config/cscs/spack-envs/daint_cpu_cce',
-                                       'test_spec')
-
-    @pytest.mark.no_balfrin  # config file does not exist for this machine
-    def test_install_exclaim_test_cpu(self):
+    def test_install_c2sm_test_cpu_gcc(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack-envs/daint_cpu_nvhpc', 'test_spec')
+            'config/cscs/spack/v0.18.1.1/daint_cpu_gcc', 'v2.6.6')
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
-    def test_install_exclaim_test_gpu(self):
+    def test_install_c2sm_test_cpu(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack-envs/daint_gpu_nvhpc', 'test_spec')
+            'config/cscs/spack/v0.18.1.1/daint_cpu_nvhpc', 'v2.6.6')
+
+    @pytest.mark.no_balfrin  # config file does not exist for this machine
+    def test_install_c2sm_test_gpu(self):
+        spack_env_dev_install_and_test(
+            'config/cscs/spack/v0.18.1.1/daint_gpu_nvhpc', 'v2.6.6')
 
 
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
