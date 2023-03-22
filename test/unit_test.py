@@ -42,7 +42,7 @@ class MarkDownTest(unittest.TestCase):
 
     def test_table(self):
         self.assertEqual(
-            Markdown.table([['title1', 'title2'], ['data1', 'data2'],
+            Markdown.table(['title1', 'title2'], [['data1', 'data2'],
                             ['data3', 'data4']]),
             'title1 | title2\n--- | ---\ndata1 | data2\ndata3 | data4')
 
@@ -54,7 +54,7 @@ class HTMLTest(unittest.TestCase):
 
     def test_table(self):
         self.assertEqual(
-            HTML.table([['title1', 'title2'], ['data1', 'data2'],
+            HTML.table(['title1', 'title2'], [['data1', 'data2'],
                         ['data3', 'data4']]),
             '<table><thead><tr><th>title1</th><th>title2</th></tr></thead><tbody><tr><td>data1</td><td>data2</td></tr><tr><td>data3</td><td>data4</td></tr></tbody></table>'
         )

@@ -9,13 +9,9 @@ class GitHubRepo:
         self.auth_token: str = auth_token
 
     def add_test(test: str, test_col: str, col: list, logfiles: list) -> str:
-        details = [['', 'Test']]
-        for l, c in zip(logfiles, col):
-            if test in l:
-                details.append([c, l])
-        text = HTML.collapsible(test_col + ' ' + test + ' test',
-                                HTML.table(details))
-        return (text)
+        head = ['', 'Test']
+        body = [[c, l] for c, l in zip(col, logfiles) if test in l]
+        return HTML.collapsible(test_col + ' ' + test + ' test', HTML.table(head, body))
 
     def comment(self, issue_id: str, text: str) -> None:
         url = f'https://api.github.com/repos/{self.group}/{self.repo}/issues/{issue_id}/comments'
@@ -55,10 +51,9 @@ class Markdown:
         return f'```{language}\n{code}\n```'
 
     @staticmethod
-    def table(data) -> str:
-        return '\n'.join(
-            ' | '.join(str(cell) for cell in row)
-            for row in [data[0], ['---' for d in data[0]], *data[1:]])
+    def table(head, body) -> str:
+        data = [head, ['---'] * len(head)] + body
+        return '\n'.join(' | '.join(row) for row in data)
 
     @staticmethod
     def header(text: str, level: int = 1) -> str:
@@ -74,16 +69,16 @@ class HTML:
         return f'<a href="{url}">{text}</a>'
 
     @staticmethod
-    def table(data) -> str:
+    def table(head, body) -> str:
         table = '<table>'
         table += '<thead>'
         table += '<tr>'
-        for cell in data[0]:
+        for cell in head:
             table += f'<th>{cell}</th>'
         table += '</tr>'
         table += '</thead>'
         table += '<tbody>'
-        for row in data[1:]:
+        for row in body:
             table += '<tr>'
             for cell in row:
                 table += f'<td>{cell}</td>'
