@@ -59,6 +59,10 @@ class Oasis(MakefilePackage):
 
         FFLAGS = '-O2 {INCPSMILE} {CPPDEF}'.format(CPPDEF=CPPDEF,
                                                    INCPSMILE=INCPSMILE)
+
+        if self.compiler.name == 'gcc':
+            FFLAGS += ' -ffree-line-length-512'
+            
         env.set('F90FLAGS', FFLAGS)
         env.set('f90FLAGS', FFLAGS)
         env.set('FFLAGS', FFLAGS)
