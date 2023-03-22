@@ -38,12 +38,17 @@ if __name__ == "__main__":
     # Trigger phrases that cause a test to get a special icon and comment.
     # List[(trigger, icon, comment)]
     triggers = [
-        ('AssertionError exception when releasing read lock', ':lock:', 'spack locking problem'),
-        ('Timed out waiting for a write lock', ':lock:', 'spack write lock problem'),
-        ('Timed out waiting for a read lock', ':lock:', 'spack read lock problem'),
-        ('gzip: stdin: decompression OK, trailing garbage ignored', ':wastebasket:', 'spack cached archive problem'),
+        ('AssertionError exception when releasing read lock', ':lock:',
+         'spack locking problem'),
+        ('Timed out waiting for a write lock', ':lock:',
+         'spack write lock problem'),
+        ('Timed out waiting for a read lock', ':lock:',
+         'spack read lock problem'),
+        ('gzip: stdin: decompression OK, trailing garbage ignored',
+         ':wastebasket:', 'spack cached archive problem'),
         ('DUE TO TIME LIMIT', ':hourglass:', 'slurm time limit'),
-        ('timed out after 5 seconds', ':yellow_circle:', 'timed out after 5 seconds'),
+        ('timed out after 5 seconds', ':yellow_circle:',
+         'timed out after 5 seconds'),
     ]
 
     comment = Markdown.header(machine_name(), level=3)
@@ -51,7 +56,8 @@ if __name__ == "__main__":
     for test_type in ['unit', 'integration', 'system']:
         all_tests_of_type_passed = True
         any_tests_of_type = False
-        for file_name in sorted(glob.glob(f'log/{machine_name()}/{test_type}_test/*.log')):
+        for file_name in sorted(
+                glob.glob(f'log/{machine_name()}/{test_type}_test/*.log')):
             file_name = Path(file_name)
             any_tests_ran_on_machine = True
             any_tests_of_type = True
@@ -77,5 +83,5 @@ if __name__ == "__main__":
 
     if not any_tests_ran_on_machine:
         comment += f'No tests executed.'
-    
+
     repo.comment(args.issue_id, comment)
