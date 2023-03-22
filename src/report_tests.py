@@ -75,7 +75,7 @@ if __name__ == "__main__":
                 icon = ':red_circle:'
             comment += HTML.collapsible(f'{icon} {test_type} test', table)
 
-    if any_tests_ran_on_machine:
+    if not any_tests_ran_on_machine:
         comment += f'No tests executed.'
 
     if not os.path.isfile(f'log/{machine_name()}/system_test/serial_test_run'):
