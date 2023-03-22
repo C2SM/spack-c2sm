@@ -8,11 +8,6 @@ class GitHubRepo:
         self.repo: str = repo
         self.auth_token: str = auth_token
 
-    def add_test(test: str, test_col: str, col: list, logfiles: list) -> str:
-        head = ['', 'Test']
-        body = [[c, l] for c, l in zip(col, logfiles) if test in l]
-        return HTML.collapsible(test_col + ' ' + test + ' test', HTML.table(head, body))
-
     def comment(self, issue_id: str, text: str) -> None:
         url = f'https://api.github.com/repos/{self.group}/{self.repo}/issues/{issue_id}/comments'
 
