@@ -77,8 +77,5 @@ if __name__ == "__main__":
 
     if not any_tests_ran_on_machine:
         comment += f'No tests executed.'
-
-    if not os.path.isfile(f'log/{machine_name()}/system_test/serial_test_run'):
-        comment += '\n\n**WARNING**: Serial tests did not run for system tests'
-
+    
     repo.comment(args.issue_id, comment)
