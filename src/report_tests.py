@@ -13,8 +13,8 @@ class ResultTable:
         self.head = ['', 'Test']
         self.body = []
 
-    def append(self, status: str, log_file: Path, comment: str = '') -> None:
-        link = HTML.link(log_file.stem, self.artifact_path + log_file)
+    def append(self, status: str, log_file: str, comment: str = '') -> None:
+        link = HTML.link(Path(log_file).stem, self.artifact_path + log_file)
         self.body.append([status, f'{link} {comment}'])
 
     def __str__(self) -> str:
@@ -58,7 +58,6 @@ if __name__ == "__main__":
         any_tests_of_type = False
         for file_name in sorted(
                 glob.glob(f'log/{machine_name()}/{test_type}_test/*.log')):
-            file_name = Path(file_name)
             any_tests_ran_on_machine = True
             any_tests_of_type = True
             with open(file_name, 'r') as file:
