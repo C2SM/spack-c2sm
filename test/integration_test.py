@@ -26,7 +26,7 @@ def spack_spec(spec: str, log_filename: str = None):
     Tests 'spack info' of the given spec and writes the output into the log file.
     If log_filename is None, spec is used to create one.
     """
-    log_filename = sanitized_filename(f'{spec}' + '-spack_spec')
+    log_filename = sanitized_filename(f'{spec}-spack_spec')
     ret = log_with_spack(f'spack spec {spec}', 'integration_test',
                          log_filename)
 
