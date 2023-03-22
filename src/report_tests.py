@@ -81,7 +81,7 @@ if __name__ == "__main__":
             logfiles.append(item[item.find('<a'):item.rfind('a>') + 2])
             col.append(item.split()[0])
 
-        comment = Markdown.header(f'{machine_name()}', 3)
+        comment = Markdown.header(machine_name(), level=3)
 
         unit_col = ResultList.get_test_result('unit', logfiles, col)
         if unit_col:
