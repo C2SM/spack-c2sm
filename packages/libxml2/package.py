@@ -8,5 +8,5 @@ from spack.pkg.builtin.libxml2 import Libxml2 as SpackLibxml2
 
 
 class Libxml2(SpackLibxml2):
-    conflicts('%nvhpc @22.1:')
+    conflicts('%nvhpc @21.1:')
     conflicts('%pgi')
