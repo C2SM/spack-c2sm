@@ -32,8 +32,7 @@ def devirtualize_env():
 
 def spack_install_and_test(spec: str,
                            log_filename: str = None,
-                           split_phases=True,
-                           python_package=False):
+                           split_phases=False):
     """
     Tests 'spack install' of the given spec and writes the output into the log file.
     If log_filename is None, spec is used to create one.
@@ -47,12 +46,6 @@ def spack_install_and_test(spec: str,
         command = 'install'
 
     if spec.startswith('py-'):
-        python_package = True
-
-    if python_package:
-        # python packages don't necessarily have a build phase.
-        # Thus splitting on build doesn't work in general
-        split_phases = False
         devirtualize_env()
 
     if split_phases:
@@ -76,8 +69,7 @@ def spack_install_and_test(spec: str,
 def spack_devbuild_and_test(spec: str,
                             log_filename: str = None,
                             cwd=None,
-                            split_phases=True,
-                            python_package=False):
+                            split_phases=False):
     """
     Tests 'spack dev-build' of the given spec and writes the output into the log file.
     If log_filename is None, spec is used to create one.
@@ -89,10 +81,7 @@ def spack_devbuild_and_test(spec: str,
     else:
         command = 'dev-build'
 
-    if python_package:
-        # python packages don't necessarily have a build phase.
-        # Thus splitting on build doesn't work in general
-        split_phases = False
+    if spec.startswith('py-'):
         devirtualize_env()
 
     if split_phases:
@@ -169,13 +158,13 @@ class CosmoTest(unittest.TestCase):
 
     def test_install_version_6_0_gpu(self):
         spack_install_and_test(
-            f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}'
-        )
+            f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}',
+            split_phases=True)
 
     def test_install_version_6_0_cpu(self):
         spack_install_and_test(
-            f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
-        )
+            f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}',
+            split_phases=True)
 
     @pytest.mark.serial_only  # devbuildcosmo does a forced uninstall
     def test_devbuildcosmo(self):
@@ -187,28 +176,30 @@ class CosmoTest(unittest.TestCase):
         spack_devbuild_and_test(
             spec,
             cwd='cosmo',
-            log_filename=sanitized_filename('devbuildcosmo ' + spec))
+            log_filename=sanitized_filename('devbuildcosmo ' + spec),
+            split_phases=True)
 
 
 @pytest.mark.no_balfrin  # cuda arch is not supported
 class CosmoDycoreTest(unittest.TestCase):
 
     def test_install_version_6_0(self):
-        spack_install_and_test('cosmo-dycore @6.0 +cuda')
-        spack_install_and_test('cosmo-dycore @6.0 ~cuda')
+        spack_install_and_test('cosmo-dycore @6.0 +cuda', split_phases=True)
+        spack_install_and_test('cosmo-dycore @6.0 ~cuda', split_phases=True)
 
     def test_install_c2sm_master_cuda(self):
-        spack_install_and_test('cosmo-dycore @c2sm-master +cuda')
+        spack_install_and_test('cosmo-dycore @c2sm-master +cuda',
+                               split_phases=True)
 
     def test_install_c2sm_master_no_cuda(self):
-        spack_install_and_test('cosmo-dycore @c2sm-master ~cuda')
+        spack_install_and_test('cosmo-dycore @c2sm-master ~cuda',
+                               split_phases=True)
 
 
 class CosmoEccodesDefinitionsTest(unittest.TestCase):
 
     def test_install_version_2_19_0_7(self):
-        spack_install_and_test('cosmo-eccodes-definitions @2.19.0.7',
-                               split_phases=False)
+        spack_install_and_test('cosmo-eccodes-definitions @2.19.0.7')
 
 
 class DawnTest(unittest.TestCase):
@@ -327,13 +318,13 @@ class LibGrib1Test(unittest.TestCase):
 class OasisTest(unittest.TestCase):
 
     def test_install_master_nvhpc(self):
-        spack_install_and_test('oasis@master%nvhpc', split_phases=False)
+        spack_install_and_test('oasis @master %nvhpc')
 
 
 class OmniXmodPoolTest(unittest.TestCase):
 
     def test_install_version_0_1(self):
-        spack_install_and_test('omni-xmod-pool @0.1', split_phases=False)
+        spack_install_and_test('omni-xmod-pool @0.1')
 
 
 @pytest.mark.no_balfrin  # Irrelevant
