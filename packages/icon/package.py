@@ -166,10 +166,6 @@ class Icon(AutotoolsPackage):
     depends_on('libcdi-pio grib2=eccodes', when='+cdi-pio+grib2')
     depends_on('libcdi-pio+mpi', when='+cdi-pio+mpi')
 
-    # needed to mimick BB in test.py
-    # only available in icon-exclaim so far
-    depends_on('cdo', when='@exclaim-master,exclaim-test')
-
     depends_on('eccodes +fortran', when='+emvorado')
     depends_on('eccodes', when='+grib2 ~cdi-pio')
     depends_on('cosmo-eccodes-definitions',
@@ -650,6 +646,7 @@ class Icon(AutotoolsPackage):
     @run_before('install')
     @on_package_attributes(run_tests=True)
     def check(self):
+        # script needs cdo to work, but not listed as dep of ICON
         test_script = 'scripts/spack/test.py'
         if os.path.exists(test_script):
             test_py = Executable(test_script)
