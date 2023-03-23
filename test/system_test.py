@@ -5,6 +5,7 @@ import sys
 import os
 import uuid
 from pathlib import Path
+import inspect
 
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                '..')
@@ -38,7 +39,11 @@ def spack_install_and_test(spec: str,
     If log_filename is None, spec is used to create one.
     """
 
-    log_filename = sanitized_filename(log_filename or spec)
+    func_name = inspect.currentframe().f_back.f_code.co_name.replace(
+        'test_', '')
+    class_name = inspect.currentframe().f_back.f_locals.get(
+        'self', None).__class__.__name__.replace('Test', '')
+    log_filename = sanitized_filename(class_name + '-' + func_name)
 
     if spec.startswith('cosmo '):
         command = 'installcosmo'
@@ -74,7 +79,12 @@ def spack_devbuild_and_test(spec: str,
     Tests 'spack dev-build' of the given spec and writes the output into the log file.
     If log_filename is None, spec is used to create one.
     """
-    log_filename = sanitized_filename(log_filename or spec)
+
+    func_name = inspect.currentframe().f_back.f_code.co_name.replace(
+        'test_', '')
+    class_name = inspect.currentframe().f_back.f_locals.get(
+        'self', None).__class__.__name__.replace('Test', '')
+    log_filename = sanitized_filename(class_name + '-' + func_name)
 
     if spec.startswith('cosmo '):
         command = 'devbuildcosmo'

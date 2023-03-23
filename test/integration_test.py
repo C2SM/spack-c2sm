@@ -2,12 +2,13 @@ import unittest
 import sys
 import os
 from pathlib import Path
+import inspect
 
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                '..')
 
 sys.path.append(os.path.normpath(spack_c2sm_path))
-from src import machine_name, log_with_spack
+from src import machine_name, log_with_spack, sanitized_filename
 
 
 def spack_info(spec: str, log_filename: str = None):
@@ -15,6 +16,7 @@ def spack_info(spec: str, log_filename: str = None):
     Tests 'spack info' of the given spec and writes the output into the log file.
     If log_filename is None, spec is used to create one.
     """
+    log_filename = sanitized_filename(f'{spec}-spack_info')
     ret = log_with_spack(f'spack info {spec}', 'integration_test',
                          log_filename)
 
@@ -24,6 +26,7 @@ def spack_spec(spec: str, log_filename: str = None):
     Tests 'spack info' of the given spec and writes the output into the log file.
     If log_filename is None, spec is used to create one.
     """
+    log_filename = sanitized_filename(f'{spec}-spack_spec')
     ret = log_with_spack(f'spack spec {spec}', 'integration_test',
                          log_filename)
 
