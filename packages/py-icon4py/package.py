@@ -55,7 +55,9 @@ class PyIcon4py(PythonPackage):
             args.append('.')
 
         pip = inspect.getmodule(self).pip
-        build_dirs = ['common', 'pyutils', 'testutils', 'liskov', 'atm_dyn_iconam']
+        build_dirs = [
+            'common', 'pyutils', 'testutils', 'liskov', 'atm_dyn_iconam'
+        ]
         for dir in build_dirs:
             with working_dir(os.path.join(self.stage.source_path, dir)):
                 pip(*args)
