@@ -8,7 +8,8 @@ from spack.util.executable import which_string, which
 
 def check_variant_fcgroup(fcgroup):
     pattern = re.compile(r"^[A-Z]+;.+;.")
-    if pattern.match(fcgroup):
+    # fcgroup is False in case not set
+    if pattern.match(fcgroup) or fcgroup == 'none':
         return True
     else:
         tty.warn('Variant fcgroup needs format GROUP;files;flags')
@@ -147,7 +148,7 @@ class Icon(AutotoolsPackage):
             description='Ennable NCCL for communication')
 
     variant('fcgroup',
-            default=False,
+            default='none',
             multi=True,
             values=check_variant_fcgroup,
             description='Create a Fortran compile group')
