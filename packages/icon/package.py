@@ -1,4 +1,4 @@
-import os, subprocess, glob
+import os, subprocess, glob, re
 from collections import defaultdict
 
 from llnl.util import lang, filesystem, tty
@@ -136,6 +136,16 @@ class Icon(AutotoolsPackage):
     variant('nccl',
             default=False,
             description='Ennable NCCL for communication')
+
+    def return_true(self):
+        return True
+
+    variant('fcgroup',
+            default=False,
+            multi=True, 
+            values=return_true,
+            description='Create a Fortran compile group')
+
 
     # C2SM specific Features:
     variant(
@@ -552,6 +562,11 @@ class Icon(AutotoolsPackage):
         if '+infero' in self.spec:
             libs += self.spec['infero'].libs
 
+        fcgroup = self.spec.variants['fcgroup'].value
+        if fcgroup != 'none':
+            config_args.extend(self.extract_from_fcgroup(fcgroup,action='config_args'))
+            config_vars.update(self.extract_from_fcgroup(fcgroup,action='config_vars'))
+
         claw = self.spec.variants['claw'].value
         if claw == 'none':
             config_args.append('--disable-claw')
@@ -618,6 +633,22 @@ class Icon(AutotoolsPackage):
         ])
 
         return config_args
+
+    def extract_from_fcgroup(self,fcgroup,action):
+        flags_config_var = {}
+        group_config_arg = []
+        for group in fcgroup:
+            name = group.split(';')[0]
+            files = group.split(';')[1]
+            flags = group.split(';')[2]
+            group_config_arg.append(f'--enable-fcgroup-{name}={files}')
+            flags_config_var[f'ICON_{name}_FCFLAGS'] = [flags]
+
+        if action == 'config_args':
+            return group_config_arg
+        elif action == 'config_vars':
+            return flags_config_var
+
 
     @run_after('configure')
     def adjust_rttov_macro(self):
