@@ -23,6 +23,10 @@ class Icon(AutotoolsPackage):
             branch='test_spec',
             git='ssh://git@github.com/C2SM/icon-exclaim.git',
             submodules=True)
+    version('gt4py',
+            branch='icon-dsl',
+            git='ssh://git@github.com/C2SM/icon-exclaim.git',
+            submodules=True)
     version('nwp-master',
             git='ssh://git@gitlab.dkrz.de/icon/icon-nwp.git',
             submodules=True)
@@ -131,7 +135,7 @@ class Icon(AutotoolsPackage):
         description=
         'Enable extension of eccodes with center specific definition files')
 
-    depends_on('py-icon4py@0.0.1%gcc')
+    depends_on('py-icon4py@main%gcc')
     depends_on('gridtools@master%gcc')
 
     depends_on('infero +quiet', when='+infero')
@@ -562,10 +566,8 @@ class Icon(AutotoolsPackage):
                 cuda_host_compiler = self.compiler.cxx
                 cuda_host_compiler_stdcxx_libs = self.compiler.stdcxx_libs
 
-            config_vars['NVCFLAGS'].extend([
-                '-ccbin {0}'.format(cuda_host_compiler), '-g', '-O3',
-                '-arch=sm_{0}'.format(gpu)
-            ])
+            config_vars['NVCFLAGS'].extend(
+                ['-g', '-O3', '-arch=sm_{0}'.format(gpu)])
             # cuda_host_compiler_stdcxx_libs might contain compiler-specific
             # flags (i.e. not the linker -l<library> flags), therefore we put
             # the value to the config_flags directly.

@@ -30,6 +30,13 @@ class NvidiaLapack(Package):
                               shared=True,
                               recursive=True)
 
+    @property
+    def headers(self):
+
+        headers = ["lapack.h"]
+
+        return find_headers(headers, root=self.prefix, recursive=True)
+
     def install(self, spec, prefix):
         raise InstallError(
             self.spec.format('{name} is not installable, you need to specify '
