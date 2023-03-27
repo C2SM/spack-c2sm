@@ -12,8 +12,6 @@ class Icon(AutotoolsPackage):
     homepage = 'https://code.mpimet.mpg.de/projects/iconpublic'
     url = 'https://gitlab.dkrz.de/icon/icon/-/archive/icon-2.6.5.1/icon-icon-2.6.5.1.tar.gz'
     git = 'ssh://git@gitlab.dkrz.de/icon/icon.git'
-    #url = "git@github.com/C2SM/icon-exclaim.git"
-    #git = 'ssh://git@github.com/C2SM/icon-exclaim.git'
 
     version('develop', submodules=True)
     version('2.6.5.1', tag='icon-2.6.5.1', submodules=True)
