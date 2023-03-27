@@ -570,7 +570,7 @@ class Icon(AutotoolsPackage):
 
         fcgroup = self.spec.variants['fcgroup'].value
         # ('none',) is the values spack assign if fcgroup is not set
-        if fcgroup != ('none',):
+        if fcgroup != ('none', ):
             config_args.extend(self.fcgroup_to_config_arg())
             config_vars.update(self.fcgroup_to_config_var())
 
