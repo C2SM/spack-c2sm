@@ -8,11 +8,11 @@ from spack.util.executable import which_string, which
 
 def check_variant_fcgroup(fcgroup):
     pattern = re.compile(r"^[A-Z]+;.+;.")
-    # fcgroup is False in case not set
+    # fcgroup is False as default
     if pattern.match(fcgroup) or fcgroup == 'none':
         return True
     else:
-        tty.warn('Variant fcgroup needs format GROUP;files;flags')
+        tty.warn('Variant fcgroup needs format GROUP;files;flag')
         return False
 
 
@@ -569,7 +569,8 @@ class Icon(AutotoolsPackage):
             libs += self.spec['infero'].libs
 
         fcgroup = self.spec.variants['fcgroup'].value
-        if fcgroup != 'none':
+        # ('none',) is the values spack assign if fcgroup is not set
+        if fcgroup != ('none',):
             config_args.extend(self.fcgroup_to_config_arg())
             config_vars.update(self.fcgroup_to_config_var())
 
@@ -652,9 +653,9 @@ class Icon(AutotoolsPackage):
         var = {}
         for group in self.spec.variants['fcgroup'].value:
             name = group.split(';')[0]
-            flags = group.split(';')[2]
-            # Note: flags needs to be a list
-            var[f'ICON_{name}_FCFLAGS'] = [flags]
+            flag = group.split(';')[2]
+            # Note: flag needs to be a list
+            var[f'ICON_{name}_FCFLAGS'] = [flag]
         return var
 
     @run_after('configure')
