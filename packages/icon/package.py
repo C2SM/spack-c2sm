@@ -5,6 +5,13 @@ from llnl.util import lang, filesystem, tty
 from spack.util.environment import is_system_path, dump_environment
 from spack.util.executable import which_string, which
 
+def check_variant_fcgroup(fcgroup):
+    pattern = re.compile(r"^[A-Z]+;.+;.")
+    if pattern.match(fcgroup):
+        return True
+    else:
+        tty.warn('Variant fcgroup needs format GROUP;files;flags')
+        return False
 
 class Icon(AutotoolsPackage):
     """Icosahedral Nonhydrostatic Weather and Climate Model."""
@@ -137,13 +144,10 @@ class Icon(AutotoolsPackage):
             default=False,
             description='Ennable NCCL for communication')
 
-    def return_true(self):
-        return True
-
     variant('fcgroup',
             default=False,
             multi=True,
-            values=return_true,
+            values=check_variant_fcgroup,
             description='Create a Fortran compile group')
 
     # C2SM specific Features:
@@ -564,9 +568,9 @@ class Icon(AutotoolsPackage):
         fcgroup = self.spec.variants['fcgroup'].value
         if fcgroup != 'none':
             config_args.extend(
-                self.extract_from_fcgroup(fcgroup, action='config_args'))
+                self.fcgroup_to_config_arg())
             config_vars.update(
-                self.extract_from_fcgroup(fcgroup, action='config_vars'))
+                self.fcgroup_to_config_var())
 
         claw = self.spec.variants['claw'].value
         if claw == 'none':
@@ -635,20 +639,23 @@ class Icon(AutotoolsPackage):
 
         return config_args
 
-    def extract_from_fcgroup(self, fcgroup, action):
-        flags_config_var = {}
-        group_config_arg = []
-        for group in fcgroup:
+    def fcgroup_to_config_arg(self):
+        arg = []
+        for group in self.spec.variants['fcgroup'].value:
             name = group.split(';')[0]
             files = group.split(';')[1]
-            flags = group.split(';')[2]
-            group_config_arg.append(f'--enable-fcgroup-{name}={files}')
-            flags_config_var[f'ICON_{name}_FCFLAGS'] = [flags]
+            arg.append(f'--enable-fcgroup-{name}={files}')
+        return arg
 
-        if action == 'config_args':
-            return group_config_arg
-        elif action == 'config_vars':
-            return flags_config_var
+    def fcgroup_to_config_var(self):
+        var = {}
+        for group in self.spec.variants['fcgroup'].value:
+            name = group.split(';')[0]
+            flags = group.split(';')[2]
+            # Note: flags needs to be a list
+            var[f'ICON_{name}_FCFLAGS'] = [flags]
+        return var
+
 
     @run_after('configure')
     def adjust_rttov_macro(self):
