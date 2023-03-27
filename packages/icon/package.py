@@ -5,6 +5,7 @@ from llnl.util import lang, filesystem, tty
 from spack.util.environment import is_system_path, dump_environment
 from spack.util.executable import which_string, which
 
+
 def check_variant_fcgroup(fcgroup):
     pattern = re.compile(r"^[A-Z]+;.+;.")
     if pattern.match(fcgroup):
@@ -12,6 +13,7 @@ def check_variant_fcgroup(fcgroup):
     else:
         tty.warn('Variant fcgroup needs format GROUP;files;flags')
         return False
+
 
 class Icon(AutotoolsPackage):
     """Icosahedral Nonhydrostatic Weather and Climate Model."""
@@ -567,10 +569,8 @@ class Icon(AutotoolsPackage):
 
         fcgroup = self.spec.variants['fcgroup'].value
         if fcgroup != 'none':
-            config_args.extend(
-                self.fcgroup_to_config_arg())
-            config_vars.update(
-                self.fcgroup_to_config_var())
+            config_args.extend(self.fcgroup_to_config_arg())
+            config_vars.update(self.fcgroup_to_config_var())
 
         claw = self.spec.variants['claw'].value
         if claw == 'none':
@@ -655,7 +655,6 @@ class Icon(AutotoolsPackage):
             # Note: flags needs to be a list
             var[f'ICON_{name}_FCFLAGS'] = [flags]
         return var
-
 
     @run_after('configure')
     def adjust_rttov_macro(self):
