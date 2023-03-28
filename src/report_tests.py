@@ -57,7 +57,8 @@ if __name__ == "__main__":
         all_tests_of_type_passed = True
         any_tests_of_type = False
         for file_name in sorted(
-                glob.glob(f'log/{machine_name()}/{test_type}_test/**/*.log', recursive=True)):
+                glob.glob(f'log/{machine_name()}/{test_type}_test/**/*.log',
+                          recursive=True)):
             any_tests_ran_on_machine = True
             any_tests_of_type = True
             with open(file_name, 'r') as file:
