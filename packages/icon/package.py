@@ -1,9 +1,19 @@
-import os, subprocess, glob
+import os, subprocess, glob, re
 from collections import defaultdict
 
 from llnl.util import lang, filesystem, tty
 from spack.util.environment import is_system_path, dump_environment
 from spack.util.executable import which_string, which
+
+
+def check_variant_fcgroup(fcgroup):
+    pattern = re.compile(r"^[A-Z]+;.+;.")
+    # fcgroup is False as default
+    if pattern.match(fcgroup) or fcgroup == 'none':
+        return True
+    else:
+        tty.warn('Variant fcgroup needs format GROUP;files;flag')
+        return False
 
 
 class Icon(AutotoolsPackage):
@@ -136,6 +146,15 @@ class Icon(AutotoolsPackage):
     variant('nccl',
             default=False,
             description='Ennable NCCL for communication')
+
+    variant(
+        'fcgroup',
+        default='none',
+        multi=True,
+        values=check_variant_fcgroup,
+        description=
+        'Create a Fortran compile group: GROUP;files;flag \nNote: flag can only be one single value, i.e. -O1'
+    )
 
     # C2SM specific Features:
     variant(
@@ -552,6 +571,12 @@ class Icon(AutotoolsPackage):
         if '+infero' in self.spec:
             libs += self.spec['infero'].libs
 
+        fcgroup = self.spec.variants['fcgroup'].value
+        # ('none',) is the values spack assign if fcgroup is not set
+        if fcgroup != ('none', ):
+            config_args.extend(self.fcgroup_to_config_arg())
+            config_vars.update(self.fcgroup_to_config_var())
+
         claw = self.spec.variants['claw'].value
         if claw == 'none':
             config_args.append('--disable-claw')
@@ -618,6 +643,23 @@ class Icon(AutotoolsPackage):
         ])
 
         return config_args
+
+    def fcgroup_to_config_arg(self):
+        arg = []
+        for group in self.spec.variants['fcgroup'].value:
+            name = group.split(';')[0]
+            files = group.split(';')[1]
+            arg.append(f'--enable-fcgroup-{name}={files}')
+        return arg
+
+    def fcgroup_to_config_var(self):
+        var = {}
+        for group in self.spec.variants['fcgroup'].value:
+            name = group.split(';')[0]
+            flag = group.split(';')[2]
+            # Note: flag needs to be a list
+            var[f'ICON_{name}_FCFLAGS'] = [flag]
+        return var
 
     @run_after('configure')
     def adjust_rttov_macro(self):
