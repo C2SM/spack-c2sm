@@ -107,7 +107,7 @@ Example to build ICON for CPU with NVHPC:
     $ spack install
 
 ..  attention::
-    Spack will skip the configure phase in case ``icon.mk`` is found. In case you
+    Spack will skip the configure phase if ``icon.mk`` is found. In case you
     need to reconfigure you can either delete the file or run ``make distclean``.
 
 Out-of-source builds are possible as follows:
