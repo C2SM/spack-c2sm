@@ -115,6 +115,7 @@ Out-of-source builds are possible as follows:
     $ spack env activate -p -d config/cscs/spack/v0.18.1.1/daint_cpu_nvhpc
     $ spack install
 
+This is an experimental feature:
 ..  attention::
     Out-of-source build for AutotoolsPackages is not supported by Spack.
     The implementation for ICON relies on some hacks inside package.py and
