@@ -164,6 +164,11 @@ For ICON, they are located in <code class="docutils literal notranslate"><span c
 <span class="gp">$ </span>spack install
 </pre></div>
 </div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Spack will skip the configure phase in case <code class="docutils literal notranslate"><span class="pre">icon.mk</span></code> is found. In case you
+need to reconfigure you can either delete the file or run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">distclean</span></code>.</p>
+</div>
 <p>Out-of-source builds are possible as follows:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir cpu <span class="o">&amp;&amp;</span> <span class="nb">cd</span> cpu
 <span class="gp">$ </span>cp -r ../config .
