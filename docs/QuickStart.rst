@@ -106,6 +106,18 @@ Example to build ICON for CPU with NVHPC:
     $ spack env activate -p -d config/cscs/spack/v0.18.1.1/daint_cpu_nvhpc
     $ spack install
 
+Out-of-source builds are possible as follows:
+ .. code-block:: console
+    $ mkdir cpu && cd cpu
+    $ cp -r ../config .
+    $ spack env activate -p -d config/cscs/spack/v0.18.1.1/daint_cpu_nvhpc
+    $ spack install
+
+..  attention::
+    Out-of-source build for AutotoolsPackages is not supported by Spack.
+    The implementation for ICON relies on some hacks inside package.py and
+    only works if the build-folder is located inside the Git repo of ICON.
+    
 
 COSMO
 -----
