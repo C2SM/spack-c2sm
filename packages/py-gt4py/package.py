@@ -23,7 +23,7 @@ class PyGt4py(PythonPackage):
     # Build dependencies
     depends_on('py-wheel', type='build')
     depends_on('py-cython', type='build')
-    depends_on('py-setuptools@60.6.0', type='build')
+    depends_on('py-setuptools@65.5.0', type='build')
 
     depends_on('cmake@3.22:', type=('build', 'run'))
     depends_on('boost@1.65.1:', type=('build', 'run'))
@@ -46,7 +46,7 @@ class PyGt4py(PythonPackage):
     depends_on('py-mako@1.1:', type=('build', 'run'))
     depends_on('py-networkx@2.4:', type=('build', 'run'))
     depends_on('py-ninja@1.10.2:', type=('build', 'run'))
-    depends_on('py-numpy@1.22.2: +blas +lapack', type=('build', 'run'))
+    depends_on('py-numpy@1.24.2: +blas +lapack', type=('build', 'run'))
     depends_on('py-packaging@20.0:', type=('build', 'run'))
     depends_on('py-pybind11@2.5:', type=('build', 'run'))
     depends_on('py-scipy@1.4:', type=('build', 'run'))

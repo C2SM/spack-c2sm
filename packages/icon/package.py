@@ -260,6 +260,7 @@ class Icon(AutotoolsPackage):
             for d in link_dirs:
                 env.append_path('SPACK_COMPILER_IMPLICIT_RPATHS', d)
 
+        env.set("CUDAARCHS", self.spec.variants['gpu'].value)
         env.set("Boost_INCLUDE_DIR", self.spec['boost'].prefix.include)
 
     @run_before('configure')
