@@ -9,7 +9,7 @@ To set up a Spack instance, clone the repository
 
 .. code-block:: console
 
-  $ git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.18.1.1 https://github.com/C2SM/spack-c2sm.git
+  $ git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.18.1.2 https://github.com/C2SM/spack-c2sm.git
 
 To load it into your command line, execute
 
