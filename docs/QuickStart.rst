@@ -107,7 +107,8 @@ Example to build ICON for CPU with NVHPC:
     $ spack install
 
 Out-of-source builds are possible as follows:
- .. code-block:: console
+
+.. code-block:: console
     $ mkdir cpu && cd cpu
     $ cp -r ../config .
     $ spack env activate -p -d config/cscs/spack/v0.18.1.1/daint_cpu_nvhpc
