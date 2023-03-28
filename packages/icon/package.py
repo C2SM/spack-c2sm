@@ -147,12 +147,14 @@ class Icon(AutotoolsPackage):
             default=False,
             description='Ennable NCCL for communication')
 
-    variant('fcgroup',
-            default='none',
-            multi=True,
-            values=check_variant_fcgroup,
-            description=
-            'Create a Fortran compile group: GROUP;files;flag \nNote: flag can only be one single value, i.e. -O1')
+    variant(
+        'fcgroup',
+        default='none',
+        multi=True,
+        values=check_variant_fcgroup,
+        description=
+        'Create a Fortran compile group: GROUP;files;flag \nNote: flag can only be one single value, i.e. -O1'
+    )
 
     # C2SM specific Features:
     variant(
