@@ -67,7 +67,7 @@ packages:
     externals:
     - spec: cuda@11.2%nvhpc@22.5
       modules:
-      - cudatoolkit/21.3_11.2
+      - cudatoolkit/11.2.0_3.39-2.1__gf93aa1c
     - spec: cuda@11.0%gcc
       modules:
       - cudatoolkit/11.0.2_3.38-8.1__g5b73779
