@@ -43,7 +43,8 @@ def spack_install_and_test(spec: str,
         'test_', '')
     class_name = inspect.currentframe().f_back.f_locals.get(
         'self', None).__class__.__name__.replace('Test', '')
-    log_filename = sanitized_filename(class_name + '-' + func_name)
+    if log_filename is not None:
+        log_filename = sanitized_filename(class_name + '-' + func_name)
 
     if spec.startswith('cosmo '):
         command = 'installcosmo'
@@ -84,7 +85,8 @@ def spack_devbuild_and_test(spec: str,
         'test_', '')
     class_name = inspect.currentframe().f_back.f_locals.get(
         'self', None).__class__.__name__.replace('Test', '')
-    log_filename = sanitized_filename(class_name + '-' + func_name)
+    if log_filename is not None:
+        log_filename = sanitized_filename(class_name + '-' + func_name)
 
     if spec.startswith('cosmo '):
         command = 'devbuildcosmo'
