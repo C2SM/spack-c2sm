@@ -126,6 +126,7 @@ compilers:
       fflags: -lnvcpumath -lnvhpcatm
     modules:
     - PrgEnv-nvidia
+    - cdt-cuda/22.9
     - nvidia/22.5
     environment:
       set:

@@ -243,6 +243,7 @@ class Icon(AutotoolsPackage):
                         backup=False)
 
     def setup_build_environment(self, env):
+        #env.prepend_path('PKG_CONFIG_PATH', '/usr/local/cuda-11.2/11.2.0_3.39-2.1__gf93aa1c/lib64/pkgconfig')
         if '+cuda-gcc' in self.spec:
             # Make sure that the compiler in use adds an RPATH entry for the
             # directory containing the C++ standard library of the CUDA host
