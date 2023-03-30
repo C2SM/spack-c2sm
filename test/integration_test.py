@@ -14,10 +14,9 @@ from src import machine_name, log_with_spack, sanitized_filename
 def spack_info(spec: str, log_filename: str = None):
     """
     Tests 'spack info' of the given spec and writes the output into the log file.
-    If log_filename is None, spec is used to create one.
     """
 
-    if log_filename is not None:
+    if log_filename is None:
         log_filename = sanitized_filename(f'{spec}-spack_info')
     ret = log_with_spack(f'spack info {spec}', 'integration_test',
                          log_filename)
@@ -26,10 +25,9 @@ def spack_info(spec: str, log_filename: str = None):
 def spack_spec(spec: str, log_filename: str = None):
     """
     Tests 'spack info' of the given spec and writes the output into the log file.
-    If log_filename is None, spec is used to create one.
     """
 
-    if log_filename is not None:
+    if log_filename is None:
         log_filename = sanitized_filename(f'{spec}-spack_spec')
     ret = log_with_spack(f'spack spec {spec}', 'integration_test',
                          log_filename)
