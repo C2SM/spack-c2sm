@@ -36,14 +36,14 @@ def spack_install_and_test(spec: str,
                            split_phases=False):
     """
     Tests 'spack install' of the given spec and writes the output into the log file.
-    If log_filename is None, spec is used to create one.
     """
 
     func_name = inspect.currentframe().f_back.f_code.co_name.replace(
         'test_', '')
     class_name = inspect.currentframe().f_back.f_locals.get(
         'self', None).__class__.__name__.replace('Test', '')
-    log_filename = sanitized_filename(class_name + '-' + func_name)
+    if log_filename is None:
+        log_filename = sanitized_filename(class_name + '-' + func_name)
 
     if spec.startswith('cosmo '):
         command = 'installcosmo'
@@ -77,14 +77,14 @@ def spack_devbuild_and_test(spec: str,
                             split_phases=False):
     """
     Tests 'spack dev-build' of the given spec and writes the output into the log file.
-    If log_filename is None, spec is used to create one.
     """
 
     func_name = inspect.currentframe().f_back.f_code.co_name.replace(
         'test_', '')
     class_name = inspect.currentframe().f_back.f_locals.get(
         'self', None).__class__.__name__.replace('Test', '')
-    log_filename = sanitized_filename(class_name + '-' + func_name)
+    if log_filename is None:
+        log_filename = sanitized_filename(class_name + '-' + func_name)
 
     if spec.startswith('cosmo '):
         command = 'devbuildcosmo'
@@ -152,7 +152,7 @@ def spack_env_dev_install_and_test(spack_env: str,
 mpi: str = {
     'daint': 'mpich',
     'tsa': 'openmpi',
-    'balfrin': 'cray-mpich-binary',
+    'balfrin': 'cray-mpich',
 }[machine_name()]
 
 nvidia_compiler: str = {

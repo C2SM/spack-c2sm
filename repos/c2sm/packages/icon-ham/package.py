@@ -1,5 +1,5 @@
 from spack import *
-from spack.pkg.mch.icon import Icon
+from spack.pkg.c2sm.icon import Icon
 
 
 class IconHam(Icon):
