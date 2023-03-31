@@ -54,7 +54,7 @@ if __name__ == "__main__":
          'timed out after 5 seconds'),
     ]
 
-    comment = Markdown.header(machine_name(), level=3)
+    report = Markdown.header(machine_name(), level=3)
     any_tests_ran_on_machine = False
     for test_type in ['unit', 'integration', 'system']:
         table.clear()
@@ -83,13 +83,13 @@ if __name__ == "__main__":
                 icon = ':green_circle:'
             else:
                 icon = ':red_circle:'
-            comment += HTML.collapsible(f'{icon} {test_type} test', table)
+            report += HTML.collapsible(f'{icon} {test_type} test', table)
 
         if test_type == 'system' and not os.path.isfile(
                 f'log/{machine_name()}/system_test/serial_test_run'):
-            comment += '\n\n**WARNING**: Serial tests did not run for system tests'
+            report += '\n\n**WARNING**: Serial tests did not run for system tests'
 
     if not any_tests_ran_on_machine:
-        comment += f'No tests executed.'
+        report += f'No tests executed.'
 
-    repo.comment(args.issue_id, comment)
+    repo.comment(args.issue_id, report)
