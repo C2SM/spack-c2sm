@@ -303,8 +303,9 @@ class Icon(AutotoolsPackage):
 
         if self.compiler.name == 'intel':
             if self.spec.satisfies('%intel@17:17.0.2+ocean+openmp'):
-                file_flags.append(('src/hamocc/common/mo_sedmnt_diffusion.f90',
-                                   '$(ICON_OCEAN_FCFLAGS) $(make_FCFLAGS) -O1'))
+                file_flags.append(
+                    ('src/hamocc/common/mo_sedmnt_diffusion.f90',
+                     '$(ICON_OCEAN_FCFLAGS) $(make_FCFLAGS) -O1'))
         elif self.compiler.name in ['pgi', 'nvhpc']:
             if '+emvorado' in self.spec:
                 file_flags.append(
