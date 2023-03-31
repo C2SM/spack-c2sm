@@ -152,7 +152,7 @@ def spack_env_dev_install_and_test(spack_env: str,
 mpi: str = {
     'daint': 'mpich',
     'tsa': 'openmpi',
-    'balfrin': 'cray-mpich-binary',
+    'balfrin': 'cray-mpich',
 }[machine_name()]
 
 nvidia_compiler: str = {
