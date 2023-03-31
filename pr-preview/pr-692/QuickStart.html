@@ -94,7 +94,7 @@
 <section id="at-cscs-daint-tsa-balfrin">
 <h2>At CSCS (Daint, Tsa, Balfrin)<a class="headerlink" href="#at-cscs-daint-tsa-balfrin" title="Permalink to this heading"></a></h2>
 <p>To set up a Spack instance, clone the repository</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b v0.18.1.1 https://github.com/C2SM/spack-c2sm.git
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b v0.18.1.2 https://github.com/C2SM/spack-c2sm.git
 </pre></div>
 </div>
 <p>To load it into your command line, execute</p>
@@ -163,6 +163,24 @@ For ICON, they are located in <code class="docutils literal notranslate"><span c
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack env activate -p -d config/cscs/spack/v0.18.1.1/daint_cpu_nvhpc
 <span class="gp">$ </span>spack install
 </pre></div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Spack will skip the configure phase if <code class="docutils literal notranslate"><span class="pre">icon.mk</span></code> is found. In case you
+need to reconfigure you can either delete the file or run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">distclean</span></code>.</p>
+</div>
+<p>Out-of-source builds are possible as follows:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir cpu <span class="o">&amp;&amp;</span> <span class="nb">cd</span> cpu
+<span class="gp">$ </span>cp -r ../config .
+<span class="gp">$ </span>spack env activate -p -d config/cscs/spack/v0.18.1.1/daint_cpu_nvhpc
+<span class="gp">$ </span>spack install
+</pre></div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Out-of-source build for AutotoolsPackages is not supported by Spack.
+The implementation for ICON relies on some hacks inside package.py and
+only works if the build-folder is located inside the Git repo of ICON.</p>
 </div>
 </section>
 <section id="cosmo">
