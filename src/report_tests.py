@@ -16,7 +16,7 @@ class ResultTable:
     def append(self, status: str, log_file: str, comment: str = '') -> None:
         link = HTML.link(Path(log_file).stem, self.artifact_path + log_file)
         self.body.append([status, f'{link} {comment}'])
-    
+
     def clear(self) -> None:
         self.body = []
 
