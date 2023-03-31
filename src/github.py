@@ -46,10 +46,41 @@ class Markdown:
         return f'```{language}\n{code}\n```'
 
     @staticmethod
-    def table(data) -> str:
-        return '\n'.join(
-            ' | '.join(str(cell) for cell in row)
-            for row in [data[0], ['---' for d in data[0]], *data[1:]])
+    def table(head, body) -> str:
+        data = [head, ['---'] * len(head)] + body
+        return '\n'.join(' | '.join(row) for row in data)
+
+    @staticmethod
+    def header(text: str, level: int = 1) -> str:
+        if (level < 1) or (level > 6):
+            raise Exception('Invalid header level')
+        return ('#' * level + ' ' + text + '\n')
+
+
+class HTML:
+
+    @staticmethod
+    def link(text: str, url: str) -> str:
+        return f'<a href="{url}">{text}</a>'
+
+    @staticmethod
+    def table(head, body) -> str:
+        table = '<table>'
+        table += '<thead>'
+        table += '<tr>'
+        for cell in head:
+            table += f'<th>{cell}</th>'
+        table += '</tr>'
+        table += '</thead>'
+        table += '<tbody>'
+        for row in body:
+            table += '<tr>'
+            for cell in row:
+                table += f'<td>{cell}</td>'
+            table += '</tr>'
+        table += '</tbody>'
+        table += '</table>'
+        return table
 
     @staticmethod
     def collapsible(summary: str, details: str) -> str:

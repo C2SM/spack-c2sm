@@ -1,21 +1,24 @@
 import os
 import argparse
 import glob
-from github import GitHubRepo, Markdown
+from pathlib import Path
+from github import GitHubRepo, Markdown, HTML
 from machine import machine_name
 
-spack_c2sm_path = os.path.dirname(os.path.realpath(__file__)) + '/..'
 
-
-class ResultList:
+class ResultTable:
 
     def __init__(self, artifact_path: str) -> None:
         self.artifact_path = artifact_path
-        self.text = ''
+        self.head = ['', 'Test']
+        self.body = []
 
-    def append(self, status: str, test: str, comment: str = '') -> None:
-        link = Markdown.link(test, self.artifact_path + test)
-        self.text += f'{status} {link} {comment}\n'
+    def append(self, status: str, log_file: str, comment: str = '') -> None:
+        link = HTML.link(Path(log_file).stem, self.artifact_path + log_file)
+        self.body.append([status, f'{link} {comment}'])
+
+    def __str__(self) -> str:
+        return HTML.table(self.head, self.body)
 
 
 if __name__ == "__main__":
@@ -28,43 +31,61 @@ if __name__ == "__main__":
     repo = GitHubRepo(group='c2sm',
                       repo='spack-c2sm',
                       auth_token=args.auth_token)
-    summary = ResultList(
-        f'https://jenkins-mch.cscs.ch/job/Spack/job/spack_PR/{args.build_id}/artifact/log/'
+    table = ResultTable(
+        f'https://jenkins-mch.cscs.ch/job/Spack/job/spack_PR/{args.build_id}/artifact/'
     )
 
-    # Trigger phrases that cause a test to get a yellow circle
-    yellow_triggers = [
-        'timed out after 5 seconds',
+    # Trigger phrases that cause a test to get a special icon and comment.
+    # List[(trigger, icon, comment)]
+    triggers = [
+        ('AssertionError exception when releasing read lock', ':lock:',
+         'spack locking problem'),
+        ('Timed out waiting for a write lock', ':lock:',
+         'spack write lock problem'),
+        ('Timed out waiting for a read lock', ':lock:',
+         'spack read lock problem'),
+        ('gzip: stdin: decompression OK, trailing garbage ignored',
+         ':wastebasket:', 'spack cached archive problem'),
+        ('DUE TO TIME LIMIT', ':hourglass:', 'slurm time limit'),
+        ('timed out after 5 seconds', ':yellow_circle:',
+         'timed out after 5 seconds'),
     ]
 
-    for file_name in sorted(glob.glob('log/**/*.log', recursive=True)):
-        test_name = file_name.lstrip('log/')
-        with open(file_name, 'r') as file:
-            content = file.read()
-            if content.endswith('OK\n'):
-                summary.append(':green_circle:', test_name)
-            elif 'AssertionError exception when releasing read lock' in content:
-                summary.append(':lock:', test_name, 'spack locking problem')
-            elif 'Timed out waiting for a write lock' in content:
-                summary.append(':lock:', test_name, 'spack write lock problem')
-            elif 'Timed out waiting for a read lock' in content:
-                summary.append(':lock:', test_name, 'spack read lock problem')
-            elif 'gzip: stdin: decompression OK, trailing garbage ignored' in content:
-                summary.append(':wastebasket:', test_name,
-                               'spack cached archive problem')
-            elif 'DUE TO TIME LIMIT' in content:
-                summary.append(':hourglass:', test_name, 'slurm time limit')
-            else:
-                for trigger in yellow_triggers:
-                    if trigger in content:
-                        summary.append(':yellow_circle:', test_name, trigger)
-                        break
+    comment = Markdown.header(machine_name(), level=3)
+    any_tests_ran_on_machine = False
+    for test_type in ['unit', 'integration', 'system']:
+        all_tests_of_type_passed = True
+        any_tests_of_type = False
+        for file_name in sorted(
+                glob.glob(f'log/{machine_name()}/{test_type}_test/**/*.log',
+                          recursive=True)):
+            any_tests_ran_on_machine = True
+            any_tests_of_type = True
+            with open(file_name, 'r') as file:
+                content = file.read()
+                if content.endswith('OK\n'):
+                    table.append(':green_circle:', file_name)
                 else:
-                    summary.append(':red_circle:', test_name)
+                    all_tests_of_type_passed = False
+                    for trigger, icon, comment in triggers:
+                        if trigger in content:
+                            table.append(icon, file_name, comment)
+                            break
+                    else:
+                        table.append(':red_circle:', file_name)
 
-    if summary.text == '':
-        comment = f'No tests ran on {machine_name()}.'
-    else:
-        comment = summary.text
+        if any_tests_of_type:
+            if all_tests_of_type_passed:
+                icon = ':green_circle:'
+            else:
+                icon = ':red_circle:'
+            comment += HTML.collapsible(f'{icon} {test_type} test', table)
+
+        if test_type == 'system' and not os.path.isfile(
+                f'log/{machine_name()}/system_test/serial_test_run'):
+            comment += '\n\n**WARNING**: Serial tests did not run for system tests'
+
+    if not any_tests_ran_on_machine:
+        comment += f'No tests executed.'
 
     repo.comment(args.issue_id, comment)
