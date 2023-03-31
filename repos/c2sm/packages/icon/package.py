@@ -303,26 +303,27 @@ class Icon(AutotoolsPackage):
 
         if self.compiler.name == 'intel':
             if self.spec.satisfies('%intel@17:17.0.2+ocean+openmp'):
-                file_flags.append(('src/hamocc/common/mo_sedmnt_diffusion.f90',
-                                   '$(ICON_OCEAN_FCFLAGS) -O1'))
+                file_flags.append(
+                    ('src/hamocc/common/mo_sedmnt_diffusion.f90',
+                     '$(ICON_OCEAN_FCFLAGS) $(make_FCFLAGS) -O1'))
         elif self.compiler.name in ['pgi', 'nvhpc']:
             if '+emvorado' in self.spec:
                 file_flags.append(
                     ('src/data_assimilation/interfaces/radar_interface.f90',
-                     '$(ICON_FCFLAGS) -O1'))
+                     '$(ICON_FCFLAGS) $(make_FCFLAGS) -O1'))
         elif self.compiler.name == 'cce':
             if self.compiler.version == ver('12.0.2'):
                 file_flags.append(
                     ('src/parallel_infrastructure/mo_setup_subdivision.f90',
-                     '$(ICON_FCFLAGS) -O0'))
+                     '$(ICON_FCFLAGS) $(make_FCFLAGS) -O0'))
             elif self.compiler.version == ver('13.0.0'):
                 file_flags.append(
                     ('src/parallel_infrastructure/mo_extents.f90',
-                     '$(ICON_FCFLAGS) -O0'))
+                     '$(ICON_FCFLAGS) $(make_FCFLAGS) -O0'))
             if '+jsbach' in self.spec:
                 file_flags.append(
                     ('externals/jsbach/src/base/mo_jsb_process_factory.f90',
-                     '$(ICON_FCFLAGS) -O0'))
+                     '$(ICON_FCFLAGS) $(make_FCFLAGS) -O0'))
 
         if not file_flags:
             return
