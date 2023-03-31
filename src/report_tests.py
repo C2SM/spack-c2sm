@@ -16,6 +16,9 @@ class ResultTable:
     def append(self, status: str, log_file: str, comment: str = '') -> None:
         link = HTML.link(Path(log_file).stem, self.artifact_path + log_file)
         self.body.append([status, f'{link} {comment}'])
+    
+    def clear(self) -> None:
+        self.body = []
 
     def __str__(self) -> str:
         return HTML.table(self.head, self.body)
@@ -54,6 +57,7 @@ if __name__ == "__main__":
     comment = Markdown.header(machine_name(), level=3)
     any_tests_ran_on_machine = False
     for test_type in ['unit', 'integration', 'system']:
+        table.clear()
         all_tests_of_type_passed = True
         any_tests_of_type = False
         for file_name in sorted(
