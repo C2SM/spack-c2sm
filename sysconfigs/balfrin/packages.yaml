@@ -1,7 +1,7 @@
 packages:
   all:
     providers:
-      mpi: [cray-mpich-binary]
+      mpi: [cray-mpich]
   cosmo: # manually added
     variants: slave=balfrin cuda_arch=80 slurm_bin= "srun" slurm_partition="debug" slurm_opt_nodes= "-n" slurm_nodes= "1" slurm_opt_account= "-" slurm_account="-" slurm_opt_constraint= "-" slurm_constraint= "-"
   cosmo-dycore: # manually added
