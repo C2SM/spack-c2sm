@@ -7,6 +7,7 @@ Spack is the package manager used by C2SM and MeteoSwiss to install and deploy s
 
 **Infos about c2sm-supported software and machines**
   * [spack-c2sm latest](https://C2SM.github.io/spack-c2sm/latest)
+  * [spack-c2sm v0.18.1.3](https://C2SM.github.io/spack-c2sm/v0.18.1.3)
   * [spack-c2sm v0.18.1.2](https://C2SM.github.io/spack-c2sm/v0.18.1.2)
   * [spack-c2sm v0.18.1.1](https://C2SM.github.io/spack-c2sm/v0.18.1.1)
   
@@ -18,7 +19,7 @@ With spack v0.18 we suggest local/individual spack instances and the use of spac
 
 A user clones the spack repo
 ```bash
-git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.18.1.2 https://github.com/C2SM/spack-c2sm.git
+git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.18.1.3 https://github.com/C2SM/spack-c2sm.git
 ```
 gets spack in the command line
 ```bash
