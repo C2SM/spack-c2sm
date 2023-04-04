@@ -617,8 +617,7 @@ class Icon(AutotoolsPackage):
 
             config_vars['NVCFLAGS'].extend([
                 '-ccbin {0}'.format(cuda_host_compiler), '-g', '-O3',
-                '-arch=sm_{0}'.format(gpu),
-                '-allow-unsupported-compiler'
+                '-arch=sm_{0}'.format(gpu), '-allow-unsupported-compiler'
             ])
             # cuda_host_compiler_stdcxx_libs might contain compiler-specific
             # flags (i.e. not the linker -l<library> flags), therefore we put
