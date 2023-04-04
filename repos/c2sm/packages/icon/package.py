@@ -1,9 +1,19 @@
-import os, subprocess
+import os, subprocess, glob, re
 from collections import defaultdict
 
 from llnl.util import lang, filesystem, tty
 from spack.util.environment import is_system_path, dump_environment
-from spack.util.executable import which_string
+from spack.util.executable import which_string, which
+
+
+def check_variant_fcgroup(fcgroup):
+    pattern = re.compile(r"^[A-Z]+;.+;.")
+    # fcgroup is False as default
+    if pattern.match(fcgroup) or fcgroup == 'none':
+        return True
+    else:
+        tty.warn('Variant fcgroup needs format GROUP;files;flag')
+        return False
 
 
 class Icon(AutotoolsPackage):
@@ -35,9 +45,22 @@ class Icon(AutotoolsPackage):
     variant('atmo',
             default=True,
             description='Enable the atmosphere component')
+    variant('edmf',
+            default=True,
+            description='Enable the EDMF turbulence component')  #
+    variant('les',
+            default=True,
+            description='Enable the Large-Eddy Simulation component')  #
+    variant('upatmo',
+            default=True,
+            description='Enable the upper atmosphere component')  #
     variant('ocean', default=True, description='Enable the ocean component')
     variant('jsbach', default=True, description='Enable the land component')
+    variant('waves',
+            default=False,
+            description='Enable the surface wave component')  #
     variant('coupling', default=True, description='Enable the coupling')
+    variant('aes', default=True, description='Enable the AES physics package')
     variant('ecrad',
             default=False,
             description='Enable usage of the ECMWF radiation scheme')
@@ -63,6 +86,12 @@ class Icon(AutotoolsPackage):
     variant('mpi',
             default=True,
             description='Enable MPI (parallelization) support')
+    variant(
+        'active-target-sync',
+        default=False,
+        description=
+        'Enable MPI active target mode (otherwise, passive target mode is used)'
+    )
     variant('openmp', default=False, description='Enable OpenMP support')
 
     # https://en.wikipedia.org/wiki/CUDA#GPUs_supported
@@ -118,6 +147,15 @@ class Icon(AutotoolsPackage):
             default=False,
             description='Ennable NCCL for communication')
 
+    variant(
+        'fcgroup',
+        default='none',
+        multi=True,
+        values=check_variant_fcgroup,
+        description=
+        'Create a Fortran compile group: GROUP;files;flag \nNote: flag can only be one single value, i.e. -O1'
+    )
+
     # C2SM specific Features:
     variant(
         'infero',
@@ -146,10 +184,6 @@ class Icon(AutotoolsPackage):
     depends_on('libcdi-pio+fortran+netcdf', when='+cdi-pio')
     depends_on('libcdi-pio grib2=eccodes', when='+cdi-pio+grib2')
     depends_on('libcdi-pio+mpi', when='+cdi-pio+mpi')
-
-    # needed to mimick BB in test.py
-    # only available in icon-exclaim so far
-    depends_on('cdo', when='@exclaim-master,exclaim-test')
 
     depends_on('eccodes +fortran', when='+emvorado')
     depends_on('eccodes', when='+grib2 ~cdi-pio')
@@ -189,6 +223,10 @@ class Icon(AutotoolsPackage):
 
     conflicts('+dace', when='~mpi')
     conflicts('+emvorado', when='~mpi')
+
+    # Flag to mark if we build out-of-source
+    # Needed to trigger sync of input files for experiments
+    out_of_source_build = False
 
     # patch_libtool is a function from Autotoolspackage.
     # For BB we cannot use it because it finds all files
@@ -266,26 +304,27 @@ class Icon(AutotoolsPackage):
 
         if self.compiler.name == 'intel':
             if self.spec.satisfies('%intel@17:17.0.2+ocean+openmp'):
-                file_flags.append(('src/hamocc/common/mo_sedmnt_diffusion.f90',
-                                   '$(ICON_OCEAN_FCFLAGS) -O1'))
+                file_flags.append(
+                    ('src/hamocc/common/mo_sedmnt_diffusion.f90',
+                     '$(ICON_OCEAN_FCFLAGS) $(make_FCFLAGS) -O1'))
         elif self.compiler.name in ['pgi', 'nvhpc']:
             if '+emvorado' in self.spec:
                 file_flags.append(
                     ('src/data_assimilation/interfaces/radar_interface.f90',
-                     '$(ICON_FCFLAGS) -O1'))
+                     '$(ICON_FCFLAGS) $(make_FCFLAGS) -O1'))
         elif self.compiler.name == 'cce':
             if self.compiler.version == ver('12.0.2'):
                 file_flags.append(
                     ('src/parallel_infrastructure/mo_setup_subdivision.f90',
-                     '$(ICON_FCFLAGS) -O0'))
+                     '$(ICON_FCFLAGS) $(make_FCFLAGS) -O0'))
             elif self.compiler.version == ver('13.0.0'):
                 file_flags.append(
                     ('src/parallel_infrastructure/mo_extents.f90',
-                     '$(ICON_FCFLAGS) -O0'))
+                     '$(ICON_FCFLAGS) $(make_FCFLAGS) -O0'))
             if '+jsbach' in self.spec:
                 file_flags.append(
                     ('externals/jsbach/src/base/mo_jsb_process_factory.f90',
-                     '$(ICON_FCFLAGS) -O0'))
+                     '$(ICON_FCFLAGS) $(make_FCFLAGS) -O0'))
 
         if not file_flags:
             return
@@ -314,9 +353,14 @@ class Icon(AutotoolsPackage):
 
         for x in [
                 'atmo',
+                'edmf',
+                'les',
+                'upatmo',
                 'ocean',
                 'jsbach',
+                'waves',
                 'coupling',
+                'aes',
                 'ecrad',
                 'rte-rrtmgp',
                 'rttov',
@@ -324,6 +368,7 @@ class Icon(AutotoolsPackage):
                 'emvorado',
                 'art',
                 'mpi',
+                'active-target-sync',
                 'openmp',
                 'grib2',
                 'parallel-netcdf',
@@ -350,10 +395,17 @@ class Icon(AutotoolsPackage):
             config_vars['ICON_CFLAGS'].append('-O3')
             config_vars['ICON_BUNDLED_CFLAGS'].append('-O2')
             config_vars['FCFLAGS'].extend([
-                '-g', '-fmodule-private', '-fimplicit-none',
-                '-fmax-identifier-length=63', '-Wall',
-                '-Wcharacter-truncation', '-Wconversion', '-Wunderflow',
-                '-Wunused-parameter', '-Wno-surprising', '-fall-intrinsics'
+                '-g',
+                '-fmodule-private',
+                '-fimplicit-none',
+                '-fmax-identifier-length=63',
+                '-Wall',
+                '-Wcharacter-truncation',
+                '-Wconversion',
+                '-Wunderflow',
+                '-Wunused-parameter',
+                '-Wno-surprising',
+                '-fall-intrinsics',
             ])
             config_vars['ICON_FCFLAGS'].extend([
                 '-O2', '-fbacktrace', '-fbounds-check',
@@ -424,7 +476,7 @@ class Icon(AutotoolsPackage):
             if gpu != 'none':
                 config_vars['FCFLAGS'].extend([
                     '-acc=verystrict', '-Minfo=accel,inline',
-                    '-ta=nvidia:cc{0}'.format(gpu)
+                    '-gpu=cc{0}'.format(gpu)
                 ])
                 config_vars['ICON_FCFLAGS'].append('-D__SWAPDIM')
         elif self.compiler.name == 'cce':
@@ -521,6 +573,12 @@ class Icon(AutotoolsPackage):
         if '+infero' in self.spec:
             libs += self.spec['infero'].libs
 
+        fcgroup = self.spec.variants['fcgroup'].value
+        # ('none',) is the values spack assign if fcgroup is not set
+        if fcgroup != ('none', ):
+            config_args.extend(self.fcgroup_to_config_arg())
+            config_vars.update(self.fcgroup_to_config_var())
+
         claw = self.spec.variants['claw'].value
         if claw == 'none':
             config_args.append('--disable-claw')
@@ -588,6 +646,23 @@ class Icon(AutotoolsPackage):
 
         return config_args
 
+    def fcgroup_to_config_arg(self):
+        arg = []
+        for group in self.spec.variants['fcgroup'].value:
+            name = group.split(';')[0]
+            files = group.split(';')[1]
+            arg.append(f'--enable-fcgroup-{name}={files}')
+        return arg
+
+    def fcgroup_to_config_var(self):
+        var = {}
+        for group in self.spec.variants['fcgroup'].value:
+            name = group.split(';')[0]
+            flag = group.split(';')[2]
+            # Note: flag needs to be a list
+            var[f'ICON_{name}_FCFLAGS'] = [flag]
+        return var
+
     @run_after('configure')
     def adjust_rttov_macro(self):
         if '+rttov' in self.spec:
@@ -615,6 +690,7 @@ class Icon(AutotoolsPackage):
     @run_before('install')
     @on_package_attributes(run_tests=True)
     def check(self):
+        # script needs cdo to work, but not listed as dep of ICON
         test_script = 'scripts/spack/test.py'
         if os.path.exists(test_script):
             test_py = Executable(test_script)
@@ -724,3 +800,106 @@ class Icon(AutotoolsPackage):
 
         from spack.compilers.gcc import Gcc
         return fc_name in Gcc.fc_names
+
+    @property
+    def build_directory(self):
+        """Overrides function from spack.build_system.autotools
+        
+        By default build_directory is identical as configure_directory
+        To enable out-of-source builds this is not the case anymore
+        """
+
+        return self.stage.source_path
+
+    @property
+    def configure_directory(self):
+        """Returns the directory where 'configure' resides.
+
+        Overides function from spack.build_systems.autotools
+
+        CAUTION: Does only work if Spack is inside the git-repo
+                 of ICON, otherwise "git rev-pars --show-toplevel"
+                 fails!
+
+        """
+
+        Git = which('git', required=True)
+        git_root = Git('rev-parse', '--show-toplevel',
+                       output=str).replace("\n", "")
+        if git_root != self.stage.source_path:
+            # mark out-of-source build for function
+            # copy_runscript_related_input_files
+            self.out_of_source_build = True
+            return git_root
+        else:
+            return self.stage.source_path
+
+    def configure(self, spec, prefix):
+        if os.path.exists(
+                os.path.join(self.build_directory,
+                             'icon.mk')) and self.build_uses_same_spec():
+            tty.warn(
+                'icon.mk already present -> skip configure stage',
+                '\t delete "icon.mk" or run "make distclean" to not skip configure'
+            )
+            return
+
+        # use configure provided by Spack
+        AutotoolsPackage.configure(self, spec, prefix)
+
+    def build_uses_same_spec(self):
+        """
+        Ensure that configure is rerun in case spec has changed,
+        otherwise for the case below
+
+            $ spack dev-build icon @develop gpu=none ~dace
+            $ spack dev-build icon @develop gpu=none +dace
+        
+        configure is skipped for the latter.
+        """
+
+        is_same_spec = False
+
+        previous_spec = os.path.join(self.build_directory,
+                                     '.previous_spec.yaml')
+
+        # not the first build in self.build_directory
+        if os.path.exists(previous_spec):
+            with open(previous_spec, mode='r') as f:
+                if self.spec == Spec.from_yaml(f):
+                    is_same_spec = True
+                else:
+                    is_same_spec = False
+                    tty.warn(
+                        'Cannot skip configure phase because spec changed')
+
+        # first build in self.build_directory, no worries
+        else:
+            is_same_spec = True
+
+        # dump spec of new build
+        with open(previous_spec, mode='w') as f:
+            f.write(self.spec.to_yaml())
+
+        return is_same_spec
+
+    @run_after('configure')
+    def copy_runscript_related_input_files(self):
+        if self.out_of_source_build:
+            with working_dir(self.build_directory):
+                Rsync = which('rsync', required=True)
+                icon_dir = self.configure_directory
+                Rsync("-uavz", f"{icon_dir}/run", ".", "--exclude=*.in",
+                      "--exclude=.*", "--exclude=standard_*")
+                Rsync("-uavz", f"{icon_dir}/externals", ".", "--exclude=.git",
+                      "--exclude=*.f90", "--exclude=*.F90", "--exclude=*.c",
+                      "--exclude=*.h", "--exclude=*.Po", "--exclude=tests",
+                      "--exclude=*.mod", "--exclude=*.o")
+                Rsync("-uavz", f"{icon_dir}/make_runscripts", ".")
+
+                Ln = which('ln', required=True)
+                dirs = glob.glob(f"{icon_dir}/run/standard_*")
+                for dir in dirs:
+                    Ln("-sf", "-t", "run/", f"{dir}")
+                Ln("-sf", f"{icon_dir}/data")
+                Ln("-sf", f"{icon_dir}/vertical_coord_tables")

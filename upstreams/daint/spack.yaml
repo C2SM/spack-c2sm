@@ -26,4 +26,4 @@ spack:
   view: false
   config:
     install_tree:
-      root: /project/g110/spack/upstream/daint_v0.18.1.1
+      root: /project/g110/spack/upstream/daint_v0.18.1.2
