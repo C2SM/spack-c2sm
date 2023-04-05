@@ -8,9 +8,9 @@ Documentations: [spack-C2SM](https://C2SM.github.io/spack-c2sm/), [spack](https:
 ## Workflow
 With spack v0.18 we suggest local/individual spack instances and the use of spack environments.
 
-A user clones the spack repo
+A user clones the spack repot
 ```bash
-git clone --depth 1 --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
+git clone --depth 1 --recurse-submodules --shallow-submodules -b mch_env_3.p1 https://github.com/C2SM/spack-c2sm.git
 ```
 gets spack in the command line
 ```bash
@@ -48,7 +48,7 @@ and rebuild.
 ## Command cheat sheet
 |  | Command |
 | --- | --- |
-| Clone | `git clone --depth 1 --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git` |
+| Clone | `git clone --depth 1 --recurse-submodules --shallow-submodules -b mch_env_3.p1 https://github.com/C2SM/spack-c2sm.git` |
 | Load | `. spack-c2sm/setup-env.sh` autodetects machine <br>or<br>`. spack-c2sm/setup-env.sh <machine>` forces machine<br>or<br>`. spack-c2sm/setup-env.sh unknown` uses blank config<br>`spack compiler find` [autodetects compilers](https://spack.readthedocs.io/en/v0.18.1/command_index.html?highlight=spack%20load#spack-compiler-find)<br>`spack external find --all` [autodetects externally installed packages](https://spack.readthedocs.io/en/v0.18.1/command_index.html?highlight=spack%20load#spack-external-find)|
 | Update | `git pull`<br>`git submodule update --recursive` |
 | Clean | `spack uninstall -a` [uninstalls all packages](https://spack.readthedocs.io/en/v0.18.1/command_index.html?highlight=spack%20load#spack-uninstall)<br>`spack clean -a` [cleans all misc caches](https://spack.readthedocs.io/en/v0.18.1/command_index.html?highlight=spack%20load#spack-clean)<br>`rm -rf ~/.spack` removes user scope data |
