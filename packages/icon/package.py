@@ -8,15 +8,12 @@ import spack.error as error
 
 
 def validate_variant_dsl(pkg, name, value):
-    print("pkg is {0}, name: {1}, value is {2}".format(pkg, name, value))
     set_mutual_excl = set(['substitute', 'verify', 'serialize'])
     set_input_var = set(value)
     if len(set_mutual_excl.intersection(set_input_var)) > 1:
         raise error.SpecError(
             'Cannot have more than one of (substitute, verify, serialize) in the same build'
         )
-        #tty.warn('Cannot have more than one of (substitute, verify, serialize) in the same build')
-
 
 class Icon(AutotoolsPackage):
     """Icosahedral Nonhydrostatic Weather and Climate Model."""
