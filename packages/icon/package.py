@@ -4,6 +4,16 @@ from collections import defaultdict
 from llnl.util import lang, filesystem, tty
 from spack.util.environment import is_system_path, dump_environment
 from spack.util.executable import which_string
+import spack.error as error
+
+
+def validate_variant_dsl(pkg,name,value):
+    print("pkg is {0}, name: {1}, value is {2}".format(pkg,name,value))
+    set_mutual_excl=set(['substitute','verify','serialize'])
+    set_input_var=set(value)
+    if len(set_mutual_excl.intersection(set_input_var))>1:
+        raise error.SpecError('Cannot have more than one of (substitute, verify, serialize) in the same build')
+        #tty.warn('Cannot have more than one of (substitute, verify, serialize) in the same build')
 
 
 class Icon(AutotoolsPackage):
@@ -135,8 +145,13 @@ class Icon(AutotoolsPackage):
         description=
         'Enable extension of eccodes with center specific definition files')
 
-    depends_on('py-icon4py@main%gcc')
-    depends_on('gridtools@master%gcc')
+    # EXCLAIM-GT4Py specific features:
+    variant('dsl', default='none', validator=validate_variant_dsl,
+        values=('none','substitute','verify','serialize','fused','nvtx','lam'),
+        description='Build with GT4Py dynamical core', multi=True)
+
+    depends_on('py-icon4py', when='dsl'!='none')
+    depends_on('gridtools', when='dsl'!='none')
 
     depends_on('infero +quiet', when='+infero')
 
@@ -260,9 +275,11 @@ class Icon(AutotoolsPackage):
             for d in link_dirs:
                 env.append_path('SPACK_COMPILER_IMPLICIT_RPATHS', d)
 
-        env.set("CUDAARCHS", self.spec.variants['gpu'].value)
-        env.unset("CUDAHOSTCXX")
-        env.set("Boost_INCLUDE_DIR", self.spec['boost'].prefix.include)
+        if 'none' not in self.spec.variants['dsl'].value:
+            env.set("CUDAARCHS", self.spec.variants['gpu'].value)
+            env.unset("CUDAHOSTCXX")
+            env.set("Boost_INCLUDE_DIR", self.spec['boost'].prefix.include)
+
 
     @run_before('configure')
     def downgrade_opt_level(self):
@@ -545,6 +562,7 @@ class Icon(AutotoolsPackage):
                 config_vars['CLAWFLAGS'].append(
                     self.spec['libcdi-pio'].headers.include_flags)
 
+
         if gpu == 'none':
             config_args.append('--disable-gpu')
         else:
@@ -564,6 +582,9 @@ class Icon(AutotoolsPackage):
                     for d in self._get_cuda_ccbin_link_paths(gcc, 'libstdc++')
                 ]
                 cuda_host_compiler_stdcxx_libs.append('-lstdc++')
+                config_vars['NVCFLAGS'].extend([
+                        '-ccbin {0}'.format(cuda_host_compiler)])
+
             else:
                 cuda_host_compiler = self.compiler.cxx
                 cuda_host_compiler_stdcxx_libs = self.compiler.stdcxx_libs
@@ -575,12 +596,29 @@ class Icon(AutotoolsPackage):
             # the value to the config_flags directly.
             config_vars['LIBS'].extend(cuda_host_compiler_stdcxx_libs)
 
+        dsl = self.spec.variants['dsl'].value
+        if dsl != 'none':
+            tty.warn('values of dsl:::: {}'.format(dsl))
+            if 'substitute' in dsl: 
+                config_args.append('--enable-liskov=substitute')
+            elif 'verify' in dsl: 
+                config_args.append('--enable-liskov=verify')
+            elif 'serialize' in dsl: 
+                raise error.UnsupportedPlatformError('serialize mode is not supported yet by icon-liskov')
+            
+
+            if 'lam' in dsl: 
+                config_args.append('--enable-dsl-local')
+            if 'nvtx' in dsl: 
+                config_args.append('--enable-nvtx')
+            if 'fused' in dsl: 
+                raise error.UnsupportedPlatformError('liskov does not support fusing just yet')
+
             config_vars['LOC_GT4PY'].append(self.spec['py-gt4py'].prefix)
             config_vars['LOC_ICON4PY'].append(
                 os.path.join(self.spec['py-icon4py'].prefix,
                              'lib/python3.10/site-packages/icon4py'))
             config_vars['LOC_GRIDTOOLS'].append(self.spec['gridtools'].prefix)
-
             config_vars['GT4PYNVCFLAGS'] = config_vars['NVCFLAGS']
 
         # Finalize the LIBS variable (we always put the real collected
