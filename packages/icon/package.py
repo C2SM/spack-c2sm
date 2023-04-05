@@ -15,6 +15,7 @@ def validate_variant_dsl(pkg, name, value):
             'Cannot have more than one of (substitute, verify, serialize) in the same build'
         )
 
+
 class Icon(AutotoolsPackage):
     """Icosahedral Nonhydrostatic Weather and Climate Model."""
 
