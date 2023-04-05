@@ -12,6 +12,9 @@ pipeline {
                     . ./setup-env.sh
                     spack env activate upstreams/daint
                     spack install -v
+                    spack env activate upstreams/daint/rttov
+                    ln -s /some/jenkins-read-only/path/rttov131.tar.xz rttov131.tar.xz
+                    spack install -v
                     """
                 }
             }

@@ -1,0 +1,17 @@
+spack:
+  specs:
+   # ICON + rttov
+    - rttov@13.1%nvhpc ~openmp +hdf5
+    - nvidia-blas%nvhpc
+    - nvidia-lapack%nvhpc
+    - pkg-config%gcc
+    - zlib%gcc
+    
+#    - netlib-lapack@3.10.1%nvhpc
+    - hdf5@1.12.2%nvhpc
+  concretizer:
+    unify: true
+  view: false
+  config:
+    install_tree:
+      root: /project/g110/spack/upstream/daint_v0.18.1.2
