@@ -9,7 +9,7 @@ To set up a Spack instance, clone the repository
 
 .. code-block:: console
 
-  $ git clone --depth 1 --recurse-submodules --shallow-submodules -b dev_v0.18.1 https://github.com/C2SM/spack-c2sm.git
+  $ git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.18.1.3 https://github.com/C2SM/spack-c2sm.git
 
 To load it into your command line, execute
 
@@ -85,7 +85,7 @@ ICON
 
 ICON is built using environments.
 Environments sit in a folder with a name and are defined in a ``spack.yaml`` file.
-For ICON, they are located in ``config/cscs/spack-envs/<machine>_<target>_<compiler>``.
+For ICON, they are located in ``config/cscs/spack/<version>/<machine>_<target>_<compiler>``.
 
 To activate the Spack environment, type
 
@@ -103,9 +103,26 @@ Example to build ICON for CPU with NVHPC:
 
 .. code-block:: console
 
-    $ spack env activate -p -d config/cscs/spack-envs/daint_cpu_nvhpc
+    $ spack env activate -p -d config/cscs/spack/v0.18.1.1/daint_cpu_nvhpc
     $ spack install
 
+..  attention::
+    Spack will skip the configure phase if ``icon.mk`` is found. In case you
+    need to reconfigure you can either delete the file or run ``make distclean``.
+
+Out-of-source builds are possible as follows:
+
+.. code-block:: console
+
+    $ mkdir cpu && cd cpu
+    $ cp -r ../config .
+    $ spack env activate -p -d config/cscs/spack/v0.18.1.1/daint_cpu_nvhpc
+    $ spack install
+
+..  attention::
+    Out-of-source build for AutotoolsPackages is not supported by Spack.
+    The implementation for ICON relies on some hacks inside package.py and
+    only works if the build-folder is located inside the Git repo of ICON.
 
 COSMO
 -----
