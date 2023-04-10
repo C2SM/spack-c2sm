@@ -65,5 +65,3 @@ class Gridtools(Package):
 
     def install(self, spec, prefix):
         install_tree('include', prefix.include)
-
-
