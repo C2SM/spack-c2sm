@@ -15,6 +15,7 @@ def validate_variant_dsl(pkg, name, value):
             'Cannot have more than one of (substitute, verify, serialize) in the same build'
         )
 
+
 def check_variant_fcgroup(fcgroup):
     pattern = re.compile(r"^[A-Z]+;.+;.")
     # fcgroup is False as default
@@ -178,7 +179,6 @@ class Icon(AutotoolsPackage):
         description=
         'Enable extension of eccodes with center specific definition files')
 
-
     # EXCLAIM-GT4Py specific features:
     variant('dsl',
             default='none',
@@ -313,12 +313,10 @@ class Icon(AutotoolsPackage):
             for d in link_dirs:
                 env.append_path('SPACK_COMPILER_IMPLICIT_RPATHS', d)
 
-
         if 'none' not in self.spec.variants['dsl'].value:
             env.set("CUDAARCHS", self.spec.variants['gpu'].value)
             env.unset("CUDAHOSTCXX")
             env.set("Boost_INCLUDE_DIR", self.spec['boost'].prefix.include)
-
 
     @run_before('configure')
     def downgrade_opt_level(self):
@@ -640,14 +638,14 @@ class Icon(AutotoolsPackage):
                     for d in self._get_cuda_ccbin_link_paths(gcc, 'libstdc++')
                 ]
                 cuda_host_compiler_stdcxx_libs.append('-lstdc++')
-                config_vars['NVCFLAGS'].extend([
-                    '-ccbin {0}'.format(cuda_host_compiler)])
+                config_vars['NVCFLAGS'].extend(
+                    ['-ccbin {0}'.format(cuda_host_compiler)])
             else:
                 cuda_host_compiler = self.compiler.cxx
                 cuda_host_compiler_stdcxx_libs = self.compiler.stdcxx_libs
 
-            config_vars['NVCFLAGS'].extend([
-                '-g', '-O3','-arch=sm_{0}'.format(gpu)])
+            config_vars['NVCFLAGS'].extend(
+                ['-g', '-O3', '-arch=sm_{0}'.format(gpu)])
             # cuda_host_compiler_stdcxx_libs might contain compiler-specific
             # flags (i.e. not the linker -l<library> flags), therefore we put
             # the value to the config_flags directly.
@@ -679,7 +677,6 @@ class Icon(AutotoolsPackage):
                              'lib/python3.10/site-packages/icon4py'))
             config_vars['LOC_GRIDTOOLS'].append(self.spec['gridtools'].prefix)
             config_vars['GT4PYNVCFLAGS'] = config_vars['NVCFLAGS']
-
 
         # Finalize the LIBS variable (we always put the real collected
         # libraries to the front):
