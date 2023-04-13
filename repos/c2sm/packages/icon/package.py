@@ -245,6 +245,7 @@ class Icon(AutotoolsPackage):
 
     conflicts('+dace', when='~mpi')
     conflicts('+emvorado', when='~mpi')
+    conflicts('^python@:3.9,3.11:', when='dsl'!='none')
 
     # Flag to mark if we build out-of-source
     # Needed to trigger sync of input files for experiments
@@ -638,18 +639,16 @@ class Icon(AutotoolsPackage):
                     for d in self._get_cuda_ccbin_link_paths(gcc, 'libstdc++')
                 ]
                 cuda_host_compiler_stdcxx_libs.append('-lstdc++')
-                config_vars['NVCFLAGS'].extend(
-                    ['-ccbin {0}'.format(cuda_host_compiler)])
             else:
                 cuda_host_compiler = self.compiler.cxx
                 cuda_host_compiler_stdcxx_libs = self.compiler.stdcxx_libs
 
+            if 'none' in self.spec.variants['dsl'].value:
+                config_vars['NVCFLAGS'].extend([
+                    '-ccbin {0}'.format(cuda_host_compiler)])
+
             config_vars['NVCFLAGS'].extend(
                 ['-g', '-O3', '-arch=sm_{0}'.format(gpu)])
-            config_vars['NVCFLAGS'].extend([
-                '-ccbin {0}'.format(cuda_host_compiler), '-g', '-O3',
-                '-arch=sm_{0}'.format(gpu)
-            ])
             # cuda_host_compiler_stdcxx_libs might contain compiler-specific
             # flags (i.e. not the linker -l<library> flags), therefore we put
             # the value to the config_flags directly.
