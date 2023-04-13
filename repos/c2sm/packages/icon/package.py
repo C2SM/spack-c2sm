@@ -682,8 +682,6 @@ class Icon(AutotoolsPackage):
             config_vars['LOC_GRIDTOOLS'].append(self.spec['gridtools'].prefix)
             config_vars['GT4PYNVCFLAGS'] = config_vars['NVCFLAGS']
 
-=======
->>>>>>> org_ssh/main
         # Finalize the LIBS variable (we always put the real collected
         # libraries to the front):
         config_vars['LIBS'].insert(0, libs.link_flags)
