@@ -13,12 +13,14 @@ class PyIcon4py(PythonPackage):
     components for weather and climate models."""
 
     url = "git@github.com:C2SM/icon4py.git"
+    git = 'ssh://git@github.com/C2SM/icon4py.git'
 
     homepage = "https://github.com/C2SM/icon4py"
 
     maintainers = ['samkellerhals']
 
-    version('main', branch='main', git='ssh://git@github.com/C2SM/icon4py.git')
+    version('main', branch='main', git=git)
+    version('0.0.3', tag='v0.0.3', git=git)
 
     depends_on('py-wheel', type='build')
     depends_on('py-setuptools', type='build')
@@ -29,6 +31,11 @@ class PyIcon4py(PythonPackage):
     depends_on('py-fprettify@0.3.7:', type=('build', 'run'))
     depends_on('py-gt4py', type=('build', 'run'))
     depends_on('py-pytest', type=('build', 'run'))
+    depends_on('boost@1.65.1:', type=('build', 'run'))
+
+    # cmake in unit-tests needs this path
+    def setup_build_environment(self, env):
+        env.set("CMAKE_INCLUDE_PATH", self.spec['boost'].prefix.include)
 
     def install(self, spec, prefix):
         """Install everything from build directory."""
@@ -47,7 +54,9 @@ class PyIcon4py(PythonPackage):
             args.append('.')
 
         pip = inspect.getmodule(self).pip
-        build_dirs = ['common', 'pyutils', 'testutils', 'atm_dyn_iconam']
+        build_dirs = [
+            'common', 'pyutils', 'testutils', 'liskov', 'atm_dyn_iconam'
+        ]
         for dir in build_dirs:
             with working_dir(os.path.join(self.stage.source_path, dir)):
                 pip(*args)

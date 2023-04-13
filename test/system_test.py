@@ -332,22 +332,19 @@ class OmniXmodPoolTest(unittest.TestCase):
         spack_install_and_test('omni-xmod-pool @0.1')
 
 
-@pytest.mark.no_balfrin  # Irrelevant
-@pytest.mark.no_daint  # py-isort install fails with: No module named 'poetry'.
 @pytest.mark.no_tsa  # Irrelevant
 class PyGt4pyTest(unittest.TestCase):
 
-    def test_install_version_functional(self):
-        spack_install_and_test('py-gt4py %gcc')
+    def test_install_version_1_1_1(self):
+        spack_install_and_test('py-gt4py @ 1.1.1 %gcc ^python@3.10.4')
 
 
-@pytest.mark.no_balfrin  # py-isort install fails with: No module named 'poetry'.
-@pytest.mark.no_daint  # py-isort install fails
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 class PyIcon4pyTest(unittest.TestCase):
 
-    def test_install_version_main(self):
-        spack_install_and_test('py-icon4py @main %gcc')
+    def test_install_version_0_0_3(self):
+        spack_install_and_test(
+            'py-icon4py @ 0.0.3 %gcc ^py-gt4py@1.1.1 ^python@3.10.4')
 
 
 class ZLibNGTest(unittest.TestCase):

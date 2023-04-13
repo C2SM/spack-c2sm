@@ -6,7 +6,7 @@
 from spack import *
 
 
-class Gridtools(CMakePackage):
+class Gridtools(Package):
     """The GridTools framework is a set of libraries and utilities to develop performance portable applications in the area of weather and climate."""
 
     homepage = "https://github.com/GridTools/gridtools.git"
@@ -61,57 +61,7 @@ class Gridtools(CMakePackage):
     conflicts('%pgi@20:')
     conflicts('%pgi@:17')
 
-    def cmake_args(self):
-        spec = self.spec
-        args = []
+    phases = ['install']
 
-        args.append('-DGT_ENABLE_BACKEND_MC=OFF')
-        args.append('-DGT_ENABLE_BACKEND_NAIVE=OFF')
-
-        args.append('-DCMAKE_BUILD_TYPE={0}'.format(
-            self.spec.variants['build_type'].value))
-
-        if spec.variants['no_boost_cmake'].value:
-            args.append('-DBoost_NO_BOOST_CMAKE=ON')
-        else:
-            args.append('-DBoost_NO_BOOST_CMAKE=OFF')
-
-        if spec.variants['install_examples'].value:
-            args.append('-DGT_INSTALL_EXAMPLES=ON')
-        else:
-            args.append('-DGT_INSTALL_EXAMPLES=OFF')
-
-        if spec.variants['shared_libs'].value:
-            args.append('-DBUILD_SHARED_LIBS=ON')
-        else:
-            args.append('-DBUILD_SHARED_LIBS=OFF')
-
-        if spec.variants['export_no_package_registery'].value:
-            args.append('-DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=ON')
-        else:
-            args.append('-DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=OFF')
-
-        if spec.variants['enable_bindings_gerneration'].value:
-            args.append('-DGT_ENABLE_BINDINGS_GENERATION=ON')
-        else:
-            args.append('-DGT_ENABLE_BINDINGS_GENERATION=OFF')
-
-        if spec.variants['build_testing'].value:
-            args.append('-DBUILD_TESTING=ON')
-        else:
-            args.append('-DBUILD_TESTING=OFF')
-
-        if spec.variants['use_mpi'].value:
-            args.append('-DGT_USE_MPI=ON')
-        else:
-            args.append('-DGT_USE_MPI=OFF')
-
-        if '+cuda' in spec:
-            args.append('-DCUDA_ARCH=sm_{0}'.format(
-                self.spec.variants['cuda_arch'].value))
-            args.append('-DGT_ENABLE_BACKEND_CUDA=ON')
-            args.append('-DGT_ENABLE_BACKEND_X86=OFF')
-        else:
-            args.append('-DGT_ENABLE_BACKEND_CUDA=OFF')
-            args.append('-DGT_ENABLE_BACKEND_X86=ON')
-        return args
+    def install(self, spec, prefix):
+        install_tree('include', prefix.include)
