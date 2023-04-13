@@ -16,7 +16,7 @@ class PyGt4py(PythonPackage):
     url = "ssh://git@github.com/GridTools/gt4py.git"
 
     version('main', branch='main', git=url)
-    version('1.1.1', tag='v1.1.1', git=url)
+    version('1.1.1', tag='icon4py_20230413', git=url)
 
     maintainers = ['samkellerhals']
 
