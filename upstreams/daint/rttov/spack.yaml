@@ -6,8 +6,6 @@ spack:
     - nvidia-lapack%nvhpc
     - pkg-config%gcc
     - zlib%gcc
-    
-#    - netlib-lapack@3.10.1%nvhpc
     - hdf5@1.12.2%nvhpc
   concretizer:
     unify: true
