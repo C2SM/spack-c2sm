@@ -12,7 +12,7 @@ class Rttov(Package):
     homepage = 'https://nwp-saf.eumetsat.int/site/software/rttov/'
     git = 'ssh://git@github.com/C2SM/rttov.git'
 
-    version('13.1', tag='v13.1',git=git)
+    version('13.1', tag='v13.1', git=git)
 
     variant('hdf5', default=False, description='Enable HDF5 support')
     variant('netcdf', default=False, description='Enable NetCDF support')
