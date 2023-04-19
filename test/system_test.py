@@ -346,13 +346,13 @@ class PyIcon4pyTest(unittest.TestCase):
         spack_install_and_test(
             'py-icon4py @ 0.0.3 %gcc ^py-gt4py@1.1.1 ^python@3.10.4')
 
+
 @pytest.mark.no_tsa  # Irrelevant
-@pytest.mark.no_balfrin #Irrelevant
+@pytest.mark.no_balfrin  #Irrelevant
 class RttovTest(unittest.TestCase):
 
     def test_install_version_13_1(self):
-        spack_install_and_test(
-            'rttov @ 13.1  %nvhpc')
+        spack_install_and_test('rttov @ 13.1  %nvhpc')
 
 
 class ZLibNGTest(unittest.TestCase):
