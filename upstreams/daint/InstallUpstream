@@ -6,14 +6,20 @@ pipeline {
         }
     }
     stages {
-            stage('Install Upstream') {
+            stage('Install Upstream Base') {
                 steps {
                     sh"""
                     . ./setup-env.sh
                     spack env activate upstreams/daint
                     spack install -v
+                    """
+                }
+            }
+            stage('Install Upstream Rttov') {
+                steps {
+                    sh"""
+                    . ./setup-env.sh
                     spack env activate upstreams/daint/rttov
-                    ln -s /some/jenkins-read-only/path/rttov131.tar.xz rttov131.tar.xz
                     spack install -v
                     """
                 }
