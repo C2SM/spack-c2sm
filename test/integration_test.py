@@ -138,6 +138,12 @@ class InfoTest(unittest.TestCase):
     def test_py_typing_extensions(self):
         spack_info('py-typing')
 
+    def test_tensorflowc(self):
+        spack_info('tensorflowc')
+
+    def test_rttov(self):
+        spack_info('rttov')
+
     def test_zlib_ng(self):
         spack_info('zlib_ng')
 
@@ -263,6 +269,9 @@ class PlainSpecTest(unittest.TestCase):
 
     def test_py_typing_extensions(self):
         spack_spec('py-typing')
+
+    def test_rttov(self):
+        spack_spec('rttov')
 
     def test_tensorflowc(self):
         spack_spec('tensorflowc')
