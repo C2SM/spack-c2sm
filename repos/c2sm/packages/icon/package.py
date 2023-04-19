@@ -39,8 +39,8 @@ class Icon(AutotoolsPackage):
             branch='master',
             git='ssh://git@github.com/C2SM/icon-exclaim.git',
             submodules=True)
-    version('exclaim-test',
-            branch='test_spec',
+    version('exclaim',
+            branch='icon-dsl-spack',
             git='ssh://git@github.com/C2SM/icon-exclaim.git',
             submodules=True)
     version('nwp-master',
