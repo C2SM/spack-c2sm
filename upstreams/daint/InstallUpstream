@@ -6,11 +6,20 @@ pipeline {
         }
     }
     stages {
-            stage('Install Upstream') {
+            stage('Install Upstream Base') {
                 steps {
                     sh"""
                     . ./setup-env.sh
-                    spack env activate upstreams/daint
+                    spack env activate upstreams/daint/base
+                    spack install -v
+                    """
+                }
+            }
+            stage('Install Upstream Exclaim') {
+                steps {
+                    sh"""
+                    . ./setup-env.sh
+                    spack env activate upstreams/daint/exclaim
                     spack install -v
                     """
                 }
