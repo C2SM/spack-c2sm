@@ -1,3 +1,7 @@
 upstreams:
-  system:
+  base:
     install_tree: /project/g110/spack/upstream/daint_v0.18.1.2
+  base_soon:
+    install_tree: /project/g110/spack/upstream/daint_v0.18.1.4/base
+  exclaim:
+    install_tree: /project/g110/spack/upstream/daint_v0.18.1.4/exclaim
