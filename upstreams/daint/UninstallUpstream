@@ -1,0 +1,45 @@
+pipeline {
+
+    agent {
+        node {
+            label 'daint'
+        }
+    }
+    stages {
+            stage('Uninstall Upstream Base') {
+                steps {
+                    sh"""
+                    . ./setup-env.sh
+                    spack env activate upstreams/daint/base
+                    spack uninstall -afy
+                    """
+                }
+            }
+            stage('Uninstall Upstream Icon-DSL') {
+                steps {
+                    sh"""
+                    . ./setup-env.sh
+                    spack env activate upstreams/daint/icon-dsl
+                    spack uninstall -afy
+                    """
+                }
+            }
+            stage('Uninstall Upstream Icon-rttov') {
+                steps {
+                    sh"""
+                    . ./setup-env.sh
+                    spack env activate upstreams/daint/icon-rttov
+                    spack uninstall -afy
+                    """
+                }
+            }
+    }
+    post {
+        always {
+            echo 'Cleaning up workspace'
+            deleteDir()
+        }
+    }
+
+}
+
