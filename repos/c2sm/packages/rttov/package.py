@@ -10,14 +10,9 @@ class Rttov(Package):
     radiometers, spectrometers and interferometers."""
 
     homepage = 'https://nwp-saf.eumetsat.int/site/software/rttov/'
-    manual_download = True
+    git = 'ssh://git@github.com/C2SM/rttov.git'
 
-    version('13.1',
-            sha256=
-            'f3bec1ca3ba952bc49e19d851144f9d51126bfe59f473be4992eac0b3366dbb2')
-    version('12.3',
-            sha256=
-            'c9e71861c2fae7b6e793405dc23f0fe42ced98b0a8313865ed480edd71f12f57')
+    version('13.1', tag='v13.1', git=git)
 
     variant('hdf5', default=False, description='Enable HDF5 support')
     variant('netcdf', default=False, description='Enable NetCDF support')
