@@ -7,4 +7,4 @@ spack:
   view: false
   config:
     install_tree:
-      root: /scratch/snx3000/juckerj/EXCLAIM/upstream/install-upstream
+      root: /project/g110/spack/upstream/do_not_use/icon-dsl

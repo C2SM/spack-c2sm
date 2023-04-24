@@ -1,0 +1,15 @@
+spack:
+  specs:
+   # ICON + rttov
+    - rttov@13.1%nvhpc ~openmp +hdf5
+    - nvidia-blas%nvhpc
+    - nvidia-lapack%nvhpc
+    - pkg-config%gcc
+    - zlib%gcc
+    - hdf5@1.12.2%nvhpc
+  concretizer:
+    unify: true
+  view: false
+  config:
+    install_tree:
+      root: /project/g110/spack/upstream/do_not_use/icon-rttov

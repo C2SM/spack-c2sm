@@ -1,7 +1,7 @@
 upstreams:
   base:
-    install_tree: /project/g110/spack/upstream/daint_v0.18.1.2
-  base_soon:
-    install_tree: /project/g110/spack/upstream/daint_v0.18.1.4/base
-  exclaim:
-    install_tree: /project/g110/spack/upstream/daint_v0.18.1.4/exclaim
+    install_tree: /project/g110/spack/upstream/do_not_use/base
+  icon-dsl:
+    install_tree: /project/g110/spack/upstream/do_not_use/icon-dsl
+  icon-rttov:
+    install_tree: /project/g110/spack/upstream/do_not_use/icon-rttov

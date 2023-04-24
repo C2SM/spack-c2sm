@@ -15,11 +15,20 @@ pipeline {
                     """
                 }
             }
-            stage('Install Upstream Exclaim') {
+            stage('Install Upstream Icon-DSL') {
                 steps {
                     sh"""
                     . ./setup-env.sh
-                    spack env activate upstreams/daint/exclaim
+                    spack env activate upstreams/daint/icon-dsl
+                    spack install -v
+                    """
+                }
+            }
+            stage('Install Upstream Icon-rttov') {
+                steps {
+                    sh"""
+                    . ./setup-env.sh
+                    spack env activate upstreams/daint/icon-rttov
                     spack install -v
                     """
                 }
