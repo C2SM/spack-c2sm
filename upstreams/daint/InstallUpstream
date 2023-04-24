@@ -6,20 +6,11 @@ pipeline {
         }
     }
     stages {
-            stage('Install Upstream Base') {
+            stage('Install Upstream') {
                 steps {
                     sh"""
                     . ./setup-env.sh
                     spack env activate upstreams/daint
-                    spack install -v
-                    """
-                }
-            }
-            stage('Install Upstream Rttov') {
-                steps {
-                    sh"""
-                    . ./setup-env.sh
-                    spack env activate upstreams/daint/rttov
                     spack install -v
                     """
                 }
