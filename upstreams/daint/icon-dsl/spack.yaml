@@ -3,7 +3,7 @@ spack:
   - py-icon4py@0.0.3%gcc@9.3.0
   - py-gt4py@1.1.1%gcc@9.3.0
   concretizer:
-    unify: when_possible
+    unify: true
   view: false
   config:
     install_tree:
