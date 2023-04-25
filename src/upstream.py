@@ -14,7 +14,7 @@ def read_upstream_from_spack_yaml(config_dir):
 
 def delete_upstream(upstream):
     print(f'Delete upstream {upstream}')
-    shutil.rmtree(upstream,ignore_errors=True)
+    shutil.rmtree(upstream, ignore_errors=True)
 
 
 if __name__ == '__main__':
