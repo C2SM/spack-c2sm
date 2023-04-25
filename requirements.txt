@@ -1,3 +1,2 @@
 requests
 pytest-xdist
-ruamel.yaml

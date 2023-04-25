@@ -26,18 +26,16 @@ pipeline {
             stage('Uninstall Upstream Icon-DSL') {
                 steps {
                     sh"""
-                    . ./setup-env.sh
-                    spack env activate upstreams/daint/icon-dsl
-                    spack uninstall -afy
+                    source env/bin/activate
+                    python src/upstream.py upstreams/daint/icon-dsl
                     """
                 }
             }
             stage('Uninstall Upstream Icon-rttov') {
                 steps {
                     sh"""
-                    . ./setup-env.sh
-                    spack env activate upstreams/daint/icon-rttov
-                    spack uninstall -afy
+                    source env/bin/activate
+                    python src/upstream.py upstreams/daint/icon-rttov
                     """
                 }
             }
