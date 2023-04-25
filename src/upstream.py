@@ -2,7 +2,7 @@ import shutil
 import sys
 import os
 
-sys.path.insert(1,'spack/lib/spack/external')
+sys.path.insert(1, 'spack/lib/spack/external')
 from ruamel import yaml
 
 
