@@ -22,4 +22,4 @@ if __name__ == '__main__':
     if len(sys.argv) != 2:
         raise ValueError('Need path to folder containing a spack.yaml')
     else:
-        delete_upstream(read_upstream_from_spack_yaml(sys.argv[2]))
+        delete_upstream(read_upstream_from_spack_yaml(sys.argv[1]))
