@@ -189,7 +189,7 @@ class Icon(AutotoolsPackage):
             multi=True)
 
     depends_on('py-icon4py', when='dsl' != 'none')
-    depends_on('gridtools', when='dsl' != 'none')
+    depends_on('py-gridtools-cpp', when='dsl' != 'none')
 
     depends_on('infero +quiet', when='+infero')
 
@@ -676,9 +676,13 @@ class Icon(AutotoolsPackage):
 
             config_vars['LOC_GT4PY'].append(self.spec['py-gt4py'].prefix)
             config_vars['LOC_ICON4PY'].append(
+                    os.path.join(self.spec['py-icon4py'].prefix))
+            config_vars['LOC_ICON4PY_LIB'].append(
                 os.path.join(self.spec['py-icon4py'].prefix,
                              'lib/python3.10/site-packages/icon4py'))
-            config_vars['LOC_GRIDTOOLS'].append(self.spec['gridtools'].prefix)
+            config_vars['LOC_GRIDTOOLS'].append(
+                os.path.join(self.spec['py-gridtools-cpp'].prefix,
+                             'lib/python3.10/site-packages/gridtools_cpp/data'))
             config_vars['GT4PYNVCFLAGS'] = config_vars['NVCFLAGS']
 
         # Finalize the LIBS variable (we always put the real collected
