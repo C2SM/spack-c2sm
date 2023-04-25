@@ -28,6 +28,9 @@ class Fdb(CMakePackage):
     version("inspect",
             git='https://github.com/ecmwf/fdb.git',
             branch='feature/c_inspect')
+    version("fastinspect",
+            git='https://github.com/ecmwf/fdb.git',
+            branch='feature/FDB-300_fastInspect')
 
     variant("tools", default=True, description="Build the command line tools")
     variant(
@@ -46,7 +49,7 @@ class Fdb(CMakePackage):
     )
 
     depends_on("cmake@3.12:", type="build")
-    depends_on("ecbuild@3.4:", type="build")
+    depends_on("ecbuild@3.7:", type="build")
 
     depends_on("eckit@1.16:")
     depends_on("eckit+admin", when="+tools")
