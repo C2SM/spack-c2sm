@@ -149,7 +149,7 @@ class UpstreamTest(unittest.TestCase):
             os.path.join(os.path.normpath(spack_c2sm_path),
                          'upstreams/daint/base'))
         self.assertEqual(
-            '/scratch/snx3000/juckerj/EXCLAIM/upstream/install-upstream',
+            '/project/g110/spack/upstream/do_not_use/base',
             upstream_base)
 
 
