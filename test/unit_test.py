@@ -11,8 +11,6 @@ from src import machine_name, Markdown, HTML, time_format, sanitized_filename, a
 
 from src.upstream import read_upstream_from_spack_yaml
 
-print(sys.path)
-
 
 class MachineDetection(unittest.TestCase):
 
@@ -143,8 +141,6 @@ class UpstreamTest(unittest.TestCase):
         read_upstream_from_spack_yaml('/inexistent_path/to_yaml')
 
     def test_upstream_from_config(self):
-        print(os.path.normpath(spack_c2sm_path))
-
         upstream_base = read_upstream_from_spack_yaml(
             os.path.join(os.path.normpath(spack_c2sm_path),
                          'upstreams/daint/base'))
