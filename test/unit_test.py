@@ -148,9 +148,8 @@ class UpstreamTest(unittest.TestCase):
         upstream_base = read_upstream_from_spack_yaml(
             os.path.join(os.path.normpath(spack_c2sm_path),
                          'upstreams/daint/base'))
-        self.assertEqual(
-            '/project/g110/spack/upstream/do_not_use/base',
-            upstream_base)
+        self.assertEqual('/project/g110/spack/upstream/do_not_use/base',
+                         upstream_base)
 
 
 if __name__ == '__main__':
