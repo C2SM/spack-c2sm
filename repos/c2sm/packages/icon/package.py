@@ -681,8 +681,9 @@ class Icon(AutotoolsPackage):
                 os.path.join(self.spec['py-icon4py'].prefix,
                              'lib/python3.10/site-packages/icon4py'))
             config_vars['LOC_GRIDTOOLS'].append(
-                os.path.join(self.spec['py-gridtools-cpp'].prefix,
-                             'lib/python3.10/site-packages/gridtools_cpp/data'))
+                os.path.join(
+                    self.spec['py-gridtools-cpp'].prefix,
+                    'lib/python3.10/site-packages/gridtools_cpp/data'))
             config_vars['GT4PYNVCFLAGS'] = config_vars['NVCFLAGS']
 
         # Finalize the LIBS variable (we always put the real collected
