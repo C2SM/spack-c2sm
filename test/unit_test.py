@@ -13,6 +13,7 @@ from src.upstream import read_upstream_from_spack_yaml
 
 print(sys.path)
 
+
 class MachineDetection(unittest.TestCase):
 
     @unittest.skipUnless(__name__ == '__main__' and len(sys.argv) > 1,
@@ -134,6 +135,7 @@ class ScopeTest(unittest.TestCase):
         self.assertTrue('test_cosmo_dycore'.lower()
                         in triggers)  # Name of Test included
 
+
 class UpstreamTest(unittest.TestCase):
 
     @unittest.expectedFailure
@@ -143,9 +145,12 @@ class UpstreamTest(unittest.TestCase):
     def test_upstream_from_config(self):
         print(os.path.normpath(spack_c2sm_path))
 
-        upstream_base = read_upstream_from_spack_yaml(os.path.join(os.path.normpath(spack_c2sm_path),'upstreams/daint/base'))
-        self.assertEqual('/scratch/snx3000/juckerj/EXCLAIM/upstream/install-upstream',upstream_base)
-
+        upstream_base = read_upstream_from_spack_yaml(
+            os.path.join(os.path.normpath(spack_c2sm_path),
+                         'upstreams/daint/base'))
+        self.assertEqual(
+            '/scratch/snx3000/juckerj/EXCLAIM/upstream/install-upstream',
+            upstream_base)
 
 
 if __name__ == '__main__':
