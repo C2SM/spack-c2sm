@@ -1,0 +1,300 @@
+
+
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Why was spack chosen by MeteoSwiss? &mdash; C2SM Spack  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.min.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.min.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="PR testing" href="PrTesting.html" />
+    <link rel="prev" title="Using the Jenkins Continuous Integration Executables [outdated]" href="CI.html" /> 
+
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <a class="site-nav-toggle hidden-lg-up"><i class="icon-menu"></i></a>
+            <a class="site-title" href="index.html">
+                C2SM Spack
+            </a>
+        </div>
+    </header>
+
+
+<div class="breadcrumbs-outer hidden-xs-down">
+    <div class="container">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="breadcrumbs">
+    
+      <li><a href="index.html">Docs</a></li>
+        
+      <li>Why was spack chosen by MeteoSwiss?</li>
+    
+    
+      <li class="breadcrumbs-aside">
+        
+            
+            <a href="_sources/SpackChoice.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+</div>
+    </div>
+</div>
+    <div class="main-outer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-3 site-nav">
+                    
+<div role="search">
+    <form class="search" action="search.html" method="get">
+        <div class="icon-input">
+            <input type="text" name="q" placeholder="Search" />
+            <span class="icon-search"></span>
+        </div>
+        <input type="submit" value="Go" class="d-hidden" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+                    <div class="site-nav-tree">
+                        
+                            
+                            
+                                <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="QuickStart.html">Quick Start for Spack</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="QuickStart.html#source-spack-instance-on-piz-daint">Source Spack instance on Piz Daint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="QuickStart.html#source-spack-instance-on-tsa">Source Spack instance on Tsa</a></li>
+<li class="toctree-l2"><a class="reference internal" href="QuickStart.html#cosmo-model">COSMO-Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="QuickStart.html#int2lm">Int2lm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="QuickStart.html#icon">ICON</a></li>
+<li class="toctree-l2"><a class="reference internal" href="QuickStart.html#accessing-executables">Accessing executables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="QuickStart.html#running-executables-from-spack">Running executables from Spack</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Install.html">Spack Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Install.html#preinstalled-instance">Preinstalled Instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Install.html#your-own-spack-instance">Your own Spack instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Install.html#machine-specific-config-files">Machine specific config files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Install.html#spack-instance-on-dom">Spack instance on Dom</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="C2SMGuidelines.html">C2SM Guidelines for Spack</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="C2SMGuidelines.html#building">Building</a></li>
+<li class="toctree-l2"><a class="reference internal" href="C2SMGuidelines.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="C2SMGuidelines.html#running">Running</a></li>
+<li class="toctree-l2"><a class="reference internal" href="C2SMGuidelines.html#spack-in-scripts">Spack in scripts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SpackCommands.html">Important Spack Commands</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-find">Spack find</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-list">Spack list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-info">Spack info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-spec">Spack spec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-install">Spack install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-installcosmo">Spack installcosmo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-dev-build">Spack dev-build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-devbuildcosmo">Spack devbuildcosmo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-location">Spack location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-build-env">Spack build-env</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-edit">Spack edit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpackCommands.html#spack-load">Spack load</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Problems.html">Known Problems with Spack</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Problems.html#error-init-got-an-unexpected-keyword-argument-capture-output">Error: __init__() got an unexpected keyword argument ‘capture_output’</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Problems.html#error-initialization-hangs">Error: Initialization hangs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Problems.html#error-could-not-determine-host">Error: Could not determine host</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Problems.html#error-broken-cache">Error: Broken cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Problems.html#error-multiple-definitions-of-compiler">Error: Multiple definitions of compiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Problems.html#delete-entire-spack">Delete entire Spack</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Problems.html#known-problems-with-spack-icon">Known Problems with Spack &amp; ICON</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Problems.html#error-fetcherror-archive-was-empty-for-icon">Error: FetchError: Archive was empty for icon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Problems.html#error-processerror-config-cscs-machine-target-compiler-no-such-file-or-directory">Error: ProcessError: ./config/cscs/&lt;machine&gt;.&lt;target&gt;.&lt;compiler&gt;: No such file or directory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CodeDev.html">Code Development [MCH]</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="CodeDev.html#cosmo">COSMO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CodeDev.html#cosmo-c-dycore">COSMO C++ Dycore</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SpackManagement.html">Spack Instance Management [admin]</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SpackManagement.html#how-to-re-create-the-spack-instance">How to re-create the spack instance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CI.html">Using the Jenkins Continuous Integration Executables [outdated]</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Why was spack chosen by MeteoSwiss?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PrTesting.html">PR testing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="PrTesting.html#what-is-tested">What is tested</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PrTesting.html#examples">Examples:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PrTesting.html#supported-commands">Supported commands</a></li>
+</ul>
+</li>
+</ul>
+
+                            
+                        
+                    </div>
+                </div>
+                <div class="col-12 col-lg-9">
+                    <div class="document">
+                        
+                            
+  <section id="why-was-spack-chosen-by-meteoswiss">
+<h1>Why was spack chosen by MeteoSwiss?<a class="headerlink" href="#why-was-spack-chosen-by-meteoswiss" title="Permalink to this heading">¶</a></h1>
+<p>So the question came up why spack was chosen as the package manager for MeteoSwiss
+and I wanted to try to answer this here so that others can see this as well
+(my account may be incomplete, but should hopefully give a decent view on the whole topic):</p>
+<p>The main issue is that MCH has some hefty requirements when it comes to building software.</p>
+<p>To just name a few:</p>
+<ul class="simple">
+<li><p>We need to be able to build multiple versions and configurations of the same software
+(most linux distributions will provide one officially supported version and for others
+you’re mostly on your own)</p></li>
+<li><p>Hardware matters for our software due to performance reasons. E.g., the MPI implementation
+or specific GPU models are important (this is a problem for package managers that try
+to create very isolated build environments)</p></li>
+<li><p>Build Systems of some of our software can be quite tricky to deal with (as part of
+its build process COSMO requires one to edit the Makefile which we usually automate
+with something like regex I believe)</p></li>
+<li><p>We often have to build a lot of HPC dependencies/libraries that aren’t part of a
+usual system’s installation (which means we don’t really want to just use some bash
+scripts, we tried that and it became very difficult to maintain)</p></li>
+<li><p>We want to also create development builds and possibly hack the build of a package
+(clean building of packages isn’t enough, we also need hackability)</p></li>
+<li><p>We have multiple relevant machines all with different hardware, MPI implementations
+and Accelerators/GPUs  (MCH alone needs tsa &amp; daint, but we used to also have kesch
+and our collaborators have a whole lot of other machines as well)</p></li>
+</ul>
+<p>These requirements are very common in HPC and they rule out a lot of popular solutions
+(e.g., <cite>apt-get</cite>, <cite>pacman</cite>, <cite>rpm</cite>, etc). There are still quite a few package managers left
+that could fullfill all the requirements. But of all of those spack has by far the
+biggest adoption within HPC (just google “HPC package manager” and the first few pages
+are dominated by spack).</p>
+<p>Spack is adopted by:</p>
+<ul class="simple">
+<li><p>The US Department of Energy (which includes Aurora (1 exaFLOPS), Frontier
+(1.5 exaFLOPS) and El Capitan (2 exaFLOPS))</p></li>
+<li><p>Riken (this includes Fugaku (~2 exaFLOPS))</p></li>
+<li><p>CERN</p></li>
+<li><p>EPFL</p></li>
+<li><p>Fermilab</p></li>
+<li><p>CSCS provides some support for spack
+( <a class="reference external" href="https://user.cscs.ch/computing/compilation/spack/">https://user.cscs.ch/computing/compilation/spack/</a> )</p></li>
+</ul>
+<p>This strong dominance sets it apart from all other viable options. It only makes
+sense for MCH to follow the rest of the industry.</p>
+<p>A comparison of various tools (including spack) can be found
+<a class="reference external" href="https://easybuilders.github.io/easybuild-tutorial/comparison_other_tools/">here</a>
+and
+<a class="reference external" href="https://archive.fosdem.org/2018/schedule/event/installing_software_for_scientists/attachments/slides/2437/export/events/attachments/installing_software_for_scientists/slides/2437/20180204_installing_software_for_scientists.pdf">here</a>.</p>
+<p>I believe the timeline of spack at MCH was roughly:</p>
+<ul class="simple">
+<li><p>Sometime 2018 Valentin and Hannes gave a presentation about spack at MCH</p></li>
+<li><p>Summer 2019 an evaluation of possible solutions was done and it was determined
+that spack was the best option (probably same or similar reasons as above)</p></li>
+<li><p>November 2019 Elsa started her build &amp; devops internship and until November 2020
+most software builds at MCH were ported to spack</p></li>
+<li><p>September/October/November 2020 was when most of the migration happened</p></li>
+</ul>
+<p>Of course we regularly have issues with spack and these issues are time consuming
+and frustrating. However, building, package management &amp; dependencies is a very very
+hard problem. While we regularly encounter bugs in spack and spack is still far away
+from an optimal solution, there are also unavoidable issues when it comes to building
+HPC software. You can’t expect spack to solve unsolvable issues. Spack is only a tool.
+If you misuse your tool, it’s not fair to blame the tool for issues. Because spack
+is trying to solve a complex problem, it also contains quite a bit of complexity
+itself. If you’re not willing to learn spack and ensure you’re using it right,
+you will have a bad time. But you will also have a bad time with any other solution
+in this case. The idea that there is a magical tool that will automatically make
+all our build requirements work is unfortunately not realistic at this point.
+There are good reasons why there are so many package managers and users still
+regularly encounter issues with them.</p>
+</section>
+
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            LANGUAGE:'en',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/sphinx_highlight.js"></script>
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+    <div class="footer" role="contentinfo">
+        <div class="container">
+            &#169; Copyright 2020, Carlos Osuna.
+        Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.
+        </div>
+    </div>  
+
+</body>
+</html>
