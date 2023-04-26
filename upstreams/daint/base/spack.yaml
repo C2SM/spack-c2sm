@@ -2,7 +2,7 @@ spack:
   specs:
    # ICON 
   - matrix:
-    - [eccodes@2.19.0+fortran+aec+tools, cosmo-eccodes-definitions@2.19.0.7, serialbox@2.6.1+fortran]
+    - [eccodes@2.19.0+fortran+aec+tools, cosmo-eccodes-definitions@2.19.0.7, serialbox@2.6.1+fortran, libfyaml@0.7.12]
     - ['%nvhpc', '%cce', '%gcc']
   - libxml2@2.9.13%gcc
   - claw@2.0.3%nvhpc
