@@ -184,7 +184,7 @@ class Icon(AutotoolsPackage):
     variant('dsl',
             default='none',
             validator=validate_variant_dsl,
-            values=('none',) + dsl_values,
+            values=('none', ) + dsl_values,
             description='Build with GT4Py dynamical core',
             multi=True)
 
@@ -657,7 +657,7 @@ class Icon(AutotoolsPackage):
 
         # Check for DSL variants and set corresponding Liskov options
         dsl = self.spec.variants['dsl'].value
-        if dsl != ('none',):
+        if dsl != ('none', ):
             tty.warn('values of dsl:::: {}'.format(dsl))
             if 'substitute' in dsl:
                 config_args.append('--enable-liskov=substitute')
