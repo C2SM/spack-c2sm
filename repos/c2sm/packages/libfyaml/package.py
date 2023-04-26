@@ -1,4 +1,5 @@
-from spack.pkg.builtin.libfyaml import Libfyaml as SpackLibfyaml 
+from spack.pkg.builtin.libfyaml import Libfyaml as SpackLibfyaml
+
 
 class Libfyaml(SpackLibfyaml):
 
@@ -17,4 +18,3 @@ class Libfyaml(SpackLibfyaml):
         msg = 'Unable to recursively locate shared {0} libraries in {1}'
         raise spack.error.NoLibrariesError(
             msg.format(self.spec.name, self.spec.prefix))
-
