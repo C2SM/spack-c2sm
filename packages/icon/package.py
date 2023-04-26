@@ -50,6 +50,7 @@ class Icon(Package):
     version('2.0.17', commit='39ed04ad', submodules=True)
 
     depends_on('cmake')
+    depends_on('libfyaml')
     depends_on('libxml2@2.9.8:%gcc', type=('build', 'link', 'run'))
     depends_on('eccodes@2.19.0 +build_shared_libs',
                when='+eccodes',
@@ -148,6 +149,7 @@ class Icon(Package):
 
         if '~skip-config' in self.spec:
             env.set('XML2_ROOT', self.spec['libxml2'].prefix)
+            env.set('FYAML_ROOT', self.spec['libfyaml'].prefix)
             if self.spec.variants['serialize_mode'].value != 'none':
                 env.set('SERIALBOX2_ROOT', self.spec['serialbox'].prefix)
             if '+claw' in self.spec:
