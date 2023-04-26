@@ -180,16 +180,18 @@ class Icon(AutotoolsPackage):
         'Enable extension of eccodes with center specific definition files')
 
     # EXCLAIM-GT4Py specific features:
+    dsl_values = ('substitute', 'verify', 'serialize', 'fused', 'nvtx', 'lam')
     variant('dsl',
             default='none',
             validator=validate_variant_dsl,
-            values=('none', 'substitute', 'verify', 'serialize', 'fused',
-                    'nvtx', 'lam'),
+            values=('none',) + dsl_values,
             description='Build with GT4Py dynamical core',
             multi=True)
 
-    depends_on('py-icon4py', when='dsl' != 'none')
-    depends_on('py-gridtools-cpp', when='dsl' != 'none')
+    for x in dsl_values:
+        depends_on('py-icon4py', when='dsl={0}'.format(x))
+        depends_on('py-gridtools-cpp', when='dsl={0}'.format(x))
+        conflicts('^python@:3.9,3.11:', when='dsl={0}'.format(x))
 
     depends_on('infero +quiet', when='+infero')
 
@@ -245,7 +247,6 @@ class Icon(AutotoolsPackage):
 
     conflicts('+dace', when='~mpi')
     conflicts('+emvorado', when='~mpi')
-    conflicts('^python@:3.9,3.11:', when='dsl' != 'none')
 
     # Flag to mark if we build out-of-source
     # Needed to trigger sync of input files for experiments
@@ -656,7 +657,7 @@ class Icon(AutotoolsPackage):
 
         # Check for DSL variants and set corresponding Liskov options
         dsl = self.spec.variants['dsl'].value
-        if dsl != 'none':
+        if dsl != ('none',):
             tty.warn('values of dsl:::: {}'.format(dsl))
             if 'substitute' in dsl:
                 config_args.append('--enable-liskov=substitute')
