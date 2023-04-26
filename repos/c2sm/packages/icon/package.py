@@ -658,7 +658,6 @@ class Icon(AutotoolsPackage):
         # Check for DSL variants and set corresponding Liskov options
         dsl = self.spec.variants['dsl'].value
         if dsl != ('none', ):
-            tty.warn('values of dsl:::: {}'.format(dsl))
             if 'substitute' in dsl:
                 config_args.append('--enable-liskov=substitute')
             elif 'verify' in dsl:
