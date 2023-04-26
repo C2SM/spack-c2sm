@@ -171,6 +171,7 @@ class Icon(AutotoolsPackage):
 
     depends_on('infero +quiet', when='+infero')
 
+    depends_on('libfyaml', when='+coupling')
     depends_on('libxml2', when='+coupling')
     depends_on('libxml2', when='+art')
 
@@ -516,6 +517,8 @@ class Icon(AutotoolsPackage):
                     if not is_system_path(d)
                 ]
                 config_vars['CPPFLAGS'].append(xml2_headers.include_flags)
+
+            libs += self.spec['libfyaml'].libs
 
         serialization = self.spec.variants['serialization'].value
         if serialization == 'none':
