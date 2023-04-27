@@ -4,7 +4,7 @@ spack:
   - py-gt4py@1.1.1%gcc@9.3.0
   concretizer:
     unify: true
-  view: false
+  view: true
   config:
     install_tree:
       root: /project/g110/spack/upstream/do_not_use/icon-dsl
