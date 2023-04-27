@@ -9,7 +9,6 @@ pipeline {
             stage('Uninstall Upstream Base') {
                 steps {
                     sh"""
-                    exit 0
                     python3 src/upstream.py upstreams/daint/base
                     """
                 }
@@ -24,7 +23,6 @@ pipeline {
             stage('Uninstall Upstream Icon-rttov') {
                 steps {
                     sh"""
-                    exit 0
                     python3 src/upstream.py upstreams/daint/icon-rttov
                     """
                 }

@@ -9,7 +9,7 @@ pipeline {
             stage('Install Upstream Base') {
                 steps {
                     sh"""
-                    . ./setup-env.sh && exit 0
+                    . ./setup-env.sh
                     spack env activate upstreams/daint/base
                     spack install -v
                     """
@@ -27,7 +27,7 @@ pipeline {
             stage('Install Upstream Icon-rttov') {
                 steps {
                     sh"""
-                    . ./setup-env.sh && exit 0
+                    . ./setup-env.sh
                     spack env activate upstreams/daint/icon-rttov
                     spack install -v
                     """
