@@ -67,7 +67,8 @@ if __name__ == "__main__":
             any_tests_of_type = True
             with open(file_name, 'r') as file:
                 content = file.read()
-                if content.endswith('OK\n'):
+                second_last_line = content.split('\n')[-2]
+                if 'OK' in second_last_line:
                     table.append(':green_circle:', file_name)
                 else:
                     all_tests_of_type_passed = False

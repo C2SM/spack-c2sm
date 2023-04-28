@@ -9,6 +9,8 @@ spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 sys.path.append(os.path.normpath(spack_c2sm_path))
 from src import machine_name, Markdown, HTML, time_format, sanitized_filename, all_machines, all_packages, explicit_scope, package_triggers
 
+from src.upstream import read_upstream_from_spack_yaml
+
 
 class MachineDetection(unittest.TestCase):
 
@@ -130,6 +132,20 @@ class ScopeTest(unittest.TestCase):
                         in triggers)  # Name of TestCase included
         self.assertTrue('test_cosmo_dycore'.lower()
                         in triggers)  # Name of Test included
+
+
+class UpstreamTest(unittest.TestCase):
+
+    @unittest.expectedFailure
+    def test_non_existent_spack_yaml(self):
+        read_upstream_from_spack_yaml('/inexistent_path/to_yaml')
+
+    def test_upstream_from_config(self):
+        upstream_base = read_upstream_from_spack_yaml(
+            os.path.join(os.path.normpath(spack_c2sm_path),
+                         'upstreams/daint/base'))
+        self.assertEqual('/project/g110/spack/upstream/daint_v0.18.1.2',
+                         upstream_base)
 
 
 if __name__ == '__main__':

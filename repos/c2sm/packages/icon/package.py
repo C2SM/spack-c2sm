@@ -316,10 +316,11 @@ class Icon(AutotoolsPackage):
             for d in link_dirs:
                 env.append_path('SPACK_COMPILER_IMPLICIT_RPATHS', d)
 
+        # help cmake to build dsl-stencils
         if 'none' not in self.spec.variants['dsl'].value:
             env.set("CUDAARCHS", self.spec.variants['gpu'].value)
             env.unset("CUDAHOSTCXX")
-            env.set("Boost_INCLUDE_DIR", self.spec['boost'].prefix.include)
+            env.set("BOOST_ROOT", self.spec['boost'].prefix)
 
     @run_before('configure')
     def downgrade_opt_level(self):

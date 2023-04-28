@@ -1,0 +1,39 @@
+pipeline {
+
+    agent {
+        node {
+            label 'daint'
+        }
+    }
+    stages {
+            stage('Uninstall Upstream Base') {
+                steps {
+                    sh"""
+                    python3 src/upstream.py upstreams/daint/base
+                    """
+                }
+            }
+            stage('Uninstall Upstream Icon-DSL') {
+                steps {
+                    sh"""
+                    python3 src/upstream.py upstreams/daint/icon-dsl
+                    """
+                }
+            }
+            stage('Uninstall Upstream Icon-rttov') {
+                steps {
+                    sh"""
+                    python3 src/upstream.py upstreams/daint/icon-rttov
+                    """
+                }
+            }
+    }
+    post {
+        always {
+            echo 'Cleaning up workspace'
+            deleteDir()
+        }
+    }
+
+}
+
