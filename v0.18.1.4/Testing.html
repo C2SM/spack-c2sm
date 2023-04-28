@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Testing &mdash; C2SM Spack  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Develop packages" href="CodeDevelopment.html" />
+    <link rel="prev" title="Important Spack Commands" href="SpackCommands.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            C2SM Spack
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="QuickStart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="C2SMGuidelines.html">C2SM Guidelines for Spack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="InstanceManagement.html">How to manage your own Spack instance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpackCommands.html">Important Spack Commands</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Testing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#test-packages-pr-mr-ci-cd">Test packages (PR/MR/CI/CD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pull-request-testing-for-spack-c2sm-on-github">Pull Request Testing for spack-c2sm on GitHub</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CodeDevelopment.html">Develop packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpackChoice.html">Why was Spack chosen by MeteoSwiss?</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">C2SM Spack</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Testing</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Testing.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="testing">
+<h1>Testing<a class="headerlink" href="#testing" title="Permalink to this heading"></a></h1>
+<section id="test-packages-pr-mr-ci-cd">
+<h2>Test packages (PR/MR/CI/CD)<a class="headerlink" href="#test-packages-pr-mr-ci-cd" title="Permalink to this heading"></a></h2>
+<p>You can use spack to test a PR/MR in your CI pipeline.
+This is a common way to do it.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span><span class="nb">cd</span> into the packages repo!
+<span class="gp">$ </span>git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b v0.18.1.4 https://github.com/C2SM/spack-c2sm.git
+<span class="gp">$ </span>. spack-c2sm/setup-env.sh
+<span class="gp">$ </span>spack dev-build --test<span class="o">=</span>root --show-log-on-error &lt;package&gt; @develop &lt;variant&gt;
+</pre></div>
+</div>
+<p>You can also use spack in your end-to-end tests.
+This is a common way to do it.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack install --test<span class="o">=</span>root --show-log-on-error &lt;package&gt; @&lt;version&gt; &lt;variant&gt;
+</pre></div>
+</div>
+</section>
+<section id="pull-request-testing-for-spack-c2sm-on-github">
+<h2>Pull Request Testing for spack-c2sm on GitHub<a class="headerlink" href="#pull-request-testing-for-spack-c2sm-on-github" title="Permalink to this heading"></a></h2>
+<p>To test a PR, create a comment <code class="docutils literal notranslate"><span class="pre">launch</span> <span class="pre">jenkins</span> <span class="pre">[&lt;packages&gt;]</span> <span class="pre">[&lt;machines&gt;]</span></code>.</p>
+<p>It will test the listed packages on the listed machines.
+No package means all packages. No machine means all machines.
+The order is irrelevant.</p>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">launch</span> <span class="pre">jenkins</span> <span class="pre">int2lm</span> <span class="pre">daint</span></code> tests int2lm on daint.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">launch</span> <span class="pre">jenkins</span> <span class="pre">cosmo</span> <span class="pre">int2lm</span> <span class="pre">daint</span> <span class="pre">tsa</span></code> tests</p>
+<ul>
+<li><p>cosmo on daint</p></li>
+<li><p>cosmo on tsa</p></li>
+<li><p>int2lm on daint</p></li>
+<li><p>int2lm on tsa</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">launch</span> <span class="pre">jenkins</span> <span class="pre">cosmo</span> <span class="pre">icon</span></code> tests cosmo and icon on all machines.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">launch</span> <span class="pre">jenkins</span> <span class="pre">daint</span></code> tests all packages on daint.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">launch</span> <span class="pre">jenkins</span></code> tests all packages on all machines.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">launch</span> <span class="pre">jenkins</span> <span class="pre">all</span></code> tests all packages on all machines.</p></li>
+</ul>
+<p>Supported packages: all folder names in folder <a class="reference external" href="https://github.com/C2SM/spack-c2sm/tree/main/packages">packages</a>.</p>
+<p>Supported machines:</p>
+<ul class="simple">
+<li><p>balfrin</p></li>
+<li><p>daint</p></li>
+<li><p>tsa</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="SpackCommands.html" class="btn btn-neutral float-left" title="Important Spack Commands" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="CodeDevelopment.html" class="btn btn-neutral float-right" title="Develop packages" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2023, C2SM.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
