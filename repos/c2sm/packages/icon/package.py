@@ -730,8 +730,6 @@ class Icon(AutotoolsPackage):
         # Archive makefiles:
         archive.extend(
             [join_path(self.build_directory, f) for f in ['Makefile', '*.mk']])
-        # Archive CUDA GCC wrapper:
-        archive.append(join_path(self._cuda_ccbin_wrapper_dir, '*'))
         return archive
 
     @property
