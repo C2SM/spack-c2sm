@@ -375,7 +375,7 @@ class Icon(AutotoolsPackage):
 
         gpu = self.spec.variants['gpu'].value
 
-        if self.compiler.name == 'gcc' or self._compiler_is_mixed_gfortran():
+        if self.compiler.name == 'gcc':
             config_vars['CFLAGS'].append('-g')
             config_vars['ICON_CFLAGS'].append('-O3')
             config_vars['ICON_BUNDLED_CFLAGS'].append('-O2')
@@ -400,9 +400,7 @@ class Icon(AutotoolsPackage):
             config_vars['ICON_OCEAN_FCFLAGS'].append('-O3')
 
             # Version-specific workarounds:
-            fc_version = (ver(self.compiler.fc_version(self.compiler.fc))
-                          if self._compiler_is_mixed_gfortran() else
-                          self.compiler.version)
+            fc_version = self.compiler.version
             if fc_version >= ver(10):
                 config_vars['ICON_FCFLAGS'].append('-fallow-argument-mismatch')
                 config_vars['ICON_OCEAN_FCFLAGS'].append(
