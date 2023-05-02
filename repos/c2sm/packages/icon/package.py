@@ -114,10 +114,6 @@ class Icon(AutotoolsPackage):
             description='Enable GPU support with the specified compute '
             'capability version')
 
-    variant('cuda-gcc',
-            default=False,
-            description='Use GCC as the CUDA host compiler')
-
     variant('grib2', default=True, description='Enable GRIB2 I/O')
     variant('parallel-netcdf',
             default=False,
@@ -241,7 +237,6 @@ class Icon(AutotoolsPackage):
         depends_on('claw', type='build', when='claw={0}'.format(x))
 
     conflicts('claw=validate', when='serialization=none')
-    conflicts('+cuda-gcc', when='gpu=none')
 
     for x in claw_values:
         conflicts('+sct', when='claw={0}'.format(x))
@@ -260,36 +255,6 @@ class Icon(AutotoolsPackage):
     # also the folder where libtool package itself is installed.
     patch_libtool = False
 
-    # We need an existing gcc compiler when '+cuda-gcc'. Taking one from the
-    # PATH is not an option because we cannot always make sure that it will be
-    # a particular installation of gcc. For example, we might want to build icon
-    # with pgi compiler and use a system installation of gcc from '/usr/bin' as
-    # the CUDA host compiler. Prepending '/usr/bin' to the PATH when pgi is used
-    # breaks the building environment. We also cannot tell Spack to unload
-    # particular environment modules that the user might have loaded before
-    # running Spack and that put other installations of gcc on the PATH.
-    # Therefore, our best option is to use gcc from compilers.yaml. The least
-    # confusing way to get the required gcc when a different compiler is used to
-    # build icon is to introduce a restriction: '^cuda%gcc' when '+cuda-gcc'.
-    # This way, the users have control over what version of gcc will be used as
-    # the CUDA host compiler and we can be sure that it will be a configured and
-    # existing installation of gcc. There are two ways to introduce the
-    # restriction:
-    #   1) depends_on('cuda%gcc', when='+cuda-gcc') - this is the easiest way
-    #      but it affects the compiler preferences in packages.yaml:
-    #      'icon +cuda-gcc' always leads to 'icon%gcc';
-    #   2) conflicts('+cuda-gcc', '^cuda%x') where x are all supported compilers
-    #      except for gcc - this way does not affect the concretization
-    #      preferences and does not even require the user to specify '^cuda%gcc'
-    #      when cuda is configured as a non-buildable external for compatible
-    #      compilers only.
-    # Currently, we prefer the second option:
-    for x in spack.compilers.supported_compilers():
-        if x != 'gcc':
-            conflicts('+cuda-gcc',
-                      '^cuda%{0}'.format(x),
-                      msg='"+cuda-gcc" requires "^cuda%gcc"')
-
     @when('%cce~openmp')
     def patch(self):
         # Cray Fortran preprocessor removes the OpenMP conditional compilation
@@ -306,16 +271,6 @@ class Icon(AutotoolsPackage):
                         backup=False)
 
     def setup_build_environment(self, env):
-        if '+cuda-gcc' in self.spec:
-            # Make sure that the compiler in use adds an RPATH entry for the
-            # directory containing the C++ standard library of the CUDA host
-            # compiler:
-            link_dirs = self._get_cuda_ccbin_link_paths(
-                self.spec['cuda'].package.compiler, 'libstdc++')
-
-            for d in link_dirs:
-                env.append_path('SPACK_COMPILER_IMPLICIT_RPATHS', d)
-
         # help cmake to build dsl-stencils
         if 'none' not in self.spec.variants['dsl'].value:
             env.set("CUDAARCHS", self.spec.variants['gpu'].value)
@@ -420,7 +375,7 @@ class Icon(AutotoolsPackage):
 
         gpu = self.spec.variants['gpu'].value
 
-        if self.compiler.name == 'gcc' or self._compiler_is_mixed_gfortran():
+        if self.compiler.name == 'gcc':
             config_vars['CFLAGS'].append('-g')
             config_vars['ICON_CFLAGS'].append('-O3')
             config_vars['ICON_BUNDLED_CFLAGS'].append('-O2')
@@ -445,9 +400,7 @@ class Icon(AutotoolsPackage):
             config_vars['ICON_OCEAN_FCFLAGS'].append('-O3')
 
             # Version-specific workarounds:
-            fc_version = (ver(self.compiler.fc_version(self.compiler.fc))
-                          if self._compiler_is_mixed_gfortran() else
-                          self.compiler.version)
+            fc_version = self.compiler.version
             if fc_version >= ver(10):
                 config_vars['ICON_FCFLAGS'].append('-fallow-argument-mismatch')
                 config_vars['ICON_OCEAN_FCFLAGS'].append(
@@ -635,18 +588,8 @@ class Icon(AutotoolsPackage):
 
             libs += self.spec['cuda'].libs
 
-            if '+cuda-gcc' in self.spec:
-                # We know that the compiler of cuda is gcc:
-                gcc = self.spec['cuda'].package.compiler
-                cuda_host_compiler = self._get_cuda_ccbin_wrapper(gcc)
-                cuda_host_compiler_stdcxx_libs = [
-                    '-L{0}'.format(d)
-                    for d in self._get_cuda_ccbin_link_paths(gcc, 'libstdc++')
-                ]
-                cuda_host_compiler_stdcxx_libs.append('-lstdc++')
-            else:
-                cuda_host_compiler = self.compiler.cxx
-                cuda_host_compiler_stdcxx_libs = self.compiler.stdcxx_libs
+            cuda_host_compiler = self.compiler.cxx
+            cuda_host_compiler_stdcxx_libs = self.compiler.stdcxx_libs
 
             if 'none' in self.spec.variants['dsl'].value:
                 config_vars['NVCFLAGS'].extend(
@@ -785,86 +728,7 @@ class Icon(AutotoolsPackage):
         # Archive makefiles:
         archive.extend(
             [join_path(self.build_directory, f) for f in ['Makefile', '*.mk']])
-        # Archive CUDA GCC wrapper:
-        archive.append(join_path(self._cuda_ccbin_wrapper_dir, '*'))
         return archive
-
-    @property
-    def _cuda_ccbin_wrapper_dir(self):
-        # Path to the CUDA host compiler wrapper directory:
-        return join_path(self.stage.path, 'spack-cuda-ccbin')
-
-    @lang.memoized
-    def _get_cuda_ccbin_wrapper(self, compiler):
-        # The version of CUDA in use might be incompatible with the C++ compiler
-        # of the compiler toolchain that needs to be used to build ICON. For
-        # example, we might be limited to CUDA 10.0.130 (due to the
-        # compatibility with the GPU drivers on the compute nodes), which is
-        # incompatible with pgc++ from the PGI 19.9 toolchain - the only
-        # available compiler toolchain with the Fortran compiler that can handle
-        # OpenACC directives in the source code of ICON. To cover such cases, we
-        # introduced a fallback solution (see variant 'cuda-gcc'), which is to
-        # make sure that self.spec['cuda'].package.compiler is an instance of
-        # spack.compilers.Gcc and use its cxx as the CUDA host compiler. The
-        # problem is that the user might have configured the compiler (in
-        # compilers.yaml) to be run in a modified environment with additional
-        # flags. We address that by creating a wrapper, which is in fact a very
-        # simplified version of the Spack compiler wrapper (which we cannot use
-        # because the current build environment is configured for the compiler
-        # that ICON must be built with).
-        #
-        # This method is not limited to gcc and can create a wrapper for any
-        # subclass of spack.compiler.
-
-        # Create a directory for the wrapper:
-        mkdirp(self._cuda_ccbin_wrapper_dir)
-
-        # Dump the modified compiler environment to a source-able file:
-        env_file = join_path(self._cuda_ccbin_wrapper_dir, 'ccbin-env.txt')
-        with compiler._compiler_environment():
-            dump_environment(env_file)
-
-        # Create the wrapper:
-        ccbin_wrapper = join_path(self._cuda_ccbin_wrapper_dir, 'ccbin')
-        with open(ccbin_wrapper, 'w') as f:
-            f.writelines([
-                '#!{0}\n'.format(which_string('bash', required=True)),
-                '. {0}\n'.format(env_file), 'exec {0} {1} "$@"\n'.format(
-                    compiler.cxx,
-                    ' '.join(flag for flag_type in ['cppflags', 'cxxflags']
-                             for flag in compiler.flags.get(flag_type, [])))
-            ])
-        os.chmod(ccbin_wrapper, 0o755)
-
-        return ccbin_wrapper
-
-    @lang.memoized
-    def _get_cuda_ccbin_link_paths(self, compiler, *required_libs):
-        # The compiler in use might not know how to find the runtime libraries
-        # of the CUDA host compiler (i.e. when '+cuda-gcc', see comments in the
-        # _get_cuda_ccbin_wrapper method). For example, the Fortran compiler of
-        # the PGI toolchain might not know where to find libstdc++ of g++ that
-        # is used as the CUDA host compiler. This method requests the provided
-        # instance of spack.compiler (does not have to be spack.compilers.Gcc)
-        # for paths that its cxx implicitly passes to the linker and returns a
-        # a list of (non-system) directories that contain at least one library
-        # from the required_libs argument.
-
-        link_dirs = compiler._get_compiler_link_paths([compiler.cxx])
-        return list(filesystem.paths_containing_libs(link_dirs, required_libs))
-
-    @lang.memoized
-    def _compiler_is_mixed_gfortran(self):
-        if self.compiler.name == 'gcc' or not self.compiler.fc:
-            return False
-
-        fc_name, _, _ = os.path.basename(self.compiler.fc).partition('-')
-
-        if not fc_name:
-            return False
-
-        from spack.compilers.gcc import Gcc
-        return fc_name in Gcc.fc_names
 
     @property
     def build_directory(self):
