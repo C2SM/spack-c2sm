@@ -734,7 +734,6 @@ class Icon(AutotoolsPackage):
         archive.append(join_path(self._cuda_ccbin_wrapper_dir, '*'))
         return archive
 
-
     @property
     def build_directory(self):
         """Overrides function from spack.build_system.autotools
