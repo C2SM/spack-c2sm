@@ -102,6 +102,7 @@ class Icon(AutotoolsPackage):
         description=
         'Enable MPI active target mode (otherwise, passive target mode is used)'
     )
+    variant('async-io-rma', default=True, description='Enable remote memory access (RMA) for async I/O')
     variant('openmp', default=False, description='Enable OpenMP support')
 
     # https://en.wikipedia.org/wiki/CUDA#GPUs_supported
@@ -354,6 +355,7 @@ class Icon(AutotoolsPackage):
                 'art',
                 'mpi',
                 'active-target-sync',
+                'async-io-rma',
                 'openmp',
                 'grib2',
                 'parallel-netcdf',
