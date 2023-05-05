@@ -102,7 +102,9 @@ class Icon(AutotoolsPackage):
         description=
         'Enable MPI active target mode (otherwise, passive target mode is used)'
     )
-    variant('async-io-rma', default=True, description='Enable remote memory access (RMA) for async I/O')
+    variant('async-io-rma',
+            default=True,
+            description='Enable remote memory access (RMA) for async I/O')
     variant('openmp', default=False, description='Enable OpenMP support')
 
     # https://en.wikipedia.org/wiki/CUDA#GPUs_supported
@@ -150,12 +152,11 @@ class Icon(AutotoolsPackage):
         default=False,
         description=
         'Enable PGI/NVIDIA cross-file function inlining via an inline library')
-    variant('nccl',
-            default=False,
-            description='Enable NCCL for communication')
+    variant('nccl', default=False, description='Enable NCCL for communication')
     variant('cuda-graphs',
             default=False,
-            description='Enable CUDA graphs. Warning! This is an experimental feature')
+            description=
+            'Enable CUDA graphs. Warning! This is an experimental feature')
     variant(
         'fcgroup',
         default='none',
