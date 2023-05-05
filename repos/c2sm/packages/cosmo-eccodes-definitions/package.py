@@ -74,3 +74,4 @@ class CosmoEccodesDefinitions(Package):
         mkdir(prefix.cosmoDefinitions + '/samples')
         install_tree('definitions', prefix.cosmoDefinitions + '/definitions')
         install_tree('samples', prefix.cosmoDefinitions + '/samples')
+        install('RELEASE', prefix.cosmoDefinitions)
