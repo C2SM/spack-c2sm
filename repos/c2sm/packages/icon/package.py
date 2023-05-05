@@ -246,12 +246,12 @@ class Icon(AutotoolsPackage):
 
     conflicts('+dace', when='~mpi')
     conflicts('+emvorado', when='~mpi')
-    
-    conflicts('+cuda-graphs', when'%cce')
-    conflicts('+cuda-graphs', when'%gcc')
-    conflicts('+cuda-graphs', when'%intel')
-    conflicts('+cuda-graphs', when'%pgi')
-    conflicts('+cuda-graphs', when'%nvhpc@:23.2')
+
+    conflicts('+cuda-graphs', when='%cce')
+    conflicts('+cuda-graphs', when='%gcc')
+    conflicts('+cuda-graphs', when='%intel')
+    conflicts('+cuda-graphs', when='%pgi')
+    conflicts('+cuda-graphs', when='%nvhpc@:23.2')
 
     # Flag to mark if we build out-of-source
     # Needed to trigger sync of input files for experiments
