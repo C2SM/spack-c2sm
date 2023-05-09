@@ -102,6 +102,9 @@ class Icon(AutotoolsPackage):
         description=
         'Enable MPI active target mode (otherwise, passive target mode is used)'
     )
+    variant('async-io-rma',
+            default=True,
+            description='Enable remote memory access (RMA) for async I/O')
     variant('openmp', default=False, description='Enable OpenMP support')
 
     # https://en.wikipedia.org/wiki/CUDA#GPUs_supported
@@ -149,10 +152,11 @@ class Icon(AutotoolsPackage):
         default=False,
         description=
         'Enable PGI/NVIDIA cross-file function inlining via an inline library')
-    variant('nccl',
+    variant('nccl', default=False, description='Enable NCCL for communication')
+    variant('cuda-graphs',
             default=False,
-            description='Ennable NCCL for communication')
-
+            description=
+            'Enable CUDA graphs. Warning! This is an experimental feature')
     variant(
         'fcgroup',
         default='none',
@@ -243,6 +247,12 @@ class Icon(AutotoolsPackage):
 
     conflicts('+dace', when='~mpi')
     conflicts('+emvorado', when='~mpi')
+
+    conflicts('+cuda-graphs', when='%cce')
+    conflicts('+cuda-graphs', when='%gcc')
+    conflicts('+cuda-graphs', when='%intel')
+    conflicts('+cuda-graphs', when='%pgi')
+    conflicts('+cuda-graphs', when='%nvhpc@:23.2')
 
     # Flag to mark if we build out-of-source
     # Needed to trigger sync of input files for experiments
@@ -354,6 +364,7 @@ class Icon(AutotoolsPackage):
                 'art',
                 'mpi',
                 'active-target-sync',
+                'async-io-rma',
                 'openmp',
                 'grib2',
                 'parallel-netcdf',
@@ -364,6 +375,7 @@ class Icon(AutotoolsPackage):
                 'mixed-precision',
                 'pgi-inlib',
                 'nccl',
+                'cuda-graphs',
         ]:
             config_args += self.enable_or_disable(x)
 
