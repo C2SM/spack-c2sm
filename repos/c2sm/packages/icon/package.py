@@ -375,6 +375,7 @@ class Icon(AutotoolsPackage):
                 'mixed-precision',
                 'pgi-inlib',
                 'nccl',
+                'cuda-graphs',
         ]:
             config_args += self.enable_or_disable(x)
 
