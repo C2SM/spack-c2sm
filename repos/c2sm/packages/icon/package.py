@@ -167,10 +167,9 @@ class Icon(AutotoolsPackage):
     )
 
     # verbosity
-    variant(
-        'silent-rules',
-        default=True,
-        description='Enable silent-rules for build-process')
+    variant('silent-rules',
+            default=True,
+            description='Enable silent-rules for build-process')
 
     # C2SM specific Features:
     variant(
