@@ -95,7 +95,7 @@
 <p>You can use spack to test a PR/MR in your CI pipeline.
 This is a common way to do it.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span><span class="nb">cd</span> into the packages repo!
-<span class="gp">$ </span>git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b v0.18.1.4 https://github.com/C2SM/spack-c2sm.git
+<span class="gp">$ </span>git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b v0.18.1.5 https://github.com/C2SM/spack-c2sm.git
 <span class="gp">$ </span>. spack-c2sm/setup-env.sh
 <span class="gp">$ </span>spack dev-build --test<span class="o">=</span>root --show-log-on-error &lt;package&gt; @develop &lt;variant&gt;
 </pre></div>
