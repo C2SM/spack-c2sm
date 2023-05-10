@@ -166,6 +166,11 @@ class Icon(AutotoolsPackage):
         'Create a Fortran compile group: GROUP;files;flag \nNote: flag can only be one single value, i.e. -O1'
     )
 
+    # verbosity
+    variant('silent-rules',
+            default=True,
+            description='Enable silent-rules for build-process')
+
     # C2SM specific Features:
     variant(
         'infero',
@@ -342,7 +347,7 @@ class Icon(AutotoolsPackage):
             f.writelines(['\n', '\n'.join(rules)])
 
     def configure_args(self):
-        config_args = ['--disable-rpaths', '--disable-silent-rules']
+        config_args = ['--disable-rpaths']
         config_vars = defaultdict(list)
         libs = LibraryList([])
 
@@ -376,6 +381,7 @@ class Icon(AutotoolsPackage):
                 'pgi-inlib',
                 'nccl',
                 'cuda-graphs',
+                'silent-rules',
         ]:
             config_args += self.enable_or_disable(x)
 
