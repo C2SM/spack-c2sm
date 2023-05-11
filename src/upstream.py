@@ -41,8 +41,7 @@ def newer_tags(current):
                                        shell=True).decode().split('\n')[0:-1]
     idx = all_tags.index(current)
 
-    return all_tags
-    #return all_tags[idx + 1:]
+    return all_tags[idx + 1:]
 
 
 def upstream_from_another_tag(folder, next):
