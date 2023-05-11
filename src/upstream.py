@@ -19,10 +19,12 @@ def delete_upstream(upstream):
     print(f'Delete upstream {upstream}')
     shutil.rmtree(upstream, ignore_errors=True)
 
+
 def git_version():
-    version =subprocess.check_output("git --version",
-                                   shell=True).decode().split('\n')[0].split(' ')[2]
+    version = subprocess.check_output(
+        "git --version", shell=True).decode().split('\n')[0].split(' ')[2]
     return int(version.replace(".", ""))
+
 
 def current_tag():
     return subprocess.check_output("git describe --tags --abbrev=0",
@@ -43,11 +45,13 @@ def newer_tags(current):
 
 
 def upstream_from_another_tag(folder, next):
-    subprocess.check_output(f"git checkout {next} {folder}",
-                            shell=True,stderr=subprocess.DEVNULL).decode().split('\n')[0:-1]
+    subprocess.check_output(
+        f"git checkout {next} {folder}", shell=True,
+        stderr=subprocess.DEVNULL).decode().split('\n')[0:-1]
     upstream = read_upstream_from_spack_yaml(folder)
     subprocess.check_output(f"git checkout {current_commit()} {folder}",
-                            shell=True,stderr=subprocess.DEVNULL)
+                            shell=True,
+                            stderr=subprocess.DEVNULL)
 
     return upstream
 
