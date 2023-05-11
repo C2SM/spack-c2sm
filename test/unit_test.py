@@ -150,8 +150,13 @@ class UpstreamTest(unittest.TestCase):
     def test_upstream_from_another_tag(self):
         upstream_base = os.path.join(os.path.normpath(spack_c2sm_path),
                                      'upstreams/daint/base')
+
         self.assertEqual('/project/g110/spack/upstream/daint_v0.18.1.4/base',
                          upstream_from_another_tag(upstream_base, 'v0.18.1.4'))
+
+        # mch_env_3 does not contain upstream_base -> None
+        self.assertEqual(None,
+                         upstream_from_another_tag(upstream_base, 'mch_env_3'))
 
     def test_current_tag(self):
         current_tag()

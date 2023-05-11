@@ -41,14 +41,19 @@ def newer_tags(current):
                                        shell=True).decode().split('\n')[0:-1]
     idx = all_tags.index(current)
 
-    return all_tags[idx + 1:]
+    return all_tags
+    #return all_tags[idx + 1:]
 
 
 def upstream_from_another_tag(folder, next):
-    subprocess.check_output(
-        f"git checkout {next} {folder}", shell=True,
-        stderr=subprocess.DEVNULL).decode().split('\n')[0:-1]
-    upstream = read_upstream_from_spack_yaml(folder)
+    try:
+        subprocess.check_output(
+            f"git checkout {next} {folder}", shell=True,
+            stderr=subprocess.DEVNULL).decode().split('\n')[0:-1]
+        upstream = read_upstream_from_spack_yaml(folder)
+    except subprocess.CalledProcessError:
+        upstream = None
+
     subprocess.check_output(f"git checkout {current_commit()} {folder}",
                             shell=True,
                             stderr=subprocess.DEVNULL)
