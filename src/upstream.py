@@ -48,7 +48,8 @@ def newer_tags(current):
 def upstream_from_another_tag(folder, next):
     try:
         subprocess.check_output(
-            f"git checkout {next} {folder}", shell=True,
+            f"git checkout {next} {folder}",
+            shell=True,
             stderr=subprocess.DEVNULL).decode().split('\n')[0:-1]
         upstream = read_upstream_from_spack_yaml(folder)
     except subprocess.CalledProcessError:
