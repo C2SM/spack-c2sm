@@ -21,24 +21,29 @@ def delete_upstream(upstream):
 
 
 def current_tag():
-    return subprocess.check_output("git describe --tags --abbrev=0", shell=True).decode().split('\n')[0]
+    return subprocess.check_output("git describe --tags --abbrev=0",
+                                   shell=True).decode().split('\n')[0]
 
 
 def current_commit():
-    return subprocess.check_output('git log -n 1 --pretty=format:"%H"', shell=True).decode().split('\n')[0]
+    return subprocess.check_output('git log -n 1 --pretty=format:"%H"',
+                                   shell=True).decode().split('\n')[0]
 
 
 def newer_tags(current):
-    all_tags = subprocess.check_output("git tag --sort=authordate", shell=True).decode().split('\n')[0:-1]
+    all_tags = subprocess.check_output("git tag --sort=authordate",
+                                       shell=True).decode().split('\n')[0:-1]
     idx = all_tags.index(current)
 
-    return all_tags[idx+1:]
+    return all_tags[idx + 1:]
 
 
-def upstream_from_another_tag(folder,next):
-    subprocess.check_output(f"git checkout {next} {folder}", shell=True).decode().split('\n')[0:-1]
+def upstream_from_another_tag(folder, next):
+    subprocess.check_output(f"git checkout {next} {folder}",
+                            shell=True).decode().split('\n')[0:-1]
     upstream = read_upstream_from_spack_yaml(folder)
-    subprocess.check_output(f"git checkout {current_commit()} {folder}", shell=True).decode().split('\n')[0:-1]
+    subprocess.check_output(f"git checkout {current_commit()} {folder}",
+                            shell=True).decode().split('\n')[0:-1]
 
     return upstream
 
@@ -50,11 +55,13 @@ if __name__ == '__main__':
 
     upstream = read_upstream_from_spack_yaml(sys.argv[1])
     upstream_is_still_in_use = False
-    for tag in newer_tags(current_tag()): 
-        if upstream == upstream_from_another_tag(sys.argv[1],tag):
+    for tag in newer_tags(current_tag()):
+        if upstream == upstream_from_another_tag(sys.argv[1], tag):
             upstream_is_still_in_use = True
             tag_using_upstream = tag
     if upstream_is_still_in_use:
-        print(f'Can not delete upstream -> still in use for tag {tag_using_upstream}')
+        print(
+            f'Can not delete upstream -> still in use for tag {tag_using_upstream}'
+        )
     else:
         delete_upstream(upstream)

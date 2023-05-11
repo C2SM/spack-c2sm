@@ -147,12 +147,11 @@ class UpstreamTest(unittest.TestCase):
         self.assertEqual('/project/g110/spack/upstream/daint_v0.18.1.5/base',
                          upstream_base)
 
-
     def test_upstream_from_another_tag(self):
         upstream_base = os.path.join(os.path.normpath(spack_c2sm_path),
-                         'upstreams/daint/base')
+                                     'upstreams/daint/base')
         self.assertEqual('/project/g110/spack/upstream/daint_v0.18.1.4/base',
-            upstream_from_another_tag(upstream_base,'v0.18.1.4'))
+                         upstream_from_another_tag(upstream_base, 'v0.18.1.4'))
 
     def test_current_tag(self):
         current_tag()
