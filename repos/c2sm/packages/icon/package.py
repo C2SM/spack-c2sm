@@ -641,16 +641,18 @@ class Icon(AutotoolsPackage):
 
             config_vars['LOC_GT4PY'].append(self.spec['py-gt4py'].prefix)
             config_vars['LOC_ICON4PY_BIN'].append(
-                os.path.join(self.spec['py-icon4py'].prefix,'bin'))
+                os.path.join(self.spec['py-icon4py'].prefix, 'bin'))
             config_vars['LOC_ICON4PY_ATM_DYN_ICONAM'].append(
-                os.path.join(self.spec['py-icon4py'].prefix,
-                             'lib/python3.10/site-packages/icon4py/atm_dyn_iconam'))
+                os.path.join(
+                    self.spec['py-icon4py'].prefix,
+                    'lib/python3.10/site-packages/icon4py/atm_dyn_iconam'))
             config_vars['LOC_ICON4PY_ADVECTION'].append(
                 os.path.join(self.spec['py-icon4py'].prefix,
                              'lib/python3.10/site-packages/icon4py/advection'))
             config_vars['LOC_ICON4PY_UTILS'].append(
-                os.path.join(self.spec['py-icon4py'].prefix,
-                             'lib/python3.10/site-packages/icon4py/icon4pygen'))
+                os.path.join(
+                    self.spec['py-icon4py'].prefix,
+                    'lib/python3.10/site-packages/icon4py/icon4pygen'))
             config_vars['LOC_GRIDTOOLS'].append(
                 os.path.join(
                     self.spec['py-gridtools-cpp'].prefix,
