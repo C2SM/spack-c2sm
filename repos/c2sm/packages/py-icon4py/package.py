@@ -20,6 +20,7 @@ class PyIcon4py(PythonPackage):
     maintainers = ['samkellerhals']
 
     version('main', branch='main', git=git)
+    version('test', tag='v0.0.3', git=git)
     version('0.0.3', tag='v0.0.3', git=git)
 
     depends_on('py-wheel', type='build')

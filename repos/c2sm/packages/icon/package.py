@@ -641,7 +641,7 @@ class Icon(AutotoolsPackage):
 
             config_vars['LOC_GT4PY'].append(self.spec['py-gt4py'].prefix)
             config_vars['LOC_ICON4PY_BIN'].append(
-                os.path.join(self.spec['py-icon4py'].prefix,'bin'))
+                self.spec['py-icon4py'].prefix)
             config_vars['LOC_ICON4PY_ATM_DYN_ICONAM'].append(
                 os.path.join(self.spec['py-icon4py'].prefix,
                              'lib/python3.10/site-packages/icon4py/atm_dyn_iconam'))
