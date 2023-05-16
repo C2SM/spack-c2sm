@@ -48,7 +48,7 @@ def upstream_from_another_tag(upstream_folder, tag):
         subprocess.check_output(
             f"git checkout {tag} {upstream_folder}",
             shell=True,
-            stderr=subprocess.DEVNULL).decode().split('\n')[0:-1]
+            stderr=subprocess.DEVNULL)
         upstream = read_upstream_from_spack_yaml(upstream_folder)
     except subprocess.CalledProcessError:
         upstream = None
