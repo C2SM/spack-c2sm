@@ -20,6 +20,7 @@ and deploy our software on supercomputers, mostly at the
    InstanceManagement
    SpackCommands
    Testing
+   UpstreamManagement
    CodeDevelopment
    SpackChoice
 
