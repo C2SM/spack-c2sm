@@ -13,12 +13,12 @@ compilers:
     environment: {}
     extra_rpaths: []
 - compiler:
-    spec: nvhpc@22.7
+    spec: nvhpc@23.3
     paths:
-      cc: /mch-environment/v3/linux-sles15-zen3/gcc-11.3.0/nvhpc-22.7-nn6rciaqkr2qll3vziuernjofirwu3d3/Linux_x86_64/22.7/compilers/bin/nvc
-      cxx: /mch-environment/v3/linux-sles15-zen3/gcc-11.3.0/nvhpc-22.7-nn6rciaqkr2qll3vziuernjofirwu3d3/Linux_x86_64/22.7/compilers/bin/nvc++
-      f77: /mch-environment/v3/linux-sles15-zen3/gcc-11.3.0/nvhpc-22.7-nn6rciaqkr2qll3vziuernjofirwu3d3/Linux_x86_64/22.7/compilers/bin/nvfortran
-      fc: /mch-environment/v3/linux-sles15-zen3/gcc-11.3.0/nvhpc-22.7-nn6rciaqkr2qll3vziuernjofirwu3d3/Linux_x86_64/22.7/compilers/bin/nvfortran
+      cc: /mch-environment/v3/linux-sles15-zen3/gcc-11.3.0/nvhpc-23.3-bubpfon3axcnv5k2e2mrd6myvrgg3lby/Linux_x86_64/23.3/compilers/bin/nvc
+      cxx: /mch-environment/v3/linux-sles15-zen3/gcc-11.3.0/nvhpc-23.3-bubpfon3axcnv5k2e2mrd6myvrgg3lby/Linux_x86_64/23.3/compilers/bin/nvc++
+      f77: /mch-environment/v3/linux-sles15-zen3/gcc-11.3.0/nvhpc-23.3-bubpfon3axcnv5k2e2mrd6myvrgg3lby/Linux_x86_64/23.3/compilers/bin/nvfortran
+      fc: /mch-environment/v3/linux-sles15-zen3/gcc-11.3.0/nvhpc-23.3-bubpfon3axcnv5k2e2mrd6myvrgg3lby/Linux_x86_64/23.3/compilers/bin/nvfortran
     flags: {}
     operating_system: sles15
     target: x86_64
