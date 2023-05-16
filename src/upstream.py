@@ -54,9 +54,10 @@ def upstream_from_another_tag(upstream_folder, tag):
     except subprocess.CalledProcessError:
         upstream = None
 
-    subprocess.check_output(f"git checkout {current_commit()} {upstream_folder}",
-                            shell=True,
-                            stderr=subprocess.DEVNULL)
+    subprocess.check_output(
+        f"git checkout {current_commit()} {upstream_folder}",
+        shell=True,
+        stderr=subprocess.DEVNULL)
 
     return upstream
 
