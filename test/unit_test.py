@@ -168,7 +168,7 @@ class UpstreamTest(unittest.TestCase):
     def test_current_commit(self):
         self.assertTrue(current_commit())
 
-    @unittest.skipUnless(2000 <= int(git_version().replace(".", "")),
+    @unittest.skipUnless(2 <= int(git_version().split(".")[0]),
                          'needs git version > 2.0.0')
     def test_newer_tags(self):
         self.assertGreater(len(newer_tags('v0.18.1.0')), 5)
