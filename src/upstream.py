@@ -22,18 +22,18 @@ def delete_upstream(upstream):
 
 def git_version():
     version = subprocess.check_output(
-        "git --version", shell=True).decode().split('\n')[0].split(' ')[2]
+        "git --version", shell=True).decode().split()[2]
     return int(version.replace(".", ""))
 
 
 def current_tag():
     return subprocess.check_output("git describe --tags --abbrev=0",
-                                   shell=True).decode().split('\n')[0]
+                                   shell=True).decode().split()[0]
 
 
 def current_commit():
     return subprocess.check_output('git log -n 1 --pretty=format:"%H"',
-                                   shell=True).decode().split('\n')[0]
+                                   shell=True).decode().split()[0]
 
 
 def newer_tags(reference_tag):
