@@ -21,8 +21,8 @@ def delete_upstream(upstream):
 
 
 def git_version():
-    return subprocess.check_output(
-        "git --version", shell=True).decode().split()[2]
+    return subprocess.check_output("git --version",
+                                   shell=True).decode().split()[2]
 
 
 def current_tag():
