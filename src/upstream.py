@@ -36,25 +36,25 @@ def current_commit():
                                    shell=True).decode().split('\n')[0]
 
 
-def newer_tags(current):
+def newer_tags(reference_tag):
     all_tags = subprocess.check_output("git tag --sort=authordate",
                                        shell=True).decode().split('\n')[0:-1]
-    idx = all_tags.index(current)
+    idx = all_tags.index(reference_tag)
 
     return all_tags[idx + 1:]
 
 
-def upstream_from_another_tag(folder, next):
+def upstream_from_another_tag(upstream_folder, tag):
     try:
         subprocess.check_output(
-            f"git checkout {next} {folder}",
+            f"git checkout {tag} {upstream_folder}",
             shell=True,
             stderr=subprocess.DEVNULL).decode().split('\n')[0:-1]
-        upstream = read_upstream_from_spack_yaml(folder)
+        upstream = read_upstream_from_spack_yaml(upstream_folder)
     except subprocess.CalledProcessError:
         upstream = None
 
-    subprocess.check_output(f"git checkout {current_commit()} {folder}",
+    subprocess.check_output(f"git checkout {current_commit()} {upstream_folder}",
                             shell=True,
                             stderr=subprocess.DEVNULL)
 
