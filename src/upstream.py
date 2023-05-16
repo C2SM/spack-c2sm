@@ -45,10 +45,9 @@ def newer_tags(reference_tag):
 
 def upstream_from_another_tag(upstream_folder, tag):
     try:
-        subprocess.check_output(
-            f"git checkout {tag} {upstream_folder}",
-            shell=True,
-            stderr=subprocess.DEVNULL)
+        subprocess.check_output(f"git checkout {tag} {upstream_folder}",
+                                shell=True,
+                                stderr=subprocess.DEVNULL)
         upstream = read_upstream_from_spack_yaml(upstream_folder)
     except subprocess.CalledProcessError:
         upstream = None
