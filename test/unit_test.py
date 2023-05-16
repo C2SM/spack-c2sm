@@ -2,6 +2,7 @@ import unittest
 import pytest
 import sys
 import os
+import re
 from pathlib import Path
 
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
@@ -159,15 +160,15 @@ class UpstreamTest(unittest.TestCase):
                          upstream_from_another_tag(upstream_base, 'mch_env_3'))
 
     def test_current_tag(self):
-        current_tag()
+        self.assertTrue(current_tag())
 
     def test_git_version(self):
-        git_version()
+        self.assertTrue(re.match(r'^\d+(\.\d+)*$', git_version()) is not None)
 
     def test_current_commit(self):
-        current_commit()
+        self.assertTrue(current_commit())
 
-    @unittest.skipUnless(2000 <= git_version(), 'needs git version > 2.0.0')
+    @unittest.skipUnless(2000 <= int(git_version().replace(".", "")), 'needs git version > 2.0.0')
     def test_newer_tags(self):
         self.assertGreater(len(newer_tags('v0.18.1.0')), 5)
 
