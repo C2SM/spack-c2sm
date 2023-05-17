@@ -88,19 +88,21 @@
              
   <section id="upstream-management">
 <h1>Upstream management<a class="headerlink" href="#upstream-management" title="Permalink to this heading"></a></h1>
-<p>To speed-up compilation spack-c2sm is aware of multiple upstream instances
-providing pre-built dependencies. This is important for CI like BuildBot or Jenkins or
-to not overload filesystems at CSCS because each users installs its own software stack.</p>
+<p>spack-c2sm is aware of multiple upstream instances
+providing pre-built dependencies. This is important for efficient builds during CI.
+Additionally an overload of filesystems at CSCS is prevented because not every users install
+its own software stack.</p>
 <section id="install-upstream">
 <h2>Install upstream<a class="headerlink" href="#install-upstream" title="Permalink to this heading"></a></h2>
-<p>The upstream instances are installed for each tag through a dedicated [Jenkinks plan](<a class="reference external" href="https://jenkins-mch.cscs.ch/job/Spack/job/spack-upstream_v0.18.1.5/">https://jenkins-mch.cscs.ch/job/Spack/job/spack-upstream_v0.18.1.5/</a>).
+<p>The upstream instances are installed for each tag through a dedicated <a class="reference external" href="https://jenkins-mch.cscs.ch/job/Spack/job/spack-upstream_v0.18.1.5/">Jenkinks plan (Install upstream)</a>
 Each new tag of spack-c2sm needs a new plan, it can simply be copied from existing one. The only thing to adapt is the default value of the spack-tag.</p>
 </section>
 <section id="uninstall-upstream">
 <h2>Uninstall upstream<a class="headerlink" href="#uninstall-upstream" title="Permalink to this heading"></a></h2>
-<p>The upstream instances are uninstalled for each tag through a common [Jenkinks plan](<a class="reference external" href="https://jenkins-mch.cscs.ch/job/Spack/job/spack-delete-upstream/">https://jenkins-mch.cscs.ch/job/Spack/job/spack-delete-upstream/</a>). No manual deletion of files in g110 needed.
+<p>The upstream instances are uninstalled for each tag through a common <a class="reference external" href="https://jenkins-mch.cscs.ch/job/Spack/job/spack-delete-upstream/">Jenkinks plan(Uninstall upstream)</a> . No manual deletion of files in g110 needed.
 In case multiple tags of spack-c2sm use the same version of an upstream a mechanism is programmed that checks if a given upstream is still used for future releases.
 In that case the upstream is not removed.</p>
+<img alt="Exemplary installation scheme of upstream instances" src="_images/upstream_scheme.png" />
 </section>
 </section>
 
