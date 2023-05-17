@@ -17,7 +17,7 @@ In case multiple tags of spack-c2sm use the same version of an upstream a mechan
 In that case the upstream is not removed.
 
 ..  attention::
-    Automativ deinstallation of upstreams is only implemented since spack-c2sm v0.18.1.4!
+    Automatic deinstallation of upstreams is only implemented in spack-c2sm v0.18.1.4 and later!
 
 
 .. figure:: pictures/upstream_scheme.png
