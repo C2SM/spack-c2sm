@@ -16,6 +16,10 @@ The upstream instances are uninstalled for each tag through a common `Jenkinks p
 In case multiple tags of spack-c2sm use the same version of an upstream a mechanism is programmed that checks if a given upstream is still used for future releases.
 In that case the upstream is not removed.
 
+..  attention::
+    Automativ deinstallation of upstreams is only implemented since spack-c2sm v0.18.1.4!
+
+
 .. figure:: pictures/upstream_scheme.png
 
    Installation scheme of upstream instances. If tag v0.18.0.5 is the oldest tag supported, the orange upstream instances can safely be removed.
