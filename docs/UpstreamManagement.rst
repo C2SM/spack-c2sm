@@ -12,9 +12,10 @@ Each new tag of spack-c2sm needs a new plan, it can simply be copied from existi
 
 Uninstall upstream
 ----------------------
-The upstream instances are uninstalled for each tag through a common `Jenkinks plan(Uninstall upstream) <https://jenkins-mch.cscs.ch/job/Spack/job/spack-delete-upstream/>`_ . No manual deletion of files in g110 needed.
+The upstream instances are uninstalled for each tag through a common `Jenkinks plan (Uninstall upstream) <https://jenkins-mch.cscs.ch/job/Spack/job/spack-delete-upstream/>`_ . No manual deletion of files in g110 needed.
 In case multiple tags of spack-c2sm use the same version of an upstream a mechanism is programmed that checks if a given upstream is still used for future releases.
 In that case the upstream is not removed.
 
 .. image:: pictures/upstream_scheme.png
-   :alt: Exemplary installation scheme of upstream instances
+
+   Installation scheme of upstream instances
