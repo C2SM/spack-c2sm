@@ -2,6 +2,7 @@ import unittest
 import pytest
 import sys
 import os
+import re
 from pathlib import Path
 
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
@@ -9,7 +10,7 @@ spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 sys.path.append(os.path.normpath(spack_c2sm_path))
 from src import machine_name, Markdown, HTML, time_format, sanitized_filename, all_machines, all_packages, explicit_scope, package_triggers
 
-from src.upstream import read_upstream_from_spack_yaml
+from src.upstream import *
 
 
 class MachineDetection(unittest.TestCase):
@@ -146,6 +147,31 @@ class UpstreamTest(unittest.TestCase):
                          'upstreams/daint/base'))
         self.assertEqual('/project/g110/spack/upstream/daint_v0.18.1.5/base',
                          upstream_base)
+
+    def test_upstream_from_another_tag(self):
+        upstream_base = os.path.join(os.path.normpath(spack_c2sm_path),
+                                     'upstreams/daint/base')
+
+        self.assertEqual('/project/g110/spack/upstream/daint_v0.18.1.4/base',
+                         upstream_from_another_tag(upstream_base, 'v0.18.1.4'))
+
+        # mch_env_3 does not contain upstream_base -> None
+        self.assertEqual(None,
+                         upstream_from_another_tag(upstream_base, 'mch_env_3'))
+
+    def test_current_tag(self):
+        self.assertTrue(current_tag())
+
+    def test_git_version(self):
+        self.assertTrue(re.match(r'^\d+(\.\d+)*$', git_version()) is not None)
+
+    def test_current_commit(self):
+        self.assertTrue(current_commit())
+
+    @unittest.skipUnless(2 <= int(git_version().split(".")[0]),
+                         'needs git version > 2.0.0')
+    def test_newer_tags(self):
+        self.assertGreater(len(newer_tags('v0.18.1.0')), 5)
 
 
 if __name__ == '__main__':
