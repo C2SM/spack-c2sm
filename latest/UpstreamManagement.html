@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Search &mdash; C2SM Spack  documentation</title>
+  <title>Upstream management &mdash; C2SM Spack  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
-    
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -21,10 +21,10 @@
         <script src="_static/clipboard.min.js"></script>
         <script src="_static/copybutton.js"></script>
     <script src="_static/js/theme.js"></script>
-    <script src="_static/searchtools.js"></script>
-    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Develop packages" href="CodeDevelopment.html" />
+    <link rel="prev" title="Testing" href="Testing.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -39,7 +39,7 @@
             C2SM Spack
           </a>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -47,13 +47,17 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="QuickStart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="C2SMGuidelines.html">C2SM Guidelines for Spack</a></li>
 <li class="toctree-l1"><a class="reference internal" href="InstanceManagement.html">How to manage your own Spack instance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SpackCommands.html">Important Spack Commands</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="UpstreamManagement.html">Upstream management</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Upstream management</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#install-upstream">Install upstream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#uninstall-upstream">Uninstall upstream</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="CodeDevelopment.html">Develop packages</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SpackChoice.html">Why was Spack chosen by MeteoSwiss?</a></li>
 </ul>
@@ -72,8 +76,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Search</li>
+      <li class="breadcrumb-item active">Upstream management</li>
       <li class="wy-breadcrumbs-aside">
+            <a href="_sources/UpstreamManagement.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -81,22 +86,42 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search functionality.
-    </p>
-  </div>
-  </noscript>
+  <section id="upstream-management">
+<h1>Upstream management<a class="headerlink" href="#upstream-management" title="Permalink to this heading"></a></h1>
+<p>spack-c2sm is aware of multiple upstream instances
+providing pre-built dependencies. This is important for efficient builds during CI.
+Additionally an overload of filesystems at CSCS is prevented because not every users install
+its own software stack.</p>
+<section id="install-upstream">
+<h2>Install upstream<a class="headerlink" href="#install-upstream" title="Permalink to this heading"></a></h2>
+<p>The upstream instances are installed for each tag through a dedicated <a class="reference external" href="https://jenkins-mch.cscs.ch/job/Spack/job/spack-upstream_v0.18.1.5/">Jenkinks plan (Install upstream)</a>.
+Each new tag of spack-c2sm needs a new plan, it can simply be copied from existing one. The only thing to adapt is the default value of the spack-tag.</p>
+</section>
+<section id="uninstall-upstream">
+<h2>Uninstall upstream<a class="headerlink" href="#uninstall-upstream" title="Permalink to this heading"></a></h2>
+<p>The upstream instances are uninstalled for each tag through a common <a class="reference external" href="https://jenkins-mch.cscs.ch/job/Spack/job/spack-delete-upstream/">Jenkinks plan (Uninstall upstream)</a> . No manual deletion of files in g110 needed.
+In case multiple tags of spack-c2sm use the same version of an upstream a mechanism is programmed that checks if a given upstream is still used for future releases.
+In that case the upstream is not removed.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Automatic deinstallation of upstreams is only implemented in spack-c2sm v0.18.1.4 and later!</p>
+</div>
+<figure class="align-default" id="id1">
+<img alt="_images/upstream_scheme.png" src="_images/upstream_scheme.png" />
+<figcaption>
+<p><span class="caption-text">Installation scheme of upstream instances. If tag v0.18.0.5 is the oldest tag supported, the orange upstream instances can safely be removed.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
 
-  
-  <div id="search-results">
-  
-  </div>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Testing.html" class="btn btn-neutral float-left" title="Testing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="CodeDevelopment.html" class="btn btn-neutral float-right" title="Develop packages" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
@@ -118,14 +143,7 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-  <script>
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script id="searchindexloader"></script>
-   
-
+  </script> 
 
 </body>
 </html>
