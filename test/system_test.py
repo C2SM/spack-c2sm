@@ -230,10 +230,10 @@ class FlexpartIfsTest(unittest.TestCase):
         spack_install_and_test('flexpart-ifs')
 
 
-class FlexpartTest(unittest.TestCase):
+class FlexpartCosmoTest(unittest.TestCase):
 
     def test_install(self):
-        spack_install_and_test('flexpart')
+        spack_install_and_test('flexpart-cosmo')
 
 
 class GridToolsTest(unittest.TestCase):

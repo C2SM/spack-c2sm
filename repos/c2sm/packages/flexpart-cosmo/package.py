@@ -8,16 +8,16 @@ from spack import *
 from distutils.dir_util import copy_tree
 
 
-class Flexpart(MakefilePackage):
+class FlexpartCosmo(MakefilePackage):
     """flexpart is a Lagrangian dispersion model"""
 
     homepage = 'https://github.com/C2SM-RCM/flexpart'
     url = 'https://github.com/C2SM-RCM/flexpart/archive/refs/tags/V8C3-preop.tar.gz'
-    git = 'git@github.com:C2SM-RCM/flexpart.git'
+    git = 'ssh://git@github.com/C2SM-RCM/flexpart.git'
 
-    version('V8C3-preop', tag='V8C3-preop')
+    version('master', branch='master')
 
-    depends_on('eccodes jp2k=none +fortran')
+    depends_on('eccodes@2.19.0 jp2k=none +fortran')
     depends_on('netcdf-fortran')
 
     conflicts('%nvhpc')
