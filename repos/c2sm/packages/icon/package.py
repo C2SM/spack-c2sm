@@ -102,6 +102,9 @@ class Icon(AutotoolsPackage):
         description=
         'Enable MPI active target mode (otherwise, passive target mode is used)'
     )
+    variant('async-io-rma',
+            default=True,
+            description='Enable remote memory access (RMA) for async I/O')
     variant('openmp', default=False, description='Enable OpenMP support')
 
     # https://en.wikipedia.org/wiki/CUDA#GPUs_supported
@@ -149,10 +152,11 @@ class Icon(AutotoolsPackage):
         default=False,
         description=
         'Enable PGI/NVIDIA cross-file function inlining via an inline library')
-    variant('nccl',
+    variant('nccl', default=False, description='Enable NCCL for communication')
+    variant('cuda-graphs',
             default=False,
-            description='Ennable NCCL for communication')
-
+            description=
+            'Enable CUDA graphs. Warning! This is an experimental feature')
     variant(
         'fcgroup',
         default='none',
@@ -161,6 +165,11 @@ class Icon(AutotoolsPackage):
         description=
         'Create a Fortran compile group: GROUP;files;flag \nNote: flag can only be one single value, i.e. -O1'
     )
+
+    # verbosity
+    variant('silent-rules',
+            default=True,
+            description='Enable silent-rules for build-process')
 
     # C2SM specific Features:
     variant(
@@ -243,6 +252,12 @@ class Icon(AutotoolsPackage):
 
     conflicts('+dace', when='~mpi')
     conflicts('+emvorado', when='~mpi')
+
+    conflicts('+cuda-graphs', when='%cce')
+    conflicts('+cuda-graphs', when='%gcc')
+    conflicts('+cuda-graphs', when='%intel')
+    conflicts('+cuda-graphs', when='%pgi')
+    conflicts('+cuda-graphs', when='%nvhpc@:23.2')
 
     # Flag to mark if we build out-of-source
     # Needed to trigger sync of input files for experiments
@@ -332,7 +347,7 @@ class Icon(AutotoolsPackage):
             f.writelines(['\n', '\n'.join(rules)])
 
     def configure_args(self):
-        config_args = ['--disable-rpaths', '--disable-silent-rules']
+        config_args = ['--disable-rpaths']
         config_vars = defaultdict(list)
         libs = LibraryList([])
 
@@ -354,6 +369,7 @@ class Icon(AutotoolsPackage):
                 'art',
                 'mpi',
                 'active-target-sync',
+                'async-io-rma',
                 'openmp',
                 'grib2',
                 'parallel-netcdf',
@@ -364,6 +380,8 @@ class Icon(AutotoolsPackage):
                 'mixed-precision',
                 'pgi-inlib',
                 'nccl',
+                'cuda-graphs',
+                'silent-rules',
         ]:
             config_args += self.enable_or_disable(x)
 
@@ -622,9 +640,16 @@ class Icon(AutotoolsPackage):
                     'liskov does not support fusing just yet')
 
             config_vars['LOC_GT4PY'].append(self.spec['py-gt4py'].prefix)
-            config_vars['LOC_ICON4PY'].append(
-                os.path.join(self.spec['py-icon4py'].prefix))
-            config_vars['LOC_ICON4PY_LIB'].append(
+            config_vars['LOC_ICON4PY_BIN'].append(
+                self.spec['py-icon4py'].prefix)
+            config_vars['LOC_ICON4PY_ATM_DYN_ICONAM'].append(
+                os.path.join(
+                    self.spec['py-icon4py'].prefix,
+                    'lib/python3.10/site-packages/icon4py/atm_dyn_iconam'))
+            config_vars['LOC_ICON4PY_ADVECTION'].append(
+                os.path.join(self.spec['py-icon4py'].prefix,
+                             'lib/python3.10/site-packages/icon4py/advection'))
+            config_vars['LOC_ICON4PY_UTILS'].append(
                 os.path.join(self.spec['py-icon4py'].prefix,
                              'lib/python3.10/site-packages/icon4py'))
             config_vars['LOC_GRIDTOOLS'].append(

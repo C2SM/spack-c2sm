@@ -9,7 +9,7 @@ To set up a Spack instance, clone the repository
 
 .. code-block:: console
 
-  $ git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.18.1.4 https://github.com/C2SM/spack-c2sm.git
+  $ git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.18.1.5 https://github.com/C2SM/spack-c2sm.git
 
 To load it into your command line, execute
 
@@ -103,7 +103,7 @@ Example to build ICON for CPU with NVHPC:
 
 .. code-block:: console
 
-    $ spack env activate -p -d config/cscs/spack/v0.18.1.1/daint_cpu_nvhpc
+    $ spack env activate -p -d config/cscs/spack/v0.18.1.5/daint_cpu_nvhpc
     $ spack install
 
 ..  attention::
@@ -116,7 +116,7 @@ Out-of-source builds are possible as follows:
 
     $ mkdir cpu && cd cpu
     $ cp -r ../config .
-    $ spack env activate -p -d config/cscs/spack/v0.18.1.1/daint_cpu_nvhpc
+    $ spack env activate -p -d config/cscs/spack/v0.18.1.5/daint_cpu_nvhpc
     $ spack install
 
 ..  attention::
