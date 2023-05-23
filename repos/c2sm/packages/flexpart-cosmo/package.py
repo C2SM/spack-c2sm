@@ -19,6 +19,7 @@ class FlexpartCosmo(MakefilePackage):
 
     depends_on('eccodes@2.19.0 jp2k=none +fortran')
     depends_on('netcdf-fortran')
+    depends_on('jasper@1.900.1')
 
     conflicts('%nvhpc')
     conflicts('%pgi')
@@ -27,21 +28,12 @@ class FlexpartCosmo(MakefilePackage):
 
     @property
     def build_targets(self):
-        return ['ncf=yes', 'VERBOSE=1', 'serial']
-
-    #def edit(self, spec, prefix):
-    #    copy('src/makefile.meteoswiss', 'src/makefile')
+        return ['ncf=yes', 'VERBOSE=1']
 
     def setup_build_environment(self, env):
-        env.set('ECCODESROOT', self.spec['eccodes'].prefix)
-        env.set(
-            'ECCODES_LD_FLAGS', '-L' + self.spec['eccodes'].prefix +
-            '/lib64 -leccodes_f90 -leccodes')
-        env.set('EBROOTNETCDFMINFORTRAN', self.spec['netcdf-fortran'].prefix)
-        #abuse of JASPER_LD_FLAGS since there is no other entrypoint var for LDFLAGS
-        env.set('JASPER_LD_FLAGS', '-Wl,--no-relax')
-        # not really required, just a default since the -I flags would be inconsistent with an empty string
-        env.set('CURL_INCLUDES', '/usr')
+        env.set('GRIB_API', self.spec['eccodes'].prefix)
+        env.set('NETCDF', self.spec['netcdf-fortran'].prefix)
+        env.set('JASPER', self.spec['jasper'].prefix)
 
     def install(self, spec, prefix):
         mkdir(prefix.bin)
@@ -49,5 +41,5 @@ class FlexpartCosmo(MakefilePackage):
         mkdir(prefix.share + '/test/')
         mkdir(prefix.share + '/options/')
         copy_tree('options/', prefix.share + '/options/')
-        install('src/FLEXPART', prefix.bin)
-        install('test/*', prefix.share + '/test/')
+        install('bin/FLEXPART', prefix.bin)
+        # install('test/*', prefix.share + '/test/')
