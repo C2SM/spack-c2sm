@@ -335,10 +335,12 @@ class Nvhpc(Package):
     #  properly. For now, add conflicts for non-gcc compilers instead.
     for __compiler in spack.compilers.supported_compilers():
         if __compiler != "gcc":
-            conflicts("%{0}".format(__compiler), msg="nvhpc must be installed with %gcc")
+            conflicts("%{0}".format(__compiler),
+                      msg="nvhpc must be installed with %gcc")
 
     def _version_prefix(self):
-        return join_path(self.prefix, "Linux_%s" % self.spec.target.family, self.version)
+        return join_path(self.prefix, "Linux_%s" % self.spec.target.family,
+                         self.version)
 
     def setup_build_environment(self, env):
         env.set("NVHPC_SILENT", "true")
@@ -379,8 +381,8 @@ class Nvhpc(Package):
 
     def setup_run_environment(self, env):
         prefix = Prefix(
-            join_path(self.prefix, "Linux_%s" % self.spec.target.family, self.version, "compilers")
-        )
+            join_path(self.prefix, "Linux_%s" % self.spec.target.family,
+                      self.version, "compilers"))
 
         env.set("CC", join_path(prefix.bin, "nvc"))
         env.set("CXX", join_path(prefix.bin, "nvc++"))
@@ -400,15 +402,14 @@ class Nvhpc(Package):
                     self.version,
                     "comm_libs",
                     "mpi",
-                )
-            )
+                ))
             env.prepend_path("PATH", mpi_prefix.bin)
             env.prepend_path("LD_LIBRARY_PATH", mpi_prefix.lib)
 
     def setup_dependent_build_environment(self, env, dependent_spec):
         prefix = Prefix(
-            join_path(self.prefix, "Linux_%s" % self.spec.target.family, self.version, "compilers")
-        )
+            join_path(self.prefix, "Linux_%s" % self.spec.target.family,
+                      self.version, "compilers"))
 
         env.prepend_path("LIBRARY_PATH", prefix.lib)
         env.prepend_path("LD_LIBRARY_PATH", prefix.lib)
@@ -421,8 +422,7 @@ class Nvhpc(Package):
                     self.version,
                     "comm_libs",
                     "mpi",
-                )
-            )
+                ))
 
             env.prepend_path("LD_LIBRARY_PATH", mpi_prefix.lib)
 
@@ -435,8 +435,7 @@ class Nvhpc(Package):
                     self.version,
                     "comm_libs",
                     "mpi",
-                )
-            )
+                ))
 
             self.spec.mpicc = join_path(mpi_prefix.bin, "mpicc")
             self.spec.mpicxx = join_path(mpi_prefix.bin, "mpicxx")
@@ -446,8 +445,8 @@ class Nvhpc(Package):
     @property
     def libs(self):
         prefix = Prefix(
-            join_path(self.prefix, "Linux_%s" % self.spec.target.family, self.version, "compilers")
-        )
+            join_path(self.prefix, "Linux_%s" % self.spec.target.family,
+                      self.version, "compilers"))
         libs = []
 
         if "+blas" in self.spec:
