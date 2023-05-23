@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Why was Spack chosen by MeteoSwiss? &mdash; C2SM Spack  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Develop packages" href="CodeDevelopment.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            C2SM Spack
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="QuickStart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="C2SMGuidelines.html">C2SM Guidelines for Spack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="InstanceManagement.html">How to manage your own Spack instance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpackCommands.html">Important Spack Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UpstreamManagement.html">Upstream management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CodeDevelopment.html">Develop packages</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Why was Spack chosen by MeteoSwiss?</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">C2SM Spack</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Why was Spack chosen by MeteoSwiss?</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/SpackChoice.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="why-was-spack-chosen-by-meteoswiss">
+<h1>Why was Spack chosen by MeteoSwiss?<a class="headerlink" href="#why-was-spack-chosen-by-meteoswiss" title="Permalink to this heading"></a></h1>
+<p><em>by Carlos Osuna, MeteoSwiss</em></p>
+<p>So the question came up why Spack was chosen as the package manager for MeteoSwiss
+and I wanted to try to answer this here so that others can see this as well
+(my account may be incomplete, but should hopefully give a decent view on the whole topic):</p>
+<p>The main issue is that MCH has some hefty requirements when it comes to building software.</p>
+<p>To just name a few:</p>
+<ul class="simple">
+<li><p>We need to be able to build multiple versions and configurations of the same software
+(most linux distributions will provide one officially supported version and for others
+you’re mostly on your own)</p></li>
+<li><p>Hardware matters for our software due to performance reasons. E.g., the MPI implementation
+or specific GPU models are important (this is a problem for package managers that try
+to create very isolated build environments)</p></li>
+<li><p>Build Systems of some of our software can be quite tricky to deal with (as part of
+its build process COSMO requires one to edit the Makefile which we usually automate
+with something like regex I believe)</p></li>
+<li><p>We often have to build a lot of HPC dependencies/libraries that aren’t part of a
+usual system’s installation (which means we don’t really want to just use some bash
+scripts, we tried that and it became very difficult to maintain)</p></li>
+<li><p>We want to also create development builds and possibly hack the build of a package
+(clean building of packages isn’t enough, we also need hackability)</p></li>
+<li><p>We have multiple relevant machines all with different hardware, MPI implementations
+and Accelerators/GPUs  (MCH alone needs tsa &amp; daint, but we used to also have kesch
+and our collaborators have a whole lot of other machines as well)</p></li>
+</ul>
+<p>These requirements are very common in HPC and they rule out a lot of popular solutions
+(e.g., <code class="docutils literal notranslate"><span class="pre">apt-get</span></code>, <code class="docutils literal notranslate"><span class="pre">pacman</span></code>, <code class="docutils literal notranslate"><span class="pre">rpm</span></code>, etc). There are still quite a few package managers left
+that could fulfill all the requirements.But of all these, Spack has by far the
+widest adoption within HPC (just google “HPC package manager” and the first few pages
+are dominated by Spack).</p>
+<p>Spack is adopted by:</p>
+<ul class="simple">
+<li><p>The US Department of Energy (which includes Aurora (1 exaFLOPS), Frontier
+(1.5 exaFLOPS) and El Capitan (2 exaFLOPS))</p></li>
+<li><p>Riken (this includes Fugaku (~2 exaFLOPS))</p></li>
+<li><p>CERN</p></li>
+<li><p>EPFL</p></li>
+<li><p>Fermilab</p></li>
+<li><p>CSCS provides some support for Spack
+(<a class="reference external" href="https://user.cscs.ch/computing/compilation/spack/">https://user.cscs.ch/computing/compilation/spack/</a>)</p></li>
+</ul>
+<p>This strong dominance sets it apart from all other viable options. It only makes
+sense for MCH to follow the rest of the industry.</p>
+<p>A comparison of various tools (including Spack) can be found
+<a class="reference external" href="https://easybuilders.github.io/easybuild-tutorial/comparison_other_tools/">here</a>
+and
+<a class="reference external" href="https://archive.fosdem.org/2018/schedule/event/installing_software_for_scientists/attachments/slides/2437/export/events/attachments/installing_software_for_scientists/slides/2437/20180204_installing_software_for_scientists.pdf">here</a>.</p>
+<p>I believe the timeline of Spack at MCH was roughly:</p>
+<ul class="simple">
+<li><p>Sometime 2018 Valentin and Hannes gave a presentation about Spack at MCH</p></li>
+<li><p>Summer 2019 an evaluation of possible solutions was done and it was determined
+that Spack was the best option (probably same or similar reasons as above)</p></li>
+<li><p>November 2019 Elsa started her build &amp; devops internship and until November 2020
+most software builds at MCH were ported to Spack</p></li>
+<li><p>September/October/November 2020 was when most of the migration happened</p></li>
+</ul>
+<p>Of course we regularly have issues with Spack and these issues are time consuming
+and frustrating. However, building, package management &amp; dependencies is a very very
+hard problem. While we regularly encounter bugs in Spack and Spack is still far away
+from an optimal solution, there are also unavoidable issues when it comes to building
+HPC software. You can’t expect Spack to solve unsolvable issues. Spack is only a tool.
+If you misuse your tool, it’s not fair to blame the tool for issues. Because Spack
+is trying to solve a complex problem, it also contains quite a bit of complexity
+itself. If you’re not willing to learn Spack and ensure you’re using it right,
+you will have a bad time. But you will also have a bad time with any other solution
+in this case. The idea that there is a magical tool that will automatically make
+all our build requirements work is unfortunately not realistic at this point.
+There are good reasons why there are so many package managers and users still
+regularly encounter issues with them.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="CodeDevelopment.html" class="btn btn-neutral float-left" title="Develop packages" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020-2023, C2SM.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
