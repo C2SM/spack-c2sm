@@ -153,7 +153,7 @@ You can force a machine with an argument. The name has to match a folder in sysc
 Environments sit in a folder with a name and are defined in a <code class="docutils literal notranslate"><span class="pre">spack.yaml</span></code> file.
 For ICON, they are located in <code class="docutils literal notranslate"><span class="pre">config/cscs/spack/&lt;version&gt;/&lt;machine&gt;_&lt;target&gt;_&lt;compiler&gt;</span></code>.</p>
 <p>To activate the Spack environment, type</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack env activate -p -d &lt;path_to_folder_with_spack_yaml&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack env activate -d &lt;path_to_folder_with_spack_yaml&gt;
 </pre></div>
 </div>
 <p>To install the environment and so ICON, type</p>
@@ -161,7 +161,7 @@ For ICON, they are located in <code class="docutils literal notranslate"><span c
 </pre></div>
 </div>
 <p>Example to build ICON for CPU with NVHPC:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack env activate -p -d config/cscs/spack/v0.18.1.5/daint_cpu_nvhpc
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack env activate -d config/cscs/spack/v0.18.1.5/daint_cpu_nvhpc
 <span class="gp">$ </span>spack install
 </pre></div>
 </div>
@@ -173,7 +173,7 @@ need to reconfigure you can either delete the file or run <code class="docutils 
 <p>Out-of-source builds are possible as follows:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir cpu <span class="o">&amp;&amp;</span> <span class="nb">cd</span> cpu
 <span class="gp">$ </span>cp -r ../config .
-<span class="gp">$ </span>spack env activate -p -d config/cscs/spack/v0.18.1.5/daint_cpu_nvhpc
+<span class="gp">$ </span>spack env activate -d config/cscs/spack/v0.18.1.5/daint_cpu_nvhpc
 <span class="gp">$ </span>spack install
 </pre></div>
 </div>
