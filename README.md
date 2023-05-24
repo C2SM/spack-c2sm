@@ -29,7 +29,7 @@ gets spack in the command line
 ```
 activates an environment
 ```bash
-spack env activate -p <path_to_env>
+spack env activate <path_to_env>
 ```
 and starts exploring
 ```bash
@@ -74,6 +74,6 @@ and rebuild.
 | Install  | `spack install <spec>` |
 | Locate | `spack location --install-dir <spec>` prints location of **all** installs that satisfy the spec |
 | [Load env](https://spack.readthedocs.io/en/v0.18.1/command_index.html?highlight=spack%20load#spack-load) | `spack load <spec>` loads run environment |
-| [Activate env](https://spack.readthedocs.io/en/v0.18.1/environments.html) | `spack env activate -p <env_name>` |
+| [Activate env](https://spack.readthedocs.io/en/v0.18.1/environments.html) | `spack env activate <env_name>` |
 | [Deactivate env](https://spack.readthedocs.io/en/v0.18.1/environments.html) | `spack deactivate` |
 
