@@ -26,7 +26,7 @@ def check_variant_fcgroup(fcgroup):
         return False
 
 
-class Icon(AutotoolsPackage):
+class Icon(AutotoolsPackage, CudaPackage):
     """Icosahedral Nonhydrostatic Weather and Climate Model."""
 
     homepage = 'https://code.mpimet.mpg.de/projects/iconpublic'
@@ -106,17 +106,6 @@ class Icon(AutotoolsPackage):
             default=True,
             description='Enable remote memory access (RMA) for async I/O')
     variant('openmp', default=False, description='Enable OpenMP support')
-
-    # https://en.wikipedia.org/wiki/CUDA#GPUs_supported
-    gpu_values = ('10', '11', '12', '13', '20', '21', '30', '32', '35', '37',
-                  '50', '52', '53', '60', '61', '62', '70', '72', '75', '80',
-                  '86')
-    variant('gpu',
-            default='none',
-            values=('none', ) + gpu_values,
-            description='Enable GPU support with the specified compute '
-            'capability version')
-
     variant('grib2', default=True, description='Enable GRIB2 I/O')
     variant('parallel-netcdf',
             default=False,
@@ -236,9 +225,6 @@ class Icon(AutotoolsPackage):
     depends_on('zlib', when='+emvorado')
     depends_on('mpi', when='+mpi')
 
-    for x in gpu_values:
-        depends_on('cuda', when='gpu={0}'.format(x))
-
     depends_on('python', type='build')
     depends_on('perl', type='build')
 
@@ -252,6 +238,7 @@ class Icon(AutotoolsPackage):
 
     conflicts('+dace', when='~mpi')
     conflicts('+emvorado', when='~mpi')
+    conflicts('+cuda', when='%gcc')
 
     conflicts('+cuda-graphs', when='%cce')
     conflicts('+cuda-graphs', when='%gcc')
@@ -288,7 +275,7 @@ class Icon(AutotoolsPackage):
     def setup_build_environment(self, env):
         # help cmake to build dsl-stencils
         if 'none' not in self.spec.variants['dsl'].value:
-            env.set("CUDAARCHS", self.spec.variants['gpu'].value)
+            env.set("CUDAARCHS", self.spec.variants['cuda_arch'].value[0])
             env.unset("CUDAHOSTCXX")
             env.set("BOOST_ROOT", self.spec['boost'].prefix)
 
@@ -391,8 +378,6 @@ class Icon(AutotoolsPackage):
                 '--with-external-yaxt'
             ])
 
-        gpu = self.spec.variants['gpu'].value
-
         if self.compiler.name == 'gcc':
             config_vars['CFLAGS'].append('-g')
             config_vars['ICON_CFLAGS'].append('-O3')
@@ -474,10 +459,11 @@ class Icon(AutotoolsPackage):
             config_vars['CFLAGS'].extend(['-g', '-O2'])
             config_vars['FCFLAGS'].extend(
                 ['-g', '-O', '-Mrecursive', '-Mallocatable=03', '-Mbackslash'])
-            if gpu != 'none':
+            if '+cuda' in self.spec:
                 config_vars['FCFLAGS'].extend([
                     '-acc=verystrict', '-Minfo=accel,inline',
-                    '-gpu=cc{0}'.format(gpu)
+                    '-gpu=cc{0}'.format(
+                        self.spec.variants['cuda_arch'].value[0])
                 ])
                 config_vars['ICON_FCFLAGS'].append('-D__SWAPDIM')
         elif self.compiler.name == 'cce':
@@ -490,7 +476,7 @@ class Icon(AutotoolsPackage):
                 '-hadd_paren', '-r am', '-Ktrap=divz,ovf,inv',
                 '-hflex_mp=intolerant', '-hfp0', '-O0'
             ])
-            if gpu != 'none':
+            if '+cuda' in self.spec:
                 config_vars['FCFLAGS'].extend(['-hnoacc'])
         elif self.compiler.name == 'aocc':
             config_vars['CFLAGS'].extend(['-g', '-O2'])
@@ -596,7 +582,7 @@ class Icon(AutotoolsPackage):
                 config_vars['CLAWFLAGS'].append(
                     self.spec['libcdi-pio'].headers.include_flags)
 
-        if gpu == 'none':
+        if '~cuda' in self.spec:
             config_args.append('--disable-gpu')
         else:
             config_args.extend([
@@ -613,8 +599,10 @@ class Icon(AutotoolsPackage):
                 config_vars['NVCFLAGS'].extend(
                     ['-ccbin {0}'.format(cuda_host_compiler)])
 
-            config_vars['NVCFLAGS'].extend(
-                ['-g', '-O3', '-arch=sm_{0}'.format(gpu)])
+            config_vars['NVCFLAGS'].extend([
+                '-g', '-O3',
+                '-arch=sm_{0}'.format(self.spec.variants['cuda_arch'].value[0])
+            ])
             # cuda_host_compiler_stdcxx_libs might contain compiler-specific
             # flags (i.e. not the linker -l<library> flags), therefore we put
             # the value to the config_flags directly.
@@ -806,8 +794,8 @@ class Icon(AutotoolsPackage):
         Ensure that configure is rerun in case spec has changed,
         otherwise for the case below
 
-            $ spack dev-build icon @develop gpu=none ~dace
-            $ spack dev-build icon @develop gpu=none +dace
+            $ spack dev-build icon @develop ~dace
+            $ spack dev-build icon @develop +dace
         
         configure is skipped for the latter.
         """
