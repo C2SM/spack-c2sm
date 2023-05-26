@@ -1,5 +1,6 @@
 packages:
   all:
+    variants: cuda_arch=80  # manually added
     providers:
       mpi: [cray-mpich]
   cosmo: # manually added
