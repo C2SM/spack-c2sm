@@ -56,7 +56,7 @@ class PyIcon4py(PythonPackage):
 
         pip = inspect.getmodule(self).pip
 
-        if self.spec.version <= ver('0.0.3'):
+        if self.spec.version == ver('0.0.3'):
             build_dirs = [
                 'common', 'pyutils', 'testutils', 'liskov', 'atm_dyn_iconam'
             ]
