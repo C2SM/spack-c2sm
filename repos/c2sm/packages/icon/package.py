@@ -477,7 +477,8 @@ class Icon(AutotoolsPackage):
             if gpu != 'none':
                 config_vars['FCFLAGS'].extend([
                     '-acc=verystrict', '-Minfo=accel,inline',
-                    '-gpu=cc{0}'.format(gpu), '-D__USE_G2G', '-D__SWAPDIM', '-D__ENABLE_REALLOC'
+                    '-gpu=cc{0}'.format(gpu), '-D__USE_G2G', '-D__SWAPDIM',
+                    '-D__ENABLE_REALLOC'
                 ])
                 config_vars['ICON_FCFLAGS'].append('-D__SWAPDIM')
         elif self.compiler.name == 'cce':
