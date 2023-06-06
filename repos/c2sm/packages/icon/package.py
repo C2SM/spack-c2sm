@@ -649,9 +649,9 @@ class Icon(AutotoolsPackage):
             config_vars['LOC_ICON4PY_ADVECTION'].append(
                 os.path.join(self.spec['py-icon4py'].prefix,
                              'lib/python3.10/site-packages/icon4py/advection'))
-            config_vars['LOC_ICON4PY_UTILS'].append(
+            config_vars['LOC_ICON4PY_TOOLS'].append(
                 os.path.join(self.spec['py-icon4py'].prefix,
-                             'lib/python3.10/site-packages/icon4py'))
+                             'lib/python3.10/site-packages/icon4pytools'))
             config_vars['LOC_GRIDTOOLS'].append(
                 os.path.join(
                     self.spec['py-gridtools-cpp'].prefix,
