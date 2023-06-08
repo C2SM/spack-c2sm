@@ -8,4 +8,4 @@ spack:
   view: false
   config:
     install_tree:
-      root: /project/g110/spack/upstream/daint_v0.18.1.5/icon-dsl
+      root: /project/g110/spack/upstream/daint_v0.18.1.7/icon-dsl
