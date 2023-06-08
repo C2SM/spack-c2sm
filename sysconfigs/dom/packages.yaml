@@ -1,5 +1,6 @@
 packages:
   all:
+    variants: cuda_arch=60  # manually added
     compiler: # manually added
     - gcc@9.3.0
     - gcc@8.3.0

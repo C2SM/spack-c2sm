@@ -57,7 +57,7 @@ For more information about environments in general, consider reading the
     spack:
       # add package specs to the `specs` list
       specs:
-      - icon@develop%nvhpc +ecrad +rte-rrtmgp claw=std gpu=60
+      - icon@develop%nvhpc +ecrad +rte-rrtmgp claw=std +cuda
       - eccodes@2.19.0%nvhpc
       - claw@2.0.3%nvhpc
       - nvidia-blas%nvhpc
@@ -68,7 +68,7 @@ For more information about environments in general, consider reading the
         unify: true
       develop:
         icon:
-          spec: icon@develop%nvhpc +ecrad +rte-rrtmgp claw=std gpu=60
+          spec: icon@develop%nvhpc +ecrad +rte-rrtmgp claw=std +cuda
           path: ../../../../
 
 The key part of the environments is the ``develop`` keyword.
