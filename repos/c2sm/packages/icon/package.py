@@ -130,7 +130,9 @@ class Icon(AutotoolsPackage, CudaPackage):
             default='none',
             values=('none', ) + serialization_values,
             description='Enable the Serialbox2 serialization')
-    variant('testbed', default=False, description='Enable ICON Testbed infrastructure')
+    variant('testbed',
+            default=False,
+            description='Enable ICON Testbed infrastructure')
 
     # Optimization Features:
     variant('loop-exchange', default=True, description='Enable loop exchange')
@@ -185,7 +187,7 @@ class Icon(AutotoolsPackage, CudaPackage):
             values=('none', ) + dsl_values,
             description='Build with GT4Py dynamical core',
             multi=True)
-            
+
     depends_on('autoconf', type='build', when='@2.6.6')
     depends_on('automake', type='build', when='@2.6.6')
     depends_on('libtool', type='build', when='@2.6.6')
@@ -749,11 +751,11 @@ class Icon(AutotoolsPackage, CudaPackage):
             Rsync = which('rsync', required=True)
             icon_dir = self.configure_directory
             Rsync("-uavz", f"{icon_dir}/run", ".", "--exclude=*.in",
-                    "--exclude=.*", "--exclude=standard_*")
+                  "--exclude=.*", "--exclude=standard_*")
             Rsync("-uavz", f"{icon_dir}/externals", ".", "--exclude=.git",
-                    "--exclude=*.f90", "--exclude=*.F90", "--exclude=*.c",
-                    "--exclude=*.h", "--exclude=*.Po", "--exclude=tests",
-                    "--exclude=*.mod", "--exclude=*.o")
+                  "--exclude=*.f90", "--exclude=*.F90", "--exclude=*.c",
+                  "--exclude=*.h", "--exclude=*.Po", "--exclude=tests",
+                  "--exclude=*.mod", "--exclude=*.o")
             Rsync("-uavz", f"{icon_dir}/make_runscripts", ".")
 
             Ln = which('ln', required=True)
