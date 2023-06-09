@@ -34,7 +34,7 @@ class Icon(AutotoolsPackage, CudaPackage):
     git = 'ssh://git@gitlab.dkrz.de/icon/icon.git'
 
     version('develop', submodules=True)
-    version('2.6.5.1', tag='icon-2.6.5.1', submodules=True)
+    version('2.6.6', tag='icon-2.6.6', submodules=True)
     version('exclaim-master',
             branch='master',
             git='ssh://git@github.com/C2SM/icon-exclaim.git',
@@ -49,7 +49,7 @@ class Icon(AutotoolsPackage, CudaPackage):
 
     # The variants' default follow those of ICON
     # as described here
-    # https://gitlab.dkrz.de/icon/icon/-/blob/icon-2.6.5.1/configure#L1454-1557
+    # https://gitlab.dkrz.de/icon/icon/-/blob/icon-2.6.6/configure#L1457-1563
 
     # Model Features:
     variant('atmo',
@@ -57,25 +57,25 @@ class Icon(AutotoolsPackage, CudaPackage):
             description='Enable the atmosphere component')
     variant('edmf',
             default=True,
-            description='Enable the EDMF turbulence component')  #
+            description='Enable the EDMF turbulence component')
     variant('les',
             default=True,
-            description='Enable the Large-Eddy Simulation component')  #
+            description='Enable the Large-Eddy Simulation component')
     variant('upatmo',
             default=True,
-            description='Enable the upper atmosphere component')  #
+            description='Enable the upper atmosphere component')
     variant('ocean', default=True, description='Enable the ocean component')
     variant('jsbach', default=True, description='Enable the land component')
     variant('waves',
             default=False,
-            description='Enable the surface wave component')  #
+            description='Enable the surface wave component')
     variant('coupling', default=True, description='Enable the coupling')
     variant('aes', default=True, description='Enable the AES physics package')
     variant('ecrad',
             default=False,
             description='Enable usage of the ECMWF radiation scheme')
     variant('rte-rrtmgp',
-            default=False,
+            default=True,
             description='Enable usage of the RTE+RRTMGP toolbox '
             'for radiation calculations')
     variant(
@@ -105,8 +105,11 @@ class Icon(AutotoolsPackage, CudaPackage):
     variant('async-io-rma',
             default=True,
             description='Enable remote memory access (RMA) for async I/O')
+    variant('mpi-gpu',
+            default=False,
+            description='Enable usage of the GPU-aware MPI features')
     variant('openmp', default=False, description='Enable OpenMP support')
-    variant('grib2', default=True, description='Enable GRIB2 I/O')
+    variant('grib2', default=False, description='Enable GRIB2 I/O')
     variant('parallel-netcdf',
             default=False,
             description='Enable usage of the parallel features of NetCDF')
@@ -127,6 +130,7 @@ class Icon(AutotoolsPackage, CudaPackage):
             default='none',
             values=('none', ) + serialization_values,
             description='Enable the Serialbox2 serialization')
+    variant('testbed', default=False, description='Enable ICON Testbed infrastructure')
 
     # Optimization Features:
     variant('loop-exchange', default=True, description='Enable loop exchange')
@@ -357,11 +361,13 @@ class Icon(AutotoolsPackage, CudaPackage):
                 'mpi',
                 'active-target-sync',
                 'async-io-rma',
+                'mpi-gpu',
                 'openmp',
                 'grib2',
                 'parallel-netcdf',
                 'sct',
                 'yaxt',
+                'testbed',
                 'loop-exchange',
                 'vectorized-lrtm',
                 'mixed-precision',
