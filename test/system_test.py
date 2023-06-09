@@ -281,9 +281,9 @@ class IconTest(unittest.TestCase):
         # The dependency on hdf5 +szip +hl +fortran is caused by +emvorado.
         # The dependency on zlib is caused by +emvorado.
         # The dependency on mpi is caused by +mpi.
-        # The dependency on cuda is caused by +cuda.
+        # The dependency on cuda conflicts with gcc.
         # The dependency on claw is caused by claw=std.
-        spack_install_and_test(f'icon @2.6.6 %gcc +coupling +rttov +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions +cuda claw=std')
+        spack_install_and_test(f'icon @2.6.6 %gcc +coupling +rttov +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions claw=std')
 
     def test_max_deps_nvhpc(self):
         "This tests the latest version of icon with as much dependencies as possible for nvhpc"

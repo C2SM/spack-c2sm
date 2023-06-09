@@ -214,10 +214,9 @@ class PlainSpecTest(unittest.TestCase):
         # The dependency on hdf5 +szip +hl +fortran is caused by +emvorado.
         # The dependency on zlib is caused by +emvorado.
         # The dependency on mpi is caused by +mpi.
-        # The dependency on cuda is caused by +cuda.
+        # The dependency on cuda is caused by +cuda, but conflicts with gcc.
         # The dependency on claw is caused by claw=std.
-
-        spack_spec(f'icon %gcc +coupling +rttov +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions +cuda claw=std')
+        spack_spec(f'icon %gcc +coupling +rttov +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions claw=std')
         spack_spec(f'icon %{nvidia_compiler} +coupling +rttov +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions +cuda claw=std')
 
     def test_icontools(self):
