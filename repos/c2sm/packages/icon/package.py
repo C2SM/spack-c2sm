@@ -232,6 +232,7 @@ class Icon(AutotoolsPackage, CudaPackage):
 
     depends_on('zlib', when='+emvorado')
     depends_on('mpi', when='+mpi')
+    depends_on('mpi', when='+cdi-pio')
 
     depends_on('python', type='build')
     depends_on('perl', type='build')
