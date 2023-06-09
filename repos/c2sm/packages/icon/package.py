@@ -185,6 +185,10 @@ class Icon(AutotoolsPackage, CudaPackage):
             values=('none', ) + dsl_values,
             description='Build with GT4Py dynamical core',
             multi=True)
+            
+    depends_on('autoconf', type='build', when='@2.6.6')
+    depends_on('automake', type='build', when='@2.6.6')
+    depends_on('libtool', type='build', when='@2.6.6')
 
     for x in dsl_values:
         depends_on('py-icon4py', when='dsl={0}'.format(x))
