@@ -267,7 +267,7 @@ class IconTest(unittest.TestCase):
     def test_min_deps_2(self):
         "This tests the latest version of icon without netcdf-c, because test_install_min_deps_1 couldn't do it"
         # To avoid a dependency on netcdf-c, +cdi-pio ~coupling is required.
-        spack_install_and_test(f'icon @2.6.6 ~infero ~coupling ~art ~rttov serialization=none +cdi-pio ~emvorado ~grib2 ~eccodes-definitions ~sct ~mpi ~cuda claw=none')
+        spack_install_and_test(f'icon @2.6.6 ~infero ~coupling ~art ~rttov serialization=none +cdi-pio ~emvorado ~grib2 ~eccodes-definitions ~sct ~cuda claw=none')
 
     def test_max_deps_gcc(self):
         "This tests the latest version of icon with as much dependencies as possible for gcc"
@@ -288,7 +288,6 @@ class IconTest(unittest.TestCase):
     def test_max_deps_nvhpc(self):
         "This tests the latest version of icon with as much dependencies as possible for nvhpc"
         spack_install_and_test(f'icon @2.6.6 %{nvidia_compiler} +coupling +rttov +cdi-pio +grib2 +mpi +emvorado +eccodes-definitions +cuda claw=std')
-
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_gcc(self):
