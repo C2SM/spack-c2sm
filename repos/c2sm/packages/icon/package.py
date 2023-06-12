@@ -724,7 +724,7 @@ class Icon(AutotoolsPackage, CudaPackage):
 
             with open('spec.yaml', mode='w') as f:
                 f.write(self.spec.to_yaml())
-            test_py('--spec', 'spec.yaml',fail_on_error=True)
+            test_py('--spec', 'spec.yaml', fail_on_error=True)
 
             # restore PYTHONHOME after test.py
             os.environ['PYTHONHOME'] = PYTHONHOME
