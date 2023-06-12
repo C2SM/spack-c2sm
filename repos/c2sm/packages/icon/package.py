@@ -708,6 +708,12 @@ class Icon(AutotoolsPackage, CudaPackage):
             make.jobs = make_jobs
         make(*self.build_targets)
 
+    def check(self): 
+        # By default "check" calls make with targets "check" and "test".
+        # This testing is beyond the scope of BuildBot test at CSCS.
+        # Therefore override this function, saves a lot of time too.
+        pass
+
     @run_before('install')
     @on_package_attributes(run_tests=True)
     def checksuite(self):
