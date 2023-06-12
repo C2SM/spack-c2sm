@@ -710,7 +710,7 @@ class Icon(AutotoolsPackage, CudaPackage):
 
     @run_before('install')
     @on_package_attributes(run_tests=True)
-    def check(self):
+    def checksuite(self):
         # script needs cdo to work, but not listed as dep of ICON
         test_script = 'scripts/spack/test.py'
         if os.path.exists(test_script):
@@ -724,10 +724,7 @@ class Icon(AutotoolsPackage, CudaPackage):
 
             with open('spec.yaml', mode='w') as f:
                 f.write(self.spec.to_yaml())
-            try:
-                test_py('--spec', 'spec.yaml')
-            except:
-                raise InstallError('Tests failed')
+            test_py('--spec', 'spec.yaml',fail_on_error=True)
 
             # restore PYTHONHOME after test.py
             os.environ['PYTHONHOME'] = PYTHONHOME
