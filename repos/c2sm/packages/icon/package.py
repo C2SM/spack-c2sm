@@ -257,21 +257,6 @@ class Icon(AutotoolsPackage, CudaPackage):
     # also the folder where libtool package itself is installed.
     patch_libtool = False
 
-    @when('%cce~openmp')
-    def patch(self):
-        # Cray Fortran preprocessor removes the OpenMP conditional compilation
-        # sentinels (i.e. '!$') regardless of whether OpenMP is enabled.
-        # Therefore, in cases when OpenMP support is disabled and separate
-        # Fortran preprocessing is required, we substitute the sentinels with
-        # '#ifdef _OPENMP' directives:
-        if any(self.spec.variants[x].value != 'none'
-               for x in ['serialization', 'claw']):
-            src_files = find(join_path(self.stage.source_path, 'src'), '*.f90')
-            filter_file(r'^(\s*)!\$(\s+.*)',
-                        '#ifdef _OPENMP\n\\1  \\2\n#endif',
-                        *src_files,
-                        backup=False)
-
     def setup_build_environment(self, env):
         # help cmake to build dsl-stencils
         if 'none' not in self.spec.variants['dsl'].value:
