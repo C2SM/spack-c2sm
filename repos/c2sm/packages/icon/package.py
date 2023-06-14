@@ -227,6 +227,7 @@ class Icon(AutotoolsPackage, CudaPackage):
 
     depends_on('python', type='build')
     depends_on('perl', type='build')
+    depends_on('cmake@3.18:', type='build')
 
     for x in claw_values:
         depends_on('claw', type='build', when='claw={0}'.format(x))
