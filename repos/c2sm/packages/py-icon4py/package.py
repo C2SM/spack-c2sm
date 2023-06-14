@@ -38,6 +38,40 @@ class PyIcon4py(PythonPackage):
     def setup_build_environment(self, env):
         env.set("CMAKE_INCLUDE_PATH", self.spec['boost'].prefix.include)
 
+    @property
+    def headers(self):
+        '''Workaround to hide the details of the installation path, 
+        i.e "lib/python3.10/site-packages/icon4py/atm_dyn_iconam"
+        from upstream packages. It needs to be part of the "Spec" object,
+        therefore choose the headers-function
+        '''
+
+        if self.spec.version == ver('0.0.3'):
+            msg = 'Not implemented for version {0}'.format(self.spec.version)
+            raise spack.error.NoHeadersError(msg)
+
+        query_parameters = self.spec.last_query.extra_parameters
+        if len(query_parameters) > 1:
+            raise ValueError('Only one query parameter allowed')
+
+        if 'atm_dyn_iconam' in query_parameters:
+            header = find(self.prefix,'atm_dyn_iconam')
+        elif 'tools' in query_parameters:
+            header = find(self.prefix,'icon4pytools')
+        elif 'common' in query_parameters:
+            header = find(self.prefix,'common')
+        else:
+            raise ValueError('Unknown query parameter {0}'.format(query_parameters[0]))
+
+        if not header:
+            msg = 'Unable to locate folder for query {0} in {1}'
+            raise spack.error.NoHeadersError(
+                msg.format( query_parameters[0],
+                        self.spec.prefix))
+
+        return header[0]
+
+
     def install(self, spec, prefix):
         """Install everything from build directory."""
 
