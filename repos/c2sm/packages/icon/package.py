@@ -616,19 +616,11 @@ class Icon(AutotoolsPackage, CudaPackage):
             config_vars['LOC_ICON4PY_BIN'].append(
                 self.spec['py-icon4py'].prefix)
             config_vars['LOC_ICON4PY_ATM_DYN_ICONAM'].append(
-                os.path.join(
-                    self.spec['py-icon4py'].prefix,
-                    'lib/python3.10/site-packages/icon4py/atm_dyn_iconam'))
-            config_vars['LOC_ICON4PY_ADVECTION'].append(
-                os.path.join(self.spec['py-icon4py'].prefix,
-                             'lib/python3.10/site-packages/icon4py/advection'))
+                    self.spec['py-icon4py:atm_dyn_iconam'].headers)
             config_vars['LOC_ICON4PY_TOOLS'].append(
-                os.path.join(self.spec['py-icon4py'].prefix,
-                             'lib/python3.10/site-packages/icon4pytools'))
+                    self.spec['py-icon4py:tools'].headers)
             config_vars['LOC_GRIDTOOLS'].append(
-                os.path.join(
-                    self.spec['py-gridtools-cpp'].prefix,
-                    'lib/python3.10/site-packages/gridtools_cpp/data'))
+                    self.spec['py-gridtools-cpp:data'].headers)
             config_vars['GT4PYNVCFLAGS'] = config_vars['NVCFLAGS']
 
         # Finalize the LIBS variable (we always put the real collected
