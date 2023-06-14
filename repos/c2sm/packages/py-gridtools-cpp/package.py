@@ -44,7 +44,6 @@ class PyGridtoolsCpp(PythonPackage):
 
         if not header:
             msg = 'Unable to locate folder "data" in {0}'
-            raise spack.error.NoHeadersError(
-                msg.format(self.spec.prefix))
+            raise spack.error.NoHeadersError(msg.format(self.spec.prefix))
 
         return header[0]
