@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-from spack.package import *
+from spack import *
 
 
 class PyGridtoolsCpp(PythonPackage):
@@ -40,19 +40,11 @@ class PyGridtoolsCpp(PythonPackage):
         therefore choose the headers-function
         '''
 
-        query_parameters = self.spec.last_query.extra_parameters
-        if len(query_parameters) > 1:
-            raise ValueError('Only one query parameter allowed')
-
-        if 'data' in query_parameters:
-            header = find(self.prefix, 'data')
-        else:
-            raise ValueError('Unknown query parameter {0}'.format(
-                query_parameters[0]))
+        header = find(self.prefix, 'data')
 
         if not header:
-            msg = 'Unable to locate folder for query {0} in {1}'
+            msg = 'Unable to locate folder "data" in {0}'
             raise spack.error.NoHeadersError(
-                msg.format(query_parameters[0], self.spec.prefix))
+                msg.format(self.spec.prefix))
 
         return header[0]
