@@ -264,59 +264,6 @@ class Icon(AutotoolsPackage, CudaPackage):
             env.unset("CUDAHOSTCXX")
             env.set("BOOST_ROOT", self.spec['boost'].prefix)
 
-    @run_before('configure')
-    def downgrade_opt_level(self):
-        # We try to prevent compiler crashes by reducing the optimization level
-        # for certain files in certain configurations. This method extends the
-        # makefile (i.e. icon.mk.in) with file-specific compilation rules that
-        # call the compiler with the default flags plus the provided extra
-        # flags. The extra flags must not affect the dependencies (e.g. define
-        # additional macros).
-        file_flags = []
-
-        if self.compiler.name == 'intel':
-            if self.spec.satisfies('%intel@17:17.0.2+ocean+openmp'):
-                file_flags.append(
-                    ('src/hamocc/common/mo_sedmnt_diffusion.f90',
-                     '$(ICON_OCEAN_FCFLAGS) $(make_FCFLAGS) -O1'))
-        elif self.compiler.name in ['pgi', 'nvhpc']:
-            if '+emvorado' in self.spec:
-                file_flags.append(
-                    ('src/data_assimilation/interfaces/radar_interface.f90',
-                     '$(ICON_FCFLAGS) $(make_FCFLAGS) -O1'))
-        elif self.compiler.name == 'cce':
-            if self.compiler.version == ver('12.0.2'):
-                file_flags.append(
-                    ('src/parallel_infrastructure/mo_setup_subdivision.f90',
-                     '$(ICON_FCFLAGS) $(make_FCFLAGS) -O0'))
-            elif self.compiler.version == ver('13.0.0'):
-                file_flags.append(
-                    ('src/parallel_infrastructure/mo_extents.f90',
-                     '$(ICON_FCFLAGS) $(make_FCFLAGS) -O0'))
-            if '+jsbach' in self.spec:
-                file_flags.append(
-                    ('externals/jsbach/src/base/mo_jsb_process_factory.f90',
-                     '$(ICON_FCFLAGS) $(make_FCFLAGS) -O0'))
-
-        if not file_flags:
-            return
-
-        recipe_prefix = '$(silent_FC)$(FC) -o $@ -c $(FCFLAGS)'
-        recipe_suffix = '@FCFLAGS_f90@ $<'
-
-        rules = []
-        for file, flags in file_flags:
-            recipe = '{0} {1} {2}'.format(recipe_prefix, flags, recipe_suffix)
-            target = '{0}.@OBJEXT@'.format(os.path.splitext(file)[0])
-            rules.extend([
-                # Rule for the original file:
-                '{0}: {1}; {2}'.format(target, file, recipe),
-                # Rule for the preprocessed file:
-                '%{0}: %{1}; {2}'.format(target, file, recipe)
-            ])
-
-        with open(join_path(self.stage.source_path, 'icon.mk.in'), 'a') as f:
-            f.writelines(['\n', '\n'.join(rules)])
 
     def configure_args(self):
         config_args = ['--disable-rpaths']
