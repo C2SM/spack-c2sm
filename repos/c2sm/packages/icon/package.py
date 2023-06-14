@@ -264,7 +264,6 @@ class Icon(AutotoolsPackage, CudaPackage):
             env.unset("CUDAHOSTCXX")
             env.set("BOOST_ROOT", self.spec['boost'].prefix)
 
-
     def configure_args(self):
         config_args = ['--disable-rpaths']
         config_vars = defaultdict(list)
