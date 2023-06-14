@@ -55,22 +55,21 @@ class PyIcon4py(PythonPackage):
             raise ValueError('Only one query parameter allowed')
 
         if 'atm_dyn_iconam' in query_parameters:
-            header = find(self.prefix,'atm_dyn_iconam')
+            header = find(self.prefix, 'atm_dyn_iconam')
         elif 'tools' in query_parameters:
-            header = find(self.prefix,'icon4pytools')
+            header = find(self.prefix, 'icon4pytools')
         elif 'common' in query_parameters:
-            header = find(self.prefix,'common')
+            header = find(self.prefix, 'common')
         else:
-            raise ValueError('Unknown query parameter {0}'.format(query_parameters[0]))
+            raise ValueError('Unknown query parameter {0}'.format(
+                query_parameters[0]))
 
         if not header:
             msg = 'Unable to locate folder for query {0} in {1}'
             raise spack.error.NoHeadersError(
-                msg.format( query_parameters[0],
-                        self.spec.prefix))
+                msg.format(query_parameters[0], self.spec.prefix))
 
         return header[0]
-
 
     def install(self, spec, prefix):
         """Install everything from build directory."""
