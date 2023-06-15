@@ -46,7 +46,6 @@ class PyIcon4py(PythonPackage):
         therefore choose the headers-function
         '''
 
-
         query_parameters = self.spec.last_query.extra_parameters
 
         if len(query_parameters) > 1:
@@ -57,21 +56,20 @@ class PyIcon4py(PythonPackage):
             raise spack.error.NoHeadersError(msg)
 
         if 'atm_dyn_iconam' in query_parameters:
-            header = self._find_folder_and_add_dummy_header(self.prefix,'atm_dyn_iconam')
+            header = self._find_folder_and_add_dummy_header(
+                self.prefix, 'atm_dyn_iconam')
         elif 'tools' in query_parameters:
-            header = self._find_folder_and_add_dummy_header(self.prefix,'icon4pytools')
+            header = self._find_folder_and_add_dummy_header(
+                self.prefix, 'icon4pytools')
         else:
             header = HeaderList([])
 
         return header
-    
-    def _find_folder_and_add_dummy_header(self,prefix,name):
-        folder = find(prefix,name)
+
+    def _find_folder_and_add_dummy_header(self, prefix, name):
+        folder = find(prefix, name)
         headerlist = HeaderList(f'{folder[0]}/dummy.h')
         return headerlist
-
-
-
 
     def install(self, spec, prefix):
         """Install everything from build directory."""

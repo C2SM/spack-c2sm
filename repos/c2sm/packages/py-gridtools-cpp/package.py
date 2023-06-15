@@ -45,13 +45,14 @@ class PyGridtoolsCpp(PythonPackage):
             raise ValueError('Only one query parameter allowed')
 
         if 'data' in query_parameters:
-            header = self._find_folder_and_add_dummy_header(self.prefix,'data')
+            header = self._find_folder_and_add_dummy_header(
+                self.prefix, 'data')
         else:
             header = HeaderList([])
 
         return header
-    
-    def _find_folder_and_add_dummy_header(self,prefix,name):
-        folder = find(prefix,name)
+
+    def _find_folder_and_add_dummy_header(self, prefix, name):
+        folder = find(prefix, name)
         headerlist = HeaderList(f'{folder[0]}/dummy.h')
         return headerlist
