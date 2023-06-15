@@ -46,30 +46,32 @@ class PyIcon4py(PythonPackage):
         therefore choose the headers-function
         '''
 
-        if self.spec.version == ver('0.0.3'):
-            msg = 'Not implemented for version {0}'.format(self.spec.version)
-            raise spack.error.NoHeadersError(msg)
 
         query_parameters = self.spec.last_query.extra_parameters
+
         if len(query_parameters) > 1:
             raise ValueError('Only one query parameter allowed')
 
+        if (self.spec.version == ver('0.0.3') and len(query_parameters) == 1):
+            msg = 'Not implemented for version {0}'.format(self.spec.version)
+            raise spack.error.NoHeadersError(msg)
+
         if 'atm_dyn_iconam' in query_parameters:
-            header = find(self.prefix, 'atm_dyn_iconam')
+            header = self._find_folder_and_add_dummy_header(self.prefix,'atm_dyn_iconam')
         elif 'tools' in query_parameters:
-            header = find(self.prefix, 'icon4pytools')
-        elif 'common' in query_parameters:
-            header = find(self.prefix, 'common')
+            header = self._find_folder_and_add_dummy_header(self.prefix,'icon4pytools')
         else:
-            raise ValueError('Unknown query parameter {0}'.format(
-                query_parameters[0]))
+            header = HeaderList([])
 
-        if not header:
-            msg = 'Unable to locate folder for query {0} in {1}'
-            raise spack.error.NoHeadersError(
-                msg.format(query_parameters[0], self.spec.prefix))
+        return header
+    
+    def _find_folder_and_add_dummy_header(self,prefix,name):
+        folder = find(prefix,name)
+        headerlist = HeaderList(f'{folder[0]}/dummy.h')
+        return headerlist
 
-        return header[0]
+
+
 
     def install(self, spec, prefix):
         """Install everything from build directory."""
