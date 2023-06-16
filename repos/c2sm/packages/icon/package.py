@@ -39,8 +39,12 @@ class Icon(AutotoolsPackage, CudaPackage):
             branch='master',
             git='ssh://git@github.com/C2SM/icon-exclaim.git',
             submodules=True)
+    version('exclaim-stable',
+            tag='v0.1.0',
+            git='ssh://git@github.com/C2SM/icon-exclaim.git',
+            submodules=True)
     version('exclaim',
-            branch='icon-dsl-spack',
+            branch='icon-dsl',
             git='ssh://git@github.com/C2SM/icon-exclaim.git',
             submodules=True)
     version('nwp-master',
@@ -838,6 +842,8 @@ class Icon(AutotoolsPackage, CudaPackage):
                       "--exclude=*.h", "--exclude=*.Po", "--exclude=tests",
                       "--exclude=*.mod", "--exclude=*.o")
                 Rsync("-uavz", f"{icon_dir}/make_runscripts", ".")
+                Rsync("-uavz", f"{icon_dir}/scripts/spack", ".")
+                Rsync("-uavz", f"{icon_dir}/scripts/buildbot_scripts", ".")
 
                 Ln = which('ln', required=True)
                 dirs = glob.glob(f"{icon_dir}/run/standard_*")
