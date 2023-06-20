@@ -413,7 +413,7 @@ class OmniXmodPoolTest(unittest.TestCase):
         spack_install_and_test('omni-xmod-pool')
 
     def test_install_version_0_1(self):
-        spack_install_and_test('omni-xmod-pool @0.1')class PyBlackTest(unittest.TestCase):
+        spack_install_and_test('omni-xmod-pool @0.1')
 
 
 class PyBlackTest(unittest.TestCase):
