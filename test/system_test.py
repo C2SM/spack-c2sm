@@ -137,9 +137,10 @@ def spack_env_dev_install_and_test(spack_env: str,
     log_filename = sanitized_filename(log_filename or spack_env)
 
     if out_of_source:
-        build_dir = os.path.join(unique_folder,'build')
-        os.makedirs(build_dir,exist_ok=True)
-        shutil.copytree(os.path.join(unique_folder,'config'),os.path.join(build_dir,'config'))
+        build_dir = os.path.join(unique_folder, 'build')
+        os.makedirs(build_dir, exist_ok=True)
+        shutil.copytree(os.path.join(unique_folder, 'config'),
+                        os.path.join(build_dir, 'config'))
         unique_folder = build_dir
 
     # limit number of build-jobs to 4 because no srun used
@@ -270,7 +271,9 @@ class IconTest(unittest.TestCase):
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_gcc_out_of_source(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.7/daint_cpu_gcc', 'icon-2.6.6.1',out_of_source=True)
+            'config/cscs/spack/v0.18.1.7/daint_cpu_gcc',
+            'icon-2.6.6.1',
+            out_of_source=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu(self):
