@@ -162,6 +162,24 @@ nvidia_compiler: str = {
 }[machine_name()]
 
 
+class CdoTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('cdo')
+
+
+class ClangFormatTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('clang-format')
+
+
+class ClawTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('claw')
+
+
 @pytest.mark.no_balfrin  # cosmo-dycore does not support the cuda arch of balfrin
 @pytest.mark.no_tsa  # irrelevant
 class CosmoTest(unittest.TestCase):
@@ -224,6 +242,24 @@ class DuskTest(unittest.TestCase):
     pass
 
 
+class EccodesTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('eccodes')
+
+
+class EckitTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('eckit')
+
+
+class FckitTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('fckit')
+
+
 class FlexpartIfsTest(unittest.TestCase):
 
     def test_install(self):
@@ -267,6 +303,32 @@ class IconTest(unittest.TestCase):
             'config/cscs/spack/v0.18.1.7/daint_gpu_nvhpc', 'icon-2.6.6.1')
 
 
+class IconHamTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('icon-ham')
+
+
+class IconToolsTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('icontools')
+
+    def test_install(self):
+        spack_install_and_test('icontools @2.5.2')
+
+
+@pytest.mark.no_tsa  # Not supported on Tsa
+@pytest.mark.no_balfrin  # Not supported on Balfrin
+class InferoTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('infero')
+
+    def test_install(self):
+        spack_install_and_test('infero@0.1.2 %gcc')
+
+
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
 class Int2lmTest(unittest.TestCase):
 
@@ -296,18 +358,16 @@ class Int2lmTest(unittest.TestCase):
         )
 
 
-class IconToolsTest(unittest.TestCase):
+class LibCdiPioTest(unittest.TestCase):
 
-    def test_install(self):
-        spack_install_and_test('icontools @2.5.2')
+    def test_install_default(self):
+        spack_install_and_test('libcdi-pio')
 
 
-@pytest.mark.no_tsa  # Not supported on Tsa
-@pytest.mark.no_balfrin  # Not supported on Balfrin
-class InferoTest(unittest.TestCase):
+class LibfyamlTest(unittest.TestCase):
 
-    def test_install(self):
-        spack_install_and_test('infero@0.1.2 %gcc')
+    def test_install_default(self):
+        spack_install_and_test('libfyaml')
 
 
 @pytest.mark.no_balfrin  # This fails with "BOZ literal constant at (1) cannot appear in an array constructor". https://gcc.gnu.org/onlinedocs/gfortran/BOZ-literal-constants.html
@@ -318,9 +378,30 @@ class LibGrib1Test(unittest.TestCase):
         spack_install_and_test('libgrib1 @22-01-2020')
 
 
+class LibXml2Test(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('libxml2')
+
+
+class NvidiaBlasTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('nvidia-blas')
+
+
+class NvidiaLapackTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('nvidia-lapack')
+
+
 @pytest.mark.no_balfrin  # Coupling only needed on Daint
 @pytest.mark.no_tsa  # Coupling only needed on Daint
 class OasisTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('oasis')
 
     def test_install_master_nvhpc(self):
         spack_install_and_test('oasis @master %nvhpc')
@@ -328,19 +409,88 @@ class OasisTest(unittest.TestCase):
 
 class OmniXmodPoolTest(unittest.TestCase):
 
+    def test_install_default(self):
+        spack_install_and_test('omni-xmod-pool')
+
     def test_install_version_0_1(self):
-        spack_install_and_test('omni-xmod-pool @0.1')
+        spack_install_and_test('omni-xmod-pool @0.1')class PyBlackTest(unittest.TestCase):
+
+
+class PyBlackTest(unittest.TestCase):
+
+	def test_install_default(self):
+		spack_install_and_test('py-black')
+
+
+class PyBoltonsTest(unittest.TestCase):
+
+	def test_install_default(self):
+		spack_install_and_test('py-boltons')
+
+
+class PyCytoolzTest(unittest.TestCase):
+
+	def test_install_default(self):
+		spack_install_and_test('py-cytoolz')
+
+
+class PyDevtoolsTest(unittest.TestCase):
+
+	def test_install_default(self):
+		spack_install_and_test('py-devtools')
+
+
+class PyEditablesTest(unittest.TestCase):
+
+	def test_install_default(self):
+		spack_install_and_test('py-editables')
+
+
+class PyFactoryBoyTest(unittest.TestCase):
+
+	def test_install_default(self):
+		spack_install_and_test('py-factory-boy')
+
+
+class PyFprettifyTest(unittest.TestCase):
+
+	def test_install_default(self):
+		spack_install_and_test('py-fprettify')
+
+
+class PyFrozendictTest(unittest.TestCase):
+
+	def test_install_default(self):
+		spack_install_and_test('py-frozendict')
+
+
+class PyGridtools-cppTest(unittest.TestCase):
+
+	def test_install_default(self):
+		spack_install_and_test('py-gridtools-cpp')
 
 
 @pytest.mark.no_tsa  # Irrelevant
 class PyGt4pyTest(unittest.TestCase):
 
+    def test_install_default(self):
+        spack_install_and_test('py-gt4py')
+
     def test_install_version_1_1_1(self):
         spack_install_and_test('py-gt4py @ 1.1.1 %gcc ^python@3.10.4')
 
 
+class PyHatchlingTest(unittest.TestCase):
+
+	def test_install_default(self):
+		spack_install_and_test('py-hatchling')
+
+
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 class PyIcon4pyTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-icon4py')
 
     def test_install_version_0_0_3(self):
         spack_install_and_test(
@@ -351,15 +501,105 @@ class PyIcon4pyTest(unittest.TestCase):
             'py-icon4py @ 0.0.4 %gcc ^py-gt4py@1.1.1 ^python@3.10.4')
 
 
+class PyInflectionTest(unittest.TestCase):
+
+	def test_install_default(self):
+		spack_install_and_test('py-inflection')
+
+
+class PyLarkTest(unittest.TestCase):
+
+	def test_install_default(self):
+		spack_install_and_test('py-lark')
+
+
+class PyNumpyTest(unittest.TestCase):
+
+	def test_install_default(self):
+		spack_install_and_test('py-numpy')
+
+
+class PyPathspecTest(unittest.TestCase):
+
+	def test_install_default(self):
+		spack_install_and_test('py-pathspec')
+        
+        
+class PyPoetryCoreTest(unittest.TestCase):
+
+	def test_install_default(self):
+		spack_install_and_test('py-poetry-core')
+
+
+class PyPytestTest(unittest.TestCase):
+
+	def test_install_default(self):
+		spack_install_and_test('py-pytest')
+
+
+class PyPytestFactoryboyTest(unittest.TestCase):
+
+	def test_install_default(self):
+		spack_install_and_test('py-pytest-factoryboy')
+
+
+class PySetuptoolsTest(unittest.TestCase):
+
+	def test_install_default(self):
+		spack_install_and_test('py-setuptools')
+
+
+class PyToolzTest(unittest.TestCase):
+
+	def test_install_default(self):
+		spack_install_and_test('py-toolz')
+
+
+class PyTypingExtensionsTest(unittest.TestCase):
+
+	def test_install_default(self):
+		spack_install_and_test('py-typing-extensions')
+
+
 @pytest.mark.no_tsa  # Irrelevant
 @pytest.mark.no_balfrin  #Irrelevant
 class RttovTest(unittest.TestCase):
 
+	def test_install_default(self):
+		spack_install_and_test('rttov')
+
     def test_install_version_13_1(self):
-        spack_install_and_test('rttov @ 13.1  %nvhpc')
+        spack_install_and_test('rttov @13.1  %nvhpc')
+
+
+class ScalesPPMTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('scales-ppm')
+
+
+class TensorflowCTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('tensorflowc')
+
+
+class YacTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('yac')
+
+
+class YaxtTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('yaxt')
 
 
 class ZLibNGTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('zlib_ng')
 
     def test_install_version_2_0_0(self):
         spack_install_and_test('zlib_ng @2.0.0')
