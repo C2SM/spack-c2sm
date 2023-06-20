@@ -202,7 +202,7 @@ class InfoTest(unittest.TestCase):
 class SpecTest(unittest.TestCase):
     """
     Tests that the command 'spack spec <package>' works for all spack-c2sm packages.
-    Ideally 
+    Ideally all conditional dependencies are triggered at least once.
     """
 
     def test_cdo(self):
