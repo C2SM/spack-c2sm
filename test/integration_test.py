@@ -189,9 +189,6 @@ class InfoTest(unittest.TestCase):
     def test_tensorflowc(self):
         spack_info('tensorflowc')
 
-    def test_yac(self):
-        spack_info('yac')
-
     def test_yaxt(self):
         spack_info('yaxt')
 
@@ -365,9 +362,6 @@ class SpecTest(unittest.TestCase):
 
     def test_tensorflowc(self):
         spack_spec('tensorflowc')
-
-    def test_yac(self):
-        spack_spec('yac')
 
     def test_yaxt(self):
         spack_spec('yaxt')
