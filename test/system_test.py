@@ -418,56 +418,56 @@ class OmniXmodPoolTest(unittest.TestCase):
 
 class PyBlackTest(unittest.TestCase):
 
-	def test_install_default(self):
-		spack_install_and_test('py-black')
+    def test_install_default(self):
+        spack_install_and_test('py-black')
 
 
 class PyBoltonsTest(unittest.TestCase):
 
-	def test_install_default(self):
-		spack_install_and_test('py-boltons')
+    def test_install_default(self):
+        spack_install_and_test('py-boltons')
 
 
 class PyCytoolzTest(unittest.TestCase):
 
-	def test_install_default(self):
-		spack_install_and_test('py-cytoolz')
+    def test_install_default(self):
+        spack_install_and_test('py-cytoolz')
 
 
 class PyDevtoolsTest(unittest.TestCase):
 
-	def test_install_default(self):
-		spack_install_and_test('py-devtools')
+    def test_install_default(self):
+        spack_install_and_test('py-devtools')
 
 
 class PyEditablesTest(unittest.TestCase):
 
-	def test_install_default(self):
-		spack_install_and_test('py-editables')
+    def test_install_default(self):
+        spack_install_and_test('py-editables')
 
 
 class PyFactoryBoyTest(unittest.TestCase):
 
-	def test_install_default(self):
-		spack_install_and_test('py-factory-boy')
+    def test_install_default(self):
+        spack_install_and_test('py-factory-boy')
 
 
 class PyFprettifyTest(unittest.TestCase):
 
-	def test_install_default(self):
-		spack_install_and_test('py-fprettify')
+    def test_install_default(self):
+        spack_install_and_test('py-fprettify')
 
 
 class PyFrozendictTest(unittest.TestCase):
 
-	def test_install_default(self):
-		spack_install_and_test('py-frozendict')
+    def test_install_default(self):
+        spack_install_and_test('py-frozendict')
 
 
-class PyGridtools-cppTest(unittest.TestCase):
+class PyGridtoolsCppTest(unittest.TestCase):
 
-	def test_install_default(self):
-		spack_install_and_test('py-gridtools-cpp')
+    def test_install_default(self):
+        spack_install_and_test('py-gridtools-cpp')
 
 
 @pytest.mark.no_tsa  # Irrelevant
@@ -482,8 +482,8 @@ class PyGt4pyTest(unittest.TestCase):
 
 class PyHatchlingTest(unittest.TestCase):
 
-	def test_install_default(self):
-		spack_install_and_test('py-hatchling')
+    def test_install_default(self):
+        spack_install_and_test('py-hatchling')
 
 
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
@@ -503,70 +503,70 @@ class PyIcon4pyTest(unittest.TestCase):
 
 class PyInflectionTest(unittest.TestCase):
 
-	def test_install_default(self):
-		spack_install_and_test('py-inflection')
+    def test_install_default(self):
+        spack_install_and_test('py-inflection')
 
 
 class PyLarkTest(unittest.TestCase):
 
-	def test_install_default(self):
-		spack_install_and_test('py-lark')
+    def test_install_default(self):
+        spack_install_and_test('py-lark')
 
 
 class PyNumpyTest(unittest.TestCase):
 
-	def test_install_default(self):
-		spack_install_and_test('py-numpy')
+    def test_install_default(self):
+        spack_install_and_test('py-numpy')
 
 
 class PyPathspecTest(unittest.TestCase):
 
-	def test_install_default(self):
-		spack_install_and_test('py-pathspec')
+    def test_install_default(self):
+        spack_install_and_test('py-pathspec')
         
         
 class PyPoetryCoreTest(unittest.TestCase):
 
-	def test_install_default(self):
-		spack_install_and_test('py-poetry-core')
+    def test_install_default(self):
+        spack_install_and_test('py-poetry-core')
 
 
 class PyPytestTest(unittest.TestCase):
 
-	def test_install_default(self):
-		spack_install_and_test('py-pytest')
+    def test_install_default(self):
+        spack_install_and_test('py-pytest')
 
 
 class PyPytestFactoryboyTest(unittest.TestCase):
 
-	def test_install_default(self):
-		spack_install_and_test('py-pytest-factoryboy')
+    def test_install_default(self):
+        spack_install_and_test('py-pytest-factoryboy')
 
 
 class PySetuptoolsTest(unittest.TestCase):
 
-	def test_install_default(self):
-		spack_install_and_test('py-setuptools')
+    def test_install_default(self):
+        spack_install_and_test('py-setuptools')
 
 
 class PyToolzTest(unittest.TestCase):
 
-	def test_install_default(self):
-		spack_install_and_test('py-toolz')
+    def test_install_default(self):
+        spack_install_and_test('py-toolz')
 
 
 class PyTypingExtensionsTest(unittest.TestCase):
 
-	def test_install_default(self):
-		spack_install_and_test('py-typing-extensions')
+    def test_install_default(self):
+        spack_install_and_test('py-typing-extensions')
 
 
 @pytest.mark.no_tsa  # Irrelevant
 @pytest.mark.no_balfrin  #Irrelevant
 class RttovTest(unittest.TestCase):
 
-	def test_install_default(self):
-		spack_install_and_test('rttov')
+    def test_install_default(self):
+        spack_install_and_test('rttov')
 
     def test_install_version_13_1(self):
         spack_install_and_test('rttov @13.1  %nvhpc')
