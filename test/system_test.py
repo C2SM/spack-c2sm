@@ -136,7 +136,7 @@ def spack_env_dev_install_and_test(spack_env: str,
     filename = f'{unique_folder}/{spack_env}/spack.yaml'
     with open(filename, 'r') as file:
         lines = file.readlines()
-    lines[8] += ' +grib2'
+    lines = [line.rstrip() + ' +grib2\n' if 'icon@develop' in line else line for line in lines]
     with open(filename, 'w') as file:
         file.writelines(lines)
 
