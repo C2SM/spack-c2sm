@@ -142,6 +142,7 @@ def spack_env_dev_install_and_test(spack_env: str,
         shutil.copytree(os.path.join(unique_folder, 'config'),
                         os.path.join(build_dir, 'config'))
         unique_folder = build_dir
+        log_filename = f'{log_filename}_out_of_source'
 
     # limit number of build-jobs to 4 because no srun used
     log_with_spack('spack install -j 4 --until build -n -v',
@@ -151,8 +152,8 @@ def spack_env_dev_install_and_test(spack_env: str,
                    env=spack_env,
                    srun=False)
 
-    # not all relevante files for testing are synced in spack recipe
     if not out_of_source:
+        # not all relevante files for testing are synced in spack recipe
         log_with_spack('spack install --test=root -n -v',
                        'system_test',
                        log_filename,
@@ -269,9 +270,9 @@ class IconTest(unittest.TestCase):
             'config/cscs/spack/v0.18.1.7/daint_cpu_gcc', 'icon-2.6.6.1')
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
-    def test_install_c2sm_test_cpu_gcc_out_of_source(self):
+    def test_install_c2sm_test_cpu_nvhpc_out_of_source(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.7/daint_cpu_gcc',
+            'config/cscs/spack/v0.18.1.7/daint_cpu_nvhpc',
             'icon-2.6.6.1',
             out_of_source=True)
 
@@ -288,7 +289,7 @@ class IconTest(unittest.TestCase):
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_nwp_test_cpu_cce(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.4/daint_cpu_cce', 'nwp-master-spack-ci')
+            'config/cscs/spack/v0.18.1.7/daint_cpu_cce', 'cce')
 
 
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
