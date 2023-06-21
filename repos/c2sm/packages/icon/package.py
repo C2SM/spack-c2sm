@@ -130,7 +130,9 @@ class Icon(AutotoolsPackage, CudaPackage):
             default='none',
             values=('none', ) + serialization_values,
             description='Enable the Serialbox2 serialization')
-    variant('testbed', default=False, description='Enable ICON Testbed infrastructure')
+    variant('testbed',
+            default=False,
+            description='Enable ICON Testbed infrastructure')
 
     # Optimization Features:
     variant('loop-exchange', default=True, description='Enable loop exchange')
