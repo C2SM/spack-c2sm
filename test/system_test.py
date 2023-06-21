@@ -384,12 +384,16 @@ class LibXml2Test(unittest.TestCase):
         spack_install_and_test('libxml2')
 
 
+@pytest.mark.no_balfrin  # Package is a workaround, only needed on Daint.
+@pytest.mark.no_tsa  # Package is a workaround, only needed on Daint.
 class NvidiaBlasTest(unittest.TestCase):
 
     def test_install_default(self):
         spack_install_and_test('nvidia-blas')
 
 
+@pytest.mark.no_balfrin  # Package is a workaround, only needed on Daint.
+@pytest.mark.no_tsa  # Package is a workaround, only needed on Daint.
 class NvidiaLapackTest(unittest.TestCase):
 
     def test_install_default(self):
