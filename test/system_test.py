@@ -4,6 +4,7 @@ import subprocess
 import sys
 import os
 import uuid
+import shutil
 from pathlib import Path
 import inspect
 
@@ -115,11 +116,13 @@ def spack_devbuild_and_test(spec: str,
 
 def spack_env_dev_install_and_test(spack_env: str,
                                    icon_branch: str,
-                                   log_filename: str = None):
+                                   log_filename: str = None,
+                                   out_of_source: bool = False):
     """
     Clones ICON with given branch into unique folder, activates the given spack
     environment, tests 'spack install' and writes the output into the log file.
     If log_filename is None, spack_env is used to create one.
+    If out_of_source is True, create additional folder and build there, BUT skip testing!
     """
 
     # in case we use serialbox or another python preprocessor
@@ -133,6 +136,14 @@ def spack_env_dev_install_and_test(spack_env: str,
         shell=True)
     log_filename = sanitized_filename(log_filename or spack_env)
 
+    if out_of_source:
+        build_dir = os.path.join(unique_folder, 'build')
+        os.makedirs(build_dir, exist_ok=True)
+        shutil.copytree(os.path.join(unique_folder, 'config'),
+                        os.path.join(build_dir, 'config'))
+        unique_folder = build_dir
+        log_filename = f'{log_filename}_out_of_source'
+
     # limit number of build-jobs to 4 because no srun used
     log_with_spack('spack install -j 4 --until build -n -v',
                    'system_test',
@@ -141,12 +152,16 @@ def spack_env_dev_install_and_test(spack_env: str,
                    env=spack_env,
                    srun=False)
 
-    log_with_spack('spack install --test=root -n -v',
-                   'system_test',
-                   log_filename,
-                   cwd=unique_folder,
-                   env=spack_env,
-                   srun=False)
+    # for out-of-source build we can't run tests because required files
+    # like scripts/spack/test.py or scripts/buildbot_script are not synced
+    # in our spack-recipe to the build-folder
+    if not out_of_source:
+        log_with_spack('spack install --test=root -n -v',
+                       'system_test',
+                       log_filename,
+                       cwd=unique_folder,
+                       env=spack_env,
+                       srun=False)
 
 
 mpi: str = {
@@ -293,6 +308,13 @@ class IconTest(unittest.TestCase):
             'config/cscs/spack/v0.18.1.7/daint_cpu_gcc', 'icon-2.6.6.1')
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
+    def test_install_c2sm_test_cpu_nvhpc_out_of_source(self):
+        spack_env_dev_install_and_test(
+            'config/cscs/spack/v0.18.1.7/daint_cpu_nvhpc',
+            'icon-2.6.6.1',
+            out_of_source=True)
+
+    @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu(self):
         spack_env_dev_install_and_test(
             'config/cscs/spack/v0.18.1.7/daint_cpu_nvhpc', 'icon-2.6.6.1')
@@ -301,6 +323,11 @@ class IconTest(unittest.TestCase):
     def test_install_c2sm_test_gpu(self):
         spack_env_dev_install_and_test(
             'config/cscs/spack/v0.18.1.7/daint_gpu_nvhpc', 'icon-2.6.6.1')
+
+    @pytest.mark.no_balfrin  # config file does not exist for this machine
+    def test_install_nwp_test_cpu_cce(self):
+        spack_env_dev_install_and_test(
+            'config/cscs/spack/v0.18.1.7/daint_cpu_cce', 'cce')
 
 
 class IconHamTest(unittest.TestCase):

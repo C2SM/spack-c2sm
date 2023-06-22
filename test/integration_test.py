@@ -34,7 +34,10 @@ def spack_spec(spec: str, log_filename: str = None):
 
 
 class InfoTest(unittest.TestCase):
-    """Tests that 'spack spec <spec>' works for all conditional dependencies of all packages in spack-c2sm."""
+    """Tests that the command 'spack info <package>' works for all spack-c2sm packages."""
+
+    def test_cdo(self):
+        spack_info('cdo')
 
     def test_clang_format(self):
         spack_info('clang-format')
@@ -60,6 +63,15 @@ class InfoTest(unittest.TestCase):
     def test_dusk(self):
         spack_info('dusk')
 
+    def test_eccodes(self):
+        spack_info('eccodes')
+
+    def test_eckit(self):
+        spack_info('eckit')
+
+    def test_fckit(self):
+        spack_info('fckit')
+
     def test_flexpart_ifs(self):
         spack_info('flexpart-ifs')
 
@@ -69,14 +81,35 @@ class InfoTest(unittest.TestCase):
     def test_icon(self):
         spack_info('icon')
 
+    def test_icon_ham(self):
+        spack_info('icon-ham')
+
     def test_icontools(self):
         spack_info('icontools')
+
+    def test_infero(self):
+        spack_info('infero')
 
     def test_int2lm(self):
         spack_info('int2lm')
 
+    def test_libcdi_pio(self):
+        spack_info('libcdi-pio')
+
+    def test_libyaml(self):
+        spack_info('libyaml')
+
     def test_libgrib1(self):
         spack_info('libgrib1')
+
+    def test_libxml2(self):
+        spack_info('libxml2')
+
+    def test_nvidia_blas(self):
+        spack_info('nvidia-blas')
+
+    def test_nvidia_lapack(self):
+        spack_info('nvidia-lapack')
 
     def test_oasis(self):
         spack_info('oasis')
@@ -129,27 +162,48 @@ class InfoTest(unittest.TestCase):
     def test_py_pathspec(self):
         spack_info('py-pathspec')
 
+    def test_py_poetry_core(self):
+        spack_info('py-poetry-core')
+
+    def test_py_pytest(self):
+        spack_info('py-pytest')
+
     def test_py_pytest_factoryboy(self):
         spack_info('py-pytest-factoryboy')
+
+    def test_py_setuptools(self):
+        spack_info('py-setuptools')
 
     def test_py_toolz(self):
         spack_info('py-toolz')
 
     def test_py_typing_extensions(self):
-        spack_info('py-typing')
+        spack_info('py-typing-extensions')
+
+    def test_rttov(self):
+        spack_info('rttov')
+
+    def test_scales_ppm(self):
+        spack_info('scales-ppm')
 
     def test_tensorflowc(self):
         spack_info('tensorflowc')
 
-    def test_rttov(self):
-        spack_info('rttov')
+    def test_yaxt(self):
+        spack_info('yaxt')
 
     def test_zlib_ng(self):
         spack_info('zlib_ng')
 
 
-class PlainSpecTest(unittest.TestCase):
-    """Tests that the command 'spack spec <package>' works for all spack-c2sm packages."""
+class SpecTest(unittest.TestCase):
+    """
+    Tests that the command 'spack spec <package>' works for all spack-c2sm packages.
+    Ideally all conditional dependencies are triggered at least once.
+    """
+
+    def test_cdo(self):
+        spack_spec('cdo')
 
     def test_clang_format(self):
         spack_spec('clang-format')
@@ -179,6 +233,9 @@ class PlainSpecTest(unittest.TestCase):
     def test_dusk(self):
         spack_spec('dusk')
 
+    def test_eccodes(self):
+        spack_spec('eccodes')
+
     def test_eckit(self):
         spack_spec('eckit')
 
@@ -197,6 +254,9 @@ class PlainSpecTest(unittest.TestCase):
         spack_spec('icon')
         spack_spec('icon serialization=create claw=std')
 
+    def test_icon_ham(self):
+        spack_spec('icon-ham')
+
     def test_icontools(self):
         spack_spec('icontools')
 
@@ -207,8 +267,23 @@ class PlainSpecTest(unittest.TestCase):
         spack_spec('int2lm')
         spack_spec('int2lm +parallel')
 
+    def test_libcdi_pio(self):
+        spack_spec('libcdi-pio')
+
+    def test_libfyaml(self):
+        spack_spec('libfyaml')
+
     def test_libgrib1(self):
         spack_spec('libgrib1')
+
+    def test_libxml2(self):
+        spack_spec('libxml2')
+
+    def test_nvidia_blas(self):
+        spack_spec('nvidia-blas')
+
+    def test_nvidia_lapack(self):
+        spack_spec('nvidia-lapack')
 
     def test_oasis(self):
         spack_spec('oasis')
@@ -261,20 +336,35 @@ class PlainSpecTest(unittest.TestCase):
     def test_py_pathspec(self):
         spack_spec('py-pathspec')
 
+    def test_py_poetry_core(self):
+        spack_spec('py-poetry-core')
+
+    def test_py_pytest(self):
+        spack_spec('py-pytest')
+
     def test_py_pytest_factoryboy(self):
         spack_spec('py-pytest-factoryboy')
+
+    def test_py_setuptools(self):
+        spack_spec('py-setuptools')
 
     def test_py_toolz(self):
         spack_spec('py-toolz')
 
     def test_py_typing_extensions(self):
-        spack_spec('py-typing')
+        spack_spec('py-typing-extensions')
 
     def test_rttov(self):
         spack_spec('rttov')
 
+    def test_scales_ppm(self):
+        spack_spec('scales-ppm')
+
     def test_tensorflowc(self):
         spack_spec('tensorflowc')
+
+    def test_yaxt(self):
+        spack_spec('yaxt')
 
     def test_zlib_ng(self):
         spack_spec('zlib_ng')
