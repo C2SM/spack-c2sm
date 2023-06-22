@@ -258,15 +258,17 @@ class DuskTest(unittest.TestCase):
 
 
 class EccodesTest(unittest.TestCase):
+    # All the other versions are not the responsibility of spack-c2sm
 
-    def test_install_default(self):
-        spack_install_and_test('eccodes')
+    def test_install_2_19_0(self):
+        spack_install_and_test('eccodes @2.19.0')
 
 
 class EckitTest(unittest.TestCase):
+    # All the other versions are not the responsibility of spack-c2sm
 
-    def test_install_default(self):
-        spack_install_and_test('eckit')
+    def test_install_1_20_0(self):
+        spack_install_and_test('eckit @1.20.0')
 
 
 class FckitTest(unittest.TestCase):
