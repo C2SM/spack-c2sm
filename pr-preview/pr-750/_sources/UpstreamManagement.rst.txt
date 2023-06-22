@@ -7,7 +7,7 @@ its own software stack.
 
 Install upstream
 ----------------------
-The upstream instances are installed for each tag through a dedicated `Jenkinks plan (Install upstream) <https://jenkins-mch.cscs.ch/job/Spack/job/spack-upstream_v0.18.1.6/>`_.
+The upstream instances are installed for each tag through a dedicated `Jenkinks plan (Install upstream) <https://jenkins-mch.cscs.ch/job/Spack/job/spack-upstream_v0.18.1.7/>`_.
 Each new tag of spack-c2sm needs a new plan, it can simply be copied from existing one. The only thing to adapt is the default value of the spack-tag.
 
 Uninstall upstream
