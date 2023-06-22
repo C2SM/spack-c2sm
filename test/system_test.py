@@ -151,9 +151,11 @@ def spack_env_dev_install_and_test(spack_env: str,
                    cwd=unique_folder,
                    env=spack_env,
                    srun=False)
-
+    
+    # for out-of-source build we can't run tests because required files
+    # like scripts/spack/test.py or scripts/buildbot_script are not synced
+    # in our spack-recipe to the build-folder
     if not out_of_source:
-        # not all relevante files for testing are synced in spack recipe
         log_with_spack('spack install --test=root -n -v',
                        'system_test',
                        log_filename,
