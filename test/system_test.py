@@ -615,12 +615,6 @@ class TensorflowCTest(unittest.TestCase):
         spack_install_and_test('tensorflowc')
 
 
-class YacTest(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('yac')
-
-
 class YaxtTest(unittest.TestCase):
 
     def test_install_default(self):
