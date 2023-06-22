@@ -117,7 +117,7 @@ def spack_devbuild_and_test(spec: str,
 def spack_env_dev_install_and_test(spack_env: str,
                                    icon_branch: str,
                                    log_filename: str = None,
-                                   out_of_source: bool = None):
+                                   out_of_source: bool = False):
     """
     Clones ICON with given branch into unique folder, activates the given spack
     environment, tests 'spack install' and writes the output into the log file.
