@@ -1,4 +1,5 @@
 #!/bin/bash
+# Intended use: ./sysconfigs/copy_alps_env_files_from.sh /mch-environment/v8
 
 parent_dir=$( cd "$(dirname "${BASH_SOURCE[0]:-${(%):-%x}}")" ; pwd -P )
 
