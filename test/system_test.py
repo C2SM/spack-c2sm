@@ -134,6 +134,18 @@ def spack_env_dev_install_and_test(spack_env: str,
         f'git clone --depth 1 --recurse-submodules -b {icon_branch} git@github.com:C2SM/icon.git {unique_folder}',
         check=True,
         shell=True)
+
+    # patch spack env
+    filename = f'{unique_folder}/{spack_env}/spack.yaml'
+    with open(filename, 'r') as file:
+        lines = file.readlines()
+    lines = [
+        line.rstrip() + ' +grib2\n' if 'icon@develop' in line else line
+        for line in lines
+    ]
+    with open(filename, 'w') as file:
+        file.writelines(lines)
+
     log_filename = sanitized_filename(log_filename or spack_env)
 
     if out_of_source:
