@@ -34,8 +34,8 @@ def log_with_spack(command: str,
         # sysconfig/<machine>/config.yaml config:build_jobs for max efficiency
         srun = {
             'balfrin': '',
-            'daint': 'srun -t 03:00:00 -C gpu -A g110',
-            'tsa': 'srun -t 03:00:00 -c 6',
+            'daint': 'srun -t 05:00:00 -C gpu -A g110',
+            'tsa': 'srun -t 05:00:00 -c 6',
         }[machine_name()]
     else:
         srun = ''
