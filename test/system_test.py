@@ -32,6 +32,33 @@ def devirtualize_env():
         pass
 
 
+def spack_install(spec: str, log_filename: str = None):
+    """
+    Tests 'spack install' of the given spec and writes the output into the log file.
+    """
+
+    func_name = inspect.currentframe().f_back.f_code.co_name.replace(
+        'test_', '')
+    class_name = inspect.currentframe().f_back.f_locals.get(
+        'self', None).__class__.__name__.replace('Test', '')
+    if log_filename is None:
+        log_filename = sanitized_filename(class_name + '-' + func_name)
+
+    if spec.startswith('cosmo '):
+        command = 'installcosmo'
+    else:
+        command = 'install'
+
+    if spec.startswith('py-'):
+        devirtualize_env()
+
+    log_with_spack(
+        f'spack {command} -n -v {spec}',
+        'system_test',
+        log_filename,
+        srun=True)
+
+
 def spack_install_and_test(spec: str,
                            log_filename: str = None,
                            split_phases=False):
@@ -549,7 +576,7 @@ class PyLarkTest(unittest.TestCase):
 class PyNumpyTest(unittest.TestCase):
 
     def test_install_default(self):
-        spack_install_and_test('py-numpy')
+        spack_install('py-numpy')
 
 
 class PyPathspecTest(unittest.TestCase):
