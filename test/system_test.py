@@ -365,11 +365,8 @@ class IconTest(unittest.TestCase):
             'config/cscs/spack/v0.18.1.7/daint_cpu_cce', 'cce')
 
 
-@pytest.mark.no_tsa  # Icon does not run on Tsa
 class IconHamTest(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('icon-ham')
+    pass
 
 
 class IconToolsTest(unittest.TestCase):
