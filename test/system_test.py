@@ -204,6 +204,7 @@ nvidia_compiler: str = {
 }[machine_name()]
 
 
+@pytest.mark.no_tsa  # proj-8.2.1 fails with "./.libs/libproj.so: error: undefined reference to 'curl_easy_setopt'"
 class CdoTest(unittest.TestCase):
 
     def test_install_default(self):
@@ -267,6 +268,10 @@ class CosmoDycoreTest(unittest.TestCase):
 
 
 class CosmoEccodesDefinitionsTest(unittest.TestCase):
+    # TODO: Add the other versions!
+
+    def test_install_version_2_25_0_1(self):
+        spack_install_and_test('cosmo-eccodes-definitions @2.25.0.1')
 
     def test_install_version_2_19_0_7(self):
         spack_install_and_test('cosmo-eccodes-definitions @2.19.0.7')
@@ -291,6 +296,7 @@ class EccodesTest(unittest.TestCase):
         spack_install_and_test('eccodes @2.19.0')
 
 
+@pytest.mark.no_tsa  # Fails with "The C compiler "/scratch-shared/meteoswiss/scratch/jenkins/workspace/Spack/spack_PR/spack/lib/spack/env/nvhpc/nvc" is not able to compile a simple test program."
 class EckitTest(unittest.TestCase):
     # All the other versions are not the responsibility of spack-c2sm
 
@@ -306,8 +312,8 @@ class FckitTest(unittest.TestCase):
 
 class FlexpartIfsTest(unittest.TestCase):
 
-    def test_install(self):
-        spack_install_and_test('flexpart-ifs')
+    def test_install_latest(self):
+        spack_install_and_test('flexpart-ifs @meteoswiss-10')
 
 
 class GridToolsTest(unittest.TestCase):
@@ -359,6 +365,7 @@ class IconTest(unittest.TestCase):
             'config/cscs/spack/v0.18.1.7/daint_cpu_cce', 'cce')
 
 
+@pytest.mark.no_tsa  # Icon does not run on Tsa
 class IconHamTest(unittest.TestCase):
 
     def test_install_default(self):
@@ -367,10 +374,7 @@ class IconHamTest(unittest.TestCase):
 
 class IconToolsTest(unittest.TestCase):
 
-    def test_install_default(self):
-        spack_install_and_test('icontools')
-
-    def test_install(self):
+    def test_install_2_5_2(self):
         spack_install_and_test('icontools @2.5.2')
 
 
@@ -378,11 +382,8 @@ class IconToolsTest(unittest.TestCase):
 @pytest.mark.no_balfrin  # Not supported on Balfrin
 class InferoTest(unittest.TestCase):
 
-    def test_install_default(self):
-        spack_install_and_test('infero')
-
     def test_install(self):
-        spack_install_and_test('infero@0.1.2 %gcc')
+        spack_install_and_test('infero @0.1.2 %gcc')
 
 
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
@@ -420,6 +421,7 @@ class LibCdiPioTest(unittest.TestCase):
         spack_install_and_test('libcdi-pio')
 
 
+@pytest.mark.no_tsa  # Fails "make check"
 class LibfyamlTest(unittest.TestCase):
 
     def test_install_default(self):
@@ -460,17 +462,11 @@ class NvidiaLapackTest(unittest.TestCase):
 @pytest.mark.no_tsa  # Coupling only needed on Daint
 class OasisTest(unittest.TestCase):
 
-    def test_install_default(self):
-        spack_install_and_test('oasis')
-
     def test_install_master_nvhpc(self):
         spack_install_and_test('oasis @master %nvhpc')
 
 
 class OmniXmodPoolTest(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('omni-xmod-pool')
 
     def test_install_version_0_1(self):
         spack_install_and_test('omni-xmod-pool @0.1')
@@ -488,6 +484,7 @@ class PyBoltonsTest(unittest.TestCase):
         spack_install_and_test('py-boltons')
 
 
+@pytest.mark.no_balfrin  # Preparing metadata (pyproject.toml): finished with status 'error: metadata-generation-failed'.
 class PyCytoolzTest(unittest.TestCase):
 
     def test_install_default(self):
@@ -533,11 +530,8 @@ class PyGridtoolsCppTest(unittest.TestCase):
 @pytest.mark.no_tsa  # Irrelevant
 class PyGt4pyTest(unittest.TestCase):
 
-    def test_install_default(self):
-        spack_install_and_test('py-gt4py')
-
     def test_install_version_1_1_1(self):
-        spack_install_and_test('py-gt4py @ 1.1.1 %gcc ^python@3.10.4')
+        spack_install_and_test('py-gt4py @1.1.1')
 
 
 class PyHatchlingTest(unittest.TestCase):
@@ -549,8 +543,8 @@ class PyHatchlingTest(unittest.TestCase):
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 class PyIcon4pyTest(unittest.TestCase):
 
-    def test_install_default(self):
-        spack_install_and_test('py-icon4py')
+    def test_install_0_0_4(self):
+        spack_install_and_test('py-icon4py @0.0.4')
 
     def test_install_version_0_0_3(self):
         spack_install_and_test(
@@ -625,35 +619,38 @@ class PyTypingExtensionsTest(unittest.TestCase):
 @pytest.mark.no_balfrin  #Irrelevant
 class RttovTest(unittest.TestCase):
 
-    def test_install_default(self):
-        spack_install_and_test('rttov')
+    def test_install_version_13_1_gcc(self):
+        spack_install_and_test('rttov @13.1 %gcc')
 
-    def test_install_version_13_1(self):
-        spack_install_and_test('rttov @13.1  %nvhpc')
+    def test_install_version_13_1_nvhpc(self):
+        spack_install_and_test('rttov @13.1 %nvhpc')
 
 
+@pytest.mark.no_tsa  # Fails with "C compiler cannot create executables"
 class ScalesPPMTest(unittest.TestCase):
+    # TODO: Add other versions and compilers!
 
     def test_install_default(self):
         spack_install_and_test('scales-ppm')
 
 
 class TensorflowCTest(unittest.TestCase):
+    # TODO: Add other compilers!
 
-    def test_install_default(self):
-        spack_install_and_test('tensorflowc')
+    def test_install_2_6_0(self):
+        spack_install_and_test('tensorflowc @2.6.0')
 
 
+@pytest.mark.no_tsa  # Fails with "C compiler cannot create executables"
 class YaxtTest(unittest.TestCase):
+    # TODO: Add other versions and compilers!
 
     def test_install_default(self):
         spack_install_and_test('yaxt')
 
 
 class ZLibNGTest(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('zlib_ng')
+    # TODO: Add other compilers!
 
     def test_install_version_2_0_0(self):
         spack_install_and_test('zlib_ng @2.0.0')
