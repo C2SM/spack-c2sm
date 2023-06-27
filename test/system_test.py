@@ -297,6 +297,8 @@ class EccodesTest(unittest.TestCase):
 
 
 @pytest.mark.no_tsa  # Fails with "The C compiler "/scratch-shared/meteoswiss/scratch/jenkins/workspace/Spack/spack_PR/spack/lib/spack/env/nvhpc/nvc" is not able to compile a simple test program."
+@pytest.mark.no_daint  # Tests are flaky https://github.com/C2SM/spack-c2sm/issues/779
+@pytest.mark.no_balfrin  # Tests are flaky https://github.com/C2SM/spack-c2sm/issues/779
 class EckitTest(unittest.TestCase):
     # All the other versions are not the responsibility of spack-c2sm
 
