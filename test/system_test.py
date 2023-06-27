@@ -52,11 +52,10 @@ def spack_install(spec: str, log_filename: str = None):
     if spec.startswith('py-'):
         devirtualize_env()
 
-    log_with_spack(
-        f'spack {command} -n -v {spec}',
-        'system_test',
-        log_filename,
-        srun=True)
+    log_with_spack(f'spack {command} -n -v {spec}',
+                   'system_test',
+                   log_filename,
+                   srun=True)
 
 
 def spack_install_and_test(spec: str,
