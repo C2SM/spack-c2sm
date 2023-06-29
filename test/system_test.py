@@ -269,23 +269,8 @@ class GridToolsTest(unittest.TestCase):
 
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 class IconTest(unittest.TestCase):
-    # Generally for icon 2.6.6 the dependencies are triggered like this:
-    # The dependency on libxml2 is caused by +coupling.
-    # The dependency on rttov is caused by +rttov.
-    # The dependency on libcdi-pio +fortran +netcdf +mpi grib2=eccodes is caused by +cdi-pio +grib2 +mpi.
-    # The dependency on eccodes +fortran is caused by +emvorado.
-    # The dependency on cosmo-eccodes-definitions is caused by +eccodes-definitions.
-    # The dependency on yaxt is caused by +cdi-pio.
-    # The dependency on netcdf-c is caused by +coupling.
-    # The dependency on hdf5 +szip +hl +fortran is caused by +emvorado.
-    # The dependency on zlib is caused by +emvorado.
-    # The dependency on mpi is caused by +mpi.
-    # The dependency on cuda is caused by +cuda.
-    # The dependency on claw is caused by claw=std.
 
     def test_install_2_6_6_gcc(self):
-        # +cuda and %gcc conflict.
-        # +coupling triggers icon/externals/yac, which fails to compile.
         spack_install_and_test('icon @2.6.6 %gcc')
 
     def test_install_2_6_6_nvhpc(self):
