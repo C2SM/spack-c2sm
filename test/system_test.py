@@ -273,6 +273,7 @@ class IconTest(unittest.TestCase):
     def test_install_2_6_6_gcc(self):
         spack_install_and_test('icon @2.6.6 %gcc')
 
+    @pytest.mark.no_daint
     def test_install_2_6_6_nvhpc(self):
         spack_install_and_test('icon @2.6.6 %nvhpc')
 
