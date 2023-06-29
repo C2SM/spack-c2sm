@@ -193,6 +193,10 @@ class Icon(AutotoolsPackage, CudaPackage):
         depends_on('py-gridtools-cpp', when='dsl={0}'.format(x))
         conflicts('^python@:3.9,3.11:', when='dsl={0}'.format(x))
 
+    depends_on('autoconf', type='build', when='@2.6.6')
+    depends_on('automake', type='build', when='@2.6.6')
+    depends_on('libtool', type='build', when='@2.6.6')
+
     depends_on('infero +quiet', when='+infero')
 
     depends_on('libfyaml', when='+coupling')
