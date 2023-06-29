@@ -370,6 +370,7 @@ class IconHamTest(unittest.TestCase):
     pass
 
 
+@pytest.mark.no_tsa  # This test is flaky and sometimes fails with: icondelaunay.cpp:29:10: fatal error: version.c: No such file or directory. See issue #781.
 class IconToolsTest(unittest.TestCase):
 
     def test_install_2_5_2(self):
@@ -413,6 +414,7 @@ class Int2lmTest(unittest.TestCase):
         )
 
 
+@pytest.mark.no_tsa  # Test is too expensive. It takes over 5h.
 class LibCdiPioTest(unittest.TestCase):
 
     def test_install_default(self):
