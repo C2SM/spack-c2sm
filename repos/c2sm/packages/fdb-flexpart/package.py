@@ -6,7 +6,7 @@ class FdbFlexpart(MakefilePackage):
     """flexpart is a Lagrangian dispersion model"""
 
     homepage = 'https://github.com/MeteoSwiss-APN/fdb-flexpart'
-    git = 'ssh://git@github.com:MeteoSwiss-APN/fdb-flexpart.git'
+    git = 'ssh://git@github.com/MeteoSwiss-APN/fdb-flexpart.git'
 
     version('fdb', branch='fdb')
 

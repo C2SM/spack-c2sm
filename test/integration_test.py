@@ -257,8 +257,8 @@ class SpecTest(unittest.TestCase):
     def test_fdb(self):
         spack_spec('fdb')
 
-    def test_fdb_felxpart(self):
-        spack_spec('fdb-felxpart')
+    def test_fdb_flexpart(self):
+        spack_spec('fdb-flexpart')
 
     def test_fdb_fortran(self):
         spack_spec('fdb-fortran')
