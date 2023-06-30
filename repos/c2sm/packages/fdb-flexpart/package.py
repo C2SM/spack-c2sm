@@ -28,10 +28,17 @@ class FdbFlexpart(MakefilePackage):
 
     def setup_build_environment(self, env):
         env.set('ECCODESROOT', self.spec['eccodes'].prefix)
-        env.set('ECCODES_LD_FLAGS', '-L' + self.spec['eccodes'].prefix + '/lib64 -leccodes_f90 -leccodes')
+        env.set(
+            'ECCODES_LD_FLAGS', '-L' + self.spec['eccodes'].prefix +
+            '/lib64 -leccodes_f90 -leccodes')
         env.set('EBROOTNETCDFMINFORTRAN', self.spec['netcdf-fortran'].prefix)
-        env.set('JASPER_LD_FLAGS', '-Wl,--no-relax -L' + self.spec['fdb'].prefix + '/lib -lfdb5 -L' + self.spec['fdb-fortran'].prefix + '/lib -lfdbf')
-        env.set('CURL_INCLUDES', self.spec['fdb-fortran'].prefix + '/include/fortran/fdb/modules -I' + self.spec['fdb'].prefix + '/include')
+        env.set(
+            'JASPER_LD_FLAGS', '-Wl,--no-relax -L' + self.spec['fdb'].prefix +
+            '/lib -lfdb5 -L' + self.spec['fdb-fortran'].prefix + '/lib -lfdbf')
+        env.set(
+            'CURL_INCLUDES', self.spec['fdb-fortran'].prefix +
+            '/include/fortran/fdb/modules -I' + self.spec['fdb'].prefix +
+            '/include')
 
     def install(self, spec, prefix):
         mkdir(prefix.bin)
