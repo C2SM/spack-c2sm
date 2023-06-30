@@ -72,6 +72,15 @@ class InfoTest(unittest.TestCase):
     def test_fckit(self):
         spack_info('fckit')
 
+    def test_fdb(self):
+        spack_info('fdb')
+
+    def test_fdb_flexpart(self):
+        spack_info('fdb-flexpart')
+
+    def test_fdb_fortran(self):
+        spack_info('fdb-fortran')
+
     def test_flexpart_ifs(self):
         spack_info('flexpart-ifs')
 
@@ -104,6 +113,9 @@ class InfoTest(unittest.TestCase):
 
     def test_libxml2(self):
         spack_info('libxml2')
+
+    def test_metkit(self):
+        spack_info('metkit')
 
     def test_nvidia_blas(self):
         spack_info('nvidia-blas')
@@ -242,6 +254,15 @@ class SpecTest(unittest.TestCase):
     def test_fckit(self):
         spack_spec('fckit')
 
+    def test_fdb(self):
+        spack_spec('fdb')
+
+    def test_fdb_felxpart(self):
+        spack_spec('fdb-felxpart')
+
+    def test_fdb_fortran(self):
+        spack_spec('fdb-fortran')
+
     def test_flexpart_ifs(self):
         spack_spec('flexpart-ifs')
 
@@ -278,6 +299,9 @@ class SpecTest(unittest.TestCase):
 
     def test_libxml2(self):
         spack_spec('libxml2')
+
+    def test_metkit(self):
+        spack_spec('metkit')
 
     def test_nvidia_blas(self):
         spack_spec('nvidia-blas')
