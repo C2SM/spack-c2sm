@@ -635,7 +635,6 @@ class ScalesPPMTest(unittest.TestCase):
 
 
 class TensorflowCTest(unittest.TestCase):
-    # TODO: Add other compilers!
 
     def test_install_2_6_0(self):
         spack_install_and_test('tensorflowc @2.6.0')
