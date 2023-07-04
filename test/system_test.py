@@ -264,7 +264,7 @@ class FdbTest(unittest.TestCase):
 
     def test_install_5_10_8_gcc(self):
         spack_install_and_test('fdb @5.8.10 %gcc')
-        
+
     def test_install_5_10_8_nvhpc(self):
         spack_install_and_test(f'fdb @5.8.10 %{nvidia_compiler}')
 
