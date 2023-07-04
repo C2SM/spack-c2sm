@@ -307,20 +307,21 @@ class EccodesTest(unittest.TestCase):
         spack_install_and_test('eccodes @2.19.0')
 
 
-@pytest.mark.no_tsa  # Fails with "The C compiler "/scratch-shared/meteoswiss/scratch/jenkins/workspace/Spack/spack_PR/spack/lib/spack/env/nvhpc/nvc" is not able to compile a simple test program."
-@pytest.mark.no_daint  # Tests are flaky https://github.com/C2SM/spack-c2sm/issues/779
-@pytest.mark.no_balfrin  # Tests are flaky https://github.com/C2SM/spack-c2sm/issues/779
 class EckitTest(unittest.TestCase):
     # All the other versions are not the responsibility of spack-c2sm
+    # Package tests are not run because they are flaky https://github.com/C2SM/spack-c2sm/issues/779
 
     def test_install_1_20_2_gcc(self):
-        spack_install_and_test('eckit @1.20.2 %gcc')
+        spack_install('eckit @1.20.2 %gcc')
 
     def test_install_1_20_2_nvhpc(self):
-        spack_install_and_test(f'eckit @1.20.2 %{nvidia_compiler}')
+        spack_install(f'eckit @1.20.2 %{nvidia_compiler}')
 
-    def test_install_1_20_0(self):
-        spack_install_and_test('eckit @1.20.0')
+    def test_install_1_20_0_gcc(self):
+        spack_install('eckit @1.20.0 %gcc')
+
+    def test_install_1_20_0_gcc(self):
+        spack_install(f'eckit @1.20.0 %{nvidia_compiler}')
 
 
 class FckitTest(unittest.TestCase):
