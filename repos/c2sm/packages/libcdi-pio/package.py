@@ -7,7 +7,7 @@ class LibcdiPio(AutotoolsPackage):
     """A version of CDI with parallel I/O features."""
 
     homepage = 'https://gitlab.dkrz.de/dkrz-sw/cdi-pio'
-    git = 'git@gitlab.dkrz.de:mpim-sw/libcdi.git'
+    git = 'ssh://git@gitlab.dkrz.de/mpim-sw/libcdi.git'
 
     version('master', branch='cdipio-dev-snapshot-20210223')
 
