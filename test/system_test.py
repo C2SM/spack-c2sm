@@ -251,6 +251,36 @@ class DuskTest(unittest.TestCase):
     pass
 
 
+class EckitTest(unittest.TestCase):
+
+    def test_install_1_20_2_gcc(self):
+        spack_install_and_test('eckit @1.20.2 %gcc')
+
+    def test_install_1_20_2_nvhpc(self):
+        spack_install_and_test(f'eckit @1.20.2 %{nvidia_compiler}')
+
+
+class FdbTest(unittest.TestCase):
+
+    def test_install_5_10_8_gcc(self):
+        spack_install_and_test('fdb @5.8.10 %gcc')
+        
+    def test_install_5_10_8_nvhpc(self):
+        spack_install_and_test(f'fdb @5.8.10 %{nvidia_compiler}')
+
+
+class FdbFlexpartTest(unittest.TestCase):
+
+    def test_install(self):
+        spack_install_and_test('fdbflexpart @fdb')
+
+
+class FdbFortranTest(unittest.TestCase):
+
+    def test_install(self):
+        spack_install_and_test('fdbfortran @0.1.0')
+
+
 class FlexpartIfsTest(unittest.TestCase):
 
     def test_install(self):
@@ -355,6 +385,15 @@ class LibGrib1Test(unittest.TestCase):
     @pytest.mark.serial_only  # locking problem on Tsa in combination with int2lm
     def test_install_version_22_01_2020(self):
         spack_install_and_test('libgrib1 @22-01-2020')
+
+
+class MetkitTest(unittest.TestCase):
+
+    def test_install_1_9_2_gcc(self):
+        spack_install_and_test('metkit @1.9.2 %gcc')
+
+    def test_install_1_9_2_nvhpc(self):
+        spack_install_and_test(f'metkit @1.9.2 %{nvidia_compiler}')
 
 
 @pytest.mark.no_balfrin  # Coupling only needed on Daint
