@@ -109,7 +109,7 @@ class Icon(AutotoolsPackage, CudaPackage):
             default=False,
             description='Enable usage of the GPU-aware MPI features')
     variant('openmp', default=False, description='Enable OpenMP support')
-    variant('gpu', default='no', values=('openacc+cuda', 'openacc+hip', 'openacc', 'yes', 'no'), description='Enable GPU support')
+    variant('gpu', default='no', values=('openacc+cuda', 'openacc', 'yes', 'no'), description='Enable GPU support')
     variant('grib2', default=False, description='Enable GRIB2 I/O')
     variant('parallel-netcdf',
             default=False,
@@ -250,7 +250,6 @@ class Icon(AutotoolsPackage, CudaPackage):
     conflicts('+cuda', when='%gcc')
 
     conflicts('~cuda', when='gpu=openacc+cuda')
-    conflicts('+cuda', when='gpu=openacc+hip')
     conflicts('~cuda', when='gpu=openacc')
     conflicts('~cuda', when='gpu=yes')
     conflicts('+cuda', when='gpu=no')
