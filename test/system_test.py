@@ -95,7 +95,7 @@ def spack_install_and_test(spec: str,
         log_with_spack(f'spack {command} --test=root -n -v {spec}',
                        'system_test',
                        log_filename,
-                       srun=True)
+                       srun=not spec.startswith('icon '))
 
 
 def spack_devbuild_and_test(spec: str,
