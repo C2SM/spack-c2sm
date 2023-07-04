@@ -221,7 +221,6 @@ class Icon(AutotoolsPackage, CudaPackage):
     depends_on('lapack')
     depends_on('blas')
     depends_on('netcdf-fortran')
-    depends_on('hip', when='gpu=openacc+hip')
 
     depends_on('netcdf-c', when='~cdi-pio')
     depends_on('netcdf-c', when='+coupling')
