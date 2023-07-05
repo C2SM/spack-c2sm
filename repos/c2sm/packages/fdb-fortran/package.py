@@ -9,7 +9,7 @@ class FdbFortran(CMakePackage):
     version('0.1.0', tag='0.1.0')
 
     depends_on('cmake@3.10:', type='build')
-    depends_on('fdb')
+    depends_on('fdb@inspect') # Only this branch provides the necessary interface, like 'fdb_listiterator_attrs'.
 
 
 def cmake_args(self):
