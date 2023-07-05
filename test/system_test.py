@@ -333,10 +333,10 @@ class FckitTest(unittest.TestCase):
 class FdbTest(unittest.TestCase):
 
     def test_install_5_10_8_gcc(self):
-        spack_install_and_test('fdb @5.8.10 %gcc')
+        spack_install('fdb @5.10.8 %gcc')
 
     def test_install_5_10_8_nvhpc(self):
-        spack_install_and_test(f'fdb @5.8.10 %{nvidia_compiler}')
+        spack_install(f'fdb @5.10.8 %{nvidia_compiler}')
 
 
 class FdbFlexpartTest(unittest.TestCase):
