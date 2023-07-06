@@ -10,7 +10,7 @@ class FdbFlexpart(MakefilePackage):
 
     version('fdb', branch='fdb')
 
-    depends_on('eccodes jp2k=none +fortran')
+    depends_on('eccodes +fortran')
     depends_on('netcdf-fortran')
     depends_on('fdb-fortran')
 
