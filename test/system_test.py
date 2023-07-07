@@ -343,7 +343,7 @@ class FdbTest(unittest.TestCase):
 class FdbFlexpartTest(unittest.TestCase):
 
     def test_install(self):
-        spack_install_and_test('fdb-flexpart @fdb')
+        spack_install_and_test('fdb-flexpart')
 
 
 class FdbFortranTest(unittest.TestCase):
