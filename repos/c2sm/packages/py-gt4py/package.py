@@ -14,11 +14,10 @@ class PyGt4py(PythonPackage):
     homepage = "https://gridtools.github.io/gt4py/latest/index.html"
 
     url = "ssh://git@github.com/GridTools/gt4py.git"
-    url_c2sm = "ssh://git@github.com/C2SM/gt4py.git"
 
     version('main', branch='main', git=url)
     version('1.1.1', tag='icon4py_20230413', git=url)
-    version('1.1.2', tag='icon4py_20230706', git=url_c2sm)
+    version('1.1.2', tag='icon4py_20230621', git=url)
 
     maintainers = ['samkellerhals']
 
