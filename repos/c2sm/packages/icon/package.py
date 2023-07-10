@@ -408,7 +408,7 @@ class Icon(AutotoolsPackage, CudaPackage):
             config_vars['FCFLAGS'].extend(
                 ['-g', '-O', '-Mrecursive', '-Mallocatable=03', '-Mbackslash'])
 
-            if self.spec.variants['gpu'].value=='openacc+cuda':
+            if self.spec.variants['gpu'].value == 'openacc+cuda':
                 config_vars['FCFLAGS'].extend([
                     '-acc=verystrict', '-Minfo=accel,inline',
                     '-gpu=cc{0}'.format(
@@ -424,7 +424,7 @@ class Icon(AutotoolsPackage, CudaPackage):
                 '-hadd_paren', '-r am', '-Ktrap=divz,ovf,inv',
                 '-hflex_mp=intolerant', '-hfp0', '-O0'
             ])
-            if self.spec.variants['gpu'].value=='openacc+cuda':
+            if self.spec.variants['gpu'].value == 'openacc+cuda':
                 config_vars['FCFLAGS'].extend(['-hacc'])
         elif self.compiler.name == 'aocc':
             config_vars['CFLAGS'].extend(['-g', '-O2'])
@@ -530,7 +530,7 @@ class Icon(AutotoolsPackage, CudaPackage):
                 config_vars['CLAWFLAGS'].append(
                     self.spec['libcdi-pio'].headers.include_flags)
 
-        gpu=self.spec.variants['gpu'].value
+        gpu = self.spec.variants['gpu'].value
         if gpu == 'no':
             config_args.append('--disable-gpu')
         elif gpu == 'openacc+cuda':
