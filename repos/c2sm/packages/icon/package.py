@@ -534,7 +534,7 @@ class Icon(AutotoolsPackage, CudaPackage):
             config_args.append('--disable-gpu')
         elif gpu == 'openacc' and self.spec.variants['cuda'].value:
             config_args.extend([
-                '--enable-gpu=openacc+cuda','--disable-loop-exchange',
+                '--enable-gpu=openacc+cuda', '--disable-loop-exchange',
                 'NVCC={0}'.format(self.spec['cuda'].prefix.bin.nvcc)
             ])
 
@@ -557,8 +557,8 @@ class Icon(AutotoolsPackage, CudaPackage):
             config_vars['LIBS'].extend(cuda_host_compiler_stdcxx_libs)
         else:
             raise error.UnsupportedPlatformError(
-                   'only gpu=openacc with +cuda supported with spack for gpu build')
-            
+                'only gpu=openacc with +cuda supported with spack for gpu build'
+            )
 
         # Check for DSL variants and set corresponding Liskov options
         dsl = self.spec.variants['dsl'].value
