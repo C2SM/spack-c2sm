@@ -111,7 +111,7 @@ class Icon(AutotoolsPackage, CudaPackage):
     variant('openmp', default=False, description='Enable OpenMP support')
     variant('gpu',
             default='no',
-            values=('openacc+cuda', 'openacc', 'yes', 'no'),
+            values=('openacc', 'no'),
             description='Enable GPU support')
     variant('grib2', default=False, description='Enable GRIB2 I/O')
     variant('parallel-netcdf',
@@ -251,9 +251,7 @@ class Icon(AutotoolsPackage, CudaPackage):
     conflicts('+emvorado', when='~mpi')
     conflicts('+cuda', when='%gcc')
 
-    conflicts('~cuda', when='gpu=openacc+cuda')
     conflicts('~cuda', when='gpu=openacc')
-    conflicts('~cuda', when='gpu=yes')
     conflicts('+cuda', when='gpu=no')
 
     conflicts('+cuda-graphs', when='%cce')
@@ -408,13 +406,13 @@ class Icon(AutotoolsPackage, CudaPackage):
             config_vars['CFLAGS'].extend(['-g', '-O2'])
             config_vars['FCFLAGS'].extend(
                 ['-g', '-O', '-Mrecursive', '-Mallocatable=03', '-Mbackslash'])
-            if '+cuda' in self.spec:
+
+            if self.spec.variants['cuda'].value:
                 config_vars['FCFLAGS'].extend([
                     '-acc=verystrict', '-Minfo=accel,inline',
                     '-gpu=cc{0}'.format(
                         self.spec.variants['cuda_arch'].value[0])
                 ])
-                config_vars['ICON_FCFLAGS'].append('-D__SWAPDIM')
         elif self.compiler.name == 'cce':
             config_vars['CFLAGS'].append('-g')
             config_vars['ICON_CFLAGS'].append('-O3')
@@ -425,8 +423,8 @@ class Icon(AutotoolsPackage, CudaPackage):
                 '-hadd_paren', '-r am', '-Ktrap=divz,ovf,inv',
                 '-hflex_mp=intolerant', '-hfp0', '-O0'
             ])
-            if '+cuda' in self.spec:
-                config_vars['FCFLAGS'].extend(['-hnoacc'])
+            if self.spec.variants['cuda'].value:
+                config_vars['FCFLAGS'].extend(['-hacc'])
         elif self.compiler.name == 'aocc':
             config_vars['CFLAGS'].extend(['-g', '-O2'])
             config_vars['FCFLAGS'].extend(['-g', '-O2'])
@@ -531,11 +529,12 @@ class Icon(AutotoolsPackage, CudaPackage):
                 config_vars['CLAWFLAGS'].append(
                     self.spec['libcdi-pio'].headers.include_flags)
 
-        if '~cuda' in self.spec:
+        # Set GPU compilation.  Both gpu=openacc and +cuda are needed
+        if gpu == 'no':
             config_args.append('--disable-gpu')
-        else:
+        elif gpu == 'openacc' and self.spec.variants['cuda'].value:
             config_args.extend([
-                '--enable-gpu', '--disable-loop-exchange',
+                '--enable-gpu=openacc+cuda','--disable-loop-exchange',
                 'NVCC={0}'.format(self.spec['cuda'].prefix.bin.nvcc)
             ])
 
@@ -556,6 +555,10 @@ class Icon(AutotoolsPackage, CudaPackage):
             # flags (i.e. not the linker -l<library> flags), therefore we put
             # the value to the config_flags directly.
             config_vars['LIBS'].extend(cuda_host_compiler_stdcxx_libs)
+        else:
+            raise error.UnsupportedPlatformError(
+                   'only gpu=openacc with +cuda supported with spack for gpu build')
+            
 
         # Check for DSL variants and set corresponding Liskov options
         dsl = self.spec.variants['dsl'].value
