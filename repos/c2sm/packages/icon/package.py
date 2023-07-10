@@ -530,6 +530,7 @@ class Icon(AutotoolsPackage, CudaPackage):
                     self.spec['libcdi-pio'].headers.include_flags)
 
         # Set GPU compilation.  Both gpu=openacc and +cuda are needed
+        gpu=self.spec.variants['gpu'].value
         if gpu == 'no':
             config_args.append('--disable-gpu')
         elif gpu == 'openacc' and self.spec.variants['cuda'].value:
