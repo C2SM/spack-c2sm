@@ -556,10 +556,6 @@ class Icon(AutotoolsPackage, CudaPackage):
             # flags (i.e. not the linker -l<library> flags), therefore we put
             # the value to the config_flags directly.
             config_vars['LIBS'].extend(cuda_host_compiler_stdcxx_libs)
-        else:
-            raise error.UnsupportedPlatformError(
-                'only gpu=openacc with +cuda supported with spack for gpu build'
-            )
 
         # Check for DSL variants and set corresponding Liskov options
         dsl = self.spec.variants['dsl'].value
