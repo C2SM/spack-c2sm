@@ -30,7 +30,7 @@ class Icon(AutotoolsPackage, CudaPackage):
     """Icosahedral Nonhydrostatic Weather and Climate Model."""
 
     homepage = 'https://code.mpimet.mpg.de/projects/iconpublic'
-    url = 'https://gitlab.dkrz.de/icon/icon/-/archive/icon-2.6.5.1/icon-icon-2.6.5.1.tar.gz'
+    url = 'https://gitlab.dkrz.de/icon/icon/-/archive/icon-2.6.6/icon-icon-2.6.6.tar.gz'
     git = 'ssh://git@gitlab.dkrz.de/icon/icon.git'
 
     version('develop', submodules=True)
@@ -192,10 +192,6 @@ class Icon(AutotoolsPackage, CudaPackage):
         depends_on('py-icon4py', when='dsl={0}'.format(x))
         depends_on('py-gridtools-cpp', when='dsl={0}'.format(x))
         conflicts('^python@:3.9,3.11:', when='dsl={0}'.format(x))
-
-    depends_on('autoconf', type='build', when='@2.6.6')
-    depends_on('automake', type='build', when='@2.6.6')
-    depends_on('libtool', type='build', when='@2.6.6')
 
     depends_on('infero +quiet', when='+infero')
 
