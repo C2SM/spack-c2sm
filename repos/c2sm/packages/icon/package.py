@@ -533,7 +533,7 @@ class Icon(AutotoolsPackage, CudaPackage):
         gpu = self.spec.variants['gpu'].value
         if gpu == 'no':
             config_args.append('--disable-gpu')
-        elif gpu == 'openacc+cuda':
+        else:
             config_args.extend([
                 '--enable-gpu={0}'.format(gpu), '--disable-loop-exchange',
                 'NVCC={0}'.format(self.spec['cuda'].prefix.bin.nvcc)
