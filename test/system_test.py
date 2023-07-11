@@ -95,7 +95,7 @@ def spack_install_and_test(spec: str,
         log_with_spack(f'spack {command} --test=root -n -v {spec}',
                        'system_test',
                        log_filename,
-                       srun=True)
+                       srun=not spec.startswith('icon '))
 
 
 def spack_devbuild_and_test(spec: str,
@@ -370,6 +370,13 @@ class GridToolsTest(unittest.TestCase):
 
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 class IconTest(unittest.TestCase):
+
+    def test_install_2_6_6_gcc(self):
+        spack_install_and_test('icon @2.6.6 %gcc')
+
+    @pytest.mark.no_daint
+    def test_install_2_6_6_nvhpc(self):
+        spack_install_and_test('icon @2.6.6 %nvhpc')
 
     @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
     def test_install_nwp_gpu(self):
