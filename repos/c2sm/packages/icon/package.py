@@ -308,7 +308,7 @@ class Icon(AutotoolsPackage, CudaPackage):
                 'async-io-rma',
                 'mpi-gpu',
                 'openmp',
-                'realloc-com-buffer'
+                'realloc-com-buffer',
                 'grib2',
                 'parallel-netcdf',
                 'sct',
