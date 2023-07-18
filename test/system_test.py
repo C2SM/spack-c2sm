@@ -587,12 +587,7 @@ class PyGridtoolsCppTest(unittest.TestCase):
 
 @pytest.mark.no_tsa  # Irrelevant
 class PyGt4pyTest(unittest.TestCase):
-
-    def test_install_version_1_1_1(self):
-        spack_install_and_test('py-gt4py @1.1.1')
-
-    def test_install_version_1_1_2(self):
-        spack_install_and_test('py-gt4py @1.1.2')
+    pass
 
 
 class PyHatchlingTest(unittest.TestCase):
@@ -603,17 +598,7 @@ class PyHatchlingTest(unittest.TestCase):
 
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 class PyIcon4pyTest(unittest.TestCase):
-
-    def test_install_0_0_4(self):
-        spack_install_and_test('py-icon4py @0.0.4')
-
-    def test_install_version_0_0_3(self):
-        spack_install_and_test(
-            'py-icon4py @ 0.0.3 %gcc ^py-gt4py@1.1.1 ^python@3.10.4')
-
-    def test_install_version_0_0_4(self):
-        spack_install_and_test(
-            'py-icon4py @ 0.0.4 %gcc ^py-gt4py@1.1.1 ^python@3.10.4')
+    pass
 
 
 class PyInflectionTest(unittest.TestCase):

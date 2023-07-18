@@ -45,12 +45,6 @@ class InfoTest(unittest.TestCase):
     def test_claw(self):
         spack_info('claw')
 
-    def test_cosmo(self):
-        spack_info('cosmo')
-
-    def test_cosmo_dycore(self):
-        spack_info('cosmo-dycore')
-
     def test_cosmo_eccodes_definitions(self):
         spack_info('cosmo-eccodes-definitions')
 
@@ -156,14 +150,8 @@ class InfoTest(unittest.TestCase):
     def test_py_gridtools_cpp(self):
         spack_info('py-gridtools-cpp')
 
-    def test_py_gt4py(self):
-        spack_info('py-gt4py')
-
     def test_py_hatchling(self):
         spack_info('py-hatchling')
-
-    def test_py_icon4py(self):
-        spack_info('py-icon4py')
 
     def test_py_inflection(self):
         spack_info('py-inflection')
@@ -222,16 +210,6 @@ class SpecTest(unittest.TestCase):
 
     def test_claw(self):
         spack_spec('claw')
-
-    def test_cosmo(self):
-        spack_spec('cosmo')
-        spack_spec('cosmo cosmo_target=gpu ~cppdycore')
-        spack_spec('cosmo cosmo_target=gpu +serialize +claw +zlib_ng +oasis')
-
-    def test_cosmo_dycore(self):
-        spack_spec('cosmo-dycore')
-        spack_spec('cosmo-dycore ~cuda +gt1')
-        spack_spec('cosmo-dycore +cuda +gt1 +build_tests')
 
     def test_cosmo_eccodes_definitions(self):
         spack_spec('cosmo-eccodes-definitions')
@@ -342,14 +320,8 @@ class SpecTest(unittest.TestCase):
     def test_py_gridtools_cpp(self):
         spack_spec('py-gridtools-cpp')
 
-    def test_py_gt4py(self):
-        spack_spec('py-gt4py')
-
     def test_py_hatchling(self):
         spack_spec('py-hatchling')
-
-    def test_py_icon4py(self):
-        spack_spec('py-icon4py')
 
     def test_py_inflection(self):
         spack_spec('py-inflection')
