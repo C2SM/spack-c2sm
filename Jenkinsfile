@@ -46,7 +46,7 @@ pipeline {
                             sh """
                             source env/bin/activate
                             . ./setup-env.sh
-                            spack spec spack
+                            spack spec gnuconfig
                             """
                         }
                     }
