@@ -7,10 +7,10 @@ class CosmoDycore(CMakePackage):
 
     homepage = "https://github.com/COSMO-ORG/cosmo/tree/master/dycore"
     url = "https://github.com/COSMO-ORG/cosmo/archive/6.0.tar.gz"
-    git = "ssh://git@github.com/COSMO-ORG/cosmo.git"
-    apngit = "ssh://git@github.com/MeteoSwiss-APN/cosmo.git"
-    c2smgit = "ssh://git@github.com/C2SM-RCM/cosmo.git"
-    empagit = 'ssh://git@github.com/C2SM-RCM/cosmo-ghg.git'
+    git = "git@github.com:COSMO-ORG/cosmo.git"
+    apngit = "git@github.com:MeteoSwiss-APN/cosmo.git"
+    c2smgit = "git@github.com:C2SM-RCM/cosmo.git"
+    empagit = 'git@github.com:C2SM-RCM/cosmo-ghg.git'
 
     maintainers = ['elsagermann']
 

@@ -10,7 +10,7 @@ class Rttov(Package):
     radiometers, spectrometers and interferometers."""
 
     homepage = 'https://nwp-saf.eumetsat.int/site/software/rttov/'
-    git = 'ssh://git@github.com/C2SM/rttov.git'
+    git = 'git@github.com:C2SM/rttov.git'
 
     version('13.1', tag='v13.1', git=git)
 

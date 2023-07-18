@@ -13,7 +13,7 @@ class FlexpartIfs(MakefilePackage):
 
     homepage = 'https://github.com/MeteoSwiss-APN/flexpart-ifs'
     url = 'https://github.com/MeteoSwiss-APN/flexpart-ifs/archive/refs/tags/v9.2mch.tar.gz'
-    git = 'ssh://git@github.com/MeteoSwiss-APN/flexpart-ifs.git'
+    git = 'git@github.com:MeteoSwiss-APN/flexpart-ifs.git'
 
     version('meteoswiss-10', branch='meteoswiss-10')
 

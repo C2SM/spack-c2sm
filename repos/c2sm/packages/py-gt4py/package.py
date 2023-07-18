@@ -13,7 +13,7 @@ class PyGt4py(PythonPackage):
 
     homepage = "https://gridtools.github.io/gt4py/latest/index.html"
 
-    url = "ssh://git@github.com/GridTools/gt4py.git"
+    url = "git@github.com:GridTools/gt4py.git"
 
     version('main', branch='main', git=url)
     version('1.1.1', tag='icon4py_20230413', git=url)

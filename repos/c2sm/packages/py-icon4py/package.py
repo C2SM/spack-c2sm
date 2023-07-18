@@ -13,7 +13,7 @@ class PyIcon4py(PythonPackage):
     components for weather and climate models."""
 
     url = "git@github.com:C2SM/icon4py.git"
-    git = 'ssh://git@github.com/C2SM/icon4py.git'
+    git = 'git@github.com:C2SM/icon4py.git'
 
     homepage = "https://github.com/C2SM/icon4py"
 

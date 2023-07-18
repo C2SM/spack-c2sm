@@ -12,10 +12,10 @@ class Cosmo(MakefilePackage):
 
     homepage = "http://www.cosmo-model.org"
     url = "https://github.com/COSMO-ORG/cosmo/archive/6.0.tar.gz"
-    git = 'ssh://git@github.com/COSMO-ORG/cosmo.git'
-    apn_git = 'ssh://git@github.com/MeteoSwiss-APN/cosmo.git'
-    c2sm_git = 'ssh://git@github.com/C2SM-RCM/cosmo.git'
-    empa_git = 'ssh://git@github.com/C2SM-RCM/cosmo-ghg.git'
+    git = 'git@github.com:COSMO-ORG/cosmo.git'
+    apn_git = 'git@github.com:MeteoSwiss-APN/cosmo.git'
+    c2sm_git = 'git@github.com:C2SM-RCM/cosmo.git'
+    empa_git = 'git@github.com:C2SM-RCM/cosmo-ghg.git'
     maintainers = ['elsagermann']
 
     version('org-master', branch='master')
