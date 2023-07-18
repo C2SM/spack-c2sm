@@ -113,6 +113,9 @@ class Icon(AutotoolsPackage, CudaPackage):
             default='no',
             values=('openacc+cuda', 'no'),
             description='Enable GPU support')
+    variant('realloc-buf',
+            default=False,
+            description='Enable reallocatable communication buffer')
     variant('grib2', default=False, description='Enable GRIB2 I/O')
     variant('parallel-netcdf',
             default=False,
@@ -305,6 +308,7 @@ class Icon(AutotoolsPackage, CudaPackage):
                 'async-io-rma',
                 'mpi-gpu',
                 'openmp',
+                'realloc-buf',
                 'grib2',
                 'parallel-netcdf',
                 'sct',
