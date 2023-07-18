@@ -31,7 +31,7 @@ class Icon(AutotoolsPackage, CudaPackage):
 
     homepage = 'https://code.mpimet.mpg.de/projects/iconpublic'
     url = 'https://gitlab.dkrz.de/icon/icon/-/archive/icon-2.6.6/icon-icon-2.6.6.tar.gz'
-    git = 'git@gitlab.dkrz.de/icon/icon.git'
+    git = 'git@gitlab.dkrz.de:icon/icon.git'
 
     version('develop', submodules=True)
     version('2.6.6', tag='icon-2.6.6', submodules=True)
@@ -44,7 +44,7 @@ class Icon(AutotoolsPackage, CudaPackage):
             git='git@github.com:C2SM/icon-exclaim.git',
             submodules=True)
     version('nwp-master',
-            git='git@gitlab.dkrz.de/icon/icon-nwp.git',
+            git='git@gitlab.dkrz.de:icon/icon-nwp.git',
             submodules=True)
 
     # The variants' default follow those of ICON
