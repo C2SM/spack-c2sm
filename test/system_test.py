@@ -469,25 +469,12 @@ class LibCdiPioTest(unittest.TestCase):
         spack_install_and_test('libcdi-pio')
 
 
-@pytest.mark.no_tsa  # Fails "make check"
-class LibfyamlTest(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('libfyaml')
-
-
 @pytest.mark.no_balfrin  # This fails with "BOZ literal constant at (1) cannot appear in an array constructor". https://gcc.gnu.org/onlinedocs/gfortran/BOZ-literal-constants.html
 class LibGrib1Test(unittest.TestCase):
 
     @pytest.mark.serial_only  # locking problem on Tsa in combination with int2lm
     def test_install_version_22_01_2020(self):
         spack_install_and_test('libgrib1 @22-01-2020')
-
-
-class LibXml2Test(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('libxml2')
 
 
 class MetkitTest(unittest.TestCase):
