@@ -62,7 +62,8 @@ class PyIcon4py(PythonPackage):
             build_dirs = [
                 'common', 'pyutils', 'testutils', 'liskov', 'atm_dyn_iconam'
             ]
-        elif self.spec.version == ver('0.0.4') or self.spec.version == ver('0.0.5'):
+        elif self.spec.version == ver('0.0.4') or self.spec.version == ver(
+                '0.0.5'):
             build_dirs = ['common', 'atm_dyn_iconam', 'tools']
         else:
             build_dirs = ['tools', 'model/atmosphere/dycore', 'model/common/']
