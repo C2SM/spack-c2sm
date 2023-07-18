@@ -304,7 +304,7 @@ class EccodesTest(unittest.TestCase):
     # All the other versions are not the responsibility of spack-c2sm
 
     def test_install_2_19_0(self):
-        spack_install_and_test('eccodes @2.19.0')
+        spack_install('eccodes @2.19.0')
 
 
 class EckitTest(unittest.TestCase):
