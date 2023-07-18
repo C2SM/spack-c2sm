@@ -778,7 +778,6 @@ class Icon(AutotoolsPackage, CudaPackage):
         # use configure provided by Spack
         super().configure(spec, prefix)
 
-
     def build_uses_same_spec(self):
         """
         Ensure that configure is rerun in case spec has changed,
