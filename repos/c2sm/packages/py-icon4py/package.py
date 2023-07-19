@@ -22,6 +22,8 @@ class PyIcon4py(PythonPackage):
     version('main', branch='main', git=git)
     version('0.0.3', tag='v0.0.3', git=git)
     version('0.0.4', tag='v0.0.4', git=git)
+    version('0.0.5', tag='v0.0.5', git=git)
+    version('0.0.6', tag='v0.0.6', git=git)
 
     depends_on('py-wheel', type='build')
     depends_on('py-setuptools', type='build')
@@ -60,8 +62,11 @@ class PyIcon4py(PythonPackage):
             build_dirs = [
                 'common', 'pyutils', 'testutils', 'liskov', 'atm_dyn_iconam'
             ]
-        else:
+        elif self.spec.version == ver('0.0.4') or self.spec.version == ver(
+                '0.0.5'):
             build_dirs = ['common', 'atm_dyn_iconam', 'tools']
+        else:
+            build_dirs = ['tools', 'model/atmosphere/dycore', 'model/common/']
 
         for dir in build_dirs:
             with working_dir(os.path.join(self.stage.source_path, dir)):
