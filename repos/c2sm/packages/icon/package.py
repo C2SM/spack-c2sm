@@ -742,8 +742,8 @@ class Icon(AutotoolsPackage, CudaPackage):
             )
             return
 
-        # use configure provided by Spack
-        AutotoolsPackage.configure(self, spec, prefix)
+        # Call configure of Autotools
+        super().configure(spec, prefix)
 
     def build_uses_same_spec(self):
         """
