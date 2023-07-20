@@ -30,11 +30,11 @@ class Icon(AutotoolsPackage, CudaPackage):
     """Icosahedral Nonhydrostatic Weather and Climate Model."""
 
     homepage = 'https://code.mpimet.mpg.de/projects/iconpublic'
-    url = 'https://gitlab.dkrz.de/icon/icon/-/archive/icon-2.6.5.1/icon-icon-2.6.5.1.tar.gz'
+    url = 'https://gitlab.dkrz.de/icon/icon/-/archive/icon-2.6.6/icon-icon-2.6.6.tar.gz'
     git = 'ssh://git@gitlab.dkrz.de/icon/icon.git'
 
     version('develop', submodules=True)
-    version('2.6.5.1', tag='icon-2.6.5.1', submodules=True)
+    version('2.6.6', tag='icon-2.6.6', submodules=True)
     version('exclaim-master',
             branch='master',
             git='ssh://git@github.com/C2SM/icon-exclaim.git',
@@ -49,7 +49,7 @@ class Icon(AutotoolsPackage, CudaPackage):
 
     # The variants' default follow those of ICON
     # as described here
-    # https://gitlab.dkrz.de/icon/icon/-/blob/icon-2.6.5.1/configure#L1454-1557
+    # https://gitlab.dkrz.de/icon/icon/-/blob/icon-2.6.6/configure#L1457-1563
 
     # Model Features:
     variant('atmo',
@@ -57,25 +57,25 @@ class Icon(AutotoolsPackage, CudaPackage):
             description='Enable the atmosphere component')
     variant('edmf',
             default=True,
-            description='Enable the EDMF turbulence component')  #
+            description='Enable the EDMF turbulence component')
     variant('les',
             default=True,
-            description='Enable the Large-Eddy Simulation component')  #
+            description='Enable the Large-Eddy Simulation component')
     variant('upatmo',
             default=True,
-            description='Enable the upper atmosphere component')  #
+            description='Enable the upper atmosphere component')
     variant('ocean', default=True, description='Enable the ocean component')
     variant('jsbach', default=True, description='Enable the land component')
     variant('waves',
             default=False,
-            description='Enable the surface wave component')  #
+            description='Enable the surface wave component')
     variant('coupling', default=True, description='Enable the coupling')
     variant('aes', default=True, description='Enable the AES physics package')
     variant('ecrad',
             default=False,
             description='Enable usage of the ECMWF radiation scheme')
     variant('rte-rrtmgp',
-            default=False,
+            default=True,
             description='Enable usage of the RTE+RRTMGP toolbox '
             'for radiation calculations')
     variant(
@@ -105,8 +105,18 @@ class Icon(AutotoolsPackage, CudaPackage):
     variant('async-io-rma',
             default=True,
             description='Enable remote memory access (RMA) for async I/O')
+    variant('mpi-gpu',
+            default=False,
+            description='Enable usage of the GPU-aware MPI features')
     variant('openmp', default=False, description='Enable OpenMP support')
-    variant('grib2', default=True, description='Enable GRIB2 I/O')
+    variant('gpu',
+            default='no',
+            values=('openacc+cuda', 'no'),
+            description='Enable GPU support')
+    variant('realloc-buf',
+            default=False,
+            description='Enable reallocatable communication buffer')
+    variant('grib2', default=False, description='Enable GRIB2 I/O')
     variant('parallel-netcdf',
             default=False,
             description='Enable usage of the parallel features of NetCDF')
@@ -127,6 +137,9 @@ class Icon(AutotoolsPackage, CudaPackage):
             default='none',
             values=('none', ) + serialization_values,
             description='Enable the Serialbox2 serialization')
+    variant('testbed',
+            default=False,
+            description='Enable ICON Testbed infrastructure')
 
     # Optimization Features:
     variant('loop-exchange', default=True, description='Enable loop exchange')
@@ -227,6 +240,7 @@ class Icon(AutotoolsPackage, CudaPackage):
 
     depends_on('python', type='build')
     depends_on('perl', type='build')
+    depends_on('cmake@3.18:', type='build')
 
     for x in claw_values:
         depends_on('claw', type='build', when='claw={0}'.format(x))
@@ -239,6 +253,10 @@ class Icon(AutotoolsPackage, CudaPackage):
     conflicts('+dace', when='~mpi')
     conflicts('+emvorado', when='~mpi')
     conflicts('+cuda', when='%gcc')
+
+    # The gpu=openacc+cuda relies on the cuda variant
+    conflicts('~cuda', when='gpu=openacc+cuda')
+    conflicts('+cuda', when='gpu=no')
 
     conflicts('+cuda-graphs', when='%cce')
     conflicts('+cuda-graphs', when='%gcc')
@@ -264,60 +282,6 @@ class Icon(AutotoolsPackage, CudaPackage):
             env.unset("CUDAHOSTCXX")
             env.set("BOOST_ROOT", self.spec['boost'].prefix)
 
-    @run_before('configure')
-    def downgrade_opt_level(self):
-        # We try to prevent compiler crashes by reducing the optimization level
-        # for certain files in certain configurations. This method extends the
-        # makefile (i.e. icon.mk.in) with file-specific compilation rules that
-        # call the compiler with the default flags plus the provided extra
-        # flags. The extra flags must not affect the dependencies (e.g. define
-        # additional macros).
-        file_flags = []
-
-        if self.compiler.name == 'intel':
-            if self.spec.satisfies('%intel@17:17.0.2+ocean+openmp'):
-                file_flags.append(
-                    ('src/hamocc/common/mo_sedmnt_diffusion.f90',
-                     '$(ICON_OCEAN_FCFLAGS) $(make_FCFLAGS) -O1'))
-        elif self.compiler.name in ['pgi', 'nvhpc']:
-            if '+emvorado' in self.spec:
-                file_flags.append(
-                    ('src/data_assimilation/interfaces/radar_interface.f90',
-                     '$(ICON_FCFLAGS) $(make_FCFLAGS) -O1'))
-        elif self.compiler.name == 'cce':
-            if self.compiler.version == ver('12.0.2'):
-                file_flags.append(
-                    ('src/parallel_infrastructure/mo_setup_subdivision.f90',
-                     '$(ICON_FCFLAGS) $(make_FCFLAGS) -O0'))
-            elif self.compiler.version == ver('13.0.0'):
-                file_flags.append(
-                    ('src/parallel_infrastructure/mo_extents.f90',
-                     '$(ICON_FCFLAGS) $(make_FCFLAGS) -O0'))
-            if '+jsbach' in self.spec:
-                file_flags.append(
-                    ('externals/jsbach/src/base/mo_jsb_process_factory.f90',
-                     '$(ICON_FCFLAGS) $(make_FCFLAGS) -O0'))
-
-        if not file_flags:
-            return
-
-        recipe_prefix = '$(silent_FC)$(FC) -o $@ -c $(FCFLAGS)'
-        recipe_suffix = '@FCFLAGS_f90@ $<'
-
-        rules = []
-        for file, flags in file_flags:
-            recipe = '{0} {1} {2}'.format(recipe_prefix, flags, recipe_suffix)
-            target = '{0}.@OBJEXT@'.format(os.path.splitext(file)[0])
-            rules.extend([
-                # Rule for the original file:
-                '{0}: {1}; {2}'.format(target, file, recipe),
-                # Rule for the preprocessed file:
-                '%{0}: %{1}; {2}'.format(target, file, recipe)
-            ])
-
-        with open(join_path(self.stage.source_path, 'icon.mk.in'), 'a') as f:
-            f.writelines(['\n', '\n'.join(rules)])
-
     def configure_args(self):
         config_args = ['--disable-rpaths']
         config_vars = defaultdict(list)
@@ -342,11 +306,14 @@ class Icon(AutotoolsPackage, CudaPackage):
                 'mpi',
                 'active-target-sync',
                 'async-io-rma',
+                'mpi-gpu',
                 'openmp',
+                'realloc-buf',
                 'grib2',
                 'parallel-netcdf',
                 'sct',
                 'yaxt',
+                'testbed',
                 'loop-exchange',
                 'vectorized-lrtm',
                 'mixed-precision',
@@ -444,13 +411,13 @@ class Icon(AutotoolsPackage, CudaPackage):
             config_vars['CFLAGS'].extend(['-g', '-O2'])
             config_vars['FCFLAGS'].extend(
                 ['-g', '-O', '-Mrecursive', '-Mallocatable=03', '-Mbackslash'])
-            if '+cuda' in self.spec:
+
+            if self.spec.variants['gpu'].value == 'openacc+cuda':
                 config_vars['FCFLAGS'].extend([
                     '-acc=verystrict', '-Minfo=accel,inline',
                     '-gpu=cc{0}'.format(
                         self.spec.variants['cuda_arch'].value[0])
                 ])
-                config_vars['ICON_FCFLAGS'].append('-D__SWAPDIM')
         elif self.compiler.name == 'cce':
             config_vars['CFLAGS'].append('-g')
             config_vars['ICON_CFLAGS'].append('-O3')
@@ -461,8 +428,8 @@ class Icon(AutotoolsPackage, CudaPackage):
                 '-hadd_paren', '-r am', '-Ktrap=divz,ovf,inv',
                 '-hflex_mp=intolerant', '-hfp0', '-O0'
             ])
-            if '+cuda' in self.spec:
-                config_vars['FCFLAGS'].extend(['-hnoacc'])
+            if self.spec.variants['gpu'].value == 'openacc+cuda':
+                config_vars['FCFLAGS'].extend(['-hacc'])
         elif self.compiler.name == 'aocc':
             config_vars['CFLAGS'].extend(['-g', '-O2'])
             config_vars['FCFLAGS'].extend(['-g', '-O2'])
@@ -490,6 +457,7 @@ class Icon(AutotoolsPackage, CudaPackage):
                 ]
                 config_vars['CPPFLAGS'].append(xml2_headers.include_flags)
 
+        if '+coupling' in self.spec:
             libs += self.spec['libfyaml'].libs
 
         serialization = self.spec.variants['serialization'].value
@@ -567,11 +535,12 @@ class Icon(AutotoolsPackage, CudaPackage):
                 config_vars['CLAWFLAGS'].append(
                     self.spec['libcdi-pio'].headers.include_flags)
 
-        if '~cuda' in self.spec:
+        gpu = self.spec.variants['gpu'].value
+        if gpu == 'no':
             config_args.append('--disable-gpu')
         else:
             config_args.extend([
-                '--enable-gpu', '--disable-loop-exchange',
+                '--enable-gpu={0}'.format(gpu), '--disable-loop-exchange',
                 'NVCC={0}'.format(self.spec['cuda'].prefix.bin.nvcc)
             ])
 

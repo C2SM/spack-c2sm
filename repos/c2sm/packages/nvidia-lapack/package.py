@@ -12,6 +12,7 @@ class NvidiaLapack(Package):
     from building blas/lapack from i.e. netlib-lapack instead
     """
 
+    homepage = ""
     maintainers = ['juckerj']
 
     has_code = False  # Skip attempts to fetch source that is not available
