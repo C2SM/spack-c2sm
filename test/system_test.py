@@ -413,6 +413,7 @@ class IconTest(unittest.TestCase):
         spack_env_dev_install_and_test(
             'config/cscs/spack/v0.18.1.7/daint_cpu_cce', 'cce')
 
+
 class IconHamTest(unittest.TestCase):
     pass
 
