@@ -62,6 +62,10 @@ class PyIcon4py(PythonPackage):
             ver('0.0.6'): {
                 'atm_dyn_iconam': 'dycore',
                 'tools': 'icon4pytools'
+            },
+            ver('main'): {
+                'atm_dyn_iconam': 'dycore',
+                'tools': 'icon4pytools'
             }
         }
 
