@@ -42,31 +42,39 @@ class PyIcon4py(PythonPackage):
 
     @property
     def headers(self):
-        '''Workaround to hide the details of the installation path, 
+        '''Workaround to hide the details of the installation path,
         i.e "lib/python3.10/site-packages/icon4py/atm_dyn_iconam"
         from upstream packages. It needs to be part of the "Spec" object,
         therefore choose the headers-function
         '''
-
         query_parameters = self.spec.last_query.extra_parameters
+        version = self.spec.version
+
+        folder_mapping = {
+            ver('0.0.4'): {'atm_dyn_iconam': 'atm_dyn_iconam', 'tools': 'icon4pytools'},
+            ver('0.0.5'): {'atm_dyn_iconam': 'atm_dyn_iconam', 'tools': 'icon4pytools'},
+            ver('0.0.6'): {'atm_dyn_iconam': 'dycore', 'tools': 'icon4pytools'}
+        }
 
         if len(query_parameters) > 1:
             raise ValueError('Only one query parameter allowed')
 
-        if (self.spec.version == ver('0.0.3') and len(query_parameters) == 1):
-            msg = 'Not implemented for version {0}'.format(self.spec.version)
+        if version == ver('0.0.3') and len(query_parameters) == 1:
+            msg = 'Not implemented for version {0}'.format(version)
             raise spack.error.NoHeadersError(msg)
 
-        if 'atm_dyn_iconam' in query_parameters:
-            header = self._find_folder_and_add_dummy_header(
-                self.prefix, 'atm_dyn_iconam')
-        elif 'tools' in query_parameters:
-            header = self._find_folder_and_add_dummy_header(
-                self.prefix, 'icon4pytools')
-        else:
-            header = HeaderList([])
+        folder_name = folder_mapping.get(version, {})
 
-        return header
+        if not folder_name:
+            return HeaderList([])
+
+        for param, folder in folder_name.items():
+            if param in query_parameters:
+                return self._find_folder_and_add_dummy_header(self.prefix, folder)
+
+        return HeaderList([])
+
+        
 
     def _find_folder_and_add_dummy_header(self, prefix, name):
         folder = find(prefix, name)
