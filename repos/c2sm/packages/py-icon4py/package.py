@@ -51,9 +51,18 @@ class PyIcon4py(PythonPackage):
         version = self.spec.version
 
         folder_mapping = {
-            ver('0.0.4'): {'atm_dyn_iconam': 'atm_dyn_iconam', 'tools': 'icon4pytools'},
-            ver('0.0.5'): {'atm_dyn_iconam': 'atm_dyn_iconam', 'tools': 'icon4pytools'},
-            ver('0.0.6'): {'atm_dyn_iconam': 'dycore', 'tools': 'icon4pytools'}
+            ver('0.0.4'): {
+                'atm_dyn_iconam': 'atm_dyn_iconam',
+                'tools': 'icon4pytools'
+            },
+            ver('0.0.5'): {
+                'atm_dyn_iconam': 'atm_dyn_iconam',
+                'tools': 'icon4pytools'
+            },
+            ver('0.0.6'): {
+                'atm_dyn_iconam': 'dycore',
+                'tools': 'icon4pytools'
+            }
         }
 
         if len(query_parameters) > 1:
@@ -70,11 +79,10 @@ class PyIcon4py(PythonPackage):
 
         for param, folder in folder_name.items():
             if param in query_parameters:
-                return self._find_folder_and_add_dummy_header(self.prefix, folder)
+                return self._find_folder_and_add_dummy_header(
+                    self.prefix, folder)
 
         return HeaderList([])
-
-        
 
     def _find_folder_and_add_dummy_header(self, prefix, name):
         folder = find(prefix, name)
