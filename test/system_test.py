@@ -182,10 +182,7 @@ def spack_env_dev_install_and_test(spack_env: str,
         unique_folder = build_dir
         log_filename = f'{log_filename}_out_of_source'
 
-    subprocess.run(
-        f'spack find',
-        check=True,
-        shell=True)
+    subprocess.run(f'spack find', check=True, shell=True)
     # limit number of build-jobs to 4 because no srun used
     log_with_spack('spack install -j 4 --until build -n -v',
                    'system_test',
