@@ -413,7 +413,7 @@ class IconTest(unittest.TestCase):
         spack_env_dev_install_and_test(
             'config/cscs/spack/v0.18.1.7/daint_cpu_cce', 'cce')
 
-    @pytest.mark.serial_only # needs more memory to build
+    @pytest.mark.serial_only  # needs more memory to build
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_exclaim_test_gpu_dsl(self):
         spack_env_dev_install_and_test(
