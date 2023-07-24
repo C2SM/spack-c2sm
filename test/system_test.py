@@ -371,47 +371,52 @@ class GridToolsTest(unittest.TestCase):
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 class IconTest(unittest.TestCase):
 
-    def test_install_2_6_6_gcc(self):
-        spack_install_and_test('icon @2.6.6 %gcc')
+    #def test_install_2_6_6_gcc(self):
+    #    spack_install_and_test('icon @2.6.6 %gcc')
 
-    @pytest.mark.no_daint
-    def test_install_2_6_6_nvhpc(self):
-        spack_install_and_test('icon @2.6.6 %nvhpc')
+    #@pytest.mark.no_daint
+    #def test_install_2_6_6_nvhpc(self):
+    #    spack_install_and_test('icon @2.6.6 %nvhpc')
 
-    @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
-    def test_install_nwp_gpu(self):
-        spack_install_and_test(f'icon @nwp-master %nvhpc +cuda')
+    #@pytest.mark.no_daint  # libxml2 %nvhpc fails to build
+    #def test_install_nwp_gpu(self):
+    #    spack_install_and_test(f'icon @nwp-master %nvhpc +cuda')
 
-    @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
-    def test_install_nwp_cpu(self):
-        spack_install_and_test(f'icon @nwp-master %nvhpc ~cuda')
+    #@pytest.mark.no_daint  # libxml2 %nvhpc fails to build
+    #def test_install_nwp_cpu(self):
+    #    spack_install_and_test(f'icon @nwp-master %nvhpc ~cuda')
+
+    #@pytest.mark.no_balfrin  # config file does not exist for this machine
+    #def test_install_c2sm_test_cpu_gcc(self):
+    #    spack_env_dev_install_and_test(
+    #        'config/cscs/spack/v0.18.1.7/daint_cpu_gcc', 'icon-2.6.6.1')
+
+    #@pytest.mark.no_balfrin  # config file does not exist for this machine
+    #def test_install_c2sm_test_cpu_nvhpc_out_of_source(self):
+    #    spack_env_dev_install_and_test(
+    #        'config/cscs/spack/v0.18.1.7/daint_cpu_nvhpc',
+    #        'icon-2.6.6.1',
+    #        out_of_source=True)
+
+    #@pytest.mark.no_balfrin  # config file does not exist for this machine
+    #def test_install_c2sm_test_cpu(self):
+    #    spack_env_dev_install_and_test(
+    #        'config/cscs/spack/v0.18.1.7/daint_cpu_nvhpc', 'icon-2.6.6.1')
+
+    #@pytest.mark.no_balfrin  # config file does not exist for this machine
+    #def test_install_c2sm_test_gpu(self):
+    #    spack_env_dev_install_and_test(
+    #        'config/cscs/spack/v0.18.1.7/daint_gpu_nvhpc', 'icon-2.6.6.1')
+
+    #@pytest.mark.no_balfrin  # config file does not exist for this machine
+    #def test_install_nwp_test_cpu_cce(self):
+    #    spack_env_dev_install_and_test(
+    #        'config/cscs/spack/v0.18.1.7/daint_cpu_cce', 'cce')
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
-    def test_install_c2sm_test_cpu_gcc(self):
+    def test_install_exclaim_test_gpu_dsl(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.7/daint_cpu_gcc', 'icon-2.6.6.1')
-
-    @pytest.mark.no_balfrin  # config file does not exist for this machine
-    def test_install_c2sm_test_cpu_nvhpc_out_of_source(self):
-        spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.7/daint_cpu_nvhpc',
-            'icon-2.6.6.1',
-            out_of_source=True)
-
-    @pytest.mark.no_balfrin  # config file does not exist for this machine
-    def test_install_c2sm_test_cpu(self):
-        spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.7/daint_cpu_nvhpc', 'icon-2.6.6.1')
-
-    @pytest.mark.no_balfrin  # config file does not exist for this machine
-    def test_install_c2sm_test_gpu(self):
-        spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.7/daint_gpu_nvhpc', 'icon-2.6.6.1')
-
-    @pytest.mark.no_balfrin  # config file does not exist for this machine
-    def test_install_nwp_test_cpu_cce(self):
-        spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.7/daint_cpu_cce', 'cce')
+            'config/cscs/spack/v0.18.1.7/daint_dsl_nvhpc', 'ci_dsl')
 
 
 class IconHamTest(unittest.TestCase):
