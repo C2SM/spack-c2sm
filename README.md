@@ -7,13 +7,17 @@ Spack is the package manager used by C2SM and MeteoSwiss to install and deploy s
 
 **Infos about c2sm-supported software and machines**
   * [spack-c2sm latest](https://C2SM.github.io/spack-c2sm/latest)
-  * [spack-c2sm v0.18.1.7](https://C2SM.github.io/spack-c2sm/v0.18.1.6)
+  * [spack-c2sm v0.18.1.10](https://C2SM.github.io/spack-c2sm/v0.18.1.10)
+  * [spack-c2sm v0.18.1.9](https://C2SM.github.io/spack-c2sm/v0.18.1.9)
+  * [spack-c2sm v0.18.1.8](https://C2SM.github.io/spack-c2sm/v0.18.1.8)
+  * [spack-c2sm v0.18.1.7](https://C2SM.github.io/spack-c2sm/v0.18.1.7)
   * [spack-c2sm v0.18.1.6](https://C2SM.github.io/spack-c2sm/v0.18.1.6)
   * [spack-c2sm v0.18.1.5](https://C2SM.github.io/spack-c2sm/v0.18.1.5)
   * [spack-c2sm v0.18.1.4](https://C2SM.github.io/spack-c2sm/v0.18.1.4)
-  * [spack-c2sm v0.18.1.3](https://C2SM.github.io/spack-c2sm/v0.18.1.3)
-  * [spack-c2sm v0.18.1.2](https://C2SM.github.io/spack-c2sm/v0.18.1.2)
-  * [spack-c2sm v0.18.1.1](https://C2SM.github.io/spack-c2sm/v0.18.1.1)
+
+  * [spack-c2sm v0.18.1.3](https://C2SM.github.io/spack-c2sm/v0.18.1.3) [deprecated]
+  * [spack-c2sm v0.18.1.2](https://C2SM.github.io/spack-c2sm/v0.18.1.2) [deprecated]
+  * [spack-c2sm v0.18.1.1](https://C2SM.github.io/spack-c2sm/v0.18.1.1) [deprecated]
   
 **General infos about spack**
   * [Official spack v0.18.1](https://spack.readthedocs.io/en/v0.18.1/) 
@@ -23,7 +27,7 @@ With spack v0.18 we suggest local/individual spack instances and the use of spac
 
 A user clones the spack repo
 ```bash
-git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.18.1.7 https://github.com/C2SM/spack-c2sm.git
+git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.18.1.10 https://github.com/C2SM/spack-c2sm.git
 ```
 gets spack in the command line
 ```bash
