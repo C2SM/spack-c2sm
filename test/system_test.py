@@ -370,7 +370,8 @@ class GridToolsTest(unittest.TestCase):
 
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 class IconTest(unittest.TestCase):
-    @pytest.mark.no_daint # fetch from gitlab fails
+
+    @pytest.mark.no_daint  # fetch from gitlab fails
     def test_install_2_6_6_gcc(self):
         spack_install_and_test('icon @2.6.6 %gcc')
 
