@@ -87,6 +87,11 @@ ICON is built using environments.
 Environments sit in a folder with a name and are defined in a ``spack.yaml`` file.
 For ICON, they are located in ``config/cscs/spack/<version>/<machine>_<target>_<compiler>``.
 
+..  tip::
+    On Balfrin: In case your Spack environment requires Python a compatability issue
+    with openssl and git appears. To circumvent that simply do
+    `spack load git` prior to activation of the environment.
+
 To activate the Spack environment, type
 
 .. code-block:: console
