@@ -88,9 +88,12 @@ Environments sit in a folder with a name and are defined in a ``spack.yaml`` fil
 For ICON, they are located in ``config/cscs/spack/<version>/<machine>_<target>_<compiler>``.
 
 ..  tip::
-    On Balfrin: In case your Spack environment requires Python a compatability issue
-    with openssl and git appears. To circumvent that simply do
-    `spack load git` prior to activation of the environment.
+    **Balfrin:** 
+    In case your Spack environment requires Python, a compatability issue
+    with `openssl` and `git` appears.
+    ``/usr/bin/ssh: symbol lookup error: /usr/bin/ssh: undefined symbol: EVP_KDF_CTX_free, version OPENSSL_1_1_1d``
+    To circumvent that simply do
+    ``spack load git`` prior to activation of the environment.
 
 To activate the Spack environment, type
 
