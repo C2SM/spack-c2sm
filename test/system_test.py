@@ -161,17 +161,6 @@ def spack_env_dev_install_and_test(spack_env: str,
         check=True,
         shell=True)
 
-    # patch spack env
-    filename = f'{unique_folder}/{spack_env}/spack.yaml'
-    with open(filename, 'r') as file:
-        lines = file.readlines()
-    lines = [
-        line.rstrip() + ' +grib2\n' if 'icon@develop' in line else line
-        for line in lines
-    ]
-    with open(filename, 'w') as file:
-        file.writelines(lines)
-
     log_filename = sanitized_filename(log_filename or spack_env)
 
     if out_of_source:
@@ -389,29 +378,29 @@ class IconTest(unittest.TestCase):
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_gcc(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.7/daint_cpu_gcc', 'icon-2.6.6.1')
+            'config/cscs/spack/v0.18.1.10/daint_cpu_gcc', 'latest_spack')
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_nvhpc_out_of_source(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.7/daint_cpu_nvhpc',
-            'icon-2.6.6.1',
+            'config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc',
+            'latest_spack',
             out_of_source=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.7/daint_cpu_nvhpc', 'icon-2.6.6.1')
+            'config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc', 'latest_spack')
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_gpu(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.7/daint_gpu_nvhpc', 'icon-2.6.6.1')
+            'config/cscs/spack/v0.18.1.10/daint_gpu_nvhpc', 'latest_spack')
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_nwp_test_cpu_cce(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.7/daint_cpu_cce', 'cce')
+            'config/cscs/spack/v0.18.1.10/daint_cpu_cce', 'latest_spack')
 
 
 class IconHamTest(unittest.TestCase):
