@@ -660,7 +660,7 @@ class Icon(AutotoolsPackage, CudaPackage):
         # Therefore override this function, saves a lot of time too.
         pass
 
-    @run_before('install')
+    @run_after('install')
     @on_package_attributes(run_tests=True)
     def checksuite(self):
         # script needs cdo to work, but not listed as dep of ICON
