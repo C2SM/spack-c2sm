@@ -57,7 +57,6 @@ class Infero(CMakePackage):
         ]
         return args
 
-
     @property
     def libs(self):
         libraries = ['libinfero', 'libinferof']
@@ -81,6 +80,7 @@ class Infero(CMakePackage):
         dest = os.path.join(self.prefix.include, mod)
         os.symlink(src, dest)
 
+
 class CMakeBuilder(CMakeBuilder):
 
     def check(self):
@@ -88,6 +88,7 @@ class CMakeBuilder(CMakeBuilder):
         and runs them if found.
         """
         with fs.working_dir(self.build_directory):
-                make.jobs = 1
-                self.pkg._if_make_target_execute("test", jobs_env="CTEST_PARALLEL_LEVEL")
-                self.pkg._if_make_target_execute("check")
+            make.jobs = 1
+            self.pkg._if_make_target_execute("test",
+                                             jobs_env="CTEST_PARALLEL_LEVEL")
+            self.pkg._if_make_target_execute("check")
