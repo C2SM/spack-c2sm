@@ -5,6 +5,8 @@
 
 #
 from spack import *
+import llnl.util.filesystem as fs
+from spack.build_systems.cmake import CMakeBuilder
 import os
 
 
@@ -55,18 +57,6 @@ class Infero(CMakePackage):
         ]
         return args
 
-    def check(self):
-        """Searches the Makefile for targets ``test`` and ``check``
-        and runs them if found.
-        """
-        # limit build-jobs to 1, otherwise test fail
-        # on compute nodes with Jenkins
-        make.jobs = 1
-        targets = ['check', 'test']
-        with working_dir(self.build_directory):
-            for target in targets:
-                if self._has_make_target(target):
-                    make(target)
 
     @property
     def libs(self):
@@ -90,3 +80,14 @@ class Infero(CMakePackage):
         src = os.path.join(self.prefix, 'module/infero', mod)
         dest = os.path.join(self.prefix.include, mod)
         os.symlink(src, dest)
+
+class CMakeBuilder(CMakeBuilder):
+
+    def check(self):
+        """Search the CMake-generated files for the targets ``test`` and ``check``,
+        and runs them if found.
+        """
+        with fs.working_dir(self.build_directory):
+                make.jobs = 1
+                self.pkg._if_make_target_execute("test", jobs_env="CTEST_PARALLEL_LEVEL")
+                self.pkg._if_make_target_execute("check")
