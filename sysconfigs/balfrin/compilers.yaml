@@ -1,11 +1,11 @@
 compilers:
 - compiler:
-    spec: gcc@11.3.0
+    spec: gcc@=11.3.0
     paths:
-      cc: /mch-environment/v4/linux-sles15-zen3/gcc-11.3.0/gcc-11.3.0-gyb6liat3gnkygiwzvrqjof2rnqw3krd/bin/gcc
-      cxx: /mch-environment/v4/linux-sles15-zen3/gcc-11.3.0/gcc-11.3.0-gyb6liat3gnkygiwzvrqjof2rnqw3krd/bin/g++
-      f77: /mch-environment/v4/linux-sles15-zen3/gcc-11.3.0/gcc-11.3.0-gyb6liat3gnkygiwzvrqjof2rnqw3krd/bin/gfortran
-      fc: /mch-environment/v4/linux-sles15-zen3/gcc-11.3.0/gcc-11.3.0-gyb6liat3gnkygiwzvrqjof2rnqw3krd/bin/gfortran
+      cc: /scratch/e1000/meteoswiss/scratch/bcumming/mch-environment/v5/rc3/linux-sles15-zen3/gcc-11.3.0/gcc-11.3.0-baahow72c7biurcibksiettypuwhy6f7/bin/gcc
+      cxx: /scratch/e1000/meteoswiss/scratch/bcumming/mch-environment/v5/rc3/linux-sles15-zen3/gcc-11.3.0/gcc-11.3.0-baahow72c7biurcibksiettypuwhy6f7/bin/g++
+      f77: /scratch/e1000/meteoswiss/scratch/bcumming/mch-environment/v5/rc3/linux-sles15-zen3/gcc-11.3.0/gcc-11.3.0-baahow72c7biurcibksiettypuwhy6f7/bin/gfortran
+      fc: /scratch/e1000/meteoswiss/scratch/bcumming/mch-environment/v5/rc3/linux-sles15-zen3/gcc-11.3.0/gcc-11.3.0-baahow72c7biurcibksiettypuwhy6f7/bin/gfortran
     flags: {}
     operating_system: sles15
     target: x86_64
@@ -13,12 +13,12 @@ compilers:
     environment: {}
     extra_rpaths: []
 - compiler:
-    spec: nvhpc@23.3
+    spec: nvhpc@=23.3
     paths:
-      cc: /mch-environment/v4/linux-sles15-zen3/gcc-11.3.0/nvhpc-23.3-bubpfon3axcnv5k2e2mrd6myvrgg3lby/Linux_x86_64/23.3/compilers/bin/nvc
-      cxx: /mch-environment/v4/linux-sles15-zen3/gcc-11.3.0/nvhpc-23.3-bubpfon3axcnv5k2e2mrd6myvrgg3lby/Linux_x86_64/23.3/compilers/bin/nvc++
-      f77: /mch-environment/v4/linux-sles15-zen3/gcc-11.3.0/nvhpc-23.3-bubpfon3axcnv5k2e2mrd6myvrgg3lby/Linux_x86_64/23.3/compilers/bin/nvfortran
-      fc: /mch-environment/v4/linux-sles15-zen3/gcc-11.3.0/nvhpc-23.3-bubpfon3axcnv5k2e2mrd6myvrgg3lby/Linux_x86_64/23.3/compilers/bin/nvfortran
+      cc: /scratch/e1000/meteoswiss/scratch/bcumming/mch-environment/v5/rc3/linux-sles15-zen3/gcc-11.3.0/nvhpc-23.3-vjwhck2vt2mzpnagmdsaaozm3pzqixrn/Linux_x86_64/23.3/compilers/bin/nvc
+      cxx: /scratch/e1000/meteoswiss/scratch/bcumming/mch-environment/v5/rc3/linux-sles15-zen3/gcc-11.3.0/nvhpc-23.3-vjwhck2vt2mzpnagmdsaaozm3pzqixrn/Linux_x86_64/23.3/compilers/bin/nvc++
+      f77: /scratch/e1000/meteoswiss/scratch/bcumming/mch-environment/v5/rc3/linux-sles15-zen3/gcc-11.3.0/nvhpc-23.3-vjwhck2vt2mzpnagmdsaaozm3pzqixrn/Linux_x86_64/23.3/compilers/bin/nvfortran
+      fc: /scratch/e1000/meteoswiss/scratch/bcumming/mch-environment/v5/rc3/linux-sles15-zen3/gcc-11.3.0/nvhpc-23.3-vjwhck2vt2mzpnagmdsaaozm3pzqixrn/Linux_x86_64/23.3/compilers/bin/nvfortran
     flags: {}
     operating_system: sles15
     target: x86_64
