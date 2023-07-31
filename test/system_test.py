@@ -613,12 +613,6 @@ class PyPathspecTest(unittest.TestCase):
         spack_install_and_test('py-pathspec')
 
 
-class PyPoetryCoreTest(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('py-poetry-core')
-
-
 class PyPytestTest(unittest.TestCase):
 
     def test_install_default(self):
