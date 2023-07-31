@@ -11,6 +11,7 @@ from spack.package import *
 
 class CrayMpich(Package):
     """Install cray-mpich as a binary package"""
+
     """Intended to override the main cray-mpich"""
 
     homepage = "https://www.hpe.com/us/en/compute/hpc/hpc-software.html"
@@ -19,73 +20,53 @@ class CrayMpich(Package):
 
     version(
         "8.1.25-gcc",
-        sha256=
-        "95a8a161dc9704ea7b971dc8c1b7ec4d63de57e2f6932f0aa3d1ff1d73899765",
-        url=
-        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.25-gcc.tar.gz",
+        sha256="95a8a161dc9704ea7b971dc8c1b7ec4d63de57e2f6932f0aa3d1ff1d73899765",
+        url="https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.25-gcc.tar.gz",
     )
     version(
         "8.1.25-nvhpc",
-        sha256=
-        "7a89a3f5d35538a4f7984c1403ca888e1b018485597318eaefa4639341e1eb27",
-        url=
-        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.25-nvhpc.tar.gz",
+        sha256="7a89a3f5d35538a4f7984c1403ca888e1b018485597318eaefa4639341e1eb27",
+        url="https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.25-nvhpc.tar.gz",
     )
     version(
         "8.1.24-gcc",
-        sha256=
-        "3da0e421c3faaadbe18e57dd033b0ec6513e0d9ed7fbfa77f05a02bada4cd483",
-        url=
-        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.24-gcc.tar.gz",
+        sha256="3da0e421c3faaadbe18e57dd033b0ec6513e0d9ed7fbfa77f05a02bada4cd483",
+        url="https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.24-gcc.tar.gz",
     )
     version(
         "8.1.24-nvhpc",
-        sha256=
-        "1b507f4e9150cf188a0571aad0d190fc8ee981def1d6198c998673d73828ed6f",
-        url=
-        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.24-nvhpc.tar.gz",
+        sha256="1b507f4e9150cf188a0571aad0d190fc8ee981def1d6198c998673d73828ed6f",
+        url="https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.24-nvhpc.tar.gz",
     )
     version(
         "8.1.23-gcc",
-        sha256=
-        "2d1dfda811848d278548b0d7735f17341c70380dbf7f91dc680e5afcfb5e0038",
-        url=
-        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.23-gcc.tar.gz",
+        sha256="2d1dfda811848d278548b0d7735f17341c70380dbf7f91dc680e5afcfb5e0038",
+        url="https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.23-gcc.tar.gz",
     )
     version(
         "8.1.23-nvhpc",
-        sha256=
-        "1dd9b161c538dbac564ecff6f1552220ba40dcc9436dc855087438f29861eba1",
-        url=
-        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.23-nvhpc.tar.gz",
+        sha256="1dd9b161c538dbac564ecff6f1552220ba40dcc9436dc855087438f29861eba1",
+        url="https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.23-nvhpc.tar.gz",
     )
     version(
         "8.1.21.1-gcc",
-        sha256=
-        "0a6852ebf06afd249285fd09566e8489300cba96ad66e90c40df36b6af9a631e",
-        url=
-        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.21.1-gcc.tar.gz",
+        sha256="0a6852ebf06afd249285fd09566e8489300cba96ad66e90c40df36b6af9a631e",
+        url="https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.21.1-gcc.tar.gz",
     )
     version(
         "8.1.21.1-nvhpc",
-        sha256=
-        "791b39f2ecb933060abaa8c8704e71da01c6962c4211cc99d12b9d964e9be4cb",
-        url=
-        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.21.1-nvhpc.tar.gz",
+        sha256="791b39f2ecb933060abaa8c8704e71da01c6962c4211cc99d12b9d964e9be4cb",
+        url="https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.21.1-nvhpc.tar.gz",
     )
     version(
         "8.1.18.4-gcc",
-        sha256=
-        "776c695aeed62b3f64a1bca11b30a2537a907777a8664d2f092e3deac288e4ad",
-        url=
-        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.18.4-gcc.tar.gz",
+        sha256="776c695aeed62b3f64a1bca11b30a2537a907777a8664d2f092e3deac288e4ad",
+        url="https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.18.4-gcc.tar.gz",
     )
     version(
         "8.1.18.4-nvhpc",
-        sha256=
-        "2285433363c75a04ccdf4798be5b0e296e0c9a8fb8fcb38eb0aa4ccf8d1e0843",
-        url=
-        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.18.4-nvhpc.tar.gz",
+        sha256="2285433363c75a04ccdf4798be5b0e296e0c9a8fb8fcb38eb0aa4ccf8d1e0843",
+        url="https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.18.4-nvhpc.tar.gz",
     )
 
     variant("cuda", default=False)
@@ -124,6 +105,7 @@ class CrayMpich(Package):
         for __compiler in spack.compilers.supported_compilers():
             if __compiler != "nvhpc":
                 conflicts("%{}".format(__compiler), msg="nvhpc required")
+
 
     with when("@8.1.24-gcc"):
         # libgfortran.so.5
@@ -234,46 +216,21 @@ class CrayMpich(Package):
                 f = os.path.join(root, name)
                 if not self.should_patch(f):
                     continue
-                patchelf("--force-rpath",
-                         "--set-rpath",
-                         rpath,
-                         f,
-                         fail_on_error=False)
+                patchelf("--force-rpath", "--set-rpath", rpath, f, fail_on_error=False)
                 # The C compiler wrapper can fail because libmpi_gtl_cuda refers to the symbol
                 # __gxx_personality_v0 but wasn't linked against libstdc++.
                 if "libmpi_gtl_cuda.so" in str(f):
-                    patchelf("--add-needed",
-                             "libstdc++.so",
-                             f,
-                             fail_on_error=False)
+                    patchelf("--add-needed", "libstdc++.so", f, fail_on_error=False)
 
     @run_after("install")
     def fixup_compiler_paths(self):
-        filter_file("@@CC@@",
-                    self.compiler.cc,
-                    self.prefix.bin.mpicc,
-                    string=True)
-        filter_file("@@CXX@@",
-                    self.compiler.cxx,
-                    self.prefix.bin.mpicxx,
-                    string=True)
-        filter_file("@@FC@@",
-                    self.compiler.fc,
-                    self.prefix.bin.mpifort,
-                    string=True)
+        filter_file("@@CC@@", self.compiler.cc, self.prefix.bin.mpicc, string=True)
+        filter_file("@@CXX@@", self.compiler.cxx, self.prefix.bin.mpicxx, string=True)
+        filter_file("@@FC@@", self.compiler.fc, self.prefix.bin.mpifort, string=True)
 
-        filter_file("@@PREFIX@@",
-                    self.prefix,
-                    self.prefix.bin.mpicc,
-                    string=True)
-        filter_file("@@PREFIX@@",
-                    self.prefix,
-                    self.prefix.bin.mpicxx,
-                    string=True)
-        filter_file("@@PREFIX@@",
-                    self.prefix,
-                    self.prefix.bin.mpifort,
-                    string=True)
+        filter_file("@@PREFIX@@", self.prefix, self.prefix.bin.mpicc, string=True)
+        filter_file("@@PREFIX@@", self.prefix, self.prefix.bin.mpicxx, string=True)
+        filter_file("@@PREFIX@@", self.prefix, self.prefix.bin.mpifort, string=True)
 
         # link with the relevant gtl lib
         if "+cuda" in self.spec:
@@ -283,28 +240,18 @@ class CrayMpich(Package):
         else:
             gtl_library = ""
 
-        filter_file("@@GTL_LIBRARY@@",
-                    gtl_library,
-                    self.prefix.bin.mpicc,
-                    string=True)
-        filter_file("@@GTL_LIBRARY@@",
-                    gtl_library,
-                    self.prefix.bin.mpicxx,
-                    string=True)
-        filter_file("@@GTL_LIBRARY@@",
-                    gtl_library,
-                    self.prefix.bin.mpifort,
-                    string=True)
+        filter_file("@@GTL_LIBRARY@@", gtl_library, self.prefix.bin.mpicc, string=True)
+        filter_file("@@GTL_LIBRARY@@", gtl_library, self.prefix.bin.mpicxx, string=True)
+        filter_file(
+            "@@GTL_LIBRARY@@", gtl_library, self.prefix.bin.mpifort, string=True
+        )
 
     @property
     def headers(self):
         hdrs = find_headers("mpi", self.prefix.include, recursive=True)
-        hdrs += find_headers("cray_version",
-                             self.prefix.include,
-                             recursive=True)  # cray_version.h
+        hdrs += find_headers("cray_version", self.prefix.include, recursive=True) # cray_version.h
         # cray-mpich depends on cray-pmi
-        hdrs += find_headers("pmi", self.prefix.include,
-                             recursive=True)  # See cray-pmi package
+        hdrs += find_headers("pmi", self.prefix.include, recursive=True) # See cray-pmi package
         hdrs.directories = os.path.dirname(hdrs[0])
         return hdrs
 
@@ -315,8 +262,7 @@ class CrayMpich(Package):
         libraries = ["libmpi", "libmpich"]
 
         if "f77" in query_parameters:
-            libraries.extend(
-                ["libmpifort", "libmpichfort", "libfmpi", "libfmpich"])
+            libraries.extend(["libmpifort", "libmpichfort", "libfmpi", "libfmpich"])
 
         if "f90" in query_parameters:
             libraries.extend(["libmpif90", "libmpichf90"])
