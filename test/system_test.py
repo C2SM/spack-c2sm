@@ -475,6 +475,7 @@ class LibCdiPioTest(unittest.TestCase):
         spack_install_and_test('libcdi-pio')
 
 
+@pytest.mark.no_tsa  # JJ: debug
 class LibXml2Test(unittest.TestCase):
 
     def test_install_default(self):
