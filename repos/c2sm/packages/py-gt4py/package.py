@@ -24,7 +24,9 @@ class PyGt4py(PythonPackage):
     # Build dependencies
     depends_on('py-wheel', type='build')
     depends_on('py-cython', type='build')
-    depends_on('py-setuptools@65.5.0', type='build')
+
+    # downgrade to from 65 to 63 because of py-numpy
+    depends_on('py-setuptools@63:', type='build')
 
     depends_on('cmake@3.22:', type=('build', 'run'))
     depends_on('boost@1.65.1:', type=('build', 'run'))

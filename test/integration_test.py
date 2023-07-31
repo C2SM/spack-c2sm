@@ -150,8 +150,14 @@ class InfoTest(unittest.TestCase):
     def test_py_gridtools_cpp(self):
         spack_info('py-gridtools-cpp')
 
+    def test_py_gt4py(self):
+        spack_info('py-gt4py')
+
     def test_py_hatchling(self):
         spack_info('py-hatchling')
+
+    def test_py_icon4py(self):
+        spack_info('py-icon4py')
 
     def test_py_inflection(self):
         spack_info('py-inflection')
@@ -170,6 +176,9 @@ class InfoTest(unittest.TestCase):
 
     def test_py_setuptools(self):
         spack_info('py-setuptools')
+
+    def test_py_sphinxcontrib_jquery(self):
+        spack_info('py-sphinxcontrib-jquery')
 
     def test_py_toolz(self):
         spack_info('py-toolz')
@@ -317,8 +326,14 @@ class SpecTest(unittest.TestCase):
     def test_py_gridtools_cpp(self):
         spack_spec('py-gridtools-cpp')
 
+    def test_py_gt4py(self):
+        spack_spec('py-gt4py')
+
     def test_py_hatchling(self):
         spack_spec('py-hatchling')
+
+    def test_py_icon4py(self):
+        spack_spec('py-icon4py')
 
     def test_py_inflection(self):
         spack_spec('py-inflection')
@@ -340,6 +355,9 @@ class SpecTest(unittest.TestCase):
 
     def test_py_setuptools(self):
         spack_spec('py-setuptools')
+
+    def test_py_sphinxcontrib_jquery(self):
+        spack_spec('py-sphinxcontrib-jquery')
 
     def test_py_toolz(self):
         spack_spec('py-toolz')
