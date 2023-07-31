@@ -654,6 +654,7 @@ class PySetuptoolsTest(unittest.TestCase):
     def test_install_default(self):
         spack_install_and_test('py-setuptools')
 
+
 class PySphinxcontribJquery(unittest.TestCase):
 
     def test_install_default(self):
