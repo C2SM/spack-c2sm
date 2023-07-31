@@ -37,7 +37,7 @@ class PyGt4py(PythonPackage):
     depends_on('py-boltons@20.0.0:', type=('build', 'run'))
     depends_on('py-cached-property@1.5:', type=('build', 'run'))
     depends_on('py-click@8.0.0:', type=('build', 'run'))
-    depends_on('py-cytoolz@0.12: +cython', type=('build', 'run'))
+    depends_on('py-cytoolz@0.12:', type=('build', 'run'))
     depends_on('py-deepdiff@5.6:', type=('build', 'run'))
     depends_on('py-devtools@0.6:', type=('build', 'run'))
     depends_on('py-frozendict@2.3:', type=('build', 'run'))
