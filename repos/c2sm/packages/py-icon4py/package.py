@@ -52,6 +52,7 @@ class PyIcon4py(PythonPackage):
 
 
 class PythonPipBuilder(PythonPipBuilder):
+
     def install(self, pkg, spec, prefix):
         """Install everything from build directory."""
 
@@ -62,8 +63,8 @@ class PythonPipBuilder(PythonPipBuilder):
                 raise SpecError(
                     "'{}' package uses 'config_settings' which is only supported by "
                     "pip 22.1+. Add the following line to the package to fix this:\n\n"
-                    '    depends_on("py-pip@22.1:", type="build")'.format(spec.name)
-                )
+                    '    depends_on("py-pip@22.1:", type="build")'.format(
+                        spec.name))
 
             args.append("--config-settings={}={}".format(key, value))
 
