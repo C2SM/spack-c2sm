@@ -548,6 +548,7 @@ class Icon(AutotoolsPackage):
                 ]
                 config_vars['CPPFLAGS'].append(xml2_headers.include_flags)
 
+        if '+coupling' in self.spec:
             libs += self.spec['libfyaml'].libs
 
         serialization = self.spec.variants['serialization'].value
