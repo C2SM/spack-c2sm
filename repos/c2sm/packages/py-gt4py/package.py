@@ -50,7 +50,12 @@ class PyGt4py(PythonPackage):
     depends_on('py-ninja@1.10:', type=('build', 'run'))
     depends_on('py-numpy@1.24.2: ~blas ~lapack', type=('build', 'run'))
     depends_on('py-packaging@20.0:', type=('build', 'run'))
-    depends_on('py-pybind11@2.5:', type=('build', 'run'))
+
+    # versions later than 2.9.2 fail to pick to right Python version
+    # for compiled modules. 
+    # See: https://github.com/C2SM/spack-c2sm/issues/803
+    depends_on('py-pybind11@2.5:2.9.2', type=('build', 'run'))
+
     depends_on('py-tabulate@0.8:', type=('build', 'run'))
     depends_on('py-typing-extensions@4.5:', type=('build', 'run'))
     depends_on('py-toolz@0.12.0:', type=('build', 'run'))
@@ -73,8 +78,6 @@ class PyGt4py(PythonPackage):
     # missing version constraint: pytest-xdist[psutil]>=2.4
     depends_on('py-pytest-xdist', type=('build', 'run'))
 
-    @run_after('install')
-    @on_package_attributes(run_tests=True)
-    def install_test(self):
+    def test(self):
         python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--cov',
                '--cov-append', 'tests/next_tests', 'tests/eve_tests')
