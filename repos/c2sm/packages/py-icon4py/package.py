@@ -63,19 +63,19 @@ class PyIcon4py(PythonPackage):
         version = self.spec.version
 
         folder_mapping = {
-            ver('0.0.4'): {
+            ver('=0.0.4'): {
                 'atm_dyn_iconam': 'atm_dyn_iconam',
                 'tools': 'icon4pytools'
             },
-            ver('0.0.5'): {
+            ver('=0.0.5'): {
                 'atm_dyn_iconam': 'atm_dyn_iconam',
                 'tools': 'icon4pytools'
             },
-            ver('0.0.6'): {
+            ver('=0.0.6'): {
                 'atm_dyn_iconam': 'dycore',
                 'tools': 'icon4pytools'
             },
-            ver('main'): {
+            ver('=main'): {
                 'atm_dyn_iconam': 'dycore',
                 'tools': 'icon4pytools'
             }
@@ -84,7 +84,7 @@ class PyIcon4py(PythonPackage):
         if len(query_parameters) > 1:
             raise ValueError('Only one query parameter allowed')
 
-        if version == ver('0.0.3') and len(query_parameters) == 1:
+        if version == ver('=0.0.3') and len(query_parameters) == 1:
             msg = 'Not implemented for version {0}'.format(version)
             raise spack.error.NoHeadersError(msg)
 
@@ -135,12 +135,12 @@ class PythonPipBuilder(PythonPipBuilder):
 
         pip = inspect.getmodule(pkg).pip
 
-        if self.spec.version == ver('0.0.3'):
+        if self.spec.version == ver('=0.0.3'):
             build_dirs = [
                 'common', 'pyutils', 'testutils', 'liskov', 'atm_dyn_iconam'
             ]
-        elif self.spec.version == ver('0.0.4') or self.spec.version == ver(
-                '0.0.5'):
+        elif self.spec.version == ver('=0.0.4') or self.spec.version == ver(
+                '=0.0.5'):
             build_dirs = ['common', 'atm_dyn_iconam', 'tools']
         else:
             build_dirs = ['tools', 'model/atmosphere/dycore', 'model/common/']
