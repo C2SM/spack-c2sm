@@ -52,7 +52,7 @@ class PyGt4py(PythonPackage):
     depends_on('py-packaging@20.0:', type=('build', 'run'))
 
     # versions later than 2.9.2 fail to pick to right Python version
-    # for compiled modules. 
+    # for compiled modules.
     # See: https://github.com/C2SM/spack-c2sm/issues/803
     depends_on('py-pybind11@2.5:2.9.2', type=('build', 'run'))
 
