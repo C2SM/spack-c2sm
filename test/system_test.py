@@ -161,17 +161,6 @@ def spack_env_dev_install_and_test(spack_env: str,
         check=True,
         shell=True)
 
-    # patch spack env
-    filename = f'{unique_folder}/{spack_env}/spack.yaml'
-    with open(filename, 'r') as file:
-        lines = file.readlines()
-    lines = [
-        line.rstrip() + ' +grib2\n' if 'icon@develop' in line else line
-        for line in lines
-    ]
-    with open(filename, 'w') as file:
-        file.writelines(lines)
-
     log_filename = sanitized_filename(log_filename or spack_env)
 
     if out_of_source:
@@ -389,29 +378,29 @@ class IconTest(unittest.TestCase):
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_gcc(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.7/daint_cpu_gcc', 'icon-2.6.6.1')
+            'config/cscs/spack/v0.18.1.10/daint_cpu_gcc', 'icon-2.6.6.2')
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_nvhpc_out_of_source(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.7/daint_cpu_nvhpc',
-            'icon-2.6.6.1',
+            'config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc',
+            'icon-2.6.6.2',
             out_of_source=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.7/daint_cpu_nvhpc', 'icon-2.6.6.1')
+            'config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc', 'icon-2.6.6.2')
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_gpu(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.7/daint_gpu_nvhpc', 'icon-2.6.6.1')
+            'config/cscs/spack/v0.18.1.10/daint_gpu_nvhpc', 'icon-2.6.6.2')
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_nwp_test_cpu_cce(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.7/daint_cpu_cce', 'cce')
+            'config/cscs/spack/v0.18.1.10/daint_cpu_cce', 'icon-2.6.6.2')
 
 
 class IconHamTest(unittest.TestCase):
@@ -604,16 +593,13 @@ class PyHatchlingTest(unittest.TestCase):
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 class PyIcon4pyTest(unittest.TestCase):
 
-    def test_install_0_0_4(self):
-        spack_install_and_test('py-icon4py @0.0.4')
-
-    def test_install_version_0_0_3(self):
+    def test_install_version_0_0_5(self):
         spack_install_and_test(
-            'py-icon4py @ 0.0.3 %gcc ^py-gt4py@1.1.1 ^python@3.10.4')
+            'py-icon4py @ 0.0.5 %gcc ^py-gt4py@1.1.1 ^python@3.10.4')
 
-    def test_install_version_0_0_4(self):
+    def test_install_version_0_0_6(self):
         spack_install_and_test(
-            'py-icon4py @ 0.0.4 %gcc ^py-gt4py@1.1.1 ^python@3.10.4')
+            'py-icon4py @ 0.0.6 %gcc ^py-gt4py@1.1.2 ^python@3.10.4')
 
 
 class PyInflectionTest(unittest.TestCase):

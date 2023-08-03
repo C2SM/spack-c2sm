@@ -457,6 +457,7 @@ class Icon(AutotoolsPackage, CudaPackage):
                 ]
                 config_vars['CPPFLAGS'].append(xml2_headers.include_flags)
 
+        if '+coupling' in self.spec:
             libs += self.spec['libfyaml'].libs
 
         serialization = self.spec.variants['serialization'].value
@@ -584,19 +585,11 @@ class Icon(AutotoolsPackage, CudaPackage):
             config_vars['LOC_ICON4PY_BIN'].append(
                 self.spec['py-icon4py'].prefix)
             config_vars['LOC_ICON4PY_ATM_DYN_ICONAM'].append(
-                os.path.join(
-                    self.spec['py-icon4py'].prefix,
-                    'lib/python3.10/site-packages/icon4py/atm_dyn_iconam'))
-            config_vars['LOC_ICON4PY_ADVECTION'].append(
-                os.path.join(self.spec['py-icon4py'].prefix,
-                             'lib/python3.10/site-packages/icon4py/advection'))
+                self.spec['py-icon4py:atm_dyn_iconam'].headers.directories[0])
             config_vars['LOC_ICON4PY_TOOLS'].append(
-                os.path.join(self.spec['py-icon4py'].prefix,
-                             'lib/python3.10/site-packages/icon4pytools'))
+                self.spec['py-icon4py:tools'].headers.directories[0])
             config_vars['LOC_GRIDTOOLS'].append(
-                os.path.join(
-                    self.spec['py-gridtools-cpp'].prefix,
-                    'lib/python3.10/site-packages/gridtools_cpp/data'))
+                self.spec['py-gridtools-cpp:data'].headers.directories[0])
             config_vars['GT4PYNVCFLAGS'] = config_vars['NVCFLAGS']
 
         # Finalize the LIBS variable (we always put the real collected
@@ -667,7 +660,7 @@ class Icon(AutotoolsPackage, CudaPackage):
         # Therefore override this function, saves a lot of time too.
         pass
 
-    @run_before('install')
+    @run_after('install')
     @on_package_attributes(run_tests=True)
     def checksuite(self):
         # script needs cdo to work, but not listed as dep of ICON

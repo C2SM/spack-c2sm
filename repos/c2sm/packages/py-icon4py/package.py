@@ -26,6 +26,8 @@ class PyIcon4py(PythonPackage):
     version('main', branch='main', git=git)
     version('0.0.3', tag='v0.0.3', git=git)
     version('0.0.4', tag='v0.0.4', git=git)
+    version('0.0.5', tag='v0.0.5', git=git)
+    version('0.0.6', tag='v0.0.6', git=git)
 
     depends_on('py-wheel', type='build')
     depends_on('py-setuptools', type='build')
@@ -49,6 +51,59 @@ class PyIcon4py(PythonPackage):
         # unit tests
         python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--cov',
                '--cov-append')
+
+    @property
+    def headers(self):
+        '''Workaround to hide the details of the installation path,
+        i.e "lib/python3.10/site-packages/icon4py/atm_dyn_iconam"
+        from upstream packages. It needs to be part of the "Spec" object,
+        therefore choose the headers-function
+        '''
+        query_parameters = self.spec.last_query.extra_parameters
+        version = self.spec.version
+
+        folder_mapping = {
+            ver('0.0.4'): {
+                'atm_dyn_iconam': 'atm_dyn_iconam',
+                'tools': 'icon4pytools'
+            },
+            ver('0.0.5'): {
+                'atm_dyn_iconam': 'atm_dyn_iconam',
+                'tools': 'icon4pytools'
+            },
+            ver('0.0.6'): {
+                'atm_dyn_iconam': 'dycore',
+                'tools': 'icon4pytools'
+            },
+            ver('main'): {
+                'atm_dyn_iconam': 'dycore',
+                'tools': 'icon4pytools'
+            }
+        }
+
+        if len(query_parameters) > 1:
+            raise ValueError('Only one query parameter allowed')
+
+        if version == ver('0.0.3') and len(query_parameters) == 1:
+            msg = 'Not implemented for version {0}'.format(version)
+            raise spack.error.NoHeadersError(msg)
+
+        folder_name = folder_mapping.get(version, {})
+
+        if not folder_name:
+            return HeaderList([])
+
+        for param, folder in folder_name.items():
+            if param in query_parameters:
+                return self._find_folder_and_add_dummy_header(
+                    self.prefix, folder)
+
+        return HeaderList([])
+
+    def _find_folder_and_add_dummy_header(self, prefix, name):
+        folder = find(prefix, name)
+        headerlist = HeaderList(f'{folder[0]}/dummy.h')
+        return headerlist
 
 
 class PythonPipBuilder(PythonPipBuilder):
@@ -84,8 +139,11 @@ class PythonPipBuilder(PythonPipBuilder):
             build_dirs = [
                 'common', 'pyutils', 'testutils', 'liskov', 'atm_dyn_iconam'
             ]
-        else:
+        elif self.spec.version == ver('0.0.4') or self.spec.version == ver(
+                '0.0.5'):
             build_dirs = ['common', 'atm_dyn_iconam', 'tools']
+        else:
+            build_dirs = ['tools', 'model/atmosphere/dycore', 'model/common/']
 
         for dir in build_dirs:
             with fs.working_dir(os.path.join(self.build_directory, dir)):
