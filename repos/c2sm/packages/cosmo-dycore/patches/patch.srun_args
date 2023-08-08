@@ -1,0 +1,14 @@
+diff --git a/dycore/test/tools/test_dycore.py b/dycore/test/tools/test_dycore.py
+index bcfcd483..837479fb 100755
+--- a/dycore/test/tools/test_dycore.py
++++ b/dycore/test/tools/test_dycore.py
+@@ -62,7 +62,8 @@ def test_dycore(dycore_spec, base_directory, data_path):
+             dycore_spec.variants['real_type'].value
+         )
+ 
+-    slurm_cmd = concat_slurm_variants(dycore_spec)
++    #slurm_cmd = concat_slurm_variants(dycore_spec)
++    slurm_cmd ="srun -p normal -N {0} -A g110 -C gpu"
+ 
+     failures = []
+ 
