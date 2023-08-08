@@ -67,7 +67,6 @@ class CosmoDycore(CMakePackage):
     conflicts('%nvhpc')
     conflicts('%pgi')
 
-
     # hardcode srun arguments, replaces all srun related variants
     patch('patches/patch.srun_args')
 
