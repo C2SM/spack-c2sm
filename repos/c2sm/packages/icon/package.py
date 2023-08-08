@@ -671,15 +671,20 @@ class Icon(AutotoolsPackage, CudaPackage):
             # test.py fails if PYTHONHOME has any value,
             # even '' or ' ' is failing, therefore delete
             # it temporary from env
-            PYTHONHOME = os.environ['PYTHONHOME']
-            os.environ.pop('PYTHONHOME')
+            try:
+                PYTHONHOME = os.environ['PYTHONHOME']
+                os.environ.pop('PYTHONHOME')
+                pythonhome_is_set = True
+            except:
+                pythonhome_is_set = False
 
             with open('spec.yaml', mode='w') as f:
                 f.write(self.spec.to_yaml())
             test_py('--spec', 'spec.yaml', fail_on_error=True)
 
             # restore PYTHONHOME after test.py
-            os.environ['PYTHONHOME'] = PYTHONHOME
+            if pythonhome_is_set:
+                os.environ['PYTHONHOME'] = PYTHONHOME
         else:
             tty.warn('Cannot find test.py -> skipping tests')
 
