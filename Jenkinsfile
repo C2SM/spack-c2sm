@@ -1,7 +1,7 @@
 pipeline {
     agent none
     environment {
-        SPACK_DISABLE_LOCAL_CONFIG = "true"
+        SPACK_USER_CONFIG_PATH = ${WORKSPACE}/spack_user_config
         SPACK_USER_CACHE_PATH = "/tmp/spack"
     }
     stages {
