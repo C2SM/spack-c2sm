@@ -1,9 +1,5 @@
 pipeline {
     agent none
-    environment {
-        SPACK_USER_CONFIG_PATH = "${WORKSPACE}" + "/spack_user_config"
-        SPACK_USER_CACHE_PATH = "/tmp/spack"
-    }
     stages {
         stage('Tests') {
             matrix {
@@ -11,7 +7,7 @@ pipeline {
                 axes {
                     axis {
                         name 'NODENAME'
-                        values 'tsa', 'daint'
+                        values 'tsa', 'daint', 'balfrin'
                     }
                 }
                 post {
@@ -50,7 +46,7 @@ pipeline {
                             sh """
                             source env/bin/activate
                             . ./setup-env.sh
-                            spack spec gnuconfig
+                            spack spec spack
                             """
                         }
                     }
