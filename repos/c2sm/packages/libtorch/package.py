@@ -20,7 +20,12 @@ class Libtorch(Package):
 
     maintainers = ['juckerj']
 
-    version('2.0.1', url=url,sha256='262f723ee5a2caac977e089bc06e9d840ca33d70706fbd4a2fca04995bb94eb4')
+    version('2.0.1',
+            url=url,
+            sha256=
+            '262f723ee5a2caac977e089bc06e9d840ca33d70706fbd4a2fca04995bb94eb4')
+
+    depends_on('glib@2.27.0')
 
     phases = ['install']
 
@@ -44,3 +49,7 @@ class Libtorch(Package):
                         prefix.bin,
                         symlinks=True,
                         copy_function=shutil.copy)
+
+        rpath_flags = '-Wl,-rpath={0}'.format(spec['glib'].prefix.lib)
+        make('CXXFLAGS={0}'.format(rpath_flags))
+
