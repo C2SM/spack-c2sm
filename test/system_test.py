@@ -139,6 +139,7 @@ def spack_devbuild_and_test(spec: str,
                        cwd=cwd,
                        srun=True)
 
+
 def spack_env_dev_install_and_test(spack_env: str,
                                    url: str,
                                    branch: str,
@@ -205,6 +206,7 @@ def spack_env_dev_install_and_test(spack_env: str,
                        cwd=unique_folder,
                        env=spack_env,
                        srun=False)
+
 
 #def spack_env_dev_install_and_test(spack_env: str,
 #                                   icon_branch: str,
@@ -296,16 +298,15 @@ class CosmoTest(unittest.TestCase):
     def test_install_c2sm_master_cpu(self):
         spack_env_dev_install_and_test(
             'cosmo/ACC/spack/v0.20.1.0/nvhpc_cpu_double',
-            'git@github.com:C2SM-RCM/cosmo.git',
-            'dev_spackv0.20.1',
+            'git@github.com:C2SM-RCM/cosmo.git', 'dev_spackv0.20.1',
             'cosmo-c2sm-master')
 
     def test_install_c2sm_master_gpu(self):
         spack_env_dev_install_and_test(
             'cosmo/ACC/spack/v0.20.1.0/nvhpc_gpu_double',
-            'git@github.com:C2SM-RCM/cosmo.git',
-            'dev_spackv0.20.1',
+            'git@github.com:C2SM-RCM/cosmo.git', 'dev_spackv0.20.1',
             'cosmo-c2sm-master')
+
 
 @pytest.mark.no_balfrin  # cuda arch is not supported
 class CosmoDycoreTest(unittest.TestCase):
@@ -434,7 +435,7 @@ class IconTest(unittest.TestCase):
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_gcc(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_cpu_gcc', 
+            'config/cscs/spack/v0.18.1.10/daint_cpu_gcc',
             'git@github.com:C2SM/icon.git',
             'icon-2.6.6.2',
             'icon',
