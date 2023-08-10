@@ -139,55 +139,33 @@ def spack_devbuild_and_test(spec: str,
                        cwd=cwd,
                        srun=True)
 
-def spack_env_dev_install_and_test_cosmo(spack_env: str,
-                                   branch: str,
-                                   log_filename: str = None):
-
-    # in case we use serialbox or another python preprocessor
-    devirtualize_env()
-
-    unique_folder = 'cosmo_' + uuid.uuid4(
-    ).hex  # to avoid cloning into the same folder and having race conditions
-    subprocess.run(
-        f'git clone --depth 1 --recurse-submodules -b {branch} git@github.com:C2SM-RCM/cosmo.git {unique_folder}',
-        check=True,
-        shell=True)
-
-    log_filename = sanitized_filename(log_filename or spack_env)
-
-    # limit number of build-jobs to 4 because no srun used
-    log_with_spack('spack install --until build -n -v',
-                   'system_test',
-                   log_filename,
-                   cwd=unique_folder,
-                   env=spack_env,
-                   srun=True)
-
-    log_with_spack('spack install --test=root -n -v',
-                   'system_test',
-                   log_filename,
-                   cwd=unique_folder,
-                   env=spack_env,
-                   srun=False)
-
 def spack_env_dev_install_and_test(spack_env: str,
-                                   icon_branch: str,
+                                   url: str,
+                                   branch: str,
+                                   name: str,
                                    log_filename: str = None,
-                                   out_of_source: bool = False):
+                                   out_of_source: bool = False,
+                                   build_on_login_node: bool = False):
     """
-    Clones ICON with given branch into unique folder, activates the given spack
+    Clones repo with given branch into unique folder, activates the given spack
     environment, tests 'spack install' and writes the output into the log file.
     If log_filename is None, spack_env is used to create one.
+
+    ICON specials:
     If out_of_source is True, create additional folder and build there, BUT skip testing!
+    If build_on_login_node is True, do not run build-step on login node
     """
 
     # in case we use serialbox or another python preprocessor
     devirtualize_env()
 
-    unique_folder = 'icon_' + uuid.uuid4(
+    if name != 'icon' and out_of_source:
+        raise ValueError('out-of-source only possible with Icon')
+
+    unique_folder = name + '_' + uuid.uuid4(
     ).hex  # to avoid cloning into the same folder and having race conditions
     subprocess.run(
-        f'git clone --depth 1 --recurse-submodules -b {icon_branch} git@github.com:C2SM/icon.git {unique_folder}',
+        f'git clone --depth 1 --recurse-submodules -b {branch} {url} {unique_folder}',
         check=True,
         shell=True)
 
@@ -201,13 +179,21 @@ def spack_env_dev_install_and_test(spack_env: str,
         unique_folder = build_dir
         log_filename = f'{log_filename}_out_of_source'
 
-    # limit number of build-jobs to 4 because no srun used
-    log_with_spack('spack install -j 4 --until build -n -v',
+    # with v0.20.1 "--until build" applies to all root-spec in env
+    # therefore build all deps first
+    log_with_spack('spack install --only=dependencies -n -v',
                    'system_test',
                    log_filename,
                    cwd=unique_folder,
                    env=spack_env,
-                   srun=False)
+                   srun=True)
+
+    log_with_spack('spack install --until build -n -v',
+                   'system_test',
+                   log_filename,
+                   cwd=unique_folder,
+                   env=spack_env,
+                   srun=not build_on_login_node)
 
     # for out-of-source build we can't run tests because required files
     # like scripts/spack/test.py or scripts/buildbot_script are not synced
@@ -220,6 +206,56 @@ def spack_env_dev_install_and_test(spack_env: str,
                        env=spack_env,
                        srun=False)
 
+#def spack_env_dev_install_and_test(spack_env: str,
+#                                   icon_branch: str,
+#                                   log_filename: str = None,
+#                                   out_of_source: bool = False):
+#    """
+#    Clones ICON with given branch into unique folder, activates the given spack
+#    environment, tests 'spack install' and writes the output into the log file.
+#    If log_filename is None, spack_env is used to create one.
+#    If out_of_source is True, create additional folder and build there, BUT skip testing!
+#    """
+#
+#    # in case we use serialbox or another python preprocessor
+#    devirtualize_env()
+#
+#    unique_folder = 'icon_' + uuid.uuid4(
+#    ).hex  # to avoid cloning into the same folder and having race conditions
+#    subprocess.run(
+#        f'git clone --depth 1 --recurse-submodules -b {icon_branch} git@github.com:C2SM/icon.git {unique_folder}',
+#        check=True,
+#        shell=True)
+#
+#    log_filename = sanitized_filename(log_filename or spack_env)
+#
+#    if out_of_source:
+#        build_dir = os.path.join(unique_folder, 'build')
+#        os.makedirs(build_dir, exist_ok=True)
+#        shutil.copytree(os.path.join(unique_folder, 'config'),
+#                        os.path.join(build_dir, 'config'))
+#        unique_folder = build_dir
+#        log_filename = f'{log_filename}_out_of_source'
+#
+#    # limit number of build-jobs to 4 because no srun used
+#    log_with_spack('spack install -j 4 --until build -n -v',
+#                   'system_test',
+#                   log_filename,
+#                   cwd=unique_folder,
+#                   env=spack_env,
+#                   srun=False)
+#
+#    # for out-of-source build we can't run tests because required files
+#    # like scripts/spack/test.py or scripts/buildbot_script are not synced
+#    # in our spack-recipe to the build-folder
+#    if not out_of_source:
+#        log_with_spack('spack install --test=root -n -v',
+#                       'system_test',
+#                       log_filename,
+#                       cwd=unique_folder,
+#                       env=spack_env,
+#                       srun=False)
+#
 
 mpi: str = {
     'daint': 'mpich',
@@ -258,37 +294,18 @@ class ClawTest(unittest.TestCase):
 class CosmoTest(unittest.TestCase):
 
     def test_install_c2sm_master_cpu(self):
-        spack_env_dev_install_and_test_cosmo(
+        spack_env_dev_install_and_test(
             'cosmo/ACC/spack/v0.20.1.0/nvhpc_cpu_double',
-            'dev_spackv0.20.1')
+            'git@github.com:C2SM-RCM/cosmo.git',
+            'dev_spackv0.20.1',
+            'cosmo-c2sm-master')
 
     def test_install_c2sm_master_gpu(self):
-        spack_env_dev_install_and_test_cosmo(
+        spack_env_dev_install_and_test(
             'cosmo/ACC/spack/v0.20.1.0/nvhpc_gpu_double',
-            'dev_spackv0.20.1')
-    #def test_install_version_6_0_gpu(self):
-    #    spack_install_and_test(
-    #        f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}',
-    #        split_phases=True)
-
-    #def test_install_version_6_0_cpu(self):
-    #    spack_install_and_test(
-    #        f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}',
-    #        split_phases=True)
-
-    @pytest.mark.serial_only  # devbuildcosmo does a forced uninstall
-    def test_devbuildcosmo(self):
-        subprocess.run(
-            'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git',
-            check=True,
-            shell=True)
-        spec = f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
-        spack_devbuild_and_test(
-            spec,
-            cwd='cosmo',
-            log_filename=sanitized_filename('devbuildcosmo ' + spec),
-            split_phases=True)
-
+            'git@github.com:C2SM-RCM/cosmo.git',
+            'dev_spackv0.20.1',
+            'cosmo-c2sm-master')
 
 @pytest.mark.no_balfrin  # cuda arch is not supported
 class CosmoDycoreTest(unittest.TestCase):
@@ -417,29 +434,48 @@ class IconTest(unittest.TestCase):
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_gcc(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_cpu_gcc', 'icon-2.6.6.2')
+            'config/cscs/spack/v0.18.1.10/daint_cpu_gcc', 
+            'git@github.com:C2SM/icon.git',
+            'icon-2.6.6.2',
+            'icon',
+            build_on_login_node=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_nvhpc_out_of_source(self):
         spack_env_dev_install_and_test(
             'config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc',
+            'git@github.com:C2SM/icon.git',
             'icon-2.6.6.2',
-            out_of_source=True)
+            'icon',
+            out_of_source=True,
+            build_on_login_node=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc', 'icon-2.6.6.2')
+            'config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc',
+            'git@github.com:C2SM/icon.git',
+            'icon-2.6.6.2',
+            'icon',
+            build_on_login_node=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_gpu(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_gpu_nvhpc', 'icon-2.6.6.2')
+            'config/cscs/spack/v0.18.1.10/daint_gpu_nvhpc',
+            'git@github.com:C2SM/icon.git',
+            'icon-2.6.6.2',
+            'icon',
+            build_on_login_node=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_nwp_test_cpu_cce(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_cpu_cce', 'icon-2.6.6.2')
+            'config/cscs/spack/v0.18.1.10/daint_cpu_cce',
+            'git@github.com:C2SM/icon.git',
+            'icon-2.6.6.2',
+            'icon',
+            build_on_login_node=True)
 
 
 class IconHamTest(unittest.TestCase):
