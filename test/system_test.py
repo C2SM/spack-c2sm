@@ -139,9 +139,10 @@ def spack_devbuild_and_test(spec: str,
                        cwd=cwd,
                        srun=True)
 
+
 def spack_env_dev_install_and_test_cosmo(spack_env: str,
-                                   branch: str,
-                                   log_filename: str = None):
+                                         branch: str,
+                                         log_filename: str = None):
 
     # in case we use serialbox or another python preprocessor
     devirtualize_env()
@@ -169,6 +170,7 @@ def spack_env_dev_install_and_test_cosmo(spack_env: str,
                    cwd=unique_folder,
                    env=spack_env,
                    srun=False)
+
 
 def spack_env_dev_install_and_test(spack_env: str,
                                    icon_branch: str,
@@ -259,13 +261,12 @@ class CosmoTest(unittest.TestCase):
 
     def test_install_c2sm_master_cpu(self):
         spack_env_dev_install_and_test_cosmo(
-            'cosmo/ACC/spack/v0.20.1.0/nvhpc_cpu_double',
-            'dev_spackv0.20.1')
+            'cosmo/ACC/spack/v0.20.1.0/nvhpc_cpu_double', 'dev_spackv0.20.1')
 
     def test_install_c2sm_master_gpu(self):
         spack_env_dev_install_and_test_cosmo(
-            'cosmo/ACC/spack/v0.20.1.0/nvhpc_gpu_double',
-            'dev_spackv0.20.1')
+            'cosmo/ACC/spack/v0.20.1.0/nvhpc_gpu_double', 'dev_spackv0.20.1')
+
     #def test_install_version_6_0_gpu(self):
     #    spack_install_and_test(
     #        f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}',
