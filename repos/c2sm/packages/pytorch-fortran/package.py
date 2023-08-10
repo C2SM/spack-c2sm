@@ -6,6 +6,7 @@
 #
 from spack import *
 
+
 class PytorchFortran(CMakePackage):
     '''
     '''
@@ -22,7 +23,6 @@ class PytorchFortran(CMakePackage):
     root_cmakelists_dir = 'src/f90_bindings'
 
     def cmake_args(self):
-        args = [
-            self.define('OPENACC',1)]
+        args = [self.define('OPENACC', 1)]
 
         return args

@@ -6,6 +6,7 @@
 #
 from spack import *
 
+
 class PytorchFortranProxy(CMakePackage):
     '''
     '''
@@ -13,12 +14,9 @@ class PytorchFortranProxy(CMakePackage):
     homepage = "https://github.com/alexeedm/pytorch-fortran"
     url = "https://github.com/alexeedm/pytorch-fortran.git"
 
-    version('0.4',
-            git=url,
-            tag='v0.4')
+    version('0.4', git=url, tag='v0.4')
 
     maintainers = ['juckerj']
-
 
     depends_on('cuda')
     depends_on('libtorch')
@@ -28,8 +26,9 @@ class PytorchFortranProxy(CMakePackage):
 
     def cmake_args(self):
         args = [
-            self.define('OPENACC',1),
-            self.define('CUDA_TOOLKIT_ROOT_DIR',self.spec['cuda'].prefix),
-            self.define('TORCH_CUDA_ARCH_LIST',"6.0")]
+            self.define('OPENACC', 1),
+            self.define('CUDA_TOOLKIT_ROOT_DIR', self.spec['cuda'].prefix),
+            self.define('TORCH_CUDA_ARCH_LIST', "6.0")
+        ]
 
         return args
