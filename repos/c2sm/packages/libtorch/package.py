@@ -9,18 +9,20 @@ import shutil
 
 class Libtorch(Package):
     '''
+    PyTorch is a Python package that provides two high-level features:
+
+    - Tensor computation (like NumPy) with strong GPU acceleration
+    - Deep neural networks built on a tape-based autograd system
     '''
 
-    homepage = "https://www.tensorflow.org/install/lang_c"
+    homepage = "https://pytorch.org/"
     url = "https://download.pytorch.org/libtorch/cu117/libtorch-cxx11-abi-shared-with-deps-2.0.1%2Bcu117.zip"
 
     maintainers = ['juckerj']
 
-    version('1.0')
+    version('2.0.1', url=url,sha256='262f723ee5a2caac977e089bc06e9d840ca33d70706fbd4a2fca04995bb94eb4')
 
     phases = ['install']
-
-    manual_download = True
 
     def install(self, spec, prefix):
         # can't use Spack convenience-function 'install_tree' because it uses
