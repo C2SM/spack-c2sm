@@ -141,7 +141,7 @@ def spack_devbuild_and_test(spec: str,
 
 def spack_env_dev_install_and_test_cosmo(spack_env: str,
                                    branch: str,
-                                   log_filename: str = None)
+                                   log_filename: str = None):
 
     # in case we use serialbox or another python preprocessor
     devirtualize_env()
