@@ -20,7 +20,10 @@ class Libtorch(Package):
 
     maintainers = ['juckerj']
 
-    version('2.0.1', url=url,sha256='262f723ee5a2caac977e089bc06e9d840ca33d70706fbd4a2fca04995bb94eb4')
+    version('2.0.1',
+            url=url,
+            sha256=
+            '262f723ee5a2caac977e089bc06e9d840ca33d70706fbd4a2fca04995bb94eb4')
 
     phases = ['install']
 
