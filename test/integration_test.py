@@ -45,6 +45,12 @@ class InfoTest(unittest.TestCase):
     def test_claw(self):
         spack_info('claw')
 
+    def test_cosmo(self):
+        spack_info('cosmo')
+
+    def test_cosmo_dycore(self):
+        spack_info('cosmo-dycore')
+
     def test_cosmo_eccodes_definitions(self):
         spack_info('cosmo-eccodes-definitions')
 
@@ -216,6 +222,16 @@ class SpecTest(unittest.TestCase):
 
     def test_claw(self):
         spack_spec('claw')
+
+    def test_cosmo(self):
+        spack_spec('cosmo')
+        spack_spec('cosmo cosmo_target=gpu ~cppdycore')
+        spack_spec('cosmo cosmo_target=gpu +serialize +claw +zlib_ng +oasis')
+
+    def test_cosmo_dycore(self):
+        spack_spec('cosmo-dycore')
+        spack_spec('cosmo-dycore ~cuda +gt1')
+        spack_spec('cosmo-dycore +cuda +gt1 +build_tests')
 
     def test_cosmo_eccodes_definitions(self):
         spack_spec('cosmo-eccodes-definitions')
