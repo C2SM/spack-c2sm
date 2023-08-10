@@ -32,8 +32,6 @@ class Cosmo(MakefilePackage):
     # There are three different types of test_cosmo.py around:
 
     # COSMO-ORG
-    patch('patches/c2sm-master/spec_as_yaml/patch.test_cosmo',
-          when='@c2sm-master')
     patch('patches/org-master/spec_as_yaml/patch.test_cosmo',
           when='@org-master')
     patch('patches/org-master/spec_as_yaml/patch.test_cosmo', when='@6.0')
@@ -47,8 +45,6 @@ class Cosmo(MakefilePackage):
     # There are two different types of serialize_cosmo.py around:
 
     # COSMO-ORG
-    patch('patches/c2sm-master/spec_as_yaml/patch.serialize_cosmo',
-          when='@c2sm-master +serialize')
     patch('patches/org-master/spec_as_yaml/patch.serialize_cosmo',
           when='@org-master +serialize')
     patch('patches/org-master/spec_as_yaml/patch.serialize_cosmo',
@@ -152,38 +148,6 @@ class Cosmo(MakefilePackage):
     variant('oasis',
             default=False,
             description='Build with the unified oasis interface')
-
-    variant('slurm_bin',
-            default='srun',
-            description='Slurm binary on CSCS machines')
-    variant('slurm_opt_partition',
-            default='-p',
-            description='Slurm option to specify partition for testing')
-    variant('slurm_partition',
-            default='normal',
-            description='Slurm partition for testing')
-
-    variant('slurm_opt_nodes',
-            default='-n',
-            description='Slurm option to specify number of nodes for testing')
-    variant('slurm_nodes',
-            default='1',
-            description='Pattern to specify number of nodes for testing')
-
-    variant('slurm_opt_account',
-            default='-A',
-            description='Slurm option to specify account for testing')
-    variant('slurm_account',
-            default='g110',
-            description='Slurm option to specify account for testing')
-
-    variant(
-        'slurm_opt_constraint',
-        default='-C',
-        description='Slurm option to specify constraints for nodes requested')
-    variant('slurm_constraint',
-            default='gpu',
-            description='Slurm constraints for nodes requested')
 
     conflicts(
         '@dev-build',

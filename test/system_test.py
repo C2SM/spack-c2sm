@@ -139,6 +139,36 @@ def spack_devbuild_and_test(spec: str,
                        cwd=cwd,
                        srun=True)
 
+def spack_env_dev_install_and_test_cosmo(spack_env: str,
+                                   branch: str,
+                                   log_filename: str = None)
+
+    # in case we use serialbox or another python preprocessor
+    devirtualize_env()
+
+    unique_folder = 'cosmo_' + uuid.uuid4(
+    ).hex  # to avoid cloning into the same folder and having race conditions
+    subprocess.run(
+        f'git clone --depth 1 --recurse-submodules -b {branch} git@github.com:C2SM-RCM/cosmo.git {unique_folder}',
+        check=True,
+        shell=True)
+
+    log_filename = sanitized_filename(log_filename or spack_env)
+
+    # limit number of build-jobs to 4 because no srun used
+    log_with_spack('spack install --until build -n -v',
+                   'system_test',
+                   log_filename,
+                   cwd=unique_folder,
+                   env=spack_env,
+                   srun=True)
+
+    log_with_spack('spack install --test=root -n -v',
+                   'system_test',
+                   log_filename,
+                   cwd=unique_folder,
+                   env=spack_env,
+                   srun=False)
 
 def spack_env_dev_install_and_test(spack_env: str,
                                    icon_branch: str,
@@ -227,15 +257,24 @@ class ClawTest(unittest.TestCase):
 @pytest.mark.no_tsa  # irrelevant
 class CosmoTest(unittest.TestCase):
 
-    def test_install_version_6_0_gpu(self):
-        spack_install_and_test(
-            f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}',
-            split_phases=True)
+    def test_install_c2sm_master_cpu(self):
+        spack_env_dev_install_and_test_cosmo(
+            'cosmo/ACC/spack/v0.20.1.0/nvhpc_cpu_double',
+            'dev_spackv0.20.1')
 
-    def test_install_version_6_0_cpu(self):
-        spack_install_and_test(
-            f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}',
-            split_phases=True)
+    def test_install_c2sm_master_gpu(self):
+        spack_env_dev_install_and_test_cosmo(
+            'cosmo/ACC/spack/v0.20.1.0/nvhpc_gpu_double',
+            'dev_spackv0.20.1')
+    #def test_install_version_6_0_gpu(self):
+    #    spack_install_and_test(
+    #        f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}',
+    #        split_phases=True)
+
+    #def test_install_version_6_0_cpu(self):
+    #    spack_install_and_test(
+    #        f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}',
+    #        split_phases=True)
 
     @pytest.mark.serial_only  # devbuildcosmo does a forced uninstall
     def test_devbuildcosmo(self):
