@@ -13,12 +13,9 @@ class PytorchFortran(CMakePackage):
     homepage = "https://github.com/alexeedm/pytorch-fortran"
     url = "https://github.com/alexeedm/pytorch-fortran.git"
 
-    version('0.4',
-            git=url,
-            tag='v0.4')
+    version('0.4', git=url, tag='v0.4')
 
     maintainers = ['juckerj']
-
 
     depends_on('pytorch-fortran-proxy')
 
