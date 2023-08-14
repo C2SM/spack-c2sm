@@ -1,4 +1,4 @@
-# Copyright 2013-2022 Lawrence Livermore National Security, LLC and other
+# Copyright 2013-2023 Lawrence Livermore National Security, LLC and other
 # Spack Project Developers. See the top-level COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
@@ -15,9 +15,36 @@ class CrayMpich(Package):
 
     homepage = "https://www.hpe.com/us/en/compute/hpc/hpc-software.html"
     url = "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.18.4-gcc.tar.gz"
-
     maintainers = ["haampie"]
 
+    version(
+        "8.1.25-gcc",
+        sha256=
+        "95a8a161dc9704ea7b971dc8c1b7ec4d63de57e2f6932f0aa3d1ff1d73899765",
+        url=
+        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.25-gcc.tar.gz",
+    )
+    version(
+        "8.1.25-nvhpc",
+        sha256=
+        "7a89a3f5d35538a4f7984c1403ca888e1b018485597318eaefa4639341e1eb27",
+        url=
+        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.25-nvhpc.tar.gz",
+    )
+    version(
+        "8.1.24-gcc",
+        sha256=
+        "3da0e421c3faaadbe18e57dd033b0ec6513e0d9ed7fbfa77f05a02bada4cd483",
+        url=
+        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.24-gcc.tar.gz",
+    )
+    version(
+        "8.1.24-nvhpc",
+        sha256=
+        "1b507f4e9150cf188a0571aad0d190fc8ee981def1d6198c998673d73828ed6f",
+        url=
+        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.24-nvhpc.tar.gz",
+    )
     version(
         "8.1.23-gcc",
         sha256=
@@ -82,6 +109,36 @@ class CrayMpich(Package):
 
     # libfabric.so.1
     depends_on("libfabric@1:", type="link")
+
+    with when("@8.1.25-gcc"):
+        # libgfortran.so.5
+        conflicts("%gcc@:7")
+        for __compiler in spack.compilers.supported_compilers():
+            if __compiler != "gcc":
+                conflicts("%{}".format(__compiler), msg="gcc required")
+
+    with when("@8.1.25-nvhpc"):
+        conflicts("%nvhpc@:20.7")
+        conflicts("+rocm")
+        conflicts("~cuda")
+        for __compiler in spack.compilers.supported_compilers():
+            if __compiler != "nvhpc":
+                conflicts("%{}".format(__compiler), msg="nvhpc required")
+
+    with when("@8.1.24-gcc"):
+        # libgfortran.so.5
+        conflicts("%gcc@:7")
+        for __compiler in spack.compilers.supported_compilers():
+            if __compiler != "gcc":
+                conflicts("%{}".format(__compiler), msg="gcc required")
+
+    with when("@8.1.24-nvhpc"):
+        conflicts("%nvhpc@:20.7")
+        conflicts("+rocm")
+        conflicts("~cuda")
+        for __compiler in spack.compilers.supported_compilers():
+            if __compiler != "nvhpc":
+                conflicts("%{}".format(__compiler), msg="nvhpc required")
 
     with when("@8.1.23-gcc"):
         # libgfortran.so.5
@@ -238,3 +295,44 @@ class CrayMpich(Package):
                     gtl_library,
                     self.prefix.bin.mpifort,
                     string=True)
+
+    @property
+    def headers(self):
+        hdrs = find_headers("mpi", self.prefix.include, recursive=True)
+        hdrs += find_headers("cray_version",
+                             self.prefix.include,
+                             recursive=True)  # cray_version.h
+        # cray-mpich depends on cray-pmi
+        hdrs += find_headers("pmi", self.prefix.include,
+                             recursive=True)  # See cray-pmi package
+        hdrs.directories = os.path.dirname(hdrs[0])
+        return hdrs
+
+    @property
+    def libs(self):
+        query_parameters = self.spec.last_query.extra_parameters
+
+        libraries = ["libmpi", "libmpich"]
+
+        if "f77" in query_parameters:
+            libraries.extend(
+                ["libmpifort", "libmpichfort", "libfmpi", "libfmpich"])
+
+        if "f90" in query_parameters:
+            libraries.extend(["libmpif90", "libmpichf90"])
+
+        if "+cuda" in self.spec:
+            libraries.append("libmpi*cuda")
+
+        if "+rocm" in self.spec:
+            libraries.append("libmpi*hsa")
+
+        libs = []
+        for lib_folder in [self.prefix.lib, self.prefix.lib64]:
+            libs += find_libraries(libraries, root=lib_folder, recursive=True)
+            # cray-mpich depends on cray-pmi
+            libs += find_libraries("libpmi", root=lib_folder, recursive=True)
+            libs += find_libraries("libopa", root=lib_folder, recursive=True)
+            libs += find_libraries("libmpl", root=lib_folder, recursive=True)
+
+        return libs
