@@ -516,8 +516,7 @@ class Int2lmTest(unittest.TestCase):
         )
 
     def test_install_c2sm_master_gcc(self):
-        spack_install(
-            'int2lm @c2sm-master %gcc ^eccodes %gcc ^libgrib1 %gcc')
+        spack_install('int2lm @c2sm-master %gcc ^eccodes %gcc ^libgrib1 %gcc')
 
     @pytest.mark.no_balfrin  # fails because libgrib1 master fails
     @pytest.mark.no_tsa  # An error occurred in MPI_Bcast
