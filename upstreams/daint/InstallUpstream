@@ -10,6 +10,7 @@ pipeline {
                 steps {
                     sh"""
                     . ./setup-env.sh
+                    spack clean -a
                     spack env activate upstreams/daint/base
                     spack install -v
                     """
@@ -19,6 +20,7 @@ pipeline {
                 steps {
                     sh"""
                     . ./setup-env.sh
+                    spack clean -a
                     spack env activate upstreams/daint/icon-dsl
                     spack install -v
                     """
@@ -28,6 +30,7 @@ pipeline {
                 steps {
                     sh"""
                     . ./setup-env.sh
+                    spack clean -a
                     spack env activate upstreams/daint/icon-rttov
                     spack install -v
                     """
