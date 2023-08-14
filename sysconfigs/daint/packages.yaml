@@ -51,6 +51,10 @@ packages:
     externals:
     - spec: bzip2@1.0.6
       prefix: /usr
+  cmake:
+      externals:
+    - spec: cmake@3.17
+      prefix: /usr
   cosmo: # manually added
     variants: slave=daint cuda_arch=60
   cosmo-dycore: # manually added
