@@ -12,10 +12,9 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
         <script src="_static/clipboard.min.js"></script>
@@ -95,15 +94,15 @@
 <h2>Test packages (PR/MR/CI/CD)<a class="headerlink" href="#test-packages-pr-mr-ci-cd" title="Permalink to this heading"></a></h2>
 <p>You can use spack to test a PR/MR in your CI pipeline.
 This is a common way to do it.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span><span class="nb">cd</span> into the packages repo!
-<span class="gp">$ </span>git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b v0.18.1.10 https://github.com/C2SM/spack-c2sm.git
-<span class="gp">$ </span>. spack-c2sm/setup-env.sh
-<span class="gp">$ </span>spack dev-build --test<span class="o">=</span>root --show-log-on-error &lt;package&gt; @develop &lt;variant&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span><span class="nb">cd</span><span class="w"> </span>into<span class="w"> </span>the<span class="w"> </span>packages<span class="w"> </span>repo!
+<span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>--recurse-submodules<span class="w"> </span>--shallow-submodules<span class="w"> </span>-b<span class="w"> </span>v0.18.1.10<span class="w"> </span>https://github.com/C2SM/spack-c2sm.git
+<span class="gp">$ </span>.<span class="w"> </span>spack-c2sm/setup-env.sh
+<span class="gp">$ </span>spack<span class="w"> </span>dev-build<span class="w"> </span>--test<span class="o">=</span>root<span class="w"> </span>--show-log-on-error<span class="w"> </span>&lt;package&gt;<span class="w"> </span>@develop<span class="w"> </span>&lt;variant&gt;
 </pre></div>
 </div>
 <p>You can also use spack in your end-to-end tests.
 This is a common way to do it.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack install --test<span class="o">=</span>root --show-log-on-error &lt;package&gt; @&lt;version&gt; &lt;variant&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>install<span class="w"> </span>--test<span class="o">=</span>root<span class="w"> </span>--show-log-on-error<span class="w"> </span>&lt;package&gt;<span class="w"> </span>@&lt;version&gt;<span class="w"> </span>&lt;variant&gt;
 </pre></div>
 </div>
 </section>
