@@ -432,7 +432,7 @@ class IconTest(unittest.TestCase):
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_exclaim_test_gpu_dsl(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.7/daint_dsl_nvhpc', 
+            'config/cscs/spack/v0.18.1.7/daint_dsl_nvhpc',
             'git@github.com:C2SM/icon.git',
             'ci_dsl',
             'icon',
