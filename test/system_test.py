@@ -502,7 +502,7 @@ class InferoTest(unittest.TestCase):
 class Int2lmTest(unittest.TestCase):
 
     def test_install_version_3_00_gcc(self):
-        spack_install_and_test('int2lm @int2lm-3.00 %gcc')
+        spack_install('int2lm @int2lm-3.00 %gcc')
 
     @pytest.mark.serial_only
     @pytest.mark.no_balfrin  # fails because libgrib1 master fails
@@ -516,7 +516,7 @@ class Int2lmTest(unittest.TestCase):
         )
 
     def test_install_c2sm_master_gcc(self):
-        spack_install_and_test(
+        spack_install(
             'int2lm @c2sm-master %gcc ^eccodes %gcc ^libgrib1 %gcc')
 
     @pytest.mark.no_balfrin  # fails because libgrib1 master fails
