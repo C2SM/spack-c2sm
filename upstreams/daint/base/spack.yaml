@@ -2,7 +2,7 @@ spack:
   specs:
    # ICON 
   - matrix:
-    - [eccodes@2.19.0+fortran+aec+tools, cosmo-eccodes-definitions@2.19.0.7, serialbox@2.6.1+fortran]
+    - [eccodes@2.19.0+fortran+aec+tools, cosmo-eccodes-definitions@2.19.0.7, serialbox@2.6.1+fortran, libfyaml@0.7.12]
     - ['%nvhpc', '%cce', '%gcc']
   - libxml2@2.9.13%gcc
   - claw@2.0.3%nvhpc
@@ -20,9 +20,6 @@ spack:
     ~locale~log~math~mpi+multithreaded~nowide~numpy~pic+program_options~python~random
     ~regex~serialization+shared~signals~singlethreaded~stacktrace+system~taggedlayout
     ~test~thread~timer~type_erasure~versionedlayout~wave cxxstd=98 visibility=hidden
-
-  # we need cmake, otherwise /usr/bin/cmake will be used
-  - cmake@3.26.3%gcc
 
   concretizer:
     unify: when_possible
