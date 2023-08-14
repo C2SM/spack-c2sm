@@ -198,6 +198,7 @@ def spack_env_dev_install_and_test(spack_env: str,
                        env=spack_env,
                        srun=False)
 
+
 mpi: str = {
     'daint': 'mpich',
     'tsa': 'openmpi',
