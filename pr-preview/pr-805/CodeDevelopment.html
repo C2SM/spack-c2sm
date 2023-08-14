@@ -12,10 +12,9 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
         <script src="_static/clipboard.min.js"></script>
@@ -97,7 +96,7 @@ development workflow which is maintained by C2SM.</p>
 <h2>Plain dev-build<a class="headerlink" href="#plain-dev-build" title="Permalink to this heading"></a></h2>
 <p>This is the easiest way to build local sources.
 Enter the root of your source repository and execute:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack dev-build  &lt;package&gt; @develop &lt;variant&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>dev-build<span class="w">  </span>&lt;package&gt;<span class="w"> </span>@develop<span class="w"> </span>&lt;variant&gt;
 </pre></div>
 </div>
 <p>This will install the package as is. The downside of this approach is that
@@ -108,13 +107,13 @@ you need to go through all phases of a package build.</p>
 <p>We assume that developers of a package are familiar with its build system.
 Therefore, we reccomend to use Spack to set up the environment for the package.
 Building and testing should be done with the package’s build and test system.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>Load Spack!
-<span class="gp">$ </span>spack dev-build --before build &lt;package&gt; @develop &lt;variant&gt; <span class="c1"># stops dev-build before executing the phase &#39;build&#39;</span>
-<span class="gp">$ </span>spack build-env &lt;package&gt; @develop &lt;variant&gt; -- bash <span class="c1"># nests a bash shell with the build env vars loaded</span>
-<span class="gp"># </span>Work on the package!
-<span class="gp"># </span>Use the build system of the package! <span class="o">(</span>e.g. <span class="s1">&#39;make&#39;</span><span class="o">)</span>
-<span class="gp"># </span>Use the testing infrastructure of the package!
-<span class="gp">$ </span><span class="nb">exit</span> <span class="c1"># to exit the nested bash</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>Load<span class="w"> </span>Spack!
+<span class="gp">$ </span>spack<span class="w"> </span>dev-build<span class="w"> </span>--before<span class="w"> </span>build<span class="w"> </span>&lt;package&gt;<span class="w"> </span>@develop<span class="w"> </span>&lt;variant&gt;<span class="w"> </span><span class="c1"># stops dev-build before executing the phase &#39;build&#39;</span>
+<span class="gp">$ </span>spack<span class="w"> </span>build-env<span class="w"> </span>&lt;package&gt;<span class="w"> </span>@develop<span class="w"> </span>&lt;variant&gt;<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span><span class="c1"># nests a bash shell with the build env vars loaded</span>
+<span class="gp"># </span>Work<span class="w"> </span>on<span class="w"> </span>the<span class="w"> </span>package!
+<span class="gp"># </span>Use<span class="w"> </span>the<span class="w"> </span>build<span class="w"> </span>system<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>package!<span class="w"> </span><span class="o">(</span>e.g.<span class="w"> </span><span class="s1">&#39;make&#39;</span><span class="o">)</span>
+<span class="gp"># </span>Use<span class="w"> </span>the<span class="w"> </span>testing<span class="w"> </span>infrastructure<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>package!
+<span class="gp">$ </span><span class="nb">exit</span><span class="w"> </span><span class="c1"># to exit the nested bash</span>
 </pre></div>
 </div>
 <p>If you want multiple dev-builds at the same time, label them with separate <code class="docutils literal notranslate"><span class="pre">&#64;&lt;your-label&gt;</span></code>.
@@ -127,26 +126,26 @@ For more information about environments in general, consider reading the
 <a class="reference external" href="https://spack.readthedocs.io/en/latest/environments.html">official Spack docs</a>.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">Example environment for ICON</span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># This is a Spack Environment file.</span><span class="w"></span>
-<span class="c1">#</span><span class="w"></span>
-<span class="c1"># It describes a set of packages to be installed, along with</span><span class="w"></span>
-<span class="c1"># configuration settings.</span><span class="w"></span>
-<span class="nt">spack</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="c1"># add package specs to the `specs` list</span><span class="w"></span>
-<span class="w">  </span><span class="nt">specs</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">icon@develop%nvhpc +ecrad +rte-rrtmgp claw=std +cuda</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eccodes@2.19.0%nvhpc</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claw@2.0.3%nvhpc</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-blas%nvhpc</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-lapack%nvhpc</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">libxml2@2.9.13%gcc</span><span class="w"></span>
-<span class="w">  </span><span class="nt">view</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">  </span><span class="nt">concretizer</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">unify</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">  </span><span class="nt">develop</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">spec</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">icon@develop%nvhpc +ecrad +rte-rrtmgp claw=std +cuda</span><span class="w"></span>
-<span class="w">      </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">../../../../</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># This is a Spack Environment file.</span>
+<span class="c1">#</span>
+<span class="c1"># It describes a set of packages to be installed, along with</span>
+<span class="c1"># configuration settings.</span>
+<span class="nt">spack</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># add package specs to the `specs` list</span>
+<span class="w">  </span><span class="nt">specs</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">icon@develop%nvhpc +ecrad +rte-rrtmgp claw=std +cuda</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eccodes@2.19.0%nvhpc</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claw@2.0.3%nvhpc</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-blas%nvhpc</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-lapack%nvhpc</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">libxml2@2.9.13%gcc</span>
+<span class="w">  </span><span class="nt">view</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">concretizer</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">unify</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">develop</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">icon</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">spec</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">icon@develop%nvhpc +ecrad +rte-rrtmgp claw=std +cuda</span>
+<span class="w">      </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">../../../../</span>
 </pre></div>
 </div>
 </div>
@@ -154,15 +153,15 @@ For more information about environments in general, consider reading the
 This tells Spack to look for a certain spec in <code class="docutils literal notranslate"><span class="pre">path</span></code>.
 It is possible to specify multiple packages under <code class="docutils literal notranslate"><span class="pre">develop</span></code>.</p>
 <p>To activate a Spack environment, type</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack env activate &lt;path_to_folder_with_spack_yaml&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>env<span class="w"> </span>activate<span class="w"> </span>&lt;path_to_folder_with_spack_yaml&gt;
 </pre></div>
 </div>
 <p>To install the environment, type</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack install
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>install
 </pre></div>
 </div>
 <p>To deactivate a Spack environment, type</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack env deactivate
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>env<span class="w"> </span>deactivate
 </pre></div>
 </div>
 <p>Most of the Spack commands are sensitive to environments, see
