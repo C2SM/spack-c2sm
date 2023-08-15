@@ -141,23 +141,32 @@ def spack_devbuild_and_test(spec: str,
 
 
 def spack_env_dev_install_and_test(spack_env: str,
-                                   icon_branch: str,
+                                   url: str,
+                                   branch: str,
+                                   name: str,
                                    log_filename: str = None,
-                                   out_of_source: bool = False):
+                                   out_of_source: bool = False,
+                                   build_on_login_node: bool = False):
     """
-    Clones ICON with given branch into unique folder, activates the given spack
+    Clones repo with given branch into unique folder, activates the given spack
     environment, tests 'spack install' and writes the output into the log file.
     If log_filename is None, spack_env is used to create one.
+
+    ICON specials:
     If out_of_source is True, create additional folder and build there, BUT skip testing!
+    If build_on_login_node is True, do not run build-step on login node
     """
 
     # in case we use serialbox or another python preprocessor
     devirtualize_env()
 
-    unique_folder = 'icon_' + uuid.uuid4(
+    if name != 'icon' and out_of_source:
+        raise ValueError('out-of-source only possible with Icon')
+
+    unique_folder = name + '_' + uuid.uuid4(
     ).hex  # to avoid cloning into the same folder and having race conditions
     subprocess.run(
-        f'git clone --depth 1 --recurse-submodules -b {icon_branch} git@github.com:C2SM/icon.git {unique_folder}',
+        f'git clone --depth 1 --recurse-submodules -b {branch} {url} {unique_folder}',
         check=True,
         shell=True)
 
@@ -171,13 +180,12 @@ def spack_env_dev_install_and_test(spack_env: str,
         unique_folder = build_dir
         log_filename = f'{log_filename}_out_of_source'
 
-    # limit number of build-jobs to 4 because no srun used
-    log_with_spack('spack install -j 4 --until build -n -v',
+    log_with_spack('spack install -n -v',
                    'system_test',
                    log_filename,
                    cwd=unique_folder,
                    env=spack_env,
-                   srun=False)
+                   srun=not build_on_login_node)
 
     # for out-of-source build we can't run tests because required files
     # like scripts/spack/test.py or scripts/buildbot_script are not synced
@@ -376,34 +384,57 @@ class IconTest(unittest.TestCase):
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_gcc(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_cpu_gcc', 'icon-2.6.6.2')
+            'config/cscs/spack/v0.18.1.10/daint_cpu_gcc',
+            'git@github.com:C2SM/icon.git',
+            'icon-2.6.6.2',
+            'icon',
+            build_on_login_node=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_nvhpc_out_of_source(self):
         spack_env_dev_install_and_test(
             'config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc',
+            'git@github.com:C2SM/icon.git',
             'icon-2.6.6.2',
-            out_of_source=True)
+            'icon',
+            out_of_source=True,
+            build_on_login_node=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc', 'icon-2.6.6.2')
+            'config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc',
+            'git@github.com:C2SM/icon.git',
+            'icon-2.6.6.2',
+            'icon',
+            build_on_login_node=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_gpu(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_gpu_nvhpc', 'icon-2.6.6.2')
+            'config/cscs/spack/v0.18.1.10/daint_gpu_nvhpc',
+            'git@github.com:C2SM/icon.git',
+            'icon-2.6.6.2',
+            'icon',
+            build_on_login_node=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_nwp_test_cpu_cce(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_cpu_cce', 'icon-2.6.6.2')
+            'config/cscs/spack/v0.18.1.10/daint_cpu_cce',
+            'git@github.com:C2SM/icon.git',
+            'icon-2.6.6.2',
+            'icon',
+            build_on_login_node=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_exclaim_test_gpu_dsl(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.7/daint_dsl_nvhpc', 'ci_dsl')
+            'config/cscs/spack/v0.18.1.7/daint_dsl_nvhpc',
+            'git@github.com:C2SM/icon.git',
+            'ci_dsl',
+            'icon',
+            build_on_login_node=True)
 
 
 class IconHamTest(unittest.TestCase):
