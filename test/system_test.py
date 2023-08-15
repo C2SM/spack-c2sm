@@ -72,10 +72,7 @@ def spack_install_and_test(spec: str,
     if log_filename is None:
         log_filename = sanitized_filename(class_name + '-' + func_name)
 
-    if spec.startswith('cosmo '):
-        command = 'installcosmo'
-    else:
-        command = 'install'
+    command = 'install'
 
     if spec.startswith('py-'):
         devirtualize_env()
@@ -113,10 +110,7 @@ def spack_devbuild_and_test(spec: str,
     if log_filename is None:
         log_filename = sanitized_filename(class_name + '-' + func_name)
 
-    if spec.startswith('cosmo '):
-        command = 'devbuildcosmo'
-    else:
-        command = 'dev-build'
+    command = 'dev-build'
 
     if spec.startswith('py-'):
         devirtualize_env()
@@ -198,57 +192,6 @@ def spack_env_dev_install_and_test(spack_env: str,
                        env=spack_env,
                        srun=False)
 
-
-#def spack_env_dev_install_and_test(spack_env: str,
-#                                   icon_branch: str,
-#                                   log_filename: str = None,
-#                                   out_of_source: bool = False):
-#    """
-#    Clones ICON with given branch into unique folder, activates the given spack
-#    environment, tests 'spack install' and writes the output into the log file.
-#    If log_filename is None, spack_env is used to create one.
-#    If out_of_source is True, create additional folder and build there, BUT skip testing!
-#    """
-#
-#    # in case we use serialbox or another python preprocessor
-#    devirtualize_env()
-#
-#    unique_folder = 'icon_' + uuid.uuid4(
-#    ).hex  # to avoid cloning into the same folder and having race conditions
-#    subprocess.run(
-#        f'git clone --depth 1 --recurse-submodules -b {icon_branch} git@github.com:C2SM/icon.git {unique_folder}',
-#        check=True,
-#        shell=True)
-#
-#    log_filename = sanitized_filename(log_filename or spack_env)
-#
-#    if out_of_source:
-#        build_dir = os.path.join(unique_folder, 'build')
-#        os.makedirs(build_dir, exist_ok=True)
-#        shutil.copytree(os.path.join(unique_folder, 'config'),
-#                        os.path.join(build_dir, 'config'))
-#        unique_folder = build_dir
-#        log_filename = f'{log_filename}_out_of_source'
-#
-#    # limit number of build-jobs to 4 because no srun used
-#    log_with_spack('spack install -j 4 --until build -n -v',
-#                   'system_test',
-#                   log_filename,
-#                   cwd=unique_folder,
-#                   env=spack_env,
-#                   srun=False)
-#
-#    # for out-of-source build we can't run tests because required files
-#    # like scripts/spack/test.py or scripts/buildbot_script are not synced
-#    # in our spack-recipe to the build-folder
-#    if not out_of_source:
-#        log_with_spack('spack install --test=root -n -v',
-#                       'system_test',
-#                       log_filename,
-#                       cwd=unique_folder,
-#                       env=spack_env,
-#                       srun=False)
-#
 
 mpi: str = {
     'daint': 'mpich',
