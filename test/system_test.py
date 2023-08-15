@@ -44,7 +44,10 @@ def spack_install(spec: str, log_filename: str = None):
     if log_filename is None:
         log_filename = sanitized_filename(class_name + '-' + func_name)
 
-    command = 'install'
+    if spec.startswith('cosmo '):
+        command = 'installcosmo'
+    else:
+        command = 'install'
 
     if spec.startswith('py-'):
         devirtualize_env()
@@ -171,9 +174,7 @@ def spack_env_dev_install_and_test(spack_env: str,
         unique_folder = build_dir
         log_filename = f'{log_filename}_out_of_source'
 
-    # since v0.20.1 concretizer is more picky, advise to reuse installation
-    # from upstreams with --reuse
-    log_with_spack('spack install -n -v --reuse',
+    log_with_spack('spack install -n -v',
                    'system_test',
                    log_filename,
                    cwd=unique_folder,

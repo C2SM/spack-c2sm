@@ -1,0 +1,12 @@
+diff --git a/dycore/src/common/GCLExchange.hpp b/dycore/src/common/GCLExchange.hpp
+index d27146ec..d6fecdbf 100644
+--- a/dycore/src/common/GCLExchange.hpp
++++ b/dycore/src/common/GCLExchange.hpp
+@@ -6,6 +6,7 @@
+ #include <gridtools/common/halo_descriptor.hpp>
+ 
+ #include <array>
++#include <map>
+ 
+ template <typename DataType, typename Pattern>
+ class GCLExchange {
