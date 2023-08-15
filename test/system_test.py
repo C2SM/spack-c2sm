@@ -180,16 +180,7 @@ def spack_env_dev_install_and_test(spack_env: str,
         unique_folder = build_dir
         log_filename = f'{log_filename}_out_of_source'
 
-    # with v0.20.1 "--until build" applies to all root-spec in env
-    # therefore build all deps first
-    log_with_spack('spack install --only=dependencies -n -v',
-                   'system_test',
-                   log_filename,
-                   cwd=unique_folder,
-                   env=spack_env,
-                   srun=True)
-
-    log_with_spack('spack install --until build -n -v',
+    log_with_spack('spack install -n -v',
                    'system_test',
                    log_filename,
                    cwd=unique_folder,
@@ -426,11 +417,9 @@ class IconTest(unittest.TestCase):
 
     @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
     def test_install_nwp_gpu(self):
-        spack_install_and_test(f'icon @nwp-master %nvhpc +cuda')
-
-    @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
-    def test_install_nwp_cpu(self):
-        spack_install_and_test(f'icon @nwp-master %nvhpc ~cuda')
+        spack_install_and_test(
+            'icon @nwp-master %nvhpc +grib2 +eccodes-definitions +ecrad +art +dace gpu=openacc+cuda +mpi-gpu +realloc-buf +pgi-inlib ~aes ~jsbach ~ocean ~coupling ~rte-rrtmgp ~loop-exchange ~async-io-rma +mixed-precision'
+        )
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_gcc(self):
@@ -475,6 +464,15 @@ class IconTest(unittest.TestCase):
             'config/cscs/spack/v0.18.1.10/daint_cpu_cce',
             'git@github.com:C2SM/icon.git',
             'icon-2.6.6.2',
+            'icon',
+            build_on_login_node=True)
+
+    @pytest.mark.no_balfrin  # config file does not exist for this machine
+    def test_install_exclaim_test_gpu_dsl(self):
+        spack_env_dev_install_and_test(
+            'config/cscs/spack/v0.18.1.7/daint_dsl_nvhpc',
+            'git@github.com:C2SM/icon.git',
+            'ci_dsl',
             'icon',
             build_on_login_node=True)
 
