@@ -195,6 +195,10 @@ class Icon(AutotoolsPackage, CudaPackage):
             description='Build with GT4Py dynamical core',
             multi=True)
 
+    depends_on("autoconf", type="build", when="@2.6.6 build_system=autotools")
+    depends_on("automake", type="build", when="@2.6.6 build_system=autotools")
+    depends_on("libtool", type="build", when="@2.6.6 build_system=autotools")
+
     for x in dsl_values:
         depends_on('py-icon4py', when='dsl={0}'.format(x))
         depends_on('py-gridtools-cpp', when='dsl={0}'.format(x))
