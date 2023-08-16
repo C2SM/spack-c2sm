@@ -44,7 +44,7 @@ def spack_install(spec: str, log_filename: str = None):
     if log_filename is None:
         log_filename = sanitized_filename(class_name + '-' + func_name)
 
-    command = 'install --reuse'
+    command = 'install'
 
     if spec.startswith('py-'):
         devirtualize_env()
@@ -69,7 +69,7 @@ def spack_install_and_test(spec: str,
     if log_filename is None:
         log_filename = sanitized_filename(class_name + '-' + func_name)
 
-    command = 'install --reuse'
+    command = 'install'
 
     if spec.startswith('py-'):
         devirtualize_env()
@@ -107,7 +107,7 @@ def spack_devbuild_and_test(spec: str,
     if log_filename is None:
         log_filename = sanitized_filename(class_name + '-' + func_name)
 
-    command = 'dev-build --reuse'
+    command = 'dev-build'
 
     if spec.startswith('py-'):
         devirtualize_env()
