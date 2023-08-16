@@ -44,10 +44,7 @@ def spack_install(spec: str, log_filename: str = None):
     if log_filename is None:
         log_filename = sanitized_filename(class_name + '-' + func_name)
 
-    if spec.startswith('cosmo '):
-        command = 'installcosmo'
-    else:
-        command = 'install'
+    command = 'install --reuse'
 
     if spec.startswith('py-'):
         devirtualize_env()
@@ -72,7 +69,7 @@ def spack_install_and_test(spec: str,
     if log_filename is None:
         log_filename = sanitized_filename(class_name + '-' + func_name)
 
-    command = 'install'
+    command = 'install --reuse'
 
     if spec.startswith('py-'):
         devirtualize_env()
@@ -110,7 +107,7 @@ def spack_devbuild_and_test(spec: str,
     if log_filename is None:
         log_filename = sanitized_filename(class_name + '-' + func_name)
 
-    command = 'dev-build'
+    command = 'dev-build --reuse'
 
     if spec.startswith('py-'):
         devirtualize_env()
@@ -174,7 +171,7 @@ def spack_env_dev_install_and_test(spack_env: str,
         unique_folder = build_dir
         log_filename = f'{log_filename}_out_of_source'
 
-    log_with_spack('spack install -n -v',
+    log_with_spack('spack install --reuse -n -v',
                    'system_test',
                    log_filename,
                    cwd=unique_folder,
@@ -185,7 +182,7 @@ def spack_env_dev_install_and_test(spack_env: str,
     # like scripts/spack/test.py or scripts/buildbot_script are not synced
     # in our spack-recipe to the build-folder
     if not out_of_source:
-        log_with_spack('spack install --test=root -n -v',
+        log_with_spack('spack install --reuse --test=root -n -v',
                        'system_test',
                        log_filename,
                        cwd=unique_folder,
@@ -611,11 +608,11 @@ class PyIcon4pyTest(unittest.TestCase):
 
     def test_install_version_0_0_5(self):
         spack_install_and_test(
-            'py-icon4py @ 0.0.5 %gcc ^py-gt4py@1.1.1 ^python@3.10.4')
+            'py-icon4py @ 0.0.5 %gcc ^py-gt4py@1.1.1')
 
     def test_install_version_0_0_6(self):
         spack_install_and_test(
-            'py-icon4py @ 0.0.6 %gcc ^py-gt4py@1.1.2 ^python@3.10.4')
+            'py-icon4py @ 0.0.6 %gcc ^py-gt4py@1.1.2')
 
 
 class PyInflectionTest(unittest.TestCase):

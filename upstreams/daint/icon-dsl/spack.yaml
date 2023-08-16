@@ -1,6 +1,5 @@
 spack:
   specs:
-  - python@3.10.4%gcc@9.3.0
   - py-icon4py@0.0.4%gcc@9.3.0
   - py-icon4py@0.0.5%gcc@9.3.0
   - py-icon4py@0.0.6%gcc@9.3.0
