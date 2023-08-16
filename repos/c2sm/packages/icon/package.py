@@ -198,7 +198,7 @@ class Icon(AutotoolsPackage, CudaPackage):
     for x in dsl_values:
         depends_on('py-icon4py', when='dsl={0}'.format(x))
         depends_on('py-gridtools-cpp', when='dsl={0}'.format(x))
-        depends_on('boost',when='dsl={0}'.format(x))
+        depends_on('boost', when='dsl={0}'.format(x))
         conflicts('^python@:3.9,3.11:', when='dsl={0}'.format(x))
 
     depends_on('infero +quiet', when='+infero')
