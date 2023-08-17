@@ -50,5 +50,3 @@ class Libtorch(Package):
                         symlinks=True,
                         copy_function=shutil.copy)
 
-        # rpath_flags = '-Wl,-rpath={0}'.format(spec['glib'].prefix.lib)
-        # make('CXXFLAGS={0}'.format(rpath_flags))
