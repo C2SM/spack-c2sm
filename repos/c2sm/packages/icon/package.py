@@ -554,8 +554,7 @@ class AutotoolsBuilder(AutotoolsBuilder):
             libs += self.spec['cuda'].libs
 
             if 'none' in self.spec.variants['dsl'].value:
-                config_vars['NVCFLAGS'].extend(
-                    ['-ccbin CC'])
+                config_vars['NVCFLAGS'].extend(['-ccbin CC'])
 
             config_vars['NVCFLAGS'].extend([
                 '-g', '-O3',
