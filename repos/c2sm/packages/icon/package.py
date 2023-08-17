@@ -714,22 +714,25 @@ class Icon(AutotoolsPackage, CudaPackage):
 
         Overides function from spack.build_systems.autotools
 
-        CAUTION: Does only work if Spack is inside the git-repo
-                 of ICON, otherwise "git rev-pars --show-toplevel"
-                 fails!
-
         """
 
-        Git = which('git', required=True)
-        git_root = Git('rev-parse', '--show-toplevel',
-                       output=str).replace("\n", "")
-        if git_root != self.stage.source_path:
-            # mark out-of-source build for function
-            # copy_runscript_related_input_files
-            self.out_of_source_build = True
-            return git_root
-        else:
-            return self.stage.source_path
+        source_path = self.stage.source_path
+
+        # stage-folder is located in spack-c2sm, therefore make
+        # sure source_path has own .git-folder. Archived/Cached
+        # repos may not have it, then git-folder from spack-c2sm
+        # or any other repo detected as git_root
+        if os.path.exists(os.path.join(source_path,'.git')):
+            Git = which('git', required=True)
+            git_root = Git('rev-parse', '--show-toplevel',
+                           output=str,fail_on_error=True).replace("\n", "")
+            if git_root != source_path:
+                # mark out-of-source build for function
+                # copy_runscript_related_input_files
+                self.out_of_source_build = True
+                return git_root
+
+        return source_path
 
     def configure(self, spec, prefix):
         if os.path.exists(
