@@ -25,8 +25,6 @@ class Libtorch(Package):
             sha256=
             '262f723ee5a2caac977e089bc06e9d840ca33d70706fbd4a2fca04995bb94eb4')
 
-    depends_on('glib@2.27.0')
-
     phases = ['install']
 
     def install(self, spec, prefix):
