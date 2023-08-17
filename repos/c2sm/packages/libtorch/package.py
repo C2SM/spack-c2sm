@@ -49,4 +49,3 @@ class Libtorch(Package):
                         prefix.bin,
                         symlinks=True,
                         copy_function=shutil.copy)
-
