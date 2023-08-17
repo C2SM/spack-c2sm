@@ -4,6 +4,7 @@ from collections import defaultdict
 from llnl.util import lang, filesystem, tty
 from spack.util.environment import is_system_path, dump_environment
 from spack.util.executable import which_string, which
+from spack.build_systems.autotools import AutotoolsBuilder
 import spack.error as error
 
 
@@ -265,6 +266,8 @@ class Icon(AutotoolsPackage, CudaPackage):
     conflicts('+cuda-graphs', when='%pgi')
     conflicts('+cuda-graphs', when='%nvhpc@:23.2')
 
+class AutotoolsBuilder(AutotoolsBuilder):   
+
     # Flag to mark if we build out-of-source
     # Needed to trigger sync of input files for experiments
     out_of_source_build = False
@@ -331,7 +334,7 @@ class Icon(AutotoolsPackage, CudaPackage):
                 '--with-external-yaxt'
             ])
 
-        if self.compiler.name == 'gcc':
+        if self.spec.compiler.name == 'gcc':
             config_vars['CFLAGS'].append('-g')
             config_vars['ICON_CFLAGS'].append('-O3')
             config_vars['ICON_BUNDLED_CFLAGS'].append('-O2')
@@ -356,7 +359,7 @@ class Icon(AutotoolsPackage, CudaPackage):
             config_vars['ICON_OCEAN_FCFLAGS'].append('-O3')
 
             # Version-specific workarounds:
-            fc_version = self.compiler.version
+            fc_version = self.spec.compiler.version
             if fc_version >= ver(10):
                 config_vars['ICON_FCFLAGS'].append('-fallow-argument-mismatch')
                 config_vars['ICON_OCEAN_FCFLAGS'].append(
@@ -365,7 +368,7 @@ class Icon(AutotoolsPackage, CudaPackage):
                     # For externals/ecrad/ifsaux/random_numbers_mix.F90:
                     config_vars['ICON_ECRAD_FCFLAGS'].append(
                         '-fallow-invalid-boz')
-        elif self.compiler.name == 'intel':
+        elif self.spec.compiler.name == 'intel':
             config_vars['CFLAGS'].extend(
                 ['-g', '-gdwarf-4', '-O3', '-qno-opt-dynamic-align', '-ftz'])
             config_vars['FCFLAGS'].extend(
@@ -378,7 +381,7 @@ class Icon(AutotoolsPackage, CudaPackage):
                 '-qopt-report-phase=vec'
             ])
             config_args.append('--enable-intel-consistency')
-        elif self.compiler.name == 'nag':
+        elif self.spec.compiler.name == 'nag':
             config_vars['CFLAGS'].append('-g')
             config_vars['ICON_CFLAGS'].append('-O3')
             config_vars['ICON_BUNDLED_CFLAGS'].append('-O2')
@@ -408,7 +411,7 @@ class Icon(AutotoolsPackage, CudaPackage):
                 '-C=recursion'
             ])
             config_vars['ICON_BUNDLED_FCFLAGS'] = []
-        elif self.compiler.name in ['pgi', 'nvhpc']:
+        elif self.spec.compiler.name in ['pgi', 'nvhpc']:
             config_vars['CFLAGS'].extend(['-g', '-O2'])
             config_vars['FCFLAGS'].extend(
                 ['-g', '-O', '-Mrecursive', '-Mallocatable=03', '-Mbackslash'])
@@ -419,7 +422,7 @@ class Icon(AutotoolsPackage, CudaPackage):
                     '-gpu=cc{0}'.format(
                         self.spec.variants['cuda_arch'].value[0])
                 ])
-        elif self.compiler.name == 'cce':
+        elif self.spec.compiler.name == 'cce':
             config_vars['CFLAGS'].append('-g')
             config_vars['ICON_CFLAGS'].append('-O3')
             if self.spec.satisfies('%cce@13.0.0+coupling'):
@@ -431,7 +434,7 @@ class Icon(AutotoolsPackage, CudaPackage):
             ])
             if self.spec.variants['gpu'].value == 'openacc+cuda':
                 config_vars['FCFLAGS'].extend(['-hacc'])
-        elif self.compiler.name == 'aocc':
+        elif self.spec.compiler.name == 'aocc':
             config_vars['CFLAGS'].extend(['-g', '-O2'])
             config_vars['FCFLAGS'].extend(['-g', '-O2'])
             if self.spec.satisfies('~cdi-pio+yaxt'):
@@ -547,8 +550,11 @@ class Icon(AutotoolsPackage, CudaPackage):
 
             libs += self.spec['cuda'].libs
 
-            cuda_host_compiler = self.compiler.cxx
-            cuda_host_compiler_stdcxx_libs = self.compiler.stdcxx_libs
+            print(type(self.spec.compiler))
+            print(self.spec.compiler)
+            print(self.spec)
+            cuda_host_compiler = self.spec.cxx
+            cuda_host_compiler_stdcxx_libs = self.spec.compiler.stdcxx_libs
 
             if 'none' in self.spec.variants['dsl'].value:
                 config_vars['NVCFLAGS'].extend(
@@ -698,51 +704,6 @@ class Icon(AutotoolsPackage, CudaPackage):
             [join_path(self.build_directory, f) for f in ['Makefile', '*.mk']])
         return archive
 
-    @property
-    def build_directory(self):
-        """Overrides function from spack.build_system.autotools
-        
-        By default build_directory is identical as configure_directory
-        To enable out-of-source builds this is not the case anymore
-        """
-
-        return self.stage.source_path
-
-    @property
-    def configure_directory(self):
-        """Returns the directory where 'configure' resides.
-
-        Overides function from spack.build_systems.autotools
-
-        CAUTION: Does only work if Spack is inside the git-repo
-                 of ICON, otherwise "git rev-pars --show-toplevel"
-                 fails!
-
-        """
-
-        Git = which('git', required=True)
-        git_root = Git('rev-parse', '--show-toplevel',
-                       output=str).replace("\n", "")
-        if git_root != self.stage.source_path:
-            # mark out-of-source build for function
-            # copy_runscript_related_input_files
-            self.out_of_source_build = True
-            return git_root
-        else:
-            return self.stage.source_path
-
-    def configure(self, spec, prefix):
-        if os.path.exists(
-                os.path.join(self.build_directory,
-                             'icon.mk')) and self.build_uses_same_spec():
-            tty.warn(
-                'icon.mk already present -> skip configure stage',
-                '\t delete "icon.mk" or run "make distclean" to not skip configure'
-            )
-            return
-
-        # Call configure of Autotools
-        super().configure(spec, prefix)
 
     def build_uses_same_spec(self):
         """
@@ -800,3 +761,50 @@ class Icon(AutotoolsPackage, CudaPackage):
                     Ln("-sf", "-t", "run/", f"{dir}")
                 Ln("-sf", f"{icon_dir}/data")
                 Ln("-sf", f"{icon_dir}/vertical_coord_tables")
+
+    @property
+    def build_directory(self):
+        """Overrides function from spack.build_system.autotools.AutotoolsBuilder
+        
+        By default build_directory is identical as configure_directory
+        To enable out-of-source builds this is not the case anymore
+        """
+
+        return self.pkg.stage.source_path
+
+    @property
+    def configure_directory(self):
+        """Returns the directory where 'configure' resides.
+
+        Overides function from spack.build_systems.autotools.AutotoolsBuilder
+
+        CAUTION: Does only work if Spack is inside the git-repo
+                 of ICON, otherwise "git rev-pars --show-toplevel"
+                 fails!
+
+        """
+
+        Git = which('git', required=True)
+        git_root = Git('rev-parse', '--show-toplevel',
+                       output=str,fail_on_error=True).replace("\n", "")
+        if git_root != self.pkg.stage.source_path:
+            # mark out-of-source build for function
+            # copy_runscript_related_input_files
+            self.out_of_source_build = True
+            return git_root
+        else:
+            return self.pkg.stage.source_path
+
+    def configure(self, pkg, spec, prefix):
+        if os.path.exists(
+                os.path.join(self.build_directory,
+                             'icon.mk')) and self.build_uses_same_spec():
+            tty.warn(
+                'icon.mk already present -> skip configure stage',
+                '\t delete "icon.mk" or run "make distclean" to not skip configure'
+            )
+            return
+
+        print(pkg)
+        # Call configure of AutotoolsBuilder
+        super().configure(pkg, spec, prefix)
