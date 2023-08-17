@@ -52,4 +52,3 @@ class Libtorch(Package):
 
         # rpath_flags = '-Wl,-rpath={0}'.format(spec['glib'].prefix.lib)
         # make('CXXFLAGS={0}'.format(rpath_flags))
-
