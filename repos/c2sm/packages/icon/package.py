@@ -268,7 +268,8 @@ class Icon(AutotoolsPackage, CudaPackage):
     conflicts('+cuda-graphs', when='%pgi')
     conflicts('+cuda-graphs', when='%nvhpc@:23.2')
 
-class AutotoolsBuilder(AutotoolsBuilder):   
+
+class AutotoolsBuilder(AutotoolsBuilder):
 
     # Flag to mark if we build out-of-source
     # Needed to trigger sync of input files for experiments
@@ -704,7 +705,6 @@ class AutotoolsBuilder(AutotoolsBuilder):
             [join_path(self.build_directory, f) for f in ['Makefile', '*.mk']])
         return archive
 
-
     def build_uses_same_spec(self):
         """
         Ensure that configure is rerun in case spec has changed,
@@ -785,8 +785,10 @@ class AutotoolsBuilder(AutotoolsBuilder):
         """
 
         Git = which('git', required=True)
-        git_root = Git('rev-parse', '--show-toplevel',
-                       output=str,fail_on_error=True).replace("\n", "")
+        git_root = Git('rev-parse',
+                       '--show-toplevel',
+                       output=str,
+                       fail_on_error=True).replace("\n", "")
         if git_root != self.pkg.stage.source_path:
             # mark out-of-source build for function
             # copy_runscript_related_input_files
