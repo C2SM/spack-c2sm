@@ -1,3 +1,4 @@
+import inspect
 import os, subprocess, glob, re
 from collections import defaultdict
 
@@ -6,6 +7,7 @@ from spack.util.environment import is_system_path, dump_environment
 from spack.util.executable import which_string, which
 from spack.build_systems.autotools import AutotoolsBuilder
 import spack.error as error
+import llnl.util.filesystem as fs
 
 
 def validate_variant_dsl(pkg, name, value):
@@ -550,24 +552,14 @@ class AutotoolsBuilder(AutotoolsBuilder):
 
             libs += self.spec['cuda'].libs
 
-            print(type(self.spec.compiler))
-            print(self.spec.compiler)
-            print(self.spec)
-            cuda_host_compiler = self.spec.cxx
-            cuda_host_compiler_stdcxx_libs = self.spec.compiler.stdcxx_libs
-
             if 'none' in self.spec.variants['dsl'].value:
                 config_vars['NVCFLAGS'].extend(
-                    ['-ccbin {0}'.format(cuda_host_compiler)])
+                    ['-ccbin CC'])
 
             config_vars['NVCFLAGS'].extend([
                 '-g', '-O3',
                 '-arch=sm_{0}'.format(self.spec.variants['cuda_arch'].value[0])
             ])
-            # cuda_host_compiler_stdcxx_libs might contain compiler-specific
-            # flags (i.e. not the linker -l<library> flags), therefore we put
-            # the value to the config_flags directly.
-            config_vars['LIBS'].extend(cuda_host_compiler_stdcxx_libs)
 
         # Check for DSL variants and set corresponding Liskov options
         dsl = self.spec.variants['dsl'].value
@@ -648,7 +640,14 @@ class AutotoolsBuilder(AutotoolsBuilder):
                             string=True,
                             backup=False)
 
-    def build(self, spec, prefix):
+    def build(self, pkg, spec, prefix):
+        """
+        Overrides function from spack.build_system.autotools.AutotoolsBuilder
+
+        Run "make" on the build targets specified by the builder.
+        """
+        params = self.build_targets
+
         claw = self.spec.variants['claw'].value
         if claw != 'none' and make_jobs > 8:
             # Limit CLAW preprocessing to 8 parallel jobs to avoid
@@ -659,7 +658,8 @@ class AutotoolsBuilder(AutotoolsBuilder):
             make.jobs = 8
             make('preprocess')
             make.jobs = make_jobs
-        make(*self.build_targets)
+        with fs.working_dir(self.build_directory):
+            inspect.getmodule(self.pkg).make(*params)
 
     def check(self):
         # By default "check" calls make with targets "check" and "test".
@@ -791,8 +791,10 @@ class AutotoolsBuilder(AutotoolsBuilder):
             # mark out-of-source build for function
             # copy_runscript_related_input_files
             self.out_of_source_build = True
+            print(git_root)
             return git_root
         else:
+            print(self.pkg.stage.source_path)
             return self.pkg.stage.source_path
 
     def configure(self, pkg, spec, prefix):
@@ -805,6 +807,5 @@ class AutotoolsBuilder(AutotoolsBuilder):
             )
             return
 
-        print(pkg)
         # Call configure of AutotoolsBuilder
         super().configure(pkg, spec, prefix)
