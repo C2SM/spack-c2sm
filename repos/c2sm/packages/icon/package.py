@@ -722,10 +722,12 @@ class Icon(AutotoolsPackage, CudaPackage):
         # sure source_path has own .git-folder. Archived/Cached
         # repos may not have it, then git-folder from spack-c2sm
         # or any other repo detected as git_root
-        if os.path.exists(os.path.join(source_path,'.git')):
+        if os.path.exists(os.path.join(source_path, '.git')):
             Git = which('git', required=True)
-            git_root = Git('rev-parse', '--show-toplevel',
-                           output=str,fail_on_error=True).replace("\n", "")
+            git_root = Git('rev-parse',
+                           '--show-toplevel',
+                           output=str,
+                           fail_on_error=True).replace("\n", "")
             if git_root != source_path:
                 # mark out-of-source build for function
                 # copy_runscript_related_input_files
