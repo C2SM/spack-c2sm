@@ -718,11 +718,9 @@ class Icon(AutotoolsPackage, CudaPackage):
 
         source_path = self.stage.source_path
 
-        # stage-folder is located in spack-c2sm, therefore make
-        # sure source_path has own .git-folder. Archived/Cached
-        # repos may not have it, then git-folder from spack-c2sm
-        # or any other repo detected as git_root
-        if os.path.exists(os.path.join(source_path, '.git')):
+        # dev_path is indicator for dev-build or develop
+        # only case when out-of-source build are possible
+        if "dev_path" in self.spec.variants:
             Git = which('git', required=True)
             git_root = Git('rev-parse',
                            '--show-toplevel',
