@@ -16,12 +16,12 @@ class PyGridtoolsCpp(PythonPackage):
     maintainers = ['havogt']
 
     version("2.3.1",
-            url=whl_url + "gridtools_cpp-2.3.1-py3-none-any.whl",
+            url=whl_url_prefix + "gridtools_cpp-2.3.1-py3-none-any.whl",
             sha256=
             "90cf40287c4df7586bc497f9e612b1b79d5751cb41c62ac557d2d4999aaed954",
             expand=False)
     version("2.3.0",
-            url=whl_url + "gridtools_cpp-2.3.0-py3-none-any.whl",
+            url=whl_url_prefix + "gridtools_cpp-2.3.0-py3-none-any.whl",
             sha256=
             "0af02845a538a7c20791ecaeeb3b68c8b976b653ef8593a00beea60445ec38b6",
             expand=False)
