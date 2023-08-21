@@ -10,7 +10,23 @@ Please visit https://c2sm.github.io/spack-c2sm/latest/
 and https://github.com/C2SM/spack-c2sm#readme for up-to-date documentation.
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Contents:
 
    QuickStart
+   Install
+   C2SMGuidelines
+   SpackCommands
+   Problems
+   CodeDev
+   SpackManagement
+   CI
+   SpackChoice
+   PrTesting
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
