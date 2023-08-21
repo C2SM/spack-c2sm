@@ -268,6 +268,7 @@ class Icon(AutotoolsPackage, CudaPackage):
     # Flag to mark if we build out-of-source
     # Needed to trigger sync of input files for experiments
     out_of_source_build = False
+    out_of_source_configure_directory = ''
 
     # patch_libtool is a function from Autotoolspackage.
     # For BB we cannot use it because it finds all files
@@ -706,6 +707,7 @@ class Icon(AutotoolsPackage, CudaPackage):
         To enable out-of-source builds this is not the case anymore
         """
 
+
         return self.stage.source_path
 
     @property
@@ -716,7 +718,7 @@ class Icon(AutotoolsPackage, CudaPackage):
 
         """
 
-        source_path = self.stage.source_path
+        source_path = self.build_directory
 
         # dev_path is indicator for dev-build or develop
         # only case when out-of-source build are possible
@@ -730,9 +732,16 @@ class Icon(AutotoolsPackage, CudaPackage):
                 # mark out-of-source build for function
                 # copy_runscript_related_input_files
                 self.out_of_source_build = True
+                self.out_of_source_configure_directory = git_root
                 return git_root
 
         return source_path
+
+    @run_before('configure')
+    def report_out_of_source_directories(self):
+        if self.out_of_source_build:
+            tty.warn(f'build-directory: {self.build_directory}')
+            tty.warn(f'configure-directory: {self.out_of_source_configure_directory}')
 
     def configure(self, spec, prefix):
         if os.path.exists(
