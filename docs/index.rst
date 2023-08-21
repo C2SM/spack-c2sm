@@ -8,3 +8,9 @@ Welcome to C2SM Spack Documentation!
 spack-c2sm v0.17.1 is not supported anymore and so this documentation.
 Please visit https://c2sm.github.io/spack-c2sm/latest/
 and https://github.com/C2SM/spack-c2sm#readme for up-to-date documentation.
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Contents:
+
+   QuickStart
