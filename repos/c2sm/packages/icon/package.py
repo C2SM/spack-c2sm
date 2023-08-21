@@ -707,7 +707,6 @@ class Icon(AutotoolsPackage, CudaPackage):
         To enable out-of-source builds this is not the case anymore
         """
 
-
         return self.stage.source_path
 
     @property
@@ -741,7 +740,9 @@ class Icon(AutotoolsPackage, CudaPackage):
     def report_out_of_source_directories(self):
         if self.out_of_source_build:
             tty.warn(f'build-directory: {self.build_directory}')
-            tty.warn(f'configure-directory: {self.out_of_source_configure_directory}')
+            tty.warn(
+                f'configure-directory: {self.out_of_source_configure_directory}'
+            )
 
     def configure(self, spec, prefix):
         if os.path.exists(
