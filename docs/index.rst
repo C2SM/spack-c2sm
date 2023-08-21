@@ -5,28 +5,6 @@
 
 Welcome to C2SM Spack Documentation!
 =============================================
-Spack is the package manager used by C2SM and MeteoSwiss to install 
-and deploy our software on supercomputer 
-mostly at the Swiss Super Computing Center (CSCS).
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
-   QuickStart
-   Install
-   C2SMGuidelines
-   SpackCommands
-   Problems
-   CodeDev
-   SpackManagement
-   CI
-   SpackChoice
-   PrTesting
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+spack-c2sm v0.17.1 is not supported anymore and so this documentation.
+Please visit https://c2sm.github.io/spack-c2sm/latest/
+and https://github.com/C2SM/spack-c2sm#readme for up-to-date documentation.
