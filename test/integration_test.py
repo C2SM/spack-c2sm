@@ -274,6 +274,7 @@ class SpecTest(unittest.TestCase):
     def test_icon(self):
         spack_spec('icon')
         spack_spec('icon serialization=create claw=std')
+        spack_spec('icon fcgroup=DACE.externals/dace_icon.-O1')
 
     def test_icon_ham(self):
         spack_spec('icon-ham')
