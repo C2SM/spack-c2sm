@@ -17,12 +17,12 @@ def validate_variant_dsl(pkg, name, value):
 
 
 def check_variant_fcgroup(fcgroup):
-    pattern = re.compile(r"^[A-Z]+;.+;.")
+    pattern = re.compile(r"^[A-Z]+\..+\..")
     # fcgroup is False as default
     if pattern.match(fcgroup) or fcgroup == 'none':
         return True
     else:
-        tty.warn('Variant fcgroup needs format GROUP;files;flag')
+        tty.warn('Variant fcgroup needs format GROUP.files.flag')
         return False
 
 
@@ -618,16 +618,16 @@ class Icon(AutotoolsPackage, CudaPackage):
     def fcgroup_to_config_arg(self):
         arg = []
         for group in self.spec.variants['fcgroup'].value:
-            name = group.split(';')[0]
-            files = group.split(';')[1]
+            name = group.split('.')[0]
+            files = group.split('.')[1]
             arg.append(f'--enable-fcgroup-{name}={files}')
         return arg
 
     def fcgroup_to_config_var(self):
         var = {}
         for group in self.spec.variants['fcgroup'].value:
-            name = group.split(';')[0]
-            flag = group.split(';')[2]
+            name = group.split('.')[0]
+            flag = group.split('.')[2]
             # Note: flag needs to be a list
             var[f'ICON_{name}_FCFLAGS'] = [flag]
         return var
