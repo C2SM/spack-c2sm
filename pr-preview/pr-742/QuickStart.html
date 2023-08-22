@@ -12,14 +12,13 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
-        <script src="_static/clipboard.min.js"></script>
-        <script src="_static/copybutton.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=a5fa425f"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -95,55 +94,55 @@
 <section id="at-cscs-daint-tsa-balfrin">
 <h2>At CSCS (Daint, Tsa, Balfrin)<a class="headerlink" href="#at-cscs-daint-tsa-balfrin" title="Permalink to this heading"></a></h2>
 <p>To set up a Spack instance, clone the repository</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b v0.18.1.5 https://github.com/C2SM/spack-c2sm.git
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>--recurse-submodules<span class="w"> </span>--shallow-submodules<span class="w"> </span>-b<span class="w"> </span>v0.18.1.10<span class="w"> </span>https://github.com/C2SM/spack-c2sm.git
 </pre></div>
 </div>
 <p>To load it into your command line, execute</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>. spack-c2sm/setup-env.sh
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>.<span class="w"> </span>spack-c2sm/setup-env.sh
 </pre></div>
 </div>
 <p>This auto-detects your machine and configures your instance for it.
 You can force a machine with an argument. The name has to match a folder in sysconfigs.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>. spack-c2sm/setup-env.sh tsa
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>.<span class="w"> </span>spack-c2sm/setup-env.sh<span class="w"> </span>tsa
 </pre></div>
 </div>
 </section>
 <section id="local-machines-and-containers">
 <h2>Local machines and Containers<a class="headerlink" href="#local-machines-and-containers" title="Permalink to this heading"></a></h2>
 <p>Spack can autodetect compilers and pre-installed packages with</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack compiler find
-<span class="gp">$ </span>spack external find --all
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>compiler<span class="w"> </span>find
+<span class="gp">$ </span>spack<span class="w"> </span>external<span class="w"> </span>find<span class="w"> </span>--all
 </pre></div>
 </div>
 </section>
 <section id="use-packages">
 <h2>Use packages<a class="headerlink" href="#use-packages" title="Permalink to this heading"></a></h2>
 <p>To get information about a package, query Spack</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack info &lt;package&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>info<span class="w"> </span>&lt;package&gt;
 <span class="gp"># </span>e.g.
-<span class="gp">$ </span>spack info icon
+<span class="gp">$ </span>spack<span class="w"> </span>info<span class="w"> </span>icon
 </pre></div>
 </div>
 <p>To see what <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span></code> would install, ask for a spec</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack spec &lt;variant&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>spec<span class="w"> </span>&lt;variant&gt;
 <span class="gp"># </span>e.g.
-<span class="gp">$ </span>spack spec icon @master +ocean
+<span class="gp">$ </span>spack<span class="w"> </span>spec<span class="w"> </span>icon<span class="w"> </span>@master<span class="w"> </span>+ocean
 </pre></div>
 </div>
 <p>An unspecfied variant (e.g. <code class="docutils literal notranslate"><span class="pre">ocean</span></code>) can be concretized to ANY of its values. Spack isn’t required to use the default value when a variant is unspecified. The default value only serves as a tiebreaker.</p>
 <p>To install a package</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack install &lt;variant&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>install<span class="w"> </span>&lt;variant&gt;
 <span class="gp"># </span>e.g.
-<span class="gp">$ </span>spack install icon @master %gcc +ocean
+<span class="gp">$ </span>spack<span class="w"> </span>install<span class="w"> </span>icon<span class="w"> </span>@master<span class="w"> </span>%gcc<span class="w"> </span>+ocean
 </pre></div>
 </div>
 <p>To locate your install, query Spack</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack location --install-dir &lt;variant&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>location<span class="w"> </span>--install-dir<span class="w"> </span>&lt;variant&gt;
 </pre></div>
 </div>
 <p>This prints a list of all installs that satisfy the restrictions in your variant.</p>
 <p>To run it, you may need to load environment variables</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack load &lt;variant&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>load<span class="w"> </span>&lt;variant&gt;
 </pre></div>
 </div>
 </section>
@@ -152,17 +151,26 @@ You can force a machine with an argument. The name has to match a folder in sysc
 <p>ICON is built using environments.
 Environments sit in a folder with a name and are defined in a <code class="docutils literal notranslate"><span class="pre">spack.yaml</span></code> file.
 For ICON, they are located in <code class="docutils literal notranslate"><span class="pre">config/cscs/spack/&lt;version&gt;/&lt;machine&gt;_&lt;target&gt;_&lt;compiler&gt;</span></code>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><strong>On Balfrin:</strong>
+In case your Spack environment requires Python, a compatability issue
+with <cite>openssl</cite> and <cite>git</cite> appears.</p>
+<p><code class="docutils literal notranslate"><span class="pre">/usr/bin/ssh:</span> <span class="pre">symbol</span> <span class="pre">lookup</span> <span class="pre">error:</span> <span class="pre">/usr/bin/ssh:</span> <span class="pre">undefined</span> <span class="pre">symbol:</span> <span class="pre">EVP_KDF_CTX_free,</span> <span class="pre">version</span> <span class="pre">OPENSSL_1_1_1d</span></code></p>
+<p>To circumvent that simply do
+<code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">load</span> <span class="pre">git</span></code> prior to activation of the environment.</p>
+</div>
 <p>To activate the Spack environment, type</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack env activate -p -d &lt;path_to_folder_with_spack_yaml&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>env<span class="w"> </span>activate<span class="w"> </span>-d<span class="w"> </span>&lt;path_to_folder_with_spack_yaml&gt;
 </pre></div>
 </div>
 <p>To install the environment and so ICON, type</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack install
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>install
 </pre></div>
 </div>
 <p>Example to build ICON for CPU with NVHPC:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack env activate -p -d config/cscs/spack/v0.18.1.5/daint_cpu_nvhpc
-<span class="gp">$ </span>spack install
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>env<span class="w"> </span>activate<span class="w"> </span>-d<span class="w"> </span>config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc
+<span class="gp">$ </span>spack<span class="w"> </span>install
 </pre></div>
 </div>
 <div class="admonition attention">
@@ -171,10 +179,10 @@ For ICON, they are located in <code class="docutils literal notranslate"><span c
 need to reconfigure you can either delete the file or run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">distclean</span></code>.</p>
 </div>
 <p>Out-of-source builds are possible as follows:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir cpu <span class="o">&amp;&amp;</span> <span class="nb">cd</span> cpu
-<span class="gp">$ </span>cp -r ../config .
-<span class="gp">$ </span>spack env activate -p -d config/cscs/spack/v0.18.1.5/daint_cpu_nvhpc
-<span class="gp">$ </span>spack install
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir<span class="w"> </span>cpu<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>cpu
+<span class="gp">$ </span>cp<span class="w"> </span>-r<span class="w"> </span>../config<span class="w"> </span>.
+<span class="gp">$ </span>spack<span class="w"> </span>env<span class="w"> </span>activate<span class="w"> </span>-d<span class="w"> </span>config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc
+<span class="gp">$ </span>spack<span class="w"> </span>install
 </pre></div>
 </div>
 <div class="admonition attention">
@@ -189,18 +197,18 @@ only works if the build-folder is located inside the Git repo of ICON.</p>
 <p>COSMO is currently receiving special treatment. It has its own commands in spack-c2sm.
 The reason for this is that the optional depencendy on the C++ dycore lives in the same repository as COSMO.</p>
 <p>To install COSMO</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack installcosmo cosmo @&lt;version&gt; %nvhpc &lt;variants&gt; ^mpich%nvhpc
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>installcosmo<span class="w"> </span>cosmo<span class="w"> </span>@&lt;version&gt;<span class="w"> </span>%nvhpc<span class="w"> </span>&lt;variants&gt;<span class="w"> </span>^mpich%nvhpc
 </pre></div>
 </div>
 <p>To develop COSMO</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> &lt;/path/to/package&gt;
-<span class="gp">$ </span>spack devbuildcosmo cosmo @&lt;version&gt; %nvhpc &lt;variants&gt; ^mpich%nvhpc
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>&lt;/path/to/package&gt;
+<span class="gp">$ </span>spack<span class="w"> </span>devbuildcosmo<span class="w"> </span>cosmo<span class="w"> </span>@&lt;version&gt;<span class="w"> </span>%nvhpc<span class="w"> </span>&lt;variants&gt;<span class="w"> </span>^mpich%nvhpc
 </pre></div>
 </div>
 <p>Example variants:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack installcosmo cosmo @org-master <span class="nv">cosmo_target</span><span class="o">=</span>cpu <span class="c1"># CPU variant of https://github.com/COSMO-ORG/cosmo master</span>
-<span class="gp">$ </span>spack installcosmo cosmo @org-master <span class="nv">cosmo_target</span><span class="o">=</span>gpu <span class="c1"># GPU variant of https://github.com/COSMO-ORG/cosmo master</span>
-<span class="gp">$ </span>spack installcosmo cosmo @apn_5.09a.mch1.2.p1 <span class="nv">cosmo_target</span><span class="o">=</span>gpu <span class="c1"># GPU variant of https://github.com/MeteoSwiss-APN/cosmo/releases/tag/5.09a.mch1.2.p1</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>installcosmo<span class="w"> </span>cosmo<span class="w"> </span>@org-master<span class="w"> </span><span class="nv">cosmo_target</span><span class="o">=</span>cpu<span class="w"> </span><span class="c1"># CPU variant of https://github.com/COSMO-ORG/cosmo master</span>
+<span class="gp">$ </span>spack<span class="w"> </span>installcosmo<span class="w"> </span>cosmo<span class="w"> </span>@org-master<span class="w"> </span><span class="nv">cosmo_target</span><span class="o">=</span>gpu<span class="w"> </span><span class="c1"># GPU variant of https://github.com/COSMO-ORG/cosmo master</span>
+<span class="gp">$ </span>spack<span class="w"> </span>installcosmo<span class="w"> </span>cosmo<span class="w"> </span>@apn_5.09a.mch1.2.p1<span class="w"> </span><span class="nv">cosmo_target</span><span class="o">=</span>gpu<span class="w"> </span><span class="c1"># GPU variant of https://github.com/MeteoSwiss-APN/cosmo/releases/tag/5.09a.mch1.2.p1</span>
 </pre></div>
 </div>
 </section>

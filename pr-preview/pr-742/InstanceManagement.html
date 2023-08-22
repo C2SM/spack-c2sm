@@ -12,14 +12,13 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
-        <script src="_static/clipboard.min.js"></script>
-        <script src="_static/copybutton.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=a5fa425f"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -110,7 +109,7 @@ For automated systems that regularly set up a new Spack instance, using a fixed 
 <section id="create-a-new-spack-instance">
 <h2>Create a new Spack instance<a class="headerlink" href="#create-a-new-spack-instance" title="Permalink to this heading"></a></h2>
 <p>To get an instance, clone spack-c2sm and its submodule spack.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone --depth <span class="m">1</span> --recurse-submodules --shallow-submodules -b &lt;branch/tag&gt; https://github.com/C2SM/spack-c2sm.git
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>--recurse-submodules<span class="w"> </span>--shallow-submodules<span class="w"> </span>-b<span class="w"> </span>&lt;branch/tag&gt;<span class="w"> </span>https://github.com/C2SM/spack-c2sm.git
 </pre></div>
 </div>
 <p>The arguments <code class="docutils literal notranslate"><span class="pre">--depth</span> <span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">--shallow-submodules</span></code> are optional, but they reduce the amount of downloaded data.
@@ -124,7 +123,7 @@ This may corrupt your Spack instance, therefore <code class="docutils literal no
 <code class="docutils literal notranslate"><span class="pre">setup-env.sh</span> <span class="pre">&lt;machine&gt;</span></code> forces a machine. This also works with ‘unknown’ as a machine, which is useful in a container.
 It prints which machine it detected. Currently it’s able to detect Balfrin, Piz Daint and Tsa.
 You may simply execute</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>. spack-c2sm/setup-env.sh
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>.<span class="w"> </span>spack-c2sm/setup-env.sh
 </pre></div>
 </div>
 </section>
@@ -132,8 +131,8 @@ You may simply execute</p>
 <h2>Update Spack instance<a class="headerlink" href="#update-spack-instance" title="Permalink to this heading"></a></h2>
 <p>Before updating, we recommend to clean the instance, as this avoids occasional, hard to debug problems. For more infos, see below.
 To update a Spack instance, pull the latest version from the repository and update the submodules:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git pull
-<span class="gp">$ </span>git submodule update --recursive
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git<span class="w"> </span>pull
+<span class="gp">$ </span>git<span class="w"> </span>submodule<span class="w"> </span>update<span class="w"> </span>--recursive
 </pre></div>
 </div>
 <p>This is required after upgrades at CSCS or if you need new features of a package.</p>
@@ -141,9 +140,9 @@ To update a Spack instance, pull the latest version from the repository and upda
 <section id="clean-spack-instance">
 <h2>Clean Spack instance<a class="headerlink" href="#clean-spack-instance" title="Permalink to this heading"></a></h2>
 <p>To clean a Spack instance, empty the caches, uninstall everything and remove misc caches:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack clean -a <span class="c1">#[cleans all misc caches](https://spack.readthedocs.io/en/v0.18.1/command_index.html?highlight=spack%20load#spack-clean)</span>
-<span class="gp">$ </span>spack uninstall -a <span class="c1">#[uninstalls all packages](https://spack.readthedocs.io/en/v0.18.1/command_index.html?highlight=spack%20load#spack-uninstall)</span>
-<span class="gp">$ </span>rm -rf ~/.spack <span class="c1">#removes user scope data</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>clean<span class="w"> </span>-a<span class="w"> </span><span class="c1">#[cleans all misc caches](https://spack.readthedocs.io/en/v0.18.1/command_index.html?highlight=spack%20load#spack-clean)</span>
+<span class="gp">$ </span>spack<span class="w"> </span>uninstall<span class="w"> </span>-a<span class="w"> </span><span class="c1">#[uninstalls all packages](https://spack.readthedocs.io/en/v0.18.1/command_index.html?highlight=spack%20load#spack-uninstall)</span>
+<span class="gp">$ </span>rm<span class="w"> </span>-rf<span class="w"> </span>~/.spack<span class="w"> </span><span class="c1">#removes user scope data</span>
 </pre></div>
 </div>
 </section>

@@ -12,14 +12,13 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
-        <script src="_static/clipboard.min.js"></script>
-        <script src="_static/copybutton.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=a5fa425f"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -147,11 +146,11 @@
 <p>List and search installed packages.</p>
 <section id="usage-spack-find">
 <h3>Usage (spack find)<a class="headerlink" href="#usage-spack-find" title="Permalink to this heading"></a></h3>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack find &lt;package&gt;@&lt;version&gt;%&lt;compiler&gt; +&lt;variants&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>find<span class="w"> </span>&lt;package&gt;@&lt;version&gt;%&lt;compiler&gt;<span class="w"> </span>+&lt;variants&gt;
 </pre></div>
 </div>
 <p>Example output:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack find -v cosmo
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>find<span class="w"> </span>-v<span class="w"> </span>cosmo
 
 <span class="go">==&gt; 8 installed packages</span>
 <span class="go">-- linux-rhel7-skylake_avx512 / gcc@8.3.0 -----------------------</span>
@@ -175,11 +174,11 @@
 <section id="machine-processing-spack-find">
 <h3>Machine processing (spack find)<a class="headerlink" href="#machine-processing-spack-find" title="Permalink to this heading"></a></h3>
 <p>For a raw list of installation folders, use</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack find --format <span class="s2">&quot;{prefix}&quot;</span> &lt;spec&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>find<span class="w"> </span>--format<span class="w"> </span><span class="s2">&quot;{prefix}&quot;</span><span class="w"> </span>&lt;spec&gt;
 </pre></div>
 </div>
 <p>Example output:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack find --format <span class="s2">&quot;{prefix}&quot;</span> cosmo
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>find<span class="w"> </span>--format<span class="w"> </span><span class="s2">&quot;{prefix}&quot;</span><span class="w"> </span>cosmo
 <span class="go">/project/g110/spack-install/tsa/cosmo/apn_5.09a.mch1.2.p2/pgi/qh4lqyvz73zcm2emfwwhcfue6kkm3xyo</span>
 <span class="go">/project/g110/spack-install/tsa/cosmo/apn_5.09a.mch1.2.p2/pgi/ssezzpu36dc4j5lc35rkytuieicoptfr</span>
 <span class="go">/project/g110/spack-install/tsa/cosmo/mch/pgi/4h7b7x62dcpvrctghjv23jrpnkep4ela</span>
@@ -214,7 +213,7 @@ filled with the current defaults, you have to use Python.</p>
 </pre></div>
 </div>
 <p>or as a one-liner</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack python -c <span class="s2">&quot;print(spack.spec.Spec(&#39;cosmo&#39;).concretized().format(&#39;{prefix}&#39;))&quot;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;print(spack.spec.Spec(&#39;cosmo&#39;).concretized().format(&#39;{prefix}&#39;))&quot;</span>
 </pre></div>
 </div>
 </section>
@@ -224,7 +223,7 @@ filled with the current defaults, you have to use Python.</p>
 <p>List and search available packages.</p>
 <section id="usage-spack-list">
 <h3>Usage (spack list)<a class="headerlink" href="#usage-spack-list" title="Permalink to this heading"></a></h3>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack list &lt;package&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>list<span class="w"> </span>&lt;package&gt;
 </pre></div>
 </div>
 </section>
@@ -241,7 +240,7 @@ filled with the current defaults, you have to use Python.</p>
 (i.e. COSMO with target <code class="docutils literal notranslate"><span class="pre">gpu</span></code> or <code class="docutils literal notranslate"><span class="pre">cpu</span></code>).</p>
 <section id="usage-spack-info">
 <h3>Usage (spack info)<a class="headerlink" href="#usage-spack-info" title="Permalink to this heading"></a></h3>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack info &lt;package&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>info<span class="w"> </span>&lt;package&gt;
 </pre></div>
 </div>
 </section>
@@ -252,7 +251,7 @@ filled with the current defaults, you have to use Python.</p>
 before actually installing it.</p>
 <section id="usage-spack-spec">
 <h3>Usage (spack spec)<a class="headerlink" href="#usage-spack-spec" title="Permalink to this heading"></a></h3>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack spec &lt;package&gt;@&lt;version&gt;%&lt;compiler&gt; +&lt;variants&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>spec<span class="w"> </span>&lt;package&gt;@&lt;version&gt;%&lt;compiler&gt;<span class="w"> </span>+&lt;variants&gt;
 </pre></div>
 </div>
 </section>
@@ -269,7 +268,7 @@ Module files are also created during this process and installed under
 <p>However, being able to compile any other package might require
 installing your Spack instance if that package is installed by a Jenkins plan.
 An attempt to build your working copy with the command</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack install &lt;package&gt;@master ...
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>install<span class="w"> </span>&lt;package&gt;@master<span class="w"> </span>...
 </pre></div>
 </div>
 <p>will not perform any compilation if Spack identifies that the requested version
@@ -283,7 +282,7 @@ For any other package that does not contain this <code class="docutils literal n
 you need to install our own spack instance.</p>
 <section id="usage-spack-install">
 <h3>Usage (spack install)<a class="headerlink" href="#usage-spack-install" title="Permalink to this heading"></a></h3>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack install &lt;package&gt;@&lt;version&gt;%&lt;compiler&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>install<span class="w"> </span>&lt;package&gt;@&lt;version&gt;%&lt;compiler&gt;
 </pre></div>
 </div>
 </section>
@@ -313,7 +312,7 @@ Versions of dependencies can be overwritten with user input. The precedence is t
 </ol>
 <section id="usage-spack-installcosmo">
 <h3>Usage (spack installcosmo)<a class="headerlink" href="#usage-spack-installcosmo" title="Permalink to this heading"></a></h3>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack installcosmo cosmo@&lt;version&gt;%&lt;compiler&gt; +&lt;variants&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>installcosmo<span class="w"> </span>cosmo@&lt;version&gt;%&lt;compiler&gt;<span class="w"> </span>+&lt;variants&gt;
 </pre></div>
 </div>
 </section>
@@ -346,8 +345,8 @@ In order to force spack to build the local developments anytime,
 you need to avoid the installation phase (see option <code class="docutils literal notranslate"><span class="pre">--until</span></code> below).</p>
 <section id="usage-spack-dev-build">
 <h3>Usage (spack dev-build)<a class="headerlink" href="#usage-spack-dev-build" title="Permalink to this heading"></a></h3>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> &lt;/path/to/package&gt;
-<span class="gp">$ </span>spack dev-build &lt;package&gt;@&lt;version&gt;%&lt;compiler&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>&lt;/path/to/package&gt;
+<span class="gp">$ </span>spack<span class="w"> </span>dev-build<span class="w"> </span>&lt;package&gt;@&lt;version&gt;%&lt;compiler&gt;
 </pre></div>
 </div>
 </section>
@@ -358,7 +357,7 @@ you need to avoid the installation phase (see option <code class="docutils liter
 (but skip tests for dependencies)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--until</span> <span class="pre">&lt;stage&gt;</span></code>: only run installation until certain stage, like <code class="docutils literal notranslate"><span class="pre">build</span></code> or <code class="docutils literal notranslate"><span class="pre">install</span></code></p></li>
 </ul>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack dev-build --until build &lt;package&gt;@&lt;version&gt;%&lt;compiler&gt; +&lt;variants&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>dev-build<span class="w"> </span>--until<span class="w"> </span>build<span class="w"> </span>&lt;package&gt;@&lt;version&gt;%&lt;compiler&gt;<span class="w"> </span>+&lt;variants&gt;
 </pre></div>
 </div>
 </section>
@@ -378,8 +377,8 @@ Versions of dependencies can be overwritten with user input. The precedence is t
 to allow builds of older COSMO versions.</p>
 <section id="usage-spack-devbuildcosmo">
 <h3>Usage (spack devbuildcosmo)<a class="headerlink" href="#usage-spack-devbuildcosmo" title="Permalink to this heading"></a></h3>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span> &lt;/path/to/package&gt;
-<span class="gp">$ </span>spack devbuildcosmo &lt;cosmo&gt;@&lt;version&gt;%&lt;compiler&gt; +&lt;variants&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>&lt;/path/to/package&gt;
+<span class="gp">$ </span>spack<span class="w"> </span>devbuildcosmo<span class="w"> </span>&lt;cosmo&gt;@&lt;version&gt;%&lt;compiler&gt;<span class="w"> </span>+&lt;variants&gt;
 </pre></div>
 </div>
 </section>
@@ -413,7 +412,7 @@ documentation</a>
 or <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">location</span> <span class="pre">-h</span></code>)</p>
 <section id="usage-spack-location">
 <h3>Usage (spack location)<a class="headerlink" href="#usage-spack-location" title="Permalink to this heading"></a></h3>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack location -i &lt;spec&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>location<span class="w"> </span>-i<span class="w"> </span>&lt;spec&gt;
 </pre></div>
 </div>
 </section>
@@ -426,7 +425,7 @@ a sourceable file with the install environment. In case you want to run tests of
 is what you need.</p>
 <section id="usage-spack-build-env">
 <h3>Usage (spack build-env)<a class="headerlink" href="#usage-spack-build-env" title="Permalink to this heading"></a></h3>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack build-env &lt;spec&gt; -- &lt;command&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>build-env<span class="w"> </span>&lt;spec&gt;<span class="w"> </span>--<span class="w"> </span>&lt;command&gt;
 </pre></div>
 </div>
 <p>Replacing <code class="docutils literal notranslate"><span class="pre">&lt;command&gt;</span></code> with <code class="docutils literal notranslate"><span class="pre">bash</span></code> allows to interactively execute programmes
@@ -445,7 +444,7 @@ in the install environment.</p>
 in order to open the correspondig <code class="docutils literal notranslate"><span class="pre">package.py</span></code> file and edit it directly.</p>
 <section id="usage-spack-edit">
 <h3>Usage (spack edit)<a class="headerlink" href="#usage-spack-edit" title="Permalink to this heading"></a></h3>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack edit &lt;package&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>edit<span class="w"> </span>&lt;package&gt;
 </pre></div>
 </div>
 </section>
@@ -459,7 +458,7 @@ like <code class="docutils literal notranslate"><span class="pre">LD_LIBRARY_PAT
 compiled by Spack.</p>
 <section id="usage-spack-load">
 <h3>Usage (spack load)<a class="headerlink" href="#usage-spack-load" title="Permalink to this heading"></a></h3>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack load &lt;spec&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>load<span class="w"> </span>&lt;spec&gt;
 </pre></div>
 </div>
 </section>

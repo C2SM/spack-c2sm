@@ -9,7 +9,7 @@ To set up a Spack instance, clone the repository
 
 .. code-block:: console
 
-  $ git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.18.1.5 https://github.com/C2SM/spack-c2sm.git
+  $ git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.18.1.10 https://github.com/C2SM/spack-c2sm.git
 
 To load it into your command line, execute
 
@@ -87,11 +87,21 @@ ICON is built using environments.
 Environments sit in a folder with a name and are defined in a ``spack.yaml`` file.
 For ICON, they are located in ``config/cscs/spack/<version>/<machine>_<target>_<compiler>``.
 
+..  tip::
+    **On Balfrin:** 
+    In case your Spack environment requires Python, a compatability issue
+    with `openssl` and `git` appears.
+
+    ``/usr/bin/ssh: symbol lookup error: /usr/bin/ssh: undefined symbol: EVP_KDF_CTX_free, version OPENSSL_1_1_1d``
+   
+    To circumvent that simply do
+    ``spack load git`` prior to activation of the environment.
+
 To activate the Spack environment, type
 
 .. code-block:: console
 
-    $ spack env activate -p -d <path_to_folder_with_spack_yaml>
+    $ spack env activate -d <path_to_folder_with_spack_yaml>
 
 To install the environment and so ICON, type
 
@@ -103,7 +113,7 @@ Example to build ICON for CPU with NVHPC:
 
 .. code-block:: console
 
-    $ spack env activate -p -d config/cscs/spack/v0.18.1.5/daint_cpu_nvhpc
+    $ spack env activate -d config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc
     $ spack install
 
 ..  attention::
@@ -116,7 +126,7 @@ Out-of-source builds are possible as follows:
 
     $ mkdir cpu && cd cpu
     $ cp -r ../config .
-    $ spack env activate -p -d config/cscs/spack/v0.18.1.5/daint_cpu_nvhpc
+    $ spack env activate -d config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc
     $ spack install
 
 ..  attention::
