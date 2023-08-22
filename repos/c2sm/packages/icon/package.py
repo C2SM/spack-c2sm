@@ -26,15 +26,15 @@ def check_variant_fcgroup(fcgroup):
         return False
 
 
-class Icon(AutotoolsPackage):
+class Icon(AutotoolsPackage, CudaPackage):
     """Icosahedral Nonhydrostatic Weather and Climate Model."""
 
     homepage = 'https://code.mpimet.mpg.de/projects/iconpublic'
-    url = 'https://gitlab.dkrz.de/icon/icon/-/archive/icon-2.6.5.1/icon-icon-2.6.5.1.tar.gz'
+    url = 'https://gitlab.dkrz.de/icon/icon/-/archive/icon-2.6.6/icon-icon-2.6.6.tar.gz'
     git = 'ssh://git@gitlab.dkrz.de/icon/icon.git'
 
     version('develop', submodules=True)
-    version('2.6.5.1', tag='icon-2.6.5.1', submodules=True)
+    version('2.6.6', tag='icon-2.6.6', submodules=True)
     version('exclaim-master',
             branch='master',
             git='ssh://git@github.com/C2SM/icon-exclaim.git',
@@ -49,7 +49,7 @@ class Icon(AutotoolsPackage):
 
     # The variants' default follow those of ICON
     # as described here
-    # https://gitlab.dkrz.de/icon/icon/-/blob/icon-2.6.5.1/configure#L1454-1557
+    # https://gitlab.dkrz.de/icon/icon/-/blob/icon-2.6.6/configure#L1457-1563
 
     # Model Features:
     variant('atmo',
@@ -57,25 +57,25 @@ class Icon(AutotoolsPackage):
             description='Enable the atmosphere component')
     variant('edmf',
             default=True,
-            description='Enable the EDMF turbulence component')  #
+            description='Enable the EDMF turbulence component')
     variant('les',
             default=True,
-            description='Enable the Large-Eddy Simulation component')  #
+            description='Enable the Large-Eddy Simulation component')
     variant('upatmo',
             default=True,
-            description='Enable the upper atmosphere component')  #
+            description='Enable the upper atmosphere component')
     variant('ocean', default=True, description='Enable the ocean component')
     variant('jsbach', default=True, description='Enable the land component')
     variant('waves',
             default=False,
-            description='Enable the surface wave component')  #
+            description='Enable the surface wave component')
     variant('coupling', default=True, description='Enable the coupling')
     variant('aes', default=True, description='Enable the AES physics package')
     variant('ecrad',
             default=False,
             description='Enable usage of the ECMWF radiation scheme')
     variant('rte-rrtmgp',
-            default=False,
+            default=True,
             description='Enable usage of the RTE+RRTMGP toolbox '
             'for radiation calculations')
     variant(
@@ -105,19 +105,18 @@ class Icon(AutotoolsPackage):
     variant('async-io-rma',
             default=True,
             description='Enable remote memory access (RMA) for async I/O')
+    variant('mpi-gpu',
+            default=False,
+            description='Enable usage of the GPU-aware MPI features')
     variant('openmp', default=False, description='Enable OpenMP support')
-
-    # https://en.wikipedia.org/wiki/CUDA#GPUs_supported
-    gpu_values = ('10', '11', '12', '13', '20', '21', '30', '32', '35', '37',
-                  '50', '52', '53', '60', '61', '62', '70', '72', '75', '80',
-                  '86')
     variant('gpu',
-            default='none',
-            values=('none', ) + gpu_values,
-            description='Enable GPU support with the specified compute '
-            'capability version')
-
-    variant('grib2', default=True, description='Enable GRIB2 I/O')
+            default='no',
+            values=('openacc+cuda', 'no'),
+            description='Enable GPU support')
+    variant('realloc-buf',
+            default=False,
+            description='Enable reallocatable communication buffer')
+    variant('grib2', default=False, description='Enable GRIB2 I/O')
     variant('parallel-netcdf',
             default=False,
             description='Enable usage of the parallel features of NetCDF')
@@ -138,6 +137,9 @@ class Icon(AutotoolsPackage):
             default='none',
             values=('none', ) + serialization_values,
             description='Enable the Serialbox2 serialization')
+    variant('testbed',
+            default=False,
+            description='Enable ICON Testbed infrastructure')
 
     # Optimization Features:
     variant('loop-exchange', default=True, description='Enable loop exchange')
@@ -236,11 +238,9 @@ class Icon(AutotoolsPackage):
     depends_on('zlib', when='+emvorado')
     depends_on('mpi', when='+mpi')
 
-    for x in gpu_values:
-        depends_on('cuda', when='gpu={0}'.format(x))
-
     depends_on('python', type='build')
     depends_on('perl', type='build')
+    depends_on('cmake@3.18:', type='build')
 
     for x in claw_values:
         depends_on('claw', type='build', when='claw={0}'.format(x))
@@ -252,6 +252,11 @@ class Icon(AutotoolsPackage):
 
     conflicts('+dace', when='~mpi')
     conflicts('+emvorado', when='~mpi')
+    conflicts('+cuda', when='%gcc')
+
+    # The gpu=openacc+cuda relies on the cuda variant
+    conflicts('~cuda', when='gpu=openacc+cuda')
+    conflicts('+cuda', when='gpu=no')
 
     conflicts('+cuda-graphs', when='%cce')
     conflicts('+cuda-graphs', when='%gcc')
@@ -270,81 +275,12 @@ class Icon(AutotoolsPackage):
     # also the folder where libtool package itself is installed.
     patch_libtool = False
 
-    @when('%cce~openmp')
-    def patch(self):
-        # Cray Fortran preprocessor removes the OpenMP conditional compilation
-        # sentinels (i.e. '!$') regardless of whether OpenMP is enabled.
-        # Therefore, in cases when OpenMP support is disabled and separate
-        # Fortran preprocessing is required, we substitute the sentinels with
-        # '#ifdef _OPENMP' directives:
-        if any(self.spec.variants[x].value != 'none'
-               for x in ['serialization', 'claw']):
-            src_files = find(join_path(self.stage.source_path, 'src'), '*.f90')
-            filter_file(r'^(\s*)!\$(\s+.*)',
-                        '#ifdef _OPENMP\n\\1  \\2\n#endif',
-                        *src_files,
-                        backup=False)
-
     def setup_build_environment(self, env):
         # help cmake to build dsl-stencils
         if 'none' not in self.spec.variants['dsl'].value:
-            env.set("CUDAARCHS", self.spec.variants['gpu'].value)
+            env.set("CUDAARCHS", self.spec.variants['cuda_arch'].value[0])
             env.unset("CUDAHOSTCXX")
             env.set("BOOST_ROOT", self.spec['boost'].prefix)
-
-    @run_before('configure')
-    def downgrade_opt_level(self):
-        # We try to prevent compiler crashes by reducing the optimization level
-        # for certain files in certain configurations. This method extends the
-        # makefile (i.e. icon.mk.in) with file-specific compilation rules that
-        # call the compiler with the default flags plus the provided extra
-        # flags. The extra flags must not affect the dependencies (e.g. define
-        # additional macros).
-        file_flags = []
-
-        if self.compiler.name == 'intel':
-            if self.spec.satisfies('%intel@17:17.0.2+ocean+openmp'):
-                file_flags.append(
-                    ('src/hamocc/common/mo_sedmnt_diffusion.f90',
-                     '$(ICON_OCEAN_FCFLAGS) $(make_FCFLAGS) -O1'))
-        elif self.compiler.name in ['pgi', 'nvhpc']:
-            if '+emvorado' in self.spec:
-                file_flags.append(
-                    ('src/data_assimilation/interfaces/radar_interface.f90',
-                     '$(ICON_FCFLAGS) $(make_FCFLAGS) -O1'))
-        elif self.compiler.name == 'cce':
-            if self.compiler.version == ver('12.0.2'):
-                file_flags.append(
-                    ('src/parallel_infrastructure/mo_setup_subdivision.f90',
-                     '$(ICON_FCFLAGS) $(make_FCFLAGS) -O0'))
-            elif self.compiler.version == ver('13.0.0'):
-                file_flags.append(
-                    ('src/parallel_infrastructure/mo_extents.f90',
-                     '$(ICON_FCFLAGS) $(make_FCFLAGS) -O0'))
-            if '+jsbach' in self.spec:
-                file_flags.append(
-                    ('externals/jsbach/src/base/mo_jsb_process_factory.f90',
-                     '$(ICON_FCFLAGS) $(make_FCFLAGS) -O0'))
-
-        if not file_flags:
-            return
-
-        recipe_prefix = '$(silent_FC)$(FC) -o $@ -c $(FCFLAGS)'
-        recipe_suffix = '@FCFLAGS_f90@ $<'
-
-        rules = []
-        for file, flags in file_flags:
-            recipe = '{0} {1} {2}'.format(recipe_prefix, flags, recipe_suffix)
-            target = '{0}.@OBJEXT@'.format(os.path.splitext(file)[0])
-            rules.extend([
-                # Rule for the original file:
-                '{0}: {1}; {2}'.format(target, file, recipe),
-                # Rule for the preprocessed file:
-                '%{0}: %{1}; {2}'.format(target, file, recipe)
-            ])
-
-        with open(join_path(self.stage.source_path, 'icon.mk.in'), 'a') as f:
-            f.writelines(['\n', '\n'.join(rules)])
 
     def configure_args(self):
         config_args = ['--disable-rpaths']
@@ -370,11 +306,14 @@ class Icon(AutotoolsPackage):
                 'mpi',
                 'active-target-sync',
                 'async-io-rma',
+                'mpi-gpu',
                 'openmp',
+                'realloc-buf',
                 'grib2',
                 'parallel-netcdf',
                 'sct',
                 'yaxt',
+                'testbed',
                 'loop-exchange',
                 'vectorized-lrtm',
                 'mixed-precision',
@@ -390,8 +329,6 @@ class Icon(AutotoolsPackage):
                 '--enable-cdi-pio', '--with-external-cdi',
                 '--with-external-yaxt'
             ])
-
-        gpu = self.spec.variants['gpu'].value
 
         if self.compiler.name == 'gcc':
             config_vars['CFLAGS'].append('-g')
@@ -474,12 +411,13 @@ class Icon(AutotoolsPackage):
             config_vars['CFLAGS'].extend(['-g', '-O2'])
             config_vars['FCFLAGS'].extend(
                 ['-g', '-O', '-Mrecursive', '-Mallocatable=03', '-Mbackslash'])
-            if gpu != 'none':
+
+            if self.spec.variants['gpu'].value == 'openacc+cuda':
                 config_vars['FCFLAGS'].extend([
                     '-acc=verystrict', '-Minfo=accel,inline',
-                    '-gpu=cc{0}'.format(gpu)
+                    '-gpu=cc{0}'.format(
+                        self.spec.variants['cuda_arch'].value[0])
                 ])
-                config_vars['ICON_FCFLAGS'].append('-D__SWAPDIM')
         elif self.compiler.name == 'cce':
             config_vars['CFLAGS'].append('-g')
             config_vars['ICON_CFLAGS'].append('-O3')
@@ -490,8 +428,8 @@ class Icon(AutotoolsPackage):
                 '-hadd_paren', '-r am', '-Ktrap=divz,ovf,inv',
                 '-hflex_mp=intolerant', '-hfp0', '-O0'
             ])
-            if gpu != 'none':
-                config_vars['FCFLAGS'].extend(['-hnoacc'])
+            if self.spec.variants['gpu'].value == 'openacc+cuda':
+                config_vars['FCFLAGS'].extend(['-hacc'])
         elif self.compiler.name == 'aocc':
             config_vars['CFLAGS'].extend(['-g', '-O2'])
             config_vars['FCFLAGS'].extend(['-g', '-O2'])
@@ -519,6 +457,7 @@ class Icon(AutotoolsPackage):
                 ]
                 config_vars['CPPFLAGS'].append(xml2_headers.include_flags)
 
+        if '+coupling' in self.spec:
             libs += self.spec['libfyaml'].libs
 
         serialization = self.spec.variants['serialization'].value
@@ -596,11 +535,12 @@ class Icon(AutotoolsPackage):
                 config_vars['CLAWFLAGS'].append(
                     self.spec['libcdi-pio'].headers.include_flags)
 
-        if gpu == 'none':
+        gpu = self.spec.variants['gpu'].value
+        if gpu == 'no':
             config_args.append('--disable-gpu')
         else:
             config_args.extend([
-                '--enable-gpu', '--disable-loop-exchange',
+                '--enable-gpu={0}'.format(gpu), '--disable-loop-exchange',
                 'NVCC={0}'.format(self.spec['cuda'].prefix.bin.nvcc)
             ])
 
@@ -613,8 +553,10 @@ class Icon(AutotoolsPackage):
                 config_vars['NVCFLAGS'].extend(
                     ['-ccbin {0}'.format(cuda_host_compiler)])
 
-            config_vars['NVCFLAGS'].extend(
-                ['-g', '-O3', '-arch=sm_{0}'.format(gpu)])
+            config_vars['NVCFLAGS'].extend([
+                '-g', '-O3',
+                '-arch=sm_{0}'.format(self.spec.variants['cuda_arch'].value[0])
+            ])
             # cuda_host_compiler_stdcxx_libs might contain compiler-specific
             # flags (i.e. not the linker -l<library> flags), therefore we put
             # the value to the config_flags directly.
@@ -643,19 +585,11 @@ class Icon(AutotoolsPackage):
             config_vars['LOC_ICON4PY_BIN'].append(
                 self.spec['py-icon4py'].prefix)
             config_vars['LOC_ICON4PY_ATM_DYN_ICONAM'].append(
-                os.path.join(
-                    self.spec['py-icon4py'].prefix,
-                    'lib/python3.10/site-packages/icon4py/atm_dyn_iconam'))
-            config_vars['LOC_ICON4PY_ADVECTION'].append(
-                os.path.join(self.spec['py-icon4py'].prefix,
-                             'lib/python3.10/site-packages/icon4py/advection'))
-            config_vars['LOC_ICON4PY_UTILS'].append(
-                os.path.join(self.spec['py-icon4py'].prefix,
-                             'lib/python3.10/site-packages/icon4py'))
+                self.spec['py-icon4py:atm_dyn_iconam'].headers.directories[0])
+            config_vars['LOC_ICON4PY_TOOLS'].append(
+                self.spec['py-icon4py:tools'].headers.directories[0])
             config_vars['LOC_GRIDTOOLS'].append(
-                os.path.join(
-                    self.spec['py-gridtools-cpp'].prefix,
-                    'lib/python3.10/site-packages/gridtools_cpp/data'))
+                self.spec['py-gridtools-cpp:data'].headers.directories[0])
             config_vars['GT4PYNVCFLAGS'] = config_vars['NVCFLAGS']
 
         # Finalize the LIBS variable (we always put the real collected
@@ -720,9 +654,15 @@ class Icon(AutotoolsPackage):
             make.jobs = make_jobs
         make(*self.build_targets)
 
-    @run_before('install')
-    @on_package_attributes(run_tests=True)
     def check(self):
+        # By default "check" calls make with targets "check" and "test".
+        # This testing is beyond the scope of BuildBot test at CSCS.
+        # Therefore override this function, saves a lot of time too.
+        pass
+
+    @run_after('install')
+    @on_package_attributes(run_tests=True)
+    def checksuite(self):
         # script needs cdo to work, but not listed as dep of ICON
         test_script = 'scripts/spack/test.py'
         if os.path.exists(test_script):
@@ -736,10 +676,7 @@ class Icon(AutotoolsPackage):
 
             with open('spec.yaml', mode='w') as f:
                 f.write(self.spec.to_yaml())
-            try:
-                test_py('--spec', 'spec.yaml')
-            except:
-                raise InstallError('Tests failed')
+            test_py('--spec', 'spec.yaml', fail_on_error=True)
 
             # restore PYTHONHOME after test.py
             os.environ['PYTHONHOME'] = PYTHONHOME
@@ -806,8 +743,8 @@ class Icon(AutotoolsPackage):
         Ensure that configure is rerun in case spec has changed,
         otherwise for the case below
 
-            $ spack dev-build icon @develop gpu=none ~dace
-            $ spack dev-build icon @develop gpu=none +dace
+            $ spack dev-build icon @develop ~dace
+            $ spack dev-build icon @develop +dace
         
         configure is skipped for the latter.
         """

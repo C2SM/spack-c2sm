@@ -31,3 +31,28 @@ class PyGridtoolsCpp(PythonPackage):
 
     depends_on("python@3.8:")
     depends_on("py-setuptools", type="build")
+
+    @property
+    def headers(self):
+        '''Workaround to hide the details of the installation path, 
+        i.e "lib/python3.10/site-packages/icon4py/atm_dyn_iconam"
+        from upstream packages. It needs to be part of the "Spec" object,
+        therefore choose the headers-function
+        '''
+
+        query_parameters = self.spec.last_query.extra_parameters
+        if len(query_parameters) > 1:
+            raise ValueError('Only one query parameter allowed')
+
+        if 'data' in query_parameters:
+            header = self._find_folder_and_add_dummy_header(
+                self.prefix, 'data')
+        else:
+            header = HeaderList([])
+
+        return header
+
+    def _find_folder_and_add_dummy_header(self, prefix, name):
+        folder = find(prefix, name)
+        headerlist = HeaderList(f'{folder[0]}/dummy.h')
+        return headerlist

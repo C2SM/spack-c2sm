@@ -4,6 +4,7 @@ import subprocess
 import sys
 import os
 import uuid
+import shutil
 from pathlib import Path
 import inspect
 
@@ -29,6 +30,32 @@ def devirtualize_env():
     # happens if test are run in serial-mode because cannot unset var twice
     except KeyError:
         pass
+
+
+def spack_install(spec: str, log_filename: str = None):
+    """
+    Tests 'spack install' of the given spec and writes the output into the log file.
+    """
+
+    func_name = inspect.currentframe().f_back.f_code.co_name.replace(
+        'test_', '')
+    class_name = inspect.currentframe().f_back.f_locals.get(
+        'self', None).__class__.__name__.replace('Test', '')
+    if log_filename is None:
+        log_filename = sanitized_filename(class_name + '-' + func_name)
+
+    if spec.startswith('cosmo '):
+        command = 'installcosmo'
+    else:
+        command = 'install'
+
+    if spec.startswith('py-'):
+        devirtualize_env()
+
+    log_with_spack(f'spack {command} -n -v {spec}',
+                   'system_test',
+                   log_filename,
+                   srun=True)
 
 
 def spack_install_and_test(spec: str,
@@ -68,7 +95,7 @@ def spack_install_and_test(spec: str,
         log_with_spack(f'spack {command} --test=root -n -v {spec}',
                        'system_test',
                        log_filename,
-                       srun=True)
+                       srun=not spec.startswith('icon '))
 
 
 def spack_devbuild_and_test(spec: str,
@@ -114,39 +141,62 @@ def spack_devbuild_and_test(spec: str,
 
 
 def spack_env_dev_install_and_test(spack_env: str,
-                                   icon_branch: str,
-                                   log_filename: str = None):
+                                   url: str,
+                                   branch: str,
+                                   name: str,
+                                   log_filename: str = None,
+                                   out_of_source: bool = False,
+                                   build_on_login_node: bool = False):
     """
-    Clones ICON with given branch into unique folder, activates the given spack
+    Clones repo with given branch into unique folder, activates the given spack
     environment, tests 'spack install' and writes the output into the log file.
     If log_filename is None, spack_env is used to create one.
+
+    ICON specials:
+    If out_of_source is True, create additional folder and build there, BUT skip testing!
+    If build_on_login_node is True, do not run build-step on login node
     """
 
     # in case we use serialbox or another python preprocessor
     devirtualize_env()
 
-    unique_folder = 'icon_' + uuid.uuid4(
+    if name != 'icon' and out_of_source:
+        raise ValueError('out-of-source only possible with Icon')
+
+    unique_folder = name + '_' + uuid.uuid4(
     ).hex  # to avoid cloning into the same folder and having race conditions
     subprocess.run(
-        f'git clone --depth 1 --recurse-submodules -b {icon_branch} git@github.com:C2SM/icon.git {unique_folder}',
+        f'git clone --depth 1 --recurse-submodules -b {branch} {url} {unique_folder}',
         check=True,
         shell=True)
+
     log_filename = sanitized_filename(log_filename or spack_env)
 
-    # limit number of build-jobs to 4 because no srun used
-    log_with_spack('spack install -j 4 --until build -n -v',
-                   'system_test',
-                   log_filename,
-                   cwd=unique_folder,
-                   env=spack_env,
-                   srun=False)
+    if out_of_source:
+        build_dir = os.path.join(unique_folder, 'build')
+        os.makedirs(build_dir, exist_ok=True)
+        shutil.copytree(os.path.join(unique_folder, 'config'),
+                        os.path.join(build_dir, 'config'))
+        unique_folder = build_dir
+        log_filename = f'{log_filename}_out_of_source'
 
-    log_with_spack('spack install --test=root -n -v',
+    log_with_spack('spack install -n -v',
                    'system_test',
                    log_filename,
                    cwd=unique_folder,
                    env=spack_env,
-                   srun=False)
+                   srun=not build_on_login_node)
+
+    # for out-of-source build we can't run tests because required files
+    # like scripts/spack/test.py or scripts/buildbot_script are not synced
+    # in our spack-recipe to the build-folder
+    if not out_of_source:
+        log_with_spack('spack install --test=root -n -v',
+                       'system_test',
+                       log_filename,
+                       cwd=unique_folder,
+                       env=spack_env,
+                       srun=False)
 
 
 mpi: str = {
@@ -160,6 +210,25 @@ nvidia_compiler: str = {
     'tsa': 'pgi',
     'balfrin': 'nvhpc',
 }[machine_name()]
+
+
+@pytest.mark.no_tsa  # proj-8.2.1 fails with "./.libs/libproj.so: error: undefined reference to 'curl_easy_setopt'"
+class CdoTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('cdo')
+
+
+class ClangFormatTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('clang-format')
+
+
+class ClawTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('claw')
 
 
 @pytest.mark.no_balfrin  # cosmo-dycore does not support the cuda arch of balfrin
@@ -207,6 +276,10 @@ class CosmoDycoreTest(unittest.TestCase):
 
 
 class CosmoEccodesDefinitionsTest(unittest.TestCase):
+    # TODO: Add the other versions!
+
+    def test_install_version_2_25_0_1(self):
+        spack_install_and_test('cosmo-eccodes-definitions @2.25.0.1')
 
     def test_install_version_2_19_0_7(self):
         spack_install_and_test('cosmo-eccodes-definitions @2.19.0.7')
@@ -224,10 +297,62 @@ class DuskTest(unittest.TestCase):
     pass
 
 
-class FlexpartIfsTest(unittest.TestCase):
+class EccodesTest(unittest.TestCase):
+    # All the other versions are not the responsibility of spack-c2sm
+
+    def test_install_2_19_0(self):
+        spack_install_and_test('eccodes @2.19.0')
+
+
+class EckitTest(unittest.TestCase):
+    # All the other versions are not the responsibility of spack-c2sm
+    # Package tests are not run because they are flaky https://github.com/C2SM/spack-c2sm/issues/779
+
+    def test_install_1_20_2_gcc(self):
+        spack_install('eckit @1.20.2 %gcc')
+
+    def test_install_1_20_2_nvhpc(self):
+        spack_install(f'eckit @1.20.2 %{nvidia_compiler}')
+
+    def test_install_1_20_0_gcc(self):
+        spack_install('eckit @1.20.0 %gcc')
+
+    def test_install_1_20_0_gcc(self):
+        spack_install(f'eckit @1.20.0 %{nvidia_compiler}')
+
+
+class FckitTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('fckit')
+
+
+class FdbTest(unittest.TestCase):
+
+    def test_install_5_10_8_gcc(self):
+        spack_install_and_test('fdb @5.10.8 %gcc')
+
+    def test_install_5_10_8_nvhpc(self):
+        # tests fail because compiler emitted warnings.
+        spack_install(f'fdb @5.10.8 %{nvidia_compiler}')
+
+
+class FdbFlexpartTest(unittest.TestCase):
 
     def test_install(self):
-        spack_install_and_test('flexpart-ifs')
+        spack_install_and_test('fdb-flexpart')
+
+
+class FdbFortranTest(unittest.TestCase):
+
+    def test_install(self):
+        spack_install_and_test('fdb-fortran @0.1.0')
+
+
+class FlexpartIfsTest(unittest.TestCase):
+
+    def test_install_latest(self):
+        spack_install_and_test('flexpart-ifs @meteoswiss-10')
 
 
 class FlexpartCosmoTest(unittest.TestCase):
@@ -249,28 +374,92 @@ class GridToolsTest(unittest.TestCase):
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 class IconTest(unittest.TestCase):
 
-    @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
-    def test_install_nwp_gpu(self):
-        spack_install_and_test(f'icon @nwp-master %nvhpc gpu=80')
+    def test_install_2_6_6_gcc(self):
+        spack_install_and_test('icon @2.6.6 %gcc')
+
+    @pytest.mark.no_daint
+    def test_install_2_6_6_nvhpc(self):
+        spack_install_and_test('icon @2.6.6 %nvhpc')
 
     @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
-    def test_install_nwp_cpu(self):
-        spack_install_and_test(f'icon @nwp-master %nvhpc')
+    def test_install_nwp_gpu(self):
+        spack_install_and_test(
+            'icon @nwp-master %nvhpc +grib2 +eccodes-definitions +ecrad +art +dace gpu=openacc+cuda +mpi-gpu +realloc-buf +pgi-inlib ~aes ~jsbach ~ocean ~coupling ~rte-rrtmgp ~loop-exchange ~async-io-rma +mixed-precision'
+        )
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_gcc(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.1/daint_cpu_gcc', 'icon-2.6.6')
+            'config/cscs/spack/v0.18.1.10/daint_cpu_gcc',
+            'git@github.com:C2SM/icon.git',
+            'icon-2.6.6.2',
+            'icon',
+            build_on_login_node=True)
+
+    @pytest.mark.no_balfrin  # config file does not exist for this machine
+    def test_install_c2sm_test_cpu_nvhpc_out_of_source(self):
+        spack_env_dev_install_and_test(
+            'config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc',
+            'git@github.com:C2SM/icon.git',
+            'icon-2.6.6.2',
+            'icon',
+            out_of_source=True,
+            build_on_login_node=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.1/daint_cpu_nvhpc', 'icon-2.6.6')
+            'config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc',
+            'git@github.com:C2SM/icon.git',
+            'icon-2.6.6.2',
+            'icon',
+            build_on_login_node=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_gpu(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.1/daint_gpu_nvhpc', 'icon-2.6.6')
+            'config/cscs/spack/v0.18.1.10/daint_gpu_nvhpc',
+            'git@github.com:C2SM/icon.git',
+            'icon-2.6.6.2',
+            'icon',
+            build_on_login_node=True)
+
+    @pytest.mark.no_balfrin  # config file does not exist for this machine
+    def test_install_nwp_test_cpu_cce(self):
+        spack_env_dev_install_and_test(
+            'config/cscs/spack/v0.18.1.10/daint_cpu_cce',
+            'git@github.com:C2SM/icon.git',
+            'icon-2.6.6.2',
+            'icon',
+            build_on_login_node=True)
+
+    @pytest.mark.no_balfrin  # config file does not exist for this machine
+    def test_install_exclaim_test_gpu_dsl(self):
+        spack_env_dev_install_and_test(
+            'config/cscs/spack/v0.18.1.7/daint_dsl_nvhpc',
+            'git@github.com:C2SM/icon.git',
+            'ci_dsl',
+            'icon',
+            build_on_login_node=True)
+
+
+class IconHamTest(unittest.TestCase):
+    pass
+
+
+@pytest.mark.no_tsa  # This test is flaky and sometimes fails with: icondelaunay.cpp:29:10: fatal error: version.c: No such file or directory. See issue #781.
+class IconToolsTest(unittest.TestCase):
+
+    def test_install_2_5_2(self):
+        spack_install_and_test('icontools @2.5.2')
+
+
+@pytest.mark.no_tsa  # Not supported on Tsa
+@pytest.mark.no_balfrin  # Not supported on Balfrin
+class InferoTest(unittest.TestCase):
+
+    def test_install(self):
+        spack_install_and_test('infero @0.1.2 %gcc')
 
 
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
@@ -302,18 +491,18 @@ class Int2lmTest(unittest.TestCase):
         )
 
 
-class IconToolsTest(unittest.TestCase):
+@pytest.mark.no_tsa  # Test is too expensive. It takes over 5h.
+class LibCdiPioTest(unittest.TestCase):
 
-    def test_install(self):
-        spack_install_and_test('icontools @2.5.2')
+    def test_install_default(self):
+        spack_install_and_test('libcdi-pio')
 
 
-@pytest.mark.no_tsa  # Not supported on Tsa
-@pytest.mark.no_balfrin  # Not supported on Balfrin
-class InferoTest(unittest.TestCase):
+@pytest.mark.no_tsa  # Fails "make check"
+class LibfyamlTest(unittest.TestCase):
 
-    def test_install(self):
-        spack_install_and_test('infero@0.1.2 %gcc')
+    def test_install_default(self):
+        spack_install_and_test('libfyaml')
 
 
 @pytest.mark.no_balfrin  # This fails with "BOZ literal constant at (1) cannot appear in an array constructor". https://gcc.gnu.org/onlinedocs/gfortran/BOZ-literal-constants.html
@@ -322,6 +511,38 @@ class LibGrib1Test(unittest.TestCase):
     @pytest.mark.serial_only  # locking problem on Tsa in combination with int2lm
     def test_install_version_22_01_2020(self):
         spack_install_and_test('libgrib1 @22-01-2020')
+
+
+class LibXml2Test(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('libxml2')
+
+
+class MetkitTest(unittest.TestCase):
+    # Package tests are not run because they fail https://github.com/C2SM/spack-c2sm/issues/784
+
+    def test_install_1_9_2_gcc(self):
+        spack_install('metkit @1.9.2 %gcc')
+
+    def test_install_1_9_2_nvhpc(self):
+        spack_install(f'metkit @1.9.2 %{nvidia_compiler}')
+
+
+@pytest.mark.no_balfrin  # Package is a workaround, only needed on Daint.
+@pytest.mark.no_tsa  # Package is a workaround, only needed on Daint.
+class NvidiaBlasTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('nvidia-blas')
+
+
+@pytest.mark.no_balfrin  # Package is a workaround, only needed on Daint.
+@pytest.mark.no_tsa  # Package is a workaround, only needed on Daint.
+class NvidiaLapackTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('nvidia-lapack')
 
 
 @pytest.mark.no_balfrin  # Coupling only needed on Daint
@@ -338,30 +559,184 @@ class OmniXmodPoolTest(unittest.TestCase):
         spack_install_and_test('omni-xmod-pool @0.1')
 
 
+class PyBlackTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-black')
+
+
+class PyBoltonsTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-boltons')
+
+
+@pytest.mark.no_balfrin  # Preparing metadata (pyproject.toml): finished with status 'error: metadata-generation-failed'.
+class PyCytoolzTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-cytoolz')
+
+
+class PyDevtoolsTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-devtools')
+
+
+class PyEditablesTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-editables')
+
+
+class PyFactoryBoyTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-factory-boy')
+
+
+class PyFprettifyTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-fprettify')
+
+
+class PyFrozendictTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-frozendict')
+
+
+class PyGridtoolsCppTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-gridtools-cpp')
+
+
 @pytest.mark.no_tsa  # Irrelevant
 class PyGt4pyTest(unittest.TestCase):
 
     def test_install_version_1_1_1(self):
-        spack_install_and_test('py-gt4py @ 1.1.1 %gcc ^python@3.10.4')
+        spack_install_and_test('py-gt4py @1.1.1')
+
+    def test_install_version_1_1_2(self):
+        spack_install_and_test('py-gt4py @1.1.2')
+
+
+class PyHatchlingTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-hatchling')
 
 
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 class PyIcon4pyTest(unittest.TestCase):
 
-    def test_install_version_0_0_3(self):
+    def test_install_version_0_0_5(self):
         spack_install_and_test(
-            'py-icon4py @ 0.0.3 %gcc ^py-gt4py@1.1.1 ^python@3.10.4')
+            'py-icon4py @ 0.0.5 %gcc ^py-gt4py@1.1.1 ^python@3.10.4')
+
+    def test_install_version_0_0_6(self):
+        spack_install_and_test(
+            'py-icon4py @ 0.0.6 %gcc ^py-gt4py@1.1.2 ^python@3.10.4')
+
+
+class PyInflectionTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-inflection')
+
+
+class PyLarkTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-lark')
+
+
+class PyNumpyTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install('py-numpy')
+
+
+class PyPathspecTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-pathspec')
+
+
+class PyPoetryCoreTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-poetry-core')
+
+
+class PyPytestTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-pytest')
+
+
+class PyPytestFactoryboyTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-pytest-factoryboy')
+
+
+class PySetuptoolsTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-setuptools')
+
+
+class PyToolzTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-toolz')
+
+
+class PyTypingExtensionsTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-typing-extensions')
 
 
 @pytest.mark.no_tsa  # Irrelevant
 @pytest.mark.no_balfrin  #Irrelevant
 class RttovTest(unittest.TestCase):
 
-    def test_install_version_13_1(self):
-        spack_install_and_test('rttov @ 13.1  %nvhpc')
+    def test_install_version_13_1_gcc(self):
+        spack_install_and_test('rttov @13.1 %gcc')
+
+    def test_install_version_13_1_nvhpc(self):
+        spack_install_and_test('rttov @13.1 %nvhpc')
+
+
+@pytest.mark.no_tsa  # Fails with "C compiler cannot create executables"
+class ScalesPPMTest(unittest.TestCase):
+    # TODO: Add other versions and compilers!
+
+    def test_install_default(self):
+        spack_install_and_test('scales-ppm')
+
+
+class TensorflowCTest(unittest.TestCase):
+
+    def test_install_2_6_0(self):
+        spack_install_and_test('tensorflowc @2.6.0')
+
+
+@pytest.mark.no_tsa  # Fails with "C compiler cannot create executables"
+class YaxtTest(unittest.TestCase):
+    # TODO: Add other versions and compilers!
+
+    def test_install_default(self):
+        spack_install_and_test('yaxt')
 
 
 class ZLibNGTest(unittest.TestCase):
+    # TODO: Add other compilers!
 
     def test_install_version_2_0_0(self):
         spack_install_and_test('zlib_ng @2.0.0')

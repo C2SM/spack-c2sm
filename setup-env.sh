@@ -9,6 +9,8 @@ else
 fi
 
 export SPACK_SYSTEM_CONFIG_PATH="$parent_dir"/sysconfigs/"$machine"
+export SPACK_USER_CONFIG_PATH="$parent_dir"/user-config
+export SPACK_USER_CACHE_PATH="$parent_dir"/user-cache
 . "$parent_dir"/spack/share/spack/setup-env.sh
 
 echo Spack configured for "$machine".
