@@ -48,12 +48,11 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#at-cscs-daint-tsa-balfrin">At CSCS (Daint, Tsa, Balfrin)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#at-cscs-daint-and-balfrin">At CSCS (Daint and Balfrin)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#local-machines-and-containers">Local machines and Containers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-packages">Use packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#icon">ICON</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#cosmo">COSMO</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#changelog-to-v0-17-0">Changelog to v0.17.0</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="C2SMGuidelines.html">C2SM Guidelines for Spack</a></li>
@@ -91,10 +90,10 @@
              
   <section id="quick-start">
 <h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading"></a></h1>
-<section id="at-cscs-daint-tsa-balfrin">
-<h2>At CSCS (Daint, Tsa, Balfrin)<a class="headerlink" href="#at-cscs-daint-tsa-balfrin" title="Permalink to this heading"></a></h2>
+<section id="at-cscs-daint-and-balfrin">
+<h2>At CSCS (Daint and Balfrin)<a class="headerlink" href="#at-cscs-daint-and-balfrin" title="Permalink to this heading"></a></h2>
 <p>To set up a Spack instance, clone the repository</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>--recurse-submodules<span class="w"> </span>--shallow-submodules<span class="w"> </span>-b<span class="w"> </span>v0.18.1.10<span class="w"> </span>https://github.com/C2SM/spack-c2sm.git
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>--recurse-submodules<span class="w"> </span>--shallow-submodules<span class="w"> </span>-b<span class="w"> </span>v0.20.1.0<span class="w"> </span>https://github.com/C2SM/spack-c2sm.git
 </pre></div>
 </div>
 <p>To load it into your command line, execute</p>
@@ -103,7 +102,7 @@
 </div>
 <p>This auto-detects your machine and configures your instance for it.
 You can force a machine with an argument. The name has to match a folder in sysconfigs.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>.<span class="w"> </span>spack-c2sm/setup-env.sh<span class="w"> </span>tsa
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>.<span class="w"> </span>spack-c2sm/setup-env.sh<span class="w"> </span>daint
 </pre></div>
 </div>
 </section>
@@ -165,12 +164,12 @@ with <cite>openssl</cite> and <cite>git</cite> appears.</p>
 </pre></div>
 </div>
 <p>To install the environment and so ICON, type</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>install
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>install<span class="w"> </span>--reuse<span class="w"> </span>-v
 </pre></div>
 </div>
 <p>Example to build ICON for CPU with NVHPC:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>env<span class="w"> </span>activate<span class="w"> </span>-d<span class="w"> </span>config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc
-<span class="gp">$ </span>spack<span class="w"> </span>install
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>env<span class="w"> </span>activate<span class="w"> </span>-d<span class="w"> </span>config/cscs/spack/v0.20.1.0/daint_cpu_nvhpc
+<span class="gp">$ </span>spack<span class="w"> </span>install<span class="w"> </span>--reuse<span class="w"> </span>-v
 </pre></div>
 </div>
 <div class="admonition attention">
@@ -181,8 +180,8 @@ need to reconfigure you can either delete the file or run <code class="docutils 
 <p>Out-of-source builds are possible as follows:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir<span class="w"> </span>cpu<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>cpu
 <span class="gp">$ </span>cp<span class="w"> </span>-r<span class="w"> </span>../config<span class="w"> </span>.
-<span class="gp">$ </span>spack<span class="w"> </span>env<span class="w"> </span>activate<span class="w"> </span>-d<span class="w"> </span>config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc
-<span class="gp">$ </span>spack<span class="w"> </span>install
+<span class="gp">$ </span>spack<span class="w"> </span>env<span class="w"> </span>activate<span class="w"> </span>-d<span class="w"> </span>config/cscs/spack/v0.20.1.0/daint_cpu_nvhpc
+<span class="gp">$ </span>spack<span class="w"> </span>install<span class="w"> </span>-v<span class="w"> </span>--reuse
 </pre></div>
 </div>
 <div class="admonition attention">
@@ -194,32 +193,7 @@ only works if the build-folder is located inside the Git repo of ICON.</p>
 </section>
 <section id="cosmo">
 <h2>COSMO<a class="headerlink" href="#cosmo" title="Permalink to this heading"></a></h2>
-<p>COSMO is currently receiving special treatment. It has its own commands in spack-c2sm.
-The reason for this is that the optional depencendy on the C++ dycore lives in the same repository as COSMO.</p>
-<p>To install COSMO</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>installcosmo<span class="w"> </span>cosmo<span class="w"> </span>@&lt;version&gt;<span class="w"> </span>%nvhpc<span class="w"> </span>&lt;variants&gt;<span class="w"> </span>^mpich%nvhpc
-</pre></div>
-</div>
-<p>To develop COSMO</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>&lt;/path/to/package&gt;
-<span class="gp">$ </span>spack<span class="w"> </span>devbuildcosmo<span class="w"> </span>cosmo<span class="w"> </span>@&lt;version&gt;<span class="w"> </span>%nvhpc<span class="w"> </span>&lt;variants&gt;<span class="w"> </span>^mpich%nvhpc
-</pre></div>
-</div>
-<p>Example variants:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>installcosmo<span class="w"> </span>cosmo<span class="w"> </span>@org-master<span class="w"> </span><span class="nv">cosmo_target</span><span class="o">=</span>cpu<span class="w"> </span><span class="c1"># CPU variant of https://github.com/COSMO-ORG/cosmo master</span>
-<span class="gp">$ </span>spack<span class="w"> </span>installcosmo<span class="w"> </span>cosmo<span class="w"> </span>@org-master<span class="w"> </span><span class="nv">cosmo_target</span><span class="o">=</span>gpu<span class="w"> </span><span class="c1"># GPU variant of https://github.com/COSMO-ORG/cosmo master</span>
-<span class="gp">$ </span>spack<span class="w"> </span>installcosmo<span class="w"> </span>cosmo<span class="w"> </span>@apn_5.09a.mch1.2.p1<span class="w"> </span><span class="nv">cosmo_target</span><span class="o">=</span>gpu<span class="w"> </span><span class="c1"># GPU variant of https://github.com/MeteoSwiss-APN/cosmo/releases/tag/5.09a.mch1.2.p1</span>
-</pre></div>
-</div>
-</section>
-<section id="changelog-to-v0-17-0">
-<h2>Changelog to v0.17.0<a class="headerlink" href="#changelog-to-v0-17-0" title="Permalink to this heading"></a></h2>
-<ul class="simple">
-<li><p>Users manage their own instance instead of sourcing a pre-installed instance.</p></li>
-<li><p>Users decide on their own when they would like to update their instance (i.e. after upgrades at CSCS).</p></li>
-<li><p>Due to the new concretizer, COSMO needs an explicit <code class="docutils literal notranslate"><span class="pre">^mpich%nvhpc</span></code> (Daint) or <code class="docutils literal notranslate"><span class="pre">openmpi%nvhpc</span></code> (Tsa) in the spec, otherwise the build fails.</p></li>
-<li><p>On Daint, ICON is built using environments and <code class="docutils literal notranslate"><span class="pre">dev-build</span></code> no longer supported. On Balfrin, ICON can still be built using <code class="docutils literal notranslate"><span class="pre">dev-build</span></code>.</p></li>
-</ul>
+<p>Building COSMO is not supported anymore starting with spack-c2sm v0.20.1.0!</p>
 </section>
 </section>
 
