@@ -166,7 +166,7 @@ class Cosmo(MakefilePackage):
     # setup_build_environment method
 
     build_directory = 'cosmo/ACC'
-    
+
     # v0.20.1 does not fully support builds of COSMO
     # users should continue using v0.18.1.x on Daint
     # once support on Alps has been clarified finalize
