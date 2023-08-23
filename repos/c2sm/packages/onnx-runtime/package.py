@@ -22,7 +22,9 @@ class OnnxRuntime(Package):
     homepage = "https://github.com/microsoft/onnxruntime"
     url = "https://github.com/microsoft/onnxruntime/releases/download/v1.10.0/onnxruntime-linux-x64-1.10.0.tgz"
 
-    version('1.10.0', sha256='cc1753424114b3f7490be8b4f79e3b1aa205c57811c011fefa68c6577d634c63')
+    version('1.10.0',
+            sha256=
+            'cc1753424114b3f7490be8b4f79e3b1aa205c57811c011fefa68c6577d634c63')
 
     maintainers = ['juckerj']
 
