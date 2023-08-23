@@ -29,20 +29,18 @@ class Infero(CMakePackage):
     depends_on('fckit')
     depends_on('ecbuild', type=('build'))
     depends_on('tensorflowc')
+    depends_on('onnx-runtime')
 
     patch('comment_out_log-level_info.patch', when='@0.1.2 +quiet')
 
     def cmake_args(self):
         args = [
             self.define('CMAKE_PREFIX_PATH',
-                        f'{self.spec["ecbuild"].prefix}/share/ecbuild/cmake'),
+                f'{self.spec["ecbuild"].prefix}/share/ecbuild/cmake'),
             self.define('CMAKE_Fortran_MODULE_DIRECTORY', self.prefix.module),
             self.define('ENABLE_TESTS', self.run_tests),
             self.define('ENABLE_MPI', False),
             self.define('ENABLE_FCKIT', False),
-            self.define('ENABLE_TENSORRT', False),
-            self.define('ENABLE_ONNX', False),
-            self.define('ENABLE_ONNX', False),
             self.define('ENABLE_FCKIT', True),
 
             # enable Fortran interfaces
@@ -51,7 +49,12 @@ class Infero(CMakePackage):
             # enable TF-C backend
             self.define('ENABLE_TF_C', True),
             self.define(f'TENSORFLOWC_ROOT',
-                        f'{self.spec["tensorflowc"].prefix}')
+                        f'{self.spec["tensorflowc"].prefix}'),
+
+            #enable ONNX backend
+            self.define('ENABLE_ONNX', True),
+            self.define(f'ONNX_ROOT',
+                        f'{self.spec["onnx-runtime"].prefix}')
         ]
         return args
 
