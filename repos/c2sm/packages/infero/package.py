@@ -24,12 +24,14 @@ class Infero(CMakePackage):
     maintainers = ['juckerj']
 
     variant('quiet', description='Disable calls to Log::info', default=False)
+    variant('tf_c', description='Enable tensorflow-c backend', default=False)
+    variant('onnx',description='Enable ONNX backend', default=False)
 
     depends_on('eckit@1.20.0:')
     depends_on('fckit')
     depends_on('ecbuild', type=('build'))
-    depends_on('tensorflowc')
-    depends_on('onnx-runtime')
+    depends_on('tensorflowc',when='+tf_c')
+    depends_on('onnx-runtime',when='+onnx')
 
     patch('comment_out_log-level_info.patch', when='@0.1.2 +quiet')
 
@@ -40,22 +42,24 @@ class Infero(CMakePackage):
             self.define('CMAKE_Fortran_MODULE_DIRECTORY', self.prefix.module),
             self.define('ENABLE_TESTS', self.run_tests),
             self.define('ENABLE_MPI', False),
-            self.define('ENABLE_FCKIT', False),
             self.define('ENABLE_FCKIT', True),
 
             # enable Fortran interfaces
-            self.define(f'FCKIT_ROOT', f'{self.spec["fckit"].prefix}'),
+            self.define(f'FCKIT_ROOT', f'{self.spec["fckit"].prefix}')]
 
-            # enable TF-C backend
+        # enable TF-C backend
+        if "+tf_c" in self.spec:
+            args.extend([
             self.define('ENABLE_TF_C', True),
             self.define(f'TENSORFLOWC_ROOT',
-                        f'{self.spec["tensorflowc"].prefix}'),
+                        f'{self.spec["tensorflowc"].prefix}')])
 
-            #enable ONNX backend
+        #enable ONNX backend
+        if "+onnx" in self.spec:
+            args.extend([
             self.define('ENABLE_ONNX', True),
             self.define(f'ONNX_ROOT',
-                        f'{self.spec["onnx-runtime"].prefix}')
-        ]
+                        f'{self.spec["onnx-runtime"].prefix}')])
         return args
 
     def check(self):
