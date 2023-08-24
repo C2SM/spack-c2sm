@@ -17,9 +17,8 @@ class FlexpartCosmo(MakefilePackage):
 
     version('main', branch='main')
 
-    depends_on('eccodes@2.19.0 jp2k=none +fortran')
+    depends_on('eccodes@2.25.0 +fortran')
     depends_on('netcdf-fortran')
-    depends_on('jasper@1.900.1')
 
     conflicts('%nvhpc')
     conflicts('%pgi')
@@ -33,7 +32,6 @@ class FlexpartCosmo(MakefilePackage):
     def setup_build_environment(self, env):
         env.set('GRIB_API', self.spec['eccodes'].prefix)
         env.set('NETCDF', self.spec['netcdf-fortran'].prefix)
-        env.set('JASPER', self.spec['jasper'].prefix)
 
     def install(self, spec, prefix):
         mkdir(prefix.bin)
