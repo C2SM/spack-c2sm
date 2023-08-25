@@ -355,6 +355,7 @@ class FlexpartIfsTest(unittest.TestCase):
         spack_install_and_test('flexpart-ifs @meteoswiss-10')
 
 
+@pytest.mark.no_tsa  # flexpart-cosmo does not run on Tsa
 class FlexpartCosmoTest(unittest.TestCase):
 
     def test_install(self):
