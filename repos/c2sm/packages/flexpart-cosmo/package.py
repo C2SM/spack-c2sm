@@ -15,7 +15,7 @@ class FlexpartCosmo(MakefilePackage):
     url = 'https://github.com/C2SM-RCM/flexpart/archive/refs/tags/V8C3-preop.tar.gz'
     git = 'ssh://git@github.com/C2SM-RCM/flexpart.git'
 
-    version('main', branch='main')
+    version('main', branch='spack_compile')
 
     depends_on('eccodes@2.25.0 +fortran')
     depends_on('netcdf-fortran')
