@@ -2,6 +2,7 @@ from spack import *
 from distutils.dir_util import copy_tree
 import shutil
 
+
 class FlexpartFdb(MakefilePackage):
     """flexpart is a Lagrangian dispersion model"""
 
@@ -27,7 +28,8 @@ class FlexpartFdb(MakefilePackage):
     def edit(self, spec, prefix):
         copy_tree(self.spec['flexpart-opr'].prefix + '/flexpartOpr/src', 'src')
         shutil.rmtree('options')
-        copy_tree(self.spec['flexpart-opr'].prefix + '/flexpartOpr/options', 'options')
+        copy_tree(self.spec['flexpart-opr'].prefix + '/flexpartOpr/options',
+                  'options')
         copy('src/makefile.meteoswiss', 'src/makefile')
 
     def setup_build_environment(self, env):
