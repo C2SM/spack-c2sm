@@ -1,11 +1,11 @@
 from spack import *
 from distutils.dir_util import copy_tree
+import shutil
 
-
-class FdbFlexpart(MakefilePackage):
+class FlexpartFdb(MakefilePackage):
     """flexpart is a Lagrangian dispersion model"""
 
-    homepage = 'https://github.com/MeteoSwiss-APN/fdb-flexpart'
+    homepage = 'https://github.com/MeteoSwiss-APN/flexpart-fdb'
     git = 'git@github.com:MeteoSwiss-APN/fdb-flexpart.git'
 
     version('fdb', branch='fdb')
@@ -13,6 +13,7 @@ class FdbFlexpart(MakefilePackage):
     depends_on('eccodes +fortran')
     depends_on('netcdf-fortran')
     depends_on('fdb-fortran')
+    depends_on('flexpart-opr')
 
     conflicts('%nvhpc')
     conflicts('%pgi')
@@ -24,6 +25,9 @@ class FdbFlexpart(MakefilePackage):
         return ['ncf=yes', 'VERBOSE=1', 'serial']
 
     def edit(self, spec, prefix):
+        copy_tree(self.spec['flexpart-opr'].prefix + '/flexpartOpr/src', 'src')
+        shutil.rmtree('options')
+        copy_tree(self.spec['flexpart-opr'].prefix + '/flexpartOpr/options', 'options')
         copy('src/makefile.meteoswiss', 'src/makefile')
 
     def setup_build_environment(self, env):
