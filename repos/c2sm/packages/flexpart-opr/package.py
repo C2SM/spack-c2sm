@@ -5,7 +5,6 @@
 
 #
 from spack import *
-from distutils.dir_util import copy_tree
 
 
 class FlexpartOpr(Package):
