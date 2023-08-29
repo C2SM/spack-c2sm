@@ -459,8 +459,12 @@ class IconToolsTest(unittest.TestCase):
 @pytest.mark.no_balfrin  # Not supported on Balfrin
 class InferoTest(unittest.TestCase):
 
-    def test_install(self):
-        spack_install_and_test('infero @0.1.2 %gcc')
+    def test_install_tf_c(self):
+        spack_install_and_test('infero @0.1.2 %gcc +tf_c')
+
+    # compilation of test fails with Error: Line truncated at (1) [-Werror=line-truncation]
+    def test_install_onnx(self):
+        spack_install('infero @0.1.2 %gcc +onnx')
 
 
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.

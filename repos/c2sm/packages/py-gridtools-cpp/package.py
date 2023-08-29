@@ -11,13 +11,17 @@ class PyGridtoolsCpp(PythonPackage):
 
     homepage = "https://gridtools.github.io/gridtools/latest/index.html"
 
-    pypi = "gridtools-cpp/gridtools-cpp-2.2.3.tar.gz"
-    whl_url = "https://pypi.io/packages/py3/g/gridtools-cpp/gridtools_cpp-2.3.0-py3-none-any.whl"
+    whl_url_prefix = "https://pypi.io/packages/py3/g/gridtools-cpp/"
 
-    maintainers = ['samkellerhals']
+    maintainers = ['havogt']
 
+    version("2.3.1",
+            url=whl_url_prefix + "gridtools_cpp-2.3.1-py3-none-any.whl",
+            sha256=
+            "90cf40287c4df7586bc497f9e612b1b79d5751cb41c62ac557d2d4999aaed954",
+            expand=False)
     version("2.3.0",
-            url=whl_url,
+            url=whl_url_prefix + "gridtools_cpp-2.3.0-py3-none-any.whl",
             sha256=
             "0af02845a538a7c20791ecaeeb3b68c8b976b653ef8593a00beea60445ec38b6",
             expand=False)
@@ -29,7 +33,7 @@ class PyGridtoolsCpp(PythonPackage):
             sha256=
             "0bc4b72c9f2786f70c80092bba7bd2eedd216d8c16946b7b32704d248e0d97e6")
 
-    depends_on("python@3.8:")
+    depends_on("python@3.10:")
     depends_on("py-setuptools", type="build")
 
     @property

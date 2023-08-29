@@ -288,7 +288,7 @@ class SpecTest(unittest.TestCase):
         spack_spec('icontools')
 
     def test_infero(self):
-        spack_spec('infero')
+        spack_spec('infero +onnx +tf_c')
 
     def test_int2lm(self):
         spack_spec('int2lm')
