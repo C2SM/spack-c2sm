@@ -4,9 +4,7 @@ from spack.pkg.c2sm.icon import Icon as C2SMIcon
 
 class IconHam(C2SMIcon):
 
-    variant('ham',
-            default=True,
-            description='Enable the hammoz submodel')
+    variant('ham', default=True, description='Enable the hammoz submodel')
 
     @run_before('build')
     def generate_hammoz_nml(self):
