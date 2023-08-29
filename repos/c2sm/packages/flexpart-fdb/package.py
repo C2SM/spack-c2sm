@@ -31,7 +31,8 @@ class FlexpartFdb(MakefilePackage):
         copy_tree(self.spec['flexpart-opr'].prefix + '/flexpartOpr/options',
                   'options')
         mkdir('test')
-        copy_tree(self.spec['flexpart-opr'].prefix + '/flexpartOpr/test', 'test')
+        copy_tree(self.spec['flexpart-opr'].prefix + '/flexpartOpr/test',
+                  'test')
         copy('src/makefile.meteoswiss', 'src/makefile')
 
     def setup_build_environment(self, env):
