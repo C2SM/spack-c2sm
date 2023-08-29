@@ -17,7 +17,7 @@ class FlexpartCosmo(MakefilePackage):
 
     version('main', branch='spack_compile')
 
-    depends_on('eccodes@2.25.0 +fortran')
+    depends_on('eccodes +fortran')
     depends_on('netcdf-fortran')
 
     conflicts('%nvhpc')
