@@ -19,5 +19,7 @@ class FlexpartOpr(Package):
         mkdir(prefix.flexpartOpr)
         mkdir(prefix.flexpartOpr + '/options')
         mkdir(prefix.flexpartOpr + '/src')
+        mkdir(prefix.flexpartOpr + '/test')
         install_tree('options', prefix.flexpartOpr + '/options')
         install_tree('src', prefix.flexpartOpr + '/src')
+        install_tree('test', prefix.flexpartOpr + '/test')
