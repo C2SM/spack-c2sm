@@ -12,7 +12,6 @@ class FlexpartCosmo(MakefilePackage):
     """flexpart is a Lagrangian dispersion model"""
 
     homepage = 'https://github.com/C2SM-RCM/flexpart'
-    url = 'https://github.com/C2SM-RCM/flexpart/archive/refs/tags/V8C3-preop.tar.gz'
     git = 'ssh://git@github.com/C2SM-RCM/flexpart.git'
 
     version('main', branch='spack_compile')
