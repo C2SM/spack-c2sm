@@ -11,10 +11,12 @@ class FlexpartFdb(MakefilePackage):
 
     version('fdb', branch='fdb')
 
+    variant('mch', default=False)
+
     depends_on('eccodes +fortran')
     depends_on('netcdf-fortran')
     depends_on('fdb-fortran')
-    depends_on('flexpart-opr')
+    depends_on('flexpart-opr', when='+mch')
 
     conflicts('%nvhpc')
     conflicts('%pgi')
@@ -26,14 +28,14 @@ class FlexpartFdb(MakefilePackage):
         return ['ncf=yes', 'VERBOSE=1', 'serial']
 
     def edit(self, spec, prefix):
-        copy_tree(self.spec['flexpart-opr'].prefix + '/flexpartOpr/src', 'src')
-        shutil.rmtree('options')
-        copy_tree(self.spec['flexpart-opr'].prefix + '/flexpartOpr/options',
-                  'options')
-        mkdir('test')
-        copy_tree(self.spec['flexpart-opr'].prefix + '/flexpartOpr/test',
-                  'test')
-        copy('src/makefile.meteoswiss', 'src/makefile')
+        if '+mch' in spec:
+            copy_tree(self.spec['flexpart-opr'].prefix + '/flexpartOpr/src', 'src')
+            shutil.rmtree('options')
+            copy_tree(self.spec['flexpart-opr'].prefix + '/flexpartOpr/options',
+                    'options')
+            mkdir('test')
+            copy_tree(self.spec['flexpart-opr'].prefix + '/flexpartOpr/test', 'test')
+            copy('src/makefile.meteoswiss', 'src/makefile')
 
     def setup_build_environment(self, env):
         env.set('ECCODESROOT', self.spec['eccodes'].prefix)
