@@ -9,7 +9,12 @@ from spack import *
 
 class PytorchFortranProxy(CMakePackage):
     '''
-    '''
+    Pytorch Fortran bindings - C++ Backend
+
+    The goal of this code is to provide Fortran HPC codes with a simple way to use 
+    Pytorch deep learning framework. We want Fortran developers to take advantage 
+    of rich and optimized Torch ecosystem from within their existing codes.
+    ''' 
 
     homepage = "https://github.com/alexeedm/pytorch-fortran"
     url = "https://github.com/alexeedm/pytorch-fortran.git"
