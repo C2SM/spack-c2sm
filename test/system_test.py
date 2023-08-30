@@ -318,10 +318,12 @@ class FdbTest(unittest.TestCase):
         # tests fail because compiler emitted warnings.
         spack_install(f'fdb @5.10.8 %{nvidia_compiler}')
 
+
 class FlexpartOprTest(unittest.TestCase):
 
     def test_install(self):
         spack_install_and_test('flexpart-opr')
+
 
 class FlexpartFdbTest(unittest.TestCase):
 
@@ -331,10 +333,12 @@ class FlexpartFdbTest(unittest.TestCase):
     def test_w_mch(self):
         spack_install_and_test('flexpart-fdb +mch')
 
+
 class FdbFortranTest(unittest.TestCase):
 
     def test_install(self):
         spack_install_and_test('fdb-fortran @0.1.0')
+
 
 class FlexpartIfsTest(unittest.TestCase):
 

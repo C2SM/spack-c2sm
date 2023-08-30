@@ -53,10 +53,10 @@ class FlexpartFdb(MakefilePackage):
                 '/include')
             # -fopenmp and JASPER_LD_FLAGS only in makefile.meteoswiss
             makefile.filter(
-                r'^\s*LIBPATH2\s*=.*',
-                'LIBPATH2 = -Wl,--no-relax -L' + self.spec['fdb'].prefix +
-                '/lib -lfdb5 -L' + self.spec['fdb-fortran'].prefix + '/lib -lfdbf -fopenmp')
-            
+                r'^\s*LIBPATH2\s*=.*', 'LIBPATH2 = -Wl,--no-relax -L' +
+                self.spec['fdb'].prefix + '/lib -lfdb5 -L' +
+                self.spec['fdb-fortran'].prefix + '/lib -lfdbf -fopenmp')
+
     def setup_build_environment(self, env):
         env.set('ECCODESROOT', self.spec['eccodes'].prefix)
         env.set(
