@@ -17,6 +17,7 @@ class FlexpartFdb(MakefilePackage):
     depends_on('netcdf-fortran')
     depends_on('fdb-fortran')
     depends_on('flexpart-opr', when='+mch')
+    depends_on('jasper')
 
     conflicts('%nvhpc')
     conflicts('%pgi')
@@ -40,6 +41,22 @@ class FlexpartFdb(MakefilePackage):
                       'test')
             copy('src/makefile.meteoswiss', 'src/makefile')
 
+        else:
+            # Patch makefile if not using meteoswiss.makefile as no CURL_INCLUDES variable.
+            #with working_dir(self.build_directory):
+            makefile = FileFilter('src/makefile')
+            # CURL_INCLUDES only in makefile.meteoswiss
+            makefile.filter(
+                r'^\s*INCPATH2\s*=.*',
+                'INCPATH2 = ' + self.spec['fdb-fortran'].prefix +
+                '/include/fortran/fdb/modules -I' + self.spec['fdb'].prefix +
+                '/include')
+            # -fopenmp and JASPER_LD_FLAGS only in makefile.meteoswiss
+            makefile.filter(
+                r'^\s*LIBPATH2\s*=.*',
+                'LIBPATH2 = -Wl,--no-relax -L' + self.spec['fdb'].prefix +
+                '/lib -lfdb5 -L' + self.spec['fdb-fortran'].prefix + '/lib -lfdbf -fopenmp')
+            
     def setup_build_environment(self, env):
         env.set('ECCODESROOT', self.spec['eccodes'].prefix)
         env.set(
@@ -61,4 +78,5 @@ class FlexpartFdb(MakefilePackage):
         mkdir(prefix.share + '/options/')
         copy_tree('options/', prefix.share + '/options/')
         install('src/FLEXPART', prefix.bin)
-        install('test/*', prefix.share + '/test/')
+        if '+mch' in spec:
+            install('test/*', prefix.share + '/test/')
