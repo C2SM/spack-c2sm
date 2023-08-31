@@ -549,6 +549,12 @@ class NvidiaLapackTest(unittest.TestCase):
         spack_install_and_test('nvidia-lapack')
 
 
+class OnnxRuntimeTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('onnx-runtime')
+
+
 @pytest.mark.no_balfrin  # Coupling only needed on Daint
 @pytest.mark.no_tsa  # Coupling only needed on Daint
 class OasisTest(unittest.TestCase):
