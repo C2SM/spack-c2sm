@@ -123,6 +123,9 @@ class InfoTest(unittest.TestCase):
     def test_nvidia_lapack(self):
         spack_info('nvidia-lapack')
 
+    def test_onnx_runtime(self):
+        spack_info('onnx-runtime')
+
     def test_oasis(self):
         spack_info('oasis')
 
@@ -308,6 +311,9 @@ class SpecTest(unittest.TestCase):
 
     def test_nvidia_lapack(self):
         spack_spec('nvidia-lapack')
+
+    def test_onnx_runtime(self):
+        spack_spec('onnx-runtime')
 
     def test_oasis(self):
         spack_spec('oasis')
