@@ -489,6 +489,12 @@ class Int2lmTest(unittest.TestCase):
         )
 
 
+class LibTorchTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install('libtorch')
+
+
 @pytest.mark.no_tsa  # Test is too expensive. It takes over 5h.
 class LibCdiPioTest(unittest.TestCase):
 
@@ -555,6 +561,22 @@ class OmniXmodPoolTest(unittest.TestCase):
 
     def test_install_version_0_1(self):
         spack_install_and_test('omni-xmod-pool @0.1')
+
+
+@pytest.mark.no_tsa
+class PytorchFortranTest(unittest.TestCase):
+
+    def test_install_version_0_4(self):
+        spack_install(
+            'pytorch-fortran@0.4%nvhpc ^pytorch-fortran-proxy@0.4%gcc ^python@3.10'
+        )
+
+
+@pytest.mark.no_tsa
+class PytorchFortranProxyTest(unittest.TestCase):
+
+    def test_install_version_0_4(self):
+        spack_install('pytorch-fortran-proxy@0.4%gcc ^python@3.10')
 
 
 class PyBlackTest(unittest.TestCase):
