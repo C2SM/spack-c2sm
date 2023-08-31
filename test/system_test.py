@@ -529,7 +529,9 @@ class OmniXmodPoolTest(unittest.TestCase):
 class PytorchFortranTest(unittest.TestCase):
 
     def test_install_version_0_4(self):
-        spack_install('pytorch-fortran@0.4%nvhpc ^pytorch-fortran-proxy@0.4%gcc ^python@3.10')
+        spack_install(
+            'pytorch-fortran@0.4%nvhpc ^pytorch-fortran-proxy@0.4%gcc ^python@3.10'
+        )
 
 
 @pytest.mark.no_tsa
