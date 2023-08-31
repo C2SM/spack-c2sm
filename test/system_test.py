@@ -542,6 +542,7 @@ class NvidiaLapackTest(unittest.TestCase):
     def test_install_default(self):
         spack_install_and_test('nvidia-lapack')
 
+
 class OnnxRuntimeTest(unittest.TestCase):
 
     def test_install_default(self):
