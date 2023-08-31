@@ -49,7 +49,7 @@ def spack_install(spec: str, log_filename: str = None):
     else:
         command = 'install'
 
-    if spec.startswith('py-') or spec.startswith('pytorch-'):
+    if spec.startswith('py-'):
         devirtualize_env()
 
     log_with_spack(f'spack {command} -n -v {spec}',
@@ -77,7 +77,7 @@ def spack_install_and_test(spec: str,
     else:
         command = 'install'
 
-    if spec.startswith('py-') or spec.startswith('pytorch-'):
+    if spec.startswith('py-'):
         devirtualize_env()
 
     if split_phases:
