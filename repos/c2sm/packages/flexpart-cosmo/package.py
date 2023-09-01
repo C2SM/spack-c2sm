@@ -14,7 +14,7 @@ class FlexpartCosmo(MakefilePackage):
     homepage = 'https://github.com/C2SM-RCM/flexpart'
     git = 'ssh://git@github.com/C2SM-RCM/flexpart.git'
 
-    version('main', branch='spack_compile')
+    version('main', branch='testing')
 
     depends_on('eccodes +fortran')
     depends_on('netcdf-fortran')
