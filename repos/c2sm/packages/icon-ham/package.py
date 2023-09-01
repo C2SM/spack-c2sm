@@ -6,7 +6,7 @@ class IconHam(C2SMIcon):
 
     @run_before('build')
     def generate_hammoz_nml(self):
-        with working_dir('./externals/atm_phy_echam_submodels/namelists'):
+        with working_dir(self.configure_directory + '/externals/atm_phy_echam_submodels/namelists'):
             make()
 
     def configure_args(self):
