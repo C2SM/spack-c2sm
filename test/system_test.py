@@ -680,6 +680,12 @@ class PyLarkTest(unittest.TestCase):
         spack_install_and_test('py-lark')
 
 
+class PyNanobindTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-nanobind')
+
+
 class PyNumpyTest(unittest.TestCase):
 
     def test_install_default(self):

@@ -18,6 +18,7 @@ class PyGt4py(PythonPackage):
     version('main', branch='main', git=url)
     version('1.1.1', tag='icon4py_20230413', git=url)
     version('1.1.2', tag='icon4py_20230621', git=url)
+    version('1.1.3', tag='icon4py_20230817', git=url)
 
     maintainers = ['samkellerhals']
 
@@ -48,7 +49,10 @@ class PyGt4py(PythonPackage):
     depends_on('py-ninja@1.10:', type=('build', 'run'))
     depends_on('py-numpy@1.24.2: ~blas ~lapack', type=('build', 'run'))
     depends_on('py-packaging@20.0:', type=('build', 'run'))
-    depends_on('py-pybind11@2.5:', type=('build', 'run'))
+    depends_on('py-pybind11@2.5:', when="@1.1.1:1.1.2", type=(
+        'build', 'run'
+    ))  # >=1.1.3 depends on pybind11 only for cartesian (unsupported in spack)
+    depends_on('py-nanobind@1.4.1:', when="@1.1.3:", type=('build', 'run'))
     depends_on('py-tabulate@0.8:', type=('build', 'run'))
     depends_on('py-typing-extensions@4.5:', type=('build', 'run'))
     depends_on('py-toolz@0.12.0:', type=('build', 'run'))
