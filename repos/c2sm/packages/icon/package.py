@@ -180,9 +180,9 @@ class Icon(AutotoolsPackage, CudaPackage):
 
     # C2SM specific Features:
     variant(
-        'infero',
+        'ml-inference',
         description=
-        'Build with Infero to replace ecRad with ML implementation. Experimental, needs non-standard codebase!',
+        'Build with additional libraries [infero,pytorch-fortran] for inference with machine-learning models. Experimental, needs non-standard codebase!',
         default=False)
 
     variant(
@@ -206,7 +206,8 @@ class Icon(AutotoolsPackage, CudaPackage):
         depends_on('boost', when='dsl={0}'.format(x))
         conflicts('^python@:3.9,3.11:', when='dsl={0}'.format(x))
 
-    depends_on('infero +quiet', when='+infero')
+    depends_on('infero +quiet', when='+ml-inference')
+    depends_on('pytorch-fortran', when='+ml-inference')
 
     depends_on('libfyaml', when='+coupling')
     depends_on('libxml2', when='+coupling')
@@ -520,8 +521,9 @@ class Icon(AutotoolsPackage, CudaPackage):
                 '--disable-mpi-checks'
             ])
 
-        if '+infero' in self.spec:
+        if '+ml-inference' in self.spec:
             libs += self.spec['infero'].libs
+            libs += self.spec['pytorch-fortran'].libs
 
         fcgroup = self.spec.variants['fcgroup'].value
         # ('none',) is the values spack assign if fcgroup is not set
