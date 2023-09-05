@@ -24,6 +24,8 @@ class FlexpartCosmo(MakefilePackage):
 
     build_directory = 'src'
 
+    makefile = "Makefile.spack"
+
     @property
     def build_targets(self):
         return ['ncf=yes', 'VERBOSE=1']
