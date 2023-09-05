@@ -6,6 +6,7 @@
 #
 from spack import *
 from distutils.dir_util import copy_tree
+from llnl.util.filesystem import working_dir
 
 
 class FlexpartCosmo(MakefilePackage):
@@ -24,7 +25,7 @@ class FlexpartCosmo(MakefilePackage):
 
     build_directory = 'src'
 
-    makefile = "Makefile.spack"
+    makefile_file = "Makefile.spack"
 
     @property
     def build_targets(self):
@@ -33,6 +34,11 @@ class FlexpartCosmo(MakefilePackage):
     def setup_build_environment(self, env):
         env.set('GRIB_API', self.spec['eccodes'].prefix)
         env.set('NETCDF', self.spec['netcdf-fortran'].prefix)
+
+    def build(self, spec, prefix):
+
+        with working_dir(self.build_directory):
+            make('-f', self.makefile_file)
 
     def install(self, spec, prefix):
         mkdir(prefix.bin)
