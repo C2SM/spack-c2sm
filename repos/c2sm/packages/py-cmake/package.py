@@ -15,9 +15,15 @@ class PyCmake(PythonPackage):
     git = "https://github.com/scikit-build/cmake-python-distributions.git"
     pypi = "cmake/cmake-3.22.2.tar.gz"
 
-    version('3.22.2', sha256='b5bd5eeb488b13cf64ec963800f3d979eaeb90b4382861b86909df503379e219')
-    version('3.21.4', sha256='30fa5ed8a5ad66dcd263adb87f3ce3dc2d0ec0ac3958f5becff577e4b62cd065')
-    version('3.18.0', sha256='52b98c5ee70b5fa30a8623e96482227e065292f78794eb085fdf0fecb204b79b')
+    version('3.22.2',
+            sha256=
+            'b5bd5eeb488b13cf64ec963800f3d979eaeb90b4382861b86909df503379e219')
+    version('3.21.4',
+            sha256=
+            '30fa5ed8a5ad66dcd263adb87f3ce3dc2d0ec0ac3958f5becff577e4b62cd065')
+    version('3.18.0',
+            sha256=
+            '52b98c5ee70b5fa30a8623e96482227e065292f78794eb085fdf0fecb204b79b')
 
     depends_on('ninja', type='build')
     depends_on('py-scikit-build@0.12:', type='build')
@@ -27,7 +33,5 @@ class PyCmake(PythonPackage):
     depends_on('cmake@3.21.4', type=('build', 'link', 'run'), when='@3.21.4')
     depends_on('cmake@3.18.0', type=('build', 'link', 'run'), when='@3.18.0')
 
-
     def install_options(self, spec, prefix):
-        return [
-            '-DBUILD_CMAKE_FROM_SOURCE=OFF']
+        return ['-DBUILD_CMAKE_FROM_SOURCE=OFF']
