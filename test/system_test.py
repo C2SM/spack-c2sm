@@ -359,7 +359,7 @@ class FlexpartIfsTest(unittest.TestCase):
 class FlexpartCosmoTest(unittest.TestCase):
 
     def test_install(self):
-        spack_install_and_test('flexpart-cosmo %gcc@11.2')
+        spack_install_and_test('flexpart-cosmo %gcc@11.2.0')
 
 
 class GridToolsTest(unittest.TestCase):
