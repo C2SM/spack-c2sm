@@ -21,6 +21,7 @@ class FlexpartCosmo(MakefilePackage):
     depends_on('netcdf-fortran')
 
     depends_on('libtool@2.4.7', type='build')
+    depends_on('gcc@11:', type=('build', 'run'))
 
     conflicts('%nvhpc')
     conflicts('%pgi')
