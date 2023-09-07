@@ -183,6 +183,9 @@ class InfoTest(unittest.TestCase):
     def test_py_lark(self):
         spack_info('py-lark')
 
+    def test_py_nanobind(self):
+        spack_info('py-nanobind')
+
     def test_py_pathspec(self):
         spack_info('py-pathspec')
 
@@ -380,6 +383,9 @@ class SpecTest(unittest.TestCase):
 
     def test_py_lark(self):
         spack_spec('py-lark')
+
+    def test_py_nanobind(self):
+        spack_spec('py-nanobind')
 
     def test_py_pathspec(self):
         spack_spec('py-pathspec')
