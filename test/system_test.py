@@ -653,7 +653,6 @@ class PyGt4pyTest(unittest.TestCase):
         spack_install_and_test('py-gt4py @1.1.3')
 
 
-
 class PyHatchlingTest(unittest.TestCase):
 
     def test_install_default(self):
@@ -670,11 +669,10 @@ class PyIcon4pyTest(unittest.TestCase):
     def test_install_version_0_0_6(self):
         spack_install_and_test(
             'py-icon4py @ 0.0.6 %gcc ^py-gt4py@1.1.2 ^python@3.10.4')
-    
+
     def test_install_version_0_0_7(self):
         spack_install_and_test(
             'py-icon4py @ 0.0.7 %gcc ^py-gt4py@1.1.3 ^python@3.10.4')
-
 
 
 class PyInflectionTest(unittest.TestCase):
