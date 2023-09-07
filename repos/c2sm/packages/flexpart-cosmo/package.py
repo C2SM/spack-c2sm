@@ -25,6 +25,7 @@ class FlexpartCosmo(MakefilePackage):
     conflicts('%gcc@:10')
     conflicts('%nvhpc')
     conflicts('%pgi')
+    conflicts('%cce')
 
     build_directory = 'src'
 
