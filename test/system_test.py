@@ -467,13 +467,13 @@ class Int2lmTest(unittest.TestCase):
             f'int2lm @c2sm-master %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler} ^libgrib1 %{nvidia_compiler}'
         )
 
-        
+
 class LibfyamlTest(unittest.TestCase):
 
     def test_install_default(self):
         spack_install('libfyaml')
 
-        
+
 class LibTorchTest(unittest.TestCase):
 
     def test_install_default(self):
