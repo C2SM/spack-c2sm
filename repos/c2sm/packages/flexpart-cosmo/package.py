@@ -51,4 +51,3 @@ class FlexpartCosmo(MakefilePackage):
         mkdir(prefix.share + '/options/')
         copy_tree('options/', prefix.share + '/options/')
         install('bin/FLEXPART', prefix.bin)
-        # install('test/*', prefix.share + '/test/')
