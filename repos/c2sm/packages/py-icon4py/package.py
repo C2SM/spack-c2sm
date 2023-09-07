@@ -35,10 +35,10 @@ class PyIcon4py(PythonPackage):
     # TODO: push new version to Spack official
     depends_on('py-fprettify@0.3.7:', type=('build', 'run'))
     depends_on('py-cffi@1.5.0:', type=('build', 'run'), when='0.0.7')
-    depends_on('py-netcdf4@1.5.8', type=('build', 'run'), when='0.0.7')
-    depends_on('py-mpi4py@3.1.2', type=('build', 'run'), when='0.0.7')
-    depends_on('py-pytz@2021.3', type=('build', 'run'), when='0.0.7')
-    # TODO: add pyghex
+    depends_on('py-netcdf4', type=('build', 'run'), when='0.0.7')
+    depends_on('py-mpi4py:3.0:', type=('build', 'run'), when='0.0.7')
+    depends_on('py-pytz', type=('build', 'run'), when='0.0.7')
+    depends_on('py-ghex@0.0.3', type=('build', 'run'), when='0.0.7')
 
     depends_on('py-gt4py', type=('build', 'run'))
     depends_on('py-pytest', type=('build', 'run'))
