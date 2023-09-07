@@ -22,7 +22,7 @@ class FlexpartCosmo(MakefilePackage):
 
     depends_on('eccodes@2.25:', type=('build', 'link'))
 
-    conflicts('%gcc@:11')
+    conflicts('%gcc@:10')
     conflicts('%nvhpc')
     conflicts('%pgi')
 
