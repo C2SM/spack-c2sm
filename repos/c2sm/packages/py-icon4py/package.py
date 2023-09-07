@@ -19,11 +19,12 @@ class PyIcon4py(PythonPackage):
 
     maintainers = ['samkellerhals']
 
-    version('main', branch='main', git=git)
+    version('main', branch='merge-greenline-to-main', git=git)
     version('0.0.3', tag='v0.0.3', git=git)
     version('0.0.4', tag='v0.0.4', git=git)
     version('0.0.5', tag='v0.0.5', git=git)
     version('0.0.6', tag='v0.0.6', git=git)
+
 
     depends_on('py-wheel', type='build')
     depends_on('py-setuptools', type='build')
@@ -32,8 +33,15 @@ class PyIcon4py(PythonPackage):
     depends_on('py-tabulate@0.8.9:', type=('build', 'run'))
     # TODO: push new version to Spack official
     depends_on('py-fprettify@0.3.7:', type=('build', 'run'))
+    depends_on('py-cffi@1.5.0:', type=('build', 'run'), when='0.0.7')
+    depends_on('py-netcdf4@1.5.8', type=('build', 'run'), when='0.0.7')
+    depends_on('py-mpi4py@3.1.2', type=('build', 'run'), when='0.0.7')
+    depends_on('py-pytz@2021.3', type=('build', 'run'), when='0.0.7')
+    # TODO: add pyghex
+
     depends_on('py-gt4py', type=('build', 'run'))
     depends_on('py-pytest', type=('build', 'run'))
+
     depends_on('boost@1.65.1:', type=('build', 'run'))
 
     # cmake in unit-tests needs this path
@@ -65,8 +73,10 @@ class PyIcon4py(PythonPackage):
             },
             ver('main'): {
                 'atm_dyn_iconam': 'dycore',
-                'tools': 'icon4pytools'
-            }
+                'tools': 'icon4pytools',
+                'diffusion': 'diffusion/stencils',
+                'interpolation': 'interpolation/stencils',
+            },
         }
 
         if len(query_parameters) > 1:
@@ -119,7 +129,8 @@ class PyIcon4py(PythonPackage):
                 '0.0.5'):
             build_dirs = ['common', 'atm_dyn_iconam', 'tools']
         else:
-            build_dirs = ['tools', 'model/atmosphere/dycore', 'model/common/']
+            build_dirs = ['tools', 'model/atmosphere/dycore', 'model/atmosphere/diffusion',
+                          'model/driver', 'model/common/']
 
         for dir in build_dirs:
             with working_dir(os.path.join(self.stage.source_path, dir)):
