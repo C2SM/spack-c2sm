@@ -8,7 +8,10 @@ from spack import *
 
 
 class PyGhex(PythonPackage):
-    """A library for numerical weather prediction and climate modelling"""
+    """
+    Python bindings for Generic exascale-ready library for halo-exchange operations
+    on variety of grids/meshes.
+    """
 
     homepage = 'https://github.com/ghex-org/GHEX'
     url = "https://github.com/ghex-org/GHEX"
