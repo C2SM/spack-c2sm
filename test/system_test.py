@@ -432,8 +432,12 @@ class IconToolsTest(unittest.TestCase):
 @pytest.mark.no_balfrin  # Not supported on Balfrin
 class InferoTest(unittest.TestCase):
 
-    def test_install(self):
-        spack_install_and_test('infero @0.1.2 %gcc')
+    def test_install_tf_c(self):
+        spack_install_and_test('infero @0.1.2 %gcc +tf_c')
+
+    # compilation of test fails with Error: Line truncated at (1) [-Werror=line-truncation]
+    def test_install_onnx(self):
+        spack_install('infero @0.1.2 %gcc +onnx')
 
 
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
@@ -463,11 +467,17 @@ class Int2lmTest(unittest.TestCase):
             f'int2lm @c2sm-master %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler} ^libgrib1 %{nvidia_compiler}'
         )
 
-
+        
 class LibfyamlTest(unittest.TestCase):
 
     def test_install_default(self):
         spack_install('libfyaml')
+
+        
+class LibTorchTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install('libtorch')
 
 
 @pytest.mark.no_tsa  # Test is too expensive. It takes over 5h.
@@ -518,6 +528,12 @@ class NvidiaLapackTest(unittest.TestCase):
         spack_install_and_test('nvidia-lapack')
 
 
+class OnnxRuntimeTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('onnx-runtime')
+
+
 @pytest.mark.no_balfrin  # Coupling only needed on Daint
 @pytest.mark.no_tsa  # Coupling only needed on Daint
 class OasisTest(unittest.TestCase):
@@ -530,6 +546,22 @@ class OmniXmodPoolTest(unittest.TestCase):
 
     def test_install_version_0_1(self):
         spack_install_and_test('omni-xmod-pool @0.1')
+
+
+@pytest.mark.no_tsa
+class PytorchFortranTest(unittest.TestCase):
+
+    def test_install_version_0_4(self):
+        spack_install(
+            'pytorch-fortran@0.4%nvhpc ^pytorch-fortran-proxy@0.4%gcc ^python@3.10'
+        )
+
+
+@pytest.mark.no_tsa
+class PytorchFortranProxyTest(unittest.TestCase):
+
+    def test_install_version_0_4(self):
+        spack_install('pytorch-fortran-proxy@0.4%gcc ^python@3.10')
 
 
 class PyBlackTest(unittest.TestCase):
