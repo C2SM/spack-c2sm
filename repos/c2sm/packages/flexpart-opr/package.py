@@ -11,7 +11,7 @@ class FlexpartOpr(Package):
     """flexpart is a Lagrangian dispersion model"""
 
     homepage = 'https://github.com/MeteoSwiss-APN/flexpart-opr'
-    git = 'git@github.com:MeteoSwiss-APN/flexpart-opr.git'
+    git = 'ssh://git@github.com:MeteoSwiss-APN/flexpart-opr.git'
 
     version('fdb', branch='fdb')
 
