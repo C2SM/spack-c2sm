@@ -108,6 +108,9 @@ class InfoTest(unittest.TestCase):
     def test_libcdi_pio(self):
         spack_info('libcdi-pio')
 
+    def test_libtorch(self):
+        spack_info('libtorch')
+
     def test_libyaml(self):
         spack_info('libyaml')
 
@@ -126,11 +129,20 @@ class InfoTest(unittest.TestCase):
     def test_nvidia_lapack(self):
         spack_info('nvidia-lapack')
 
+    def test_onnx_runtime(self):
+        spack_info('onnx-runtime')
+
     def test_oasis(self):
         spack_info('oasis')
 
     def test_omni_xmod_pool(self):
         spack_info('omni-xmod-pool')
+
+    def test_pytorch_fortran(self):
+        spack_info('pytorch-fortran')
+
+    def test_pytorch_fortran_proxy(self):
+        spack_info('pytorch-fortran-proxy')
 
     def test_py_black(self):
         spack_info('py-black')
@@ -289,11 +301,14 @@ class SpecTest(unittest.TestCase):
         spack_spec('icontools')
 
     def test_infero(self):
-        spack_spec('infero')
+        spack_spec('infero +onnx +tf_c')
 
     def test_int2lm(self):
         spack_spec('int2lm')
         spack_spec('int2lm +parallel')
+
+    def test_libtorch(self):
+        spack_spec('libtorch')
 
     def test_libcdi_pio(self):
         spack_spec('libcdi-pio')
@@ -316,11 +331,20 @@ class SpecTest(unittest.TestCase):
     def test_nvidia_lapack(self):
         spack_spec('nvidia-lapack')
 
+    def test_onnx_runtime(self):
+        spack_spec('onnx-runtime')
+
     def test_oasis(self):
         spack_spec('oasis')
 
     def test_omni_xmod_pool(self):
         spack_spec('omni-xmod-pool')
+
+    def test_pytorch_fortran(self):
+        spack_spec('pytorch-fortran')
+
+    def test_pytorch_fortran_proxy(self):
+        spack_spec('pytorch-fortran-proxy')
 
     def test_py_black(self):
         spack_spec('py-black')

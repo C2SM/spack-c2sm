@@ -107,14 +107,14 @@ To install the environment and so ICON, type
 
 .. code-block:: console
     
-    $ spack install --reuse -v
+    $ spack install
 
 Example to build ICON for CPU with NVHPC:
 
 .. code-block:: console
 
     $ spack env activate -d config/cscs/spack/v0.20.1.0/daint_cpu_nvhpc
-    $ spack install --reuse -v
+    $ spack install
 
 ..  attention::
     Spack will skip the configure phase if ``icon.mk`` is found. In case you
@@ -127,7 +127,7 @@ Out-of-source builds are possible as follows:
     $ mkdir cpu && cd cpu
     $ cp -r ../config .
     $ spack env activate -d config/cscs/spack/v0.20.1.0/daint_cpu_nvhpc
-    $ spack install -v --reuse
+    $ spack install
 
 ..  attention::
     Out-of-source build for AutotoolsPackages is not supported by Spack.

@@ -7,7 +7,7 @@ pipeline {
                 axes {
                     axis {
                         name 'NODENAME'
-                        values 'daint', 'balfrin'
+                        values 'tsa', 'daint', 'balfrin'
                     }
                 }
                 post {
@@ -47,15 +47,6 @@ pipeline {
                             source env/bin/activate
                             . ./setup-env.sh
                             spack spec gnuconfig
-                            """
-                        }
-                    }
-                    stage('Clean caches') {
-                        steps {
-                            sh """
-                            source env/bin/activate
-                            . ./setup-env.sh
-                            spack clean -a
                             """
                         }
                     }
