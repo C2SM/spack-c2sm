@@ -20,7 +20,7 @@ class FlexpartCosmo(MakefilePackage):
     depends_on('eccodes +fortran')
     depends_on('netcdf-fortran')
 
-    depends_on('eccodes@2.25:', type=('build', 'link'))
+    depends_on('eccodes', type=('build', 'link'))
 
     conflicts('%gcc@:10')
     conflicts('%nvhpc')
