@@ -282,7 +282,7 @@ class SpecTest(unittest.TestCase):
         spack_info('flexpart-fdb')
 
     def test_flexpart_ifs(self):
-        spack_info('flexpart-ifs')
+        spack_spec('flexpart-ifs')
 
     def test_flexpart_opr(self):
         spack_spec('flexpart-opr')
