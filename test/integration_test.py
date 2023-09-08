@@ -235,6 +235,7 @@ class SpecTest(unittest.TestCase):
     def test_claw(self):
         spack_spec('claw')
 
+    @pytest.mark.no_tsa  # irrelevant
     def test_cosmo(self):
         spack_spec('cosmo')
         spack_spec('cosmo cosmo_target=gpu ~cppdycore')
