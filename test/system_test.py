@@ -171,7 +171,7 @@ def spack_env_dev_install_and_test(spack_env: str,
         unique_folder = build_dir
         log_filename = f'{log_filename}_out_of_source'
 
-    log_with_spack('spack install --reuse -n -v',
+    log_with_spack('spack install -n -v',
                    'system_test',
                    log_filename,
                    cwd=unique_folder,
@@ -182,19 +182,13 @@ def spack_env_dev_install_and_test(spack_env: str,
     # like scripts/spack/test.py or scripts/buildbot_script are not synced
     # in our spack-recipe to the build-folder
     if not out_of_source:
-        log_with_spack('spack install --reuse --test=root -n -v',
+        log_with_spack('spack install --test=root -n -v',
                        'system_test',
                        log_filename,
                        cwd=unique_folder,
                        env=spack_env,
                        srun=False)
 
-
-mpi: str = {
-    'daint': 'mpich',
-    'tsa': 'openmpi',
-    'balfrin': 'cray-mpich',
-}[machine_name()]
 
 nvidia_compiler: str = {
     'daint': 'nvhpc',
