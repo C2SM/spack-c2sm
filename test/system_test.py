@@ -487,13 +487,6 @@ class LibCdiPioTest(unittest.TestCase):
         spack_install_and_test('libcdi-pio')
 
 
-@pytest.mark.no_tsa  # JJ: debug
-class LibXml2Test(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('libxml2')
-
-
 @pytest.mark.no_balfrin  # This fails with "BOZ literal constant at (1) cannot appear in an array constructor". https://gcc.gnu.org/onlinedocs/gfortran/BOZ-literal-constants.html
 class LibGrib1Test(unittest.TestCase):
 
