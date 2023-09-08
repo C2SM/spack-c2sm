@@ -203,12 +203,14 @@ mpi: str = {
     'daint': 'mpich',
     'tsa': 'openmpi',
     'balfrin': 'cray-mpich',
+    'unknown': '',
 }[machine_name()]
 
 nvidia_compiler: str = {
     'daint': 'nvhpc',
     'tsa': 'pgi',
     'balfrin': 'nvhpc',
+    'unknown': '',
 }[machine_name()]
 
 
@@ -337,16 +339,25 @@ class FdbTest(unittest.TestCase):
         spack_install(f'fdb @5.10.8 %{nvidia_compiler}')
 
 
-class FdbFlexpartTest(unittest.TestCase):
-
-    def test_install(self):
-        spack_install_and_test('fdb-flexpart')
-
-
 class FdbFortranTest(unittest.TestCase):
 
     def test_install(self):
         spack_install_and_test('fdb-fortran @0.1.0')
+
+
+class FlexpartOprTest(unittest.TestCase):
+
+    def test_install(self):
+        spack_install_and_test('flexpart-opr')
+
+
+class FlexpartFdbTest(unittest.TestCase):
+
+    def test_wo_mch(self):
+        spack_install_and_test('flexpart-fdb ~mch')
+
+    def test_w_mch(self):
+        spack_install_and_test('flexpart-fdb +mch')
 
 
 class FlexpartIfsTest(unittest.TestCase):
