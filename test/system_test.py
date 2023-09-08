@@ -358,7 +358,7 @@ class FlexpartFdbTest(unittest.TestCase):
 
     def test_w_mch(self):
         spack_install_and_test('flexpart-fdb +mch')
-        
+
 
 class FlexpartIfsTest(unittest.TestCase):
 
