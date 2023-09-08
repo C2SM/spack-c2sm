@@ -50,15 +50,6 @@ pipeline {
                             """
                         }
                     }
-                    stage('Clean caches') {
-                        steps {
-                            sh """
-                            source env/bin/activate
-                            . ./setup-env.sh
-                            spack clean -a
-                            """
-                        }
-                    }
                     stage('Integration Tests') {
                         steps {
                             sh """
