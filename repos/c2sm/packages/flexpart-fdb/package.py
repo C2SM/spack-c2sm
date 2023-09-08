@@ -4,10 +4,10 @@ import shutil
 
 
 class FlexpartFdb(MakefilePackage):
-    """flexpart is a Lagrangian dispersion model"""
+    """Flexpart is a Lagrangian dispersion model"""
 
-    homepage = 'https://github.com/MeteoSwiss-APN/flexpart-fdb'
-    git = 'ssh://git@github.com:MeteoSwiss-APN/flexpart-fdb.git'
+    homepage = 'https://github.com/MeteoSwiss/flexpart'
+    git = 'https://github.com/MeteoSwiss/flexpart.git'
 
     version('fdb', branch='fdb')
 
