@@ -285,7 +285,7 @@ class SpecTest(unittest.TestCase):
         spack_info('flexpart-ifs')
 
     def test_flexpart_opr(self):
-        spack_info('flexpart-opr')
+        spack_spec('flexpart-opr')
 
     def test_gridtools(self):
         spack_spec('gridtools')
