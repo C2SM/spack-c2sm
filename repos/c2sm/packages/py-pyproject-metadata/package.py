@@ -6,7 +6,7 @@
 from spack.package import *
 
 # TODO (magdalena) remove after upgrade to spack 0.20.0
-# copy of https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/py-pyproject-metadata/package.py
+#   copy of https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/py-pyproject-metadata/package.py
 class PyPyprojectMetadata(PythonPackage):
     """PEP 621 metadata parsing."""
 

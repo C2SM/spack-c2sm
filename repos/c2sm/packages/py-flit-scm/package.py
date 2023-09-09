@@ -7,7 +7,7 @@
 from spack.package import *
 
 # TODO (magdalena) remove after upgrade to spack 0.20.0
-# copy of https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/py-flit-scm/package.py
+#   copy of https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/py-flit-scm/package.py
 class PyFlitScm(PythonPackage):
     """A PEP 518 build backend that uses setuptools_scm
     to generate a version file from your version control system,

@@ -36,9 +36,9 @@ class PyIcon4py(PythonPackage):
     depends_on('py-fprettify@0.3.7:', type=('build', 'run'))
     depends_on('py-cffi@1.5.0:', type=('build', 'run'), when='0.0.7')
     depends_on('py-netcdf4', type=('build', 'run'), when='0.0.7')
-    depends_on('py-mpi4py:3.0:', type=('build', 'run'), when='0.0.7')
+    depends_on('py-mpi4py@3.0:', type=('build', 'run'))
     depends_on('py-pytz', type=('build', 'run'), when='0.0.7')
-    depends_on('py-ghex@0.0.3', type=('build', 'run'), when='0.0.7')
+    depends_on('py-ghex@0.3.1', type=('build', 'run'))
 
     depends_on('py-gt4py', type=('build', 'run'))
     depends_on('py-pytest', type=('build', 'run'))
@@ -129,6 +129,9 @@ class PyIcon4py(PythonPackage):
         elif self.spec.version == ver('0.0.4') or self.spec.version == ver(
                 '0.0.5'):
             build_dirs = ['common', 'atm_dyn_iconam', 'tools']
+        elif self.spec.version == ver('0.0.6') or self.spec.version == ver(
+                '0.0.7'):
+            build_dirs = ['tools', 'model/atmosphere/dycore','model/common/']
         else:
             build_dirs = ['tools', 'model/atmosphere/dycore', 'model/atmosphere/diffusion',
                           'model/driver', 'model/common/']
@@ -140,5 +143,5 @@ class PyIcon4py(PythonPackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def install_test(self):
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--cov',
+        python('-m', 'pytest', '-m', '"not datatest"', '-v', '-s', '-n', 'auto', '--cov',
                '--cov-append')

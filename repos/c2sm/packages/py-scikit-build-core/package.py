@@ -6,7 +6,7 @@
 from spack.package import *
 
 # TODO (magdalena) copy from https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/py-scikit-build-core/package.py
-# add new version (0.5.0)
+#   add new version (0.5.0)
 
 class PyScikitBuildCore(PythonPackage):
     """scikit-build-core is a doubly improved build system generator
