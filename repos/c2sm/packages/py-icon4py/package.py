@@ -39,7 +39,7 @@ class PyIcon4py(PythonPackage):
     depends_on('py-pytz', type=('build', 'run'))
     depends_on('py-ghex@0.3.1', type=('build', 'run'))
     depends_on('py-wget', type=('build', 'run'))
-    depends_on('serialbox@2.6: +python', type=('build', 'run'))
+    depends_on('serialbox@2.6.1_2023-06-12 +python', type=('build', 'run'))
     depends_on('py-gt4py', type=('build', 'run'))
     depends_on('py-pytest', type=('build', 'run'))
     depends_on('py-pytest-mpi', type='test')
@@ -69,6 +69,10 @@ class PyIcon4py(PythonPackage):
                 'tools': 'icon4pytools'
             },
             ver('0.0.6'): {
+                'atm_dyn_iconam': 'dycore',
+                'tools': 'icon4pytools'
+            },
+            ver('0.0.7'): {
                 'atm_dyn_iconam': 'dycore',
                 'tools': 'icon4pytools'
             },
@@ -131,7 +135,7 @@ class PyIcon4py(PythonPackage):
             build_dirs = ['common', 'atm_dyn_iconam', 'tools']
         elif self.spec.version == ver('0.0.6') or self.spec.version == ver(
                 '0.0.7'):
-            build_dirs = ['tools', 'model/atmosphere/dycore','model/common/']
+            build_dirs = ['tools', 'model/atmosphere/dycore', 'model/common/']
         else:
             build_dirs = ['tools', 'model/atmosphere/dycore', 'model/atmosphere/diffusion',
                           'model/driver', 'model/common/']
@@ -143,5 +147,5 @@ class PyIcon4py(PythonPackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def install_test(self):
-        python('-m', 'pytest', '-m', '"not datatest"', '-v', '-s', '-n', 'auto', '--cov',
+        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--cov',
                '--cov-append')
