@@ -34,14 +34,18 @@ class PyIcon4py(PythonPackage):
     depends_on('py-tabulate@0.8.9:', type=('build', 'run'))
     # TODO: push new version to Spack official
     depends_on('py-fprettify@0.3.7:', type=('build', 'run'))
-    depends_on('py-cffi@1.5.0:', type=('build', 'run'), when='0.0.7')
-    depends_on('py-netcdf4', type=('build', 'run'), when='0.0.7')
+    depends_on('py-cffi@1.5.0:', type=('build', 'run'))
+    depends_on('py-netcdf4', type=('build', 'run'))
     depends_on('py-mpi4py@3.0:', type=('build', 'run'))
-    depends_on('py-pytz', type=('build', 'run'), when='0.0.7')
+    depends_on('py-pytz', type=('build', 'run'))
     depends_on('py-ghex@0.3.1', type=('build', 'run'))
+    depends_on('py-wget', type=('build', 'run'))
+
+    depends_on('serialbox@2.6: +python', type=('build', 'run'))
 
     depends_on('py-gt4py', type=('build', 'run'))
     depends_on('py-pytest', type=('build', 'run'))
+    depends_on('py-pytest-mpi', type='test')
 
     depends_on('boost@1.65.1:', type=('build', 'run'))
 
