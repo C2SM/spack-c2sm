@@ -19,13 +19,12 @@ class PyIcon4py(PythonPackage):
 
     maintainers = ['samkellerhals']
 
-    version('main', branch='merge-greenline-to-main', git=git)
+    version('main', branch='main', git=git)
     version('0.0.3', tag='v0.0.3', git=git)
     version('0.0.4', tag='v0.0.4', git=git)
     version('0.0.5', tag='v0.0.5', git=git)
     version('0.0.6', tag='v0.0.6', git=git)
     version('0.0.7', tag='v0.0.7', git=git)
-
 
     depends_on('py-wheel', type='build')
     depends_on('py-setuptools', type='build')
@@ -40,13 +39,10 @@ class PyIcon4py(PythonPackage):
     depends_on('py-pytz', type=('build', 'run'))
     depends_on('py-ghex@0.3.1', type=('build', 'run'))
     depends_on('py-wget', type=('build', 'run'))
-
     depends_on('serialbox@2.6: +python', type=('build', 'run'))
-
     depends_on('py-gt4py', type=('build', 'run'))
     depends_on('py-pytest', type=('build', 'run'))
     depends_on('py-pytest-mpi', type='test')
-
     depends_on('boost@1.65.1:', type=('build', 'run'))
 
     # cmake in unit-tests needs this path
