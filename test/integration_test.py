@@ -462,7 +462,7 @@ class SpecTest(unittest.TestCase):
     def test_py_ghex(self):
         spack_spec('py-ghex')
 
-    def test_hatch_vcs(self):
+    def test_py_hatch_vcs(self):
         spack_spec('py-hatch-vcs')
 
     def test_py_pyproject_metadata(self):
