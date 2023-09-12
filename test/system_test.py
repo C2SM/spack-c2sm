@@ -234,6 +234,7 @@ class CosmoTest(unittest.TestCase):
 
 
 @pytest.mark.no_balfrin  # cuda arch is not supported
+@pytest.mark.no_tsa  # irrelevant
 class CosmoDycoreTest(unittest.TestCase):
 
     def test_install_version_6_0(self):
