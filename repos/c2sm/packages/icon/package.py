@@ -40,7 +40,7 @@ class Icon(AutotoolsPackage, CudaPackage):
             git='ssh://git@github.com/C2SM/icon-exclaim.git',
             submodules=True)
     version('exclaim',
-            branch='icon-dsl-spack',
+            branch='icon-dsl',
             git='ssh://git@github.com/C2SM/icon-exclaim.git',
             submodules=True)
     version('nwp-master',

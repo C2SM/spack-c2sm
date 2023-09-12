@@ -203,12 +203,14 @@ mpi: str = {
     'daint': 'mpich',
     'tsa': 'openmpi',
     'balfrin': 'cray-mpich',
+    'unknown': '',
 }[machine_name()]
 
 nvidia_compiler: str = {
     'daint': 'nvhpc',
     'tsa': 'pgi',
     'balfrin': 'nvhpc',
+    'unknown': '',
 }[machine_name()]
 
 
@@ -337,16 +339,25 @@ class FdbTest(unittest.TestCase):
         spack_install(f'fdb @5.10.8 %{nvidia_compiler}')
 
 
-class FdbFlexpartTest(unittest.TestCase):
-
-    def test_install(self):
-        spack_install_and_test('fdb-flexpart')
-
-
 class FdbFortranTest(unittest.TestCase):
 
     def test_install(self):
         spack_install_and_test('fdb-fortran @0.1.0')
+
+
+class FlexpartOprTest(unittest.TestCase):
+
+    def test_install(self):
+        spack_install_and_test('flexpart-opr')
+
+
+class FlexpartFdbTest(unittest.TestCase):
+
+    def test_wo_mch(self):
+        spack_install_and_test('flexpart-fdb ~mch')
+
+    def test_w_mch(self):
+        spack_install_and_test('flexpart-fdb +mch')
 
 
 class FlexpartIfsTest(unittest.TestCase):
@@ -452,8 +463,12 @@ class IconToolsTest(unittest.TestCase):
 @pytest.mark.no_balfrin  # Not supported on Balfrin
 class InferoTest(unittest.TestCase):
 
-    def test_install(self):
-        spack_install_and_test('infero @0.1.2 %gcc')
+    def test_install_tf_c(self):
+        spack_install_and_test('infero @0.1.2 %gcc +tf_c')
+
+    # compilation of test fails with Error: Line truncated at (1) [-Werror=line-truncation]
+    def test_install_onnx(self):
+        spack_install('infero @0.1.2 %gcc +onnx')
 
 
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
@@ -483,6 +498,12 @@ class Int2lmTest(unittest.TestCase):
         spack_install_and_test(
             f'int2lm @c2sm-master %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler} ^libgrib1 %{nvidia_compiler}'
         )
+
+
+class LibTorchTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install('libtorch')
 
 
 @pytest.mark.no_tsa  # Test is too expensive. It takes over 5h.
@@ -539,6 +560,12 @@ class NvidiaLapackTest(unittest.TestCase):
         spack_install_and_test('nvidia-lapack')
 
 
+class OnnxRuntimeTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('onnx-runtime')
+
+
 @pytest.mark.no_balfrin  # Coupling only needed on Daint
 @pytest.mark.no_tsa  # Coupling only needed on Daint
 class OasisTest(unittest.TestCase):
@@ -551,6 +578,22 @@ class OmniXmodPoolTest(unittest.TestCase):
 
     def test_install_version_0_1(self):
         spack_install_and_test('omni-xmod-pool @0.1')
+
+
+@pytest.mark.no_tsa
+class PytorchFortranTest(unittest.TestCase):
+
+    def test_install_version_0_4(self):
+        spack_install(
+            'pytorch-fortran@0.4%nvhpc ^pytorch-fortran-proxy@0.4%gcc ^python@3.10'
+        )
+
+
+@pytest.mark.no_tsa
+class PytorchFortranProxyTest(unittest.TestCase):
+
+    def test_install_version_0_4(self):
+        spack_install('pytorch-fortran-proxy@0.4%gcc ^python@3.10')
 
 
 class PyBlackTest(unittest.TestCase):
@@ -617,6 +660,11 @@ class PyGt4pyTest(unittest.TestCase):
     def test_install_version_1_1_2(self):
         spack_install_and_test('py-gt4py @1.1.2')
 
+    @pytest.mark.no_daint  # fails with ModuleNotFoundError: No module named 'dace'
+    @pytest.mark.no_balfrin  # fails with ModuleNotFoundError: No module named 'dace'
+    def test_install_version_1_1_3(self):
+        spack_install_and_test('py-gt4py @1.1.3')
+
 
 class PyHatchlingTest(unittest.TestCase):
 
@@ -635,6 +683,10 @@ class PyIcon4pyTest(unittest.TestCase):
         spack_install_and_test(
             'py-icon4py @ 0.0.6 %gcc ^py-gt4py@1.1.2 ^python@3.10.4')
 
+    def test_install_version_0_0_7(self):
+        spack_install_and_test(
+            'py-icon4py @ 0.0.7 %gcc ^py-gt4py@1.1.3 ^python@3.10.4')
+
 
 class PyInflectionTest(unittest.TestCase):
 
@@ -646,6 +698,12 @@ class PyLarkTest(unittest.TestCase):
 
     def test_install_default(self):
         spack_install_and_test('py-lark')
+
+
+class PyNanobindTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-nanobind')
 
 
 class PyNumpyTest(unittest.TestCase):
