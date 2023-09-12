@@ -194,6 +194,7 @@ nvidia_compiler: str = {
     'daint': 'nvhpc',
     'tsa': 'pgi',
     'balfrin': 'nvhpc',
+    'unknown': '',
 }[machine_name()]
 
 
@@ -312,16 +313,25 @@ class FdbTest(unittest.TestCase):
         spack_install(f'fdb @5.10.8 %{nvidia_compiler}')
 
 
-class FdbFlexpartTest(unittest.TestCase):
-
-    def test_install(self):
-        spack_install_and_test('fdb-flexpart')
-
-
 class FdbFortranTest(unittest.TestCase):
 
     def test_install(self):
         spack_install_and_test('fdb-fortran @0.1.0')
+
+
+class FlexpartOprTest(unittest.TestCase):
+
+    def test_install(self):
+        spack_install_and_test('flexpart-opr')
+
+
+class FlexpartFdbTest(unittest.TestCase):
+
+    def test_wo_mch(self):
+        spack_install_and_test('flexpart-fdb ~mch')
+
+    def test_w_mch(self):
+        spack_install_and_test('flexpart-fdb +mch')
 
 
 class FlexpartIfsTest(unittest.TestCase):
@@ -616,6 +626,11 @@ class PyGt4pyTest(unittest.TestCase):
     def test_install_version_1_1_2(self):
         spack_install_and_test('py-gt4py @1.1.2')
 
+    @pytest.mark.no_daint  # fails with ModuleNotFoundError: No module named 'dace'
+    @pytest.mark.no_balfrin  # fails with ModuleNotFoundError: No module named 'dace'
+    def test_install_version_1_1_3(self):
+        spack_install_and_test('py-gt4py @1.1.3')
+
 
 class PyHatchlingTest(unittest.TestCase):
 
@@ -632,6 +647,10 @@ class PyIcon4pyTest(unittest.TestCase):
     def test_install_version_0_0_6(self):
         spack_install_and_test('py-icon4py @ 0.0.6 %gcc ^py-gt4py@1.1.2')
 
+    def test_install_version_0_0_7(self):
+        spack_install_and_test(
+            'py-icon4py @ 0.0.7 %gcc ^py-gt4py@1.1.3 ^python@3.10.4')
+
 
 class PyInflectionTest(unittest.TestCase):
 
@@ -643,6 +662,12 @@ class PyLarkTest(unittest.TestCase):
 
     def test_install_default(self):
         spack_install_and_test('py-lark')
+
+
+class PyNanobindTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-nanobind')
 
 
 class PyNumpyTest(unittest.TestCase):

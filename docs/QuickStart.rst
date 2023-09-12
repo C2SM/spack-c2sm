@@ -113,7 +113,11 @@ Example to build ICON for CPU with NVHPC:
 
 .. code-block:: console
 
+<<<<<<< HEAD
     $ spack env activate -d config/cscs/spack/v0.20.1.0/daint_cpu_nvhpc
+=======
+    $ spack env activate -d config/cscs/spack/v0.18.1.12/daint_cpu_nvhpc
+>>>>>>> 6d1694393ad643357de4696a5642787b600b8319
     $ spack install
 
 ..  attention::
@@ -126,7 +130,11 @@ Out-of-source builds are possible as follows:
 
     $ mkdir cpu && cd cpu
     $ cp -r ../config .
+<<<<<<< HEAD
     $ spack env activate -d config/cscs/spack/v0.20.1.0/daint_cpu_nvhpc
+=======
+    $ spack env activate -d config/cscs/spack/v0.18.1.12/daint_cpu_nvhpc
+>>>>>>> 6d1694393ad643357de4696a5642787b600b8319
     $ spack install
 
 ..  attention::

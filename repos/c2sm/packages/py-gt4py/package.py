@@ -18,6 +18,7 @@ class PyGt4py(PythonPackage):
     version('main', branch='main', git=url)
     version('1.1.1', tag='icon4py_20230413', git=url)
     version('1.1.2', tag='icon4py_20230621', git=url)
+    version('1.1.3', tag='icon4py_20230817', git=url)
 
     maintainers = ['samkellerhals']
 
@@ -43,7 +44,9 @@ class PyGt4py(PythonPackage):
     depends_on('py-deepdiff@5.6:', type=('build', 'run'))
     depends_on('py-devtools@0.6:', type=('build', 'run'))
     depends_on('py-frozendict@2.3:', type=('build', 'run'))
-    depends_on('py-gridtools-cpp@2.3.0:', type=('build', 'run'))
+    depends_on('py-gridtools-cpp@2.3.1:', type=(
+        'build', 'run'
+    ))  #gridtools-cpp is backwards compatible with older gt4py versions
     depends_on('py-jinja2@3.0.0:', type=('build', 'run'))
     depends_on('py-lark@1.1.2:', type=('build', 'run'))
     depends_on('py-mako@1.1:', type=('build', 'run'))
@@ -56,6 +59,7 @@ class PyGt4py(PythonPackage):
     # See: https://github.com/C2SM/spack-c2sm/issues/803
     depends_on('py-pybind11@2.5:2.9.2', type=('build', 'run'))
 
+    depends_on('py-nanobind@1.4.0:', when="@1.1.3:", type=('build', 'run'))
     depends_on('py-tabulate@0.8:', type=('build', 'run'))
     depends_on('py-typing-extensions@4.5:', type=('build', 'run'))
     depends_on('py-toolz@0.12.0:', type=('build', 'run'))
