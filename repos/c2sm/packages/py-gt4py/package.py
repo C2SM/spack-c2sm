@@ -17,7 +17,7 @@ class PyGt4py(PythonPackage):
     url2 = "ssh://git@github.com/edopao/gt4py.git"
 
     version('main', branch='main', git=url)
-    version('test_dace', branch='dace-import', git=url2)
+    version('develop', branch='dace-import', git=url2)
     version('1.1.1', tag='icon4py_20230413', git=url)
     version('1.1.2', tag='icon4py_20230621', git=url)
     version('1.1.3', tag='icon4py_20230817', git=url)
