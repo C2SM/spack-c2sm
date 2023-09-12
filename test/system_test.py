@@ -665,6 +665,9 @@ class PyGt4pyTest(unittest.TestCase):
     def test_install_version_1_1_3(self):
         spack_install_and_test('py-gt4py @1.1.3')
 
+    def test_install_version_test_dace(self):
+        spack_install_and_test('py-gt4py @test_dace')
+
 
 class PyHatchlingTest(unittest.TestCase):
 
