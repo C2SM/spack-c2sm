@@ -15,8 +15,7 @@ class FdbFortran(CMakePackage):
     depends_on('metkit')
     depends_on('eccodes +fortran')
 
-    # Only the branch 'inspect' branch provides the necessary interface, like 'fdb_listiterator_attrs'.
-    depends_on('fdb@inspect')
+    depends_on('fdb@5.11.0:')
 
 
 def cmake_args(self):
