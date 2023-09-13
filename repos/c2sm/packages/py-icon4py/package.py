@@ -33,18 +33,19 @@ class PyIcon4py(PythonPackage):
     depends_on('py-tabulate@0.8.9:', type=('build', 'run'))
     # TODO: push new version to Spack official
     depends_on('py-fprettify@0.3.7:', type=('build', 'run'))
-    depends_on('py-cffi@1.5.0:', type=('build', 'run'))
-    depends_on('py-netcdf4', type=('build', 'run'))
-    depends_on('py-mpi4py@3.0:', type=('build', 'run'))
-    depends_on('py-pytz', type=('build', 'run'))
-    depends_on('py-ghex@0.3.1', type=('build', 'run'))
-    depends_on('py-wget', type=('build', 'run'))
-    depends_on('serialbox@2.6.1_2023-06-12 +python', type=('build', 'run'))
     depends_on('py-gt4py', type=('build', 'run'))
     depends_on('py-pytest', type=('build', 'run'))
-    depends_on('py-pytest-mpi', type='test')
     depends_on('boost@1.65.1:', type=('build', 'run'))
 
+    depends_on('py-cffi@1.5.0:', when='@0.0.8:', type=('build', 'run'))
+    depends_on('py-netcdf4', when='@0.0.8:', type=('build', 'run'))
+    depends_on('py-mpi4py@3.0:', when='@0.0.8:', type=('build', 'run'))
+    depends_on('py-pytz', when='@0.0.8:', type=('build', 'run'))
+    depends_on('py-ghex@0.3.1', when='@0.0.8:', type=('build', 'run'))
+    depends_on('py-wget', when='@0.0.8:', type=('build', 'run'))
+    depends_on('serialbox@2.6.1_2023-06-12 +python', when='@0.0.8:', type=('build', 'run'))
+    depends_on('py-pytest-mpi', when='@0.0.8:', type='test')
+    
     # cmake in unit-tests needs this path
     def setup_build_environment(self, env):
         env.set("CMAKE_INCLUDE_PATH", self.spec['boost'].prefix.include)
