@@ -23,6 +23,6 @@ class PyDevtools(PythonPackage):
 
     depends_on('python@3.7:', type=('build', 'run'))
     depends_on('py-hatchling', type=('build', 'run'))
-    
+
     depends_on('py-executing@1.1.1:', type=('build', 'run'))
     depends_on('py-asttokens@2.0.0:2.9', type=('build', 'run'))
