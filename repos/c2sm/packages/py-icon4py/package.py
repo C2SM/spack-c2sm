@@ -41,7 +41,7 @@ class PyIcon4py(PythonPackage):
     depends_on('py-netcdf4', when='@0.0.8:', type=('build', 'run'))
     depends_on('py-mpi4py@3.0:', when='@0.0.8:', type=('build', 'run'))
     depends_on('py-pytz', when='@0.0.8:', type=('build', 'run'))
-    depends_on('py-ghex@0.3.1', when='@0.0.8:', type=('build', 'run'))
+    depends_on('py-ghex@0.3.2', when='@0.0.8:', type=('build', 'run'))
     depends_on('py-wget', when='@0.0.8:', type=('build', 'run'))
     depends_on('serialbox@2.6.1_2023-06-12 +python', when='@0.0.8:', type=('build', 'run'))
     depends_on('py-pytest-mpi', when='@0.0.8:', type='test')

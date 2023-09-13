@@ -18,6 +18,7 @@ class PyGhex(PythonPackage):
     git = 'https://github.com/ghex-org/GHEX.git'
     maintainers = ['boeschf', 'halungge']
 
+    version('0.3.2', commit='4ae0b8031647816cde3a54a856d37d38e7bdb9ac', git=git, submodules=True)
     version('0.3.1', commit='7ced96a69ab502b0ab0eddc1c0d743e06ccde919', git=git, submodules=True)
 
     build_directory = 'bindings/python'
