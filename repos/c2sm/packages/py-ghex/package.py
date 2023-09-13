@@ -34,15 +34,3 @@ class PyGhex(PythonPackage):
     depends_on('py-pytest', type=('build', 'run'))
 
     patch("add_origin_install_rpath.patch", when="@0.3.1")
-
-
-
-
-
-
-
-
-
-
-
-
