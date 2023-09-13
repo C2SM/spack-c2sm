@@ -75,17 +75,20 @@ class InfoTest(unittest.TestCase):
     def test_fdb(self):
         spack_info('fdb')
 
-    def test_fdb_flexpart(self):
-        spack_info('fdb-flexpart')
-
     def test_fdb_fortran(self):
         spack_info('fdb-fortran')
 
     def test_flexpart_cosmo(self):
         spack_info('flexpart-cosmo')
 
+    def test_flexpart_fdb(self):
+        spack_info('flexpart-fdb')
+
     def test_flexpart_ifs(self):
         spack_info('flexpart-ifs')
+
+    def test_flexpart_opr(self):
+        spack_info('flexpart-opr')
 
     def test_gridtools(self):
         spack_info('gridtools')
@@ -186,6 +189,9 @@ class InfoTest(unittest.TestCase):
     def test_py_lark(self):
         spack_info('py-lark')
 
+    def test_py_nanobind(self):
+        spack_info('py-nanobind')
+
     def test_py_pathspec(self):
         spack_info('py-pathspec')
 
@@ -272,17 +278,20 @@ class SpecTest(unittest.TestCase):
     def test_fdb(self):
         spack_spec('fdb')
 
-    def test_fdb_flexpart(self):
-        spack_spec('fdb-flexpart')
-
     def test_fdb_fortran(self):
         spack_spec('fdb-fortran')
 
     def test_flexpart_cosmo(self):
         spack_spec('flexpart-cosmo')
 
+    def test_flexpart_fdb(self):
+        spack_spec('flexpart-fdb')
+
     def test_flexpart_ifs(self):
         spack_spec('flexpart-ifs')
+
+    def test_flexpart_opr(self):
+        spack_spec('flexpart-opr')
 
     def test_gridtools(self):
         spack_spec('gridtools')
@@ -386,6 +395,9 @@ class SpecTest(unittest.TestCase):
 
     def test_py_lark(self):
         spack_spec('py-lark')
+
+    def test_py_nanobind(self):
+        spack_spec('py-nanobind')
 
     def test_py_pathspec(self):
         spack_spec('py-pathspec')
