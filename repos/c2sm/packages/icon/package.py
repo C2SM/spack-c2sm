@@ -673,11 +673,11 @@ class Icon(AutotoolsPackage, CudaPackage):
             # test.py fails if PYTHONHOME has any value,
             # even '' or ' ' is failing, therefore delete
             # it temporary from env
-            try:
+            if 'PYTHONHOME' in os.environ:
                 PYTHONHOME = os.environ['PYTHONHOME']
                 os.environ.pop('PYTHONHOME')
                 pythonhome_is_set = True
-            except:
+            else:
                 pythonhome_is_set = False
 
             with open('spec.yaml', mode='w') as f:
@@ -739,8 +739,8 @@ class Icon(AutotoolsPackage, CudaPackage):
     @run_before('configure')
     def report_out_of_source_directories(self):
         if self.out_of_source_build:
-            tty.warn(f'build-directory: {self.build_directory}')
-            tty.warn(
+            tty.info(f'build-directory: {self.build_directory}')
+            tty.info(
                 f'configure-directory: {self.out_of_source_configure_directory}'
             )
 
