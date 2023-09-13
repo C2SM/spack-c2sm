@@ -2,7 +2,7 @@ Quick Start
 ===========
 
 
-At CSCS (Daint and Balfrin)
+At CSCS (Daint, Tsa, Balfrin)
 -----------------------------
 
 To set up a Spack instance, clone the repository
