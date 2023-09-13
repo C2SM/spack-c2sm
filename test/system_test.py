@@ -214,7 +214,7 @@ class ClangFormatTest(unittest.TestCase):
 class ClawTest(unittest.TestCase):
 
     def test_install_default(self):
-        spack_install_and_test('claw',split_phases=True)
+        spack_install_and_test('claw', split_phases=True)
 
 
 @pytest.mark.no_balfrin  # cosmo-dycore does not support the cuda arch of balfrin
