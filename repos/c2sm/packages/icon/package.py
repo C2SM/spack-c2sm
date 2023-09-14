@@ -179,12 +179,18 @@ class Icon(AutotoolsPackage, CudaPackage):
             description='Enable silent-rules for build-process')
 
     # C2SM specific Features:
-    variant('infero',
-            default=False,
-            description= 'Build with infero for inference with machine-learning models. Experimental, needs non-standard codebase!')
-    variant('pytorch',
-            default=False,
-            description= 'Build with pytorch for inference with machine-learning models. Experimental, needs non-standard codebase!')
+    variant(
+        'infero',
+        default=False,
+        description=
+        'Build with infero for inference with machine-learning models. Experimental, needs non-standard codebase!'
+    )
+    variant(
+        'pytorch',
+        default=False,
+        description=
+        'Build with pytorch for inference with machine-learning models. Experimental, needs non-standard codebase!'
+    )
 
     variant(
         'eccodes-definitions',
