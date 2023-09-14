@@ -6,6 +6,7 @@
 from spack import *
 import os
 import inspect
+import subprocess
 
 
 class PyIcon4py(PythonPackage):
@@ -148,5 +149,12 @@ class PyIcon4py(PythonPackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def install_test(self):
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--cov',
-               '--cov-append')
+        #python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--cov',
+        #       '--cov-append')
+        try:
+            subprocess.run([
+                'srun', 'python', '-m', 'pytest', '-v', '--with-mpi',
+                 '-s', '-n', 'auto', '--cov', '--cov-append'
+            ], check=True, stderr=subprocess.STDOUT)
+        except:
+            raise InstallError('Pytests failed')
