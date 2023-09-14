@@ -219,7 +219,7 @@ class ClawTest(unittest.TestCase):
 
     @pytest.mark.no_tsa  # fallback for Daint
     @pytest.mark.no_balfrin  # fallback for Daint
-    def test_install_default(self):
+    def test_install_default_build_only(self):
         spack_install('claw')
 
 
