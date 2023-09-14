@@ -213,13 +213,13 @@ class ClangFormatTest(unittest.TestCase):
 
 class ClawTest(unittest.TestCase):
 
-  @pytest.mark.no_daint # Test #1: junit-tatsu fails  
-  def test_install_default(self):
+    @pytest.mark.no_daint  # Test #1: junit-tatsu fails
+    def test_install_default(self):
         spack_install_and_test('claw', split_phases=True)
 
-  @pytest.mark.no_tsa # fallback for Daint
-  @pytest.mark.no_balfrin # fallback for Daint
-  def test_install_default(self):
+    @pytest.mark.no_tsa  # fallback for Daint
+    @pytest.mark.no_balfrin  # fallback for Daint
+    def test_install_default(self):
         spack_install('claw')
 
 
