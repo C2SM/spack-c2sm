@@ -144,6 +144,9 @@ class InfoTest(unittest.TestCase):
     def test_pytorch_fortran_proxy(self):
         spack_info('pytorch-fortran-proxy')
 
+    def test_py_asttokens(self):
+        spack_info('py-asttokens')
+    
     def test_py_black(self):
         spack_info('py-black')
 
@@ -158,6 +161,9 @@ class InfoTest(unittest.TestCase):
 
     def test_py_editables(self):
         spack_info('py-editables')
+
+    def test_py_executing(self):
+        spack_info('py-executing')
 
     def test_py_factory_boy(self):
         spack_info('py-factory-boy')
@@ -348,6 +354,9 @@ class SpecTest(unittest.TestCase):
     def test_pytorch_fortran_proxy(self):
         spack_spec('pytorch-fortran-proxy')
 
+    def test_py_asttokens(self):
+        spack_spec('py-asttokens')
+
     def test_py_black(self):
         spack_spec('py-black')
 
@@ -362,6 +371,9 @@ class SpecTest(unittest.TestCase):
 
     def test_py_editables(self):
         spack_spec('py-editables')
+
+    def test_py_executing(self):
+        spack_spec('py-executing')
 
     def test_py_factory_boy(self):
         spack_spec('py-factory-boy')
