@@ -2,15 +2,13 @@ import shutil
 import sys
 import os
 import subprocess
-
-sys.path.insert(1, 'spack/lib/spack/external')
-from ruamel import yaml
+import yaml
 
 
 def read_upstream_from_spack_yaml(config_dir):
     spack_yaml = os.path.join(config_dir, 'spack.yaml')
     with open(spack_yaml, 'r') as f:
-        spack_config = yaml.load(f)
+        spack_config = yaml.safe_load(f)
     upstream = spack_config['spack']['config']['install_tree']['root']
     return upstream
 

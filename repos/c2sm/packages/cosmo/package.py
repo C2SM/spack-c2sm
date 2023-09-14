@@ -12,10 +12,10 @@ class Cosmo(MakefilePackage):
 
     homepage = "http://www.cosmo-model.org"
     url = "https://github.com/COSMO-ORG/cosmo/archive/6.0.tar.gz"
-    git = 'ssh://git@github.com/COSMO-ORG/cosmo.git'
-    apn_git = 'ssh://git@github.com/MeteoSwiss-APN/cosmo.git'
-    c2sm_git = 'ssh://git@github.com/C2SM-RCM/cosmo.git'
-    empa_git = 'ssh://git@github.com/C2SM-RCM/cosmo-ghg.git'
+    git = 'git@github.com:COSMO-ORG/cosmo.git'
+    apn_git = 'git@github.com:MeteoSwiss-APN/cosmo.git'
+    c2sm_git = 'git@github.com:C2SM-RCM/cosmo.git'
+    empa_git = 'git@github.com:C2SM-RCM/cosmo-ghg.git'
     maintainers = ['elsagermann']
 
     version('org-master', branch='master')
@@ -32,8 +32,6 @@ class Cosmo(MakefilePackage):
     # There are three different types of test_cosmo.py around:
 
     # COSMO-ORG
-    patch('patches/c2sm-master/spec_as_yaml/patch.test_cosmo',
-          when='@c2sm-master')
     patch('patches/org-master/spec_as_yaml/patch.test_cosmo',
           when='@org-master')
     patch('patches/org-master/spec_as_yaml/patch.test_cosmo', when='@6.0')
@@ -47,8 +45,6 @@ class Cosmo(MakefilePackage):
     # There are two different types of serialize_cosmo.py around:
 
     # COSMO-ORG
-    patch('patches/c2sm-master/spec_as_yaml/patch.serialize_cosmo',
-          when='@c2sm-master +serialize')
     patch('patches/org-master/spec_as_yaml/patch.serialize_cosmo',
           when='@org-master +serialize')
     patch('patches/org-master/spec_as_yaml/patch.serialize_cosmo',
@@ -153,38 +149,6 @@ class Cosmo(MakefilePackage):
             default=False,
             description='Build with the unified oasis interface')
 
-    variant('slurm_bin',
-            default='srun',
-            description='Slurm binary on CSCS machines')
-    variant('slurm_opt_partition',
-            default='-p',
-            description='Slurm option to specify partition for testing')
-    variant('slurm_partition',
-            default='normal',
-            description='Slurm partition for testing')
-
-    variant('slurm_opt_nodes',
-            default='-n',
-            description='Slurm option to specify number of nodes for testing')
-    variant('slurm_nodes',
-            default='1',
-            description='Pattern to specify number of nodes for testing')
-
-    variant('slurm_opt_account',
-            default='-A',
-            description='Slurm option to specify account for testing')
-    variant('slurm_account',
-            default='g110',
-            description='Slurm option to specify account for testing')
-
-    variant(
-        'slurm_opt_constraint',
-        default='-C',
-        description='Slurm option to specify constraints for nodes requested')
-    variant('slurm_constraint',
-            default='gpu',
-            description='Slurm constraints for nodes requested')
-
     conflicts(
         '@dev-build',
         msg=
@@ -202,6 +166,12 @@ class Cosmo(MakefilePackage):
     # setup_build_environment method
 
     build_directory = 'cosmo/ACC'
+
+    # v0.20.1 does not fully support builds of COSMO
+    # users should continue using v0.18.1.x on Daint
+    # once support on Alps has been clarified finalize
+    # recipe and remove line below.
+    manual_download = True
 
     def setup_build_environment(self, env):
 

@@ -21,6 +21,10 @@ modules:
         environment:
           set:
             DYCOREGT_DIR: '${PREFIX}'
+            UCX_MEMTYPE_CACHE: 'n'
+            UCX_TLS: 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma'
+            MPICH_G2G_PIPELINE: '64'
+            MPICH_RDMA_ENABLED_CUDA: '1'
       cosmo-grib-api-definitions:
         environment:
           prepend_path:
@@ -65,13 +69,6 @@ modules:
         environment:
           set:
             YACC: 'bison -y'
-      cosmo-dycore:
-        environment:
-          set:
-            UCX_MEMTYPE_CACHE: 'n'
-            UCX_TLS: 'rc_x,ud_x,mm,shm,cuda_copy,cuda_ipc,cma'
-            MPICH_G2G_PIPELINE: '64'
-            MPICH_RDMA_ENABLED_CUDA: '1'
       cosmo cosmo_target=cpu:
         environment:
           set:

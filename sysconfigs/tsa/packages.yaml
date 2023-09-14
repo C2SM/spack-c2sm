@@ -45,14 +45,9 @@ packages:
       modules:
       - cmake/3.14.5
   cosmo: # manually added
-    variants: slave=tsa cuda_arch=70 slurm_bin= "srun" slurm_partition=
-      "debug" slurm_opt_nodes= "-n" slurm_nodes= "1" slurm_opt_account= "-" slurm_account=
-      "-" slurm_opt_constraint= "-" slurm_constraint= "-"
+    variants: slave=tsa
   cosmo-dycore: # manually added
-    variants: slave=tsa cuda_arch=70 data_path=/scratch/jenkins/data/cosmo/
-      slurm_bin= "srun" slurm_partition= "debug" slurm_gpu= "--gres=gpu:{0}" slurm_opt_nodes=
-      "-n" slurm_nodes= "{0}" slurm_opt_account= "-" slurm_account= "-" slurm_opt_constraint=
-      "-" slurm_constraint= "-"
+    variants: slave=tsa data_path=/scratch/jenkins/data/cosmo/
   cpio:
     externals:
     - spec: cpio@2.11
@@ -224,11 +219,11 @@ packages:
       prefix: /usr
   python:
     externals:
-    - spec: python@3.7.4+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+    - spec: python@3.7.4+bz2+ctypes+dbm+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
       prefix: /apps/arolla/UES/jenkins/RH7.9/MCH-PE20.08-UP01/generic/easybuild/software/Python/3.7.4
     - spec: python@2.7.5+bz2+ctypes+dbm+nis+pyexpat+pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
       prefix: /usr
-    - spec: python@3.6.8+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
+    - spec: python@3.6.8+bz2+ctypes+dbm+lzma+nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
       prefix: /usr
   rsync:
     externals:

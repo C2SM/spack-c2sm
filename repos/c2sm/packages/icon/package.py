@@ -17,12 +17,12 @@ def validate_variant_dsl(pkg, name, value):
 
 
 def check_variant_fcgroup(fcgroup):
-    pattern = re.compile(r"^[A-Z]+;.+;.")
+    pattern = re.compile(r"^[A-Z]+\..+\..")
     # fcgroup is False as default
     if pattern.match(fcgroup) or fcgroup == 'none':
         return True
     else:
-        tty.warn('Variant fcgroup needs format GROUP;files;flag')
+        tty.warn('Variant fcgroup needs format GROUP.files.flag')
         return False
 
 
@@ -31,20 +31,20 @@ class Icon(AutotoolsPackage, CudaPackage):
 
     homepage = 'https://code.mpimet.mpg.de/projects/iconpublic'
     url = 'https://gitlab.dkrz.de/icon/icon/-/archive/icon-2.6.6/icon-icon-2.6.6.tar.gz'
-    git = 'ssh://git@gitlab.dkrz.de/icon/icon.git'
+    git = 'git@gitlab.dkrz.de:icon/icon.git'
 
     version('develop', submodules=True)
     version('2.6.6', tag='icon-2.6.6', submodules=True)
     version('exclaim-master',
             branch='master',
-            git='ssh://git@github.com/C2SM/icon-exclaim.git',
+            git='git@github.com:C2SM/icon-exclaim.git',
             submodules=True)
     version('exclaim',
             branch='icon-dsl',
-            git='ssh://git@github.com/C2SM/icon-exclaim.git',
+            git='git@github.com:C2SM/icon-exclaim.git',
             submodules=True)
     version('nwp-master',
-            git='ssh://git@gitlab.dkrz.de/icon/icon-nwp.git',
+            git='git@gitlab.dkrz.de:icon/icon-nwp.git',
             submodules=True)
 
     # The variants' default follow those of ICON
@@ -198,6 +198,7 @@ class Icon(AutotoolsPackage, CudaPackage):
     for x in dsl_values:
         depends_on('py-icon4py', when='dsl={0}'.format(x))
         depends_on('py-gridtools-cpp', when='dsl={0}'.format(x))
+        depends_on('boost', when='dsl={0}'.format(x))
         conflicts('^python@:3.9,3.11:', when='dsl={0}'.format(x))
 
     depends_on('infero +quiet', when='+infero')
@@ -267,6 +268,7 @@ class Icon(AutotoolsPackage, CudaPackage):
     # Flag to mark if we build out-of-source
     # Needed to trigger sync of input files for experiments
     out_of_source_build = False
+    out_of_source_configure_directory = ''
 
     # patch_libtool is a function from Autotoolspackage.
     # For BB we cannot use it because it finds all files
@@ -616,16 +618,16 @@ class Icon(AutotoolsPackage, CudaPackage):
     def fcgroup_to_config_arg(self):
         arg = []
         for group in self.spec.variants['fcgroup'].value:
-            name = group.split(';')[0]
-            files = group.split(';')[1]
+            name = group.split('.')[0]
+            files = group.split('.')[1]
             arg.append(f'--enable-fcgroup-{name}={files}')
         return arg
 
     def fcgroup_to_config_var(self):
         var = {}
         for group in self.spec.variants['fcgroup'].value:
-            name = group.split(';')[0]
-            flag = group.split(';')[2]
+            name = group.split('.')[0]
+            flag = group.split('.')[2]
             # Note: flag needs to be a list
             var[f'ICON_{name}_FCFLAGS'] = [flag]
         return var
@@ -671,15 +673,20 @@ class Icon(AutotoolsPackage, CudaPackage):
             # test.py fails if PYTHONHOME has any value,
             # even '' or ' ' is failing, therefore delete
             # it temporary from env
-            PYTHONHOME = os.environ['PYTHONHOME']
-            os.environ.pop('PYTHONHOME')
+            if 'PYTHONHOME' in os.environ:
+                PYTHONHOME = os.environ['PYTHONHOME']
+                os.environ.pop('PYTHONHOME')
+                pythonhome_is_set = True
+            else:
+                pythonhome_is_set = False
 
             with open('spec.yaml', mode='w') as f:
                 f.write(self.spec.to_yaml())
             test_py('--spec', 'spec.yaml', fail_on_error=True)
 
             # restore PYTHONHOME after test.py
-            os.environ['PYTHONHOME'] = PYTHONHOME
+            if pythonhome_is_set:
+                os.environ['PYTHONHOME'] = PYTHONHOME
         else:
             tty.warn('Cannot find test.py -> skipping tests')
 
@@ -708,22 +715,34 @@ class Icon(AutotoolsPackage, CudaPackage):
 
         Overides function from spack.build_systems.autotools
 
-        CAUTION: Does only work if Spack is inside the git-repo
-                 of ICON, otherwise "git rev-pars --show-toplevel"
-                 fails!
-
         """
 
-        Git = which('git', required=True)
-        git_root = Git('rev-parse', '--show-toplevel',
-                       output=str).replace("\n", "")
-        if git_root != self.stage.source_path:
-            # mark out-of-source build for function
-            # copy_runscript_related_input_files
-            self.out_of_source_build = True
-            return git_root
-        else:
-            return self.stage.source_path
+        source_path = self.build_directory
+
+        # dev_path is indicator for dev-build or develop
+        # only case when out-of-source build are possible
+        if "dev_path" in self.spec.variants:
+            Git = which('git', required=True)
+            git_root = Git('rev-parse',
+                           '--show-toplevel',
+                           output=str,
+                           fail_on_error=True).replace("\n", "")
+            if git_root != source_path:
+                # mark out-of-source build for function
+                # copy_runscript_related_input_files
+                self.out_of_source_build = True
+                self.out_of_source_configure_directory = git_root
+                return git_root
+
+        return source_path
+
+    @run_before('configure')
+    def report_out_of_source_directories(self):
+        if self.out_of_source_build:
+            tty.info(f'build-directory: {self.build_directory}')
+            tty.info(
+                f'configure-directory: {self.out_of_source_configure_directory}'
+            )
 
     def configure(self, spec, prefix):
         if os.path.exists(
@@ -735,8 +754,8 @@ class Icon(AutotoolsPackage, CudaPackage):
             )
             return
 
-        # use configure provided by Spack
-        AutotoolsPackage.configure(self, spec, prefix)
+        # Call configure of Autotools
+        super().configure(spec, prefix)
 
     def build_uses_same_spec(self):
         """

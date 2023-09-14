@@ -44,10 +44,7 @@ def spack_install(spec: str, log_filename: str = None):
     if log_filename is None:
         log_filename = sanitized_filename(class_name + '-' + func_name)
 
-    if spec.startswith('cosmo '):
-        command = 'installcosmo'
-    else:
-        command = 'install'
+    command = 'install'
 
     if spec.startswith('py-'):
         devirtualize_env()
@@ -72,10 +69,7 @@ def spack_install_and_test(spec: str,
     if log_filename is None:
         log_filename = sanitized_filename(class_name + '-' + func_name)
 
-    if spec.startswith('cosmo '):
-        command = 'installcosmo'
-    else:
-        command = 'install'
+    command = 'install'
 
     if spec.startswith('py-'):
         devirtualize_env()
@@ -113,10 +107,7 @@ def spack_devbuild_and_test(spec: str,
     if log_filename is None:
         log_filename = sanitized_filename(class_name + '-' + func_name)
 
-    if spec.startswith('cosmo '):
-        command = 'devbuildcosmo'
-    else:
-        command = 'dev-build'
+    command = 'dev-build'
 
     if spec.startswith('py-'):
         devirtualize_env()
@@ -199,13 +190,6 @@ def spack_env_dev_install_and_test(spack_env: str,
                        srun=False)
 
 
-mpi: str = {
-    'daint': 'mpich',
-    'tsa': 'openmpi',
-    'balfrin': 'cray-mpich',
-    'unknown': '',
-}[machine_name()]
-
 nvidia_compiler: str = {
     'daint': 'nvhpc',
     'tsa': 'pgi',
@@ -229,39 +213,35 @@ class ClangFormatTest(unittest.TestCase):
 
 class ClawTest(unittest.TestCase):
 
+    @pytest.mark.no_daint  # Test #1: junit-tatsu fails
     def test_install_default(self):
-        spack_install_and_test('claw')
+        spack_install_and_test('claw', split_phases=True)
+
+    @pytest.mark.no_tsa  # fallback for Daint
+    @pytest.mark.no_balfrin  # fallback for Daint
+    def test_install_default_build_only(self):
+        spack_install('claw')
 
 
 @pytest.mark.no_balfrin  # cosmo-dycore does not support the cuda arch of balfrin
 @pytest.mark.no_tsa  # irrelevant
 class CosmoTest(unittest.TestCase):
 
-    def test_install_version_6_0_gpu(self):
-        spack_install_and_test(
-            f'cosmo @6.0 %{nvidia_compiler} cosmo_target=gpu +cppdycore ^{mpi} %{nvidia_compiler}',
-            split_phases=True)
+    def test_install_c2sm_master_cpu(self):
+        spack_env_dev_install_and_test(
+            'cosmo/ACC/spack/v0.20.1.0/nvhpc_cpu_double',
+            'git@github.com:C2SM-RCM/cosmo.git', 'dev_spackv0.20.1',
+            'cosmo-c2sm-master')
 
-    def test_install_version_6_0_cpu(self):
-        spack_install_and_test(
-            f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}',
-            split_phases=True)
-
-    @pytest.mark.serial_only  # devbuildcosmo does a forced uninstall
-    def test_devbuildcosmo(self):
-        subprocess.run(
-            'git clone --depth 1 --branch 6.0 git@github.com:COSMO-ORG/cosmo.git',
-            check=True,
-            shell=True)
-        spec = f'cosmo @6.0 %{nvidia_compiler} cosmo_target=cpu ~cppdycore ^{mpi} %{nvidia_compiler}'
-        spack_devbuild_and_test(
-            spec,
-            cwd='cosmo',
-            log_filename=sanitized_filename('devbuildcosmo ' + spec),
-            split_phases=True)
+    def test_install_c2sm_master_gpu(self):
+        spack_env_dev_install_and_test(
+            'cosmo/ACC/spack/v0.20.1.0/nvhpc_gpu_double',
+            'git@github.com:C2SM-RCM/cosmo.git', 'dev_spackv0.20.1',
+            'cosmo-c2sm-master')
 
 
 @pytest.mark.no_balfrin  # cuda arch is not supported
+@pytest.mark.no_tsa  # irrelevant
 class CosmoDycoreTest(unittest.TestCase):
 
     def test_install_version_6_0(self):
@@ -303,7 +283,7 @@ class EccodesTest(unittest.TestCase):
     # All the other versions are not the responsibility of spack-c2sm
 
     def test_install_2_19_0(self):
-        spack_install_and_test('eccodes @2.19.0')
+        spack_install('eccodes @2.19.0')
 
 
 class EckitTest(unittest.TestCase):
@@ -475,7 +455,7 @@ class InferoTest(unittest.TestCase):
 class Int2lmTest(unittest.TestCase):
 
     def test_install_version_3_00_gcc(self):
-        spack_install_and_test('int2lm @int2lm-3.00 %gcc')
+        spack_install('int2lm @int2lm-3.00 %gcc')
 
     @pytest.mark.serial_only
     @pytest.mark.no_balfrin  # fails because libgrib1 master fails
@@ -489,8 +469,7 @@ class Int2lmTest(unittest.TestCase):
         )
 
     def test_install_c2sm_master_gcc(self):
-        spack_install_and_test(
-            'int2lm @c2sm-master %gcc ^eccodes %gcc ^libgrib1 %gcc')
+        spack_install('int2lm @c2sm-master %gcc ^eccodes %gcc ^libgrib1 %gcc')
 
     @pytest.mark.no_balfrin  # fails because libgrib1 master fails
     @pytest.mark.no_tsa  # An error occurred in MPI_Bcast
@@ -498,6 +477,12 @@ class Int2lmTest(unittest.TestCase):
         spack_install_and_test(
             f'int2lm @c2sm-master %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler} ^libgrib1 %{nvidia_compiler}'
         )
+
+
+class LibfyamlTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install('libfyaml')
 
 
 class LibTorchTest(unittest.TestCase):
@@ -513,25 +498,12 @@ class LibCdiPioTest(unittest.TestCase):
         spack_install_and_test('libcdi-pio')
 
 
-@pytest.mark.no_tsa  # Fails "make check"
-class LibfyamlTest(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('libfyaml')
-
-
 @pytest.mark.no_balfrin  # This fails with "BOZ literal constant at (1) cannot appear in an array constructor". https://gcc.gnu.org/onlinedocs/gfortran/BOZ-literal-constants.html
 class LibGrib1Test(unittest.TestCase):
 
     @pytest.mark.serial_only  # locking problem on Tsa in combination with int2lm
     def test_install_version_22_01_2020(self):
         spack_install_and_test('libgrib1 @22-01-2020')
-
-
-class LibXml2Test(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('libxml2')
 
 
 class MetkitTest(unittest.TestCase):
@@ -688,12 +660,10 @@ class PyHatchlingTest(unittest.TestCase):
 class PyIcon4pyTest(unittest.TestCase):
 
     def test_install_version_0_0_5(self):
-        spack_install_and_test(
-            'py-icon4py @ 0.0.5 %gcc ^py-gt4py@1.1.1 ^python@3.10.4')
+        spack_install_and_test('py-icon4py @ 0.0.5 %gcc ^py-gt4py@1.1.1')
 
     def test_install_version_0_0_6(self):
-        spack_install_and_test(
-            'py-icon4py @ 0.0.6 %gcc ^py-gt4py@1.1.2 ^python@3.10.4')
+        spack_install_and_test('py-icon4py @ 0.0.6 %gcc ^py-gt4py@1.1.2')
 
     def test_install_version_0_0_7(self):
         spack_install_and_test(
@@ -730,12 +700,6 @@ class PyPathspecTest(unittest.TestCase):
         spack_install_and_test('py-pathspec')
 
 
-class PyPoetryCoreTest(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('py-poetry-core')
-
-
 class PyPytestTest(unittest.TestCase):
 
     def test_install_default(self):
@@ -752,6 +716,12 @@ class PySetuptoolsTest(unittest.TestCase):
 
     def test_install_default(self):
         spack_install_and_test('py-setuptools')
+
+
+class PySphinxcontribJqueryTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-sphinxcontrib-jquery')
 
 
 class PyToolzTest(unittest.TestCase):

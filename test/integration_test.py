@@ -1,4 +1,5 @@
 import unittest
+import pytest
 import sys
 import os
 from pathlib import Path
@@ -198,9 +199,6 @@ class InfoTest(unittest.TestCase):
     def test_py_pathspec(self):
         spack_info('py-pathspec')
 
-    def test_py_poetry_core(self):
-        spack_info('py-poetry-core')
-
     def test_py_pytest(self):
         spack_info('py-pytest')
 
@@ -209,6 +207,9 @@ class InfoTest(unittest.TestCase):
 
     def test_py_setuptools(self):
         spack_info('py-setuptools')
+
+    def test_py_sphinxcontrib_jquery(self):
+        spack_info('py-sphinxcontrib-jquery')
 
     def test_py_toolz(self):
         spack_info('py-toolz')
@@ -247,6 +248,7 @@ class SpecTest(unittest.TestCase):
     def test_claw(self):
         spack_spec('claw')
 
+    @pytest.mark.no_tsa  # irrelevant
     def test_cosmo(self):
         spack_spec('cosmo')
         spack_spec('cosmo cosmo_target=gpu ~cppdycore')
@@ -301,6 +303,7 @@ class SpecTest(unittest.TestCase):
     def test_icon(self):
         spack_spec('icon')
         spack_spec('icon serialization=create claw=std')
+        spack_spec('icon fcgroup=DACE.externals/dace_icon.-O1')
 
     def test_icon_ham(self):
         spack_spec('icon-ham')
@@ -419,6 +422,9 @@ class SpecTest(unittest.TestCase):
 
     def test_py_setuptools(self):
         spack_spec('py-setuptools')
+
+    def test_py_sphinxcontrib_jquery(self):
+        spack_spec('py-sphinxcontrib-jquery')
 
     def test_py_toolz(self):
         spack_spec('py-toolz')

@@ -3,9 +3,13 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-from spack import *
 import os
 import inspect
+
+from spack import *
+from spack.build_systems.python import PythonPipBuilder
+
+import llnl.util.filesystem as fs
 
 
 class PyIcon4py(PythonPackage):
@@ -13,7 +17,7 @@ class PyIcon4py(PythonPackage):
     components for weather and climate models."""
 
     url = "git@github.com:C2SM/icon4py.git"
-    git = 'ssh://git@github.com/C2SM/icon4py.git'
+    git = 'git@github.com:C2SM/icon4py.git'
 
     homepage = "https://github.com/C2SM/icon4py"
 
@@ -41,6 +45,14 @@ class PyIcon4py(PythonPackage):
     def setup_build_environment(self, env):
         env.set("CMAKE_INCLUDE_PATH", self.spec['boost'].prefix.include)
 
+    def test(self):
+        # check if all installed module can be imported
+        super().test()
+
+        # unit tests
+        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--cov',
+               '--cov-append')
+
     @property
     def headers(self):
         '''Workaround to hide the details of the installation path,
@@ -52,19 +64,19 @@ class PyIcon4py(PythonPackage):
         version = self.spec.version
 
         folder_mapping = {
-            ver('0.0.4'): {
+            ver('=0.0.4'): {
                 'atm_dyn_iconam': 'atm_dyn_iconam',
                 'tools': 'icon4pytools'
             },
-            ver('0.0.5'): {
+            ver('=0.0.5'): {
                 'atm_dyn_iconam': 'atm_dyn_iconam',
                 'tools': 'icon4pytools'
             },
-            ver('0.0.6'): {
+            ver('=0.0.6'): {
                 'atm_dyn_iconam': 'dycore',
                 'tools': 'icon4pytools'
             },
-            ver('main'): {
+            ver('=main'): {
                 'atm_dyn_iconam': 'dycore',
                 'tools': 'icon4pytools'
             }
@@ -73,7 +85,7 @@ class PyIcon4py(PythonPackage):
         if len(query_parameters) > 1:
             raise ValueError('Only one query parameter allowed')
 
-        if version == ver('0.0.3') and len(query_parameters) == 1:
+        if version == ver('=0.0.3') and len(query_parameters) == 1:
             msg = 'Not implemented for version {0}'.format(version)
             raise spack.error.NoHeadersError(msg)
 
@@ -94,40 +106,46 @@ class PyIcon4py(PythonPackage):
         headerlist = HeaderList(f'{folder[0]}/dummy.h')
         return headerlist
 
-    def install(self, spec, prefix):
+
+class PythonPipBuilder(PythonPipBuilder):
+
+    def install(self, pkg, spec, prefix):
         """Install everything from build directory."""
 
-        args = PythonPackage._std_args(self) + ['--prefix=' + prefix]
+        args = PythonPipBuilder.std_args(pkg) + ["--prefix=" + prefix]
+
+        for key, value in self.config_settings(spec, prefix).items():
+            if spec["py-pip"].version < Version("22.1"):
+                raise SpecError(
+                    "'{}' package uses 'config_settings' which is only supported by "
+                    "pip 22.1+. Add the following line to the package to fix this:\n\n"
+                    '    depends_on("py-pip@22.1:", type="build")'.format(
+                        spec.name))
+
+            args.append("--config-settings={}={}".format(key, value))
 
         for option in self.install_options(spec, prefix):
-            args.append('--install-option=' + option)
+            args.append("--install-option=" + option)
         for option in self.global_options(spec, prefix):
-            args.append('--global-option=' + option)
+            args.append("--global-option=" + option)
 
-        if self.stage.archive_file and self.stage.archive_file.endswith(
-                '.whl'):
-            args.append(self.stage.archive_file)
+        if pkg.stage.archive_file and pkg.stage.archive_file.endswith(".whl"):
+            args.append(pkg.stage.archive_file)
         else:
-            args.append('.')
+            args.append(".")
 
-        pip = inspect.getmodule(self).pip
+        pip = inspect.getmodule(pkg).pip
 
-        if self.spec.version == ver('0.0.3'):
+        if self.spec.version == ver('=0.0.3'):
             build_dirs = [
                 'common', 'pyutils', 'testutils', 'liskov', 'atm_dyn_iconam'
             ]
-        elif self.spec.version == ver('0.0.4') or self.spec.version == ver(
-                '0.0.5'):
+        elif self.spec.version == ver('=0.0.4') or self.spec.version == ver(
+                '=0.0.5'):
             build_dirs = ['common', 'atm_dyn_iconam', 'tools']
         else:
             build_dirs = ['tools', 'model/atmosphere/dycore', 'model/common/']
 
         for dir in build_dirs:
-            with working_dir(os.path.join(self.stage.source_path, dir)):
+            with fs.working_dir(os.path.join(self.build_directory, dir)):
                 pip(*args)
-
-    @run_after('install')
-    @on_package_attributes(run_tests=True)
-    def install_test(self):
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--cov',
-               '--cov-append')

@@ -4,11 +4,9 @@ packages:
     providers:
       mpi: [cray-mpich]
   cosmo: # manually added
-    variants: slave=balfrin cuda_arch=80 slurm_bin= "srun" slurm_partition="debug" slurm_opt_nodes= "-n" slurm_nodes= "1" slurm_opt_account= "-" slurm_account="-" slurm_opt_constraint= "-" slurm_constraint= "-"
+    variants: slave=balfrin
   cosmo-dycore: # manually added
-    variants: slave=balfrin cuda_arch=80 slurm_bin= "srun" slurm_partition="debug" slurm_gpu="--gres=gpu:{0}" slurm_opt_nodes="-n" slurm_nodes= "{0}" slurm_opt_account= "-" slurm_account= "-" slurm_opt_constraint="-" slurm_constraint= "-" data_path=/scratch/jenkins/data/cosmo/
-  gridtools: # manually added
-    variants: +cuda cuda_arch=80
+    variants: slave=balfrin data_path=/scratch/jenkins/data/cosmo/
   icontools: # manually added
     variants: slave=balfrin
   int2lm: # manually added
@@ -40,6 +38,10 @@ packages:
   cmake:
     externals:
     - spec: cmake@3.17.0
+      prefix: /usr
+  coreutils:
+    externals:
+    - spec: coreutils@8.32
       prefix: /usr
   cpio:
     externals:
@@ -88,7 +90,7 @@ packages:
       prefix: /usr
   git:
     externals:
-    - spec: git@2.34.1~tcltk
+    - spec: git@2.35.3~tcltk
       prefix: /usr
   gmake:
     externals:
@@ -104,7 +106,7 @@ packages:
       prefix: /usr
   openjdk:
     externals:
-    - spec: openjdk@11.0.14_9-suse-3.74.2-x8664
+    - spec: openjdk@11.0.15_10-suse-150000.3.80.1-x8664
       prefix: /usr
   libfuse:
     externals:
@@ -118,7 +120,7 @@ packages:
       prefix: /usr
   lustre:
     externals:
-    - spec: lustre@2.15.0.2_rc2_cray_113_g62287d0
+    - spec: lustre@2.15.0.2_rc2_cray_150_g8176845
       prefix: /usr
   m4:
     externals:
@@ -138,7 +140,7 @@ packages:
       prefix: /usr
   perl:
     externals:
-    - spec: perl@5.26.1~cpanm+shared+threads
+    - spec: perl@5.26.1~cpanm+open+shared+threads
       prefix: /usr
   pkg-config:
     externals:
@@ -146,9 +148,9 @@ packages:
       prefix: /usr
   python:
     externals:
-    - spec: python@2.7.18+bz2+ctypes~dbm~ensurepip+nis+pyexpat+pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
+    - spec: python@2.7.18+bz2+crypt+ctypes~dbm~lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl~tkinter+uuid+zlib
       prefix: /usr
-    - spec: python@3.6.15+bz2+ctypes~dbm~ensurepip+lzma+nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
+    - spec: python@3.6.15+bz2+crypt+ctypes~dbm+lzma+nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tkinter+uuid+zlib
       prefix: /usr
   rsync:
     externals:
@@ -164,7 +166,7 @@ packages:
       prefix: /usr
   tar:
     externals:
-    - spec: tar@1.30
+    - spec: tar@1.34
       prefix: /usr
   texinfo:
     externals:
@@ -186,3 +188,75 @@ packages:
     externals:
     - spec: zip@3.0
       prefix: /usr
+  comgr:
+    externals:
+    - spec: comgr@5.2.4
+      prefix: /opt/rocm-5.2.4
+  hip:
+    externals:
+    - spec: hip@5.2.4
+      prefix: /opt/rocm-5.2.4
+  hipblas:
+    externals:
+    - spec: hipblas@5.2.4
+      prefix: /opt/rocm-5.2.4
+  hiprand:
+    externals:
+    - spec: hiprand@5.2.4
+      prefix: /opt/rocm-5.2.4
+  hipsolver:
+    externals:
+    - spec: hipsolver@5.2.4
+      prefix: /opt/rocm-5.2.4
+  hipsparse:
+    externals:
+    - spec: hipsparse@5.2.4
+      prefix: /opt/rocm-5.2.4
+  hsa-rocr-dev:
+    externals:
+    - spec: hsa-rocr-dev@5.2.4
+      prefix: /opt/rocm-5.2.4
+  miopen-hip:
+    externals:
+    - spec: miopen-hip@5.2.4
+      prefix: /opt/rocm-5.2.4
+  miopen-opencl:
+    externals:
+    - spec: miopen-opencl@5.2.4
+      prefix: /opt/rocm-5.2.4
+  rccl:
+    externals:
+    - spec: rccl@5.2.4
+      prefix: /opt/rocm-5.2.4
+  rocblas:
+    externals:
+    - spec: rocblas@5.2.4
+      prefix: /opt/rocm-5.2.4
+  rocfft:
+    externals:
+    - spec: rocfft@5.2.4
+      prefix: /opt/rocm-5.2.4
+  rocm-smi-lib:
+    externals:
+    - spec: rocm-smi-lib@5.2.4
+      prefix: /opt/rocm-5.2.4
+  rocprofiler-dev:
+    externals:
+    - spec: rocprofiler-dev@5.2.4
+      prefix: /opt/rocm-5.2.4
+  rocrand:
+    externals:
+    - spec: rocrand@5.2.4
+      prefix: /opt/rocm-5.2.4
+  rocsolver:
+    externals:
+    - spec: rocsolver@5.2.4
+      prefix: /opt/rocm-5.2.4
+  rocsparse:
+    externals:
+    - spec: rocsparse@5.2.4
+      prefix: /opt/rocm-5.2.4
+  roctracer-dev:
+    externals:
+    - spec: roctracer-dev@5.2.4
+      prefix: /opt/rocm-5.2.4

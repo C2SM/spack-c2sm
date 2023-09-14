@@ -7,10 +7,10 @@ class CosmoDycore(CMakePackage):
 
     homepage = "https://github.com/COSMO-ORG/cosmo/tree/master/dycore"
     url = "https://github.com/COSMO-ORG/cosmo/archive/6.0.tar.gz"
-    git = "ssh://git@github.com/COSMO-ORG/cosmo.git"
-    apngit = "ssh://git@github.com/MeteoSwiss-APN/cosmo.git"
-    c2smgit = "ssh://git@github.com/C2SM-RCM/cosmo.git"
-    empagit = 'ssh://git@github.com/C2SM-RCM/cosmo-ghg.git'
+    git = "git@github.com:COSMO-ORG/cosmo.git"
+    apngit = "git@github.com:MeteoSwiss-APN/cosmo.git"
+    c2smgit = "git@github.com:C2SM-RCM/cosmo.git"
+    empagit = 'git@github.com:C2SM-RCM/cosmo-ghg.git'
 
     maintainers = ['elsagermann']
 
@@ -54,42 +54,6 @@ class CosmoDycore(CMakePackage):
     variant('cuda', default=True, description='Build with cuda or target gpu')
     variant('gt1', default=False, description='Build with gridtools 1.1.3')
 
-    variant('slurm_bin',
-            default='srun',
-            description='Slurm binary on CSCS machines')
-    variant('slurm_opt_partition',
-            default='-p',
-            description='Slurm option to specify partition for testing')
-    variant('slurm_partition',
-            default='normal',
-            description='Slurm partition for testing')
-
-    variant('slurm_gpu',
-            default='-',
-            description='Slurm GPU reservation for testing')
-
-    variant('slurm_opt_nodes',
-            default='-n',
-            description='Slurm option to specify number of nodes for testing')
-    variant('slurm_nodes',
-            default='{0}',
-            description='Pattern to specify number of nodes for testing')
-
-    variant('slurm_opt_account',
-            default='-A',
-            description='Slurm option to specify account for testing')
-    variant('slurm_account',
-            default='g110',
-            description='Slurm option to specify account for testing')
-
-    variant(
-        'slurm_opt_constraint',
-        default='-C',
-        description='Slurm option to specify constraints for nodes requested')
-    variant('slurm_constraint',
-            default='gpu',
-            description='Slurm constraints for nodes requested')
-
     depends_on('gridtools@1.1.3 ~cuda', when='~cuda +gt1')
     depends_on('gridtools@1.1.3 +cuda', when='+cuda +gt1')
     depends_on('boost@1.65.1: +program_options +system')
@@ -102,6 +66,13 @@ class CosmoDycore(CMakePackage):
 
     conflicts('%nvhpc')
     conflicts('%pgi')
+
+    # hardcode srun arguments, replaces all srun related variants
+    patch('patches/patch.srun_args')
+
+    # in file dycore/src/common/GCLExchange.hpp
+    # add #include <map>
+    patch('patches/patch.include_map')
 
     root_cmakelists_dir = 'dycore'
 

@@ -22,15 +22,12 @@ class PyCytoolz(PythonPackage):
             'c105b05f85e03fbcd60244375968e62e44fe798c15a3531c922d531018d22412')
 
     depends_on('py-setuptools', type='build')
-    depends_on('py-cython', type='build', when='+cython')
+    depends_on('py-cython', type='build')
 
     depends_on('python@3.5:', type=('build', 'run'))
     depends_on('py-toolz@0.8.0:', type=('build', 'run'))
 
-    variant('cython', default=False, description='Build with Cython')
-
     def global_options(self, spec, prefix):
         options = []
-        if '+cython' in spec:
-            options.append('--with-cython')
+        options.append('--with-cython')
         return options

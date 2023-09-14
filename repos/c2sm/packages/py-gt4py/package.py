@@ -13,7 +13,7 @@ class PyGt4py(PythonPackage):
 
     homepage = "https://gridtools.github.io/gt4py/latest/index.html"
 
-    url = "ssh://git@github.com/GridTools/gt4py.git"
+    url = "git@github.com:GridTools/gt4py.git"
 
     version('main', branch='main', git=url)
     version('1.1.1', tag='icon4py_20230413', git=url)
@@ -25,7 +25,9 @@ class PyGt4py(PythonPackage):
     # Build dependencies
     depends_on('py-wheel', type='build')
     depends_on('py-cython', type='build')
-    depends_on('py-setuptools@65.5.0', type='build')
+
+    # downgrade to from 65 to 63 because of py-numpy
+    depends_on('py-setuptools@63:', type='build')
 
     depends_on('cmake@3.22:', type=('build', 'run'))
     depends_on('boost@1.65.1:', type=('build', 'run'))
@@ -38,7 +40,7 @@ class PyGt4py(PythonPackage):
     depends_on('py-boltons@20.0.0:', type=('build', 'run'))
     depends_on('py-cached-property@1.5:', type=('build', 'run'))
     depends_on('py-click@8.0.0:', type=('build', 'run'))
-    depends_on('py-cytoolz@0.12: +cython', type=('build', 'run'))
+    depends_on('py-cytoolz@0.12:', type=('build', 'run'))
     depends_on('py-deepdiff@5.6:', type=('build', 'run'))
     depends_on('py-devtools@0.6:', type=('build', 'run'))
     depends_on('py-frozendict@2.3:', type=('build', 'run'))
@@ -51,7 +53,12 @@ class PyGt4py(PythonPackage):
     depends_on('py-ninja@1.10:', type=('build', 'run'))
     depends_on('py-numpy@1.24.2: ~blas ~lapack', type=('build', 'run'))
     depends_on('py-packaging@20.0:', type=('build', 'run'))
-    depends_on('py-pybind11@2.5:', type=('build', 'run'))
+
+    # versions later than 2.9.2 fail to pick to right Python version
+    # for compiled modules.
+    # See: https://github.com/C2SM/spack-c2sm/issues/803
+    depends_on('py-pybind11@2.5:2.9.2', type=('build', 'run'))
+
     depends_on('py-nanobind@1.4.0:', when="@1.1.3:", type=('build', 'run'))
     depends_on('py-tabulate@0.8:', type=('build', 'run'))
     depends_on('py-typing-extensions@4.5:', type=('build', 'run'))
@@ -75,8 +82,6 @@ class PyGt4py(PythonPackage):
     # missing version constraint: pytest-xdist[psutil]>=2.4
     depends_on('py-pytest-xdist', type=('build', 'run'))
 
-    @run_after('install')
-    @on_package_attributes(run_tests=True)
-    def install_test(self):
+    def test(self):
         python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--cov',
                '--cov-append', 'tests/next_tests', 'tests/eve_tests')
