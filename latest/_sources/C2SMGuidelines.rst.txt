@@ -39,9 +39,9 @@ For example, there is a variety of different version suffixes for the ``cosmo`` 
 
 .. code-block:: python
 
-    git      = 'ssh://git@github.com/COSMO-ORG/cosmo.git'
-    apngit   = 'ssh://git@github.com/MeteoSwiss-APN/cosmo.git'
-    c2smgit  = 'ssh://git@github.com/C2SM-RCM/cosmo.git'
+    git      = 'git@github.com:COSMO-ORG/cosmo.git'
+    apngit   = 'git@github.com:MeteoSwiss-APN/cosmo.git'
+    c2smgit  = 'git@github.com:C2SM-RCM/cosmo.git'
 
     version('org-master', branch='master', get_full_repo=True)
     version('apn-mch', git=apngit, branch='mch', get_full_repo=True)
