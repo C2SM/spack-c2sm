@@ -595,6 +595,11 @@ class PytorchFortranProxyTest(unittest.TestCase):
     def test_install_version_0_4(self):
         spack_install('pytorch-fortran-proxy@0.4%gcc ^python@3.10')
 
+class PyAsttokensTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-asttokens')
+
 
 class PyBlackTest(unittest.TestCase):
 
@@ -625,6 +630,12 @@ class PyEditablesTest(unittest.TestCase):
 
     def test_install_default(self):
         spack_install_and_test('py-editables')
+
+
+class PyExecutingTest(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-executing')
 
 
 class PyFactoryBoyTest(unittest.TestCase):
