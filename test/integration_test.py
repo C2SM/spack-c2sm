@@ -146,7 +146,7 @@ class InfoTest(unittest.TestCase):
 
     def test_py_asttokens(self):
         spack_info('py-asttokens')
-    
+
     def test_py_black(self):
         spack_info('py-black')
 
