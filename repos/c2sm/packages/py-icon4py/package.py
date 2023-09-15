@@ -150,6 +150,6 @@ class PyIcon4py(PythonPackage):
     @on_package_attributes(run_tests=True)
     def install_test(self):
         try:
-            subprocess.run(['srun', 'python', '-m', 'pytest', '-v', '--with-mpi', '-s', '-n', 'auto', '--cov', '--cov-append'], check=True, stderr=subprocess.STDOUT)
+            subprocess.run(['srun', '-A', 'd56', '-C', 'gpu', 'python', '-m', 'pytest', '-v', '--with-mpi', '-s', '-n', 'auto', '--cov', '--cov-append'], check=True, stderr=subprocess.STDOUT)
         except:
             raise InstallError('Pytests failed')
