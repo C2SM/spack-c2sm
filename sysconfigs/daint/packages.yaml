@@ -1,4 +1,4 @@
-	packages:
+packages:
   all:
     variants: cuda_arch=60  # manually added
     compiler: # manually added
