@@ -591,9 +591,11 @@ class Icon(AutotoolsPackage, CudaPackage):
             config_vars['LOC_ICON4PY_TOOLS'].append(
                 self.spec['py-icon4py:tools'].headers.directories[0])
             if self.spec['py-icon4py'].version > Version("0.0.7"):
-                config_vars['LOC_ICON4PY_DIFFUSION'].append(self.spec['py-icon4py:diffusion'].headers.directories[0])
+                config_vars['LOC_ICON4PY_DIFFUSION'].append(
+                    self.spec['py-icon4py:diffusion'].headers.directories[0])
                 config_vars['LOC_ICON4PY_INTERPOLATION'].append(
-                    self.spec['py-icon4py:interpolation'].headers.directories[0])
+                    self.spec['py-icon4py:interpolation'].headers.
+                    directories[0])
             config_vars['LOC_GRIDTOOLS'].append(
                 self.spec['py-gridtools-cpp:data'].headers.directories[0])
             config_vars['GT4PYNVCFLAGS'] = config_vars['NVCFLAGS']
