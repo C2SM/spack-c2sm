@@ -48,9 +48,11 @@ class PyIcon4py(PythonPackage):
     depends_on('py-pytz', when='@0.0.8:', type=('build', 'run'))
     depends_on('py-ghex@0.3.2', when='@0.0.8:', type=('build', 'run'))
     depends_on('py-wget', when='@0.0.8:', type=('build', 'run'))
-    depends_on('serialbox@2.6.1_2023-06-12 +python', when='@0.0.8:', type=('build', 'run'))
+    depends_on('serialbox@2.6.1_2023-06-12 +python',
+               when='@0.0.8:',
+               type=('build', 'run'))
     depends_on('py-pytest-mpi', when='@0.0.8:', type='test')
-    
+
     # cmake in unit-tests needs this path
     def setup_build_environment(self, env):
         env.set("CMAKE_INCLUDE_PATH", self.spec['boost'].prefix.include)
@@ -163,8 +165,10 @@ class PythonPipBuilder(PythonPipBuilder):
                 '=0.0.7'):
             build_dirs = ['tools', 'model/atmosphere/dycore', 'model/common/']
         else:
-            build_dirs = ['tools', 'model/atmosphere/dycore', 'model/atmosphere/diffusion',
-                          'model/driver', 'model/common/']
+            build_dirs = [
+                'tools', 'model/atmosphere/dycore',
+                'model/atmosphere/diffusion', 'model/driver', 'model/common/'
+            ]
 
         for dir in build_dirs:
             with fs.working_dir(os.path.join(self.build_directory, dir)):

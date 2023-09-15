@@ -783,21 +783,25 @@ class ZLibNGTest(unittest.TestCase):
 
 
 class PyGhex(unittest.TestCase):
+
     def test_install_version_0_3_1(self):
         spack_install('py-ghex @0.3.1')
 
 
 class PyPytestMpi(unittest.TestCase):
+
     def test_install_pytest_mpi_default(self):
         spack_install('py-pytest-mpi')
 
 
 class PyScikitBuildCore(unittest.TestCase):
+
     def test_install_py_scikit_build_core_default(self):
         spack_install('py-scikit-build-core')
 
 
 class Serialbox(unittest.TestCase):
+
     def test_install_serialbox_2_6_1(self):
         spack_install('serialbox @2.6.1')
 
