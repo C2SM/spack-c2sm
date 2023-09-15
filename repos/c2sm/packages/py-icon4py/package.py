@@ -44,7 +44,7 @@ class PyIcon4py(PythonPackage):
     depends_on('py-ghex@0.3.2', when='@0.0.8:', type=('build', 'run'))
     depends_on('py-wget', when='@0.0.8:', type=('build', 'run'))
     depends_on('serialbox@2.6.1_2023-06-12 +python', when='@0.0.8:', type=('build', 'run'))
-    depends_on('py-pytest-mpi', when='@0.0.8:', type='test')
+    depends_on('py-pytest-mpi', when='@0.0.8:', type='build')
     
     # cmake in unit-tests needs this path
     def setup_build_environment(self, env):
@@ -148,5 +148,4 @@ class PyIcon4py(PythonPackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def install_test(self):
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--cov',
-               '--cov-append')
+        python('-m', 'pytest', '--with-mpi', '-v', '-s')
