@@ -8,6 +8,7 @@ from spack.package import *
 # TODO (magdalena) copy from https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/py-scikit-build-core/package.py
 #   add new version (0.5.0)
 
+
 class PyScikitBuildCore(PythonPackage):
     """scikit-build-core is a doubly improved build system generator
     for CPython C/C++/Fortran/Cython extensions. It features several
@@ -19,10 +20,18 @@ class PyScikitBuildCore(PythonPackage):
 
     maintainers = ["wdconinc"]
 
-    version("0.2.0", sha256="d2a76d9447a412038dc5e25dd259b03c25278661a0c7c3da766bb971c1a9acd2", pypi = pypi)
-    version("0.5.0", pypi="scikit_build_core/scikit_build_core-0.5.0.tar.gz", sha256="a42a95029b34b5cf892855342d9b9445c774cb797fcb24c8fc4c2fb42b18dfca")
+    version("0.2.0",
+            sha256=
+            "d2a76d9447a412038dc5e25dd259b03c25278661a0c7c3da766bb971c1a9acd2",
+            pypi=pypi)
+    version("0.5.0",
+            pypi="scikit_build_core/scikit_build_core-0.5.0.tar.gz",
+            sha256=
+            "a42a95029b34b5cf892855342d9b9445c774cb797fcb24c8fc4c2fb42b18dfca")
 
-    variant("pyproject", default=False, description="Enable pyproject.toml support")
+    variant("pyproject",
+            default=False,
+            description="Enable pyproject.toml support")
 
     depends_on("python@3.7:", type=("build", "run"))
 
@@ -31,15 +40,23 @@ class PyScikitBuildCore(PythonPackage):
     depends_on("py-hatch-vcs", type="build")
 
     # Dependencies
-    depends_on("py-exceptiongroup", when="^python@:3.10", type=("build", "run"))
-    depends_on("py-importlib-resources@1.3:", when="^python@:3.8", type=("build", "run"))
+    depends_on("py-exceptiongroup",
+               when="^python@:3.10",
+               type=("build", "run"))
+    depends_on("py-importlib-resources@1.3:",
+               when="^python@:3.8",
+               type=("build", "run"))
     depends_on("py-packaging@20.9:", type=("build", "run"))
     depends_on("py-tomli@1.1:", when="^python@:3.10", type=("build", "run"))
-    depends_on("py-typing-extensions@3.10:", when="^python@:3.7", type=("build", "run"))
+    depends_on("py-typing-extensions@3.10:",
+               when="^python@:3.7",
+               type=("build", "run"))
     depends_on("cmake@3.15:", type=("build", "run"))
 
     # Optional dependencies
-    depends_on("py-pyproject-metadata@0.5:", when="+pyproject", type=("build", "run"))
+    depends_on("py-pyproject-metadata@0.5:",
+               when="+pyproject",
+               type=("build", "run"))
     depends_on("py-pathspec@0.10.1:", when="+pyproject", type=("build", "run"))
 
     # Test dependencies
