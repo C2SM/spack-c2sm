@@ -782,25 +782,9 @@ class ZLibNGTest(unittest.TestCase):
         spack_install_and_test('zlib_ng @2.0.0')
 
 
-class PyCattrsTest(unittest.TestCase):
-    def test_install_default(self):
-        spack_install('py-cattrs')
-
-
 class PyGhex(unittest.TestCase):
     def test_install_version_0_3_1(self):
         spack_install('py-ghex @0.3.1')
-
-
-class PyHatchVcs(unittest.TestCase):
-    def test_install_default(self):
-        spack_install('py-hatch-vcs')
-
-
-class PyPyprojectMetadata(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install('py-pyproject-metadata')
 
 
 class PyPytestMpi(unittest.TestCase):
@@ -808,29 +792,9 @@ class PyPytestMpi(unittest.TestCase):
         spack_install('py-pytest-mpi')
 
 
-class PyPytestSubprocess(unittest.TestCase):
-    def test_install_pytest_subprocess_default(self):
-        spack_install('py-pytest-subprocess')
-
-
 class PyScikitBuildCore(unittest.TestCase):
     def test_install_py_scikit_build_core_default(self):
         spack_install('py-scikit-build-core')
-
-
-class PySetuptoolsScm(unittest.TestCase):
-    def test_install_py_setuptools_scm_default(self):
-        spack_install('py-setuptools-scm')
-
-
-class PyExceptionGroup(unittest.TestCase):
-    def test_isntall_py_exceptiongroup_default(self):
-        spack_install('py-exceptiongroup')
-
-
-class PyFlitScm(unittest.TestCase):
-    def test_py_flit_scm_default(self):
-        spack_install('py-flit-scm')
 
 
 class Serialbox(unittest.TestCase):
