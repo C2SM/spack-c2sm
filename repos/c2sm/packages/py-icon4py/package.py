@@ -45,7 +45,9 @@ class PyIcon4py(PythonPackage):
     depends_on('py-cffi@1.5.0:', when='@0.0.8:', type=('build', 'run'))
     depends_on('py-netcdf4', when='@0.0.8:', type=('build', 'run'))
     depends_on('netcdf-c@4.8.1%gcc', when='@0.0.8:', type=('build', 'run'))
-    depends_on('netcdf-fortran@4.5.4%nvhpc', when='@0.0.8:', type=('build', 'run'))
+    depends_on('netcdf-fortran@4.5.4%nvhpc',
+               when='@0.0.8:',
+               type=('build', 'run'))
     depends_on('py-mpi4py@3.0:', when='@0.0.8:', type=('build', 'run'))
     depends_on('py-pytz', when='@0.0.8:', type=('build', 'run'))
     depends_on('py-ghex@0.3.2', when='@0.0.8:', type=('build', 'run'))
