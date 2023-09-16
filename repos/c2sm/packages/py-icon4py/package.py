@@ -5,6 +5,7 @@
 
 from spack import *
 import os
+import subprocess
 import inspect
 
 
@@ -44,7 +45,7 @@ class PyIcon4py(PythonPackage):
     depends_on('py-ghex@0.3.2', when='@0.0.8:', type=('build', 'run'))
     depends_on('py-wget', when='@0.0.8:', type=('build', 'run'))
     depends_on('serialbox@2.6.1_2023-06-12 +python', when='@0.0.8:', type=('build', 'run'))
-    depends_on('py-pytest-mpi', when='@0.0.8:', type='test')
+    depends_on('py-pytest-mpi', when='@0.0.8:', type=('build','run','test'))
     
     # cmake in unit-tests needs this path
     def setup_build_environment(self, env):
@@ -148,5 +149,9 @@ class PyIcon4py(PythonPackage):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def install_test(self):
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--cov',
-               '--cov-append')
+        try:
+            subprocess.run(['srun', '-A', 'd75', '-C', 'gpu', 'python', '-m', 'pytest', '-v', '--with-mpi', '-s', '-n', 'auto', '--cov', '--cov-append'], check=True, stderr=subprocess.STDOUT)
+            subprocess.run(['srun', '-A', 'd75', '-C', 'gpu', 'python', '-m', 'pytest', '-v', '--with-mpi', '-s', '--datatest', 'model/common'], check=True, stderr=subprocess.STDOUT)
+            subprocess.run(['srun', '-A', 'd75', '-C', 'gpu', 'python', '-m', 'pytest', '-v', '--with-mpi', '-s', '--datatest', 'model/atmosphere/diffusion'], check=True, stderr=subprocess.STDOUT)
+        except:
+            raise InstallError('Pytests failed')
