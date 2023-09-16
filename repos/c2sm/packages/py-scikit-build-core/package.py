@@ -12,4 +12,6 @@ class PyScikitBuildCore(SpackPyScikitBuildCore):
     for CPython C/C++/Fortran/Cython extensions. It features several
     improvements over the classic scikit-build build system generator."""
 
-    version("0.5.0", sha256="a42a95029b34b5cf892855342d9b9445c774cb797fcb24c8fc4c2fb42b18dfca")
+    version("0.5.0",
+            sha256=
+            "a42a95029b34b5cf892855342d9b9445c774cb797fcb24c8fc4c2fb42b18dfca")
