@@ -55,7 +55,7 @@ class PyIcon4py(PythonPackage):
     depends_on('serialbox@2.6.1_2023-06-12 +python',
                when='@0.0.8:',
                type=('build', 'run'))
-    depends_on('py-pytest-mpi', when='@0.0.8:', type='test')
+    depends_on('py-pytest-mpi', when='@0.0.8:', type='build')
 
     # cmake in unit-tests needs this path
     def setup_build_environment(self, env):
@@ -66,8 +66,7 @@ class PyIcon4py(PythonPackage):
         super().test()
 
         # unit tests
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--cov',
-               '--cov-append')
+        python('-m', 'pytest', '--with-mpi', '-v', '-s')
 
     @property
     def headers(self):
