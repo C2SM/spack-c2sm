@@ -175,6 +175,9 @@ class InfoTest(unittest.TestCase):
     def test_py_frozendict(self):
         spack_info('py-frozendict')
 
+    def test_py_ghex(self):
+        spack_info('py-ghex')
+    
     def test_py_gridtools_cpp(self):
         spack_info('py-gridtools-cpp')
 
@@ -190,6 +193,9 @@ class InfoTest(unittest.TestCase):
     def test_py_inflection(self):
         spack_info('py-inflection')
 
+    def test_py_isort(self):
+        spack_info('py-isort')
+
     def test_py_lark(self):
         spack_info('py-lark')
 
@@ -199,8 +205,14 @@ class InfoTest(unittest.TestCase):
     def test_py_pathspec(self):
         spack_info('py-pathspec')
 
+    def test_py_poetry_core(self):
+        spack_info('py-poetry-core')
+    
     def test_py_pytest(self):
         spack_info('py-pytest')
+
+    def test_py_pytest_mpi(self):
+        spack_info('py-pytest-mpi')
 
     def test_py_pytest_factoryboy(self):
         spack_info('py-pytest-factoryboy')
@@ -208,9 +220,15 @@ class InfoTest(unittest.TestCase):
     def test_py_setuptools(self):
         spack_info('py-setuptools')
 
+    def test_py_scikit_build_core(self):
+        spack_info('py-scikit-build-core')
+
     def test_py_sphinxcontrib_jquery(self):
         spack_info('py-sphinxcontrib-jquery')
 
+    def test_py_tabulate(self):
+        spack_info('py-tabulate')
+    
     def test_py_toolz(self):
         spack_info('py-toolz')
 
@@ -222,6 +240,9 @@ class InfoTest(unittest.TestCase):
 
     def test_scales_ppm(self):
         spack_info('scales-ppm')
+
+    def test_serialbox(self):
+        spack_info('serialbox')
 
     def test_tensorflowc(self):
         spack_info('tensorflowc')
@@ -386,6 +407,9 @@ class SpecTest(unittest.TestCase):
 
     def test_py_frozendict(self):
         spack_spec('py-frozendict')
+    
+    def test_py_ghex(self):
+        spack_spec('py-ghex')
 
     def test_py_gridtools_cpp(self):
         spack_spec('py-gridtools-cpp')
@@ -401,6 +425,9 @@ class SpecTest(unittest.TestCase):
 
     def test_py_inflection(self):
         spack_spec('py-inflection')
+
+    def test_py_isort(self):
+        spack_spec('py-isort')
 
     def test_py_lark(self):
         spack_spec('py-lark')
@@ -420,12 +447,21 @@ class SpecTest(unittest.TestCase):
     def test_py_pytest_factoryboy(self):
         spack_spec('py-pytest-factoryboy')
 
+    def test_py_pytest_mpi(self):
+        spack_spec('py-pytest-mpi')
+      
+    def test_py_scikit_build_core(self):
+        spack_spec('py-scikit-build-core')
+
     def test_py_setuptools(self):
         spack_spec('py-setuptools')
 
     def test_py_sphinxcontrib_jquery(self):
         spack_spec('py-sphinxcontrib-jquery')
-
+    
+    def test_py_tabulate(self):
+        spack_spec('py-tabulate')
+  
     def test_py_toolz(self):
         spack_spec('py-toolz')
 
@@ -434,6 +470,9 @@ class SpecTest(unittest.TestCase):
 
     def test_rttov(self):
         spack_spec('rttov')
+
+    def test_serialbox(self):
+        spack_spec('serialbox')
 
     def test_scales_ppm(self):
         spack_spec('scales-ppm')
@@ -446,15 +485,6 @@ class SpecTest(unittest.TestCase):
 
     def test_zlib_ng(self):
         spack_spec('zlib_ng')
-
-    def test_py_ghex(self):
-        spack_spec('py-ghex')
-
-    def test_py_pytest_mpi(self):
-        spack_spec('py-pytest-mpi')
-
-    def test_py_scikit_build_core(self):
-        spack_spec('py-scikit-build-core')
 
 
 if __name__ == '__main__':
