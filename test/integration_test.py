@@ -177,7 +177,7 @@ class InfoTest(unittest.TestCase):
 
     def test_py_ghex(self):
         spack_info('py-ghex')
-    
+
     def test_py_gridtools_cpp(self):
         spack_info('py-gridtools-cpp')
 
@@ -207,7 +207,7 @@ class InfoTest(unittest.TestCase):
 
     def test_py_poetry_core(self):
         spack_info('py-poetry-core')
-    
+
     def test_py_pytest(self):
         spack_info('py-pytest')
 
@@ -228,7 +228,7 @@ class InfoTest(unittest.TestCase):
 
     def test_py_tabulate(self):
         spack_info('py-tabulate')
-    
+
     def test_py_toolz(self):
         spack_info('py-toolz')
 
@@ -407,7 +407,7 @@ class SpecTest(unittest.TestCase):
 
     def test_py_frozendict(self):
         spack_spec('py-frozendict')
-    
+
     def test_py_ghex(self):
         spack_spec('py-ghex')
 
@@ -449,7 +449,7 @@ class SpecTest(unittest.TestCase):
 
     def test_py_pytest_mpi(self):
         spack_spec('py-pytest-mpi')
-      
+
     def test_py_scikit_build_core(self):
         spack_spec('py-scikit-build-core')
 
@@ -458,10 +458,10 @@ class SpecTest(unittest.TestCase):
 
     def test_py_sphinxcontrib_jquery(self):
         spack_spec('py-sphinxcontrib-jquery')
-    
+
     def test_py_tabulate(self):
         spack_spec('py-tabulate')
-  
+
     def test_py_toolz(self):
         spack_spec('py-toolz')
 
