@@ -676,6 +676,12 @@ class PyInflectionTest(unittest.TestCase):
         spack_install_and_test('py-inflection')
 
 
+class PyIsort(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-isort')
+
+
 class PyLarkTest(unittest.TestCase):
 
     def test_install_default(self):
@@ -728,6 +734,12 @@ class PySphinxcontribJqueryTest(unittest.TestCase):
 
     def test_install_default(self):
         spack_install_and_test('py-sphinxcontrib-jquery')
+
+
+class PyTabulate(unittest.TestCase):
+
+    def test_install_default(self):
+        spack_install_and_test('py-tabulate')
 
 
 class PyToolzTest(unittest.TestCase):
