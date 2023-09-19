@@ -65,7 +65,10 @@ class PyIcon4py(PythonPackage):
         super().test()
 
         # unit tests
-        python('-m', 'pytest', '--with-mpi', '-v', '-s')
+        if 'py-pytest-mpi' in self.spec:
+            python('-m', 'pytest', '--with-mpi', '-v', '-s')
+        else:
+            python('-m', 'pytest', '-v', '-s', '-n', 'auto')
 
     @property
     def headers(self):
