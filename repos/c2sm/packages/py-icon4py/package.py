@@ -5,7 +5,6 @@
 
 import os
 import inspect
-import subprocess
 
 from spack import *
 from spack.build_systems.python import PythonPipBuilder
