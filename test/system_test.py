@@ -346,6 +346,13 @@ class FlexpartIfsTest(unittest.TestCase):
         spack_install_and_test('flexpart-ifs @meteoswiss-10')
 
 
+@pytest.mark.no_tsa  # No one uses spack for flexpart-cosmo on Tsa
+class FlexpartCosmoTest(unittest.TestCase):
+
+    def test_install(self):
+        spack_install_and_test('flexpart-cosmo')
+
+
 class GridToolsTest(unittest.TestCase):
 
     def test_install_version_1_1_3_gcc(self):
