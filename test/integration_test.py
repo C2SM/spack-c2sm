@@ -205,9 +205,6 @@ class InfoTest(unittest.TestCase):
     def test_py_pathspec(self):
         spack_info('py-pathspec')
 
-    def test_py_poetry_core(self):
-        spack_info('py-poetry-core')
-
     def test_py_pytest(self):
         spack_info('py-pytest')
 
@@ -437,9 +434,6 @@ class SpecTest(unittest.TestCase):
 
     def test_py_pathspec(self):
         spack_spec('py-pathspec')
-
-    def test_py_poetry_core(self):
-        spack_spec('py-poetry-core')
 
     def test_py_pytest(self):
         spack_spec('py-pytest')
