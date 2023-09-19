@@ -9,7 +9,7 @@ To set up a Spack instance, clone the repository
 
 .. code-block:: console
 
-  $ git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.18.1.12 https://github.com/C2SM/spack-c2sm.git
+  $ git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.20.1.0 https://github.com/C2SM/spack-c2sm.git
 
 To load it into your command line, execute
 
@@ -22,7 +22,7 @@ You can force a machine with an argument. The name has to match a folder in sysc
 
 .. code-block:: console
 
-  $ . spack-c2sm/setup-env.sh tsa
+  $ . spack-c2sm/setup-env.sh daint
 
 
 Local machines and Containers
@@ -113,7 +113,7 @@ Example to build ICON for CPU with NVHPC:
 
 .. code-block:: console
 
-    $ spack env activate -d config/cscs/spack/v0.18.1.12/daint_cpu_nvhpc
+    $ spack env activate -d config/cscs/spack/v0.20.1.0/daint_cpu_nvhpc
     $ spack install
 
 ..  attention::
@@ -126,7 +126,7 @@ Out-of-source builds are possible as follows:
 
     $ mkdir cpu && cd cpu
     $ cp -r ../config .
-    $ spack env activate -d config/cscs/spack/v0.18.1.12/daint_cpu_nvhpc
+    $ spack env activate -d config/cscs/spack/v0.20.1.0/daint_cpu_nvhpc
     $ spack install
 
 ..  attention::
@@ -137,35 +137,4 @@ Out-of-source builds are possible as follows:
 COSMO
 -----
 
-COSMO is currently receiving special treatment. It has its own commands in spack-c2sm.
-The reason for this is that the optional depencendy on the C++ dycore lives in the same repository as COSMO.
-
-To install COSMO
-
-.. code-block:: console
-
-  $ spack installcosmo cosmo @<version> %nvhpc <variants> ^mpich%nvhpc
-
-To develop COSMO
-
-.. code-block:: console
-
-  $ cd </path/to/package>
-  $ spack devbuildcosmo cosmo @<version> %nvhpc <variants> ^mpich%nvhpc
-
-Example variants:
-
-.. code-block:: console
-
-  $ spack installcosmo cosmo @org-master cosmo_target=cpu # CPU variant of https://github.com/COSMO-ORG/cosmo master
-  $ spack installcosmo cosmo @org-master cosmo_target=gpu # GPU variant of https://github.com/COSMO-ORG/cosmo master
-  $ spack installcosmo cosmo @apn_5.09a.mch1.2.p1 cosmo_target=gpu # GPU variant of https://github.com/MeteoSwiss-APN/cosmo/releases/tag/5.09a.mch1.2.p1
-
-
-Changelog to v0.17.0
---------------------
-
-* Users manage their own instance instead of sourcing a pre-installed instance.
-* Users decide on their own when they would like to update their instance (i.e. after upgrades at CSCS).
-* Due to the new concretizer, COSMO needs an explicit ``^mpich%nvhpc`` (Daint) or ``openmpi%nvhpc`` (Tsa) in the spec, otherwise the build fails.
-* On Daint, ICON is built using environments and ``dev-build`` no longer supported. On Balfrin, ICON can still be built using ``dev-build``.
+Building COSMO is not supported anymore starting with spack-c2sm v0.20.1.0!
