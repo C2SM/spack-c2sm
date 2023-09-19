@@ -676,7 +676,7 @@ class PyInflectionTest(unittest.TestCase):
         spack_install_and_test('py-inflection')
 
 
-class PyIsort(unittest.TestCase):
+class PyIsortTest(unittest.TestCase):
 
     def test_install_default(self):
         spack_install_and_test('py-isort')
@@ -730,7 +730,7 @@ class PySphinxcontribJqueryTest(unittest.TestCase):
         spack_install_and_test('py-sphinxcontrib-jquery')
 
 
-class PyTabulate(unittest.TestCase):
+class PyTabulateTest(unittest.TestCase):
 
     def test_install_default(self):
         spack_install_and_test('py-tabulate')
@@ -788,30 +788,30 @@ class ZLibNGTest(unittest.TestCase):
         spack_install_and_test('zlib_ng @2.0.0')
 
 
-class PyGhex(unittest.TestCase):
+class PyGhexTest(unittest.TestCase):
 
     def test_install_version_0_3_1(self):
         spack_install('py-ghex @0.3.1')
 
 
-class PyPytestMpi(unittest.TestCase):
+class PyPytestMpiTest(unittest.TestCase):
 
     def test_install_pytest_mpi_default(self):
         spack_install('py-pytest-mpi')
 
 
-class PyScikitBuildCore(unittest.TestCase):
+class PyScikitBuildCoreTest(unittest.TestCase):
 
     def test_install_py_scikit_build_core_default(self):
         spack_install('py-scikit-build-core')
 
 
-class Serialbox(unittest.TestCase):
+class SerialboxTest(unittest.TestCase):
 
     def test_install_serialbox_2_6_1(self):
         spack_install('serialbox @2.6.1')
 
-    def test_install_serialbox_2_6_2(self):
+    def test_install_serialbox_2_6_2_python(self):
         spack_install('serialbox @2.6.2 + python')
 
 
