@@ -811,8 +811,8 @@ class Serialbox(unittest.TestCase):
     def test_install_serialbox_2_6_1(self):
         spack_install('serialbox @2.6.1')
 
-    def test_install_serialbox_2_6_1_python(self):
-        spack_install('serialbox @2.6.1_2023_06_12 + python')
+    def test_install_serialbox_2_6_2(self):
+        spack_install('serialbox @2.6.2 + python')
 
 
 if __name__ == '__main__':
