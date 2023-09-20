@@ -25,7 +25,7 @@ class PyIcon4py(PythonPackage):
 
     version('main', branch='main', git=git)
     version('0.0.3', tag='v0.0.3', git=git)
-    version('0.0.3.1', branch='dev_v0.0.3', git=git) #delete later
+    version('0.0.3.1', branch='dev_v0.0.3', git=git)  #delete later
     #version('0.0.3.1', tag='v0.0.3.1', git=git)
     version('0.0.4', tag='v0.0.4', git=git)
     version('0.0.5', tag='v0.0.5', git=git)
