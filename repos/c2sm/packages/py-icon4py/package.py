@@ -156,7 +156,7 @@ class PythonPipBuilder(PythonPipBuilder):
 
         pip = inspect.getmodule(pkg).pip
 
-        if self.spec.version == ver('=0.0.3'):
+        if self.spec.version == ver('=0.0.3') or self.spec.version == ver('=0.0.3.1'):
             build_dirs = [
                 'common', 'pyutils', 'testutils', 'liskov', 'atm_dyn_iconam'
             ]
