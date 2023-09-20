@@ -586,18 +586,30 @@ class Icon(AutotoolsPackage, CudaPackage):
             config_vars['LOC_GT4PY'].append(self.spec['py-gt4py'].prefix)
             config_vars['LOC_ICON4PY_BIN'].append(
                 self.spec['py-icon4py'].prefix)
-            config_vars['LOC_ICON4PY_ATM_DYN_ICONAM'].append(
-                self.spec['py-icon4py:atm_dyn_iconam'].headers.directories[0])
-            config_vars['LOC_ICON4PY_TOOLS'].append(
-                self.spec['py-icon4py:tools'].headers.directories[0])
-            if self.spec['py-icon4py'].version > Version("0.0.7"):
-                config_vars['LOC_ICON4PY_DIFFUSION'].append(
-                    self.spec['py-icon4py:diffusion'].headers.directories[0])
-                config_vars['LOC_ICON4PY_INTERPOLATION'].append(
-                    self.spec['py-icon4py:interpolation'].headers.
-                    directories[0])
+
+            if self.spec['py-icon4py'].version < Version("0.0.4"):
+                config_vars['LOC_ICON4PY_ATM_DYN_ICONAM'].append(
+                    os.path.join(
+                        self.spec['py-icon4py'].prefix,
+                        'lib/python3.10/site-packages/icon4py/atm_dyn_iconam'))
                 config_vars['LOC_ICON4PY_ADVECTION'].append(
-                    self.spec['py-icon4py:advection'].headers.directories[0])
+                    os.path.join(self.spec['py-icon4py'].prefix,
+                                 'lib/python3.10/site-packages/icon4py/advection'))
+                config_vars['LOC_ICON4PY_UTILS'].append(
+                    os.path.join(self.spec['py-icon4py'].prefix,
+                                 'lib/python3.10/site-packages/icon4py'))
+            else:
+                config_vars['LOC_ICON4PY_ATM_DYN_ICONAM'].append(
+                    self.spec['py-icon4py:atm_dyn_iconam'].headers.directories[0])
+                config_vars['LOC_ICON4PY_TOOLS'].append(
+                    self.spec['py-icon4py:tools'].headers.directories[0])
+                if self.spec['py-icon4py'].version > Version("0.0.7"):
+                    config_vars['LOC_ICON4PY_DIFFUSION'].append(
+                        self.spec['py-icon4py:diffusion'].headers.directories[0])
+                    config_vars['LOC_ICON4PY_INTERPOLATION'].append(
+                        self.spec['py-icon4py:interpolation'].headers.
+                        directories[0])
+                    
             config_vars['LOC_GRIDTOOLS'].append(
                 self.spec['py-gridtools-cpp:data'].headers.directories[0])
             config_vars['GT4PYNVCFLAGS'] = config_vars['NVCFLAGS']
