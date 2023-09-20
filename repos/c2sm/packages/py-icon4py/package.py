@@ -41,6 +41,21 @@ class PyIcon4py(PythonPackage):
     depends_on('py-pytest', type=('build', 'run'))
     depends_on('boost@1.65.1:', type=('build', 'run'))
 
+    depends_on('py-cffi@1.5.0:', when='@0.0.8:', type=('build', 'run'))
+    depends_on('py-netcdf4', when='@0.0.8:', type=('build', 'run'))
+    depends_on('netcdf-c@4.8.1%gcc', when='@0.0.8:', type=('build', 'run'))
+    depends_on('netcdf-fortran@4.5.4%nvhpc',
+               when='@0.0.8:',
+               type=('build', 'run'))
+    depends_on('py-mpi4py@3.0:', when='@0.0.8:', type=('build', 'run'))
+    depends_on('py-pytz', when='@0.0.8:', type=('build', 'run'))
+    depends_on('py-ghex@0.3.2', when='@0.0.8:', type=('build', 'run'))
+    depends_on('py-wget', when='@0.0.8:', type=('build', 'run'))
+    depends_on('serialbox@2.6.2 +python',
+               when='@0.0.8:',
+               type=('build', 'run'))
+    depends_on('py-pytest-mpi', when='@0.0.8:', type='build')
+
     # cmake in unit-tests needs this path
     def setup_build_environment(self, env):
         env.set("CMAKE_INCLUDE_PATH", self.spec['boost'].prefix.include)
@@ -50,8 +65,10 @@ class PyIcon4py(PythonPackage):
         super().test()
 
         # unit tests
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--cov',
-               '--cov-append')
+        if 'py-pytest-mpi' in self.spec:
+            python('-m', 'pytest', '--with-mpi', '-v', '-s')
+        else:
+            python('-m', 'pytest', '-v', '-s', '-n', 'auto')
 
     @property
     def headers(self):
@@ -76,10 +93,16 @@ class PyIcon4py(PythonPackage):
                 'atm_dyn_iconam': 'dycore',
                 'tools': 'icon4pytools'
             },
-            ver('=main'): {
+            ver('=0.0.7'): {
                 'atm_dyn_iconam': 'dycore',
                 'tools': 'icon4pytools'
-            }
+            },
+            ver('=main'): {
+                'atm_dyn_iconam': 'dycore',
+                'tools': 'icon4pytools',
+                'diffusion': 'diffusion/stencils',
+                'interpolation': 'interpolation/stencils',
+            },
         }
 
         if len(query_parameters) > 1:
@@ -143,8 +166,14 @@ class PythonPipBuilder(PythonPipBuilder):
         elif self.spec.version == ver('=0.0.4') or self.spec.version == ver(
                 '=0.0.5'):
             build_dirs = ['common', 'atm_dyn_iconam', 'tools']
-        else:
+        elif self.spec.version == ver('=0.0.6') or self.spec.version == ver(
+                '=0.0.7'):
             build_dirs = ['tools', 'model/atmosphere/dycore', 'model/common/']
+        else:
+            build_dirs = [
+                'tools', 'model/atmosphere/dycore',
+                'model/atmosphere/diffusion', 'model/driver', 'model/common/'
+            ]
 
         for dir in build_dirs:
             with fs.working_dir(os.path.join(self.build_directory, dir)):

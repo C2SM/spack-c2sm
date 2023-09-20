@@ -37,11 +37,11 @@ class PyGt4py(PythonPackage):
     depends_on('python@3.10:', type=('build', 'run'))
     depends_on('py-attrs@21.3:', type=('build', 'run'))
     depends_on('py-black@22.3.0:', type=('build', 'run'))
-    depends_on('py-boltons@20.0.0:', type=('build', 'run'))
-    depends_on('py-cached-property@1.5:', type=('build', 'run'))
+    depends_on('py-boltons@20.1:', type=('build', 'run'))
+    depends_on('py-cached-property@1.5.1:', type=('build', 'run'))
     depends_on('py-click@8.0.0:', type=('build', 'run'))
     depends_on('py-cytoolz@0.12:', type=('build', 'run'))
-    depends_on('py-deepdiff@5.6:', type=('build', 'run'))
+    depends_on('py-deepdiff@5.6.0:', type=('build', 'run'))
     depends_on('py-devtools@0.6:', type=('build', 'run'))
     depends_on('py-frozendict@2.3:', type=('build', 'run'))
     depends_on('py-gridtools-cpp@2.3.1:', type=(
@@ -60,10 +60,10 @@ class PyGt4py(PythonPackage):
     depends_on('py-pybind11@2.5:2.9.2', type=('build', 'run'))
 
     depends_on('py-nanobind@1.4.0:', when="@1.1.3:", type=('build', 'run'))
-    depends_on('py-tabulate@0.8:', type=('build', 'run'))
-    depends_on('py-typing-extensions@4.5:', type=('build', 'run'))
+    depends_on('py-tabulate@0.8.10:', type=('build', 'run'))
+    depends_on('py-typing-extensions@4.2:4.6', type=('build', 'run'))
     depends_on('py-toolz@0.12.0:', type=('build', 'run'))
-    depends_on('py-xxhash@1.4.4:', type=('build', 'run'))
+    depends_on('py-xxhash@1.4.4:3.0.9', type=('build', 'run'))
     depends_on('py-hypothesis@6.0.0:', type=('build', 'run'))
 
     # Python dependencies from requirements-dev.txt
