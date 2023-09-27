@@ -66,7 +66,8 @@ class PyIcon4py(PythonPackage):
 
         # unit tests
         if 'py-pytest-mpi' in self.spec:
-            python('-m', 'pytest', '--with-mpi', '-v', '-s', '-m', 'not slow_tests')
+            python('-m', 'pytest', '--with-mpi', '-v', '-s', '-m',
+                   'not slow_tests')
         else:
             python('-m', 'pytest', '-v', '-s', '-n', 'auto')
 
