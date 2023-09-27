@@ -23,7 +23,7 @@ class PyIcon4py(PythonPackage):
 
     maintainers = ['samkellerhals']
 
-    version('main', branch='isolate_stencil_tests', git=git)
+    version('main', branch='main', git=git)
     version('0.0.3', tag='v0.0.3', git=git)
     version('0.0.4', tag='v0.0.4', git=git)
     version('0.0.5', tag='v0.0.5', git=git)
@@ -48,17 +48,19 @@ class PyIcon4py(PythonPackage):
     def setup_build_environment(self, env):
         env.set("CMAKE_INCLUDE_PATH", self.spec['boost'].prefix.include)
 
+    @run_after('install')
+    @on_package_attributes(run_tests=True)
     def test(self):
         # check if all installed module can be imported
         super().test()
 
         # unit tests
         # run unit tests of icon4pytools
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--ignore', 'tools/tests/py2f' 'tools')
+        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--ignore', 'tools/tests/py2f', 'tools')
         # run stencil tests of dycore
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto', 'model/atmosphere/dycore/tests/stencil_tests')
+        python('-m', 'pytest', '-v', '-s', '-n', 'auto', 'model/atmosphere/dycore/tests/stencil_tests/')
         # run stencil tests of diffusion
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto', 'model/atmosphere/diffusion/tests/stencil_tests')
+        python('-m', 'pytest', '-v', '-s', '-n', 'auto', 'model/atmosphere/diffusion/tests/stencil_tests/')
         # run stencil test for interpolation stencils
         python('-m', 'pytest', '-v', '-s', '-n', 'auto', 'model/common/tests/stencil_tests/')
 
