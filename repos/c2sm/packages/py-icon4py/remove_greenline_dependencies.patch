@@ -1,0 +1,29 @@
+diff --git a/model/atmosphere/diffusion/pyproject.toml b/model/atmosphere/diffusion/pyproject.toml
+index 412ac762..124a8839 100644
+--- a/model/atmosphere/diffusion/pyproject.toml
++++ b/model/atmosphere/diffusion/pyproject.toml
+@@ -24,8 +24,6 @@ classifiers = [
+ dependencies = [
+   "gt4py>=1.0.1",
+   "icon4py-common>=0.0.5",
+-  "mpi4py<=3.1.4",
+-  "pyghex>=0.3.0"
+ ]
+ description = "ICON diffusion."
+ dynamic = ['version']
+diff --git a/model/common/pyproject.toml b/model/common/pyproject.toml
+index 22a32d8a..0a90a8cb 100644
+--- a/model/common/pyproject.toml
++++ b/model/common/pyproject.toml
+@@ -22,10 +22,7 @@ classifiers = [
+   "Topic :: Scientific/Engineering :: Physics"
+ ]
+ dependencies = [
+-  "gt4py>=1.0.1",
+-  "mpi4py<=3.1.4",
+-  "pyghex>=0.3.0",
+-  "netcdf4>=1.6.0"
++  "gt4py>=1.0.1"
+ ]
+ description = "Shared code for the icon4py model."
+ dynamic = ['version']
