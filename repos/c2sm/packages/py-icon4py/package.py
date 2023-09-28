@@ -21,7 +21,7 @@ class PyIcon4py(PythonPackage):
 
     homepage = "https://github.com/C2SM/icon4py"
 
-    maintainers = ['agopal','samkellerhals']
+    maintainers = ['agopal', 'samkellerhals']
 
     version('main', branch='main', git=git)
     version('0.0.3', tag='v0.0.3', git=git)
