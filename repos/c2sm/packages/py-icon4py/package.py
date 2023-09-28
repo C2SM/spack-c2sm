@@ -41,7 +41,7 @@ class PyIcon4py(PythonPackage):
     depends_on('py-pytest', type=('build', 'run'))
     depends_on('boost@1.65.1:', type=('build', 'run'))
 
-    patch('patches/remove_greenline_dependencies.patch', when='@main,0.0.8:')
+    patch('patches/remove_greenline_dependencies.patch', when='@main,0.0.9:')
 
     # cmake in unit-tests needs this path
     def setup_build_environment(self, env):
