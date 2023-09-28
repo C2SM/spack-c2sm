@@ -669,6 +669,9 @@ class PyHatchlingTest(unittest.TestCase):
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 class PyIcon4pyTest(unittest.TestCase):
 
+    def test_install_version_0_0_3(self):
+        spack_install_and_test('py-icon4py @ 0.0.3.1 %gcc ^py-gt4py@1.0.1.1b')
+    
     def test_install_version_0_0_5(self):
         spack_install_and_test('py-icon4py @ 0.0.5 %gcc ^py-gt4py@1.0.1.1')
 
