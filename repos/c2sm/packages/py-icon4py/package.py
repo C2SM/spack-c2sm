@@ -43,7 +43,6 @@ class PyIcon4py(PythonPackage):
 
     patch('patches/remove_greenline_dependencies.patch', when='@main,0.0.8:')
 
-
     # cmake in unit-tests needs this path
     def setup_build_environment(self, env):
         env.set("CMAKE_INCLUDE_PATH", self.spec['boost'].prefix.include)
@@ -56,13 +55,17 @@ class PyIcon4py(PythonPackage):
 
         # unit tests
         # run unit tests of icon4pytools
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--ignore', 'tools/tests/py2f', 'tools')
+        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--ignore',
+               'tools/tests/py2f', 'tools')
         # run stencil tests of dycore
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto', 'model/atmosphere/dycore/tests/stencil_tests/')
+        python('-m', 'pytest', '-v', '-s', '-n', 'auto',
+               'model/atmosphere/dycore/tests/stencil_tests/')
         # run stencil tests of diffusion
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto', 'model/atmosphere/diffusion/tests/stencil_tests/')
+        python('-m', 'pytest', '-v', '-s', '-n', 'auto',
+               'model/atmosphere/diffusion/tests/stencil_tests/')
         # run stencil test for interpolation stencils
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto', 'model/common/tests/stencil_tests/')
+        python('-m', 'pytest', '-v', '-s', '-n', 'auto',
+               'model/common/tests/stencil_tests/')
 
     @property
     def headers(self):
