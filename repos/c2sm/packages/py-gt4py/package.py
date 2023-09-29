@@ -61,7 +61,7 @@ class PyGt4py(PythonPackage):
     # See: https://github.com/C2SM/spack-c2sm/issues/803
     depends_on('py-pybind11@2.5:2.9.2', type=('build', 'run'))
 
-    depends_on('py-nanobind@1.4.0:', when="@1.1.3:", type=('build', 'run'))
+    depends_on('py-nanobind@1.4.0:', when="@1.0.1.3:", type=('build', 'run'))
     depends_on('py-tabulate@0.8.10:', type=('build', 'run'))
     depends_on('py-typing-extensions@4.2:4.6', type=('build', 'run'))
     depends_on('py-toolz@0.12.0:', type=('build', 'run'))
