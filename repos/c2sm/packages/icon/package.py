@@ -614,7 +614,8 @@ class Icon(AutotoolsPackage, CudaPackage):
                         directories[0])
                 if self.spec['py-icon4py'].version > Version("0.0.8"):
                     config_vars['LOC_ICON4PY_ADVECTION'].append(
-                        self.spec['py-icon4py:advection'].headers.directories[0])
+                        self.spec['py-icon4py:advection'].headers.
+                        directories[0])
             config_vars['LOC_GRIDTOOLS'].append(
                 self.spec['py-gridtools-cpp:data'].headers.directories[0])
             config_vars['GT4PYNVCFLAGS'] = config_vars['NVCFLAGS']
