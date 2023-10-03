@@ -21,7 +21,7 @@ class PyIcon4py(PythonPackage):
 
     homepage = "https://github.com/C2SM/icon4py"
 
-    maintainers = ['samkellerhals']
+    maintainers = ['agopal', 'samkellerhals']
 
     version('main', branch='main', git=git)
     version('0.0.3', tag='v0.0.3', git=git)
@@ -29,6 +29,7 @@ class PyIcon4py(PythonPackage):
     version('0.0.5', tag='v0.0.5', git=git)
     version('0.0.6', tag='v0.0.6', git=git)
     version('0.0.7', tag='v0.0.7', git=git)
+    version('0.0.8', tag='v0.0.8', git=git)
 
     depends_on('py-wheel', type='build')
     depends_on('py-setuptools', type='build')
@@ -96,11 +97,18 @@ class PyIcon4py(PythonPackage):
                 'atm_dyn_iconam': 'dycore',
                 'tools': 'icon4pytools'
             },
+            ver('=0.0.8'): {
+                'atm_dyn_iconam': 'dycore',
+                'tools': 'icon4pytools',
+                'diffusion': 'diffusion/stencils',
+                'interpolation': 'interpolation/stencils',
+            },
             ver('=main'): {
                 'atm_dyn_iconam': 'dycore',
                 'tools': 'icon4pytools',
                 'diffusion': 'diffusion/stencils',
                 'interpolation': 'interpolation/stencils',
+                'advection': 'advection',
             },
         }
 
@@ -168,10 +176,16 @@ class PythonPipBuilder(PythonPipBuilder):
         elif self.spec.version == ver('=0.0.6') or self.spec.version == ver(
                 '=0.0.7'):
             build_dirs = ['tools', 'model/atmosphere/dycore', 'model/common/']
-        else:
+        elif self.spec.version == ver('=0.0.8'):
             build_dirs = [
                 'tools', 'model/atmosphere/dycore',
                 'model/atmosphere/diffusion', 'model/common/'
+            ]
+        else:
+            build_dirs = [
+                'tools', 'model/atmosphere/dycore',
+                'model/atmosphere/diffusion', 'model/atmosphere/advection',
+                'model/common/'
             ]
 
         for dir in build_dirs:
