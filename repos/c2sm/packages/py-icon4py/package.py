@@ -56,14 +56,18 @@ class PyIcon4py(PythonPackage):
         python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--ignore',
                'tools/tests/py2f', 'tools')
         # run stencil tests of dycore
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto',
+        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '-m', 'not slow_tests',
                'model/atmosphere/dycore/tests/stencil_tests/')
         # run stencil tests of diffusion
         python('-m', 'pytest', '-v', '-s', '-n', 'auto',
                'model/atmosphere/diffusion/tests/stencil_tests/')
+        # run stencil tests of tracer advection
+        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '-m', 'not slow_tests',
+               'model/atmosphere/advection/tests/stencil_tests/')
         # run stencil test for interpolation stencils
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto',
+        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '-m', 'not slow_tests',
                'model/common/tests/stencil_tests/')
+
 
     @property
     def headers(self):
