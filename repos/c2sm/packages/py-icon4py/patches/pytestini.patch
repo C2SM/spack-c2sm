@@ -1,5 +1,5 @@
 diff --git a/pytest.ini b/pytest.ini
-index c796932b..a67d4e44 100644
+index c796932b..c2b84d23 100644
 --- a/pytest.ini
 +++ b/pytest.ini
 @@ -4,3 +4,10 @@ markers =

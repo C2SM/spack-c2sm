@@ -23,7 +23,7 @@ class PyIcon4py(PythonPackage):
 
     maintainers = ['agopal', 'samkellerhals']
 
-    version('main', branch='isolate_stencil_tests', git=git)
+    version('main', branch='main', git=git)
     version('0.0.3', tag='v0.0.3', git=git)
     version('0.0.4', tag='v0.0.4', git=git)
     version('0.0.5', tag='v0.0.5', git=git)
@@ -53,18 +53,9 @@ class PyIcon4py(PythonPackage):
     def test(self):
         # check if all installed module can be imported
         super().test()
-
         # unit tests
-        if 'py-pytest-mpi' in self.spec:
-            python('-m', 'pytest', '--with-mpi', '-v', '-s', '-m',
+        python('-m', 'pytest', '-v', '-s', '-m',
                    'not slow_tests')
-        else:
-            # run stencil tests in model
-            python('-m', 'pytest', '-v', '-s', '-m',
-                   'not slow_tests')
-            # run unit tests of icon4pytools
-            #python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--ignore',
-            #       'tools/tests/py2f', 'tools')
 
 
     @property
