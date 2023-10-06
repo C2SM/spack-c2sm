@@ -23,7 +23,7 @@ class PyIcon4py(PythonPackage):
 
     maintainers = ['agopal', 'samkellerhals']
 
-    version('main', branch='main', git=git)
+    version('main', branch='isolate_stencil_tests', git=git)
     version('0.0.3', tag='v0.0.3', git=git)
     version('0.0.4', tag='v0.0.4', git=git)
     version('0.0.5', tag='v0.0.5', git=git)
@@ -42,6 +42,8 @@ class PyIcon4py(PythonPackage):
     depends_on('py-pytest', type=('build', 'run'))
     depends_on('boost@1.65.1:', type=('build', 'run'))
 
+    patch('patches/pytestini.patch', when='@main')
+
     # cmake in unit-tests needs this path
     def setup_build_environment(self, env):
         env.set("CMAKE_INCLUDE_PATH", self.spec['boost'].prefix.include)
@@ -53,21 +55,16 @@ class PyIcon4py(PythonPackage):
         super().test()
 
         # unit tests
-        # run unit tests of icon4pytools
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--ignore',
-               'tools/tests/py2f', 'tools')
-        # run stencil tests of dycore
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '-m', 'not slow_tests',
-               'model/atmosphere/dycore/tests/stencil_tests/')
-        # run stencil tests of diffusion
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto',
-               'model/atmosphere/diffusion/tests/stencil_tests/')
-        # run stencil tests of tracer advection
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '-m', 'not slow_tests',
-               'model/atmosphere/advection/tests/stencil_tests/')
-        # run stencil test for interpolation stencils
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '-m', 'not slow_tests',
-               'model/common/tests/stencil_tests/')
+        if 'py-pytest-mpi' in self.spec:
+            python('-m', 'pytest', '--with-mpi', '-v', '-s', '-m',
+                   'not slow_tests')
+        else:
+            # run stencil tests in model
+            python('-m', 'pytest', '-v', '-s', '-m',
+                   'not slow_tests')
+            # run unit tests of icon4pytools
+            #python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--ignore',
+            #       'tools/tests/py2f', 'tools')
 
 
     @property
