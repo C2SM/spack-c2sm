@@ -44,7 +44,7 @@ class PyIcon4py(PythonPackage):
     def patch(self):
         spack_pytest_ini = 'jenkins/spack/pytest.ini'
         if os.path.exists(spack_pytest_ini):
-            install(spack_pytest_ini, '.')
+            fs.install(spack_pytest_ini, '.')
 
     # cmake in unit-tests needs this path
     def setup_build_environment(self, env):
@@ -58,8 +58,7 @@ class PyIcon4py(PythonPackage):
         with open('pytest.ini', 'r') as f:
             print(f.read())
 
-        python('-m', 'pytest', '-v', '-s', '-m', 'not slow_tests',
-               '--trace-config')
+        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '-m', 'not slow_tests')
 
     @property
     def headers(self):
@@ -132,9 +131,6 @@ class PythonPipBuilder(PythonPipBuilder):
 
     def install(self, pkg, spec, prefix):
         """Install everything from build directory."""
-
-        with open('pytest.ini', 'r') as f:
-            print(f.read())
 
         args = PythonPipBuilder.std_args(pkg) + ["--prefix=" + prefix]
 
