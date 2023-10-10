@@ -465,9 +465,6 @@ class SpecTest(unittest.TestCase):
     def test_rttov(self):
         spack_spec('rttov')
 
-    def test_serialbox(self):
-        spack_spec('serialbox')
-
     def test_scales_ppm(self):
         spack_spec('scales-ppm')
 

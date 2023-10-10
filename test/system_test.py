@@ -802,20 +802,5 @@ class ZLibNGTest(unittest.TestCase):
         spack_install_and_test('zlib_ng @2.0.0')
 
 
-
-
-
-
-
-
-class SerialboxTest(unittest.TestCase):
-
-    def test_install_serialbox_2_6_1(self):
-        spack_install('serialbox @2.6.1')
-
-    def test_install_serialbox_2_6_2_python(self):
-        spack_install('serialbox @2.6.2 + python')
-
-
 if __name__ == '__main__':
     unittest.main(verbosity=2)
