@@ -79,14 +79,11 @@ class InfoTest(unittest.TestCase):
     def test_fdb_fortran(self):
         spack_info('fdb-fortran')
 
+    def test_flexpart(self):
+        spack_info('flexpart')
+
     def test_flexpart_cosmo(self):
         spack_info('flexpart-cosmo')
-
-    def test_flexpart_fdb(self):
-        spack_info('flexpart-fdb')
-
-    def test_flexpart_ifs(self):
-        spack_info('flexpart-ifs')
 
     def test_flexpart_opr(self):
         spack_info('flexpart-opr')
@@ -307,15 +304,12 @@ class SpecTest(unittest.TestCase):
     def test_fdb_fortran(self):
         spack_spec('fdb-fortran')
 
+    def test_flexpart(self):
+        spack_spec('flexpart')
+
     @pytest.mark.no_tsa  # No compatible compiler available
     def test_flexpart_cosmo(self):
         spack_spec('flexpart-cosmo')
-
-    def test_flexpart_fdb(self):
-        spack_spec('flexpart-fdb')
-
-    def test_flexpart_ifs(self):
-        spack_spec('flexpart-ifs')
 
     def test_flexpart_opr(self):
         spack_spec('flexpart-opr')

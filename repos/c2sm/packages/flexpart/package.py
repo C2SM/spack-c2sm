@@ -3,12 +3,13 @@ from distutils.dir_util import copy_tree
 import shutil
 
 
-class FlexpartFdb(MakefilePackage):
+class Flexpart(MakefilePackage):
     """Flexpart is a Lagrangian dispersion model"""
 
     homepage = 'https://github.com/MeteoSwiss/flexpart'
     git = 'https://github.com/MeteoSwiss/flexpart.git'
 
+    version('10.4.3', tag='10.4.3')
     version('fdb', branch='fdb')
 
     variant('mch', default=False)
@@ -30,17 +31,13 @@ class FlexpartFdb(MakefilePackage):
 
     def edit(self, spec, prefix):
         if '+mch' in spec:
-            copy_tree(self.spec['flexpart-opr'].prefix + '/flexpartOpr/src',
-                      'src')
+            opr = self.spec['flexpart-opr'].prefix
+            copy_tree(opr + '/flexpartOpr/src', 'src')
             shutil.rmtree('options')
-            copy_tree(
-                self.spec['flexpart-opr'].prefix + '/flexpartOpr/options',
-                'options')
+            copy_tree(opr + '/flexpartOpr/options', 'options')
             mkdir('test')
-            copy_tree(self.spec['flexpart-opr'].prefix + '/flexpartOpr/test',
-                      'test')
+            copy_tree(opr + '/flexpartOpr/test', 'test')
             copy('src/makefile.meteoswiss', 'src/makefile')
-
         else:
             # Patch makefile if not using meteoswiss.makefile as no CURL_INCLUDES variable.
             #with working_dir(self.build_directory):

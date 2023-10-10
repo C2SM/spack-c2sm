@@ -331,19 +331,13 @@ class FlexpartOprTest(unittest.TestCase):
         spack_install_and_test('flexpart-opr')
 
 
-class FlexpartFdbTest(unittest.TestCase):
+class FlexpartTest(unittest.TestCase):
 
     def test_wo_mch(self):
-        spack_install_and_test('flexpart-fdb ~mch')
+        spack_install_and_test('flexpart ~mch')
 
     def test_w_mch(self):
-        spack_install_and_test('flexpart-fdb +mch')
-
-
-class FlexpartIfsTest(unittest.TestCase):
-
-    def test_install_latest(self):
-        spack_install_and_test('flexpart-ifs @meteoswiss-10')
+        spack_install_and_test('flexpart +mch')
 
 
 @pytest.mark.no_tsa  # No one uses spack for flexpart-cosmo on Tsa
