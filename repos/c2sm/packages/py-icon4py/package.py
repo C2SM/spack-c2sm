@@ -58,7 +58,8 @@ class PyIcon4py(PythonPackage):
         with open('pytest.ini', 'r') as f:
             print(f.read())
 
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '-m', 'not slow_tests')
+        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '-m',
+               'not slow_tests')
 
     @property
     def headers(self):
