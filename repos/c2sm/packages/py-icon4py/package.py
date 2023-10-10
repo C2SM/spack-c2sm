@@ -23,7 +23,7 @@ class PyIcon4py(PythonPackage):
 
     maintainers = ['agopal', 'samkellerhals']
 
-    version('main', branch='isolate_stencil_tests', git=git)
+    version('main', branch='main', git=git)
     version('0.0.3', tag='v0.0.3', git=git)
     version('0.0.4', tag='v0.0.4', git=git)
     version('0.0.5', tag='v0.0.5', git=git)
