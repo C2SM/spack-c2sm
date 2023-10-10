@@ -41,7 +41,6 @@ class PyIcon4py(PythonPackage):
     depends_on('py-pytest', type=('build', 'run'))
     depends_on('boost@1.65.1:', type=('build', 'run'))
 
-
     def patch(self):
         spack_pytest_ini = 'jenkins/spack/pytest.ini'
         if os.path.exists(spack_pytest_ini):
@@ -59,9 +58,8 @@ class PyIcon4py(PythonPackage):
         with open('pytest.ini', 'r') as f:
             print(f.read())
 
-        python('-m', 'pytest', '-v', '-s', '-m',
-                   'not slow_tests', '--trace-config')
-
+        python('-m', 'pytest', '-v', '-s', '-m', 'not slow_tests',
+               '--trace-config')
 
     @property
     def headers(self):
@@ -137,8 +135,6 @@ class PythonPipBuilder(PythonPipBuilder):
 
         with open('pytest.ini', 'r') as f:
             print(f.read())
-
-
 
         args = PythonPipBuilder.std_args(pkg) + ["--prefix=" + prefix]
 
