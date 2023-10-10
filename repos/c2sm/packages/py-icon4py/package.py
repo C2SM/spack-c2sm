@@ -23,13 +23,12 @@ class PyIcon4py(PythonPackage):
 
     maintainers = ['agopal', 'samkellerhals']
 
-    version('main', branch='main', git=git)
+    version('main', branch='isolate_stencil_tests', git=git)
     version('0.0.3', tag='v0.0.3', git=git)
     version('0.0.4', tag='v0.0.4', git=git)
     version('0.0.5', tag='v0.0.5', git=git)
     version('0.0.6', tag='v0.0.6', git=git)
     version('0.0.7', tag='v0.0.7', git=git)
-    version('0.0.8', tag='v0.0.8', git=git)
 
     depends_on('py-wheel', type='build')
     depends_on('py-setuptools', type='build')
@@ -42,20 +41,26 @@ class PyIcon4py(PythonPackage):
     depends_on('py-pytest', type=('build', 'run'))
     depends_on('boost@1.65.1:', type=('build', 'run'))
 
-    patch('patches/pytestini.patch', when='@main')
+
+    def patch(self):
+        spack_pytest_ini = 'jenkins/spack/pytest.ini'
+        if os.path.exists(spack_pytest_ini):
+            install(spack_pytest_ini, '.')
 
     # cmake in unit-tests needs this path
     def setup_build_environment(self, env):
         env.set("CMAKE_INCLUDE_PATH", self.spec['boost'].prefix.include)
 
-    @run_after('install')
-    @on_package_attributes(run_tests=True)
     def test(self):
         # check if all installed module can be imported
         super().test()
         # unit tests
+
+        with open('pytest.ini', 'r') as f:
+            print(f.read())
+
         python('-m', 'pytest', '-v', '-s', '-m',
-                   'not slow_tests')
+                   'not slow_tests', '--trace-config')
 
 
     @property
@@ -130,6 +135,11 @@ class PythonPipBuilder(PythonPipBuilder):
     def install(self, pkg, spec, prefix):
         """Install everything from build directory."""
 
+        with open('pytest.ini', 'r') as f:
+            print(f.read())
+
+
+
         args = PythonPipBuilder.std_args(pkg) + ["--prefix=" + prefix]
 
         for key, value in self.config_settings(spec, prefix).items():
@@ -164,11 +174,6 @@ class PythonPipBuilder(PythonPipBuilder):
         elif self.spec.version == ver('=0.0.6') or self.spec.version == ver(
                 '=0.0.7'):
             build_dirs = ['tools', 'model/atmosphere/dycore', 'model/common/']
-        elif self.spec.version == ver('=0.0.8'):
-            build_dirs = [
-                'tools', 'model/atmosphere/dycore',
-                'model/atmosphere/diffusion', 'model/common/'
-            ]
         else:
             build_dirs = [
                 'tools', 'model/atmosphere/dycore',
