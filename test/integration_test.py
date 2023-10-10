@@ -445,8 +445,6 @@ class SpecTest(unittest.TestCase):
     def test_py_pytest_factoryboy(self):
         spack_spec('py-pytest-factoryboy')
 
-
-
     def test_py_setuptools(self):
         spack_spec('py-setuptools')
 
