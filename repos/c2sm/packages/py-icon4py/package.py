@@ -55,9 +55,6 @@ class PyIcon4py(PythonPackage):
         super().test()
         # unit tests
 
-        with open('pytest.ini', 'r') as f:
-            print(f.read())
-
         python('-m', 'pytest', '-v', '-s', '-n', 'auto', '-m',
                'not slow_tests')
 
