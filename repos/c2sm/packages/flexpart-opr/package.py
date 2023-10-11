@@ -8,11 +8,12 @@ from spack import *
 
 
 class FlexpartOpr(Package):
-    """flexpart is a Lagrangian dispersion model"""
+    """MeteoSwiss' addition to Flexpart."""
 
     homepage = 'https://github.com/MeteoSwiss-APN/flexpart-opr'
-    git = 'ssh://git@github.com/MeteoSwiss-APN/flexpart-opr.git'
+    git = 'git@github.com:MeteoSwiss-APN/flexpart-opr.git'
 
+    version('main', branch='main')
     version('fdb', branch='fdb')
 
     def install(self, spec, prefix):
