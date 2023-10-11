@@ -13,7 +13,7 @@ class FlexpartOpr(Package):
     homepage = 'https://github.com/MeteoSwiss-APN/flexpart-opr'
     git = 'git@github.com:MeteoSwiss-APN/flexpart-opr.git'
 
-    version('main', branch='main')
+    version('main', branch='main', preferred=True)
     version('fdb', branch='fdb')
 
     def install(self, spec, prefix):
