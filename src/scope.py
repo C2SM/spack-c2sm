@@ -3,7 +3,7 @@ import os
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                '..')
 
-all_machines = ['balfrin', 'daint', 'tsa']
+all_machines = ['balfrin', 'daint', 'tsa', 'vial']
 all_packages = [
     name for name in os.listdir(
         os.path.join(spack_c2sm_path, 'repos/c2sm/packages')) if os.path.isdir(

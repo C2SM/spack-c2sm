@@ -194,6 +194,7 @@ nvidia_compiler: str = {
     'daint': 'nvhpc',
     'tsa': 'pgi',
     'balfrin': 'nvhpc',
+    'vial': 'nvhpc',
     'unknown': '',
 }[machine_name()]
 
@@ -223,6 +224,7 @@ class ClawTest(unittest.TestCase):
         spack_install('claw')
 
 
+@pytest.mark.no_vial  # cosmo-dycore does not support the cuda arch of vial
 @pytest.mark.no_balfrin  # cosmo-dycore does not support the cuda arch of balfrin
 @pytest.mark.no_tsa  # irrelevant
 class CosmoTest(unittest.TestCase):
@@ -240,6 +242,7 @@ class CosmoTest(unittest.TestCase):
             'cosmo-c2sm-master')
 
 
+@pytest.mark.no_vial  # cuda arch is not supported
 @pytest.mark.no_balfrin  # cuda arch is not supported
 @pytest.mark.no_tsa  # irrelevant
 class CosmoDycoreTest(unittest.TestCase):
@@ -331,6 +334,7 @@ class FlexpartOprTest(unittest.TestCase):
         spack_install_and_test('flexpart-opr')
 
 
+@pytest.mark.no_vial # not supported for now
 class FlexpartFdbTest(unittest.TestCase):
 
     def test_wo_mch(self):
@@ -379,6 +383,7 @@ class IconTest(unittest.TestCase):
             'icon @nwp-master %nvhpc +grib2 +eccodes-definitions +ecrad +art +dace gpu=openacc+cuda +mpi-gpu +realloc-buf +pgi-inlib ~aes ~jsbach ~ocean ~coupling ~rte-rrtmgp ~loop-exchange ~async-io-rma +mixed-precision'
         )
 
+    @pytest.mark.no_vial  # config file does not exist for this machine
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_gcc(self):
         spack_env_dev_install_and_test(
@@ -388,6 +393,7 @@ class IconTest(unittest.TestCase):
             'icon',
             build_on_login_node=True)
 
+    @pytest.mark.no_vial  # config file does not exist for this machine
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_nvhpc_out_of_source(self):
         spack_env_dev_install_and_test(
@@ -398,6 +404,7 @@ class IconTest(unittest.TestCase):
             out_of_source=True,
             build_on_login_node=True)
 
+    @pytest.mark.no_vial  # config file does not exist for this machine
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu(self):
         spack_env_dev_install_and_test(
@@ -407,6 +414,7 @@ class IconTest(unittest.TestCase):
             'icon',
             build_on_login_node=True)
 
+    @pytest.mark.no_vial  # config file does not exist for this machine
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_gpu(self):
         spack_env_dev_install_and_test(
@@ -416,6 +424,7 @@ class IconTest(unittest.TestCase):
             'icon',
             build_on_login_node=True)
 
+    @pytest.mark.no_vial  # config file does not exist for this machine
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_nwp_test_cpu_cce(self):
         spack_env_dev_install_and_test(
@@ -425,6 +434,7 @@ class IconTest(unittest.TestCase):
             'icon',
             build_on_login_node=True)
 
+    @pytest.mark.no_vial  # config file does not exist for this machine
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_exclaim_test_gpu_dsl(self):
         spack_env_dev_install_and_test(
@@ -458,6 +468,7 @@ class InferoTest(unittest.TestCase):
         spack_install('infero @0.1.2 %gcc +onnx')
 
 
+@pytest.mark.no_vial  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
 class Int2lmTest(unittest.TestCase):
 
@@ -523,6 +534,7 @@ class MetkitTest(unittest.TestCase):
         spack_install(f'metkit @1.9.2 %{nvidia_compiler}')
 
 
+@pytest.mark.no_vial  # Package is a workaround, only needed on Daint.
 @pytest.mark.no_balfrin  # Package is a workaround, only needed on Daint.
 @pytest.mark.no_tsa  # Package is a workaround, only needed on Daint.
 class NvidiaBlasTest(unittest.TestCase):
@@ -531,6 +543,7 @@ class NvidiaBlasTest(unittest.TestCase):
         spack_install_and_test('nvidia-blas')
 
 
+@pytest.mark.no_vial  # Package is a workaround, only needed on Daint.
 @pytest.mark.no_balfrin  # Package is a workaround, only needed on Daint.
 @pytest.mark.no_tsa  # Package is a workaround, only needed on Daint.
 class NvidiaLapackTest(unittest.TestCase):
