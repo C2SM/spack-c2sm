@@ -29,7 +29,6 @@ class PyIcon4py(PythonPackage):
     version('0.0.5', tag='v0.0.5', git=git)
     version('0.0.6', tag='v0.0.6', git=git)
     version('0.0.7', tag='v0.0.7', git=git)
-    version('0.0.8', tag='v0.0.8', git=git)
 
     depends_on('py-wheel', type='build')
     depends_on('py-setuptools', type='build')
@@ -42,20 +41,10 @@ class PyIcon4py(PythonPackage):
     depends_on('py-pytest', type=('build', 'run'))
     depends_on('boost@1.65.1:', type=('build', 'run'))
 
-    depends_on('py-cffi@1.5.0:', when='@0.0.8:', type=('build', 'run'))
-    depends_on('py-netcdf4', when='@0.0.8:', type=('build', 'run'))
-    depends_on('netcdf-c@4.8.1%gcc', when='@0.0.8:', type=('build', 'run'))
-    depends_on('netcdf-fortran@4.5.4%nvhpc',
-               when='@0.0.8:',
-               type=('build', 'run'))
-    depends_on('py-mpi4py@3.0:', when='@0.0.8:', type=('build', 'run'))
-    depends_on('py-pytz', when='@0.0.8:', type=('build', 'run'))
-    depends_on('py-ghex@0.3.2', when='@0.0.8:', type=('build', 'run'))
-    depends_on('py-wget', when='@0.0.8:', type=('build', 'run'))
-    depends_on('serialbox@2.6.2 +python',
-               when='@0.0.8:',
-               type=('build', 'run'))
-    depends_on('py-pytest-mpi', when='@0.0.8:', type='build')
+    def patch(self):
+        spack_pytest_ini = 'jenkins/spack/pytest.ini'
+        if os.path.exists(spack_pytest_ini):
+            fs.install(spack_pytest_ini, '.')
 
     # cmake in unit-tests needs this path
     def setup_build_environment(self, env):
@@ -64,13 +53,10 @@ class PyIcon4py(PythonPackage):
     def test(self):
         # check if all installed module can be imported
         super().test()
-
         # unit tests
-        if 'py-pytest-mpi' in self.spec:
-            python('-m', 'pytest', '--with-mpi', '-v', '-s', '-m',
-                   'not slow_tests')
-        else:
-            python('-m', 'pytest', '-v', '-s', '-n', 'auto')
+
+        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '-m',
+               'not slow_tests')
 
     @property
     def headers(self):
@@ -178,16 +164,11 @@ class PythonPipBuilder(PythonPipBuilder):
         elif self.spec.version == ver('=0.0.6') or self.spec.version == ver(
                 '=0.0.7'):
             build_dirs = ['tools', 'model/atmosphere/dycore', 'model/common/']
-        elif self.spec.version == ver('=0.0.8'):
-            build_dirs = [
-                'tools', 'model/atmosphere/dycore',
-                'model/atmosphere/diffusion', 'model/driver', 'model/common/'
-            ]
         else:
             build_dirs = [
                 'tools', 'model/atmosphere/dycore',
                 'model/atmosphere/diffusion', 'model/atmosphere/advection',
-                'model/driver', 'model/common/'
+                'model/common/'
             ]
 
         for dir in build_dirs:
