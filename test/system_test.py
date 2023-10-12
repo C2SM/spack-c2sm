@@ -664,6 +664,7 @@ class PyGt4pyTest(unittest.TestCase):
     def test_install_version_1_1_2(self):
         spack_install_and_test('py-gt4py @1.1.2')
 
+    @pytest.mark.no_vial  # fails with ModuleNotFoundError: No module named 'dace'
     @pytest.mark.no_daint  # fails with ModuleNotFoundError: No module named 'dace'
     @pytest.mark.no_balfrin  # fails with ModuleNotFoundError: No module named 'dace'
     def test_install_version_1_1_3(self):
@@ -775,6 +776,7 @@ class PyTypingExtensionsTest(unittest.TestCase):
 @pytest.mark.no_balfrin  #Irrelevant
 class RttovTest(unittest.TestCase):
 
+    @pytest.mark.no_vial  # compilation hangs for rttov_bpr_init.F90
     def test_install_version_13_1_gcc(self):
         spack_install_and_test('rttov @13.1 %gcc')
 
