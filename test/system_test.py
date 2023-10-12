@@ -334,7 +334,7 @@ class FlexpartOprTest(unittest.TestCase):
         spack_install_and_test('flexpart-opr')
 
 
-@pytest.mark.no_vial # not supported for now
+@pytest.mark.no_vial  # not supported for now
 class FlexpartFdbTest(unittest.TestCase):
 
     def test_wo_mch(self):
