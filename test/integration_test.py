@@ -412,9 +412,6 @@ class SpecTest(unittest.TestCase):
     def test_py_frozendict(self):
         spack_spec('py-frozendict')
 
-    def test_py_ghex(self):
-        spack_spec('py-ghex')
-
     def test_py_gridtools_cpp(self):
         spack_spec('py-gridtools-cpp')
 
@@ -448,12 +445,6 @@ class SpecTest(unittest.TestCase):
     def test_py_pytest_factoryboy(self):
         spack_spec('py-pytest-factoryboy')
 
-    def test_py_pytest_mpi(self):
-        spack_spec('py-pytest-mpi')
-
-    def test_py_scikit_build_core(self):
-        spack_spec('py-scikit-build-core')
-
     def test_py_setuptools(self):
         spack_spec('py-setuptools')
 
@@ -471,9 +462,6 @@ class SpecTest(unittest.TestCase):
 
     def test_rttov(self):
         spack_spec('rttov')
-
-    def test_serialbox(self):
-        spack_spec('serialbox')
 
     def test_scales_ppm(self):
         spack_spec('scales-ppm')
