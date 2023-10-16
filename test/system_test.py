@@ -648,6 +648,9 @@ class PyGt4pyTest(unittest.TestCase):
     def test_install_version_1_0_1_1(self):
         spack_install_and_test('py-gt4py @1.0.1.1')
 
+    def test_install_version_1_0_1_1b(self):
+        spack_install_and_test('py-gt4py @1.0.1.1b')
+    
     def test_install_version_1_0_1_2(self):
         spack_install_and_test('py-gt4py @1.0.1.2')
 
