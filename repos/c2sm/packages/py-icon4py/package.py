@@ -70,6 +70,10 @@ class PyIcon4py(PythonPackage):
         version = self.spec.version
 
         folder_mapping = {
+            ver('=0.0.3:0.0.3.1'): {
+                'atm_dyn_iconam': 'atm_dyn_iconam',
+                'utils': ''
+            },
             ver('=0.0.4'): {
                 'atm_dyn_iconam': 'atm_dyn_iconam',
                 'tools': 'icon4pytools'
