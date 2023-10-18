@@ -592,7 +592,7 @@ class Icon(AutotoolsPackage, CudaPackage):
 
             if self.spec['py-icon4py'].version < Version("0.0.4"):
                 config_vars['LOC_ICON4PY_UTILS'].append(
-                    self.spec['py-icon4py:utils'].headers.directories[0])
+                    os.path.dirname(self.spec['py-icon4py:utils'].headers.directories[0]))
             else:
                 config_vars['LOC_ICON4PY_TOOLS'].append(
                     self.spec['py-icon4py:tools'].headers.directories[0])
