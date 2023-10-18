@@ -72,11 +72,13 @@ class PyIcon4py(PythonPackage):
         folder_mapping = {
             ver('=0.0.3'): {
                 'atm_dyn_iconam': 'atm_dyn_iconam',
-                'utils': 'liskov' #utils will eventually map to parent directory of liskov
+                'utils':
+                'liskov'  #utils will eventually map to parent directory of liskov
             },
             ver('=0.0.3.1'): {
                 'atm_dyn_iconam': 'atm_dyn_iconam',
-                'utils': 'liskov' #utils will eventually map to parent directory of liskov
+                'utils':
+                'liskov'  #utils will eventually map to parent directory of liskov
             },
             ver('=0.0.4'): {
                 'atm_dyn_iconam': 'atm_dyn_iconam',
