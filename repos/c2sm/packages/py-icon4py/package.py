@@ -25,6 +25,7 @@ class PyIcon4py(PythonPackage):
 
     version('main', branch='main', git=git)
     version('0.0.3', tag='v0.0.3', git=git)
+    version('0.0.3.1', tag='v0.0.3.1', git=git)
     version('0.0.4', tag='v0.0.4', git=git)
     version('0.0.5', tag='v0.0.5', git=git)
     version('0.0.6', tag='v0.0.6', git=git)
@@ -69,6 +70,16 @@ class PyIcon4py(PythonPackage):
         version = self.spec.version
 
         folder_mapping = {
+            ver('=0.0.3'): {
+                'atm_dyn_iconam': 'atm_dyn_iconam',
+                'utils':
+                'liskov'  #utils will eventually map to parent directory of liskov
+            },
+            ver('=0.0.3.1'): {
+                'atm_dyn_iconam': 'atm_dyn_iconam',
+                'utils':
+                'liskov'  #utils will eventually map to parent directory of liskov
+            },
             ver('=0.0.4'): {
                 'atm_dyn_iconam': 'atm_dyn_iconam',
                 'tools': 'icon4pytools'
@@ -102,10 +113,6 @@ class PyIcon4py(PythonPackage):
 
         if len(query_parameters) > 1:
             raise ValueError('Only one query parameter allowed')
-
-        if version == ver('=0.0.3') and len(query_parameters) == 1:
-            msg = 'Not implemented for version {0}'.format(version)
-            raise spack.error.NoHeadersError(msg)
 
         folder_name = folder_mapping.get(version, {})
 
@@ -154,7 +161,8 @@ class PythonPipBuilder(PythonPipBuilder):
 
         pip = inspect.getmodule(pkg).pip
 
-        if self.spec.version == ver('=0.0.3'):
+        if self.spec.version == ver('=0.0.3') or self.spec.version == ver(
+                '=0.0.3.1'):
             build_dirs = [
                 'common', 'pyutils', 'testutils', 'liskov', 'atm_dyn_iconam'
             ]

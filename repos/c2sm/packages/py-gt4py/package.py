@@ -16,10 +16,11 @@ class PyGt4py(PythonPackage):
     url = "git@github.com:GridTools/gt4py.git"
 
     version('main', branch='main', git=url)
-    version('1.1.1', tag='icon4py_20230413', git=url)
-    version('1.1.2', tag='icon4py_20230621', git=url)
-    version('1.1.3', tag='icon4py_20230817', git=url)
-    version('1.1.4', tag='icon4py_20230926', git=url)
+    version('1.0.1.1', tag='icon4py_20230413', git=url)
+    version('1.0.1.1b', tag='icon4py_20230530', git=url)
+    version('1.0.1.2', tag='icon4py_20230621', git=url)
+    version('1.0.1.3', tag='icon4py_20230817', git=url)
+    version('1.0.1.4', tag='icon4py_20230926', git=url)
 
     maintainers = ['samkellerhals']
 
@@ -60,7 +61,7 @@ class PyGt4py(PythonPackage):
     # See: https://github.com/C2SM/spack-c2sm/issues/803
     depends_on('py-pybind11@2.5:2.9.2', type=('build', 'run'))
 
-    depends_on('py-nanobind@1.4.0:', when="@1.1.3:", type=('build', 'run'))
+    depends_on('py-nanobind@1.4.0:', when="@1.0.1.3:", type=('build', 'run'))
     depends_on('py-tabulate@0.8.10:', type=('build', 'run'))
     depends_on('py-typing-extensions@4.2:4.6', type=('build', 'run'))
     depends_on('py-toolz@0.12.0:', type=('build', 'run'))
