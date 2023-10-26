@@ -1,0 +1,3 @@
+upstreams:
+  system:
+    install_tree: /user-environment
