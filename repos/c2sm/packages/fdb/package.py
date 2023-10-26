@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack.package import *
+from spack.pkg.builtin.fdb import Fdb as SpackFdb
 
 
 class Fdb(SpackFdb):
