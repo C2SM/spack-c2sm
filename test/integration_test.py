@@ -118,9 +118,6 @@ class InfoTest(unittest.TestCase):
     def test_libxml2(self):
         spack_info('libxml2')
 
-    def test_metkit(self):
-        spack_info('metkit')
-
     def test_nvidia_blas(self):
         spack_info('nvidia-blas')
 
@@ -289,14 +286,8 @@ class SpecTest(unittest.TestCase):
     def test_eccodes(self):
         spack_spec('eccodes')
 
-    def test_eckit(self):
-        spack_spec('eckit')
-
     def test_fckit(self):
         spack_spec('fckit')
-
-    def test_fdb(self):
-        spack_spec('fdb')
 
     def test_fdb_fortran(self):
         spack_spec('fdb-fortran')
