@@ -17,4 +17,4 @@ class Fdb(SpackFdb):
             sha256=
             "375c6893c7c60f6fdd666d2abaccb2558667bd450100817c0e1072708ad5591e")
 
-	depends_on("ecbuild@3.7:", type="build", when="@5.11.6:")
+    depends_on("ecbuild@3.7:", type="build", when="@5.11.6:")
