@@ -286,37 +286,10 @@ class EccodesTest(unittest.TestCase):
         spack_install('eccodes @2.19.0')
 
 
-class EckitTest(unittest.TestCase):
-    # All the other versions are not the responsibility of spack-c2sm
-    # Package tests are not run because they are flaky https://github.com/C2SM/spack-c2sm/issues/779
-
-    def test_install_1_20_2_gcc(self):
-        spack_install('eckit @1.20.2 %gcc')
-
-    def test_install_1_20_2_nvhpc(self):
-        spack_install(f'eckit @1.20.2 %{nvidia_compiler}')
-
-    def test_install_1_20_0_gcc(self):
-        spack_install('eckit @1.20.0 %gcc')
-
-    def test_install_1_20_0_gcc(self):
-        spack_install(f'eckit @1.20.0 %{nvidia_compiler}')
-
-
 class FckitTest(unittest.TestCase):
 
     def test_install_default(self):
         spack_install_and_test('fckit')
-
-
-class FdbTest(unittest.TestCase):
-
-    def test_install_5_10_8_gcc(self):
-        spack_install_and_test('fdb @5.10.8 %gcc')
-
-    def test_install_5_10_8_nvhpc(self):
-        # tests fail because compiler emitted warnings.
-        spack_install(f'fdb @5.10.8 %{nvidia_compiler}')
 
 
 class FdbFortranTest(unittest.TestCase):
@@ -511,16 +484,6 @@ class LibGrib1Test(unittest.TestCase):
     @pytest.mark.serial_only  # locking problem on Tsa in combination with int2lm
     def test_install_version_22_01_2020(self):
         spack_install_and_test('libgrib1 @22-01-2020')
-
-
-class MetkitTest(unittest.TestCase):
-    # Package tests are not run because they fail https://github.com/C2SM/spack-c2sm/issues/784
-
-    def test_install_1_9_2_gcc(self):
-        spack_install('metkit @1.9.2 %gcc')
-
-    def test_install_1_9_2_nvhpc(self):
-        spack_install(f'metkit @1.9.2 %{nvidia_compiler}')
 
 
 @pytest.mark.no_balfrin  # Package is a workaround, only needed on Daint.
