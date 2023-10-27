@@ -21,7 +21,7 @@ class Fdb(SpackFdb):
         enable_build_tools = "+tools" in self.spec
 
         args = [
-            self.define("CTEST_OUTPUT_ON_FAILURE", 1),
+            self.define("CTEST_OUTPUT_ON_FAILURE", '1'),
             self.define("ENABLE_FDB_BUILD_TOOLS", enable_build_tools),
             self.define("ENABLE_BUILD_TOOLS", enable_build_tools),
             # We cannot disable the FDB backend in indexed filesystem with
