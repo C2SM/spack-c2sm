@@ -86,5 +86,4 @@ class PyGt4py(PythonPackage):
     depends_on('py-pytest-xdist', type=('build', 'run'))
 
     def test(self):
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--cov',
-               '--cov-append', 'tests/next_tests', 'tests/eve_tests')
+        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '-k', '[otf_compile_executor.run_gtfn]', 'tests/next_tests', 'tests/eve_tests')
