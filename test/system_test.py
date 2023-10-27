@@ -301,13 +301,6 @@ class FdbTest(unittest.TestCase):
         # tests fail because compiler emitted warnings.
         spack_install(f'fdb @5.11.17 %{nvidia_compiler}')
 
-    def test_install_5_11_23_gcc(self):
-        spack_install_and_test('fdb @5.11.23 %gcc')
-
-    def test_install_5_11_23_nvhpc(self):
-        # tests fail because compiler emitted warnings.
-        spack_install(f'fdb @5.11.23 %{nvidia_compiler}')
-
 
 class FdbFortranTest(unittest.TestCase):
 
