@@ -49,7 +49,7 @@ def spack_install(spec: str, log_filename: str = None):
     if spec.startswith('py-'):
         devirtualize_env()
 
-    log_with_spack(f'spack spec {spec}'
+    log_with_spack(f'spack spec {spec}',
         'system_test',
         log_filename,
         srun=False)
@@ -78,7 +78,7 @@ def spack_install_and_test(spec: str,
     if spec.startswith('py-'):
         devirtualize_env()
 
-    log_with_spack(f'spack spec {spec}'
+    log_with_spack(f'spack spec {spec}',
         'system_test',
         log_filename,
         srun=False)
