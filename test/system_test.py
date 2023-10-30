@@ -292,7 +292,7 @@ class FckitTest(unittest.TestCase):
         spack_install_and_test('fckit')
 
 
-@pytest.mark.no_tsa # FDB tests fail on tsa due to 'ucp_context'
+@pytest.mark.no_tsa  # FDB tests fail on tsa due to 'ucp_context'
 class FdbTest(unittest.TestCase):
 
     def test_install_5_11_17_gcc(self):
