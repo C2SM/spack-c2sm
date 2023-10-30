@@ -292,6 +292,17 @@ class FckitTest(unittest.TestCase):
         spack_install_and_test('fckit')
 
 
+@pytest.mark.no_tsa  # FDB tests fail on tsa due to 'ucp_context'
+class FdbTest(unittest.TestCase):
+
+    def test_install_5_11_17_gcc(self):
+        spack_install_and_test('fdb @5.11.17 %gcc')
+
+    def test_install_5_11_17_nvhpc(self):
+        # tests fail because compiler emitted warnings.
+        spack_install(f'fdb @5.11.17 %{nvidia_compiler}')
+
+
 class FdbFortranTest(unittest.TestCase):
 
     def test_install(self):
