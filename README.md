@@ -1,3 +1,5 @@
+This is a test
+
 # The spack extension of C2SM and MCH
 [![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](https://C2SM.github.io/spack-c2sm/latest)
 
