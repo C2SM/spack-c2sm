@@ -6,7 +6,6 @@ At CSCS (Daint, Tsa, Balfrin)
 -----------------------------
 
 To set up a Spack instance, clone the repository using a specific Spack tag (latest ``SPACK_TAG=v0.20.1.0``).
-For ICON, the SPACK_TAG given in `icon/config/cscs/SPACK_TAG <https://github.com/C2SM/icon/blob/main/config/cscs/SPACK_TAG>`_ should be used.
 
 .. code-block:: console
 
@@ -85,8 +84,10 @@ ICON
 ----
 
 ICON is built using environments.
-Environments sit in a folder with a name and are defined in a ``spack.yaml`` file.
+Environments are located in a folder named after the environment and are defined in a ``spack.yaml`` file.
 For ICON, they are located in ``config/cscs/spack/<version>/<machine>_<target>_<compiler>``.
+They work with a special Spack tag, that is provided in the ICON repository at ``config/cscs/SPACK_TAG*``.
+So make sure you clone Spack with the specified tag.
 
 ..  tip::
     **On Balfrin:** 
