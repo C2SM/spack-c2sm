@@ -5,11 +5,12 @@ Quick Start
 At CSCS (Daint, Tsa, Balfrin)
 -----------------------------
 
-To set up a Spack instance, clone the repository
+To set up a Spack instance, clone the repository using a specific Spack tag (latest ``SPACK_TAG=v0.20.1.0``).
+For ICON, the SPACK_TAG given in `icon/config/cscs/SPACK_TAG <https://github.com/C2SM/icon/blob/main/config/cscs/SPACK_TAG>`_ should be used.
 
 .. code-block:: console
 
-  $ git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.20.1.0 https://github.com/C2SM/spack-c2sm.git
+  $ git clone --depth 1 --recurse-submodules --shallow-submodules -b $SPACK_TAG https://github.com/C2SM/spack-c2sm.git
 
 To load it into your command line, execute
 
