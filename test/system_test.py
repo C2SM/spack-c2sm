@@ -288,7 +288,7 @@ class EccodesTest(unittest.TestCase):
 
 class FckitTest(unittest.TestCase):
 
-    def test_install_default(self):
+    def test_install_0_9_0(self):
         spack_install_and_test('fckit@0.9.0')
 
 
