@@ -1,3 +1,33 @@
+Target Users of spack-c2sm
+=============================
+
+Researchers from C2SM-community
+--------------------------------
+These users generally have little knowledge about programming or packaging.
+They want spack-c2sm to compile their code in a oneliner. No modifications
+in recipes or the model/libraries they use.
+
+BuildBot as part of the ICON-consortium CI
+---------------------------------------------
+The CI running at CSCS is using spack-c2sm to build ICON.
+The main focus here is on reliability and reproducability. We do not want any
+inconsistencies to be introduced by spack-c2sm. Therefore a strict versioning
+policy is in place there. Only a specific version of spack-c2sm is guaranteed to work in BuildBot.
+Also all recipes used for ICON builds need to have
+predefined versions. Defining a spack version of a package simply as a branch is a no-go.
+
+Sofware Engineers
+-------------------
+Software experts belong to this user-group. They are able to add new recipes or edit existing ones.
+Experiment with new setups and ways to build software.
+
+Maintainers of spack-c2sm
+-------------------------
+Staff from C2SM core-team and MeteoSwiss maintain spack-c2sm. They install upstream instances providing pre-built
+libraries or manage integration of spack-c2sm in ICON etc. Also upgrade spack to newer versions
+or extend it to new system like Vial or Balfrin.
+**Main point of contact for all other users!**
+
 Why was Spack chosen by MeteoSwiss?
 ===================================
 
