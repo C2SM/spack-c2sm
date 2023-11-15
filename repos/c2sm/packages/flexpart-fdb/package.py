@@ -9,7 +9,7 @@ class FlexpartFdb(MakefilePackage):
     homepage = 'https://github.com/MeteoSwiss/flexpart'
     git = 'https://github.com/MeteoSwiss/flexpart.git'
 
-    version('fdb', branch='fdb')
+    version('fdb', tag='10.4.3_fdb')
 
     variant('mch', default=False)
 
