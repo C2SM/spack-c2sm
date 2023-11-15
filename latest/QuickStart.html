@@ -92,8 +92,8 @@
 <h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading"></a></h1>
 <section id="at-cscs-daint-tsa-balfrin">
 <h2>At CSCS (Daint, Tsa, Balfrin)<a class="headerlink" href="#at-cscs-daint-tsa-balfrin" title="Permalink to this heading"></a></h2>
-<p>To set up a Spack instance, clone the repository</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>--recurse-submodules<span class="w"> </span>--shallow-submodules<span class="w"> </span>-b<span class="w"> </span>v0.20.1.0<span class="w"> </span>https://github.com/C2SM/spack-c2sm.git
+<p>To set up a Spack instance, clone the repository using a specific Spack tag (latest <code class="docutils literal notranslate"><span class="pre">SPACK_TAG=v0.20.1.0</span></code>).</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>--recurse-submodules<span class="w"> </span>--shallow-submodules<span class="w"> </span>-b<span class="w"> </span><span class="nv">$SPACK_TAG</span><span class="w"> </span>https://github.com/C2SM/spack-c2sm.git
 </pre></div>
 </div>
 <p>To load it into your command line, execute</p>
@@ -148,8 +148,10 @@ You can force a machine with an argument. The name has to match a folder in sysc
 <section id="icon">
 <h2>ICON<a class="headerlink" href="#icon" title="Permalink to this heading"></a></h2>
 <p>ICON is built using environments.
-Environments sit in a folder with a name and are defined in a <code class="docutils literal notranslate"><span class="pre">spack.yaml</span></code> file.
-For ICON, they are located in <code class="docutils literal notranslate"><span class="pre">config/cscs/spack/&lt;version&gt;/&lt;machine&gt;_&lt;target&gt;_&lt;compiler&gt;</span></code>.</p>
+Environments are located in a folder named after the environment and are defined in a <code class="docutils literal notranslate"><span class="pre">spack.yaml</span></code> file.
+For ICON, they are located in <code class="docutils literal notranslate"><span class="pre">config/cscs/spack/&lt;version&gt;/&lt;machine&gt;_&lt;target&gt;_&lt;compiler&gt;</span></code>.
+They work with a special Spack tag, that is provided in the ICON repository at <code class="docutils literal notranslate"><span class="pre">config/cscs/SPACK_TAG*</span></code>.
+So make sure you clone Spack with the specified tag.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p><strong>On Balfrin:</strong>
