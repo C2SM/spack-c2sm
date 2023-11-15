@@ -16,7 +16,7 @@ class Fckit(CMakePackage):
     homepage = 'https://github.com/ecmwf/fckit.git'
     git = 'https://github.com/ecmwf/fckit.git'
 
-    version('0.9.0', tag='0.0.0', git=git)
+    version('0.9.0', tag='0.9.0', git=git)
     version('develop', branch='develop')
 
     maintainers = ['juckerj']
