@@ -53,7 +53,7 @@ class PyGt4py(PythonPackage):
     depends_on('py-lark@1.1.2:', type=('build', 'run'))
     depends_on('py-mako@1.1:', type=('build', 'run'))
     depends_on('py-ninja@1.10:', type=('build', 'run'))
-    depends_on('py-numpy@1.24.2: ~blas ~lapack', type=('build', 'run'))
+    depends_on('py-numpy@1.24.2:', type=('build', 'run'))
     depends_on('py-packaging@20.0:', type=('build', 'run'))
 
     # versions later than 2.9.2 fail to pick to right Python version
