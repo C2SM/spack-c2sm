@@ -21,7 +21,7 @@ class Oasis(MakefilePackage):
     git = 'https://gitlab.com/cerfacs/oasis3-mct.git'
     maintainers = ['leclairm']
 
-    version('master', branch='OASIS3-MCT_4.0')
+    version('OASIS3-MCT_4.0', tag='OASIS3-MCT_4.0')
 
     depends_on('mpi', type=('build', 'link', 'run'))
     depends_on('netcdf-fortran', type=('build', 'link', 'run'))
