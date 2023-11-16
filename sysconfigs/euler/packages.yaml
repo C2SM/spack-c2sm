@@ -1,0 +1,217 @@
+packages:
+  all:
+    compiler:
+    - gcc@9.3.0
+    providers:
+      mpi: # manually added
+      - openmpi
+  openmpi:
+    externals:
+    - spec: openmpi@4.1.4
+      prefix: /cluster/apps/gcc-9.3.0/openmpi-4.1.4-ce3rybsut3hyqo2i2sm5qwu2muxqny3x
+  autoconf:
+    externals:
+    - spec: autoconf@2.69
+      prefix: /usr
+  automake:
+    externals:
+    - spec: automake@1.13.4
+      prefix: /usr
+  bash:
+    externals:
+    - spec: bash@4.2.46
+      prefix: /usr
+    - spec: bash@4.4.23
+      prefix: /usr
+  berkeley-db:
+    externals:
+    - spec: berkeley-db@5.3.21
+      prefix: /usr
+  binutils:
+    externals:
+    - spec: binutils@2.27.44
+      prefix: /usr
+  bison:
+    externals:
+    - spec: bison@3.0.4
+      prefix: /usr
+  bzip2:
+    externals:
+    - spec: bzip2@1.0.6
+      prefix: /usr
+  cmake:
+    externals:
+    - spec: cmake@2.8.12.2
+      prefix: /usr
+  coreutils:
+    externals:
+    - spec: coreutils@8.22
+      prefix: /usr
+  cpio:
+    externals:
+    - spec: cpio@2.11
+      prefix: /usr
+  curl:
+    externals:
+    - spec: curl@7.29.0+ldap
+      prefix: /usr
+  diffutils:
+    externals:
+    - spec: diffutils@3.3
+      prefix: /usr
+  dos2unix:
+    externals:
+    - spec: dos2unix@6.0.3
+      prefix: /usr
+  doxygen:
+    externals:
+    - spec: doxygen@1.8.5~graphviz~mscgen
+      prefix: /usr
+  file:
+    externals:
+    - spec: file@5.11
+      prefix: /usr
+  findutils:
+    externals:
+    - spec: findutils@4.5.11
+      prefix: /usr
+  flex:
+    externals:
+    - spec: flex@2.5.37+lex
+      prefix: /usr
+  gawk:
+    externals:
+    - spec: gawk@4.0.2
+      prefix: /usr
+  gcc:
+    externals:
+    - spec: gcc@4.8.2 languages=c,c++,fortran
+      prefix: /cluster/apps/gcc/4.8.2
+      extra_attributes:
+        compilers:
+          c: /cluster/apps/gcc/4.8.2/bin/gcc
+          cxx: /cluster/apps/gcc/4.8.2/bin/g++
+          fortran: /cluster/apps/gcc/4.8.2/bin/gfortran
+    - spec: gcc@4.8.5 languages=c,c++,fortran
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/gcc
+          cxx: /usr/bin/g++
+          fortran: /usr/bin/gfortran
+  gettext:
+    externals:
+    - spec: gettext@0.19.8.1
+      prefix: /usr
+  git:
+    externals:
+    - spec: git@1.8.3.1~tcltk
+      prefix: /usr
+  git-lfs:
+    externals:
+    - spec: git-lfs@2.9.0
+      prefix: /cluster/home/juckerj/.local
+  gmake:
+    externals:
+    - spec: gmake@3.82
+      prefix: /usr
+  groff:
+    externals:
+    - spec: groff@1.22.2
+      prefix: /usr
+  hwloc:
+    externals:
+    - spec: hwloc@1.11.8
+      prefix: /usr
+  krb5:
+    externals:
+    - spec: krb5@1.15.1
+      prefix: /usr
+  libtool:
+    externals:
+    - spec: libtool@2.4.2
+      prefix: /usr
+  lustre:
+    externals:
+    - spec: lustre@2.12.9_ddn33
+      prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.16
+      prefix: /usr
+  ncurses:
+    externals:
+    - spec: ncurses@5.9.20130511+termlib abi=5
+      prefix: /usr
+  openssh:
+    externals:
+    - spec: openssh@7.4p1
+      prefix: /usr
+  openssl:
+    externals:
+    - spec: openssl@1.0.2k-fips
+      prefix: /usr
+    - spec: openssl@1.1.1k
+      prefix: /usr
+  perl:
+    externals:
+    - spec: perl@5.16.3~cpanm+open+shared+threads
+      prefix: /usr
+  pkg-config:
+    externals:
+    - spec: pkg-config@0.27.1
+      prefix: /usr
+  python:
+    externals:
+    - spec: python@2.7.5+bz2+crypt+ctypes+dbm+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl~tkinter+uuid+zlib
+      prefix: /usr
+    - spec: python@3.6.8+bz2+crypt+ctypes+dbm+lzma+nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tkinter+uuid+zlib
+      prefix: /usr
+  rsync:
+    externals:
+    - spec: rsync@3.1.2
+      prefix: /usr
+  sed:
+    externals:
+    - spec: sed@4.2.2
+      prefix: /usr
+  slurm:
+    externals:
+    - spec: slurm@23.02.6
+      prefix: /cluster/apps/slurm
+  sqlite:
+    externals:
+    - spec: sqlite@3.7.17~fts~functions+rtree
+      prefix: /usr
+  subversion:
+    externals:
+    - spec: subversion@1.7.14
+      prefix: /usr
+  tar:
+    externals:
+    - spec: tar@1.26
+      prefix: /usr
+  texinfo:
+    externals:
+    - spec: texinfo@5.1
+      prefix: /usr
+  texlive:
+    externals:
+    - spec: texlive@20130530
+      prefix: /usr
+  which:
+    externals:
+    - spec: which@2.20
+      prefix: /usr
+  xz:
+    externals:
+    - spec: xz@5.2.2
+      prefix: /usr
+  zip:
+    externals:
+    - spec: zip@3.0
+      prefix: /usr
+  rdma-core:
+    externals:
+    - spec: rdma-core@43.0
+      prefix: /usr
