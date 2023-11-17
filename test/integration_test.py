@@ -76,14 +76,8 @@ class InfoTest(unittest.TestCase):
     def test_flexpart_cosmo(self):
         spack_info('flexpart-cosmo')
 
-    def test_flexpart_fdb(self):
-        spack_info('flexpart-fdb')
-
     def test_flexpart_ifs(self):
         spack_info('flexpart-ifs')
-
-    def test_flexpart_opr(self):
-        spack_info('flexpart-opr')
 
     def test_gridtools(self):
         spack_info('gridtools')
@@ -296,14 +290,8 @@ class SpecTest(unittest.TestCase):
     def test_flexpart_cosmo(self):
         spack_spec('flexpart-cosmo')
 
-    def test_flexpart_fdb(self):
-        spack_spec('flexpart-fdb')
-
     def test_flexpart_ifs(self):
         spack_spec('flexpart-ifs')
-
-    def test_flexpart_opr(self):
-        spack_spec('flexpart-opr')
 
     def test_gridtools(self):
         spack_spec('gridtools')
