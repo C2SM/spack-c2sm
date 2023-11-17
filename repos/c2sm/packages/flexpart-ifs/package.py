@@ -1,23 +1,20 @@
-# Copyright 2013-2020 Lawrence Livermore National Security, LLC and other
-# Spack Project Developers. See the top-level COPYRIGHT file for details.
-#
-# SPDX-License-Identifier: (Apache-2.0 OR MIT)
-
-#
 from spack import *
-from distutils.dir_util import copy_tree
 
 
 class FlexpartIfs(MakefilePackage):
     """flexpart is a Lagrangian dispersion model"""
 
-    homepage = 'https://github.com/MeteoSwiss-APN/flexpart-ifs'
-    url = 'https://github.com/MeteoSwiss-APN/flexpart-ifs/archive/refs/tags/v9.2mch.tar.gz'
-    git = 'git@github.com:MeteoSwiss-APN/flexpart-ifs.git'
+    homepage = 'https://github.com/MeteoSwiss/flexpart'
+    url = 'https://github.com/MeteoSwiss/flexpart/archive/refs/tags/v10.4.4.tar.gz'
+    git = 'git@github.com:MeteoSwiss/flexpart.git'
+    maintainers = ['pirmink']
 
-    version('meteoswiss-10', branch='meteoswiss-10')
+    version('main', branch='main')
+    version('fdb', branch='fdb')
+    version('add_opr', branch='add_opr', git='git@github.com:dominichofer/flexpart.git') #TODO: Remove this!
+    version('10.4.4', tag='10.4.4')
 
-    depends_on('eccodes jp2k=none +fortran')
+    depends_on('eccodes +fortran')
     depends_on('netcdf-fortran')
 
     conflicts('%nvhpc')
@@ -25,29 +22,19 @@ class FlexpartIfs(MakefilePackage):
 
     build_directory = 'src'
 
-    @property
-    def build_targets(self):
-        return ['ncf=yes', 'VERBOSE=1', 'serial']
-
-    def edit(self, spec, prefix):
-        copy('src/makefile.meteoswiss', 'src/makefile')
-
     def setup_build_environment(self, env):
-        env.set('ECCODESROOT', self.spec['eccodes'].prefix)
-        env.set(
-            'ECCODES_LD_FLAGS', '-L' + self.spec['eccodes'].prefix +
-            '/lib64 -leccodes_f90 -leccodes')
-        env.set('EBROOTNETCDFMINFORTRAN', self.spec['netcdf-fortran'].prefix)
-        #abuse of JASPER_LD_FLAGS since there is no other entrypoint var for LDFLAGS
-        env.set('JASPER_LD_FLAGS', '-Wl,--no-relax')
-        # not really required, just a default since the -I flags would be inconsistent with an empty string
-        env.set('CURL_INCLUDES', '/usr')
+        env.set('ECCODES_INCLUDE', self.spec['eccodes'].prefix.include)
+        env.set('ECCODES_LD_FLAGS', self.spec['eccodes'].libs.ld_flags)
+        env.set('NETCDF_FORTRAN_INCLUDE', self.spec['netcdf-fortran'].prefix.include)
+        env.set('NETCDF_FORTRAN_LD_FLAGS', self.spec['netcdf-fortran'].libs.ld_flags)
+
+    def build(self, spec, prefix):
+        with working_dir(self.build_directory):
+            make('-f', 'makefile_meteoswiss')
 
     def install(self, spec, prefix):
         mkdir(prefix.bin)
-        mkdir(prefix.share)
-        mkdir(prefix.share + '/test/')
-        mkdir(prefix.share + '/options/')
-        copy_tree('options/', prefix.share + '/options/')
-        install('src/FLEXPART', prefix.bin)
-        install('test/*', prefix.share + '/test/')
+        install(join_path(self.build_directory,'FLEXPART'), prefix.bin)
+        install_tree('test_meteoswiss', prefix.share.test_meteoswiss)
+        install_tree('options', join_path(prefix.share, 'options'))
+        install_tree('options.meteoswiss', join_path(prefix.share, 'options.meteoswiss'))
