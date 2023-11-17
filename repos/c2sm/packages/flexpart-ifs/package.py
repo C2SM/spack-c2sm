@@ -11,7 +11,10 @@ class FlexpartIfs(MakefilePackage):
 
     version('main', branch='main')
     version('fdb', branch='fdb')
-    version('add_opr', branch='add_opr', git='git@github.com:dominichofer/flexpart.git') #TODO: Remove this!
+    version(
+        'add_opr',
+        branch='add_opr',
+        git='git@github.com:dominichofer/flexpart.git')  #TODO: Remove this!
     version('10.4.4', tag='10.4.4')
 
     depends_on('eccodes +fortran')
@@ -25,8 +28,10 @@ class FlexpartIfs(MakefilePackage):
     def setup_build_environment(self, env):
         env.set('ECCODES_INCLUDE', self.spec['eccodes'].prefix.include)
         env.set('ECCODES_LD_FLAGS', self.spec['eccodes'].libs.ld_flags)
-        env.set('NETCDF_FORTRAN_INCLUDE', self.spec['netcdf-fortran'].prefix.include)
-        env.set('NETCDF_FORTRAN_LD_FLAGS', self.spec['netcdf-fortran'].libs.ld_flags)
+        env.set('NETCDF_FORTRAN_INCLUDE',
+                self.spec['netcdf-fortran'].prefix.include)
+        env.set('NETCDF_FORTRAN_LD_FLAGS',
+                self.spec['netcdf-fortran'].libs.ld_flags)
 
     def build(self, spec, prefix):
         with working_dir(self.build_directory):
@@ -34,7 +39,8 @@ class FlexpartIfs(MakefilePackage):
 
     def install(self, spec, prefix):
         mkdir(prefix.bin)
-        install(join_path(self.build_directory,'FLEXPART'), prefix.bin)
+        install(join_path(self.build_directory, 'FLEXPART'), prefix.bin)
         install_tree('test_meteoswiss', prefix.share.test_meteoswiss)
         install_tree('options', join_path(prefix.share, 'options'))
-        install_tree('options.meteoswiss', join_path(prefix.share, 'options.meteoswiss'))
+        install_tree('options.meteoswiss',
+                     join_path(prefix.share, 'options.meteoswiss'))
