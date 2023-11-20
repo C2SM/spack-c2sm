@@ -10,11 +10,12 @@ class FlexpartIfs(MakefilePackage):
     maintainers = ['pirmink']
 
     version('main', branch='main')
-    version('fdb', branch='fdb')
+    version('fdb', tag='10.4.4_fdb')
     version('10.4.4', tag='10.4.4')
 
     depends_on('eccodes +fortran')
     depends_on('netcdf-fortran')
+    depends_on('fdb-fortran', when='@fdb')
 
     conflicts('%nvhpc')
     conflicts('%pgi')
@@ -28,6 +29,10 @@ class FlexpartIfs(MakefilePackage):
                 '-I' + self.spec['netcdf-fortran'].prefix.include)
         env.set('NETCDF_FORTRAN_LD_FLAGS',
                 self.spec['netcdf-fortran'].libs.ld_flags)
+        if self.spec.satisfies('@fdb'):
+            env.set('FDB_FORTRAN_DIR', self.spec['fdb-fortran'].prefix)
+            env.set('FDB_FORTRAN_LD_FLAGS',
+                    self.spec['fdb-fortran'].libs.ld_flags)
 
     def build(self, spec, prefix):
         with working_dir(self.build_directory):
