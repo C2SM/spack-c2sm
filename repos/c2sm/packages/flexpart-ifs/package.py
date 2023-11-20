@@ -11,10 +11,6 @@ class FlexpartIfs(MakefilePackage):
 
     version('main', branch='main')
     version('fdb', branch='fdb')
-    version(
-        'add_opr',
-        branch='add_opr',
-        git='git@github.com:dominichofer/flexpart.git')  #TODO: Remove this!
     version('10.4.4', tag='10.4.4')
 
     depends_on('eccodes +fortran')
