@@ -523,8 +523,8 @@ class OnnxRuntimeTest(unittest.TestCase):
 @pytest.mark.no_tsa  # Coupling only needed on Daint
 class OasisTest(unittest.TestCase):
 
-    def test_install_master_nvhpc(self):
-        spack_install_and_test('oasis @master %nvhpc')
+    def test_install_version_4_0_nvhpc(self):
+        spack_install_and_test('oasis @4.0 %nvhpc')
 
 
 class OmniXmodPoolTest(unittest.TestCase):
