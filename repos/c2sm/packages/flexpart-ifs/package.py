@@ -26,12 +26,10 @@ class FlexpartIfs(MakefilePackage):
     build_directory = 'src'
 
     def setup_build_environment(self, env):
-        env.set('ECCODES_INCLUDE', self.spec['eccodes'].prefix.include)
-        env.set('ECCODES_LD_FLAGS', self.spec['eccodes'].libs.ld_flags)
-        env.set('NETCDF_FORTRAN_INCLUDE',
-                self.spec['netcdf-fortran'].prefix.include)
-        env.set('NETCDF_FORTRAN_LD_FLAGS',
-                self.spec['netcdf-fortran'].libs.ld_flags)
+        env.set('ECCODES_DIR', self.spec['eccodes'].prefix)
+        env.set('ECCODES_LD_FLAGS', self.spec['eccodes:fortran'].libs.ld_flags)
+        env.set('NETCDF_FORTRAN_INCLUDE', '-I' + self.spec['netcdf-fortran'].prefix.include)
+        env.set('NETCDF_FORTRAN_LD_FLAGS', self.spec['netcdf-fortran'].libs.ld_flags)
 
     def build(self, spec, prefix):
         with working_dir(self.build_directory):
