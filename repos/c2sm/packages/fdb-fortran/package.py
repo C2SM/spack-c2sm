@@ -14,7 +14,6 @@ class FdbFortran(CMakePackage):
     depends_on('eckit')
     depends_on('metkit')
     depends_on('eccodes +fortran')
-
     depends_on('fdb@5.11.0:')
 
     @property
