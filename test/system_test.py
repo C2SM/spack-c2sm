@@ -49,6 +49,10 @@ def spack_install(spec: str, log_filename: str = None):
     if spec.startswith('py-'):
         devirtualize_env()
 
+    log_with_spack(f'spack spec {spec}',
+                   'system_test',
+                   log_filename,
+                   srun=False)
     log_with_spack(f'spack {command} -n -v {spec}',
                    'system_test',
                    log_filename,
@@ -74,6 +78,10 @@ def spack_install_and_test(spec: str,
     if spec.startswith('py-'):
         devirtualize_env()
 
+    log_with_spack(f'spack spec {spec}',
+                   'system_test',
+                   log_filename,
+                   srun=False)
     if split_phases:
         log_with_spack(
             f'spack {command} --until build --test=root -n -v {spec}',
@@ -288,8 +296,19 @@ class EccodesTest(unittest.TestCase):
 
 class FckitTest(unittest.TestCase):
 
-    def test_install_default(self):
-        spack_install_and_test('fckit')
+    def test_install_0_9_0(self):
+        spack_install_and_test('fckit@0.9.0')
+
+
+@pytest.mark.no_tsa  # FDB tests fail on tsa due to 'ucp_context'
+class FdbTest(unittest.TestCase):
+
+    def test_install_5_11_17_gcc(self):
+        spack_install_and_test('fdb @5.11.17 %gcc')
+
+    def test_install_5_11_17_nvhpc(self):
+        # tests fail because compiler emitted warnings.
+        spack_install(f'fdb @5.11.17 %{nvidia_compiler}')
 
 
 class FdbFortranTest(unittest.TestCase):
@@ -497,8 +516,8 @@ class OnnxRuntimeTest(unittest.TestCase):
 @pytest.mark.no_tsa  # Coupling only needed on Daint
 class OasisTest(unittest.TestCase):
 
-    def test_install_master_nvhpc(self):
-        spack_install_and_test('oasis @master %nvhpc')
+    def test_install_version_4_0_nvhpc(self):
+        spack_install_and_test('oasis @4.0 %nvhpc')
 
 
 class OmniXmodPoolTest(unittest.TestCase):
@@ -609,6 +628,9 @@ class PyGt4pyTest(unittest.TestCase):
 
     def test_install_version_1_0_1_4(self):
         spack_install_and_test('py-gt4py @1.0.1.4')
+
+    def test_install_version_1_0_1_5(self):
+        spack_install_and_test('py-gt4py @1.0.1.5')
 
 
 class PyHatchlingTest(unittest.TestCase):

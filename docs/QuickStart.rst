@@ -5,11 +5,11 @@ Quick Start
 At CSCS (Daint, Tsa, Balfrin)
 -----------------------------
 
-To set up a Spack instance, clone the repository
+To set up a Spack instance, clone the repository using a specific Spack tag (latest ``SPACK_TAG=v0.20.1.0``).
 
 .. code-block:: console
 
-  $ git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.20.1.0 https://github.com/C2SM/spack-c2sm.git
+  $ git clone --depth 1 --recurse-submodules --shallow-submodules -b $SPACK_TAG https://github.com/C2SM/spack-c2sm.git
 
 To load it into your command line, execute
 
@@ -84,8 +84,10 @@ ICON
 ----
 
 ICON is built using environments.
-Environments sit in a folder with a name and are defined in a ``spack.yaml`` file.
+Environments are located in a folder named after the environment and are defined in a ``spack.yaml`` file.
 For ICON, they are located in ``config/cscs/spack/<version>/<machine>_<target>_<compiler>``.
+They work with a special Spack tag, that is provided in the ICON repository at ``config/cscs/SPACK_TAG*``.
+So make sure you clone Spack with the specified tag.
 
 ..  tip::
     **On Balfrin:** 

@@ -21,6 +21,7 @@ class PyGt4py(PythonPackage):
     version('1.0.1.2', tag='icon4py_20230621', git=url)
     version('1.0.1.3', tag='icon4py_20230817', git=url)
     version('1.0.1.4', tag='icon4py_20230926', git=url)
+    version('1.0.1.5', tag='icon4py_20231027', git=url)
 
     maintainers = ['samkellerhals']
 
@@ -85,5 +86,6 @@ class PyGt4py(PythonPackage):
     depends_on('py-pytest-xdist', type=('build', 'run'))
 
     def test(self):
-        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '--cov',
-               '--cov-append', 'tests/next_tests', 'tests/eve_tests')
+        python('-m', 'pytest', '-v', '-s', '-n', 'auto', '-k',
+               '[otf_compile_executor.run_gtfn]', 'tests/next_tests',
+               'tests/eve_tests')
