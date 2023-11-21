@@ -19,7 +19,10 @@ class Fdb(SpackFdb):
 
     @property
     def libs(self):
-        return find_libraries("libfdb5", root=self.prefix, shared=True, recursive=True)
+        return find_libraries("libfdb5",
+                              root=self.prefix,
+                              shared=True,
+                              recursive=True)
 
     def setup_build_environment(self, env):
         env.set('CTEST_OUTPUT_ON_FAILURE', 1)
