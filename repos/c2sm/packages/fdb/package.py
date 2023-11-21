@@ -17,5 +17,9 @@ class Fdb(SpackFdb):
 
     depends_on("ecbuild@3.7:", type="build", when="@5.11.6:")
 
+    @property
+    def libs(self):
+        return find_libraries("libfdb5", root=self.prefix, shared=True, recursive=True)
+
     def setup_build_environment(self, env):
         env.set('CTEST_OUTPUT_ON_FAILURE', 1)
