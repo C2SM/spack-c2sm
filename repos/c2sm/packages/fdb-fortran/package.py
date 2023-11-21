@@ -19,7 +19,10 @@ class FdbFortran(CMakePackage):
 
     @property
     def libs(self):
-        return find_libraries("libfdbf", root=self.prefix, shared=False, recursive=True)
+        return find_libraries("libfdbf",
+                              root=self.prefix,
+                              shared=False,
+                              recursive=True)
 
     def cmake_args(self):
         args = [
