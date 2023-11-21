@@ -30,12 +30,9 @@ class FlexpartIfs(MakefilePackage):
         env.set('NETCDF_FORTRAN_LD_FLAGS',
                 self.spec['netcdf-fortran'].libs.ld_flags)
         if self.spec.satisfies('@fdb'):
-            env.set('FDB_DIR', 
-                    self.spec['fdb'].prefix)
-            env.set('FDB_LD_FLAGS',
-                    self.spec['fdb'].libs.ld_flags)
-            env.set('FDB_FORTRAN_DIR', 
-                    self.spec['fdb-fortran'].prefix)
+            env.set('FDB_DIR', self.spec['fdb'].prefix)
+            env.set('FDB_LD_FLAGS', self.spec['fdb'].libs.ld_flags)
+            env.set('FDB_FORTRAN_DIR', self.spec['fdb-fortran'].prefix)
             env.set('FDB_FORTRAN_LD_FLAGS',
                     self.spec['fdb-fortran'].libs.ld_flags)
 
