@@ -314,28 +314,16 @@ class FdbTest(unittest.TestCase):
 class FdbFortranTest(unittest.TestCase):
 
     def test_install(self):
-        spack_install_and_test('fdb-fortran @0.1.0')
-
-
-class FlexpartOprTest(unittest.TestCase):
-
-    def test_install(self):
-        spack_install_and_test('flexpart-opr')
-
-
-class FlexpartFdbTest(unittest.TestCase):
-
-    def test_wo_mch(self):
-        spack_install_and_test('flexpart-fdb ~mch')
-
-    def test_w_mch(self):
-        spack_install_and_test('flexpart-fdb +mch')
+        spack_install_and_test('fdb-fortran')
 
 
 class FlexpartIfsTest(unittest.TestCase):
 
-    def test_install_latest(self):
-        spack_install_and_test('flexpart-ifs @meteoswiss-10')
+    def test_install_10_4_4(self):
+        spack_install_and_test('flexpart-ifs @10.4.4')
+
+    def test_install_fdb(self):
+        spack_install_and_test('flexpart-ifs @fdb')
 
 
 @pytest.mark.no_tsa  # No one uses spack for flexpart-cosmo on Tsa
