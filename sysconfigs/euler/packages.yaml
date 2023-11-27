@@ -3,12 +3,20 @@ packages:
     compiler:
     - gcc@9.3.0
     providers:
-      mpi: # manually added
+      mpi:
       - openmpi
   openmpi:
     externals:
-    - spec: openmpi@4.1.4
+    - spec: openmpi@4.1.4%gcc@9.3.0
       prefix: /cluster/apps/gcc-9.3.0/openmpi-4.1.4-ce3rybsut3hyqo2i2sm5qwu2muxqny3x
+  cmake:
+    externals:
+    - spec: cmake@3.25
+      prefix: /cluster/apps/gcc-9.3.0/cmake-3.25.0-cmr4nu4trjzfmvz3a3cgrmes7gxizrh2
+  hdf5:
+    externals:
+    - spec: hdf5@1.10.1%gcc@9.3.0
+      prefix: /cluster/apps/gcc-9.3.0/hdf5-1.10.1-djt3pm6wdn5qtq7tjqkspwodws6wwhej
   autoconf:
     externals:
     - spec: autoconf@2.69
@@ -38,10 +46,6 @@ packages:
   bzip2:
     externals:
     - spec: bzip2@1.0.6
-      prefix: /usr
-  cmake:
-    externals:
-    - spec: cmake@2.8.12.2
       prefix: /usr
   coreutils:
     externals:
