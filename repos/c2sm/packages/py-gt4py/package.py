@@ -88,5 +88,5 @@ class PyGt4py(PythonPackage):
 
     def test(self):
         python('-m', 'pytest', '-v', '-s', '-n', 'auto', '-k',
-               '[otf_compile_executor.run_gtfn]', 'tests/next_tests',
+               '.run_gtfn]', 'tests/next_tests',
                'tests/eve_tests')
