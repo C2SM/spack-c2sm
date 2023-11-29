@@ -238,13 +238,13 @@ class CosmoTest(unittest.TestCase):
     def test_install_c2sm_master_cpu(self):
         spack_env_dev_install_and_test(
             'cosmo/ACC/spack/v0.20.1.0/nvhpc_cpu_double',
-            'git@github.com:C2SM-RCM/cosmo.git', 'dev_spackv0.20.1',
+            'git@github.com:C2SM-RCM/cosmo.git', '6.1_2023.11',
             'cosmo-c2sm-master')
 
     def test_install_c2sm_master_gpu(self):
         spack_env_dev_install_and_test(
             'cosmo/ACC/spack/v0.20.1.0/nvhpc_gpu_double',
-            'git@github.com:C2SM-RCM/cosmo.git', 'dev_spackv0.20.1',
+            'git@github.com:C2SM-RCM/cosmo.git', '6.1_2023.11',
             'cosmo-c2sm-master')
 
 
@@ -456,7 +456,7 @@ class Int2lmTest(unittest.TestCase):
         )
 
     def test_install_c2sm_master_gcc(self):
-        spack_install('int2lm @c2sm-master %gcc ^eccodes %gcc ^libgrib1 %gcc')
+        spack_install('int2lm @v2.8.4 %gcc ^eccodes %gcc ^libgrib1 %gcc')
 
     @pytest.mark.no_balfrin  # fails because libgrib1 master fails
     @pytest.mark.no_tsa  # An error occurred in MPI_Bcast

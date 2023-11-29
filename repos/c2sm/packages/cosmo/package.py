@@ -24,6 +24,7 @@ class Cosmo(MakefilePackage):
     version('apn-mch', git=apn_git, branch='mch')
     version('5.09a.mch1.2.p2', git=apn_git, tag='5.09a.mch1.2.p2')
 
+    version('6.1_2023.11', git=c2sm_git, tag='6.1_2023.11')
     version('c2sm-master', git=c2sm_git, branch='master')
     version('c2sm-features', git=c2sm_git, branch='c2sm-features')
     version('empa-ghg', git=empa_git, branch='c2sm')
