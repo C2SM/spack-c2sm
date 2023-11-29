@@ -20,7 +20,7 @@ class Int2lm(MakefilePackage):
     c2smgit = 'git@github.com:C2SM-RCM/int2lm.git'
     orggit = 'git@github.com:COSMO-ORG/int2lm.git'
 
-    maintainers = ['morsier']
+    maintainers = ['mjaehn', 'juckerj']
 
     # APN tags
     version('apn-master', git=git, branch='master')

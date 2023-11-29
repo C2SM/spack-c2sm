@@ -16,7 +16,7 @@ class Cosmo(MakefilePackage):
     apn_git = 'git@github.com:MeteoSwiss-APN/cosmo.git'
     c2sm_git = 'git@github.com:C2SM-RCM/cosmo.git'
     empa_git = 'git@github.com:C2SM-RCM/cosmo-ghg.git'
-    maintainers = ['elsagermann']
+    maintainers = ['mjaehn', 'juckerj']
 
     version('org-master', branch='master')
     version('6.0', tag='6.0')
