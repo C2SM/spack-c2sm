@@ -638,8 +638,7 @@ class PyIcon4pyTest(unittest.TestCase):
         spack_install_and_test('py-icon4py @ 0.0.3.1 %gcc ^py-gt4py@1.0.1.1b')
 
     def test_install_version_0_0_9(self):
-        spack_install_and_test(
-            'py-icon4py @ 0.0.9 %gcc ^py-gt4py@1.0.1.6')
+        spack_install_and_test('py-icon4py @ 0.0.9 %gcc ^py-gt4py@1.0.1.6')
 
 
 class PyInflectionTest(unittest.TestCase):
