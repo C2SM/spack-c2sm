@@ -462,7 +462,7 @@ class Int2lmTest(unittest.TestCase):
     @pytest.mark.no_tsa  # An error occurred in MPI_Bcast
     def test_install_c2sm_master_nvhpc(self):
         spack_install_and_test(
-            f'int2lm @c2sm-master %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler} ^libgrib1 %{nvidia_compiler}'
+            f'int2lm @v2.8.4 %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler} ^libgrib1 %{nvidia_compiler}'
         )
 
 
