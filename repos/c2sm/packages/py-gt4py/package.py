@@ -16,7 +16,6 @@ class PyGt4py(PythonPackage):
     url = "git@github.com:GridTools/gt4py.git"
 
     version('main', branch='main', git=url)
-    version('1.0.1.1', tag='icon4py_20230413', git=url)
     version('1.0.1.1b', tag='icon4py_20230530', git=url)
     version('1.0.1.6', tag='icon4py_20231124', git=url)
 
