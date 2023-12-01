@@ -66,11 +66,6 @@ class PyIcon4py(PythonPackage):
         version = self.spec.version
 
         folder_mapping = {
-            ver('=0.0.3'): {
-                'atm_dyn_iconam': 'atm_dyn_iconam',
-                'utils':
-                'liskov'  #utils will eventually map to parent directory of liskov
-            },
             ver('=0.0.3.1'): {
                 'atm_dyn_iconam': 'atm_dyn_iconam',
                 'utils':
@@ -142,8 +137,7 @@ class PythonPipBuilder(PythonPipBuilder):
 
         pip = inspect.getmodule(pkg).pip
 
-        if self.spec.version == ver('=0.0.3') or self.spec.version == ver(
-                '=0.0.3.1'):
+        if self.spec.version == ver('=0.0.3.1'):
             build_dirs = [
                 'common', 'pyutils', 'testutils', 'liskov', 'atm_dyn_iconam'
             ]
