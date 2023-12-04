@@ -76,14 +76,14 @@ class CrayMpich(Package):
     version(
         "8.1.18.4-gcc",
         sha256=
-        "776c695aeed62b3f64a1bca11b30a2537a907777a8664d2f092e3deac288e4ad",
+        "ea7cb593abb3d86174f10a38ea5a840d8601ade6477013a0ade69c5ceada06c1",
         url=
         "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.18.4-gcc.tar.gz",
     )
     version(
         "8.1.18.4-nvhpc",
         sha256=
-        "2285433363c75a04ccdf4798be5b0e296e0c9a8fb8fcb38eb0aa4ccf8d1e0843",
+        "3b7886b0346bce13a6227b2d987d5eedca746347daa3297bc076d3a6f630b64d",
         url=
         "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.18.4-nvhpc.tar.gz",
     )
