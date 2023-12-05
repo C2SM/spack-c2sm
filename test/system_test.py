@@ -408,9 +408,9 @@ class IconTest(unittest.TestCase):
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_exclaim_test_gpu_dsl(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.7/daint_dsl_nvhpc',
-            'git@github.com:C2SM/icon.git',
-            'ci_dsl',
+            'config/cscs/spack/v0.20.1.2/daint_dsl_nvhpc',
+            'git@github.com:C2SM/icon-exclaim.git',
+            'new_tag',  # will change back after new tag is released
             'icon',
             build_on_login_node=True)
 
@@ -621,20 +621,6 @@ class PyGt4pyTest(unittest.TestCase):
     def test_install_version_1_0_1_1b(self):
         spack_install_and_test('py-gt4py @1.0.1.1b')
 
-    def test_install_version_1_0_1_2(self):
-        spack_install_and_test('py-gt4py @1.0.1.2')
-
-    @pytest.mark.no_daint  # fails with ModuleNotFoundError: No module named 'dace'
-    @pytest.mark.no_balfrin  # fails with ModuleNotFoundError: No module named 'dace'
-    def test_install_version_1_0_1_3(self):
-        spack_install_and_test('py-gt4py @1.0.1.3')
-
-    def test_install_version_1_0_1_4(self):
-        spack_install_and_test('py-gt4py @1.0.1.4')
-
-    def test_install_version_1_0_1_5(self):
-        spack_install_and_test('py-gt4py @1.0.1.5')
-
     def test_install_version_1_0_1_6(self):
         spack_install_and_test('py-gt4py @1.0.1.6')
 
@@ -648,22 +634,11 @@ class PyHatchlingTest(unittest.TestCase):
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 class PyIcon4pyTest(unittest.TestCase):
 
-    def test_install_version_0_0_3(self):
+    def test_install_version_0_0_3_1(self):
         spack_install_and_test('py-icon4py @ 0.0.3.1 %gcc ^py-gt4py@1.0.1.1b')
 
-    def test_install_version_0_0_5(self):
-        spack_install_and_test('py-icon4py @ 0.0.5 %gcc ^py-gt4py@1.0.1.1')
-
-    def test_install_version_0_0_6(self):
-        spack_install_and_test('py-icon4py @ 0.0.6 %gcc ^py-gt4py@1.0.1.2')
-
-    def test_install_version_0_0_7(self):
-        spack_install_and_test(
-            'py-icon4py @ 0.0.7 %gcc ^py-gt4py@1.0.1.3 ^python@3.10.4')
-
     def test_install_version_0_0_9(self):
-        spack_install_and_test(
-            'py-icon4py @ 0.0.9 %gcc ^py-gt4py@1.0.1.6 ^python@3.10.4')
+        spack_install_and_test('py-icon4py @ 0.0.9 %gcc ^py-gt4py@1.0.1.6')
 
 
 class PyInflectionTest(unittest.TestCase):

@@ -24,14 +24,8 @@ class PyIcon4py(PythonPackage):
     maintainers = ['agopal', 'samkellerhals']
 
     version('main', branch='main', git=git)
-    version('0.0.3', tag='v0.0.3', git=git)
     version('0.0.3.1', tag='v0.0.3.1', git=git)
-    version('0.0.4', tag='v0.0.4', git=git)
-    version('0.0.5', tag='v0.0.5', git=git)
-    version('0.0.6', tag='v0.0.6', git=git)
-    version('0.0.7', tag='v0.0.7', git=git)
-    version('0.0.9', tag='v0.0.9',
-            git=git)  #v0.0.8 is skipped due to extraneous dependencies
+    version('0.0.9', tag='v0.0.9', git=git)
 
     depends_on('py-wheel', type='build')
     depends_on('py-setuptools', type='build')
@@ -72,37 +66,17 @@ class PyIcon4py(PythonPackage):
         version = self.spec.version
 
         folder_mapping = {
-            ver('=0.0.3'): {
-                'atm_dyn_iconam': 'atm_dyn_iconam',
-                'utils':
-                'liskov'  #utils will eventually map to parent directory of liskov
-            },
             ver('=0.0.3.1'): {
                 'atm_dyn_iconam': 'atm_dyn_iconam',
                 'utils':
                 'liskov'  #utils will eventually map to parent directory of liskov
             },
-            ver('=0.0.4'): {
-                'atm_dyn_iconam': 'atm_dyn_iconam',
-                'tools': 'icon4pytools'
-            },
-            ver('=0.0.5'): {
-                'atm_dyn_iconam': 'atm_dyn_iconam',
-                'tools': 'icon4pytools'
-            },
-            ver('=0.0.6'): {
-                'atm_dyn_iconam': 'dycore',
-                'tools': 'icon4pytools'
-            },
-            ver('=0.0.7'): {
-                'atm_dyn_iconam': 'dycore',
-                'tools': 'icon4pytools'
-            },
-            ver('=0.0.8'): {
+            ver('=0.0.9'): {
                 'atm_dyn_iconam': 'dycore',
                 'tools': 'icon4pytools',
                 'diffusion': 'diffusion/stencils',
                 'interpolation': 'interpolation/stencils',
+                'advection': 'advection',
             },
             ver('=main'): {
                 'atm_dyn_iconam': 'dycore',
@@ -163,17 +137,10 @@ class PythonPipBuilder(PythonPipBuilder):
 
         pip = inspect.getmodule(pkg).pip
 
-        if self.spec.version == ver('=0.0.3') or self.spec.version == ver(
-                '=0.0.3.1'):
+        if self.spec.version == ver('=0.0.3.1'):
             build_dirs = [
                 'common', 'pyutils', 'testutils', 'liskov', 'atm_dyn_iconam'
             ]
-        elif self.spec.version == ver('=0.0.4') or self.spec.version == ver(
-                '=0.0.5'):
-            build_dirs = ['common', 'atm_dyn_iconam', 'tools']
-        elif self.spec.version == ver('=0.0.6') or self.spec.version == ver(
-                '=0.0.7'):
-            build_dirs = ['tools', 'model/atmosphere/dycore', 'model/common/']
         else:
             build_dirs = [
                 'tools', 'model/atmosphere/dycore',
