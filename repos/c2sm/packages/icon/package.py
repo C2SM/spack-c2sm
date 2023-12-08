@@ -411,8 +411,10 @@ class Icon(AutotoolsPackage, CudaPackage):
             config_vars['ICON_BUNDLED_FCFLAGS'] = []
         elif self.compiler.name in ['pgi', 'nvhpc']:
             config_vars['CFLAGS'].extend(['-g', '-O2'])
-            config_vars['FCFLAGS'].extend(
-                ['-g', '-O', '-Mrecursive', '-Mallocatable=03', '-Mbackslash', '-DNO_MPI_CHOICE_ARG', '-DNO_MPI_CPTR_ARG'])
+            config_vars['FCFLAGS'].extend([
+                '-g', '-O', '-Mrecursive', '-Mallocatable=03', '-Mbackslash',
+                '-DNO_MPI_CHOICE_ARG', '-DNO_MPI_CPTR_ARG'
+            ])
 
             if self.spec.variants['gpu'].value == 'openacc+cuda':
                 config_vars['FCFLAGS'].extend([
@@ -428,7 +430,8 @@ class Icon(AutotoolsPackage, CudaPackage):
                 config_vars['ICON_YAC_CFLAGS'].append('-O2')
             config_vars['FCFLAGS'].extend([
                 '-hadd_paren', '-r am', '-Ktrap=divz,ovf,inv',
-                '-hflex_mp=intolerant', '-hfp0', '-O0', '-DNO_MPI_CHOICE_ARG', '-DNO_MPI_CPTR_ARG'
+                '-hflex_mp=intolerant', '-hfp0', '-O0', '-DNO_MPI_CHOICE_ARG',
+                '-DNO_MPI_CPTR_ARG'
             ])
             if self.spec.variants['gpu'].value == 'openacc+cuda':
                 config_vars['FCFLAGS'].extend(['-hacc'])
