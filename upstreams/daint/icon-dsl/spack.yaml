@@ -4,9 +4,37 @@ spack:
   - cmake@3.22.2%gcc@9.3.0
   - python@3.10%gcc@9.3.0
   - py-numpy@1.24.3%gcc@9.3.0~blas~lapack
+  - py-black@23.3.0%gcc@9.3.0
+  - py-ninja@1.10.2%gcc@9.3.0
+  - py-pytest@7.2.1%gcc@9.3.0
+  - py-pytest-factoryboy@2.5.1%gcc@9.3.0
+  - py-devtools@0.10.0%gcc@9.3.0
+  - py-tox@3.14.2%gcc@9.3.0
+  - py-nanobind@1.5.1%gcc@9.3.0
+  - py-pytest-cache@1.0%gcc@9.3.0
+  - py-pytest-xdist@3.2.0%gcc@9.3.0
+  - py-pytest-cov@4.0.0%gcc@9.3.0
+  - py-xxhash@2.0.2%gcc@9.3.0
+  - py-fprettify@0.3.7%gcc@9.3.0
+  - clang-format@15.0.6%gcc@9.3.0
+  - py-deepdiff@6.3.0%gcc@9.3.0
+  - py-hypothesis@6.23.1%gcc@9.3.0~django~numpy~pandas
+  - py-packaging@23.0%gcc@9.3.0
+  - py-lark@1.1.2%gcc@9.3.0
+  - py-boltons@23.0.0%gcc@9.3.0
+  - py-tabulate@0.8.10%gcc@9.3.0
+  - py-frozendict@2.3.4%gcc@9.3.0
+  - py-pybind11@2.9.2%gcc@9.3.0
+  - py-markupsafe@2.1.1%gcc@9.3.0
+  - py-psutil@5.9.4%gcc@9.3.0
+  - py-cached-property@1.5.2%gcc@9.3.0
+  - py-toolz@0.12.0%gcc@9.3.0
+  - py-mako@1.2.2%gcc@9.3.0
+  - py-jinja2@3.1.2%gcc@9.3.0
+  - py-cytoolz@0.12.0%gcc@9.3.0
   concretizer:
     unify: when_possible
   view: false
   config:
     install_tree:
-      root: /project/g110/spack/upstream/daint_v0.20.1.0/icon-dsl
+      root: /project/g110/spack/upstream/daint_v0.20.1.3/icon-dsl
