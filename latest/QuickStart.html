@@ -173,7 +173,8 @@ with <cite>openssl</cite> and <cite>git</cite> appears.</p>
 </pre></div>
 </div>
 <p>Example to build ICON for CPU with NVHPC:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>env<span class="w"> </span>activate<span class="w"> </span>-d<span class="w"> </span>config/cscs/spack/v0.20.1.0/daint_cpu_nvhpc
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">SPACK_TAG</span><span class="o">=</span><span class="k">$(</span>cat<span class="w"> </span><span class="s2">&quot;config/cscs/SPACK_TAG&quot;</span><span class="k">)</span>
+<span class="gp">$ </span>spack<span class="w"> </span>env<span class="w"> </span>activate<span class="w"> </span>-d<span class="w"> </span>config/cscs/spack/<span class="nv">$SPACK_TAG</span>/daint_cpu_nvhpc
 <span class="gp">$ </span>spack<span class="w"> </span>install
 </pre></div>
 </div>
