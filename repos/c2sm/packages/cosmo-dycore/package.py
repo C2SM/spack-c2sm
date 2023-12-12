@@ -12,7 +12,7 @@ class CosmoDycore(CMakePackage):
     c2smgit = "git@github.com:C2SM-RCM/cosmo.git"
     empagit = 'git@github.com:C2SM-RCM/cosmo-ghg.git'
 
-    maintainers = ['elsagermann']
+    maintainers = ['huppd']
 
     version('org-master', branch='master')
     version('6.0', tag='6.0')
@@ -21,6 +21,7 @@ class CosmoDycore(CMakePackage):
     version('5.09a.mch1.2.p2', git=apngit, tag='5.09a.mch1.2.p2')
 
     version('c2sm-master', git=c2smgit, branch='master')
+    version('6.1', git=c2smgit, tag='6.1')
     version('c2sm-features', git=c2smgit, branch='c2sm-features')
 
     version('empa-ghg', git=empagit, branch='c2sm')
