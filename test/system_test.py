@@ -238,13 +238,13 @@ class CosmoTest(unittest.TestCase):
     def test_install_c2sm_master_cpu(self):
         spack_env_dev_install_and_test(
             'cosmo/ACC/spack/v0.20.1.0/nvhpc_cpu_double',
-            'git@github.com:C2SM-RCM/cosmo.git', 'dev_spackv0.20.1',
+            'git@github.com:C2SM-RCM/cosmo.git', '6.1_2023.11',
             'cosmo-c2sm-master')
 
     def test_install_c2sm_master_gpu(self):
         spack_env_dev_install_and_test(
             'cosmo/ACC/spack/v0.20.1.0/nvhpc_gpu_double',
-            'git@github.com:C2SM-RCM/cosmo.git', 'dev_spackv0.20.1',
+            'git@github.com:C2SM-RCM/cosmo.git', '6.1_2023.11',
             'cosmo-c2sm-master')
 
 
@@ -330,7 +330,7 @@ class FlexpartIfsTest(unittest.TestCase):
 class FlexpartCosmoTest(unittest.TestCase):
 
     def test_install(self):
-        spack_install_and_test('flexpart-cosmo')
+        spack_install_and_test('flexpart-cosmo @V8C4.0')
 
 
 class GridToolsTest(unittest.TestCase):
@@ -456,13 +456,13 @@ class Int2lmTest(unittest.TestCase):
         )
 
     def test_install_c2sm_master_gcc(self):
-        spack_install('int2lm @c2sm-master %gcc ^eccodes %gcc ^libgrib1 %gcc')
+        spack_install('int2lm @v2.8.4 %gcc ^eccodes %gcc ^libgrib1 %gcc')
 
     @pytest.mark.no_balfrin  # fails because libgrib1 master fails
     @pytest.mark.no_tsa  # An error occurred in MPI_Bcast
     def test_install_c2sm_master_nvhpc(self):
         spack_install_and_test(
-            f'int2lm @c2sm-master %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler} ^libgrib1 %{nvidia_compiler}'
+            f'int2lm @v2.8.4 %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler} ^libgrib1 %{nvidia_compiler}'
         )
 
 

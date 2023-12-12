@@ -14,7 +14,9 @@ class FlexpartCosmo(MakefilePackage):
 
     homepage = 'https://github.com/C2SM-RCM/flexpart'
     git = 'ssh://git@github.com/C2SM-RCM/flexpart.git'
+    maintainers = ['pirmink']
 
+    version('V8C4.0', tag='V8C4.0')
     version('main', branch='main')
 
     depends_on('eccodes +fortran')
