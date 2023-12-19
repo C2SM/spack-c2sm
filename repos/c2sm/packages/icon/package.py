@@ -91,6 +91,11 @@ class Icon(AutotoolsPackage, CudaPackage):
     variant('art',
             default=False,
             description='Enable the aerosols and reactive trace component ART')
+    variant(
+        'acm-license',
+        default=False,
+        description=
+        'Enable code parts that require accepting the ACM Software License')
 
     # Infrastructural Features:
     variant('mpi',
@@ -305,6 +310,7 @@ class Icon(AutotoolsPackage, CudaPackage):
                 'dace',
                 'emvorado',
                 'art',
+                'acm-license',
                 'mpi',
                 'active-target-sync',
                 'async-io-rma',
