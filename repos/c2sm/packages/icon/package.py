@@ -25,6 +25,13 @@ def check_variant_fcgroup(fcgroup):
         tty.warn('Variant fcgroup needs format GROUP.files.flag')
         return False
 
+def check_variant_extra_configure_arg(extra_configure_arg):
+    pattern = re.compile(r'--(enable|disable)-\S+')
+    if pattern.match(extra_configure_arg) or extra_configure_arg == 'none':
+        return True
+    else:
+        tty.warn(f'The value "{extra_configure_arg}" for the extra_configure_args variant must follow the format "--enable-arg" or "--disable-arg"')
+        return False
 
 class Icon(AutotoolsPackage, CudaPackage):
     """Icosahedral Nonhydrostatic Weather and Climate Model."""
@@ -145,6 +152,15 @@ class Icon(AutotoolsPackage, CudaPackage):
     variant('testbed',
             default=False,
             description='Enable ICON Testbed infrastructure')
+
+    variant(
+        'extra-config-args',
+        default='none',
+        multi=True,
+        values=check_variant_extra_configure_arg,
+        description=
+        'Inject any configure argument not yet available as variant'
+    )
 
     # Optimization Features:
     variant('loop-exchange', default=True, description='Enable loop exchange')
@@ -617,6 +633,13 @@ class Icon(AutotoolsPackage, CudaPackage):
             config_vars['LOC_GRIDTOOLS'].append(
                 self.spec['py-gridtools-cpp:data'].headers.directories[0])
             config_vars['GT4PYNVCFLAGS'] = config_vars['NVCFLAGS']
+
+        # add configure arguments not yet available as variant
+        extra_config_args = self.spec.variants['extra-config-args'].value
+        if extra_config_args != ('none', ):
+            for x in extra_config_args:
+                config_args.append(x)
+
 
         # Finalize the LIBS variable (we always put the real collected
         # libraries to the front):
