@@ -26,13 +26,13 @@ def check_variant_fcgroup(fcgroup):
         return False
 
 
-def check_variant_extra_configure_arg(extra_configure_arg):
+def check_variant_extra_config_args(extra_config_arg):
     pattern = re.compile(r'--(enable|disable)-\S+')
-    if pattern.match(extra_configure_arg) or extra_configure_arg == 'none':
+    if pattern.match(extra_config_arg) or extra_config_arg == 'none':
         return True
     else:
         tty.warn(
-            f'The value "{extra_configure_arg}" for the extra_configure_args variant must follow the format "--enable-arg" or "--disable-arg"'
+            f'The value "{extra_config_arg}" for the extra_config_args variant must follow the format "--enable-arg" or "--disable-arg"'
         )
         return False
 
@@ -161,7 +161,7 @@ class Icon(AutotoolsPackage, CudaPackage):
         'extra-config-args',
         default='none',
         multi=True,
-        values=check_variant_extra_configure_arg,
+        values=check_variant_extra_config_args,
         description='Inject any configure argument not yet available as variant'
     )
 
