@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>C2SM Guidelines for Spack &mdash; C2SM Spack  documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -66,7 +68,8 @@
 <li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="UpstreamManagement.html">Upstream management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CodeDevelopment.html">Develop packages</a></li>
-<li class="toctree-l1"><a class="reference internal" href="SpackChoice.html">Why was Spack chosen by MeteoSwiss?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpackChoice.html">Target Users of spack-c2sm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpackChoice.html#why-was-spack-chosen-by-meteoswiss">Why was Spack chosen by MeteoSwiss?</a></li>
 </ul>
 
         </div>
@@ -124,9 +127,9 @@ codes in case the <code class="docutils literal notranslate"><span class="pre">H
 additional commits in the meantime.</p>
 <p>Especially for production it is very important to know which version of a code is actually used.</p>
 <p>For example, there is a variety of different version suffixes for the <code class="docutils literal notranslate"><span class="pre">cosmo</span></code> package:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">git</span>      <span class="o">=</span> <span class="s1">&#39;ssh://git@github.com/COSMO-ORG/cosmo.git&#39;</span>
-<span class="n">apngit</span>   <span class="o">=</span> <span class="s1">&#39;ssh://git@github.com/MeteoSwiss-APN/cosmo.git&#39;</span>
-<span class="n">c2smgit</span>  <span class="o">=</span> <span class="s1">&#39;ssh://git@github.com/C2SM-RCM/cosmo.git&#39;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">git</span>      <span class="o">=</span> <span class="s1">&#39;git@github.com:COSMO-ORG/cosmo.git&#39;</span>
+<span class="n">apngit</span>   <span class="o">=</span> <span class="s1">&#39;git@github.com:MeteoSwiss-APN/cosmo.git&#39;</span>
+<span class="n">c2smgit</span>  <span class="o">=</span> <span class="s1">&#39;git@github.com:C2SM-RCM/cosmo.git&#39;</span>
 
 <span class="n">version</span><span class="p">(</span><span class="s1">&#39;org-master&#39;</span><span class="p">,</span> <span class="n">branch</span><span class="o">=</span><span class="s1">&#39;master&#39;</span><span class="p">,</span> <span class="n">get_full_repo</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">version</span><span class="p">(</span><span class="s1">&#39;apn-mch&#39;</span><span class="p">,</span> <span class="n">git</span><span class="o">=</span><span class="n">apngit</span><span class="p">,</span> <span class="n">branch</span><span class="o">=</span><span class="s1">&#39;mch&#39;</span><span class="p">,</span> <span class="n">get_full_repo</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>

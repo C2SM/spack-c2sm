@@ -180,38 +180,7 @@ Options (spack install)
 Spack installcosmo
 ------------------
 
-The custom commant ``spack installcosmo`` can only be used to build COSMO. This command will clone, 
-build and install COSMO as you would expect using ``spack install``. 
-
-Due to the complex dependency structure of COSMO, an additional file called ``spec.yaml``
-was introduced. This file contains the version of key dependencies like
-``eccodes`` or ``cosmo-eccodes-definition``. It is fetched from the code prior to the build.
-The version of the C++ Dycore is always set equal to the COSMO version.
-Versions of dependencies can be overwritten with user input. The precedence is the following:
-
-#.   user input
-#.   version defined in ``spec.yaml``
-#.   package default
-
-Usage (spack installcosmo)
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. code-block:: console
-
-    $ spack installcosmo cosmo@<version>%<compiler> +<variants>
-
-Options (spack installcosmo)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-*   ``--test=root``: Run COSMO testsuite before installation
-*   ``--test=all``: Run package tests during installation for all packages
-*   ``-j --jobs``: Explicitly set number of parallel jobs
-*   ``--keep-stage``: Don't remove the build after compilation
-*   ``-v, --verbose``: Verbose installation
-*   ``--force_uninstall``: Force uninstall if COSMO-package is already installed
-*   ``--dont-restage``: If a partial install is detected, don't delete prior
-*   ``-u, --until``: Phase to stop after when installing
-*   ``-n, --no-checksum``: Do not use checksums to verify downloaded files (unsafe)
+Support stopped for ``installcosmo`` starting from spack-c2sm v0.20.1.0!
 
 Spack dev-build
 ---------------
@@ -251,38 +220,7 @@ Options (spack dev-build)
 Spack devbuildcosmo
 -------------------
 
-The custom command ``spack devbuildcosmo`` can only be used to build COSMO using a local source.
-Similar to ``spack installcosmo``, it uses the file ``spec.yaml`` to determine the version
-of key dependencies. The version of the C++ Dycore is alway set equal to the COSMO-version.
-Versions of dependencies can be overwritten with user input. The precedence is the following:
-
-#.   user input
-#.   version defined in ``spec.yaml``
-#.   package default
-
-There is an option the completely ignore all version specified in ``spec.yaml``
-to allow builds of older COSMO versions.
-
-Usage (spack devbuildcosmo)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. code-block:: console
-
-    $ cd </path/to/package> 
-    $ spack devbuildcosmo <cosmo>@<version>%<compiler> +<variants>
-
-Options (spack devbuildcosmo)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-*   ``--no_specyaml``: Ignore *spec.yaml*
-*   ``-c --clean_build``: Clean build
-*   ``-j <JOBS>, --jobs <JOBS>:`` Explicitly set number of parallel jobs
-*   ``--test=root``: Run COSMO testsuite before installation
-*   ``--test=all``: Run package tests during installation for all packages
-*   ``-c, --clean_build``: Clean dev-build
-*   ``--dont-restage``: If a partial install is detected, don't delete prior
-*   ``-u, --until``: Phase to stop after when installing
-*   ``-n, --no-checksum``: Do not use checksums to verify downloaded files (unsafe)
+Support stopped for ``devbuildcosmo`` starting from spack-c2sm v0.20.1.0!
 
 Spack location
 --------------

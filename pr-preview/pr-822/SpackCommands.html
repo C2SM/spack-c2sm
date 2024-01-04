@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Important Spack Commands &mdash; C2SM Spack  documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -74,21 +76,13 @@
 <li class="toctree-l3"><a class="reference internal" href="#options-spack-install">Options (spack install)</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#spack-installcosmo">Spack installcosmo</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#usage-spack-installcosmo">Usage (spack installcosmo)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#options-spack-installcosmo">Options (spack installcosmo)</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#spack-installcosmo">Spack installcosmo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#spack-dev-build">Spack dev-build</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#usage-spack-dev-build">Usage (spack dev-build)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#options-spack-dev-build">Options (spack dev-build)</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#spack-devbuildcosmo">Spack devbuildcosmo</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#usage-spack-devbuildcosmo">Usage (spack devbuildcosmo)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#options-spack-devbuildcosmo">Options (spack devbuildcosmo)</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#spack-devbuildcosmo">Spack devbuildcosmo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#spack-location">Spack location</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#usage-spack-location">Usage (spack location)</a></li>
 </ul>
@@ -112,7 +106,8 @@
 <li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="UpstreamManagement.html">Upstream management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CodeDevelopment.html">Develop packages</a></li>
-<li class="toctree-l1"><a class="reference internal" href="SpackChoice.html">Why was Spack chosen by MeteoSwiss?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpackChoice.html">Target Users of spack-c2sm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpackChoice.html#why-was-spack-chosen-by-meteoswiss">Why was Spack chosen by MeteoSwiss?</a></li>
 </ul>
 
         </div>
@@ -298,38 +293,7 @@ you need to install our own spack instance.</p>
 </section>
 <section id="spack-installcosmo">
 <h2>Spack installcosmo<a class="headerlink" href="#spack-installcosmo" title="Permalink to this heading"></a></h2>
-<p>The custom commant <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">installcosmo</span></code> can only be used to build COSMO. This command will clone,
-build and install COSMO as you would expect using <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span></code>.</p>
-<p>Due to the complex dependency structure of COSMO, an additional file called <code class="docutils literal notranslate"><span class="pre">spec.yaml</span></code>
-was introduced. This file contains the version of key dependencies like
-<code class="docutils literal notranslate"><span class="pre">eccodes</span></code> or <code class="docutils literal notranslate"><span class="pre">cosmo-eccodes-definition</span></code>. It is fetched from the code prior to the build.
-The version of the C++ Dycore is always set equal to the COSMO version.
-Versions of dependencies can be overwritten with user input. The precedence is the following:</p>
-<ol class="arabic simple">
-<li><p>user input</p></li>
-<li><p>version defined in <code class="docutils literal notranslate"><span class="pre">spec.yaml</span></code></p></li>
-<li><p>package default</p></li>
-</ol>
-<section id="usage-spack-installcosmo">
-<h3>Usage (spack installcosmo)<a class="headerlink" href="#usage-spack-installcosmo" title="Permalink to this heading"></a></h3>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>installcosmo<span class="w"> </span>cosmo@&lt;version&gt;%&lt;compiler&gt;<span class="w"> </span>+&lt;variants&gt;
-</pre></div>
-</div>
-</section>
-<section id="options-spack-installcosmo">
-<h3>Options (spack installcosmo)<a class="headerlink" href="#options-spack-installcosmo" title="Permalink to this heading"></a></h3>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">--test=root</span></code>: Run COSMO testsuite before installation</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">--test=all</span></code>: Run package tests during installation for all packages</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">-j</span> <span class="pre">--jobs</span></code>: Explicitly set number of parallel jobs</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">--keep-stage</span></code>: Don’t remove the build after compilation</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">-v,</span> <span class="pre">--verbose</span></code>: Verbose installation</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">--force_uninstall</span></code>: Force uninstall if COSMO-package is already installed</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">--dont-restage</span></code>: If a partial install is detected, don’t delete prior</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">-u,</span> <span class="pre">--until</span></code>: Phase to stop after when installing</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">-n,</span> <span class="pre">--no-checksum</span></code>: Do not use checksums to verify downloaded files (unsafe)</p></li>
-</ul>
-</section>
+<p>Support stopped for <code class="docutils literal notranslate"><span class="pre">installcosmo</span></code> starting from spack-c2sm v0.20.1.0!</p>
 </section>
 <section id="spack-dev-build">
 <h2>Spack dev-build<a class="headerlink" href="#spack-dev-build" title="Permalink to this heading"></a></h2>
@@ -364,38 +328,7 @@ you need to avoid the installation phase (see option <code class="docutils liter
 </section>
 <section id="spack-devbuildcosmo">
 <h2>Spack devbuildcosmo<a class="headerlink" href="#spack-devbuildcosmo" title="Permalink to this heading"></a></h2>
-<p>The custom command <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">devbuildcosmo</span></code> can only be used to build COSMO using a local source.
-Similar to <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">installcosmo</span></code>, it uses the file <code class="docutils literal notranslate"><span class="pre">spec.yaml</span></code> to determine the version
-of key dependencies. The version of the C++ Dycore is alway set equal to the COSMO-version.
-Versions of dependencies can be overwritten with user input. The precedence is the following:</p>
-<ol class="arabic simple">
-<li><p>user input</p></li>
-<li><p>version defined in <code class="docutils literal notranslate"><span class="pre">spec.yaml</span></code></p></li>
-<li><p>package default</p></li>
-</ol>
-<p>There is an option the completely ignore all version specified in <code class="docutils literal notranslate"><span class="pre">spec.yaml</span></code>
-to allow builds of older COSMO versions.</p>
-<section id="usage-spack-devbuildcosmo">
-<h3>Usage (spack devbuildcosmo)<a class="headerlink" href="#usage-spack-devbuildcosmo" title="Permalink to this heading"></a></h3>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>&lt;/path/to/package&gt;
-<span class="gp">$ </span>spack<span class="w"> </span>devbuildcosmo<span class="w"> </span>&lt;cosmo&gt;@&lt;version&gt;%&lt;compiler&gt;<span class="w"> </span>+&lt;variants&gt;
-</pre></div>
-</div>
-</section>
-<section id="options-spack-devbuildcosmo">
-<h3>Options (spack devbuildcosmo)<a class="headerlink" href="#options-spack-devbuildcosmo" title="Permalink to this heading"></a></h3>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">--no_specyaml</span></code>: Ignore <em>spec.yaml</em></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">-c</span> <span class="pre">--clean_build</span></code>: Clean build</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">-j</span> <span class="pre">&lt;JOBS&gt;,</span> <span class="pre">--jobs</span> <span class="pre">&lt;JOBS&gt;:</span></code> Explicitly set number of parallel jobs</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">--test=root</span></code>: Run COSMO testsuite before installation</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">--test=all</span></code>: Run package tests during installation for all packages</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">-c,</span> <span class="pre">--clean_build</span></code>: Clean dev-build</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">--dont-restage</span></code>: If a partial install is detected, don’t delete prior</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">-u,</span> <span class="pre">--until</span></code>: Phase to stop after when installing</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">-n,</span> <span class="pre">--no-checksum</span></code>: Do not use checksums to verify downloaded files (unsafe)</p></li>
-</ul>
-</section>
+<p>Support stopped for <code class="docutils literal notranslate"><span class="pre">devbuildcosmo</span></code> starting from spack-c2sm v0.20.1.0!</p>
 </section>
 <section id="spack-location">
 <h2>Spack location<a class="headerlink" href="#spack-location" title="Permalink to this heading"></a></h2>
