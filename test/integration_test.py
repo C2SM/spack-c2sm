@@ -308,6 +308,9 @@ class SpecTest(unittest.TestCase):
         spack_spec('icon')
         spack_spec('icon serialization=create claw=std')
         spack_spec('icon fcgroup=DACE.externals/dace_icon.-O1')
+        spack_spec(
+            'icon extra-config-args=--disable-new_feature,--enable-old_config_arg'
+        )
 
     def test_icon_ham(self):
         spack_spec('icon-ham')
