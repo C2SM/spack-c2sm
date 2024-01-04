@@ -162,7 +162,8 @@ class Icon(AutotoolsPackage, CudaPackage):
         default='none',
         multi=True,
         values=check_variant_extra_config_args,
-        description='Inject any configure argument not yet available as variant\nUse this feature cautiously, as injecting non-variant configure arguments may potentially disrupt the build process'
+        description=
+        'Inject any configure argument not yet available as variant\nUse this feature cautiously, as injecting non-variant configure arguments may potentially disrupt the build process'
     )
 
     # Optimization Features:
@@ -684,7 +685,7 @@ class Icon(AutotoolsPackage, CudaPackage):
             var[f'ICON_{name}_FCFLAGS'] = [flag]
         return var
 
-    def strip_variant_prefix(self,variant_string):
+    def strip_variant_prefix(self, variant_string):
         prefixes = ["--enable-", "--disable-"]
 
         for prefix in prefixes:
@@ -692,13 +693,14 @@ class Icon(AutotoolsPackage, CudaPackage):
                 return variant_string[len(prefix):]
 
         raise ValueError
-    
-    def validate_extra_config_args(self,arg):
+
+    def validate_extra_config_args(self, arg):
         variant_from_arg = self.strip_variant_prefix(arg)
         if variant_from_arg in self.spec.variants:
-            raise error.SpecError(f'The value "{arg}" for the extra_config_args variant conflicts '
-                                      f'with the existing variant {variant_from_arg}. Set this variant instead.')
-
+            raise error.SpecError(
+                f'The value "{arg}" for the extra_config_args variant conflicts '
+                f'with the existing variant {variant_from_arg}. Set this variant instead.'
+            )
 
     @run_after('configure')
     def adjust_rttov_macro(self):
