@@ -162,7 +162,7 @@ class Icon(AutotoolsPackage, CudaPackage):
         default='none',
         multi=True,
         values=check_variant_extra_config_args,
-        description='Inject any configure argument not yet available as variant'
+        description='Inject any configure argument not yet available as variant\nUse this feature cautiously, as injecting non-variant configure arguments may potentially disrupt the build process'
     )
 
     # Optimization Features:
