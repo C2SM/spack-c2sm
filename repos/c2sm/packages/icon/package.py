@@ -646,6 +646,7 @@ class Icon(AutotoolsPackage, CudaPackage):
                 # to be set through variant extra_config_args
                 self.validate_extra_config_args(x)
                 config_args.append(x)
+            tty.warn('You use variant extra-config-args. Injecting non-variant configure arguments may potentially disrupt the build process!')
 
         # Finalize the LIBS variable (we always put the real collected
         # libraries to the front):
