@@ -641,6 +641,9 @@ class Icon(AutotoolsPackage, CudaPackage):
         extra_config_args = self.spec.variants['extra-config-args'].value
         if extra_config_args != ('none', ):
             for x in extra_config_args:
+                # prevent configure-args already available as variant
+                # to be set through variant extra_config_args
+                self.validate_extra_config_args(x)
                 config_args.append(x)
 
         # Finalize the LIBS variable (we always put the real collected
@@ -680,6 +683,22 @@ class Icon(AutotoolsPackage, CudaPackage):
             # Note: flag needs to be a list
             var[f'ICON_{name}_FCFLAGS'] = [flag]
         return var
+
+    def strip_variant_prefix(self,variant_string):
+        prefixes = ["--enable-", "--disable-"]
+
+        for prefix in prefixes:
+            if variant_string.startswith(prefix):
+                return variant_string[len(prefix):]
+
+        raise ValueError
+    
+    def validate_extra_config_args(self,arg):
+        variant_from_arg = self.strip_variant_prefix(arg)
+        if variant_from_arg in self.spec.variants:
+            raise error.SpecError(f'The value "{arg}" for the extra_config_args variant conflicts '
+                                      f'with the existing variant {variant_from_arg}. Set this variant instead.')
+
 
     @run_after('configure')
     def adjust_rttov_macro(self):
