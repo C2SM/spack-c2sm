@@ -181,9 +181,16 @@ class Icon(AutotoolsPackage, CudaPackage):
     # C2SM specific Features:
     variant(
         'infero',
+        default=False,
         description=
-        'Build with Infero to replace ecRad with ML implementation. Experimental, needs non-standard codebase!',
-        default=False)
+        'Build with infero for inference with machine-learning models. Experimental, needs non-standard codebase!'
+    )
+    variant(
+        'pytorch',
+        default=False,
+        description=
+        'Build with pytorch for inference with machine-learning models. Experimental, needs non-standard codebase!'
+    )
 
     variant(
         'eccodes-definitions',
@@ -206,7 +213,8 @@ class Icon(AutotoolsPackage, CudaPackage):
         depends_on('boost', when='dsl={0}'.format(x))
         conflicts('^python@:3.9,3.11:', when='dsl={0}'.format(x))
 
-    depends_on('infero +quiet', when='+infero')
+    depends_on('infero +quiet +tf_c +onnx', when='+infero')
+    depends_on('pytorch-fortran', when='+pytorch')
 
     depends_on('libfyaml', when='+coupling')
     depends_on('libxml2', when='+coupling')
@@ -259,6 +267,7 @@ class Icon(AutotoolsPackage, CudaPackage):
     conflicts('+dace', when='~mpi')
     conflicts('+emvorado', when='~mpi')
     conflicts('+cuda', when='%gcc')
+    conflicts('~infero', when='+pytorch')
 
     # The gpu=openacc+cuda relies on the cuda variant
     conflicts('~cuda', when='gpu=openacc+cuda')
@@ -520,6 +529,8 @@ class Icon(AutotoolsPackage, CudaPackage):
                 '--disable-mpi-checks'
             ])
 
+        if '+pytorch' in self.spec:
+            libs += self.spec['pytorch-fortran'].libs
         if '+infero' in self.spec:
             libs += self.spec['infero'].libs
 

@@ -5,6 +5,7 @@
 
 #
 from spack import *
+import os
 
 
 class PytorchFortran(CMakePackage):
@@ -31,3 +32,26 @@ class PytorchFortran(CMakePackage):
         args = [self.define('OPENACC', 1)]
 
         return args
+
+    @property
+    def libs(self):
+        libraries = ['libpytorch_fort_proxy']
+
+        libs = find_libraries(libraries,
+                              root=self.prefix,
+                              shared=True,
+                              recursive=True)
+
+        if libs and len(libs) == len(libraries):
+            return libs
+
+        msg = 'Unable to recursively locate shared {0} libraries in {1}'
+        raise spack.error.NoLibrariesError(
+            msg.format(self.spec.name, self.spec.prefix))
+
+    @run_after('install')
+    def link_fmod_into_include(self):
+        mod = 'torch_ftn.mod'
+        src = os.path.join(self.prefix.include, 'mod_files', mod)
+        dest = os.path.join(self.prefix.include, mod)
+        os.symlink(src, dest)
