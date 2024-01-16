@@ -68,11 +68,11 @@ class CosmoDycore(CMakePackage):
     conflicts('%pgi')
 
     # hardcode srun arguments, replaces all srun related variants
-    patch('patches/patch.srun_args')
+    #patch('patches/patch.srun_args')
 
     # in file dycore/src/common/GCLExchange.hpp
     # add #include <map>
-    patch('patches/patch.include_map')
+    #patch('patches/patch.include_map')
 
     root_cmakelists_dir = 'dycore'
 
