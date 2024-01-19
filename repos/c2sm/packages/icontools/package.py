@@ -24,7 +24,7 @@ class Icontools(AutotoolsPackage):
     (for example the boundary condition, initial condition file,...) for ICON.
     """
 
-    homepage = 'https://wiki.c2sm.ethz.ch/MODELS/ICONDwdIconTools'
+    homepage = 'https://c2sm.github.io/tools/icontools.html'
     c2sm = 'git@github.com:C2SM/icontools.git'
     dkrz = 'git@gitlab.dkrz.de:dwd-sw/dwd_icon_tools.git'
 
