@@ -327,6 +327,7 @@ class FlexpartIfsTest(unittest.TestCase):
 @pytest.mark.no_tsa  # No one uses spack for flexpart-cosmo on Tsa
 class FlexpartCosmoTest(unittest.TestCase):
 
+    # Test this works
     def test_install(self):
         spack_install_and_test('flexpart-cosmo @V8C4.0')
 
