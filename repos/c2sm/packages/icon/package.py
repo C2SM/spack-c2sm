@@ -299,6 +299,8 @@ class Icon(AutotoolsPackage, CudaPackage):
     conflicts('+cuda-graphs', when='%pgi')
     conflicts('+cuda-graphs', when='%nvhpc@:23.2')
 
+    conflicts('+loop-exchange', when='gpu=openacc+cuda')
+
     # Flag to mark if we build out-of-source
     # Needed to trigger sync of input files for experiments
     out_of_source_build = False
@@ -579,7 +581,7 @@ class Icon(AutotoolsPackage, CudaPackage):
             config_args.append('--disable-gpu')
         else:
             config_args.extend([
-                '--enable-gpu={0}'.format(gpu), '--disable-loop-exchange',
+                '--enable-gpu={0}'.format(gpu),
                 'NVCC={0}'.format(self.spec['cuda'].prefix.bin.nvcc)
             ])
 
