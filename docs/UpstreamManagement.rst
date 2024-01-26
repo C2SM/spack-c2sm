@@ -23,3 +23,7 @@ In that case the upstream is not removed.
 .. figure:: pictures/upstream_scheme.png
 
    Installation scheme of upstream instances. If tag v0.18.0.5 is the oldest tag supported, the orange upstream instances can safely be removed.
+
+Upgrade sysconfigs
+----------------------
+To copy the alp's env files, use https://github.com/C2SM/spack-c2sm/blob/main/sysconfigs/copy_alps_env_files_from.sh
