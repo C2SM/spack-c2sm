@@ -490,6 +490,7 @@ class LibGrib1Test(unittest.TestCase):
     def test_install_version_22_01_2020(self):
         spack_install_and_test('libgrib1 @22-01-2020')
 
+
 class Makedepf90Test(unittest.TestCase):
 
     def test_install(self):
