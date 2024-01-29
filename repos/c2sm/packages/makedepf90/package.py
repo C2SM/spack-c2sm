@@ -32,7 +32,9 @@ class Makedepf90(Package):
 
     maintainers("mjaehn")
 
-    version('3.0.1', git='https://salsa.debian.org/science-team/makedepf90.git', branch='debian/3.0.1-1')
+    version('3.0.1',
+            git='https://salsa.debian.org/science-team/makedepf90.git',
+            branch='debian/3.0.1-1')
 
     depends_on('autoconf', type='build')
     depends_on('automake', type='build')
@@ -40,7 +42,8 @@ class Makedepf90(Package):
     def install(self, spec, prefix):
         # Run the configure script
         configure = Executable('./configure')
-        configure('--prefix={0}'.format(prefix), '--bindir={0}'.format(prefix.bin))
+        configure('--prefix={0}'.format(prefix),
+                  '--bindir={0}'.format(prefix.bin))
 
         # Build and install
         make()
