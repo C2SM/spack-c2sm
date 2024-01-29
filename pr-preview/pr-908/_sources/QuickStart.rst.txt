@@ -5,7 +5,7 @@ Quick Start
 At CSCS (Daint, Tsa, Balfrin)
 -----------------------------
 
-To set up a Spack instance, clone the repository using a specific Spack tag (latest ``SPACK_TAG=v0.20.1.0``).
+To set up a Spack instance, clone the repository using a specific Spack tag (latest ``SPACK_TAG=v0.20.1.4``).
 
 .. code-block:: console
 
@@ -129,7 +129,7 @@ Out-of-source builds are possible as follows:
 
     $ mkdir cpu && cd cpu
     $ cp -r ../config .
-    $ spack env activate -d config/cscs/spack/v0.20.1.0/daint_cpu_nvhpc
+    $ spack env activate -d config/cscs/spack/v0.20.1.4/daint_cpu_nvhpc
     $ spack install
 
 ..  attention::
