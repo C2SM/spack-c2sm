@@ -6,12 +6,12 @@
 from spack.package import *
 
 
-class Makedepf90(Package):
+class Makedepf90(AutotoolsPackage):
     """ Makedepf90 is a program for automatic creation of
         Makefile-style dependency lists for Fortran source code."""
 
-    homepage = "https://salsa.debian.org/science-team/makedepf90.git"
-    url = "https://salsa.debian.org/science-team/makedepf90.git"
+    git = "https://salsa.debian.org/science-team/makedepf90.git"
+    url = "https://salsa.debian.org/science-team/makedepf90/-/archive/debian/3.0.1-1/makedepf90-debian-3.0.1-1.tar.gz"
 
     maintainers("mjaehn")
 
