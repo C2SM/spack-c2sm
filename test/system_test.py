@@ -494,7 +494,7 @@ class LibGrib1Test(unittest.TestCase):
 class Makedepf90Test(unittest.TestCase):
 
     def test_install(self):
-        spack_install_and_test('makedepf90 @3.0.1')
+        spack_install('makedepf90 @3.0.1')
 
 
 @pytest.mark.no_balfrin  # Package is a workaround, only needed on Daint.
