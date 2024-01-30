@@ -491,6 +491,7 @@ class LibGrib1Test(unittest.TestCase):
         spack_install_and_test('libgrib1 @22-01-2020')
 
 
+@pytest.mark.no_tsa  # No one uses spack for flexpart-cosmo on Tsa
 class Makedepf90Test(unittest.TestCase):
 
     def test_install(self):
