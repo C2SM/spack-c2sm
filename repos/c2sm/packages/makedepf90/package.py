@@ -13,20 +13,11 @@ class Makedepf90(AutotoolsPackage):
     homepage = "https://salsa.debian.org/science-team/makedepf90"
     git = "https://salsa.debian.org/science-team/makedepf90.git"
     url = "https://salsa.debian.org/science-team/makedepf90/-/archive/debian/3.0.1-1/makedepf90-debian-3.0.1-1.tar.gz"
+    parallel = False  # Makefile is not thread-safe.
 
     maintainers("mjaehn")
 
     version('3.0.1', branch='debian/3.0.1-1')
 
-    depends_on('autoconf', type='build')
-    depends_on('automake', type='build')
-
-    def install(self, spec, prefix):
-        # Run the configure script
-        configure = Executable('./configure')
-        configure('--prefix={0}'.format(prefix),
-                  '--bindir={0}'.format(prefix.bin))
-
-        # Build and install
-        make()
-        make('install')
+    def configure_args(self):
+        return ['--bindir={0}'.format(self.prefix.bin)]
