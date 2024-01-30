@@ -17,6 +17,8 @@ class Makedepf90(AutotoolsPackage):
 
     maintainers("mjaehn")
 
+depends_on("gmake@4:")
+
     version('3.0.1', branch='debian/3.0.1-1')
 
     def configure_args(self):
