@@ -16,9 +16,7 @@ class Makedepf90(AutotoolsPackage):
 
     maintainers("mjaehn")
 
-    version('3.0.1',
-            git='https://salsa.debian.org/science-team/makedepf90.git',
-            branch='debian/3.0.1-1')
+    version('3.0.1', branch='debian/3.0.1-1')
 
     depends_on('autoconf', type='build')
     depends_on('automake', type='build')
