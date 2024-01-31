@@ -115,6 +115,9 @@ class InfoTest(unittest.TestCase):
     def test_libxml2(self):
         spack_info('libxml2')
 
+    def test_makedepf90(self):
+        spack_info('makedepf90')
+
     def test_nvidia_blas(self):
         spack_info('nvidia-blas')
 

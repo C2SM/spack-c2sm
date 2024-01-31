@@ -491,6 +491,12 @@ class LibGrib1Test(unittest.TestCase):
         spack_install_and_test('libgrib1 @22-01-2020')
 
 
+class Makedepf90Test(unittest.TestCase):
+
+    def test_install(self):
+        spack_install('makedepf90 @3.0.1')
+
+
 @pytest.mark.no_balfrin  # Package is a workaround, only needed on Daint.
 @pytest.mark.no_tsa  # Package is a workaround, only needed on Daint.
 class NvidiaBlasTest(unittest.TestCase):
