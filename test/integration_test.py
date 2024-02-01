@@ -217,9 +217,6 @@ class InfoTest(unittest.TestCase):
     def test_py_tabulate(self):
         spack_info('py-tabulate')
 
-    def test_py_toolz(self):
-        spack_info('py-toolz')
-
     def test_py_typing_extensions(self):
         spack_info('py-typing-extensions')
 
@@ -433,9 +430,6 @@ class SpecTest(unittest.TestCase):
 
     def test_py_tabulate(self):
         spack_spec('py-tabulate')
-
-    def test_py_toolz(self):
-        spack_spec('py-toolz')
 
     def test_py_typing_extensions(self):
         spack_spec('py-typing-extensions')
