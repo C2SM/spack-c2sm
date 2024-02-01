@@ -707,6 +707,7 @@ class PyTabulateTest(unittest.TestCase):
     def test_install_default(self):
         spack_install_and_test('py-tabulate')
 
+
 class PyTypingExtensionsTest(unittest.TestCase):
 
     def test_install_default(self):
