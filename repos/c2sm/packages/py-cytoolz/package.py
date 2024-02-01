@@ -17,6 +17,9 @@ class PyCytoolz(PythonPackage):
 
     maintainers = ['samkellerhals']
 
+    version('0.12.3',
+            sha256=
+            '4503dc59f4ced53a54643272c61dc305d1dbbfbd7d6bdf296948de9f34c3a282')
     version('0.12.0',
             sha256=
             'c105b05f85e03fbcd60244375968e62e44fe798c15a3531c922d531018d22412')
