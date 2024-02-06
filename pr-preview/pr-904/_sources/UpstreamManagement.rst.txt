@@ -26,4 +26,4 @@ In that case the upstream is not removed.
 
 Upgrade sysconfigs
 ----------------------
-To copy the alp's env files, use https://github.com/C2SM/spack-c2sm/blob/main/sysconfigs/copy_alps_env_files_from.sh
+To copy the alp's env files from a new spack upstream, execute https://github.com/C2SM/spack-c2sm/blob/main/sysconfigs/copy_alps_env_files_from.sh from anywhere. The script acts relative to its own location, not the current working directory.
