@@ -9,7 +9,9 @@ from spack.pkg.builtin.py_frozendict import PyFrozendict as SpackPyFrozendict
 
 class PyFrozendict(SpackPyFrozendict):
 
-    version('2.4.0',sha256='c26758198e403337933a92b01f417a8240c954f553e1d4b5e0f8e39d9c8e3f0a')
+    version('2.4.0',
+            sha256=
+            'c26758198e403337933a92b01f417a8240c954f553e1d4b5e0f8e39d9c8e3f0a')
 
     # TODO: remove this extension once we have a more recent
     # version than v0.21.1
