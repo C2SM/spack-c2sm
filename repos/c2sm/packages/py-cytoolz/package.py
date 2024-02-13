@@ -27,6 +27,10 @@ class PyCytoolz(PythonPackage):
     depends_on('py-setuptools', type='build')
     depends_on('py-cython', type='build')
 
+    # py-cytoolz@0.12.0 not compatible with py-cython@3:, see
+    # https://www.layerzrozero.network/?_=%2Fpytoolz%2Fcytoolz%2Fissues%2F202%23w2n%2BddnGqHIZTHHkluHJC3Vn
+    depends_on('py-cython@:2',when='@0.12.0', type='build')
+
     depends_on('python@3.5:', type=('build', 'run'))
     depends_on('py-toolz@0.8.0:', type=('build', 'run'))
 
