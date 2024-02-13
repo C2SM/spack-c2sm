@@ -57,6 +57,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Upstream management</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#install-upstream">Install upstream</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#uninstall-upstream">Uninstall upstream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#upgrade-sysconfigs">Upgrade sysconfigs</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="CodeDevelopment.html">Develop packages</a></li>
@@ -114,6 +115,10 @@ In that case the upstream is not removed.</p>
 <p><span class="caption-text">Installation scheme of upstream instances. If tag v0.18.0.5 is the oldest tag supported, the orange upstream instances can safely be removed.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
+</section>
+<section id="upgrade-sysconfigs">
+<h2>Upgrade sysconfigs<a class="headerlink" href="#upgrade-sysconfigs" title="Permalink to this heading"></a></h2>
+<p>To copy the alp’s env files from a new spack upstream, execute <a class="reference external" href="https://github.com/C2SM/spack-c2sm/blob/main/sysconfigs/copy_alps_env_files_from.sh">https://github.com/C2SM/spack-c2sm/blob/main/sysconfigs/copy_alps_env_files_from.sh</a> from anywhere. The script acts relative to its own location, not the current working directory.</p>
 </section>
 </section>
 
