@@ -111,10 +111,6 @@ packages:
     externals:
     - spec: git@1.8.3.1~tcltk
       prefix: /usr
-  git-lfs:
-    externals:
-    - spec: git-lfs@2.9.0
-      prefix: /cluster/home/juckerj/.local
   gmake:
     externals:
     - spec: gmake@3.82
