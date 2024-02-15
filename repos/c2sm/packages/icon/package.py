@@ -450,6 +450,8 @@ class Icon(AutotoolsPackage, CudaPackage):
             config_vars['CFLAGS'].extend(['-g', '-O2'])
             config_vars['FCFLAGS'].extend(
                 ['-g', '-O', '-Mrecursive', '-Mallocatable=03', '-Mbackslash'])
+            config_vars['YAC_FCFLAGS'].extend(['-Dis_contiguous(arg)=.TRUE.'])
+            config_args.append('yac_cv_fc_is_contiguous_works=yes')
 
             if self.spec.variants['gpu'].value == 'openacc+cuda':
                 config_vars['FCFLAGS'].extend([
