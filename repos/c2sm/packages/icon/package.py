@@ -452,6 +452,7 @@ class Icon(AutotoolsPackage, CudaPackage):
                 ['-g', '-O', '-Mrecursive', '-Mallocatable=03', '-Mbackslash'])
             config_vars['YAC_FCFLAGS'].extend(['-Dis_contiguous(arg)=.TRUE.'])
             config_args.append('yac_cv_fc_is_contiguous_works=yes')
+            ##  Here yac_cv_fc_is_contiguous_works=yes is a workaround for <=23.9. Versions <=23.3 additionally require -D'is_contiguous(arg)=.TRUE.'. Version 23.11 is simply broken (not related to YAC) and should not be used (it also does not need the YAC workarounds).
 
             if self.spec.variants['gpu'].value == 'openacc+cuda':
                 config_vars['FCFLAGS'].extend([
