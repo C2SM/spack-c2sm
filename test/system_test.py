@@ -431,7 +431,6 @@ class InferoTest(unittest.TestCase):
         spack_install_and_test(
             'infero @0.1.2 %gcc +tf_c fflags="-ffree-line-length-1024"')
 
-    # compilation of test fails with Error: Line truncated at (1) [-Werror=line-truncation]
     def test_install_onnx(self):
         spack_install(
             'infero @0.1.2 %gcc +onnx fflags="-ffree-line-length-1024"')
