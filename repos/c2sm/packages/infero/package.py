@@ -70,7 +70,6 @@ class CMakeBuilder(CMakeBuilder):
         args = [
             self.define('CMAKE_PREFIX_PATH',
                         f'{self.spec["ecbuild"].prefix}/share/ecbuild/cmake'),
-            self.define('CMAKE_Fortran_MODULE_DIRECTORY', self.prefix.include),
             self.define('ENABLE_MPI', False),
             self.define('ENABLE_FCKIT', True),
 
