@@ -37,12 +37,42 @@ class Infero(CMakePackage):
 
     patch('comment_out_log-level_info.patch', when='@0.1.2 +quiet')
 
+
+    @property
+    def libs(self):
+        libraries = ['libinfero', 'libinferof']
+
+        libs = find_libraries(libraries,
+                              root=self.prefix,
+                              shared=True,
+                              recursive=True)
+
+        if libs and len(libs) == len(libraries):
+            return libs
+
+        msg = 'Unable to recursively locate shared {0} libraries in {1}'
+        raise spack.error.NoLibrariesError(
+            msg.format(self.spec.name, self.spec.prefix))
+
+
+
+class CMakeBuilder(CMakeBuilder):
+
+    def check(self):
+        """Search the CMake-generated files for the targets ``test`` and ``check``,
+        and runs them if found.
+        """
+        with fs.working_dir(self.build_directory):
+            make.jobs = 1
+            self.pkg._if_make_target_execute("test",
+                                             jobs_env="CTEST_PARALLEL_LEVEL")
+            self.pkg._if_make_target_execute("check")
+
     def cmake_args(self):
         args = [
             self.define('CMAKE_PREFIX_PATH',
                         f'{self.spec["ecbuild"].prefix}/share/ecbuild/cmake'),
-            self.define('CMAKE_Fortran_MODULE_DIRECTORY', self.prefix.module),
-            self.define('ENABLE_TESTS', self.run_tests),
+            self.define('CMAKE_Fortran_MODULE_DIRECTORY', self.prefix.include),
             self.define('ENABLE_MPI', False),
             self.define('ENABLE_FCKIT', True),
 
@@ -67,38 +97,9 @@ class Infero(CMakePackage):
             ])
         return args
 
-    @property
-    def libs(self):
-        libraries = ['libinfero', 'libinferof']
-
-        libs = find_libraries(libraries,
-                              root=self.prefix,
-                              shared=True,
-                              recursive=True)
-
-        if libs and len(libs) == len(libraries):
-            return libs
-
-        msg = 'Unable to recursively locate shared {0} libraries in {1}'
-        raise spack.error.NoLibrariesError(
-            msg.format(self.spec.name, self.spec.prefix))
-
     @run_after('install')
     def link_fmod_into_include(self):
         mod = 'inferof.mod'
         src = os.path.join(self.prefix, 'module/infero', mod)
         dest = os.path.join(self.prefix.include, mod)
         os.symlink(src, dest)
-
-
-class CMakeBuilder(CMakeBuilder):
-
-    def check(self):
-        """Search the CMake-generated files for the targets ``test`` and ``check``,
-        and runs them if found.
-        """
-        with fs.working_dir(self.build_directory):
-            make.jobs = 1
-            self.pkg._if_make_target_execute("test",
-                                             jobs_env="CTEST_PARALLEL_LEVEL")
-            self.pkg._if_make_target_execute("check")
