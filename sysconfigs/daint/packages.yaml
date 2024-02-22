@@ -129,6 +129,10 @@ packages:
     externals:
     - spec: git@2.26.2~tcltk
       prefix: /usr
+  gmake:
+    externals:
+    - spec: gmake@4.2.1
+      prefix: /usr
   groff:
     externals:
     - spec: groff@1.22.3
