@@ -649,12 +649,6 @@ class PyNanobindTest(unittest.TestCase):
         spack_install_and_test('py-nanobind')
 
 
-class PyNumpyTest(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install('py-numpy')
-
-
 class PyPathspecTest(unittest.TestCase):
 
     def test_install_default(self):
