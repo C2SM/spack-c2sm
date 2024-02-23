@@ -30,7 +30,7 @@ class Infero(CMakePackage):
     variant('onnx', description='Enable ONNX backend', default=False)
 
     depends_on('eckit@1.20.2')
-    depends_on('fckit@0.9.0')
+    depends_on('fckit')
     depends_on('ecbuild', type=('build'))
     depends_on('tensorflowc', when='+tf_c')
     depends_on('onnx-runtime', when='+onnx')

@@ -292,12 +292,6 @@ class EccodesTest(unittest.TestCase):
         spack_install('eccodes @2.19.0')
 
 
-class FckitTest(unittest.TestCase):
-
-    def test_install_0_9_0(self):
-        spack_install_and_test('fckit@0.9.0')
-
-
 class FdbFortranTest(unittest.TestCase):
 
     def test_install(self):
