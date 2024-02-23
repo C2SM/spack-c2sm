@@ -41,8 +41,6 @@ if __name__ == "__main__":
     # Trigger phrases that cause a test to get a special icon and comment.
     # List[(trigger, icon, comment)]
     triggers = [
-        ('AssertionError exception when releasing read lock', ':lock:',
-         'spack locking problem'),
         ('Timed out waiting for a write lock', ':lock:',
          'spack write lock problem'),
         ('Timed out waiting for a read lock', ':lock:',
