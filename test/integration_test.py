@@ -67,6 +67,9 @@ class InfoTest(unittest.TestCase):
     def test_eccodes(self):
         spack_info('eccodes')
 
+    def test_fckit(self):
+        spack_info('fckit')
+
     def test_fdb_fortran(self):
         spack_info('fdb-fortran')
 
@@ -274,6 +277,9 @@ class SpecTest(unittest.TestCase):
 
     def test_eccodes(self):
         spack_spec('eccodes')
+
+    def test_fckit(self):
+        spack_spec('fckit')
 
     def test_fdb_fortran(self):
         spack_spec('fdb-fortran')
