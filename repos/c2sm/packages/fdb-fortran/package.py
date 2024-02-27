@@ -11,10 +11,7 @@ class FdbFortran(CMakePackage):
     version('0.1.0', tag='0.1.0')
 
     depends_on('cmake@3.10:', type='build')
-    depends_on('eckit')
-    depends_on('metkit')
-    depends_on('eccodes +fortran')
-    depends_on('fdb@5.11.0:')
+    depends_on('fdb@5.11.0: ^eccodes +fortran')
 
     @property
     def libs(self):
