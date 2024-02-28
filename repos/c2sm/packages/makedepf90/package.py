@@ -6,7 +6,7 @@
 from spack.package import *
 
 
-class Makedepf90(AutotoolsPackage):
+class Makedepf90(AutoreconfPackageTemplate):
     """ Makedepf90 is a program for automatic creation of
         Makefile-style dependency lists for Fortran source code."""
 
@@ -18,7 +18,6 @@ class Makedepf90(AutotoolsPackage):
     maintainers("mjaehn")
 
     depends_on("gmake@4:")
-    depends_on("autoconf")
 
     version('3.0.1', branch='debian/3.0.1-1')
 
