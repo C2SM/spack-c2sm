@@ -6,7 +6,7 @@
 from spack.package import *
 
 
-class Makedepf90(AutoreconfPackageTemplate):
+class Makedepf90(AutoreconfPackage):
     """ Makedepf90 is a program for automatic creation of
         Makefile-style dependency lists for Fortran source code."""
 
