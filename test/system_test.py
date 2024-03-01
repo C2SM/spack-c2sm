@@ -349,18 +349,18 @@ class IconTest(unittest.TestCase):
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_gcc(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_cpu_gcc',
+            'config/cscs/spack/v0.21.1/daint_cpu_gcc',
             'git@github.com:C2SM/icon.git',
-            'icon-2.6.6.2',
+            'spack_v0.21.1',
             'icon',
             build_on_login_node=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_nvhpc_out_of_source(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc',
+            'config/cscs/spack/v0.21.1/daint_cpu_nvhpc',
             'git@github.com:C2SM/icon.git',
-            'icon-2.6.6.2',
+            'spack_v0.21.1',
             'icon',
             out_of_source=True,
             build_on_login_node=True)
@@ -368,18 +368,18 @@ class IconTest(unittest.TestCase):
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc',
+            'config/cscs/spack/v0.21.1/daint_cpu_nvhpc',
             'git@github.com:C2SM/icon.git',
-            'icon-2.6.6.2',
+            'spack_v0.21.1',
             'icon',
             build_on_login_node=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_gpu(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_gpu_nvhpc',
+            'config/cscs/spack/v0.21.1/daint_gpu_nvhpc',
             'git@github.com:C2SM/icon.git',
-            'icon-2.6.6.2',
+            'spack_v0.21.1',
             'icon',
             build_on_login_node=True)
 
