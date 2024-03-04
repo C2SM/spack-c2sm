@@ -237,14 +237,14 @@ class CosmoTest(unittest.TestCase):
 
     def test_install_c2sm_master_cpu(self):
         spack_env_dev_install_and_test(
-            'cosmo/ACC/spack/v0.20.1.0/nvhpc_cpu_double',
-            'git@github.com:C2SM-RCM/cosmo.git', '6.1_2023.11',
+            'cosmo/ACC/spack/v0.21.1/nvhpc_cpu_double',
+            'git@github.com:C2SM-RCM/cosmo.git', '6.1_2024.03',
             'cosmo-c2sm-master')
 
     def test_install_c2sm_master_gpu(self):
         spack_env_dev_install_and_test(
-            'cosmo/ACC/spack/v0.20.1.0/nvhpc_gpu_double',
-            'git@github.com:C2SM-RCM/cosmo.git', '6.1_2023.11',
+            'cosmo/ACC/spack/v0.21.1/nvhpc_gpu_double',
+            'git@github.com:C2SM-RCM/cosmo.git', '6.1_2024.03',
             'cosmo-c2sm-master')
 
 
