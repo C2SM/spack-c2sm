@@ -392,7 +392,7 @@ class IconTest(unittest.TestCase):
             'icon',
             build_on_login_node=True)
 
-    @pytest.mark.no_daint    # problem with gt4py and spack v21.1
+    @pytest.mark.no_daint  # problem with gt4py and spack v21.1
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_exclaim_test_gpu_dsl(self):
         spack_env_dev_install_and_test(
