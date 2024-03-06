@@ -1,0 +1,4 @@
+config:
+  build_stage: '$spack/../spack-build_stage'
+  test_stage: '$spack/../spack-test_stage'
+  misc_cache: '$spack/../spack-misc_cache'

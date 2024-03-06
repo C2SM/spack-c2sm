@@ -8,6 +8,7 @@ else
     case $(hostname -s) in
         tsa*) echo tsa;;
         arolla*) echo arolla;;
+        eu*) echo euler;;
         *) echo unknown;;
     esac
 fi

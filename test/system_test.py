@@ -415,15 +415,15 @@ class IconToolsTest(unittest.TestCase):
 
 
 @pytest.mark.no_tsa  # Not supported on Tsa
-@pytest.mark.no_balfrin  # Not supported on Balfrin
 class InferoTest(unittest.TestCase):
 
     def test_install_tf_c(self):
-        spack_install_and_test('infero @0.1.2 %gcc +tf_c')
+        spack_install_and_test(
+            'infero @0.1.2 %gcc +tf_c fflags="-ffree-line-length-1024"')
 
-    # compilation of test fails with Error: Line truncated at (1) [-Werror=line-truncation]
     def test_install_onnx(self):
-        spack_install('infero @0.1.2 %gcc +onnx')
+        spack_install(
+            'infero @0.1.2 %gcc +onnx fflags="-ffree-line-length-1024"')
 
 
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
@@ -479,6 +479,12 @@ class LibGrib1Test(unittest.TestCase):
     @pytest.mark.serial_only  # locking problem on Tsa in combination with int2lm
     def test_install_version_22_01_2020(self):
         spack_install_and_test('libgrib1 @22-01-2020')
+
+
+class Makedepf90Test(unittest.TestCase):
+
+    def test_install(self):
+        spack_install('makedepf90 @3.0.1')
 
 
 @pytest.mark.no_balfrin  # Package is a workaround, only needed on Daint.
@@ -615,6 +621,18 @@ class PyGt4pyTest(unittest.TestCase):
     def test_install_version_1_0_1_7(self):
         spack_install_and_test('py-gt4py @1.0.1.7')
 
+    def test_install_version_1_0_3(self):
+        spack_install_and_test('py-gt4py @1.0.3')
+
+    def test_install_version_1_0_3_1(self):
+        spack_install_and_test('py-gt4py @1.0.3.1')
+
+    def test_install_version_1_0_3_2(self):
+        spack_install_and_test('py-gt4py @1.0.3.2')
+
+    def test_install_version_1_0_3_3(self):
+        spack_install_and_test('py-gt4py @1.0.3.3')
+
 
 class PyHatchlingTest(unittest.TestCase):
 
@@ -630,6 +648,9 @@ class PyIcon4pyTest(unittest.TestCase):
 
     def test_install_version_0_0_9(self):
         spack_install_and_test('py-icon4py @ 0.0.9 %gcc ^py-gt4py@1.0.1.6')
+
+    def test_install_version_0_0_10(self):
+        spack_install_and_test('py-icon4py @ 0.0.10 %gcc ^py-gt4py@1.0.3.3')
 
 
 class PyInflectionTest(unittest.TestCase):
