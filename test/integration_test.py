@@ -282,7 +282,7 @@ class SpecTest(unittest.TestCase):
 
     def test_fckit(self):
         spack_spec('fckit')
-    
+
     def test_fdb(self):
         spack_info('fdb')
 

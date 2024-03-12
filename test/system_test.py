@@ -300,6 +300,7 @@ class GridToolsTest(unittest.TestCase):
     def test_install_version_1_1_3_nvhpc(self):
         spack_install_and_test(f'gridtools @1.1.3 %{nvidia_compiler}')
 
+
 @pytest.mark.no_tsa  # FDB tests fail on tsa due to 'ucp_context'
 class FdbTest(unittest.TestCase):
 
