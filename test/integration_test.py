@@ -258,7 +258,6 @@ class SpecTest(unittest.TestCase):
     def test_cosmo(self):
         spack_spec('cosmo')
         spack_spec('cosmo cosmo_target=gpu ~cppdycore')
-        #spack_spec('cosmo cosmo_target=gpu +serialize +claw +zlib_ng +oasis')
         spack_spec('cosmo cosmo_target=gpu +claw +zlib_ng +oasis')
 
     def test_cosmo_dycore(self):
@@ -283,6 +282,9 @@ class SpecTest(unittest.TestCase):
 
     def test_fckit(self):
         spack_spec('fckit')
+    
+    def test_fdb(self):
+        spack_info('fdb')
 
     def test_fdb_fortran(self):
         spack_spec('fdb-fortran')

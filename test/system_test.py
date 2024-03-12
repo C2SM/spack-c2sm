@@ -231,24 +231,6 @@ class ClawTest(unittest.TestCase):
         spack_install('claw')
 
 
-@pytest.mark.no_balfrin  # cosmo-dycore does not support the cuda arch of balfrin
-@pytest.mark.no_tsa  # irrelevant
-@pytest.mark.no_daint  # irrelevant
-class CosmoTest(unittest.TestCase):
-
-    def test_install_c2sm_master_cpu(self):
-        spack_env_dev_install_and_test(
-            'cosmo/ACC/spack/v0.21.1/nvhpc_cpu_double',
-            'git@github.com:C2SM-RCM/cosmo.git', '6.1_2024.03',
-            'cosmo-c2sm-master')
-
-    def test_install_c2sm_master_gpu(self):
-        spack_env_dev_install_and_test(
-            'cosmo/ACC/spack/v0.21.1/nvhpc_gpu_double',
-            'git@github.com:C2SM-RCM/cosmo.git', '6.1_2024.03',
-            'cosmo-c2sm-master')
-
-
 @pytest.mark.no_balfrin  # cuda arch is not supported
 @pytest.mark.no_tsa  # irrelevant
 class CosmoDycoreTest(unittest.TestCase):
@@ -318,6 +300,16 @@ class GridToolsTest(unittest.TestCase):
     def test_install_version_1_1_3_nvhpc(self):
         spack_install_and_test(f'gridtools @1.1.3 %{nvidia_compiler}')
 
+@pytest.mark.no_tsa  # FDB tests fail on tsa due to 'ucp_context'
+class FdbTest(unittest.TestCase):
+
+    def test_install_5_11_17_gcc(self):
+        spack_install_and_test('fdb @5.11.17 %gcc')
+
+    def test_install_5_11_17_nvhpc(self):
+        # tests fail because compiler emitted warnings.
+        spack_install(f'fdb @5.11.17 %{nvidia_compiler}')
+
 
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 class IconTest(unittest.TestCase):
@@ -371,30 +363,6 @@ class IconTest(unittest.TestCase):
             'spack_v0.21.1',
             'icon',
             build_on_login_node=True)
-
-    @pytest.mark.no_daint  # test is flaky
-    @pytest.mark.no_balfrin  # config file does not exist for this machine
-    def test_install_nwp_test_cpu_cce(self):
-        spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_cpu_cce',
-            'git@github.com:C2SM/icon.git',
-            'icon-2.6.6.2',
-            'icon',
-            build_on_login_node=True)
-
-    @pytest.mark.no_daint  # problem with gt4py and spack v21.1
-    @pytest.mark.no_balfrin  # config file does not exist for this machine
-    def test_install_exclaim_test_gpu_dsl(self):
-        spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.20.1.3/daint_dsl_nvhpc',
-            'git@github.com:C2SM/icon-exclaim.git',
-            'v0.2.0',
-            'icon',
-            build_on_login_node=True)
-
-
-class IconHamTest(unittest.TestCase):
-    pass
 
 
 @pytest.mark.no_tsa  # This test is flaky and sometimes fails with: icondelaunay.cpp:29:10: fatal error: version.c: No such file or directory. See issue #781.
@@ -600,35 +568,31 @@ class PyGridtoolsCppTest(unittest.TestCase):
 @pytest.mark.no_daint  # problem with gt4py and spack v21.1
 class PyGt4pyTest(unittest.TestCase):
 
+    @pytest.mark.no_daint  # problem with gt4py and spack v21.1
     def test_install_version_1_0_1_1(self):
         spack_install_and_test('py-gt4py @1.0.1.1')
 
+    @pytest.mark.no_daint  # problem with gt4py and spack v21.1
     def test_install_version_1_0_1_1b(self):
         spack_install_and_test('py-gt4py @1.0.1.1b')
 
-    @pytest.mark.no_balfrin  # problem with gt4py and spack v21.1
     def test_install_version_1_0_1_6(self):
-        spack_install_and_test('py-gt4py @1.0.1.6')
+        spack_install('py-gt4py @1.0.1.6')
 
-    @pytest.mark.no_balfrin  # problem with gt4py and spack v21.1
     def test_install_version_1_0_1_7(self):
-        spack_install_and_test('py-gt4py @1.0.1.7')
+        spack_install('py-gt4py @1.0.1.7')
 
-    @pytest.mark.no_balfrin  # problem with gt4py and spack v21.1
     def test_install_version_1_0_3(self):
-        spack_install_and_test('py-gt4py @1.0.3')
+        spack_install('py-gt4py @1.0.3')
 
-    @pytest.mark.no_balfrin  # problem with gt4py and spack v21.1
     def test_install_version_1_0_3_1(self):
-        spack_install_and_test('py-gt4py @1.0.3.1')
+        spack_install('py-gt4py @1.0.3.1')
 
-    @pytest.mark.no_balfrin  # problem with gt4py and spack v21.1
     def test_install_version_1_0_3_2(self):
-        spack_install_and_test('py-gt4py @1.0.3.2')
+        spack_install('py-gt4py @1.0.3.2')
 
-    @pytest.mark.no_balfrin  # problem with gt4py and spack v21.1
     def test_install_version_1_0_3_3(self):
-        spack_install_and_test('py-gt4py @1.0.3.3')
+        spack_install('py-gt4py @1.0.3.3')
 
 
 class PyHatchlingTest(unittest.TestCase):
@@ -637,19 +601,17 @@ class PyHatchlingTest(unittest.TestCase):
         spack_install_and_test('py-hatchling')
 
 
-@pytest.mark.no_daint  # problem with gt4py and spack v21.1
-@pytest.mark.no_balfrin  # problem with gt4py and spack v21.1
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 class PyIcon4pyTest(unittest.TestCase):
 
     def test_install_version_0_0_3_1(self):
-        spack_install_and_test('py-icon4py @ 0.0.3.1 %gcc ^py-gt4py@1.0.1.1b')
+        spack_install('py-icon4py @ 0.0.3.1 %gcc ^py-gt4py@1.0.1.1b')
 
     def test_install_version_0_0_9(self):
-        spack_install_and_test('py-icon4py @ 0.0.9 %gcc ^py-gt4py@1.0.1.6')
+        spack_install('py-icon4py @ 0.0.9 %gcc ^py-gt4py@1.0.1.6')
 
     def test_install_version_0_0_10(self):
-        spack_install_and_test('py-icon4py @ 0.0.10 %gcc ^py-gt4py@1.0.3.3')
+        spack_install('py-icon4py @ 0.0.10 %gcc ^py-gt4py@1.0.3.3')
 
 
 class PyInflectionTest(unittest.TestCase):
