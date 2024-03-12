@@ -606,27 +606,27 @@ class PyGt4pyTest(unittest.TestCase):
     def test_install_version_1_0_1_1b(self):
         spack_install_and_test('py-gt4py @1.0.1.1b')
 
-    @pytest.mark.no_balfrin # problem with gt4py and spack v21.1
+    @pytest.mark.no_balfrin  # problem with gt4py and spack v21.1
     def test_install_version_1_0_1_6(self):
         spack_install_and_test('py-gt4py @1.0.1.6')
 
-    @pytest.mark.no_balfrin # problem with gt4py and spack v21.1
+    @pytest.mark.no_balfrin  # problem with gt4py and spack v21.1
     def test_install_version_1_0_1_7(self):
         spack_install_and_test('py-gt4py @1.0.1.7')
 
-    @pytest.mark.no_balfrin # problem with gt4py and spack v21.1
+    @pytest.mark.no_balfrin  # problem with gt4py and spack v21.1
     def test_install_version_1_0_3(self):
         spack_install_and_test('py-gt4py @1.0.3')
 
-    @pytest.mark.no_balfrin # problem with gt4py and spack v21.1
+    @pytest.mark.no_balfrin  # problem with gt4py and spack v21.1
     def test_install_version_1_0_3_1(self):
         spack_install_and_test('py-gt4py @1.0.3.1')
 
-    @pytest.mark.no_balfrin # problem with gt4py and spack v21.1
+    @pytest.mark.no_balfrin  # problem with gt4py and spack v21.1
     def test_install_version_1_0_3_2(self):
         spack_install_and_test('py-gt4py @1.0.3.2')
 
-    @pytest.mark.no_balfrin # problem with gt4py and spack v21.1
+    @pytest.mark.no_balfrin  # problem with gt4py and spack v21.1
     def test_install_version_1_0_3_3(self):
         spack_install_and_test('py-gt4py @1.0.3.3')
 
@@ -637,8 +637,8 @@ class PyHatchlingTest(unittest.TestCase):
         spack_install_and_test('py-hatchling')
 
 
-@pytest.mark.no_daint # problem with gt4py and spack v21.1
-@pytest.mark.no_balfrin # problem with gt4py and spack v21.1
+@pytest.mark.no_daint  # problem with gt4py and spack v21.1
+@pytest.mark.no_balfrin  # problem with gt4py and spack v21.1
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 class PyIcon4pyTest(unittest.TestCase):
 
