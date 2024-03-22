@@ -24,6 +24,7 @@ class PyGt4py(PythonPackage):
     version('1.0.3.2', tag='icon4py_20240226', git=url)
     version('1.0.3.3', tag='icon4py_20240229', git=url)
     version('1.0.3.4', tag='icon4py_20240320', git=url)
+    version('1.0.3.5', tag='icon4py_20240322', git=url)
 
     maintainers = ['samkellerhals']
 
