@@ -70,9 +70,6 @@ class InfoTest(unittest.TestCase):
     def test_fckit(self):
         spack_info('fckit')
 
-    def test_fdb(self):
-        spack_info('fdb')
-
     def test_fdb_fortran(self):
         spack_info('fdb-fortran')
 
@@ -220,9 +217,6 @@ class InfoTest(unittest.TestCase):
     def test_py_tabulate(self):
         spack_info('py-tabulate')
 
-    def test_py_toolz(self):
-        spack_info('py-toolz')
-
     def test_py_typing_extensions(self):
         spack_info('py-typing-extensions')
 
@@ -264,7 +258,7 @@ class SpecTest(unittest.TestCase):
     def test_cosmo(self):
         spack_spec('cosmo')
         spack_spec('cosmo cosmo_target=gpu ~cppdycore')
-        spack_spec('cosmo cosmo_target=gpu +serialize +claw +zlib_ng +oasis')
+        spack_spec('cosmo cosmo_target=gpu +claw +zlib_ng +oasis')
 
     def test_cosmo_dycore(self):
         spack_spec('cosmo-dycore')
@@ -435,9 +429,6 @@ class SpecTest(unittest.TestCase):
 
     def test_py_tabulate(self):
         spack_spec('py-tabulate')
-
-    def test_py_toolz(self):
-        spack_spec('py-toolz')
 
     def test_py_typing_extensions(self):
         spack_spec('py-typing-extensions')

@@ -58,7 +58,6 @@ packages:
   cosmo: # manually added
     variants: slave=daint cuda_arch=60
   cosmo-dycore: # manually added
-    compiler: [gcc@8.3.0]
     variants: slave=daint cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/
   cuda: # manually added
     buildable: false

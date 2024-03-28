@@ -43,6 +43,7 @@ class FlexpartCosmo(MakefilePackage):
     def build(self, spec, prefix):
 
         with working_dir(self.build_directory):
+            make.jobs = 1
             make('-f', self.makefile_file)
 
     def install(self, spec, prefix):
