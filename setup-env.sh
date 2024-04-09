@@ -8,6 +8,9 @@ else
     machine="$( "$parent_dir"/src/machine.sh )"
 fi
 
+presetup="$parent_dir"/sysconfigs/"$machine"/pre-setup.sh
+[[ -f $presetup ]] && source ${presetup}
+
 export SPACK_SYSTEM_CONFIG_PATH="$parent_dir"/sysconfigs/"$machine"
 export SPACK_USER_CONFIG_PATH="$parent_dir"/user-config
 export SPACK_USER_CACHE_PATH="$parent_dir"/user-cache
