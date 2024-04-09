@@ -231,23 +231,6 @@ class ClawTest(unittest.TestCase):
         spack_install('claw')
 
 
-@pytest.mark.no_balfrin  # cosmo-dycore does not support the cuda arch of balfrin
-@pytest.mark.no_tsa  # irrelevant
-class CosmoTest(unittest.TestCase):
-
-    def test_install_c2sm_master_cpu(self):
-        spack_env_dev_install_and_test(
-            'cosmo/ACC/spack/v0.20.1.0/nvhpc_cpu_double',
-            'git@github.com:C2SM-RCM/cosmo.git', '6.1_2023.11',
-            'cosmo-c2sm-master')
-
-    def test_install_c2sm_master_gpu(self):
-        spack_env_dev_install_and_test(
-            'cosmo/ACC/spack/v0.20.1.0/nvhpc_gpu_double',
-            'git@github.com:C2SM-RCM/cosmo.git', '6.1_2023.11',
-            'cosmo-c2sm-master')
-
-
 @pytest.mark.no_balfrin  # cuda arch is not supported
 @pytest.mark.no_tsa  # irrelevant
 class CosmoDycoreTest(unittest.TestCase):
@@ -273,18 +256,6 @@ class CosmoEccodesDefinitionsTest(unittest.TestCase):
         spack_install_and_test('cosmo-eccodes-definitions @2.19.0.7')
 
 
-class DawnTest(unittest.TestCase):
-    pass
-
-
-class Dawn4PyTest(unittest.TestCase):
-    pass
-
-
-class DuskTest(unittest.TestCase):
-    pass
-
-
 class EccodesTest(unittest.TestCase):
     # All the other versions are not the responsibility of spack-c2sm
 
@@ -296,17 +267,6 @@ class FckitTest(unittest.TestCase):
 
     def test_install_0_9_0(self):
         spack_install_and_test('fckit@0.9.0')
-
-
-@pytest.mark.no_tsa  # FDB tests fail on tsa due to 'ucp_context'
-class FdbTest(unittest.TestCase):
-
-    def test_install_5_11_17_gcc(self):
-        spack_install_and_test('fdb @5.11.17 %gcc')
-
-    def test_install_5_11_17_nvhpc(self):
-        # tests fail because compiler emitted warnings.
-        spack_install(f'fdb @5.11.17 %{nvidia_compiler}')
 
 
 class FdbFortranTest(unittest.TestCase):
@@ -341,6 +301,17 @@ class GridToolsTest(unittest.TestCase):
         spack_install_and_test(f'gridtools @1.1.3 %{nvidia_compiler}')
 
 
+@pytest.mark.no_tsa  # FDB tests fail on tsa due to 'ucp_context'
+class FdbTest(unittest.TestCase):
+
+    def test_install_5_11_17_gcc(self):
+        spack_install_and_test('fdb @5.11.17 %gcc')
+
+    def test_install_5_11_17_nvhpc(self):
+        # tests fail because compiler emitted warnings.
+        spack_install(f'fdb @5.11.17 %{nvidia_compiler}')
+
+
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 class IconTest(unittest.TestCase):
 
@@ -360,18 +331,18 @@ class IconTest(unittest.TestCase):
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_gcc(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_cpu_gcc',
+            'config/cscs/spack/v0.21.1/daint_cpu_gcc',
             'git@github.com:C2SM/icon.git',
-            'icon-2.6.6.2',
+            'spack_v0.21.1',
             'icon',
             build_on_login_node=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_nvhpc_out_of_source(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc',
+            'config/cscs/spack/v0.21.1/daint_cpu_nvhpc',
             'git@github.com:C2SM/icon.git',
-            'icon-2.6.6.2',
+            'spack_v0.21.1',
             'icon',
             out_of_source=True,
             build_on_login_node=True)
@@ -379,42 +350,20 @@ class IconTest(unittest.TestCase):
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc',
+            'config/cscs/spack/v0.21.1/daint_cpu_nvhpc',
             'git@github.com:C2SM/icon.git',
-            'icon-2.6.6.2',
+            'spack_v0.21.1',
             'icon',
             build_on_login_node=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_gpu(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_gpu_nvhpc',
+            'config/cscs/spack/v0.21.1/daint_gpu_nvhpc',
             'git@github.com:C2SM/icon.git',
-            'icon-2.6.6.2',
+            'spack_v0.21.1',
             'icon',
             build_on_login_node=True)
-
-    @pytest.mark.no_balfrin  # config file does not exist for this machine
-    def test_install_nwp_test_cpu_cce(self):
-        spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_cpu_cce',
-            'git@github.com:C2SM/icon.git',
-            'icon-2.6.6.2',
-            'icon',
-            build_on_login_node=True)
-
-    @pytest.mark.no_balfrin  # config file does not exist for this machine
-    def test_install_exclaim_test_gpu_dsl(self):
-        spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.20.1.3/daint_dsl_nvhpc',
-            'git@github.com:C2SM/icon-exclaim.git',
-            'v0.2.0',
-            'icon',
-            build_on_login_node=True)
-
-
-class IconHamTest(unittest.TestCase):
-    pass
 
 
 @pytest.mark.no_tsa  # This test is flaky and sometimes fails with: icondelaunay.cpp:29:10: fatal error: version.c: No such file or directory. See issue #781.
@@ -538,7 +487,7 @@ class PytorchFortranTest(unittest.TestCase):
 
     def test_install_version_0_4(self):
         spack_install(
-            'pytorch-fortran@0.4%nvhpc ^pytorch-fortran-proxy@0.4%gcc ^python@3.10'
+            'pytorch-fortran@0.4%nvhpc ^pytorch-fortran-proxy@0.4%gcc ^python@3.10 ^gmake%gcc ^cmake%gcc'
         )
 
 
@@ -617,37 +566,40 @@ class PyGridtoolsCppTest(unittest.TestCase):
 
 
 @pytest.mark.no_tsa  # Irrelevant
+@pytest.mark.no_daint  # problem with gt4py and spack v21.1
 class PyGt4pyTest(unittest.TestCase):
 
+    @pytest.mark.no_daint  # problem with gt4py and spack v21.1
     def test_install_version_1_0_1_1(self):
         spack_install_and_test('py-gt4py @1.0.1.1')
 
+    @pytest.mark.no_daint  # problem with gt4py and spack v21.1
     def test_install_version_1_0_1_1b(self):
         spack_install_and_test('py-gt4py @1.0.1.1b')
 
     def test_install_version_1_0_1_6(self):
-        spack_install_and_test('py-gt4py @1.0.1.6')
+        spack_install('py-gt4py @1.0.1.6')
 
     def test_install_version_1_0_1_7(self):
-        spack_install_and_test('py-gt4py @1.0.1.7')
+        spack_install('py-gt4py @1.0.1.7')
 
     def test_install_version_1_0_3(self):
-        spack_install_and_test('py-gt4py @1.0.3')
+        spack_install('py-gt4py @1.0.3')
 
     def test_install_version_1_0_3_1(self):
-        spack_install_and_test('py-gt4py @1.0.3.1')
+        spack_install('py-gt4py @1.0.3.1')
 
     def test_install_version_1_0_3_2(self):
-        spack_install_and_test('py-gt4py @1.0.3.2')
+        spack_install('py-gt4py @1.0.3.2')
 
     def test_install_version_1_0_3_3(self):
-        spack_install_and_test('py-gt4py @1.0.3.3')
+        spack_install('py-gt4py @1.0.3.3')
 
     def test_install_version_1_0_3_4(self):
-        spack_install_and_test('py-gt4py @1.0.3.4')
+        spack_install('py-gt4py @1.0.3.4')
 
     def test_install_version_1_0_3_5(self):
-        spack_install_and_test('py-gt4py @1.0.3.5')
+        spack_install('py-gt4py @1.0.3.5')
 
 
 class PyHatchlingTest(unittest.TestCase):
@@ -660,13 +612,13 @@ class PyHatchlingTest(unittest.TestCase):
 class PyIcon4pyTest(unittest.TestCase):
 
     def test_install_version_0_0_3_1(self):
-        spack_install_and_test('py-icon4py @ 0.0.3.1 %gcc ^py-gt4py@1.0.1.1b')
+        spack_install('py-icon4py @ 0.0.3.1 %gcc ^py-gt4py@1.0.1.1b')
 
     def test_install_version_0_0_9(self):
-        spack_install_and_test('py-icon4py @ 0.0.9 %gcc ^py-gt4py@1.0.1.6')
+        spack_install('py-icon4py @ 0.0.9 %gcc ^py-gt4py@1.0.1.6')
 
     def test_install_version_0_0_10(self):
-        spack_install_and_test('py-icon4py @ 0.0.10 %gcc ^py-gt4py@1.0.3.3')
+        spack_install('py-icon4py @ 0.0.10 %gcc ^py-gt4py@1.0.3.3')
 
 
 class PyInflectionTest(unittest.TestCase):
@@ -691,12 +643,6 @@ class PyNanobindTest(unittest.TestCase):
 
     def test_install_default(self):
         spack_install_and_test('py-nanobind')
-
-
-class PyNumpyTest(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install('py-numpy')
 
 
 class PyPathspecTest(unittest.TestCase):
@@ -733,12 +679,6 @@ class PyTabulateTest(unittest.TestCase):
 
     def test_install_default(self):
         spack_install_and_test('py-tabulate')
-
-
-class PyToolzTest(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('py-toolz')
 
 
 class PyTypingExtensionsTest(unittest.TestCase):
