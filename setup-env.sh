@@ -8,6 +8,11 @@ else
     machine="$( "$parent_dir"/src/machine.sh )"
 fi
 
+if [[ ${machine:0:1} == "/" ]]; then
+    uenv_mount=$machine
+    machine=uenv
+fi
+
 presetup="$parent_dir"/sysconfigs/"$machine"/pre-setup.sh
 [[ -f $presetup ]] && source ${presetup}
 

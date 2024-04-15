@@ -4,7 +4,6 @@
 # Place holder to lock the current spack instance to a specific uenv
 # Maybe use a hash of the full recipe
 
-uenv_mount=/user-environment
 conf_dir="$parent_dir"/sysconfigs/uenv
 conf_files=(compilers.yaml upstreams.yaml packages.yaml)
 
