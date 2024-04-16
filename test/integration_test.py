@@ -130,9 +130,6 @@ class InfoTest(unittest.TestCase):
     def test_oasis(self):
         spack_info('oasis')
 
-    def test_omni_xmod_pool(self):
-        spack_info('omni-xmod-pool')
-
     def test_pytorch_fortran(self):
         spack_info('pytorch-fortran')
 
@@ -354,9 +351,6 @@ class SpecTest(unittest.TestCase):
 
     def test_oasis(self):
         spack_spec('oasis')
-
-    def test_omni_xmod_pool(self):
-        spack_spec('omni-xmod-pool')
 
     def test_pytorch_fortran(self):
         spack_spec('pytorch-fortran')

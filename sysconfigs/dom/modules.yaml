@@ -57,10 +57,6 @@ modules:
           set:
             CLAWDIR: '${PREFIX}'
             CLAWFC: '${PREFIX}/bin/clawfc'
-      omni-xmod-pool:
-        environment:
-          set:
-            CLAWXMODSPOOL: '${PREFIX}'
       ant:
         environment:
           set:
