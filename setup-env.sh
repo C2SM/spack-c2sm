@@ -23,6 +23,4 @@ if [[ $? == 0 ]]; then
     . "$parent_dir"/spack/share/spack/setup-env.sh
 
     echo Spack configured for "$machine".
-else
-    echo "error in $presetup, Spack could not be configured"
 fi
