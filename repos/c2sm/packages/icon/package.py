@@ -43,9 +43,9 @@ class Icon(AutotoolsPackage, CudaPackage):
     homepage = 'https://code.mpimet.mpg.de/projects/iconpublic'
     url = 'https://gitlab.dkrz.de/icon/icon/-/archive/icon-2.6.6/icon-icon-2.6.6.tar.gz'
     git = 'git@gitlab.dkrz.de:icon/icon.git'
-    
+
     maintainers = ['jonasjucker', 'dominichofer']
-    
+
     version('develop', submodules=True)
     version('2.6.6', tag='icon-2.6.6', submodules=True)
     version('exclaim-master',
