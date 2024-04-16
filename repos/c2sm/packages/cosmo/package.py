@@ -65,8 +65,6 @@ class Cosmo(MakefilePackage):
     depends_on('perl@5.16.3:', type='build')
     depends_on('boost', when='cosmo_target=gpu ~cppdycore', type='build')
     depends_on('libgrib1', type='build')
-    depends_on('omni-xmod-pool', when='+claw', type='build')
-    depends_on('claw', when='+claw', type='build')
 
     # build and link dependency
     depends_on('mpi +fortran')
@@ -119,7 +117,6 @@ class Cosmo(MakefilePackage):
             description='Build with double or single precision enabled',
             values=('double', 'float'),
             multi=False)
-    variant('claw', default=False, description='Build with claw-compiler')
     variant('slave', default='none', description='Build on slave')
     variant('pollen', default=False, description='Build with pollen enabled')
     variant('cosmo_target',
@@ -155,7 +152,6 @@ class Cosmo(MakefilePackage):
         msg=
         "Please use only official versions listed with 'spack info cosmo'. Even when using 'devbuildcosmo'. C2SM introduced 'dev-build' to avoid name conflicts with the upstream instance. Since spack-c2sm v0.18.1.0 this is not relevant anymore."
     )
-    conflicts('+claw', when='cosmo_target=cpu')
     conflicts('+pollen', when='@org-master,master')
     conflicts('cosmo_target=gpu', when='%gcc')
     conflicts('+cppdycore', when='%nvhpc cosmo_target=cpu')
@@ -270,26 +266,6 @@ class Cosmo(MakefilePackage):
             env.set('SERIALBOXI',
                     '-I' + self.spec['serialbox'].prefix + '/include')
 
-        # Claw library
-        if '+claw' in self.spec:
-            claw_flags = ''
-            # Set special flags after CLAW release 2.1
-            if self.compiler.name in (
-                    'pgi',
-                    'nvhpc') and self.spec['claw'].version >= Version(2.1):
-                claw_flags += ' --fc-vendor=portland --fc-cmd=${FC}'
-            if 'cosmo_target=gpu' in self.spec:
-                claw_flags += ' --directive=openacc'
-            if self.spec.variants['verbose'].value:
-                claw_flags += ' -v'
-            env.set('CLAWDIR', self.spec['claw'].prefix)
-            env.set('CLAWFC', self.spec['claw'].prefix + '/bin/clawfc')
-            env.set('CLAWXMODSPOOL',
-                    self.spec['omni-xmod-pool'].prefix + '/omniXmodPool/')
-            if self.mpi_spec.name == 'mpich':
-                claw_flags += ' -D__CRAYXC'
-            env.set('CLAWFC_FLAGS', claw_flags)
-
         # OASIS library
         if '+oasis' in self.spec:
             oasis_prefix = self.spec['oasis'].prefix
@@ -327,8 +303,6 @@ class Cosmo(MakefilePackage):
             build.append('SINGLEPRECISION=1')
         if '+cppdycore' in self.spec:
             build.append('CPP_GT_DYCORE=1')
-        if '+claw' in self.spec:
-            build.append('CLAW=1')
         if '+serialize' in self.spec:
             build.append('SERIALIZE=1')
         if self.spec.variants['verbose'].value:
