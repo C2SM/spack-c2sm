@@ -273,18 +273,6 @@ class CosmoEccodesDefinitionsTest(unittest.TestCase):
         spack_install_and_test('cosmo-eccodes-definitions @2.19.0.7')
 
 
-class DawnTest(unittest.TestCase):
-    pass
-
-
-class Dawn4PyTest(unittest.TestCase):
-    pass
-
-
-class DuskTest(unittest.TestCase):
-    pass
-
-
 class EccodesTest(unittest.TestCase):
     # All the other versions are not the responsibility of spack-c2sm
 
