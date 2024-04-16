@@ -29,8 +29,7 @@ class Libgrib1(MakefilePackage):
     homepage = "https://github.com/C2SM-RCM/libgrib1"
     git = "git@github.com:C2SM-RCM/libgrib1.git"
 
-    # notify when the package is updated.
-    maintainers = ['elsagermann']
+    maintainers = ['jonasjucker']
     build_directory = 'libgrib1_cosmo/source'
 
     version('master', branch='master')
