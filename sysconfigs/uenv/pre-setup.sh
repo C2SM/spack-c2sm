@@ -12,9 +12,10 @@ uenv_hash=$(cat $uenv_mount/meta/hash)
 if [[ -f "$conf_dir"/uenv.hash ]]; then
     local_hash=$(cat "$conf_dir"/uenv.hash)
     if [[ $uenv_hash != $local_hash ]]; then
-        echo "ERROR: This spack-c2sm instance was already once configured with a different uenv."
-        echo "       Please reuse the same uenv with the current instance or setup a fresh"
-        echo "       spack-c2sm with any uenv."
+        echo "ERROR: This spack-c2sm instance was already once configured"
+        echo "       with a different uenv."
+        echo "       Please reuse the same uenv with the current instance"
+        echo "       or setup a fresh spack-c2sm with any uenv."
         return 1
     fi
 else
