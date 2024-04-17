@@ -575,7 +575,8 @@ class PyGt4pyTest(unittest.TestCase):
     @pytest.mark.no_daint  # problem with gt4py and spack v21.1
     def test_install_version_1_0_1_1b(self):
         spack_install_and_test('py-gt4py @1.0.1.1b')
-
+    
+    @pytest.mark.no_daint  # problem with gt4py and spack v21.1
     def test_install_version_1_0_1_6(self):
         spack_install_and_test('py-gt4py @1.0.1.6')
 
