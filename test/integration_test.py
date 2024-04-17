@@ -55,15 +55,6 @@ class InfoTest(unittest.TestCase):
     def test_cosmo_eccodes_definitions(self):
         spack_info('cosmo-eccodes-definitions')
 
-    def test_dawn(self):
-        spack_info('dawn')
-
-    def test_dawn4py(self):
-        spack_info('dawn4py')
-
-    def test_dusk(self):
-        spack_info('dusk')
-
     def test_eccodes(self):
         spack_info('eccodes')
 
@@ -273,15 +264,6 @@ class SpecTest(unittest.TestCase):
 
     def test_cosmo_eccodes_definitions(self):
         spack_spec('cosmo-eccodes-definitions')
-
-    def test_dawn(self):
-        spack_spec('dawn')
-
-    def test_dawn4py(self):
-        spack_spec('dawn4py')
-
-    def test_dusk(self):
-        spack_spec('dusk')
 
     def test_eccodes(self):
         spack_spec('eccodes')
