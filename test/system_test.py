@@ -566,7 +566,6 @@ class PyGridtoolsCppTest(unittest.TestCase):
 
 
 @pytest.mark.no_tsa  # Irrelevant
-@pytest.mark.no_daint  # problem with gt4py and spack v21.1
 class PyGt4pyTest(unittest.TestCase):
 
     @pytest.mark.no_daint  # problem with gt4py and spack v21.1
@@ -577,29 +576,30 @@ class PyGt4pyTest(unittest.TestCase):
     def test_install_version_1_0_1_1b(self):
         spack_install_and_test('py-gt4py @1.0.1.1b')
 
+    @pytest.mark.no_daint  # problem with gt4py and spack v21.1
     def test_install_version_1_0_1_6(self):
-        spack_install('py-gt4py @1.0.1.6')
+        spack_install_and_test('py-gt4py @1.0.1.6')
 
     def test_install_version_1_0_1_7(self):
-        spack_install('py-gt4py @1.0.1.7')
+        spack_install_and_test('py-gt4py @1.0.1.7')
 
     def test_install_version_1_0_3(self):
-        spack_install('py-gt4py @1.0.3')
+        spack_install_and_test('py-gt4py @1.0.3')
 
     def test_install_version_1_0_3_1(self):
-        spack_install('py-gt4py @1.0.3.1')
+        spack_install_and_test('py-gt4py @1.0.3.1')
 
     def test_install_version_1_0_3_2(self):
-        spack_install('py-gt4py @1.0.3.2')
+        spack_install_and_test('py-gt4py @1.0.3.2')
 
     def test_install_version_1_0_3_3(self):
-        spack_install('py-gt4py @1.0.3.3')
+        spack_install_and_test('py-gt4py @1.0.3.3')
 
     def test_install_version_1_0_3_4(self):
-        spack_install('py-gt4py @1.0.3.4')
+        spack_install_and_test('py-gt4py @1.0.3.4')
 
     def test_install_version_1_0_3_5(self):
-        spack_install('py-gt4py @1.0.3.5')
+        spack_install_and_test('py-gt4py @1.0.3.5')
 
 
 class PyHatchlingTest(unittest.TestCase):
