@@ -611,14 +611,16 @@ class PyHatchlingTest(unittest.TestCase):
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 class PyIcon4pyTest(unittest.TestCase):
 
+    @pytest.mark.no_daint  # problem with gt4py and spack v21.1
     def test_install_version_0_0_3_1(self):
-        spack_install('py-icon4py @ 0.0.3.1 %gcc ^py-gt4py@1.0.1.1b')
+        spack_install_and_test('py-icon4py @ 0.0.3.1 %gcc ^py-gt4py@1.0.1.1b')
 
+    @pytest.mark.no_daint  # problem with gt4py and spack v21.1
     def test_install_version_0_0_9(self):
-        spack_install('py-icon4py @ 0.0.9 %gcc ^py-gt4py@1.0.1.6')
+        spack_install_and_test('py-icon4py @ 0.0.9 %gcc ^py-gt4py@1.0.1.6')
 
     def test_install_version_0_0_10(self):
-        spack_install('py-icon4py @ 0.0.10 %gcc ^py-gt4py@1.0.3.3')
+        spack_install_and_test('py-icon4py @ 0.0.10 %gcc ^py-gt4py@1.0.3.3')
 
 
 class PyInflectionTest(unittest.TestCase):
