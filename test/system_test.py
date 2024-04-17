@@ -566,7 +566,6 @@ class PyGridtoolsCppTest(unittest.TestCase):
 
 
 @pytest.mark.no_tsa  # Irrelevant
-@pytest.mark.no_daint  # problem with gt4py and spack v21.1
 class PyGt4pyTest(unittest.TestCase):
 
     @pytest.mark.no_daint  # problem with gt4py and spack v21.1
