@@ -167,6 +167,10 @@ class Icon(AutotoolsPackage, CudaPackage):
         description=
         'Inject any configure argument not yet available as variant\nUse this feature cautiously, as injecting non-variant configure arguments may potentially disrupt the build process'
     )
+    variant('comin',
+            default=False,
+            description='Enable usage of ComIn toolbox '
+            'for building plugins.')
 
     # Optimization Features:
     variant('loop-exchange', default=True, description='Enable loop exchange')
@@ -362,6 +366,7 @@ class Icon(AutotoolsPackage, CudaPackage):
                 'nccl',
                 'cuda-graphs',
                 'silent-rules',
+                'comin',
         ]:
             config_args += self.enable_or_disable(x)
 
