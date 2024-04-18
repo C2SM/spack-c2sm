@@ -68,8 +68,12 @@ class PyGt4py(PythonPackage):
 
     depends_on('py-nanobind@1.4.0:', when="@1.0.1.3:", type=('build', 'run'))
     depends_on('py-tabulate@0.8.10:', type=('build', 'run'))
-    depends_on('py-typing-extensions@4.5.0',when="@:1.0.1.5", type=('build', 'run'))
-    depends_on('py-typing-extensions@4.10.0',when="@1.0.1.6:",  type=('build', 'run'))
+    depends_on('py-typing-extensions@4.5.0',
+               when="@:1.0.1.5",
+               type=('build', 'run'))
+    depends_on('py-typing-extensions@4.10.0',
+               when="@1.0.1.6:",
+               type=('build', 'run'))
     depends_on('py-toolz@0.12.0:', type=('build', 'run'))
     depends_on('py-xxhash@1.4.4:3.0.9', type=('build', 'run'))
     depends_on('py-hypothesis@6.0.0:', type=('build', 'run'))
