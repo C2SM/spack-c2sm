@@ -12,6 +12,8 @@ class ZlibNg(CMakePackage):
     homepage = "https://github.com/zlib-ng/zlib-ng"
     url = "https://github.com/zlib-ng/zlib-ng/archive/2.0.0.tar.gz"
 
+    maintainers = ['jonasjucker']
+
     version('2.0.0',
             sha256=
             '86993903527d9b12fc543335c19c1d33a93797b3d4d37648b5addae83679ecd8')

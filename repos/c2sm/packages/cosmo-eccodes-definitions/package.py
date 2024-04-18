@@ -30,7 +30,7 @@ class CosmoEccodesDefinitions(Package):
     url = "https://github.com/COSMO-ORG/eccodes-cosmo-resources.git"
     git = 'https://github.com/COSMO-ORG/eccodes-cosmo-resources.git'
 
-    maintainers = ['egermann']
+    maintainers = ['dominichofer']
 
     version('2.25.0.2', tag='v2.25.0.2')
     version('2.25.0.1', tag='v2.25.0.1')

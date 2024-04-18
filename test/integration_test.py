@@ -55,15 +55,6 @@ class InfoTest(unittest.TestCase):
     def test_cosmo_eccodes_definitions(self):
         spack_info('cosmo-eccodes-definitions')
 
-    def test_dawn(self):
-        spack_info('dawn')
-
-    def test_dawn4py(self):
-        spack_info('dawn4py')
-
-    def test_dusk(self):
-        spack_info('dusk')
-
     def test_eccodes(self):
         spack_info('eccodes')
 
@@ -126,9 +117,6 @@ class InfoTest(unittest.TestCase):
 
     def test_oasis(self):
         spack_info('oasis')
-
-    def test_omni_xmod_pool(self):
-        spack_info('omni-xmod-pool')
 
     def test_pytorch_fortran(self):
         spack_info('pytorch-fortran')
@@ -258,7 +246,7 @@ class SpecTest(unittest.TestCase):
     def test_cosmo(self):
         spack_spec('cosmo')
         spack_spec('cosmo cosmo_target=gpu ~cppdycore')
-        spack_spec('cosmo cosmo_target=gpu +claw +zlib_ng +oasis')
+        spack_spec('cosmo cosmo_target=gpu +serialize +zlib_ng +oasis')
 
     def test_cosmo_dycore(self):
         spack_spec('cosmo-dycore')
@@ -267,15 +255,6 @@ class SpecTest(unittest.TestCase):
 
     def test_cosmo_eccodes_definitions(self):
         spack_spec('cosmo-eccodes-definitions')
-
-    def test_dawn(self):
-        spack_spec('dawn')
-
-    def test_dawn4py(self):
-        spack_spec('dawn4py')
-
-    def test_dusk(self):
-        spack_spec('dusk')
 
     def test_eccodes(self):
         spack_spec('eccodes')
@@ -348,9 +327,6 @@ class SpecTest(unittest.TestCase):
 
     def test_oasis(self):
         spack_spec('oasis')
-
-    def test_omni_xmod_pool(self):
-        spack_spec('omni-xmod-pool')
 
     def test_pytorch_fortran(self):
         spack_spec('pytorch-fortran')
