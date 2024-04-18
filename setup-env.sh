@@ -14,7 +14,9 @@ if [[ ${machine:0:1} == "/" ]]; then
 fi
 
 presetup="$parent_dir"/sysconfigs/"$machine"/pre-setup.sh
-[[ -f $presetup ]] && source ${presetup}
+if [[ -f $presetup ]]; then
+    source ${presetup}
+fi
 
 if [[ $? == 0 ]]; then
     export SPACK_SYSTEM_CONFIG_PATH="$parent_dir"/sysconfigs/"$machine"
