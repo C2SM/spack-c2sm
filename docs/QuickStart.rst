@@ -86,7 +86,7 @@ ICON
 ICON is built using environments.
 Environments are located in a folder named after the environment and are defined in a ``spack.yaml`` file.
 For ICON, they are located in ``config/cscs/spack/<version>/<machine>_<target>_<compiler>``.
-They work with a special Spack tag, that is provided in the ICON repository at ``config/cscs/SPACK_TAG*``.
+They work with a special Spack tag, that is provided in the ICON repository at ``config/cscs/SPACK_TAG_*``.
 So make sure you clone Spack with the specified tag.
 
 ..  tip::
@@ -115,7 +115,7 @@ Example to build ICON for CPU with NVHPC:
 
 .. code-block:: console
 
-    $ SPACK_TAG=$(cat "config/cscs/SPACK_TAG")
+    $ SPACK_TAG=$(cat "config/cscs/SPACK_TAG_DAINT")
     $ spack env activate -d config/cscs/spack/$SPACK_TAG/daint_cpu_nvhpc
     $ spack install
 
