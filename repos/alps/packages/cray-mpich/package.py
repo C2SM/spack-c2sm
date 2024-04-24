@@ -4,89 +4,60 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 import os
+import platform
 
 import spack.compilers
 from spack.package import *
 
+_versions = {
+    "8.1.29": {
+        "Linux-aarch64": "2fc5d1f5743f9cecc0b5dbf13355c25014f96db2386b5c2c2d8495a57b279381",
+    },
+    "8.1.28": {
+        "Linux-aarch64": "dfd6c685adfbf070fe9d546d95b31e108ee7089a738447fa7326973a3e696e8d",
+        "Linux-x86_64": "55a0a068bd8bff14f302c5371d7e2b4cf732d5c1ec875bb03e375644e1a6beab",
+    },
+    "8.1.27": {
+        "Linux-x86_64": "5d59cc69b7ae2ef692ae49843bb2c7a44b5a8478d72eaf2ab1f1f6c5983eee0b"
+    },
+    "8.1.26": {
+        "Linux-x86_64": "d308cf3e254ce5873af6caee5ec683a397fed5ce92975f57e5c9215a98d8edad"
+    },
+    "8.1.25": {
+        "Linux-x86_64": "024ab0c4526670a37df7e2995172ba264454fd69c05d8ffe140c9e519397a65c"
+    },
+    "8.1.24": {
+        "Linux-x86_64": "2c3fa339511ed822892e112d3e4d5a39a634d00a31cf22e02ce843f0efcc5ae8"
+    },
+    "8.1.23": {
+        "Linux-x86_64": "ed7ff286ede30ea96dede4c53aa2ef98e8090c988a0bea764cd505ba5fcc0520"
+    },
+    "8.1.21": {
+        "Linux-x86_64": "5fda115f356c26e5d9f8cc68fe578e954a70edd10ebf007182d945345886b61a"
+    },
+    "8.1.18": {
+        "Linux-x86_64": "f7feafd204502d0dab449ff22da138c933ec22d7de3d5e30fbb9a62fc9cdf237"
+    },
+}
+
 
 class CrayMpich(Package):
     """Install cray-mpich as a binary package"""
+
     """Intended to override the main cray-mpich"""
 
     homepage = "https://www.hpe.com/us/en/compute/hpc/hpc-software.html"
-    url = "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.18.4-gcc.tar.gz"
-    maintainers = ["haampie"]
-
-    version(
-        "8.1.25-gcc",
-        sha256=
-        "95a8a161dc9704ea7b971dc8c1b7ec4d63de57e2f6932f0aa3d1ff1d73899765",
-        url=
-        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.25-gcc.tar.gz",
-    )
-    version(
-        "8.1.25-nvhpc",
-        sha256=
-        "7a89a3f5d35538a4f7984c1403ca888e1b018485597318eaefa4639341e1eb27",
-        url=
-        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.25-nvhpc.tar.gz",
-    )
-    version(
-        "8.1.24-gcc",
-        sha256=
-        "3da0e421c3faaadbe18e57dd033b0ec6513e0d9ed7fbfa77f05a02bada4cd483",
-        url=
-        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.24-gcc.tar.gz",
-    )
-    version(
-        "8.1.24-nvhpc",
-        sha256=
-        "1b507f4e9150cf188a0571aad0d190fc8ee981def1d6198c998673d73828ed6f",
-        url=
-        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.24-nvhpc.tar.gz",
-    )
-    version(
-        "8.1.23-gcc",
-        sha256=
-        "2d1dfda811848d278548b0d7735f17341c70380dbf7f91dc680e5afcfb5e0038",
-        url=
-        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.23-gcc.tar.gz",
-    )
-    version(
-        "8.1.23-nvhpc",
-        sha256=
-        "1dd9b161c538dbac564ecff6f1552220ba40dcc9436dc855087438f29861eba1",
-        url=
-        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.23-nvhpc.tar.gz",
-    )
-    version(
-        "8.1.21.1-gcc",
-        sha256=
-        "0a6852ebf06afd249285fd09566e8489300cba96ad66e90c40df36b6af9a631e",
-        url=
-        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.21.1-gcc.tar.gz",
-    )
-    version(
-        "8.1.21.1-nvhpc",
-        sha256=
-        "791b39f2ecb933060abaa8c8704e71da01c6962c4211cc99d12b9d964e9be4cb",
-        url=
-        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.21.1-nvhpc.tar.gz",
-    )
-    version(
-        "8.1.18.4-gcc",
-        sha256=
-        "ea7cb593abb3d86174f10a38ea5a840d8601ade6477013a0ade69c5ceada06c1",
-        url=
-        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.18.4-gcc.tar.gz",
-    )
-    version(
-        "8.1.18.4-nvhpc",
-        sha256=
-        "3b7886b0346bce13a6227b2d987d5eedca746347daa3297bc076d3a6f630b64d",
-        url=
-        "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.18.4-nvhpc.tar.gz",
-    )
+    url = "https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-8.1.26.tar.gz"
+    #maintainers = ["bcumming"]
+    for ver, packages in _versions.items():
+        key = "{0}-{1}".format(platform.system(), platform.machine())
+        sha = packages.get(key)
+        if sha:
+            version(
+                ver,
+                sha256=sha,
+                url=f"https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-mpich-{ver}.{platform.machine()}.tar.gz",
+            )
 
     variant("cuda", default=False)
     variant("rocm", default=False)
@@ -97,95 +68,30 @@ class CrayMpich(Package):
 
     # Fix up binaries with patchelf.
     depends_on("patchelf", type="build")
-    with when("+cuda"):
-        # libcudart.so.11.0
-        depends_on("cuda@11.0:11", type="link")
 
-    with when("+rocm"):
-        # libamdhip64.so.5
-        depends_on("hip@5:", type="link")
-        # libhsa-runtime64.so.1
-        depends_on("hsa-rocr-dev", type="link")
+    for ver in [
+        "8.1.18",
+        "8.1.21",
+        "8.1.23",
+        "8.1.24",
+        "8.1.25",
+        "8.1.26",
+        "8.1.27",
+        "8.1.28",
+        "8.1.29",
+    ]:
+        with when("+cuda"):
+            depends_on(f"cray-gtl@{ver} +cuda", type="link", when="@" + ver)
+        with when("+rocm"):
+            depends_on(f"cray-gtl@{ver} +rocm", type="link", when="@" + ver)
 
-    # libfabric.so.1
     depends_on("libfabric@1:", type="link")
 
-    with when("@8.1.25-gcc"):
-        # libgfortran.so.5
-        conflicts("%gcc@:7")
-        for __compiler in spack.compilers.supported_compilers():
-            if __compiler != "gcc":
-                conflicts("%{}".format(__compiler), msg="gcc required")
+    depends_on("cray-pmi", type="link")
+    depends_on("xpmem", type="link")
 
-    with when("@8.1.25-nvhpc"):
-        conflicts("%nvhpc@:20.7")
-        conflicts("+rocm")
-        conflicts("~cuda")
-        for __compiler in spack.compilers.supported_compilers():
-            if __compiler != "nvhpc":
-                conflicts("%{}".format(__compiler), msg="nvhpc required")
-
-    with when("@8.1.24-gcc"):
-        # libgfortran.so.5
-        conflicts("%gcc@:7")
-        for __compiler in spack.compilers.supported_compilers():
-            if __compiler != "gcc":
-                conflicts("%{}".format(__compiler), msg="gcc required")
-
-    with when("@8.1.24-nvhpc"):
-        conflicts("%nvhpc@:20.7")
-        conflicts("+rocm")
-        conflicts("~cuda")
-        for __compiler in spack.compilers.supported_compilers():
-            if __compiler != "nvhpc":
-                conflicts("%{}".format(__compiler), msg="nvhpc required")
-
-    with when("@8.1.23-gcc"):
-        # libgfortran.so.5
-        conflicts("%gcc@:7")
-        for __compiler in spack.compilers.supported_compilers():
-            if __compiler != "gcc":
-                conflicts("%{}".format(__compiler), msg="gcc required")
-
-    with when("@8.1.23-nvhpc"):
-        conflicts("%nvhpc@:20.6")
-        conflicts("+rocm")
-        conflicts("~cuda")
-        for __compiler in spack.compilers.supported_compilers():
-            if __compiler != "nvhpc":
-                conflicts("%{}".format(__compiler), msg="nvhpc required")
-
-    with when("@8.1.21.1-gcc"):
-        # libgfortran.so.5
-        conflicts("%gcc@:7")
-        for __compiler in spack.compilers.supported_compilers():
-            if __compiler != "gcc":
-                conflicts("%{}".format(__compiler), msg="gcc required")
-
-    with when("@8.1.21.1-nvhpc"):
-        conflicts("%nvhpc@:20.6")
-        conflicts("+rocm")
-        conflicts("~cuda")
-        for __compiler in spack.compilers.supported_compilers():
-            if __compiler != "nvhpc":
-                conflicts("%{}".format(__compiler), msg="nvhpc required")
-
-    with when("@8.1.18.4-gcc"):
-        # libgfortran.so.5
-        conflicts("%gcc@:7")
-        for __compiler in spack.compilers.supported_compilers():
-            if __compiler != "gcc":
-                conflicts("%{}".format(__compiler), msg="gcc required")
-
-    with when("@8.1.18.4-nvhpc"):
-        conflicts("%nvhpc@:20.6")
-        conflicts("+rocm")
-        conflicts("~cuda")
-        for __compiler in spack.compilers.supported_compilers():
-            if __compiler != "nvhpc":
-                conflicts("%{}".format(__compiler), msg="nvhpc required")
-
-    # TODO: libpals.so.0? no clue where it comes from.
+    conflicts("%gcc@:7")
+    conflicts("%gcc@:11", when="@8.1.28:")
 
     def setup_run_environment(self, env):
         env.set("MPICC", join_path(self.prefix.bin, "mpicc"))
@@ -223,7 +129,10 @@ class CrayMpich(Package):
             return False
 
     def install(self, spec, prefix):
-        install_tree(".", prefix)
+        if "%nvhpc" in self.spec:
+            install_tree("mpich-nvhpc", prefix)
+        elif "%gcc" in self.spec:
+            install_tree("mpich-gcc", prefix)
 
     @run_after("install")
     def fixup_binaries(self):
@@ -234,77 +143,47 @@ class CrayMpich(Package):
                 f = os.path.join(root, name)
                 if not self.should_patch(f):
                     continue
-                patchelf("--force-rpath",
-                         "--set-rpath",
-                         rpath,
-                         f,
-                         fail_on_error=False)
-                # The C compiler wrapper can fail because libmpi_gtl_cuda refers to the symbol
-                # __gxx_personality_v0 but wasn't linked against libstdc++.
-                if "libmpi_gtl_cuda.so" in str(f):
-                    patchelf("--add-needed",
-                             "libstdc++.so",
-                             f,
-                             fail_on_error=False)
+                patchelf("--force-rpath", "--set-rpath", rpath, f, fail_on_error=False)
+                patchelf("--add-needed", "libxpmem.so", f, fail_on_error=False)
+                if "+cuda" in self.spec:
+                    patchelf("--add-needed", "libmpi_gtl_cuda.so", f, fail_on_error=False)
+                if "+rocm" in self.spec:
+                    patchelf("--add-needed", "libmpi_gtl_hsa.so", f, fail_on_error=False)
 
     @run_after("install")
     def fixup_compiler_paths(self):
-        filter_file("@@CC@@",
-                    self.compiler.cc,
-                    self.prefix.bin.mpicc,
-                    string=True)
-        filter_file("@@CXX@@",
-                    self.compiler.cxx,
-                    self.prefix.bin.mpicxx,
-                    string=True)
-        filter_file("@@FC@@",
-                    self.compiler.fc,
-                    self.prefix.bin.mpifort,
-                    string=True)
+        filter_file("@@CC@@", self.compiler.cc, self.prefix.bin.mpicc, string=True)
+        filter_file("@@CXX@@", self.compiler.cxx, self.prefix.bin.mpicxx, string=True)
+        filter_file("@@FC@@", self.compiler.fc, self.prefix.bin.mpifort, string=True)
 
-        filter_file("@@PREFIX@@",
-                    self.prefix,
-                    self.prefix.bin.mpicc,
-                    string=True)
-        filter_file("@@PREFIX@@",
-                    self.prefix,
-                    self.prefix.bin.mpicxx,
-                    string=True)
-        filter_file("@@PREFIX@@",
-                    self.prefix,
-                    self.prefix.bin.mpifort,
-                    string=True)
+        filter_file("@@PREFIX@@", self.prefix, self.prefix.bin.mpicc, string=True)
+        filter_file("@@PREFIX@@", self.prefix, self.prefix.bin.mpicxx, string=True)
+        filter_file("@@PREFIX@@", self.prefix, self.prefix.bin.mpifort, string=True)
 
         # link with the relevant gtl lib
         if "+cuda" in self.spec:
-            gtl_library = "-lmpi_gtl_cuda"
+            lpath = self.spec["cray-gtl"].prefix.lib
+            gtl_library = f"-L{lpath} -Wl,-rpath,{lpath} -lmpi_gtl_cuda"
         elif "+rocm" in self.spec:
-            gtl_library = "-lmpi_gtl_hsa"
+            lpath = self.spec["cray-gtl"].prefix.lib
+            gtl_library = f"-L{lpath} -Wl,-rpath,{lpath}  -lmpi_gtl_hsa"
         else:
             gtl_library = ""
-
-        filter_file("@@GTL_LIBRARY@@",
-                    gtl_library,
-                    self.prefix.bin.mpicc,
-                    string=True)
-        filter_file("@@GTL_LIBRARY@@",
-                    gtl_library,
-                    self.prefix.bin.mpicxx,
-                    string=True)
-        filter_file("@@GTL_LIBRARY@@",
-                    gtl_library,
-                    self.prefix.bin.mpifort,
-                    string=True)
+        print("==== GTL_LIBRARY", gtl_library)
+        filter_file("@@GTL_LIBRARY@@", gtl_library, self.prefix.bin.mpicc, string=True)
+        filter_file("@@GTL_LIBRARY@@", gtl_library, self.prefix.bin.mpicxx, string=True)
+        filter_file(
+            "@@GTL_LIBRARY@@", gtl_library, self.prefix.bin.mpifort, string=True
+        )
 
     @property
     def headers(self):
         hdrs = find_headers("mpi", self.prefix.include, recursive=True)
-        hdrs += find_headers("cray_version",
-                             self.prefix.include,
-                             recursive=True)  # cray_version.h
+        hdrs += find_headers(
+            "cray_version", self.prefix.include, recursive=True
+        )  # cray_version.h
         # cray-mpich depends on cray-pmi
-        hdrs += find_headers("pmi", self.prefix.include,
-                             recursive=True)  # See cray-pmi package
+        # hdrs += find_headers("pmi", self.prefix.include, recursive=True) # See cray-pmi package
         hdrs.directories = os.path.dirname(hdrs[0])
         return hdrs
 
@@ -315,23 +194,16 @@ class CrayMpich(Package):
         libraries = ["libmpi", "libmpich"]
 
         if "f77" in query_parameters:
-            libraries.extend(
-                ["libmpifort", "libmpichfort", "libfmpi", "libfmpich"])
+            libraries.extend(["libmpifort", "libmpichfort", "libfmpi", "libfmpich"])
 
         if "f90" in query_parameters:
             libraries.extend(["libmpif90", "libmpichf90"])
-
-        if "+cuda" in self.spec:
-            libraries.append("libmpi*cuda")
-
-        if "+rocm" in self.spec:
-            libraries.append("libmpi*hsa")
 
         libs = []
         for lib_folder in [self.prefix.lib, self.prefix.lib64]:
             libs += find_libraries(libraries, root=lib_folder, recursive=True)
             # cray-mpich depends on cray-pmi
-            libs += find_libraries("libpmi", root=lib_folder, recursive=True)
+            # libs += find_libraries("libpmi", root=lib_folder, recursive=True)
             libs += find_libraries("libopa", root=lib_folder, recursive=True)
             libs += find_libraries("libmpl", root=lib_folder, recursive=True)
 
