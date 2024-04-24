@@ -74,7 +74,8 @@ In order to install software with ``spack dev-build``, one needs a
 local source code.  Spack will then compile the code as it is locally
 present. Contrary to ``spack install``, the version suffix
 (``@master``, ``@v2.7.9``, etc.) does not have any effect on the code version compiled,
-since spack will always use the local source.
+since Spack will always use the local source.
+
 Nonetheless, it is important to use the correct version suffix, i.e. ``c2sm-master``
 for all your COSMO versions that build on top of the ``c2sm-master`` branch.
 The same applies to ``c2sm-features`` etc.
@@ -87,7 +88,7 @@ Using the wrong version suffix may break your code.
 
 ..  tip::
     To circumvent the above conflict, you can keep your executable alive in your source folder,
-    but omit the installation phase using ``spack install --until build <your cosmo spec>``.
+    but omit the installation phase using ``spack dev-build --until build <your_spec>``.
 
 Running
 ^^^^^^^

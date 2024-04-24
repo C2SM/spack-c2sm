@@ -162,8 +162,8 @@ software with <code class="docutils literal notranslate"><span class="pre">spack
 local source code.  Spack will then compile the code as it is locally
 present. Contrary to <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span></code>, the version suffix
 (<code class="docutils literal notranslate"><span class="pre">&#64;master</span></code>, <code class="docutils literal notranslate"><span class="pre">&#64;v2.7.9</span></code>, etc.) does not have any effect on the code version compiled,
-since spack will always use the local source.
-Nonetheless, it is important to use the correct version suffix, i.e. <code class="docutils literal notranslate"><span class="pre">c2sm-master</span></code>
+since Spack will always use the local source.</p>
+<p>Nonetheless, it is important to use the correct version suffix, i.e. <code class="docutils literal notranslate"><span class="pre">c2sm-master</span></code>
 for all your COSMO versions that build on top of the <code class="docutils literal notranslate"><span class="pre">c2sm-master</span></code> branch.
 The same applies to <code class="docutils literal notranslate"><span class="pre">c2sm-features</span></code> etc.
 The reason for this is that there are some patches Spack applies based on the version suffix.
@@ -176,7 +176,7 @@ Spack will tell you that this particular spec is already installed.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>To circumvent the above conflict, you can keep your executable alive in your source folder,
-but omit the installation phase using <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span> <span class="pre">--until</span> <span class="pre">build</span> <span class="pre">&lt;your</span> <span class="pre">cosmo</span> <span class="pre">spec&gt;</span></code>.</p>
+but omit the installation phase using <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">dev-build</span> <span class="pre">--until</span> <span class="pre">build</span> <span class="pre">&lt;your_spec&gt;</span></code>.</p>
 </div>
 </section>
 </section>
