@@ -14,7 +14,7 @@ Enter the root of your source repository and execute:
 
 .. code-block:: console
 
-    $ spack dev-build  <package> @develop <variant>
+    $ spack dev-build --until build <package> @<version>
 
 This will install the package as is. The downside of this approach is that
 you need to go through all phases of a package build.
