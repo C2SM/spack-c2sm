@@ -17,7 +17,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'C2SM Spack'
-copyright = '2020-2023, C2SM'
+copyright = '2020-2024, C2SM'
 author = 'Spack Administrators'
 
 # -- General configuration ---------------------------------------------------
@@ -48,12 +48,7 @@ copybutton_prompt_is_regexp = True
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-#
-#html_theme = 'groundwork'
-#html_theme_path, html_theme, needs_sphinx = set_psphinxtheme('p-green')
-#html_theme = 'karma_sphinx_theme'
 html_theme = 'sphinx_rtd_theme'
-#html_theme = 'p-main_theme'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
