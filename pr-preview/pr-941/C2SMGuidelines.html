@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -16,9 +16,9 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="_static/clipboard.min.js?v=a7894cd8"></script>
         <script src="_static/copybutton.js?v=a5fa425f"></script>
     <script src="_static/js/theme.js"></script>
@@ -97,7 +97,7 @@
            <div itemprop="articleBody">
              
   <section id="c2sm-guidelines-for-spack">
-<h1>C2SM Guidelines for Spack<a class="headerlink" href="#c2sm-guidelines-for-spack" title="Permalink to this heading"></a></h1>
+<h1>C2SM Guidelines for Spack<a class="headerlink" href="#c2sm-guidelines-for-spack" title="Link to this heading"></a></h1>
 <p>Spack enables users to install software in a very user-friendly way,
 for example by allowing different versions or specifications
 of the same package to be installed simultaneously, or installing
@@ -107,12 +107,12 @@ version/specification being installed. For this reason, C2SM has
 the following guidelines for building, running and installing your
 libraries and executables.</p>
 <section id="building">
-<h2>Building<a class="headerlink" href="#building" title="Permalink to this heading"></a></h2>
+<h2>Building<a class="headerlink" href="#building" title="Link to this heading"></a></h2>
 <p>There are two possible ways of building software with Spack:
 <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span></code> and  <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">dev-build</span></code>.
 Both are good, but have some special features that need to be taken into account.</p>
 <section id="option-1-spack-install">
-<h3>Option 1: spack install<a class="headerlink" href="#option-1-spack-install" title="Permalink to this heading"></a></h3>
+<h3>Option 1: spack install<a class="headerlink" href="#option-1-spack-install" title="Link to this heading"></a></h3>
 <p>Every <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span></code> command needs a version suffix,
 i.e. <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span> <span class="pre">&lt;package&gt;&#64;&lt;version-suffix&gt;</span></code>
 This version-suffix can have different meanings:</p>
@@ -157,7 +157,7 @@ software with <code class="docutils literal notranslate"><span class="pre">spack
 </div>
 </section>
 <section id="option-2-spack-dev-build">
-<h3>Option 2: spack dev-build<a class="headerlink" href="#option-2-spack-dev-build" title="Permalink to this heading"></a></h3>
+<h3>Option 2: spack dev-build<a class="headerlink" href="#option-2-spack-dev-build" title="Link to this heading"></a></h3>
 <p>In order to install software with <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">dev-build</span></code>, one needs a
 local source code.  Spack will then compile the code as it is locally
 present. Contrary to <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span></code>, the version suffix
@@ -186,12 +186,12 @@ or uninstall and rebuild them.</p>
 </section>
 </section>
 <section id="running">
-<h2>Running<a class="headerlink" href="#running" title="Permalink to this heading"></a></h2>
+<h2>Running<a class="headerlink" href="#running" title="Link to this heading"></a></h2>
 <p>When used properly, Spack is able to manage many different
 configurations of a package along with the corresponding
 run environment.</p>
 <section id="load-run-environment-of-a-package">
-<h3>Load run environment of a package<a class="headerlink" href="#load-run-environment-of-a-package" title="Permalink to this heading"></a></h3>
+<h3>Load run environment of a package<a class="headerlink" href="#load-run-environment-of-a-package" title="Link to this heading"></a></h3>
 <p>Spack provides the command <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">load</span></code> to load an installation into your environment.
 This could either be a Python installation or required variables that
 a specific binary needs to run correctly. There are two different ways of using it
@@ -223,7 +223,7 @@ executions of an executable installed by Spack!</p>
 </section>
 </section>
 <section id="spack-in-scripts">
-<h2>Spack in scripts<a class="headerlink" href="#spack-in-scripts" title="Permalink to this heading"></a></h2>
+<h2>Spack in scripts<a class="headerlink" href="#spack-in-scripts" title="Link to this heading"></a></h2>
 <p>The Spack commands are rather tailored for interacive use. For example,
 it is very possible for commands such as <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">find</span></code> or <code class="docutils literal notranslate"><span class="pre">spack</span>
 <span class="pre">location</span></code> to complain about multiple potential installed <code class="docutils literal notranslate"><span class="pre">SPECS</span></code> satisfying
