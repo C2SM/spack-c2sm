@@ -111,7 +111,7 @@ To install the environment and so ICON, type
     
     $ spack install
 
-Example to build ICON for CPU with NVHPC:
+Example to build ICON for CPU with NVHPC on Piz Daint:
 
 .. code-block:: console
 
