@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -16,9 +16,9 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="_static/clipboard.min.js?v=a7894cd8"></script>
         <script src="_static/copybutton.js?v=a5fa425f"></script>
     <script src="_static/js/theme.js"></script>
@@ -92,9 +92,9 @@
            <div itemprop="articleBody">
              
   <section id="quick-start">
-<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading"></a></h1>
+<h1>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h1>
 <section id="at-cscs-daint-tsa-balfrin">
-<h2>At CSCS (Daint, Tsa, Balfrin)<a class="headerlink" href="#at-cscs-daint-tsa-balfrin" title="Permalink to this heading"></a></h2>
+<h2>At CSCS (Daint, Tsa, Balfrin)<a class="headerlink" href="#at-cscs-daint-tsa-balfrin" title="Link to this heading"></a></h2>
 <p>To set up a Spack instance, clone the repository using a specific Spack tag (latest <code class="docutils literal notranslate"><span class="pre">SPACK_TAG=v0.20.1.5</span></code>).</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>--recurse-submodules<span class="w"> </span>--shallow-submodules<span class="w"> </span>-b<span class="w"> </span><span class="nv">$SPACK_TAG</span><span class="w"> </span>https://github.com/C2SM/spack-c2sm.git
 </pre></div>
@@ -110,7 +110,7 @@ You can force a machine with an argument. The name has to match a folder in sysc
 </div>
 </section>
 <section id="local-machines-and-containers">
-<h2>Local machines and Containers<a class="headerlink" href="#local-machines-and-containers" title="Permalink to this heading"></a></h2>
+<h2>Local machines and Containers<a class="headerlink" href="#local-machines-and-containers" title="Link to this heading"></a></h2>
 <p>Spack can autodetect compilers and pre-installed packages with</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>compiler<span class="w"> </span>find
 <span class="gp">$ </span>spack<span class="w"> </span>external<span class="w"> </span>find<span class="w"> </span>--all
@@ -118,7 +118,7 @@ You can force a machine with an argument. The name has to match a folder in sysc
 </div>
 </section>
 <section id="use-packages">
-<h2>Use packages<a class="headerlink" href="#use-packages" title="Permalink to this heading"></a></h2>
+<h2>Use packages<a class="headerlink" href="#use-packages" title="Link to this heading"></a></h2>
 <p>To get information about a package, query Spack</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>info<span class="w"> </span>&lt;package&gt;
 <span class="gp"># </span>e.g.
@@ -149,7 +149,7 @@ You can force a machine with an argument. The name has to match a folder in sysc
 </div>
 </section>
 <section id="icon">
-<h2>ICON<a class="headerlink" href="#icon" title="Permalink to this heading"></a></h2>
+<h2>ICON<a class="headerlink" href="#icon" title="Link to this heading"></a></h2>
 <p>ICON is built using environments.
 Environments are located in a folder named after the environment and are defined in a <code class="docutils literal notranslate"><span class="pre">spack.yaml</span></code> file.
 For ICON, they are located in <code class="docutils literal notranslate"><span class="pre">config/cscs/spack/&lt;version&gt;/&lt;machine&gt;_&lt;target&gt;_&lt;compiler&gt;</span></code>.
@@ -172,7 +172,7 @@ with <cite>openssl</cite> and <cite>git</cite> appears.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>install
 </pre></div>
 </div>
-<p>Example to build ICON for CPU with NVHPC:</p>
+<p>Example to build ICON for CPU with NVHPC on Piz Daint:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">SPACK_TAG</span><span class="o">=</span><span class="k">$(</span>cat<span class="w"> </span><span class="s2">&quot;config/cscs/SPACK_TAG_DAINT&quot;</span><span class="k">)</span>
 <span class="gp">$ </span>spack<span class="w"> </span>env<span class="w"> </span>activate<span class="w"> </span>-d<span class="w"> </span>config/cscs/spack/<span class="nv">$SPACK_TAG</span>/daint_cpu_nvhpc
 <span class="gp">$ </span>spack<span class="w"> </span>install
@@ -198,7 +198,7 @@ only works if the build-folder is located inside the Git repo of ICON.</p>
 </div>
 </section>
 <section id="cosmo">
-<h2>COSMO<a class="headerlink" href="#cosmo" title="Permalink to this heading"></a></h2>
+<h2>COSMO<a class="headerlink" href="#cosmo" title="Link to this heading"></a></h2>
 <p>Building COSMO is not supported anymore starting with spack-c2sm v0.20.1.0!</p>
 </section>
 </section>

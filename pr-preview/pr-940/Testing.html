@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -16,9 +16,9 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="_static/clipboard.min.js?v=a7894cd8"></script>
         <script src="_static/copybutton.js?v=a5fa425f"></script>
     <script src="_static/js/theme.js"></script>
@@ -92,9 +92,9 @@
            <div itemprop="articleBody">
              
   <section id="testing">
-<h1>Testing<a class="headerlink" href="#testing" title="Permalink to this heading"></a></h1>
+<h1>Testing<a class="headerlink" href="#testing" title="Link to this heading"></a></h1>
 <section id="test-packages-pr-mr-ci-cd">
-<h2>Test packages (PR/MR/CI/CD)<a class="headerlink" href="#test-packages-pr-mr-ci-cd" title="Permalink to this heading"></a></h2>
+<h2>Test packages (PR/MR/CI/CD)<a class="headerlink" href="#test-packages-pr-mr-ci-cd" title="Link to this heading"></a></h2>
 <p>You can use spack to test a PR/MR in your CI pipeline.
 This is a common way to do it.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span><span class="nb">cd</span><span class="w"> </span>into<span class="w"> </span>the<span class="w"> </span>packages<span class="w"> </span>repo!
@@ -110,13 +110,13 @@ This is a common way to do it.</p>
 </div>
 </section>
 <section id="pull-request-testing-for-spack-c2sm-on-github">
-<h2>Pull Request Testing for spack-c2sm on GitHub<a class="headerlink" href="#pull-request-testing-for-spack-c2sm-on-github" title="Permalink to this heading"></a></h2>
+<h2>Pull Request Testing for spack-c2sm on GitHub<a class="headerlink" href="#pull-request-testing-for-spack-c2sm-on-github" title="Link to this heading"></a></h2>
 <p>To test a PR, create a comment <code class="docutils literal notranslate"><span class="pre">launch</span> <span class="pre">jenkins</span> <span class="pre">[&lt;packages&gt;]</span> <span class="pre">[&lt;machines&gt;]</span></code>.</p>
 <p>It will test the listed packages on the listed machines.
 No package means all packages. No machine means all machines.
 The order is irrelevant.</p>
 <section id="examples">
-<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h3>
+<h3>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">launch</span> <span class="pre">jenkins</span> <span class="pre">int2lm</span> <span class="pre">daint</span></code> tests int2lm on daint.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">launch</span> <span class="pre">jenkins</span> <span class="pre">cosmo</span> <span class="pre">int2lm</span> <span class="pre">daint</span> <span class="pre">tsa</span></code> tests</p>
