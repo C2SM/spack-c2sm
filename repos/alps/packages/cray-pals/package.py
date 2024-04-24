@@ -11,33 +11,40 @@ from spack.package import *
 
 _versions = {
     "1.3.2": {
-        "Linux-aarch64": "f7b97a10cc8dde17e804f79235ab1aa98f83e0c7c178e58d6ca3e9170f89c6da",
-        "Linux-x86_64": "deea749476de0f545b31fcd0912f133d7ba60b84f673e47d8b4b15d5a117254c",
+        "Linux-aarch64":
+        "f7b97a10cc8dde17e804f79235ab1aa98f83e0c7c178e58d6ca3e9170f89c6da",
+        "Linux-x86_64":
+        "deea749476de0f545b31fcd0912f133d7ba60b84f673e47d8b4b15d5a117254c",
     },
     "1.2.12": {
-        "Linux-x86_64": "c94d29c09ed650c4e98a236df7ced77f027bdf987919a91a1a1382f704a85bb9"
+        "Linux-x86_64":
+        "c94d29c09ed650c4e98a236df7ced77f027bdf987919a91a1a1382f704a85bb9"
     },
     "1.2.11": {
-        "Linux-x86_64": "e1af09e39d70e28381de806548c6cb29c23abf891a078f46eb71c301a3f0994c"
+        "Linux-x86_64":
+        "e1af09e39d70e28381de806548c6cb29c23abf891a078f46eb71c301a3f0994c"
     },
     "1.2.9": {
-        "Linux-x86_64": "ceec6f99bea9df3f7f657a7df499445e62976064dda3f3e437d61e895ec31601"
+        "Linux-x86_64":
+        "ceec6f99bea9df3f7f657a7df499445e62976064dda3f3e437d61e895ec31601"
     },
     "1.2.5": {
-        "Linux-x86_64": "d7269ed8f4deab816e3d4006090ec68b25ccc585200d16728ed9a914baf4d9bf"
+        "Linux-x86_64":
+        "d7269ed8f4deab816e3d4006090ec68b25ccc585200d16728ed9a914baf4d9bf"
     },
     "1.2.4": {
-        "Linux-x86_64": "a253939585bad2bb9061b98be6e517f18bda0602ecfd38f75c734a01d12003f2"
+        "Linux-x86_64":
+        "a253939585bad2bb9061b98be6e517f18bda0602ecfd38f75c734a01d12003f2"
     },
     "1.2.0": {
-        "Linux-x86_64": "6f5c71aa4dd2f591b899ea693cae7a5319d859f69d8c46b7ee244fed8c094d10"
+        "Linux-x86_64":
+        "6f5c71aa4dd2f591b899ea693cae7a5319d859f69d8c46b7ee244fed8c094d10"
     },
 }
 
 
 class CrayPals(Package):
     """Install cray-pals"""
-
     """Intended to override the main cray-pals"""
 
     homepage = "https://www.hpe.com/us/en/compute/hpc/hpc-software.html"
@@ -51,7 +58,8 @@ class CrayPals(Package):
             version(
                 ver,
                 sha256=sha,
-                url=f"https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-pals-{ver}.{platform.machine()}.tar.gz",
+                url=
+                f"https://jfrog.svc.cscs.ch/artifactory/cray-mpich/cray-pals-{ver}.{platform.machine()}.tar.gz",
             )
 
     # Fix up binaries with patchelf.
@@ -86,4 +94,8 @@ class CrayPals(Package):
                 f = os.path.join(root, name)
                 if not self.should_patch(f):
                     continue
-                patchelf("--force-rpath", "--set-rpath", rpath, f, fail_on_error=False)
+                patchelf("--force-rpath",
+                         "--set-rpath",
+                         rpath,
+                         f,
+                         fail_on_error=False)

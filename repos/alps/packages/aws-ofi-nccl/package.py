@@ -18,12 +18,17 @@ class AwsOfiNccl(AutotoolsPackage):
     #maintainers("bvanessen")
 
     version("master", branch="master")
-    version("v1.7.4",
-            sha256="cca529da330d3155ae1502c21365d62159254bca6bfc0482afd35e7eaa927090",
-            url="https://github.com/aws/aws-ofi-nccl/releases/download/v1.7.4-aws/aws-ofi-nccl-1.7.4-aws.tar.gz",
+    version(
+        "v1.7.4",
+        sha256=
+        "cca529da330d3155ae1502c21365d62159254bca6bfc0482afd35e7eaa927090",
+        url=
+        "https://github.com/aws/aws-ofi-nccl/releases/download/v1.7.4-aws/aws-ofi-nccl-1.7.4-aws.tar.gz",
     )
 
-    variant("trace", default=False, description="Enable printing trace messages")
+    variant("trace",
+            default=False,
+            description="Enable printing trace messages")
     variant("tests", default=False, description="Build tests")
 
     depends_on("libfabric")
@@ -51,14 +56,12 @@ class AwsOfiNccl(AutotoolsPackage):
 
         # Always set configure's external paths to use the Spack
         # provided dependencies
-        args.extend(
-            [
-                "--with-libfabric={0}".format(spec["libfabric"].prefix),
-                "--with-cuda={0}".format(spec["cuda"].prefix),
-                "--with-nccl={0}".format(spec["nccl"].prefix),
-                "--with-mpi={0}".format(spec["mpi"].prefix),
-            ]
-        )
+        args.extend([
+            "--with-libfabric={0}".format(spec["libfabric"].prefix),
+            "--with-cuda={0}".format(spec["cuda"].prefix),
+            "--with-nccl={0}".format(spec["nccl"].prefix),
+            "--with-mpi={0}".format(spec["mpi"].prefix),
+        ])
 
         args.extend(self.enable_or_disable("trace"))
         args.extend(self.enable_or_disable("tests"))

@@ -553,7 +553,11 @@ class Cuda(Package):
         pkg = packages.get(key)
         if pkg:
             if ver == preferred_ver:
-                version(ver, sha256=pkg[0], url=pkg[1], expand=False, preferred=True)
+                version(ver,
+                        sha256=pkg[0],
+                        url=pkg[1],
+                        expand=False,
+                        preferred=True)
             else:
                 version(ver, sha256=pkg[0], url=pkg[1], expand=False)
 
@@ -568,14 +572,15 @@ class Cuda(Package):
     # Mojave support -- only macOS High Sierra 10.13 is supported.
     conflicts("arch=darwin-mojave-x86_64")
 
-    variant(
-        "dev", default=False, description="Enable development dependencies, i.e to use cuda-gdb"
-    )
+    variant("dev",
+            default=False,
+            description="Enable development dependencies, i.e to use cuda-gdb")
     variant(
         "allow-unsupported-compilers",
         default=False,
         sticky=True,
-        description="Allow unsupported host compiler and CUDA version combinations",
+        description=
+        "Allow unsupported host compiler and CUDA version combinations",
     )
 
     depends_on("libxml2", when="@10.1.243:")
@@ -590,7 +595,8 @@ class Cuda(Package):
     @classmethod
     def determine_version(cls, exe):
         output = Executable(exe)("--version", output=str, error=str)
-        match = re.search(r"Cuda compilation tools, release .*?, V(\S+)", output)
+        match = re.search(r"Cuda compilation tools, release .*?, V(\S+)",
+                          output)
         return match.group(1) if match else None
 
     def setup_build_environment(self, env):
@@ -627,11 +633,9 @@ class Cuda(Package):
                 os.remove("/tmp/cuda-installer.log")
             except OSError:
                 if spec.satisfies("@10.1:"):
-                    tty.die(
-                        "The cuda installer will segfault due to the "
-                        "presence of /tmp/cuda-installer.log "
-                        "please remove the file and try again "
-                    )
+                    tty.die("The cuda installer will segfault due to the "
+                            "presence of /tmp/cuda-installer.log "
+                            "please remove the file and try again ")
         runfile = glob(join_path(self.stage.source_path, "cuda*_linux*"))[0]
 
         # Note: NVIDIA does not officially support many newer versions of
@@ -690,7 +694,10 @@ class Cuda(Package):
 
     @property
     def libs(self):
-        libs = find_libraries("libcudart", root=self.prefix, shared=True, recursive=True)
+        libs = find_libraries("libcudart",
+                              root=self.prefix,
+                              shared=True,
+                              recursive=True)
 
         filtered_libs = []
         # CUDA 10.0 provides Compatability libraries for running newer versions
