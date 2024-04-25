@@ -47,7 +47,7 @@ class Icon(AutotoolsPackage, CudaPackage):
     maintainers = ['jonasjucker', 'dominichofer']
 
     version('develop', submodules=True)
-    version("2024.01", sha256="d9408fdd6a9ebf5990298e9a09c826e8c15b1e79b45be228f7a5670a3091a613", submodules=True)
+    version("2024.01", tag="icon-2024.01", submodules=True)
     version('exclaim-master',
             branch='master',
             git='git@github.com:C2SM/icon-exclaim.git',
@@ -102,7 +102,7 @@ class Icon(AutotoolsPackage, CudaPackage):
     variant('art',
             default=False,
             description='Enable the aerosols and reactive trace component ART')
-    variant('art-gpl'
+    variant('art-gpl',
             default=False,
             description='Enable GPL-licensed code parts of the ART component'
             )
