@@ -47,7 +47,7 @@ class Icon(AutotoolsPackage, CudaPackage):
     maintainers = ['jonasjucker', 'dominichofer']
 
     version('develop', submodules=True)
-    version("2024.01", tag="icon-2024.01", submodules=True)
+    version("2024.01-1", tag="icon-2024.01-1", submodules=True)
     version('exclaim-master',
             branch='master',
             git='git@github.com:C2SM/icon-exclaim.git',
