@@ -332,17 +332,25 @@ class GridToolsTest(unittest.TestCase):
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 class IconTest(unittest.TestCase):
 
-    def test_install_2_6_6_gcc(self):
-        spack_install_and_test('icon @2.6.6 %gcc')
+    def test_install_2024_1_gcc(self):
+        spack_install_and_test('icon @2024.1 %gcc')
 
     @pytest.mark.no_daint
-    def test_install_2_6_6_nvhpc(self):
-        spack_install_and_test('icon @2.6.6 %nvhpc')
+    def test_install_2024_1_nvhpc(self):
+        spack_install_and_test('icon @2024.1 %nvhpc')
 
     @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
-    def test_install_nwp_gpu(self):
+    def test_install_conditional_dependencies(self):
+        # +coupling triggers libfyaml, libxml2, netcdf-c
+        # +rttov triggers rttov
+        # serialization=create triggers serialbox
+        # +cdi-pio triggers libcdi-pio, yaxt
+        # +emvorado triggers eccodes, hdf5, zlib
+        # +eccodes-definitions triggers cosmo-eccodes-definitions
+        # +mpi triggers mpi
+        # claw=std triggers claw
         spack_install_and_test(
-            'icon @nwp-master %nvhpc +grib2 +eccodes-definitions +ecrad +art +dace gpu=openacc+cuda +mpi-gpu +realloc-buf +pgi-inlib ~aes ~jsbach ~ocean ~coupling ~rte-rrtmgp ~loop-exchange ~async-io-rma +mixed-precision'
+            'icon @2024.1 %nvhpc +coupling +rttov serialization=create +cdi-pio +emvorado +mpi claw=std'
         )
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
