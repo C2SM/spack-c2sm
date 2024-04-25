@@ -104,12 +104,10 @@ class Icon(AutotoolsPackage, CudaPackage):
             description='Enable the aerosols and reactive trace component ART')
     variant('art-gpl',
             default=False,
-            description='Enable GPL-licensed code parts of the ART component'
-            )
+            description='Enable GPL-licensed code parts of the ART component')
     variant('comin',
             default=False,
-            description='Enable the ICON community interfaces'
-            )
+            description='Enable the ICON community interfaces')
     variant(
         'acm-license',
         default=False,
@@ -192,10 +190,7 @@ class Icon(AutotoolsPackage, CudaPackage):
         description=
         'Enable PGI/NVIDIA cross-file function inlining via an inline library')
     variant('nccl', default=False, description='Enable NCCL for communication')
-    variant('cuda-graphs',
-            default=False,
-            description=
-            'Enable CUDA graphs.')
+    variant('cuda-graphs', default=False, description='Enable CUDA graphs.')
     variant(
         'fcgroup',
         default='none',
@@ -412,12 +407,10 @@ class Icon(AutotoolsPackage, CudaPackage):
             fc_version = self.compiler.version
             if fc_version >= ver(10):
                 flags['ICON_FCFLAGS'].append('-fallow-argument-mismatch')
-                flags['ICON_OCEAN_FCFLAGS'].append(
-                    '-fallow-argument-mismatch')
+                flags['ICON_OCEAN_FCFLAGS'].append('-fallow-argument-mismatch')
                 if '+ecrad' in self.spec:
                     # For externals/ecrad/ifsaux/random_numbers_mix.F90:
-                    flags['ICON_ECRAD_FCFLAGS'].append(
-                        '-fallow-invalid-boz')
+                    flags['ICON_ECRAD_FCFLAGS'].append('-fallow-invalid-boz')
         elif self.compiler.name == 'intel':
             flags['CFLAGS'].extend(
                 ['-g', '-gdwarf-4', '-O3', '-qno-opt-dynamic-align', '-ftz'])
@@ -638,8 +631,7 @@ class Icon(AutotoolsPackage, CudaPackage):
                     'liskov does not support fusing just yet')
 
             flags['LOC_GT4PY'].append(self.spec['py-gt4py'].prefix)
-            flags['LOC_ICON4PY_BIN'].append(
-                self.spec['py-icon4py'].prefix)
+            flags['LOC_ICON4PY_BIN'].append(self.spec['py-icon4py'].prefix)
 
             flags['LOC_ICON4PY_ATM_DYN_ICONAM'].append(
                 self.spec['py-icon4py:atm_dyn_iconam'].headers.directories[0])
@@ -693,8 +685,7 @@ class Icon(AutotoolsPackage, CudaPackage):
         ])
 
         args.extend([
-            '{0}={1}'.format(var, ' '.join(val))
-            for var, val in flags.items()
+            '{0}={1}'.format(var, ' '.join(val)) for var, val in flags.items()
         ])
 
         return args
