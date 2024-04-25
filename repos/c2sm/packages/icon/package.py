@@ -251,7 +251,7 @@ class Icon(AutotoolsPackage, CudaPackage):
     depends_on('rttov~openmp', when='~openmp+rttov')
 
     for x in serialization_values:
-        depends_on('serialbox+fortran~shared',
+        depends_on('serialbox+fortran',
                    when='serialization={0}'.format(x))
 
     depends_on('libcdi-pio+fortran+netcdf', when='+cdi-pio')
@@ -513,12 +513,9 @@ class Icon(AutotoolsPackage, CudaPackage):
         else:
             args.extend([
                 '--enable-serialization={0}'.format(serialization),
-                '--enable-explicit-fpp',
                 'SB2PP={0}'.format(self.spec['serialbox'].pp_ser)
             ])
             libs += self.spec['serialbox:fortran'].libs
-            # static libs from serialbox need libstdc++ to link
-            flags['LIBS'].extend(['-lstdc++ -lstdc++fs'])
 
         if '+cdi-pio' in self.spec:
             libs += self.spec['libcdi-pio:fortran'].libs
