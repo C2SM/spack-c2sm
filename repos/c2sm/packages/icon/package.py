@@ -40,14 +40,14 @@ def check_variant_extra_config_args(extra_config_arg):
 class Icon(AutotoolsPackage, CudaPackage):
     """Icosahedral Nonhydrostatic Weather and Climate Model."""
 
-    homepage = 'https://code.mpimet.mpg.de/projects/iconpublic'
-    url = 'https://gitlab.dkrz.de/icon/icon/-/archive/icon-2.6.6/icon-icon-2.6.6.tar.gz'
+     homepage = "https://www.icon-model.org"
+    url = "https://gitlab.dkrz.de/icon/icon-model/-/archive/icon-2024.01-public/icon-model-icon-2024.01-public.tar.gz"
     git = 'git@gitlab.dkrz.de:icon/icon.git'
 
     maintainers = ['jonasjucker', 'dominichofer']
 
     version('develop', submodules=True)
-    version('2.6.6', tag='icon-2.6.6', submodules=True)
+    version("2024.01", sha256="d9408fdd6a9ebf5990298e9a09c826e8c15b1e79b45be228f7a5670a3091a613", submodules=True)
     version('exclaim-master',
             branch='master',
             git='git@github.com:C2SM/icon-exclaim.git',
@@ -68,9 +68,6 @@ class Icon(AutotoolsPackage, CudaPackage):
     variant('atmo',
             default=True,
             description='Enable the atmosphere component')
-    variant('edmf',
-            default=True,
-            description='Enable the EDMF turbulence component')
     variant('les',
             default=True,
             description='Enable the Large-Eddy Simulation component')
@@ -84,6 +81,7 @@ class Icon(AutotoolsPackage, CudaPackage):
             description='Enable the surface wave component')
     variant('coupling', default=True, description='Enable the coupling')
     variant('aes', default=True, description='Enable the AES physics package')
+    variant('nwp', default=True, description='Enable the NWP physics package')
     variant('ecrad',
             default=False,
             description='Enable usage of the ECMWF radiation scheme')
@@ -104,6 +102,14 @@ class Icon(AutotoolsPackage, CudaPackage):
     variant('art',
             default=False,
             description='Enable the aerosols and reactive trace component ART')
+    variant('art-gpl'
+            default=False,
+            description='Enable GPL-licensed code parts of the ART component'
+            )
+    variant('comin',
+            default=False,
+            description='Enable the ICON community interfaces'
+            )
     variant(
         'acm-license',
         default=False,
@@ -189,7 +195,7 @@ class Icon(AutotoolsPackage, CudaPackage):
     variant('cuda-graphs',
             default=False,
             description=
-            'Enable CUDA graphs. Warning! This is an experimental feature')
+            'Enable CUDA graphs.')
     variant(
         'fcgroup',
         default='none',
@@ -333,7 +339,6 @@ class Icon(AutotoolsPackage, CudaPackage):
 
         for x in [
                 'atmo',
-                'edmf',
                 'les',
                 'upatmo',
                 'ocean',
@@ -341,12 +346,15 @@ class Icon(AutotoolsPackage, CudaPackage):
                 'waves',
                 'coupling',
                 'aes',
+                'nwp',
                 'ecrad',
                 'rte-rrtmgp',
                 'rttov',
                 'dace',
                 'emvorado',
                 'art',
+                'art-gpl',
+                'comin'
                 'acm-license',
                 'mpi',
                 'active-target-sync',
