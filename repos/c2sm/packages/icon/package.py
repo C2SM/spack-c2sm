@@ -354,7 +354,7 @@ class Icon(AutotoolsPackage, CudaPackage):
                 'emvorado',
                 'art',
                 'art-gpl',
-                'comin'
+                'comin',
                 'acm-license',
                 'mpi',
                 'active-target-sync',
