@@ -40,7 +40,7 @@ def check_variant_extra_config_args(extra_config_arg):
 class Icon(AutotoolsPackage, CudaPackage):
     """Icosahedral Nonhydrostatic Weather and Climate Model."""
 
-     homepage = "https://www.icon-model.org"
+    homepage = "https://www.icon-model.org"
     url = "https://gitlab.dkrz.de/icon/icon-model/-/archive/icon-2024.01-public/icon-model-icon-2024.01-public.tar.gz"
     git = 'git@gitlab.dkrz.de:icon/icon.git'
 
