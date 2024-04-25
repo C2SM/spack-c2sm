@@ -62,7 +62,7 @@ class Icon(AutotoolsPackage, CudaPackage):
 
     # The variants' default follow those of ICON
     # as described here
-    # https://gitlab.dkrz.de/icon/icon/-/blob/icon-2.6.6/configure#L1457-1563
+    # https://gitlab.dkrz.de/icon/icon/-/blob/icon-2024.01/configure?ref_type=tags#L1492-1638
 
     # Model Features:
     variant('atmo',
