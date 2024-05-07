@@ -16,6 +16,7 @@ def log_with_spack(command: str,
                    log_filename: str = None,
                    cwd=None,
                    env=None,
+                   uenv=None,
                    srun=False) -> None:
     """
     Executes the given command while spack is loaded and writes the output into the log file.

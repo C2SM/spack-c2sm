@@ -5,8 +5,9 @@ import sys
 import os
 import uuid
 import shutil
-from pathlib import Path
 import inspect
+from filelock import FileLock
+import time
 
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                '..')
@@ -14,6 +15,22 @@ spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 sys.path.append(os.path.normpath(spack_c2sm_path))
 from src import machine_name, log_with_spack, sanitized_filename
 
+@pytest.fixture(scope="session")
+def uenv_v1(tmp_path_factory, worker_id):
+    locked_clone_spack_for_uenv(tmp_path_factory, 'v1')
+    return  'v1'
+
+def locked_clone_spack_for_uenv(tmp_path_factory, uenv):
+    clone_dir = f'spack-{uenv}'
+
+    root_tmp_dir = tmp_path_factory.getbasetemp().parent
+    fn = root_tmp_dir / f'{clone_dir}.lock'
+
+    with FileLock(fn):
+        if not os.path.exists(clone_dir):
+            subprocess.run('git clone --depth 1 --recurse-submodules . ' + clone_dir,
+                            check=True,
+                            shell=True)
 
 def devirtualize_env():
     # pytest is run from a virtual environment that breaks the
@@ -60,6 +77,7 @@ def spack_install(spec: str, log_filename: str = None):
 
 
 def spack_install_and_test(spec: str,
+                           uenv: str = None,
                            log_filename: str = None,
                            split_phases=False):
     """
@@ -68,10 +86,8 @@ def spack_install_and_test(spec: str,
 
     func_name = inspect.currentframe().f_back.f_code.co_name.replace(
         'test_', '')
-    class_name = inspect.currentframe().f_back.f_locals.get(
-        'self', None).__class__.__name__.replace('Test', '')
     if log_filename is None:
-        log_filename = sanitized_filename(class_name + '-' + func_name)
+        log_filename = sanitized_filename(func_name)
 
     command = 'install'
 
@@ -81,23 +97,27 @@ def spack_install_and_test(spec: str,
     log_with_spack(f'spack spec {spec}',
                    'system_test',
                    log_filename,
-                   srun=False)
+                   srun=False,
+                   uenv=uenv)
     if split_phases:
         log_with_spack(
             f'spack {command} --until build --test=root -n -v {spec}',
             'system_test',
             log_filename,
-            srun=True)
+            srun=True,
+            uenv=uenv)
         log_with_spack(
             f'spack {command} --dont-restage --test=root -n -v {spec}',
             'system_test',
             log_filename,
-            srun=False)
+            srun=False,
+            uenv=uenv)
     else:
         log_with_spack(f'spack {command} --test=root -n -v {spec}',
                        'system_test',
                        log_filename,
-                       srun=not spec.startswith('icon '))
+                       srun=not spec.startswith('icon '),
+                       uenv=uenv)
 
 
 def spack_devbuild_and_test(spec: str,
@@ -207,19 +227,19 @@ nvidia_compiler: str = {
 
 
 @pytest.mark.no_tsa  # proj-8.2.1 fails with "./.libs/libproj.so: error: undefined reference to 'curl_easy_setopt'"
-class CdoTest(unittest.TestCase):
+class CdoTest():
 
     def test_install_default(self):
         spack_install_and_test('cdo')
 
 
-class ClangFormatTest(unittest.TestCase):
+class ClangFormatTest():
 
     def test_install_default(self):
         spack_install_and_test('clang-format')
 
 
-class ClawTest(unittest.TestCase):
+class ClawTest():
 
     @pytest.mark.no_daint  # Test #1: junit-tatsu fails
     def test_install_default(self):
@@ -233,7 +253,7 @@ class ClawTest(unittest.TestCase):
 
 @pytest.mark.no_balfrin  # cuda arch is not supported
 @pytest.mark.no_tsa  # irrelevant
-class CosmoDycoreTest(unittest.TestCase):
+class CosmoDycoreTest():
 
     def test_install_version_6_0(self):
         spack_install_and_test('cosmo-dycore @6.0 +cuda', split_phases=True)
@@ -246,7 +266,7 @@ class CosmoDycoreTest(unittest.TestCase):
         spack_install_and_test('cosmo-dycore @6.1 ~cuda', split_phases=True)
 
 
-class CosmoEccodesDefinitionsTest(unittest.TestCase):
+class CosmoEccodesDefinitionsTest():
     # TODO: Add the other versions!
 
     def test_install_version_2_25_0_1(self):
@@ -256,26 +276,26 @@ class CosmoEccodesDefinitionsTest(unittest.TestCase):
         spack_install_and_test('cosmo-eccodes-definitions @2.19.0.7')
 
 
-class EccodesTest(unittest.TestCase):
+class EccodesTest():
     # All the other versions are not the responsibility of spack-c2sm
 
     def test_install_2_19_0(self):
         spack_install('eccodes @2.19.0')
 
 
-class FckitTest(unittest.TestCase):
+class FckitTest():
 
     def test_install_0_9_0(self):
         spack_install_and_test('fckit@0.9.0')
 
 
-class FdbFortranTest(unittest.TestCase):
+class FdbFortranTest():
 
     def test_install(self):
         spack_install_and_test('fdb-fortran')
 
 
-class FlexpartIfsTest(unittest.TestCase):
+class FlexpartIfsTest():
 
     def test_install_10_4_4(self):
         spack_install_and_test('flexpart-ifs @10.4.4')
@@ -285,13 +305,13 @@ class FlexpartIfsTest(unittest.TestCase):
 
 
 @pytest.mark.no_tsa  # No one uses spack for flexpart-cosmo on Tsa
-class FlexpartCosmoTest(unittest.TestCase):
+class FlexpartCosmoTest():
 
     def test_install(self):
         spack_install_and_test('flexpart-cosmo @V8C4.0')
 
 
-class GridToolsTest(unittest.TestCase):
+class GridToolsTest():
 
     def test_install_version_1_1_3_gcc(self):
         spack_install_and_test(f'gridtools @1.1.3 %gcc')
@@ -302,7 +322,7 @@ class GridToolsTest(unittest.TestCase):
 
 
 @pytest.mark.no_tsa  # FDB tests fail on tsa due to 'ucp_context'
-class FdbTest(unittest.TestCase):
+class FdbTest():
 
     def test_install_5_11_17_gcc(self):
         spack_install_and_test('fdb @5.11.17 %gcc')
@@ -313,7 +333,7 @@ class FdbTest(unittest.TestCase):
 
 
 @pytest.mark.no_tsa  # Icon does not run on Tsa
-class IconTest(unittest.TestCase):
+class IconTest():
 
     def test_install_2_6_6_gcc(self):
         spack_install_and_test('icon @2.6.6 %gcc')
@@ -367,14 +387,14 @@ class IconTest(unittest.TestCase):
 
 
 @pytest.mark.no_tsa  # This test is flaky and sometimes fails with: icondelaunay.cpp:29:10: fatal error: version.c: No such file or directory. See issue #781.
-class IconToolsTest(unittest.TestCase):
+class IconToolsTest():
 
     def test_install_2_5_2(self):
         spack_install_and_test('icontools @2.5.2')
 
 
 @pytest.mark.no_tsa  # Not supported on Tsa
-class InferoTest(unittest.TestCase):
+class InferoTest():
 
     def test_install_tf_c(self):
         spack_install_and_test(
@@ -386,7 +406,7 @@ class InferoTest(unittest.TestCase):
 
 
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
-class Int2lmTest(unittest.TestCase):
+class Int2lmTest():
 
     def test_install_version_3_00_gcc(self):
         spack_install('int2lm @int2lm-3.00 %gcc')
@@ -413,34 +433,34 @@ class Int2lmTest(unittest.TestCase):
         )
 
 
-class LibfyamlTest(unittest.TestCase):
+class LibfyamlTest():
 
     def test_install_default(self):
         spack_install('libfyaml')
 
 
-class LibTorchTest(unittest.TestCase):
+class LibTorchTest():
 
     def test_install_default(self):
         spack_install('libtorch')
 
 
 @pytest.mark.no_tsa  # Test is too expensive. It takes over 5h.
-class LibCdiPioTest(unittest.TestCase):
+class LibCdiPioTest():
 
     def test_install_default(self):
         spack_install_and_test('libcdi-pio')
 
 
 @pytest.mark.no_balfrin  # This fails with "BOZ literal constant at (1) cannot appear in an array constructor". https://gcc.gnu.org/onlinedocs/gfortran/BOZ-literal-constants.html
-class LibGrib1Test(unittest.TestCase):
+class LibGrib1Test():
 
     @pytest.mark.serial_only  # locking problem on Tsa in combination with int2lm
     def test_install_version_22_01_2020(self):
         spack_install_and_test('libgrib1 @22-01-2020')
 
 
-class Makedepf90Test(unittest.TestCase):
+class Makedepf90Test():
 
     def test_install(self):
         spack_install('makedepf90 @3.0.1')
@@ -448,7 +468,7 @@ class Makedepf90Test(unittest.TestCase):
 
 @pytest.mark.no_balfrin  # Package is a workaround, only needed on Daint.
 @pytest.mark.no_tsa  # Package is a workaround, only needed on Daint.
-class NvidiaBlasTest(unittest.TestCase):
+class NvidiaBlasTest():
 
     def test_install_default(self):
         spack_install_and_test('nvidia-blas')
@@ -456,13 +476,13 @@ class NvidiaBlasTest(unittest.TestCase):
 
 @pytest.mark.no_balfrin  # Package is a workaround, only needed on Daint.
 @pytest.mark.no_tsa  # Package is a workaround, only needed on Daint.
-class NvidiaLapackTest(unittest.TestCase):
+class NvidiaLapackTest():
 
     def test_install_default(self):
         spack_install_and_test('nvidia-lapack')
 
 
-class OnnxRuntimeTest(unittest.TestCase):
+class OnnxRuntimeTest():
 
     def test_install_default(self):
         spack_install_and_test('onnx-runtime')
@@ -470,20 +490,20 @@ class OnnxRuntimeTest(unittest.TestCase):
 
 @pytest.mark.no_balfrin  # Coupling only needed on Daint
 @pytest.mark.no_tsa  # Coupling only needed on Daint
-class OasisTest(unittest.TestCase):
+class OasisTest():
 
     def test_install_version_4_0_nvhpc(self):
         spack_install_and_test('oasis @4.0 %nvhpc')
 
 
-class OmniXmodPoolTest(unittest.TestCase):
+class OmniXmodPoolTest():
 
     def test_install_version_0_1(self):
         spack_install_and_test('omni-xmod-pool @0.1')
 
 
 @pytest.mark.no_tsa
-class PytorchFortranTest(unittest.TestCase):
+class PytorchFortranTest():
 
     def test_install_version_0_4(self):
         spack_install(
@@ -492,74 +512,74 @@ class PytorchFortranTest(unittest.TestCase):
 
 
 @pytest.mark.no_tsa
-class PytorchFortranProxyTest(unittest.TestCase):
+class PytorchFortranProxyTest():
 
     def test_install_version_0_4(self):
         spack_install('pytorch-fortran-proxy@0.4%gcc ^python@3.10')
 
 
-class PyAsttokensTest(unittest.TestCase):
+class PyAsttokensTest():
 
     def test_install_default(self):
         spack_install_and_test('py-asttokens')
 
 
-class PyBlackTest(unittest.TestCase):
+class PyBlackTest():
 
     def test_install_default(self):
         spack_install_and_test('py-black')
 
 
-class PyBoltonsTest(unittest.TestCase):
+class PyBoltonsTest():
 
     def test_install_default(self):
         spack_install_and_test('py-boltons')
 
 
 @pytest.mark.no_balfrin  # Preparing metadata (pyproject.toml): finished with status 'error: metadata-generation-failed'.
-class PyCytoolzTest(unittest.TestCase):
+class PyCytoolzTest():
 
     def test_install_default(self):
         spack_install_and_test('py-cytoolz')
 
 
-class PyDevtoolsTest(unittest.TestCase):
+class PyDevtoolsTest():
 
     def test_install_default(self):
         spack_install_and_test('py-devtools')
 
 
-class PyEditablesTest(unittest.TestCase):
+class PyEditablesTest():
 
     def test_install_default(self):
         spack_install_and_test('py-editables')
 
 
-class PyExecutingTest(unittest.TestCase):
+class PyExecutingTest():
 
     def test_install_default(self):
         spack_install_and_test('py-executing')
 
 
-class PyFactoryBoyTest(unittest.TestCase):
+class PyFactoryBoyTest():
 
     def test_install_default(self):
         spack_install_and_test('py-factory-boy')
 
 
-class PyFprettifyTest(unittest.TestCase):
+class PyFprettifyTest():
 
     def test_install_default(self):
         spack_install_and_test('py-fprettify')
 
 
-class PyFrozendictTest(unittest.TestCase):
+class PyFrozendictTest():
 
     def test_install_default(self):
         spack_install_and_test('py-frozendict')
 
 
-class PyGridtoolsCppTest(unittest.TestCase):
+class PyGridtoolsCppTest():
 
     def test_install_default(self):
         spack_install_and_test('py-gridtools-cpp')
@@ -567,7 +587,7 @@ class PyGridtoolsCppTest(unittest.TestCase):
 
 @pytest.mark.no_tsa  # Irrelevant
 @pytest.mark.no_daint  # problem with gt4py and spack v21.1
-class PyGt4pyTest(unittest.TestCase):
+class PyGt4pyTest():
 
     @pytest.mark.no_daint  # problem with gt4py and spack v21.1
     def test_install_version_1_0_1_1(self):
@@ -602,14 +622,14 @@ class PyGt4pyTest(unittest.TestCase):
         spack_install('py-gt4py @1.0.3.5')
 
 
-class PyHatchlingTest(unittest.TestCase):
+class PyHatchlingTest():
 
     def test_install_default(self):
         spack_install_and_test('py-hatchling')
 
 
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
-class PyIcon4pyTest(unittest.TestCase):
+class PyIcon4pyTest():
 
     def test_install_version_0_0_3_1(self):
         spack_install('py-icon4py @ 0.0.3.1 %gcc ^py-gt4py@1.0.1.1b')
@@ -621,75 +641,74 @@ class PyIcon4pyTest(unittest.TestCase):
         spack_install('py-icon4py @ 0.0.10 %gcc ^py-gt4py@1.0.3.3')
 
 
-class PyInflectionTest(unittest.TestCase):
+class PyInflectionTest():
 
     def test_install_default(self):
         spack_install_and_test('py-inflection')
 
 
-class PyIsortTest(unittest.TestCase):
+class PyIsortTest():
 
     def test_install_default(self):
         spack_install_and_test('py-isort')
 
 
-class PyLarkTest(unittest.TestCase):
+class PyLarkTest():
 
     def test_install_default(self):
         spack_install_and_test('py-lark')
 
 
-class PyNanobindTest(unittest.TestCase):
+class PyNanobindTest():
 
     def test_install_default(self):
         spack_install_and_test('py-nanobind')
 
 
-class PyPathspecTest(unittest.TestCase):
+class PyPathspecTest():
 
     def test_install_default(self):
         spack_install_and_test('py-pathspec')
 
 
-class PyPytestTest(unittest.TestCase):
+class PyPytestTest():
 
     def test_install_default(self):
         spack_install_and_test('py-pytest')
 
 
-class PyPytestFactoryboyTest(unittest.TestCase):
+class PyPytestFactoryboyTest():
 
     def test_install_default(self):
         spack_install_and_test('py-pytest-factoryboy')
 
 
-class PySetuptoolsTest(unittest.TestCase):
+class PySetuptoolsTest():
 
     def test_install_default(self):
         spack_install_and_test('py-setuptools')
 
 
-class PySphinxcontribJqueryTest(unittest.TestCase):
+class PySphinxcontribJqueryTest():
 
     def test_install_default(self):
         spack_install_and_test('py-sphinxcontrib-jquery')
 
 
-class PyTabulateTest(unittest.TestCase):
+class PyTabulateTest():
 
     def test_install_default(self):
         spack_install_and_test('py-tabulate')
 
 
-class PyTypingExtensionsTest(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('py-typing-extensions')
+@pytest.mark.py_typing_extensions
+def test_py_typing_extensions_install_default():
+    spack_install_and_test('py-typing-extensions')
 
 
 @pytest.mark.no_tsa  # Irrelevant
 @pytest.mark.no_balfrin  #Irrelevant
-class RttovTest(unittest.TestCase):
+class RttovTest():
 
     def test_install_version_13_1_gcc(self):
         spack_install_and_test('rttov @13.1 %gcc')
@@ -699,33 +718,22 @@ class RttovTest(unittest.TestCase):
 
 
 @pytest.mark.no_tsa  # Fails with "C compiler cannot create executables"
-class ScalesPPMTest(unittest.TestCase):
+class ScalesPPMTest():
     # TODO: Add other versions and compilers!
 
     def test_install_default(self):
         spack_install_and_test('scales-ppm')
 
 
-class TensorflowCTest(unittest.TestCase):
+@pytest.mark.tensorflowc
+def test_tensorflowc_install_2_6_0(uenv_v1):
+    spack_install_and_test('tensorflowc @2.6.0',uenv=uenv_v1)
 
-    def test_install_2_6_0(self):
-        spack_install_and_test('tensorflowc @2.6.0')
-
-
-@pytest.mark.no_tsa  # Fails with "C compiler cannot create executables"
-class YaxtTest(unittest.TestCase):
-    # TODO: Add other versions and compilers!
-
-    def test_install_default(self):
-        spack_install_and_test('yaxt')
+@pytest.mark.yaxt
+def test_yaxt_install_default(uenv_v1):
+    spack_install_and_test('yaxt',uenv=uenv_v1)
 
 
-class ZLibNGTest(unittest.TestCase):
-    # TODO: Add other compilers!
-
-    def test_install_version_2_0_0(self):
-        spack_install_and_test('zlib_ng @2.0.0')
-
-
-if __name__ == '__main__':
-    unittest.main(verbosity=2)
+@pytest.mark.zlib_ng
+def test_zlib_ng_install_version_2_0_0(uenv_v1):
+    spack_install_and_test('zlib_ng @2.0.0',uenv=uenv_v1)
