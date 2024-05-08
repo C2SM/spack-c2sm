@@ -57,9 +57,11 @@ def log_with_spack(command: str,
         f.write('\n\n')
 
     start = time.time()
+    lookup_uenv = { 'v1': '/scratch/mch/leclairm/uenv/images/pre-post_v0.sqfs',
+                    'v2': '/scratch/mch/leclairm/uenv/images/icon.v1.a100.sqfs'}
     # The output is streamed as directly as possible to the log_file to avoid buffering and potentially losing buffered content.
     # '2>&1' redirects stderr to stdout.
-    uenv_args = '--uenv=/scratch/mch/leclairm/uenv/images/pre-post_v0.sqfs:/user-environment'
+    uenv_args = f'--uenv={lookup_uenv[uenv]}:/user-environment'
     ret = subprocess.run(
         f'{srun} {uenv_args} bash -c "{spack_env}; {command} >> {log_file} 2>&1"',
         cwd=cwd,

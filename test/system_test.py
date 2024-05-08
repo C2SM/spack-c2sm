@@ -16,9 +16,14 @@ sys.path.append(os.path.normpath(spack_c2sm_path))
 from src import machine_name, log_with_spack, sanitized_filename
 
 @pytest.fixture(scope="session")
-def uenv_v1(tmp_path_factory, worker_id):
+def v1(tmp_path_factory):
     locked_clone_spack_for_uenv(tmp_path_factory, 'v1')
     return  'v1'
+
+@pytest.fixture(scope="session")
+def v2(tmp_path_factory):
+    locked_clone_spack_for_uenv(tmp_path_factory, 'v2')
+    return  'v2'
 
 def locked_clone_spack_for_uenv(tmp_path_factory, uenv):
     clone_dir = f'spack-{uenv}'
@@ -695,10 +700,13 @@ class PySphinxcontribJqueryTest():
         spack_install_and_test('py-sphinxcontrib-jquery')
 
 
-class PyTabulateTest():
+@pytest.mark.py_tabulate
+def test_py_tabulate_install_default_v1(v1):
+    spack_install_and_test('py-tabulate',uenv=v1)
 
-    def test_install_default(self):
-        spack_install_and_test('py-tabulate')
+@pytest.mark.py_tabulate
+def test_py_tabulate_install_default_v2(v2):
+    spack_install_and_test('py-tabulate',uenv=v2)
 
 
 @pytest.mark.py_typing_extensions
@@ -726,14 +734,26 @@ class ScalesPPMTest():
 
 
 @pytest.mark.tensorflowc
-def test_tensorflowc_install_2_6_0(uenv_v1):
-    spack_install_and_test('tensorflowc @2.6.0',uenv=uenv_v1)
+def test_tensorflowc_install_2_6_0_v1(v1):
+    spack_install_and_test('tensorflowc @2.6.0',uenv=v1)
+
+@pytest.mark.tensorflowc
+def test_tensorflowc_install_2_6_0_v2(v2):
+    spack_install_and_test('tensorflowc @2.6.0',uenv=v2)
 
 @pytest.mark.yaxt
-def test_yaxt_install_default(uenv_v1):
-    spack_install_and_test('yaxt',uenv=uenv_v1)
+def test_yaxt_install_default_v1(v1):
+    spack_install_and_test('yaxt',uenv=v1)
+
+@pytest.mark.yaxt
+def test_yaxt_install_default_v2(v2):
+    spack_install_and_test('yaxt',uenv=v2)
 
 
 @pytest.mark.zlib_ng
-def test_zlib_ng_install_version_2_0_0(uenv_v1):
-    spack_install_and_test('zlib_ng @2.0.0',uenv=uenv_v1)
+def test_zlib_ng_install_version_2_0_0_v1(v1):
+    spack_install_and_test('zlib_ng @2.0.0',uenv=v1)
+
+@pytest.mark.zlib_ng
+def test_zlib_ng_install_version_2_0_0_v2(v2):
+    spack_install_and_test('zlib_ng @2.0.0',uenv=v2)
