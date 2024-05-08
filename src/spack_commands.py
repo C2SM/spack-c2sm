@@ -27,19 +27,24 @@ def log_with_spack(command: str,
         spack_c2sm_path) / 'log' / machine_name() / test_category / filename
 
     # Setup spack env
-    spack_env = f'. {spack_c2sm_path}/setup-env.sh'
+    spack_env = f'. {spack_c2sm_path}/spack-{uenv}/setup-env.sh /user-environment'
 
     # Distribute work with 'srun'
-    if srun and getpass.getuser() == 'jenkins':
-        # The '-c' argument should be in sync with
-        # sysconfig/<machine>/config.yaml config:build_jobs for max efficiency
-        srun = {
-            'balfrin': '',
-            'daint': 'srun -t 02:00:00 -C gpu -A g110 -c 12 -n 1',
-            'tsa': 'srun -t 02:00:00 -c 6',
-        }[machine_name()]
-    else:
-        srun = ''
+    #if srun and getpass.getuser() == 'jenkins':
+    #    # The '-c' argument should be in sync with
+    #    # sysconfig/<machine>/config.yaml config:build_jobs for max efficiency
+    #    srun = {
+    #        'balfrin': '',
+    #        'daint': 'srun -t 02:00:00 -C gpu -A g110 -c 12 -n 1',
+    #        'tsa': 'srun -t 02:00:00 -c 6',
+    #    }[machine_name()]
+    #else:
+    #    srun = ''
+    srun = {
+        'balfrin': 'srun -t 00:10:00 -p postproc -c 24',
+        'daint': 'srun -t 02:00:00 -C gpu -A g110 -c 12 -n 1',
+        'tsa': 'srun -t 02:00:00 -c 6',
+    }[machine_name()]
 
     # Make Directory
     log_file.parent.mkdir(exist_ok=True, parents=True)
@@ -54,18 +59,25 @@ def log_with_spack(command: str,
     start = time.time()
     # The output is streamed as directly as possible to the log_file to avoid buffering and potentially losing buffered content.
     # '2>&1' redirects stderr to stdout.
-    if env is None:
-        ret = subprocess.run(
-            f'{spack_env}; ({srun} {command}) >> {log_file} 2>&1',
-            cwd=cwd,
-            check=False,
-            shell=True)
-    else:
-        ret = subprocess.run(
-            f'{spack_env}; spack env activate -d {env}; ({srun} {command}) >> {log_file} 2>&1',
-            cwd=cwd,
-            check=False,
-            shell=True)
+    uenv_args = '--uenv=/scratch/mch/leclairm/uenv/images/pre-post_v0.sqfs:/user-environment'
+    ret = subprocess.run(
+        f'{srun} {uenv_args} bash -c "{spack_env}; {command} >> {log_file} 2>&1"',
+        cwd=cwd,
+        check=False,
+        shell=True)
+
+    #if env is None:
+    #    ret = subprocess.run(
+    #        f'{spack_env}; ({srun} {command}) >> {log_file} 2>&1',
+    #        cwd=cwd,
+    #        check=False,
+    #        shell=True)
+    #else:
+    #    ret = subprocess.run(
+    #        f'{spack_env}; spack env activate -d {env}; ({srun} {command}) >> {log_file} 2>&1',
+    #        cwd=cwd,
+    #        check=False,
+    #        shell=True)
     end = time.time()
 
     # Log time and success
