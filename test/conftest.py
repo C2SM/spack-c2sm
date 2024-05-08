@@ -15,7 +15,9 @@ def pytest_configure(config):
     config.addinivalue_line('markers',
                             'serial_only: mark test to only run serial')
     for package in all_packages:
-        config.addinivalue_line('markers', f'{package}: mark test to run for {package}')
+        config.addinivalue_line('markers',
+                                f'{package}: mark test to run for {package}')
+
 
 def pytest_addoption(parser):
     parser.addoption('--scope', action='store', default='')

@@ -15,15 +15,18 @@ spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 sys.path.append(os.path.normpath(spack_c2sm_path))
 from src import machine_name, log_with_spack, sanitized_filename
 
+
 @pytest.fixture(scope="session")
 def v1(tmp_path_factory):
     locked_clone_spack_for_uenv(tmp_path_factory, 'v1')
-    return  'v1'
+    return 'v1'
+
 
 @pytest.fixture(scope="session")
 def v2(tmp_path_factory):
     locked_clone_spack_for_uenv(tmp_path_factory, 'v2')
-    return  'v2'
+    return 'v2'
+
 
 def locked_clone_spack_for_uenv(tmp_path_factory, uenv):
     clone_dir = f'spack-{uenv}'
@@ -33,9 +36,11 @@ def locked_clone_spack_for_uenv(tmp_path_factory, uenv):
 
     with FileLock(fn):
         if not os.path.exists(clone_dir):
-            subprocess.run('git clone --depth 1 --recurse-submodules . ' + clone_dir,
-                            check=True,
-                            shell=True)
+            subprocess.run('git clone --depth 1 --recurse-submodules . ' +
+                           clone_dir,
+                           check=True,
+                           shell=True)
+
 
 def devirtualize_env():
     # pytest is run from a virtual environment that breaks the
@@ -702,11 +707,12 @@ class PySphinxcontribJqueryTest():
 
 @pytest.mark.py_tabulate
 def test_py_tabulate_install_default_v1(v1):
-    spack_install_and_test('py-tabulate',uenv=v1)
+    spack_install_and_test('py-tabulate', uenv=v1)
+
 
 @pytest.mark.py_tabulate
 def test_py_tabulate_install_default_v2(v2):
-    spack_install_and_test('py-tabulate',uenv=v2)
+    spack_install_and_test('py-tabulate', uenv=v2)
 
 
 @pytest.mark.py_typing_extensions
@@ -735,25 +741,29 @@ class ScalesPPMTest():
 
 @pytest.mark.tensorflowc
 def test_tensorflowc_install_2_6_0_v1(v1):
-    spack_install_and_test('tensorflowc @2.6.0',uenv=v1)
+    spack_install_and_test('tensorflowc @2.6.0', uenv=v1)
+
 
 @pytest.mark.tensorflowc
 def test_tensorflowc_install_2_6_0_v2(v2):
-    spack_install_and_test('tensorflowc @2.6.0',uenv=v2)
+    spack_install_and_test('tensorflowc @2.6.0', uenv=v2)
+
 
 @pytest.mark.yaxt
 def test_yaxt_install_default_v1(v1):
-    spack_install_and_test('yaxt',uenv=v1)
+    spack_install_and_test('yaxt', uenv=v1)
+
 
 @pytest.mark.yaxt
 def test_yaxt_install_default_v2(v2):
-    spack_install_and_test('yaxt',uenv=v2)
+    spack_install_and_test('yaxt', uenv=v2)
 
 
 @pytest.mark.zlib_ng
 def test_zlib_ng_install_version_2_0_0_v1(v1):
-    spack_install_and_test('zlib_ng @2.0.0',uenv=v1)
+    spack_install_and_test('zlib_ng @2.0.0', uenv=v1)
+
 
 @pytest.mark.zlib_ng
 def test_zlib_ng_install_version_2_0_0_v2(v2):
-    spack_install_and_test('zlib_ng @2.0.0',uenv=v2)
+    spack_install_and_test('zlib_ng @2.0.0', uenv=v2)

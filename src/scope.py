@@ -5,7 +5,7 @@ spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 
 all_machines = ['balfrin', 'daint', 'tsa']
 all_packages = [
-    name.replace("-","_") for name in os.listdir(
+    name.replace("-", "_") for name in os.listdir(
         os.path.join(spack_c2sm_path, 'repos/c2sm/packages')) if os.path.isdir(
             os.path.join(spack_c2sm_path, 'repos/c2sm/packages', name))
 ]
@@ -14,7 +14,7 @@ all_packages = [
 def explicit_scope(scope: str) -> list:
     "Adds all packages if none is listed, and all machines if none is listed."
 
-    scope = scope.replace("-","_").split(' ')
+    scope = scope.replace("-", "_").split(' ')
 
     if not any(x in scope for x in all_machines):
         scope.extend(all_machines)  #no machine means all machines
