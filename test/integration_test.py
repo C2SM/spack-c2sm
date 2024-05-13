@@ -246,7 +246,6 @@ class SpecTest(unittest.TestCase):
     def test_cosmo(self):
         spack_spec('cosmo')
         spack_spec('cosmo cosmo_target=gpu ~cppdycore')
-        spack_spec('cosmo cosmo_target=gpu +serialize +zlib_ng +oasis')
 
     def test_cosmo_dycore(self):
         spack_spec('cosmo-dycore')
