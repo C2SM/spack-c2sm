@@ -14,8 +14,6 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
-from PSphinxTheme.utils import set_psphinxtheme
-
 # -- Project information -----------------------------------------------------
 
 project = 'C2SM Spack'
