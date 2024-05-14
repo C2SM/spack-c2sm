@@ -81,7 +81,7 @@ and rebuild.
 | --- | --- |
 | Find | `spack find` lists all installed packages. <br>`spack find <spec>` lists all installed packages that match the spec.
 | Info | `spack info <package>` |
-| Spec | `spack spec <spec>` concretizes abstract spec (unspecfied variant = **any**)<br>*Spack is not required to use the default of an unspecified variant. The default value is only a tiebreaker for the concretizer.* |
+| Spec | `spack spec <spec>` concretizes abstract spec (unspecfied variant = **any**) <br>*Spack is not required to use the default of an unspecified variant. The default value is only a tiebreaker for the concretizer.* |
 | Install  | `spack install <spec>` |
 | Locate | `spack location --install-dir <spec>` prints location of **all** installs that satisfy the spec |
 | [Load env](https://spack.readthedocs.io/en/v0.18.1/command_index.html?highlight=spack%20load#spack-load) | `spack load <spec>` loads run environment |
