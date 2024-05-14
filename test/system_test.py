@@ -348,9 +348,8 @@ class IconTest(unittest.TestCase):
         # +emvorado triggers eccodes, hdf5, zlib
         # +eccodes-definitions triggers cosmo-eccodes-definitions
         # +mpi triggers mpi
-        # claw=std triggers claw
         spack_install_and_test(
-            'icon @2024.1-1 %nvhpc +coupling +rttov serialization=create +cdi-pio +emvorado +mpi claw=std'
+            'icon @2024.1-1 %nvhpc +coupling +rttov serialization=create +cdi-pio +emvorado +mpi'
         )
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine

@@ -148,12 +148,6 @@ class Icon(AutotoolsPackage, CudaPackage):
     variant('sct', default=False, description='Enable the SCT timer')
     variant('yaxt', default=False, description='Enable the YAXT data exchange')
 
-    claw_values = ('std', 'validate')
-    variant('claw',
-            default='none',
-            values=('none', ) + claw_values,
-            description='Enable CLAW preprocessing')
-
     serialization_values = ('read', 'perturb', 'create')
     variant('serialization',
             default='none',
@@ -282,14 +276,6 @@ class Icon(AutotoolsPackage, CudaPackage):
     depends_on('python', type='build')
     depends_on('perl', type='build')
     depends_on('cmake@3.18:', type='build')
-
-    for x in claw_values:
-        depends_on('claw', type='build', when='claw={0}'.format(x))
-
-    conflicts('claw=validate', when='serialization=none')
-
-    for x in claw_values:
-        conflicts('+sct', when='claw={0}'.format(x))
 
     conflicts('+dace', when='~mpi')
     conflicts('+emvorado', when='~mpi')
@@ -567,20 +553,6 @@ class Icon(AutotoolsPackage, CudaPackage):
             args.extend(self.fcgroup_to_config_arg())
             flags.update(self.fcgroup_to_config_var())
 
-        claw = self.spec.variants['claw'].value
-        if claw == 'none':
-            args.append('--disable-claw')
-        else:
-            args.extend([
-                '--enable-claw={0}'.format(claw),
-                'CLAW={0}'.format(self.spec['claw'].prefix.bin.clawfc)
-            ])
-            flags['CLAWFLAGS'].append(
-                self.spec['netcdf-fortran'].headers.include_flags)
-            if '+cdi-pio' in self.spec:
-                flags['CLAWFLAGS'].append(
-                    self.spec['libcdi-pio'].headers.include_flags)
-
         gpu = self.spec.variants['gpu'].value
         if gpu == 'no':
             args.append('--disable-gpu')
@@ -731,19 +703,6 @@ class Icon(AutotoolsPackage, CudaPackage):
                             'icon.mk',
                             string=True,
                             backup=False)
-
-    def build(self, spec, prefix):
-        claw = self.spec.variants['claw'].value
-        if claw != 'none' and make_jobs > 8:
-            # Limit CLAW preprocessing to 8 parallel jobs to avoid
-            # claw_f_lib.sh: fork: retry: Resource temporarily unavailable
-            # ...
-            # Error: Could not create the Java Virtual Machine.
-            # Error: A fatal exception has occurred. Program will exit.
-            make.jobs = 8
-            make('preprocess')
-            make.jobs = make_jobs
-        make(*self.build_targets)
 
     def check(self):
         # By default "check" calls make with targets "check" and "test".
