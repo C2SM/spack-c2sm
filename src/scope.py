@@ -15,7 +15,6 @@ all_packages_underscore = [p.replace('-', '_') for p in all_packages]
 def explicit_scope(scope: str) -> list:
     "Adds all packages if none is listed, and all machines if none is listed."
 
-    #scope = scope.replace('-','_').split(' ')
     scope = scope.split(' ')
 
     if not any(x in scope for x in all_machines):

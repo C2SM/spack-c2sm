@@ -47,9 +47,5 @@ def pytest_collection_modifyitems(config, items):
                     pytest.mark.skip(
                         reason="test is marked to run in serial mode only"))
 
-        if item.name == 'test_dycore_spec_with_variant[~cuda +gt1]':
-            print(item.name)
-            print(keywords)
-            print(triggers)
         if not any(k in triggers for k in keywords) or not any(k.replace('-', '_') in triggers for k in keywords):
             item.add_marker(pytest.mark.skip(reason="test not in scope"))
