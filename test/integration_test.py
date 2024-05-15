@@ -8,9 +8,13 @@ spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 sys.path.append(os.path.normpath(spack_c2sm_path))
 from src import log_with_spack, sanitized_filename, all_packages, machine_name
 
-exclude_on_machine = {'tsa': ['cosmo', # irrelevant
-                              'flexpart-cosmo', # No compatible compiler available
-                              ]}
+exclude_on_machine = {
+    'tsa': [
+        'cosmo',  # irrelevant
+        'flexpart-cosmo',  # No compatible compiler available
+    ]
+}
+
 
 def packages_for_machine() -> list:
     try:
@@ -44,7 +48,8 @@ def spack_spec(spec: str, log_filename: str = None):
 def test_spack_info(package: str):
     spack_info(package)
 
-@pytest.mark.parametrize('package', packages_for_machine()) 
+
+@pytest.mark.parametrize('package', packages_for_machine())
 def test_spack_spec(package: str):
     spack_spec(package)
 
