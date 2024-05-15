@@ -16,7 +16,8 @@ def pytest_configure(config):
                             'serial_only: mark test to only run serial')
     for package in all_packages_underscore:
         config.addinivalue_line('markers',
-            f'{package}: mark test to run for {package}')
+                                f'{package}: mark test to run for {package}')
+
 
 def pytest_addoption(parser):
     parser.addoption('--scope', action='store', default='')
@@ -47,5 +48,6 @@ def pytest_collection_modifyitems(config, items):
                     pytest.mark.skip(
                         reason="test is marked to run in serial mode only"))
 
-        if not any(k in triggers for k in keywords) or not any(k.replace('-', '_') in triggers for k in keywords):
+        if not any(k in triggers for k in keywords) or not any(
+                k.replace('-', '_') in triggers for k in keywords):
             item.add_marker(pytest.mark.skip(reason="test not in scope"))

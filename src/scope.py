@@ -26,9 +26,9 @@ def explicit_scope(scope: str) -> list:
 
 def package_triggers(scope: list) -> list:
     triggers = []
-    for x,y in zip(all_packages,all_packages_underscore):
+    for x, y in zip(all_packages, all_packages_underscore):
         if x in scope:
             triggers.append(x)
             triggers.append(y)
-        
+
     return triggers

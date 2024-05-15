@@ -129,10 +129,8 @@ class ScopeTest(unittest.TestCase):
 
     def test_package_triggers(self):
         triggers = package_triggers(['cosmo-dycore'])
-        self.assertTrue('cosmo-dycore'
-                        in triggers)  # package name included
-        self.assertTrue('cosmo_dycore'
-                        in triggers)  # marker name included
+        self.assertTrue('cosmo-dycore' in triggers)  # package name included
+        self.assertTrue('cosmo_dycore' in triggers)  # marker name included
 
 
 class UpstreamTest(unittest.TestCase):
