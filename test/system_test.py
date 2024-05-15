@@ -581,9 +581,7 @@ def test_install_default():
     spack_install_and_test('py-hatchling')
 
 
-pytest.mark.py_inflection
-
-
+@pytest.mark.py_inflection
 def test_install_default():
     spack_install_and_test('py-inflection')
 
