@@ -206,13 +206,6 @@ nvidia_compiler: str = {
 }[machine_name()]
 
 
-@pytest.mark.no_tsa  # proj-8.2.1 fails with "./.libs/libproj.so: error: undefined reference to 'curl_easy_setopt'"
-class CdoTest(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('cdo')
-
-
 class ClangFormatTest(unittest.TestCase):
 
     def test_install_default(self):

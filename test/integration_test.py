@@ -37,9 +37,6 @@ def spack_spec(spec: str, log_filename: str = None):
 class InfoTest(unittest.TestCase):
     """Tests that the command 'spack info <package>' works for all spack-c2sm packages."""
 
-    def test_cdo(self):
-        spack_info('cdo')
-
     def test_clang_format(self):
         spack_info('clang-format')
 
@@ -232,9 +229,6 @@ class SpecTest(unittest.TestCase):
     Tests that the command 'spack spec <package>' works for all spack-c2sm packages.
     Ideally all conditional dependencies are triggered at least once.
     """
-
-    def test_cdo(self):
-        spack_spec('cdo')
 
     def test_clang_format(self):
         spack_spec('clang-format')
