@@ -48,6 +48,5 @@ def pytest_collection_modifyitems(config, items):
                     pytest.mark.skip(
                         reason="test is marked to run in serial mode only"))
 
-        if not any(k in triggers for k in keywords) or not any(
-                k.replace('-', '_') in triggers for k in keywords):
+        if not any(k in triggers for k in keywords):
             item.add_marker(pytest.mark.skip(reason="test not in scope"))
