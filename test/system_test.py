@@ -39,6 +39,7 @@ def compose_logfilename(spec, log_filename: str = None):
         log_filename = sanitized_filename(func_name + '-' + spec)
     return log_filename
 
+
 def spack_install(spec: str, log_filename: str = None):
     """
     Tests 'spack install' of the given spec and writes the output into the log file.
@@ -197,23 +198,28 @@ nvidia_compiler: str = {
     'unknown': '',
 }[machine_name()]
 
+
 @pytest.mark.libfyaml
 def test_install_libfyaml_default():
     spack_install('libfyaml')
 
+
 @pytest.mark.libtorch
 def test_install_libtorch_default():
     spack_install('libtorch')
+
 
 @pytest.mark.no_tsa  # proj-8.2.1 fails with "./.libs/libproj.so: error: undefined reference to 'curl_easy_setopt'"
 @pytest.mark.cdo
 def test_install_cdo_default():
     spack_install('cdo')
 
+
 @pytest.mark.claw
 @pytest.mark.no_daint  # Test #1: junit-tatsu fails
 def test_install_claw_default():
     spack_install_and_test('claw', split_phases=True)
+
 
 @pytest.mark.no_tsa  # fallback for Daint
 @pytest.mark.no_balfrin  # fallback for Daint
@@ -225,14 +231,13 @@ def test_install_claw_default_build_only():
 #@pytest.mark.no_balfrin  # cuda arch is not supported
 @pytest.mark.no_tsa  # irrelevant
 @pytest.mark.cosmo_dycore
-@pytest.mark.parametrize("version,cuda_variant", [
-    ('6.0', '+cuda'),
-    ('6.0', '~cuda'),
-    ('6.1', '+cuda'),
-    ('6.1', '~cuda')
-])
+@pytest.mark.parametrize("version,cuda_variant", [('6.0', '+cuda'),
+                                                  ('6.0', '~cuda'),
+                                                  ('6.1', '+cuda'),
+                                                  ('6.1', '~cuda')])
 def test_install_and_check_cosmo_dycore_for(version, cuda_variant):
-    spack_install_and_test(f'cosmo-dycore @{version} {cuda_variant}', split_phases=True)
+    spack_install_and_test(f'cosmo-dycore @{version} {cuda_variant}',
+                           split_phases=True)
 
 
 @pytest.mark.cosmo_eccodes_definitions
@@ -243,17 +248,17 @@ def test_install_cosmo_eccodes_definitions_version(version):
 
 @pytest.mark.eccodes
 def test_install_eccodes_2_19_0():
-        spack_install('eccodes @2.19.0')
+    spack_install('eccodes @2.19.0')
 
 
 @pytest.mark.fckit
 def test_install_and_check_fckit_0_9_0(self):
     spack_install_and_test('fckit@0.9.0')
 
+
 @pytest.mark.fdb_fortran
 def test_install_fdb_fortran():
     spack_install_and_test('fdb-fortran')
-
 
 
 @pytest.mark.flexpart_ifs
@@ -267,9 +272,11 @@ def test_install_flexpart_ifs_version(version):
 def test_install_flexpart_cosmo():
     spack_install_and_test('flexpart-cosmo @V8C4.0')
 
+
 @pytest.mark.gridtools
 def test_install_gridtools_version_1_1_3_gcc():
     spack_install_and_test(f'gridtools @1.1.3 %gcc')
+
 
 @pytest.mark.no_tsa  # Only pgc++ 18 and 19 are supported! nvhpc doesn't work either.
 @pytest.mark.gridtools
@@ -281,6 +288,7 @@ def test_install_version_1_1_3_nvhpc():
 @pytest.mark.fdb
 def test_install_fdb_5_11_17_gcc():
     spack_install_and_test('fdb @5.11.17 %gcc')
+
 
 def test_install_fdb_5_11_17_nvhpc():
     # tests fail because compiler emitted warnings.
@@ -377,8 +385,6 @@ class Int2lmTest(unittest.TestCase):
         spack_install_and_test(
             f'int2lm @v2.8.4 %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler} ^libgrib1 %{nvidia_compiler}'
         )
-
-
 
 
 @pytest.mark.no_tsa  # Test is too expensive. It takes over 5h.
@@ -555,8 +561,6 @@ class PyGt4pyTest(unittest.TestCase):
         spack_install_and_test('py-gt4py @1.0.3.6')
 
 
-
-
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 class PyIcon4pyTest(unittest.TestCase):
 
@@ -571,12 +575,15 @@ class PyIcon4pyTest(unittest.TestCase):
     def test_install_version_0_0_10(self):
         spack_install_and_test('py-icon4py @ 0.0.10 %gcc ^py-gt4py@1.0.3.3')
 
+
 @pytest.mark.py_hatchling
 def test_install_default():
     spack_install_and_test('py-hatchling')
 
 
 pytest.mark.py_inflection
+
+
 def test_install_default():
     spack_install_and_test('py-inflection')
 
@@ -584,6 +591,7 @@ def test_install_default():
 @pytest.mark.py_isort
 def test_install_default():
     spack_install_and_test('py-isort')
+
 
 @pytest.mark.py_lark
 def test_install_default():
@@ -598,6 +606,7 @@ def test_install_default():
 @pytest.mark.py_pathspec
 def test_install_default():
     spack_install_and_test('py-pathspec')
+
 
 @pytest.mark.py_pytest
 def test_install_default():
@@ -635,6 +644,7 @@ def test_install_default():
 @pytest.mark.parametrize("compiler", ['gcc', 'nvhpc'])
 def test_install(compiler):
     spack_install_and_test(f'rttov @13.1 %{compiler}')
+
 
 def test_install_version_13_1_nvhpc(self):
     spack_install_and_test('rttov @13.1 %nvhpc')
