@@ -245,8 +245,7 @@ class Icon(AutotoolsPackage, CudaPackage):
     depends_on('rttov~openmp', when='~openmp+rttov')
 
     for x in serialization_values:
-        depends_on('serialbox+fortran',
-                   when='serialization={0}'.format(x))
+        depends_on('serialbox+fortran', when='serialization={0}'.format(x))
 
     depends_on('libcdi-pio+fortran+netcdf', when='+cdi-pio')
     depends_on('libcdi-pio grib2=eccodes', when='+cdi-pio+grib2')
