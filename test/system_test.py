@@ -290,54 +290,65 @@ def test_install_fdb_5_11_17_gcc():
     spack_install_and_test('fdb @5.11.17 %gcc')
 
 
+@pytest.mark.no_tsa  # FDB tests fail on tsa due to 'ucp_context'
+@pytest.mark.fdb
 def test_install_fdb_5_11_17_nvhpc():
     # tests fail because compiler emitted warnings.
     spack_install(f'fdb @5.11.17 %{nvidia_compiler}')
 
 
 @pytest.mark.no_tsa  # Icon does not run on Tsa
-class IconTest(unittest.TestCase):
+@pytest.mark.icon
+def test_install_icon_2_6_6_gcc():
+    spack_install_and_test('icon @2.6.6 %gcc')
 
-    def test_install_2_6_6_gcc():
-        spack_install_and_test('icon @2.6.6 %gcc')
+@pytest.mark.icon
+@pytest.mark.no_daint
+@pytest.mark.no_tsa  # Icon does not run on Tsa
+def test_install_icon_2_6_6_nvhpc():
+    spack_install_and_test('icon @2.6.6 %nvhpc')
 
-    @pytest.mark.no_daint
-    def test_install_2_6_6_nvhpc():
-        spack_install_and_test('icon @2.6.6 %nvhpc')
+@pytest.mark.icon
+@pytest.mark.no_daint  # libxml2 %nvhpc fails to build
+@pytest.mark.no_tsa  # Icon does not run on Tsa
+def test_install_icon_nwp_gpu():
+    spack_install_and_test(
+        'icon @nwp-master %nvhpc +grib2 +eccodes-definitions +ecrad +art +dace gpu=openacc+cuda +mpi-gpu +realloc-buf +pgi-inlib ~aes ~jsbach ~ocean ~coupling ~rte-rrtmgp ~loop-exchange ~async-io-rma +mixed-precision'
+    )
 
-    @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
-    def test_install_nwp_gpu():
-        spack_install_and_test(
-            'icon @nwp-master %nvhpc +grib2 +eccodes-definitions +ecrad +art +dace gpu=openacc+cuda +mpi-gpu +realloc-buf +pgi-inlib ~aes ~jsbach ~ocean ~coupling ~rte-rrtmgp ~loop-exchange ~async-io-rma +mixed-precision'
-        )
+@pytest.mark.no_balfrin  # config file does not exist for this machine
+@pytest.mark.icon
+@pytest.mark.no_tsa  # Icon does not run on Tsa
+def test_install_icon_c2sm_test_cpu_gcc():
+    spack_env_dev_install_and_test(
+        'config/cscs/spack/v0.21.1/daint_cpu_gcc',
+        'git@github.com:C2SM/icon.git',
+        'spack_v0.21.1',
+        'icon',
+        build_on_login_node=True)
 
-    @pytest.mark.no_balfrin  # config file does not exist for this machine
-    def test_install_c2sm_test_cpu_gcc():
-        spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.21.1/daint_cpu_gcc',
-            'git@github.com:C2SM/icon.git',
-            'spack_v0.21.1',
-            'icon',
-            build_on_login_node=True)
+@pytest.mark.icon
+@pytest.mark.no_tsa  # Icon does not run on Tsa
+@pytest.mark.no_balfrin  # config file does not exist for this machine
+def test_install_icon_c2sm_test_cpu_nvhpc_out_of_source():
+    spack_env_dev_install_and_test(
+        'config/cscs/spack/v0.21.1/daint_cpu_nvhpc',
+        'git@github.com:C2SM/icon.git',
+        'spack_v0.21.1',
+        'icon',
+        out_of_source=True,
+        build_on_login_node=True)
 
-    @pytest.mark.no_balfrin  # config file does not exist for this machine
-    def test_install_c2sm_test_cpu_nvhpc_out_of_source():
-        spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.21.1/daint_cpu_nvhpc',
-            'git@github.com:C2SM/icon.git',
-            'spack_v0.21.1',
-            'icon',
-            out_of_source=True,
-            build_on_login_node=True)
-
-    @pytest.mark.no_balfrin  # config file does not exist for this machine
-    def test_install_c2sm_test_gpu():
-        spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.21.1/daint_gpu_nvhpc',
-            'git@github.com:C2SM/icon.git',
-            'spack_v0.21.1',
-            'icon',
-            build_on_login_node=True)
+@pytest.mark.icon
+@pytest.mark.no_tsa  # Icon does not run on Tsa
+@pytest.mark.no_balfrin  # config file does not exist for this machine
+def test_install_icon_c2sm_test_gpu():
+    spack_env_dev_install_and_test(
+        'config/cscs/spack/v0.21.1/daint_gpu_nvhpc',
+        'git@github.com:C2SM/icon.git',
+        'spack_v0.21.1',
+        'icon',
+        build_on_login_node=True)
 
 
 @pytest.mark.no_tsa  # This test is flaky and sometimes fails with: icondelaunay.cpp:29:10: fatal error: version.c: No such file or directory. See issue #781.
@@ -360,31 +371,35 @@ def test_install_infero_onnx():
 
 
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
-class Int2lmTest(unittest.TestCase):
+@pytest.mark.int2lm
+def test_install_int2ml_version_3_00_gcc():
+    spack_install('int2lm @int2lm-3.00 %gcc')
 
-    def test_install_version_3_00_gcc():
-        spack_install('int2lm @int2lm-3.00 %gcc')
+@pytest.mark.int2lm
+@pytest.mark.serial_only
+@pytest.mark.no_balfrin  # fails because libgrib1 master fails
+def test_install_int2lm_version_3_00_nvhpc():
+    spack_install_and_test(f'int2lm @int2lm-3.00 %{nvidia_compiler}')
 
-    @pytest.mark.serial_only
-    @pytest.mark.no_balfrin  # fails because libgrib1 master fails
-    def test_install_version_3_00_nvhpc():
-        spack_install_and_test(f'int2lm @int2lm-3.00 %{nvidia_compiler}')
+@pytest.mark.int2lm
+@pytest.mark.no_balfrin  # fails because libgrib1 master fails
+def test_install_int2lm_version_3_00_nvhpc_fixed_definitions():
+    spack_install_and_test(
+        f'int2lm @int2lm-3.00 %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler}'
+    )
 
-    @pytest.mark.no_balfrin  # fails because libgrib1 master fails
-    def test_install_version_3_00_nvhpc_fixed_definitions():
-        spack_install_and_test(
-            f'int2lm @int2lm-3.00 %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler}'
-        )
+@pytest.mark.int2lm
+@pytest.mark.no_balfrin  # fails because libgrib1 master fails
+def test_install_int2lm_c2sm_master_gcc():
+    spack_install('int2lm @v2.8.4 %gcc ^eccodes %gcc ^libgrib1 %gcc')
 
-    def test_install_c2sm_master_gcc():
-        spack_install('int2lm @v2.8.4 %gcc ^eccodes %gcc ^libgrib1 %gcc')
-
-    @pytest.mark.no_balfrin  # fails because libgrib1 master fails
-    @pytest.mark.no_tsa  # An error occurred in MPI_Bcast
-    def test_install_c2sm_master_nvhpc():
-        spack_install_and_test(
-            f'int2lm @v2.8.4 %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler} ^libgrib1 %{nvidia_compiler}'
-        )
+@pytest.mark.int2lm
+@pytest.mark.no_balfrin  # fails because libgrib1 master fails
+@pytest.mark.no_tsa  # An error occurred in MPI_Bcast
+def test_install_int2lm_c2sm_master_nvhpc():
+    spack_install_and_test(
+        f'int2lm @v2.8.4 %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler} ^libgrib1 %{nvidia_compiler}'
+    )
 
 
 @pytest.mark.no_tsa  # Test is too expensive. It takes over 5h.
