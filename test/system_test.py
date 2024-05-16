@@ -291,11 +291,13 @@ def test_install_fdb_5_11_17_nvhpc():
 def test_install_icon_2_6_6_gcc():
     spack_install_and_test('icon @2.6.6 %gcc')
 
+
 @pytest.mark.icon
 @pytest.mark.no_daint
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 def test_install_icon_2_6_6_nvhpc():
     spack_install_and_test('icon @2.6.6 %nvhpc')
+
 
 @pytest.mark.icon
 @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
@@ -304,6 +306,7 @@ def test_install_icon_nwp_gpu():
     spack_install_and_test(
         'icon @nwp-master %nvhpc +grib2 +eccodes-definitions +ecrad +art +dace gpu=openacc+cuda +mpi-gpu +realloc-buf +pgi-inlib ~aes ~jsbach ~ocean ~coupling ~rte-rrtmgp ~loop-exchange ~async-io-rma +mixed-precision'
     )
+
 
 @pytest.mark.no_balfrin  # config file does not exist for this machine
 @pytest.mark.icon
@@ -364,11 +367,13 @@ def test_install_infero_onnx():
 def test_install_int2ml_version_3_00_gcc():
     spack_install('int2lm @int2lm-3.00 %gcc')
 
+
 @pytest.mark.int2lm
 @pytest.mark.serial_only
 @pytest.mark.no_balfrin  # fails because libgrib1 master fails
 def test_install_int2lm_version_3_00_nvhpc():
     spack_install_and_test(f'int2lm @int2lm-3.00 %{nvidia_compiler}')
+
 
 @pytest.mark.int2lm
 @pytest.mark.no_balfrin  # fails because libgrib1 master fails
@@ -377,10 +382,12 @@ def test_install_int2lm_version_3_00_nvhpc_fixed_definitions():
         f'int2lm @int2lm-3.00 %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler}'
     )
 
+
 @pytest.mark.int2lm
 @pytest.mark.no_balfrin  # fails because libgrib1 master fails
 def test_install_int2lm_c2sm_master_gcc():
     spack_install('int2lm @v2.8.4 %gcc ^eccodes %gcc ^libgrib1 %gcc')
+
 
 @pytest.mark.int2lm
 @pytest.mark.no_balfrin  # fails because libgrib1 master fails
