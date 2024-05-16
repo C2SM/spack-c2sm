@@ -203,9 +203,11 @@ def test_install_libtorch_default():
 def test_install_cdo_default():
     spack_install('cdo')
 
+
 @pytest.mark.claw
 def test_install_claw_default_build_only():
     spack_install('claw')
+
 
 @pytest.mark.no_balfrin  # cuda arch is not supported
 @pytest.mark.no_tsa  # irrelevant
