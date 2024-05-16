@@ -228,7 +228,7 @@ def test_install_claw_default_build_only():
     spack_install('claw')
 
 
-#@pytest.mark.no_balfrin  # cuda arch is not supported
+@pytest.mark.no_balfrin  # cuda arch is not supported
 @pytest.mark.no_tsa  # irrelevant
 @pytest.mark.cosmo_dycore
 @pytest.mark.parametrize("version,cuda_variant", [('6.0', '+cuda'),
@@ -252,7 +252,7 @@ def test_install_eccodes_2_19_0():
 
 
 @pytest.mark.fckit
-def test_install_and_check_fckit_0_9_0(self):
+def test_install_and_check_fckit_0_9_0():
     spack_install_and_test('fckit@0.9.0')
 
 
@@ -298,21 +298,21 @@ def test_install_fdb_5_11_17_nvhpc():
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 class IconTest(unittest.TestCase):
 
-    def test_install_2_6_6_gcc(self):
+    def test_install_2_6_6_gcc():
         spack_install_and_test('icon @2.6.6 %gcc')
 
     @pytest.mark.no_daint
-    def test_install_2_6_6_nvhpc(self):
+    def test_install_2_6_6_nvhpc():
         spack_install_and_test('icon @2.6.6 %nvhpc')
 
     @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
-    def test_install_nwp_gpu(self):
+    def test_install_nwp_gpu():
         spack_install_and_test(
             'icon @nwp-master %nvhpc +grib2 +eccodes-definitions +ecrad +art +dace gpu=openacc+cuda +mpi-gpu +realloc-buf +pgi-inlib ~aes ~jsbach ~ocean ~coupling ~rte-rrtmgp ~loop-exchange ~async-io-rma +mixed-precision'
         )
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
-    def test_install_c2sm_test_cpu_gcc(self):
+    def test_install_c2sm_test_cpu_gcc():
         spack_env_dev_install_and_test(
             'config/cscs/spack/v0.21.1/daint_cpu_gcc',
             'git@github.com:C2SM/icon.git',
@@ -321,7 +321,7 @@ class IconTest(unittest.TestCase):
             build_on_login_node=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
-    def test_install_c2sm_test_cpu_nvhpc_out_of_source(self):
+    def test_install_c2sm_test_cpu_nvhpc_out_of_source():
         spack_env_dev_install_and_test(
             'config/cscs/spack/v0.21.1/daint_cpu_nvhpc',
             'git@github.com:C2SM/icon.git',
@@ -331,7 +331,7 @@ class IconTest(unittest.TestCase):
             build_on_login_node=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
-    def test_install_c2sm_test_gpu(self):
+    def test_install_c2sm_test_gpu():
         spack_env_dev_install_and_test(
             'config/cscs/spack/v0.21.1/daint_gpu_nvhpc',
             'git@github.com:C2SM/icon.git',
@@ -341,311 +341,255 @@ class IconTest(unittest.TestCase):
 
 
 @pytest.mark.no_tsa  # This test is flaky and sometimes fails with: icondelaunay.cpp:29:10: fatal error: version.c: No such file or directory. See issue #781.
-class IconToolsTest(unittest.TestCase):
-
-    def test_install_2_5_2(self):
-        spack_install_and_test('icontools @2.5.2')
+@pytest.mark.icontools
+def test_install_icontools():
+    spack_install_and_test('icontools @2.5.2')
 
 
 @pytest.mark.no_tsa  # Not supported on Tsa
-class InferoTest(unittest.TestCase):
+@pytest.mark.infero
+def test_install_infero_tf_c():
+    spack_install_and_test(
+        'infero @0.1.2 %gcc +tf_c fflags="-ffree-line-length-1024"')
 
-    def test_install_tf_c(self):
-        spack_install_and_test(
-            'infero @0.1.2 %gcc +tf_c fflags="-ffree-line-length-1024"')
-
-    def test_install_onnx(self):
-        spack_install(
-            'infero @0.1.2 %gcc +onnx fflags="-ffree-line-length-1024"')
+@pytest.mark.no_tsa  # Not supported on Tsa
+@pytest.mark.infero
+def test_install_infero_onnx():
+    spack_install(
+        'infero @0.1.2 %gcc +onnx fflags="-ffree-line-length-1024"')
 
 
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
 class Int2lmTest(unittest.TestCase):
 
-    def test_install_version_3_00_gcc(self):
+    def test_install_version_3_00_gcc():
         spack_install('int2lm @int2lm-3.00 %gcc')
 
     @pytest.mark.serial_only
     @pytest.mark.no_balfrin  # fails because libgrib1 master fails
-    def test_install_version_3_00_nvhpc(self):
+    def test_install_version_3_00_nvhpc():
         spack_install_and_test(f'int2lm @int2lm-3.00 %{nvidia_compiler}')
 
     @pytest.mark.no_balfrin  # fails because libgrib1 master fails
-    def test_install_version_3_00_nvhpc_fixed_definitions(self):
+    def test_install_version_3_00_nvhpc_fixed_definitions():
         spack_install_and_test(
             f'int2lm @int2lm-3.00 %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler}'
         )
 
-    def test_install_c2sm_master_gcc(self):
+    def test_install_c2sm_master_gcc():
         spack_install('int2lm @v2.8.4 %gcc ^eccodes %gcc ^libgrib1 %gcc')
 
     @pytest.mark.no_balfrin  # fails because libgrib1 master fails
     @pytest.mark.no_tsa  # An error occurred in MPI_Bcast
-    def test_install_c2sm_master_nvhpc(self):
+    def test_install_c2sm_master_nvhpc():
         spack_install_and_test(
             f'int2lm @v2.8.4 %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler} ^libgrib1 %{nvidia_compiler}'
         )
 
 
 @pytest.mark.no_tsa  # Test is too expensive. It takes over 5h.
-class LibCdiPioTest(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('libcdi-pio')
+@pytest.mark.libcdi_pio
+def test_install_libcdi_pio_default():
+    spack_install_and_test('libcdi-pio')
 
 
 @pytest.mark.no_balfrin  # This fails with "BOZ literal constant at (1) cannot appear in an array constructor". https://gcc.gnu.org/onlinedocs/gfortran/BOZ-literal-constants.html
-class LibGrib1Test(unittest.TestCase):
+@pytest.mark.libgrib1
+@pytest.mark.serial_only  # locking problem on Tsa in combination with int2lm
+def test_install_libgrib1_22_01_2020():
+    spack_install_and_test('libgrib1 @22-01-2020')
 
-    @pytest.mark.serial_only  # locking problem on Tsa in combination with int2lm
-    def test_install_version_22_01_2020(self):
-        spack_install_and_test('libgrib1 @22-01-2020')
 
-
-class Makedepf90Test(unittest.TestCase):
-
-    def test_install(self):
-        spack_install('makedepf90 @3.0.1')
+@pytest.mark.makedepf90
+def test_install_makedepf90():
+    spack_install('makedepf90 @3.0.1')
 
 
 @pytest.mark.no_balfrin  # Package is a workaround, only needed on Daint.
 @pytest.mark.no_tsa  # Package is a workaround, only needed on Daint.
-class NvidiaBlasTest(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('nvidia-blas')
+@pytest.mark.nvidia_blas
+def test_install_default_nvidia_blas():
+    spack_install_and_test('nvidia-blas')
 
 
 @pytest.mark.no_balfrin  # Package is a workaround, only needed on Daint.
 @pytest.mark.no_tsa  # Package is a workaround, only needed on Daint.
-class NvidiaLapackTest(unittest.TestCase):
+@pytest.mark.nvidia_lapack
+def test_install_default_nvidia_lapack():
+    spack_install_and_test('nvidia-lapack')
 
-    def test_install_default(self):
-        spack_install_and_test('nvidia-lapack')
 
-
-class OnnxRuntimeTest(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('onnx-runtime')
+@pytest.mark.onnx_runtime
+def test_install_default_onnx_runtime():
+    spack_install_and_test('onnx-runtime')
 
 
 @pytest.mark.no_balfrin  # Coupling only needed on Daint
 @pytest.mark.no_tsa  # Coupling only needed on Daint
-class OasisTest(unittest.TestCase):
-
-    def test_install_version_4_0_nvhpc(self):
-        spack_install_and_test('oasis @4.0 %nvhpc')
-
-
-@pytest.mark.no_tsa
-class PytorchFortranTest(unittest.TestCase):
-
-    def test_install_version_0_4(self):
-        spack_install(
-            'pytorch-fortran@0.4%nvhpc ^pytorch-fortran-proxy@0.4%gcc ^python@3.10 ^gmake%gcc ^cmake%gcc'
-        )
+@pytest.mark.oasis
+def test_install_oasis_version_4_0_nvhpc():
+    spack_install_and_test('oasis @4.0 %nvhpc')
 
 
 @pytest.mark.no_tsa
-class PytorchFortranProxyTest(unittest.TestCase):
-
-    def test_install_version_0_4(self):
-        spack_install('pytorch-fortran-proxy@0.4%gcc ^python@3.10')
-
-
-class PyAsttokensTest(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('py-asttokens')
+@pytest.mark.pytorch_fortran
+def test_install_pytorch_fortran_version_0_4():
+    spack_install(
+        'pytorch-fortran@0.4%nvhpc ^pytorch-fortran-proxy@0.4%gcc ^python@3.10 ^gmake%gcc ^cmake%gcc'
+    )
 
 
-class PyBlackTest(unittest.TestCase):
+@pytest.mark.no_tsa
+@pytest.mark.pytorch_fortran_proxy
+def test_install_pytorch_fortran_proxy_version_0_4():
+    spack_install('pytorch-fortran-proxy@0.4%gcc ^python@3.10')
 
-    def test_install_default(self):
-        spack_install_and_test('py-black')
 
+@pytest.mark.py_asttokens
+def test_py_asttokens_install_default():
+    spack_install_and_test('py-asttokens')
 
-class PyBoltonsTest(unittest.TestCase):
+@pytest.mark.py_black
+def test_py_black_install_default():
+    spack_install_and_test('py-black')
 
-    def test_install_default(self):
-        spack_install_and_test('py-boltons')
-
+@pytest.mark.py_boltons
+def test_py_boltons_install_default():
+    spack_install_and_test('py-boltons')
 
 @pytest.mark.no_balfrin  # Preparing metadata (pyproject.toml): finished with status 'error: metadata-generation-failed'.
-class PyCytoolzTest(unittest.TestCase):
+@pytest.mark.py_cytoolz
+def test_py_cytoolz_install_default():
+    spack_install_and_test('py-cytoolz')
 
-    def test_install_default(self):
-        spack_install_and_test('py-cytoolz')
+@pytest.mark.py_devtools
+def test_py_devtools_install_default():
+    spack_install_and_test('py-devtools')
 
+@pytest.mark.py_editables
+def test_py_editables_install_default():
+    spack_install_and_test('py-editables')
 
-class PyDevtoolsTest(unittest.TestCase):
+@pytest.mark.py_executing
+def test_py_executing_install_default():
+    spack_install_and_test('py-executing')
 
-    def test_install_default(self):
-        spack_install_and_test('py-devtools')
+@pytest.mark.py_factory_boy
+def test_py_factory_boy_install_default():
+    spack_install_and_test('py-factory-boy')
 
+@pytest.mark.py_fprettify
+def test_py_fprettify_install_default():
+    spack_install_and_test('py-fprettify')
 
-class PyEditablesTest(unittest.TestCase):
+@pytest.mark.py_frozendict
+def test_py_frozendict_install_default():
+    spack_install_and_test('py-frozendict')
 
-    def test_install_default(self):
-        spack_install_and_test('py-editables')
-
-
-class PyExecutingTest(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('py-executing')
-
-
-class PyFactoryBoyTest(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('py-factory-boy')
-
-
-class PyFprettifyTest(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('py-fprettify')
+@pytest.mark.py_gridtools_cpp
+def test_py_gridtools_cpp_install_default():
+    spack_install_and_test('py-gridtools-cpp')
 
 
-class PyFrozendictTest(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('py-frozendict')
-
-
-class PyGridtoolsCppTest(unittest.TestCase):
-
-    def test_install_default(self):
-        spack_install_and_test('py-gridtools-cpp')
-
-
+@pytest.mark.py_gt4py
 @pytest.mark.no_tsa  # Irrelevant
-class PyGt4pyTest(unittest.TestCase):
+@pytest.mark.no_daint  # problem with gt4py and spack v21.1
+@pytest.mark.parametrize("version", [
+    '1.0.1.1',
+    '1.0.1.1b',
+    '1.0.1.6'
+])
+def test_install_version(version):
+    spack_install_and_test(f'py-gt4py @{version}')
 
-    @pytest.mark.no_daint  # problem with gt4py and spack v21.1
-    def test_install_version_1_0_1_1(self):
-        spack_install_and_test('py-gt4py @1.0.1.1')
-
-    @pytest.mark.no_daint  # problem with gt4py and spack v21.1
-    def test_install_version_1_0_1_1b(self):
-        spack_install_and_test('py-gt4py @1.0.1.1b')
-
-    @pytest.mark.no_daint  # problem with gt4py and spack v21.1
-    def test_install_version_1_0_1_6(self):
-        spack_install_and_test('py-gt4py @1.0.1.6')
-
-    def test_install_version_1_0_1_7(self):
-        spack_install_and_test('py-gt4py @1.0.1.7')
-
-    def test_install_version_1_0_3(self):
-        spack_install_and_test('py-gt4py @1.0.3')
-
-    def test_install_version_1_0_3_1(self):
-        spack_install_and_test('py-gt4py @1.0.3.1')
-
-    def test_install_version_1_0_3_2(self):
-        spack_install_and_test('py-gt4py @1.0.3.2')
-
-    def test_install_version_1_0_3_3(self):
-        spack_install_and_test('py-gt4py @1.0.3.3')
-
-    def test_install_version_1_0_3_4(self):
-        spack_install_and_test('py-gt4py @1.0.3.4')
-
-    def test_install_version_1_0_3_5(self):
-        spack_install_and_test('py-gt4py @1.0.3.5')
-
-    def test_install_version_1_0_3_6(self):
-        spack_install_and_test('py-gt4py @1.0.3.6')
+@pytest.mark.py_gt4py
+@pytest.mark.no_tsa  # Irrelevant
+@pytest.mark.parametrize("version", [
+    '1.0.1.7',
+    '1.0.3',
+    '1.0.3.1',
+    '1.0.3.2',
+    '1.0.3.3',
+    '1.0.3.4',
+    '1.0.3.5',
+    '1.0.3.6'
+])
+def test_install_py_gt4py_for_version(version):
+    spack_install_and_test(f'py-gt4py @{version}')
 
 
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
-class PyIcon4pyTest(unittest.TestCase):
+@pytest.mark.no_daint  # problem with gt4py and spack v21.1
+@pytest.mark.py_icon4py
+def test_install_py_icon4py_version_0_0_3_1():
+    spack_install_and_test('py-icon4py @ 0.0.3.1 %gcc ^py-gt4py@1.0.1.1b')
 
-    @pytest.mark.no_daint  # problem with gt4py and spack v21.1
-    def test_install_version_0_0_3_1(self):
-        spack_install_and_test('py-icon4py @ 0.0.3.1 %gcc ^py-gt4py@1.0.1.1b')
+@pytest.mark.py_icon4py
+@pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
+@pytest.mark.no_daint  # problem with gt4py and spack v21.1
+def test_install_py_icon4py_version_0_0_9():
+    spack_install_and_test('py-icon4py @ 0.0.9 %gcc ^py-gt4py@1.0.1.6')
 
-    @pytest.mark.no_daint  # problem with gt4py and spack v21.1
-    def test_install_version_0_0_9(self):
-        spack_install_and_test('py-icon4py @ 0.0.9 %gcc ^py-gt4py@1.0.1.6')
-
-    def test_install_version_0_0_10(self):
-        spack_install_and_test('py-icon4py @ 0.0.10 %gcc ^py-gt4py@1.0.3.3')
+@pytest.mark.py_icon4py
+@pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
+def test_install_py_icon4py_version_0_0_10():
+    spack_install_and_test('py-icon4py @ 0.0.10 %gcc ^py-gt4py@1.0.3.3')
 
 
 @pytest.mark.py_hatchling
-def test_install_default():
+def test_install_py_hatchling_default():
     spack_install_and_test('py-hatchling')
-
-
 @pytest.mark.py_inflection
-def test_install_default():
+def test_install_py_inflection_default():
     spack_install_and_test('py-inflection')
 
-
 @pytest.mark.py_isort
-def test_install_default():
+def test_install_py_isort_default():
     spack_install_and_test('py-isort')
 
-
 @pytest.mark.py_lark
-def test_install_default():
+def test_install_py_lark_default():
     spack_install_and_test('py-lark')
 
-
 @pytest.mark.py_nanobind
-def test_install_default():
+def test_install_py_nanobind_default():
     spack_install_and_test('py-nanobind')
 
-
 @pytest.mark.py_pathspec
-def test_install_default():
+def test_install_py_pathspec_default():
     spack_install_and_test('py-pathspec')
 
-
 @pytest.mark.py_pytest
-def test_install_default():
+def test_install_py_pytest_default():
     spack_install_and_test('py-pytest')
 
-
 @pytest.mark.py_pytest_factoryboy
-def test_install_default():
+def test_install_py_pytest_factoryboy_default():
     spack_install_and_test('py-pytest-factoryboy')
 
-
 @pytest.mark.py_setuptools
-def test_install_default():
+def test_install_py_setuptools_default():
     spack_install_and_test('py-setuptools')
 
-
 @pytest.mark.py_sphinxcontrib_jquery
-def test_install_default():
+def test_install_py_sphinxcontrib_jquery_default():
     spack_install_and_test('py-sphinxcontrib-jquery')
 
-
 @pytest.mark.py_tabulate
-def test_install_default():
+def test_install_py_tabulate_default():
     spack_install_and_test('py-tabulate')
 
-
 @pytest.mark.py_typing_extensions
-def test_install_default():
+def test_install_py_typing_extensions_default():
     spack_install_and_test('py-typing-extensions')
 
 
 @pytest.mark.no_tsa  # Irrelevant
 @pytest.mark.no_balfrin  #Irrelevant
-@pytest.mark.rrtov
+@pytest.mark.rttov
 @pytest.mark.parametrize("compiler", ['gcc', 'nvhpc'])
-def test_install(compiler):
+def test_install_rttov(compiler):
     spack_install_and_test(f'rttov @13.1 %{compiler}')
-
-
-def test_install_version_13_1_nvhpc(self):
-    spack_install_and_test('rttov @13.1 %nvhpc')
 
 
 @pytest.mark.no_tsa  # Fails with "C compiler cannot create executables"
@@ -668,7 +612,3 @@ def test_install_yaxt_default():
 @pytest.mark.zlib_ng
 def test_install_zlib_ng_version_2_0_0():
     spack_install_and_test('zlib_ng @2.0.0')
-
-
-if __name__ == '__main__':
-    unittest.main(verbosity=2)
