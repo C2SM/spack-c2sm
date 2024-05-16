@@ -61,7 +61,7 @@ pipeline {
                         steps {
                             sh """
                             source env/bin/activate
-                            pytest -v -n auto --maxprocesses=12 --scope \"""" + env.ghprbCommentBody + " parallel\"  test/system_test.py"
+                            pytest -v -n auto --maxprocesses=24 --scope \"""" + env.ghprbCommentBody + " parallel\"  test/system_test.py"
                         }
                     }
                     stage('System Tests Serial') {
@@ -70,7 +70,7 @@ pipeline {
                             mkdir -p log/${NODENAME}/system_test
                             touch log/${NODENAME}/system_test/serial_test_run
                             source env/bin/activate
-                            pytest -v -n auto --maxprocesses=12 --scope \"""" + env.ghprbCommentBody + " serial\" test/system_test.py"
+                            pytest -v -n auto --maxprocesses=24 --scope \"""" + env.ghprbCommentBody + " serial\" test/system_test.py"
                         }
                     }
                 }
