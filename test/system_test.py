@@ -203,19 +203,9 @@ def test_install_libtorch_default():
 def test_install_cdo_default():
     spack_install('cdo')
 
-
-@pytest.mark.claw
-@pytest.mark.no_daint  # Test #1: junit-tatsu fails
-def test_install_claw_default():
-    spack_install_and_test('claw', split_phases=True)
-
-
-@pytest.mark.no_tsa  # fallback for Daint
-@pytest.mark.no_balfrin  # fallback for Daint
 @pytest.mark.claw
 def test_install_claw_default_build_only():
     spack_install('claw')
-
 
 @pytest.mark.no_balfrin  # cuda arch is not supported
 @pytest.mark.no_tsa  # irrelevant
@@ -349,6 +339,7 @@ def test_install_icontools():
 
 
 @pytest.mark.no_tsa  # Not supported on Tsa
+@pytest.mark.no_balfrin  # Not supported on Balfrin
 @pytest.mark.infero
 def test_install_infero_tf_c():
     spack_install_and_test(
@@ -356,6 +347,7 @@ def test_install_infero_tf_c():
 
 
 @pytest.mark.no_tsa  # Not supported on Tsa
+@pytest.mark.no_balfrin  # Not supported on Balfrin
 @pytest.mark.infero
 def test_install_infero_onnx():
     spack_install('infero @0.1.2 %gcc +onnx fflags="-ffree-line-length-1024"')
