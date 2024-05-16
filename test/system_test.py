@@ -352,11 +352,11 @@ def test_install_infero_tf_c():
     spack_install_and_test(
         'infero @0.1.2 %gcc +tf_c fflags="-ffree-line-length-1024"')
 
+
 @pytest.mark.no_tsa  # Not supported on Tsa
 @pytest.mark.infero
 def test_install_infero_onnx():
-    spack_install(
-        'infero @0.1.2 %gcc +onnx fflags="-ffree-line-length-1024"')
+    spack_install('infero @0.1.2 %gcc +onnx fflags="-ffree-line-length-1024"')
 
 
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
@@ -449,42 +449,52 @@ def test_install_pytorch_fortran_proxy_version_0_4():
 def test_py_asttokens_install_default():
     spack_install_and_test('py-asttokens')
 
+
 @pytest.mark.py_black
 def test_py_black_install_default():
     spack_install_and_test('py-black')
 
+
 @pytest.mark.py_boltons
 def test_py_boltons_install_default():
     spack_install_and_test('py-boltons')
+
 
 @pytest.mark.no_balfrin  # Preparing metadata (pyproject.toml): finished with status 'error: metadata-generation-failed'.
 @pytest.mark.py_cytoolz
 def test_py_cytoolz_install_default():
     spack_install_and_test('py-cytoolz')
 
+
 @pytest.mark.py_devtools
 def test_py_devtools_install_default():
     spack_install_and_test('py-devtools')
+
 
 @pytest.mark.py_editables
 def test_py_editables_install_default():
     spack_install_and_test('py-editables')
 
+
 @pytest.mark.py_executing
 def test_py_executing_install_default():
     spack_install_and_test('py-executing')
+
 
 @pytest.mark.py_factory_boy
 def test_py_factory_boy_install_default():
     spack_install_and_test('py-factory-boy')
 
+
 @pytest.mark.py_fprettify
 def test_py_fprettify_install_default():
     spack_install_and_test('py-fprettify')
 
+
 @pytest.mark.py_frozendict
 def test_py_frozendict_install_default():
     spack_install_and_test('py-frozendict')
+
 
 @pytest.mark.py_gridtools_cpp
 def test_py_gridtools_cpp_install_default():
@@ -494,24 +504,15 @@ def test_py_gridtools_cpp_install_default():
 @pytest.mark.py_gt4py
 @pytest.mark.no_tsa  # Irrelevant
 @pytest.mark.no_daint  # problem with gt4py and spack v21.1
-@pytest.mark.parametrize("version", [
-    '1.0.1.1',
-    '1.0.1.1b',
-    '1.0.1.6'
-])
+@pytest.mark.parametrize("version", ['1.0.1.1', '1.0.1.1b', '1.0.1.6'])
 def test_install_version(version):
     spack_install_and_test(f'py-gt4py @{version}')
+
 
 @pytest.mark.py_gt4py
 @pytest.mark.no_tsa  # Irrelevant
 @pytest.mark.parametrize("version", [
-    '1.0.1.7',
-    '1.0.3',
-    '1.0.3.1',
-    '1.0.3.2',
-    '1.0.3.3',
-    '1.0.3.4',
-    '1.0.3.5',
+    '1.0.1.7', '1.0.3', '1.0.3.1', '1.0.3.2', '1.0.3.3', '1.0.3.4', '1.0.3.5',
     '1.0.3.6'
 ])
 def test_install_py_gt4py_for_version(version):
@@ -524,11 +525,13 @@ def test_install_py_gt4py_for_version(version):
 def test_install_py_icon4py_version_0_0_3_1():
     spack_install_and_test('py-icon4py @ 0.0.3.1 %gcc ^py-gt4py@1.0.1.1b')
 
+
 @pytest.mark.py_icon4py
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 @pytest.mark.no_daint  # problem with gt4py and spack v21.1
 def test_install_py_icon4py_version_0_0_9():
     spack_install_and_test('py-icon4py @ 0.0.9 %gcc ^py-gt4py@1.0.1.6')
+
 
 @pytest.mark.py_icon4py
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
@@ -539,45 +542,57 @@ def test_install_py_icon4py_version_0_0_10():
 @pytest.mark.py_hatchling
 def test_install_py_hatchling_default():
     spack_install_and_test('py-hatchling')
+
+
 @pytest.mark.py_inflection
 def test_install_py_inflection_default():
     spack_install_and_test('py-inflection')
+
 
 @pytest.mark.py_isort
 def test_install_py_isort_default():
     spack_install_and_test('py-isort')
 
+
 @pytest.mark.py_lark
 def test_install_py_lark_default():
     spack_install_and_test('py-lark')
+
 
 @pytest.mark.py_nanobind
 def test_install_py_nanobind_default():
     spack_install_and_test('py-nanobind')
 
+
 @pytest.mark.py_pathspec
 def test_install_py_pathspec_default():
     spack_install_and_test('py-pathspec')
+
 
 @pytest.mark.py_pytest
 def test_install_py_pytest_default():
     spack_install_and_test('py-pytest')
 
+
 @pytest.mark.py_pytest_factoryboy
 def test_install_py_pytest_factoryboy_default():
     spack_install_and_test('py-pytest-factoryboy')
+
 
 @pytest.mark.py_setuptools
 def test_install_py_setuptools_default():
     spack_install_and_test('py-setuptools')
 
+
 @pytest.mark.py_sphinxcontrib_jquery
 def test_install_py_sphinxcontrib_jquery_default():
     spack_install_and_test('py-sphinxcontrib-jquery')
 
+
 @pytest.mark.py_tabulate
 def test_install_py_tabulate_default():
     spack_install_and_test('py-tabulate')
+
 
 @pytest.mark.py_typing_extensions
 def test_install_py_typing_extensions_default():
