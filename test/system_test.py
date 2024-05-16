@@ -332,6 +332,7 @@ class GridToolsTest(unittest.TestCase):
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 class IconTest(unittest.TestCase):
 
+    @pytest.mark.no_daint
     def test_install_2024_1_gcc(self):
         spack_install_and_test('icon @2024.1-1 %gcc')
 
@@ -344,12 +345,13 @@ class IconTest(unittest.TestCase):
         # +coupling triggers libfyaml, libxml2, netcdf-c
         # +rttov triggers rttov
         # serialization=create triggers serialbox
-        # +cdi-pio triggers libcdi-pio, yaxt
+        # +cdi-pio triggers libcdi-pio, yaxt                   (but unfortunately this is broken)
         # +emvorado triggers eccodes, hdf5, zlib
         # +eccodes-definitions triggers cosmo-eccodes-definitions
         # +mpi triggers mpi
+        # gpu=openacc+cuda triggers cuda
         spack_install_and_test(
-            'icon @2024.1-1 %nvhpc +coupling +rttov serialization=create +cdi-pio +emvorado +mpi'
+            'icon @2024.1-1 %nvhpc +coupling +rttov serialization=create +emvorado +mpi gpu=openacc+cuda'
         )
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
@@ -381,6 +383,7 @@ class IconTest(unittest.TestCase):
             build_on_login_node=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
+    @pytest.mark.no_daint  # contains claw=std, which doesn't exist any more.
     def test_install_c2sm_test_gpu(self):
         spack_env_dev_install_and_test(
             'config/cscs/spack/v0.18.1.10/daint_gpu_nvhpc',
