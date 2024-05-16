@@ -15,7 +15,8 @@ sys.path.append(os.path.normpath(spack_c2sm_path))
 from src import machine_name, log_with_spack, sanitized_filename
 
 
-def devirtualize_env():
+@pytest.fixture(scope='function')
+def devirt_env():
     # pytest is run from a virtual environment that breaks the
     # Python environment setup by Spack. Additionally "deactivate"
     # is not available here, therefore we manually unset
@@ -49,9 +50,6 @@ def spack_install(spec: str, log_filename: str = None):
 
     command = 'install'
 
-    if spec.startswith('py-'):
-        devirtualize_env()
-
     log_with_spack(f'spack spec {spec}',
                    'system_test',
                    log_filename,
@@ -72,9 +70,6 @@ def spack_install_and_test(spec: str,
     log_filename = compose_logfilename(spec, log_filename)
 
     command = 'install'
-
-    if spec.startswith('py-'):
-        devirtualize_env()
 
     log_with_spack(f'spack spec {spec}',
                    'system_test',
@@ -109,9 +104,6 @@ def spack_devbuild_and_test(spec: str,
     log_filename = compose_logfilename(spec, log_filename)
 
     command = 'dev-build'
-
-    if spec.startswith('py-'):
-        devirtualize_env()
 
     if split_phases:
         log_with_spack(f'spack {command} --until build --test=root -n {spec}',
@@ -148,9 +140,6 @@ def spack_env_dev_install_and_test(spack_env: str,
     If out_of_source is True, create additional folder and build there, BUT skip testing!
     If build_on_login_node is True, do not run build-step on login node
     """
-
-    # in case we use serialbox or another python preprocessor
-    devirtualize_env()
 
     if name != 'icon' and out_of_source:
         raise ValueError('out-of-source only possible with Icon')
@@ -319,7 +308,7 @@ def test_install_icon_nwp_gpu():
 @pytest.mark.no_balfrin  # config file does not exist for this machine
 @pytest.mark.icon
 @pytest.mark.no_tsa  # Icon does not run on Tsa
-def test_install_icon_c2sm_test_cpu_gcc():
+def test_install_icon_c2sm_test_cpu_gcc(devirt_env):
     spack_env_dev_install_and_test(
         'config/cscs/spack/v0.21.1/daint_cpu_gcc',
         'git@github.com:C2SM/icon.git',
@@ -330,7 +319,7 @@ def test_install_icon_c2sm_test_cpu_gcc():
 @pytest.mark.icon
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 @pytest.mark.no_balfrin  # config file does not exist for this machine
-def test_install_icon_c2sm_test_cpu_nvhpc_out_of_source():
+def test_install_icon_c2sm_test_cpu_nvhpc_out_of_source(devirt_env):
     spack_env_dev_install_and_test(
         'config/cscs/spack/v0.21.1/daint_cpu_nvhpc',
         'git@github.com:C2SM/icon.git',
@@ -342,7 +331,7 @@ def test_install_icon_c2sm_test_cpu_nvhpc_out_of_source():
 @pytest.mark.icon
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 @pytest.mark.no_balfrin  # config file does not exist for this machine
-def test_install_icon_c2sm_test_gpu():
+def test_install_icon_c2sm_test_gpu(devirt_env):
     spack_env_dev_install_and_test(
         'config/cscs/spack/v0.21.1/daint_gpu_nvhpc',
         'git@github.com:C2SM/icon.git',
@@ -448,7 +437,7 @@ def test_install_oasis_version_4_0_nvhpc():
 
 @pytest.mark.no_tsa
 @pytest.mark.pytorch_fortran
-def test_install_pytorch_fortran_version_0_4():
+def test_install_pytorch_fortran_version_0_4(devirt_env):
     spack_install(
         'pytorch-fortran@0.4%nvhpc ^pytorch-fortran-proxy@0.4%gcc ^python@3.10 ^gmake%gcc ^cmake%gcc'
     )
@@ -456,63 +445,63 @@ def test_install_pytorch_fortran_version_0_4():
 
 @pytest.mark.no_tsa
 @pytest.mark.pytorch_fortran_proxy
-def test_install_pytorch_fortran_proxy_version_0_4():
+def test_install_pytorch_fortran_proxy_version_0_4(devirt_env):
     spack_install('pytorch-fortran-proxy@0.4%gcc ^python@3.10')
 
 
 @pytest.mark.py_asttokens
-def test_py_asttokens_install_default():
+def test_py_asttokens_install_default(devirt_env):
     spack_install_and_test('py-asttokens')
 
 
 @pytest.mark.py_black
-def test_py_black_install_default():
+def test_py_black_install_default(devirt_env):
     spack_install_and_test('py-black')
 
 
 @pytest.mark.py_boltons
-def test_py_boltons_install_default():
+def test_py_boltons_install_default(devirt_env):
     spack_install_and_test('py-boltons')
 
 
 @pytest.mark.no_balfrin  # Preparing metadata (pyproject.toml): finished with status 'error: metadata-generation-failed'.
 @pytest.mark.py_cytoolz
-def test_py_cytoolz_install_default():
+def test_py_cytoolz_install_default(devirt_env):
     spack_install_and_test('py-cytoolz')
 
 
 @pytest.mark.py_devtools
-def test_py_devtools_install_default():
+def test_py_devtools_install_default(devirt_env):
     spack_install_and_test('py-devtools')
 
 
 @pytest.mark.py_editables
-def test_py_editables_install_default():
+def test_py_editables_install_default(devirt_env):
     spack_install_and_test('py-editables')
 
 
 @pytest.mark.py_executing
-def test_py_executing_install_default():
+def test_py_executing_install_default(devirt_env):
     spack_install_and_test('py-executing')
 
 
 @pytest.mark.py_factory_boy
-def test_py_factory_boy_install_default():
+def test_py_factory_boy_install_default(devirt_env):
     spack_install_and_test('py-factory-boy')
 
 
 @pytest.mark.py_fprettify
-def test_py_fprettify_install_default():
+def test_py_fprettify_install_default(devirt_env):
     spack_install_and_test('py-fprettify')
 
 
 @pytest.mark.py_frozendict
-def test_py_frozendict_install_default():
+def test_py_frozendict_install_default(devirt_env):
     spack_install_and_test('py-frozendict')
 
 
 @pytest.mark.py_gridtools_cpp
-def test_py_gridtools_cpp_install_default():
+def test_py_gridtools_cpp_install_default(devirt_env):
     spack_install_and_test('py-gridtools-cpp')
 
 
@@ -520,7 +509,7 @@ def test_py_gridtools_cpp_install_default():
 @pytest.mark.no_tsa  # Irrelevant
 @pytest.mark.no_daint  # problem with gt4py and spack v21.1
 @pytest.mark.parametrize("version", ['1.0.1.1', '1.0.1.1b', '1.0.1.6'])
-def test_install_version(version):
+def test_install_version(version,devirt_env):
     spack_install_and_test(f'py-gt4py @{version}')
 
 
@@ -530,87 +519,87 @@ def test_install_version(version):
     '1.0.1.7', '1.0.3', '1.0.3.1', '1.0.3.2', '1.0.3.3', '1.0.3.4', '1.0.3.5',
     '1.0.3.6'
 ])
-def test_install_py_gt4py_for_version(version):
+def test_install_py_gt4py_for_version(version,devirt_env):
     spack_install_and_test(f'py-gt4py @{version}')
 
 
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 @pytest.mark.no_daint  # problem with gt4py and spack v21.1
 @pytest.mark.py_icon4py
-def test_install_py_icon4py_version_0_0_3_1():
+def test_install_py_icon4py_version_0_0_3_1(devirt_env):
     spack_install_and_test('py-icon4py @ 0.0.3.1 %gcc ^py-gt4py@1.0.1.1b')
 
 
 @pytest.mark.py_icon4py
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 @pytest.mark.no_daint  # problem with gt4py and spack v21.1
-def test_install_py_icon4py_version_0_0_9():
+def test_install_py_icon4py_version_0_0_9(devirt_env):
     spack_install_and_test('py-icon4py @ 0.0.9 %gcc ^py-gt4py@1.0.1.6')
 
 
 @pytest.mark.py_icon4py
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
-def test_install_py_icon4py_version_0_0_10():
+def test_install_py_icon4py_version_0_0_10(devirt_env):
     spack_install_and_test('py-icon4py @ 0.0.10 %gcc ^py-gt4py@1.0.3.3')
 
 
 @pytest.mark.py_hatchling
-def test_install_py_hatchling_default():
+def test_install_py_hatchling_default(devirt_env):
     spack_install_and_test('py-hatchling')
 
 
 @pytest.mark.py_inflection
-def test_install_py_inflection_default():
+def test_install_py_inflection_default(devirt_env):
     spack_install_and_test('py-inflection')
 
 
 @pytest.mark.py_isort
-def test_install_py_isort_default():
+def test_install_py_isort_default(devirt_env):
     spack_install_and_test('py-isort')
 
 
 @pytest.mark.py_lark
-def test_install_py_lark_default():
+def test_install_py_lark_default(devirt_env):
     spack_install_and_test('py-lark')
 
 
 @pytest.mark.py_nanobind
-def test_install_py_nanobind_default():
+def test_install_py_nanobind_default(devirt_env):
     spack_install_and_test('py-nanobind')
 
 
 @pytest.mark.py_pathspec
-def test_install_py_pathspec_default():
+def test_install_py_pathspec_default(devirt_env):
     spack_install_and_test('py-pathspec')
 
 
 @pytest.mark.py_pytest
-def test_install_py_pytest_default():
+def test_install_py_pytest_default(devirt_env):
     spack_install_and_test('py-pytest')
 
 
 @pytest.mark.py_pytest_factoryboy
-def test_install_py_pytest_factoryboy_default():
+def test_install_py_pytest_factoryboy_default(devirt_env):
     spack_install_and_test('py-pytest-factoryboy')
 
 
 @pytest.mark.py_setuptools
-def test_install_py_setuptools_default():
+def test_install_py_setuptools_default(devirt_env):
     spack_install_and_test('py-setuptools')
 
 
 @pytest.mark.py_sphinxcontrib_jquery
-def test_install_py_sphinxcontrib_jquery_default():
+def test_install_py_sphinxcontrib_jquery_default(devirt_env):
     spack_install_and_test('py-sphinxcontrib-jquery')
 
 
 @pytest.mark.py_tabulate
-def test_install_py_tabulate_default():
+def test_install_py_tabulate_default(devirt_env):
     spack_install_and_test('py-tabulate')
 
 
 @pytest.mark.py_typing_extensions
-def test_install_py_typing_extensions_default():
+def test_install_py_typing_extensions_default(devirt_env):
     spack_install_and_test('py-typing-extensions')
 
 
