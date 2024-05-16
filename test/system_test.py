@@ -312,35 +312,34 @@ def test_install_icon_nwp_gpu():
 @pytest.mark.icon
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 def test_install_icon_c2sm_test_cpu_gcc(devirt_env):
-    spack_env_dev_install_and_test(
-        'config/cscs/spack/v0.21.1/daint_cpu_gcc',
-        'git@github.com:C2SM/icon.git',
-        'spack_v0.21.1',
-        'icon',
-        build_on_login_node=True)
+    spack_env_dev_install_and_test('config/cscs/spack/v0.21.1/daint_cpu_gcc',
+                                   'git@github.com:C2SM/icon.git',
+                                   'spack_v0.21.1',
+                                   'icon',
+                                   build_on_login_node=True)
+
 
 @pytest.mark.icon
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 @pytest.mark.no_balfrin  # config file does not exist for this machine
 def test_install_icon_c2sm_test_cpu_nvhpc_out_of_source(devirt_env):
-    spack_env_dev_install_and_test(
-        'config/cscs/spack/v0.21.1/daint_cpu_nvhpc',
-        'git@github.com:C2SM/icon.git',
-        'spack_v0.21.1',
-        'icon',
-        out_of_source=True,
-        build_on_login_node=True)
+    spack_env_dev_install_and_test('config/cscs/spack/v0.21.1/daint_cpu_nvhpc',
+                                   'git@github.com:C2SM/icon.git',
+                                   'spack_v0.21.1',
+                                   'icon',
+                                   out_of_source=True,
+                                   build_on_login_node=True)
+
 
 @pytest.mark.icon
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 @pytest.mark.no_balfrin  # config file does not exist for this machine
 def test_install_icon_c2sm_test_gpu(devirt_env):
-    spack_env_dev_install_and_test(
-        'config/cscs/spack/v0.21.1/daint_gpu_nvhpc',
-        'git@github.com:C2SM/icon.git',
-        'spack_v0.21.1',
-        'icon',
-        build_on_login_node=True)
+    spack_env_dev_install_and_test('config/cscs/spack/v0.21.1/daint_gpu_nvhpc',
+                                   'git@github.com:C2SM/icon.git',
+                                   'spack_v0.21.1',
+                                   'icon',
+                                   build_on_login_node=True)
 
 
 @pytest.mark.no_tsa  # This test is flaky and sometimes fails with: icondelaunay.cpp:29:10: fatal error: version.c: No such file or directory. See issue #781.
@@ -516,7 +515,7 @@ def test_py_gridtools_cpp_install_default(devirt_env):
 @pytest.mark.no_tsa  # Irrelevant
 @pytest.mark.no_daint  # problem with gt4py and spack v21.1
 @pytest.mark.parametrize("version", ['1.0.1.1', '1.0.1.1b', '1.0.1.6'])
-def test_install_version(version,devirt_env):
+def test_install_version(version, devirt_env):
     spack_install_and_test(f'py-gt4py @{version}')
 
 
@@ -526,7 +525,7 @@ def test_install_version(version,devirt_env):
     '1.0.1.7', '1.0.3', '1.0.3.1', '1.0.3.2', '1.0.3.3', '1.0.3.4', '1.0.3.5',
     '1.0.3.6'
 ])
-def test_install_py_gt4py_for_version(version,devirt_env):
+def test_install_py_gt4py_for_version(version, devirt_env):
     spack_install_and_test(f'py-gt4py @{version}')
 
 
