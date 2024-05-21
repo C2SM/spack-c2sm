@@ -332,34 +332,43 @@ class GridToolsTest(unittest.TestCase):
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 class IconTest(unittest.TestCase):
 
-    def test_install_2_6_6_gcc(self):
-        spack_install_and_test('icon @2.6.6 %gcc')
+    @pytest.mark.no_daint
+    def test_install_2024_1_gcc(self):
+        spack_install_and_test('icon @2024.1-1 %gcc')
 
     @pytest.mark.no_daint
-    def test_install_2_6_6_nvhpc(self):
-        spack_install_and_test('icon @2.6.6 %nvhpc')
+    def test_install_2024_1_nvhpc(self):
+        spack_install_and_test('icon @2024.1-1 %nvhpc')
 
     @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
-    def test_install_nwp_gpu(self):
+    def test_install_conditional_dependencies(self):
+        # +coupling triggers libfyaml, libxml2, netcdf-c
+        # +rttov triggers rttov
+        # serialization=create triggers serialbox
+        # +cdi-pio triggers libcdi-pio, yaxt                   (but unfortunately this is broken)
+        # +emvorado triggers eccodes, hdf5, zlib
+        # +eccodes-definitions triggers cosmo-eccodes-definitions
+        # +mpi triggers mpi
+        # gpu=openacc+cuda triggers cuda
         spack_install_and_test(
-            'icon @nwp-master %nvhpc +grib2 +eccodes-definitions +ecrad +art +dace gpu=openacc+cuda +mpi-gpu +realloc-buf +pgi-inlib ~aes ~jsbach ~ocean ~coupling ~rte-rrtmgp ~loop-exchange ~async-io-rma +mixed-precision'
+            'icon @2024.1-1 %nvhpc +coupling +rttov serialization=create +emvorado +mpi gpu=openacc+cuda'
         )
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_gcc(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_cpu_gcc',
+            'config/cscs/spack/v0.20.1.4/daint_cpu_gcc',
             'git@github.com:C2SM/icon.git',
-            'icon-2.6.6.2',
+            '2024.01',
             'icon',
             build_on_login_node=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_nvhpc_out_of_source(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc',
+            'config/cscs/spack/v0.20.1.4/daint_cpu_nvhpc',
             'git@github.com:C2SM/icon.git',
-            'icon-2.6.6.2',
+            '2024.01',
             'icon',
             out_of_source=True,
             build_on_login_node=True)
@@ -367,18 +376,18 @@ class IconTest(unittest.TestCase):
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_cpu_nvhpc',
+            'config/cscs/spack/v0.20.1.4/daint_cpu_nvhpc',
             'git@github.com:C2SM/icon.git',
-            'icon-2.6.6.2',
+            '2024.01',
             'icon',
             build_on_login_node=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_gpu(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.18.1.10/daint_gpu_nvhpc',
+            'config/cscs/spack/v0.20.1.4/daint_gpu_nvhpc',
             'git@github.com:C2SM/icon.git',
-            'icon-2.6.6.2',
+            '2024.01',
             'icon',
             build_on_login_node=True)
 
