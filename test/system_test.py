@@ -313,12 +313,12 @@ class IconTest(unittest.TestCase):
 
     @pytest.mark.no_daint
     def test_install_2_6_6_nvhpc(self):
-        spack_install_and_test('icon @2.6.6 %nvhpc')
+        spack_install_and_test('icon @2.6.6 %nvhpc ^libxml%gcc')
 
     @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
     def test_install_nwp_gpu(self):
         spack_install_and_test(
-            'icon @nwp-master %nvhpc +grib2 +eccodes-definitions +ecrad +art +dace gpu=openacc+cuda +mpi-gpu +realloc-buf +pgi-inlib ~aes ~jsbach ~ocean ~coupling ~rte-rrtmgp ~loop-exchange ~async-io-rma +mixed-precision'
+            'icon @nwp-master %nvhpc +grib2 +eccodes-definitions +ecrad +art +dace gpu=openacc+cuda +mpi-gpu +realloc-buf +pgi-inlib ~aes ~jsbach ~ocean ~coupling ~rte-rrtmgp ~loop-exchange ~async-io-rma +mixed-precision ^libxml2%gcc'
         )
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
