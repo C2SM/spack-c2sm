@@ -313,7 +313,7 @@ class IconTest(unittest.TestCase):
 
     @pytest.mark.no_daint
     def test_install_2_6_6_nvhpc(self):
-        spack_install_and_test('icon @2.6.6 %nvhpc ^libxml%gcc')
+        spack_install_and_test('icon @2.6.6 %nvhpc ^libxml2%gcc')
 
     @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
     def test_install_nwp_gpu(self):
