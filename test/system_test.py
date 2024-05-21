@@ -219,18 +219,6 @@ class ClangFormatTest(unittest.TestCase):
         spack_install_and_test('clang-format')
 
 
-class ClawTest(unittest.TestCase):
-
-    @pytest.mark.no_daint  # Test #1: junit-tatsu fails
-    def test_install_default(self):
-        spack_install_and_test('claw', split_phases=True)
-
-    @pytest.mark.no_tsa  # fallback for Daint
-    @pytest.mark.no_balfrin  # fallback for Daint
-    def test_install_default_build_only(self):
-        spack_install('claw')
-
-
 @pytest.mark.no_balfrin  # cosmo-dycore does not support the cuda arch of balfrin
 @pytest.mark.no_tsa  # irrelevant
 class CosmoTest(unittest.TestCase):
