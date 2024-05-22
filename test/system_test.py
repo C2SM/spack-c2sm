@@ -13,6 +13,7 @@ spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 sys.path.append(os.path.normpath(spack_c2sm_path))
 from src import machine_name, log_with_spack, sanitized_filename
 
+
 @pytest.fixture(scope="session")
 def uenv(tmp_path_factory):
     conf_files = ["compilers.yaml", "upstreams.yaml", "packages.yaml"]
@@ -26,11 +27,12 @@ def uenv(tmp_path_factory):
         for conf_file in conf_files:
             src = os.path.join(src_dir, conf_file)
             dst = os.path.join(conf_dir, conf_file)
-            
+
             if not os.path.islink(dst):
                 if os.path.exists(dst):
                     os.remove(dst)
                 os.symlink(src, dst)
+
 
 @pytest.fixture(scope='function')
 def devirt_env():
@@ -55,9 +57,9 @@ def compose_logfilename(spec, log_filename: str = None, uenv: str = None):
         'test_', '')
     if log_filename is None:
         if uenv:
-            return sanitized_filename(func_name + '_' + uenv + '-'  + spec)
+            return sanitized_filename(func_name + '_' + uenv + '-' + spec)
         else:
-            return sanitized_filename(func_name + '-'  + spec)
+            return sanitized_filename(func_name + '-' + spec)
     return log_filename
 
 
@@ -309,6 +311,7 @@ def test_install_fdb_5_11_17_nvhpc():
 @pytest.mark.icon
 def test_install_icon_2_6_6_gcc():
     spack_install_and_test('icon @2.6.6 %gcc')
+
 
 @pytest.mark.no_tsa  # No uenv for Tsa
 @pytest.mark.no_daint  # No uenv for Daint
@@ -665,6 +668,7 @@ def test_install_yaxt_default():
 @pytest.mark.zlib_ng
 def test_install_zlib_ng_version_2_0_0(uenv):
     spack_install_and_test('zlib_ng @2.0.0', uenv='v2')
+
 
 @pytest.mark.no_tsa  # No uenv for Tsa
 @pytest.mark.no_daint  # No uenv for Daint

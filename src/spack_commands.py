@@ -29,17 +29,17 @@ def log_with_spack(command: str,
     # Setup spack env
     if uenv:
         spack_env = f'. {spack_c2sm_path}/setup-env.sh /user-environment'
-    else: 
+    else:
         spack_env = f'. {spack_c2sm_path}/setup-env.sh'
 
     lookup_uenv = {
-    'v1': '/scratch/mch/leclairm/uenv/images/pre-post_v0.sqfs',
-    'v2': '/scratch/mch/leclairm/uenv/images/icon.v1.a100.sqfs'
+        'v1': '/scratch/mch/leclairm/uenv/images/pre-post_v0.sqfs',
+        'v2': '/scratch/mch/leclairm/uenv/images/icon.v1.a100.sqfs'
     }
     if uenv and srun:
         uenv_args = f'--uenv={lookup_uenv[uenv]}:/user-environment'
     elif uenv and not srun:
-        uenv_args =  f'squashfs-mount {lookup_uenv[uenv]}:/user-environment/ -- '
+        uenv_args = f'squashfs-mount {lookup_uenv[uenv]}:/user-environment/ -- '
     else:
         uenv_args = ''
 
@@ -67,7 +67,6 @@ def log_with_spack(command: str,
             f.write('\n')
         f.write(command)
         f.write('\n\n')
-
 
     start = time.time()
     # The output is streamed as directly as possible to the log_file to avoid buffering and potentially losing buffered content.
