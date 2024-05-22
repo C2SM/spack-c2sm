@@ -16,7 +16,8 @@ def log_with_spack(command: str,
                    log_filename: str = None,
                    cwd=None,
                    env=None,
-                   srun=False) -> None:
+                   srun=False,
+                   uenv=None) -> None:
     """
     Executes the given command while spack is loaded and writes the output into the log file.
     If log_filename is None, command is used to create one.
@@ -26,14 +27,28 @@ def log_with_spack(command: str,
         spack_c2sm_path) / 'log' / machine_name() / test_category / filename
 
     # Setup spack env
-    spack_env = f'. {spack_c2sm_path}/setup-env.sh'
+    if uenv:
+        spack_env = f'. {spack_c2sm_path}/setup-env.sh /user-environment'
+    else: 
+        spack_env = f'. {spack_c2sm_path}/setup-env.sh'
+
+    lookup_uenv = {
+    'v1': '/scratch/mch/leclairm/uenv/images/pre-post_v0.sqfs',
+    'v2': '/scratch/mch/leclairm/uenv/images/icon.v1.a100.sqfs'
+    }
+    if uenv and srun:
+        uenv_args = f'--uenv={lookup_uenv[uenv]}:/user-environment'
+    elif uenv and not srun:
+        uenv_args =  f'squashfs-mount {lookup_uenv[uenv]}:/user-environment/ -- '
+    else:
+        uenv_args = ''
 
     # Distribute work with 'srun'
-    if srun and getpass.getuser() == 'jenkins':
+    if srun:
         # The '-c' argument should be in sync with
         # sysconfig/<machine>/config.yaml config:build_jobs for max efficiency
         srun = {
-            'balfrin': '',
+            'balfrin': 'srun -t 00:10:00 -p postproc -c 24',
             'daint': 'srun -t 02:00:00 -C gpu -A g110 -c 12 -n 1',
             'tsa': 'srun -t 02:00:00 -c 6',
         }[machine_name()]
@@ -47,21 +62,25 @@ def log_with_spack(command: str,
     with log_file.open('a') as f:
         f.write(machine_name())
         f.write('\n')
+        if uenv:
+            f.write(f'uenv: {uenv}')
+            f.write('\n')
         f.write(command)
         f.write('\n\n')
+
 
     start = time.time()
     # The output is streamed as directly as possible to the log_file to avoid buffering and potentially losing buffered content.
     # '2>&1' redirects stderr to stdout.
     if env is None:
         ret = subprocess.run(
-            f'{spack_env}; ({srun} {command}) >> {log_file} 2>&1',
+            f'{srun} {uenv_args} bash -c "{spack_env}; {command} >> {log_file} 2>&1" ',
             cwd=cwd,
             check=False,
             shell=True)
     else:
         ret = subprocess.run(
-            f'{spack_env}; spack env activate -d {env}; ({srun} {command}) >> {log_file} 2>&1',
+            f'{srun} {uenv_args} bash -c "{spack_env}; spack env activate -d {env}; {command}) >> {log_file} 2>&1" ',
             cwd=cwd,
             check=False,
             shell=True)

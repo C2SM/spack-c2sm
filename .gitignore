@@ -15,3 +15,5 @@ user-cache/
 sysconfigs/uenv/compilers.yaml
 sysconfigs/uenv/packages.yaml
 sysconfigs/uenv/upstreams.yaml
+sysconfigs/uenv/uenv.hash
+repos/uenv

@@ -50,15 +50,18 @@ def devirt_env():
         pass
 
 
-def compose_logfilename(spec, log_filename: str = None):
+def compose_logfilename(spec, log_filename: str = None, uenv: str = None):
     func_name = inspect.currentframe().f_back.f_back.f_code.co_name.replace(
         'test_', '')
     if log_filename is None:
-        log_filename = sanitized_filename(func_name + '-' + spec)
+        if uenv:
+            return sanitized_filename(func_name + '_' + uenv + '-'  + spec)
+        else:
+            return sanitized_filename(func_name + '-'  + spec)
     return log_filename
 
 
-def spack_install(spec: str, log_filename: str = None):
+def spack_install(spec: str, log_filename: str = None, uenv: str = None):
     """
     Tests 'spack install' of the given spec and writes the output into the log file.
     """
@@ -70,44 +73,51 @@ def spack_install(spec: str, log_filename: str = None):
     log_with_spack(f'spack spec {spec}',
                    'system_test',
                    log_filename,
-                   srun=False)
+                   srun=False,
+                   uenv=uenv)
     log_with_spack(f'spack {command} -n -v {spec}',
                    'system_test',
                    log_filename,
-                   srun=True)
+                   srun=True,
+                   uenv=uenv)
 
 
 def spack_install_and_test(spec: str,
                            log_filename: str = None,
-                           split_phases=False):
+                           split_phases=False,
+                           uenv: str = None):
     """
     Tests 'spack install' of the given spec and writes the output into the log file.
     """
 
-    log_filename = compose_logfilename(spec, log_filename)
+    log_filename = compose_logfilename(spec, log_filename, uenv)
 
     command = 'install'
 
     log_with_spack(f'spack spec {spec}',
                    'system_test',
                    log_filename,
-                   srun=False)
+                   srun=False,
+                   uenv=uenv)
     if split_phases:
         log_with_spack(
             f'spack {command} --until build --test=root -n -v {spec}',
             'system_test',
             log_filename,
-            srun=True)
+            srun=True,
+            uenv=uenv)
         log_with_spack(
             f'spack {command} --dont-restage --test=root -n -v {spec}',
             'system_test',
             log_filename,
-            srun=False)
+            srun=False,
+            uenv=uenv)
     else:
         log_with_spack(f'spack {command} --test=root -n -v {spec}',
                        'system_test',
                        log_filename,
-                       srun=not spec.startswith('icon '))
+                       srun=not spec.startswith('icon '),
+                       uenv=uenv)
 
 
 def spack_devbuild_and_test(spec: str,
@@ -299,6 +309,13 @@ def test_install_fdb_5_11_17_nvhpc():
 @pytest.mark.icon
 def test_install_icon_2_6_6_gcc():
     spack_install_and_test('icon @2.6.6 %gcc')
+
+@pytest.mark.no_tsa  # No uenv for Tsa
+@pytest.mark.no_daint  # No uenv for Daint
+@pytest.mark.icon
+@pytest.mark.parametrize("v_uenv", ['v1'])
+def test_install_icon_2_6_6_gcc_for_uenv(uenv, v_uenv):
+    spack_install_and_test('icon @2.6.6 %gcc', uenv=v_uenv)
 
 
 @pytest.mark.icon
@@ -635,7 +652,7 @@ def test_install_default():
 
 
 @pytest.mark.tensorflowc
-def test_install_2_6_0(uenv):
+def test_install_2_6_0():
     spack_install_and_test('tensorflowc @2.6.0')
 
 
@@ -647,4 +664,11 @@ def test_install_yaxt_default():
 
 @pytest.mark.zlib_ng
 def test_install_zlib_ng_version_2_0_0(uenv):
-    spack_install_and_test('zlib_ng @2.0.0')
+    spack_install_and_test('zlib_ng @2.0.0', uenv='v2')
+
+@pytest.mark.no_tsa  # No uenv for Tsa
+@pytest.mark.no_daint  # No uenv for Daint
+@pytest.mark.zlib_ng
+@pytest.mark.parametrize("v_uenv", ['v1', 'v2'])
+def test_install_zlib_ng_version_2_0_0_for_uenv(uenv, v_uenv):
+    spack_install_and_test('zlib_ng @2.0.0', uenv=v_uenv)
