@@ -313,8 +313,8 @@ class IconTest(unittest.TestCase):
         spack_install_and_test('icon @2024.1-1 %gcc')
 
     @pytest.mark.no_daint
-    def test_install_2_6_6_nvhpc(self):
-        spack_install_and_test('icon @2.6.6 %nvhpc ^libxml2%gcc')
+    def test_install_2024_1_nvhpc(self):
+        spack_install_and_test('icon @2024.1-1 %nvhpc')
 
     @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
     def test_install_conditional_dependencies(self):
@@ -327,7 +327,7 @@ class IconTest(unittest.TestCase):
         # +mpi triggers mpi
         # gpu=openacc+cuda triggers cuda
         spack_install_and_test(
-            'icon @nwp-master %nvhpc +grib2 +eccodes-definitions +ecrad +art +dace gpu=openacc+cuda +mpi-gpu +realloc-buf +pgi-inlib ~aes ~jsbach ~ocean ~coupling ~rte-rrtmgp ~loop-exchange ~async-io-rma +mixed-precision ^libxml2%gcc'
+            'icon @2024.1-1 %nvhpc +coupling +rttov serialization=create +emvorado +mpi gpu=openacc+cuda'
         )
 
     @pytest.mark.no_daint  # no time for that
