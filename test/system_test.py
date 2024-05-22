@@ -1,12 +1,11 @@
-import unittest
 import pytest
 import subprocess
 import sys
 import os
 import uuid
 import shutil
-from pathlib import Path
 import inspect
+from filelock import FileLock
 
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                '..')
@@ -14,6 +13,24 @@ spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 sys.path.append(os.path.normpath(spack_c2sm_path))
 from src import machine_name, log_with_spack, sanitized_filename
 
+@pytest.fixture(scope="session")
+def uenv(tmp_path_factory):
+    conf_files = ["compilers.yaml", "upstreams.yaml", "packages.yaml"]
+    conf_dir = os.path.join(spack_c2sm_path, "sysconfigs/uenv/")
+    src_dir = "/user-environment/config"
+
+    root_tmp_dir = tmp_path_factory.getbasetemp().parent
+    fn = root_tmp_dir / 'link_config_yaml.lock'
+
+    with FileLock(fn):
+        for conf_file in conf_files:
+            src = os.path.join(src_dir, conf_file)
+            dst = os.path.join(conf_dir, conf_file)
+            
+            if not os.path.islink(dst):
+                if os.path.exists(dst):
+                    os.remove(dst)
+                os.symlink(src, dst)
 
 @pytest.fixture(scope='function')
 def devirt_env():
@@ -618,7 +635,7 @@ def test_install_default():
 
 
 @pytest.mark.tensorflowc
-def test_install_2_6_0():
+def test_install_2_6_0(uenv):
     spack_install_and_test('tensorflowc @2.6.0')
 
 
@@ -629,5 +646,5 @@ def test_install_yaxt_default():
 
 
 @pytest.mark.zlib_ng
-def test_install_zlib_ng_version_2_0_0():
+def test_install_zlib_ng_version_2_0_0(uenv):
     spack_install_and_test('zlib_ng @2.0.0')
