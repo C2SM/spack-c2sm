@@ -8,17 +8,11 @@ spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 sys.path.append(os.path.normpath(spack_c2sm_path))
 from src import log_with_spack, sanitized_filename, all_packages, machine_name
 
-exclude_on_machine = {
-    'tsa': [
-        'cosmo',  # irrelevant
-        'flexpart-cosmo',  # No compatible compiler available
-    ]
-}
 
 
-def packages_for_machine() -> list:
+def drop(unsupported_packages: list) -> list:
     try:
-        exclude = exclude_on_machine[machine_name()]
+        exclude = unsupported_packages[machine_name()]
         return [p for p in all_packages if p not in exclude]
     except KeyError:
         return all_packages
@@ -49,7 +43,13 @@ def test_spack_info(package: str):
     spack_info(package)
 
 
-@pytest.mark.parametrize('package', packages_for_machine())
+unsupported_packages = {
+    'tsa': [
+        'cosmo',  # irrelevant
+        'flexpart-cosmo',  # No compatible compiler available
+    ]
+}
+@pytest.mark.parametrize('package', drop(unsupported_packages))
 def test_spack_spec(package: str):
     spack_spec(package)
 
@@ -61,15 +61,6 @@ def test_spack_spec(package: str):
 ])
 def test_icon_spec_with_variant(variant: str):
     spack_spec(f'icon {variant}')
-
-
-#@pytest.mark.icon
-#@pytest.mark.parametrize('wrong_variant', [
-#    'fcgroup=dace.externals/dace_icon.-O1', 'extra-config-args=--new_feature'
-#])
-#@pytest.mark.xfail
-#def test_icon_spec_with_wrong_variant(wrong_variant: str):
-#    spack_spec(f'icon {wrong_variant}')
 
 
 @pytest.mark.cosmo
