@@ -1,0 +1,3 @@
+upstreams:
+  central:
+    install_tree: /cluster/software/stacks/2024-05/spack/opt/spack
