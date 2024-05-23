@@ -31,7 +31,7 @@ def uenv(tmp_path_factory):
             link(src, dst)
 
         repos = 'repos/uenv'
-        link('user-environment/repo', repos)
+        link('/user-environment/repo', repos)
 
 def link(src, dst):
     if not os.path.islink(dst):
@@ -682,3 +682,4 @@ def test_install_zlib_ng_version_2_0_0(uenv):
 @pytest.mark.parametrize("v_uenv", ['v1', 'v2'])
 def test_install_zlib_ng_version_2_0_0_for_uenv(uenv, v_uenv):
     spack_install_and_test('zlib_ng @2.0.0', uenv=v_uenv)
+    spack_install('zlib_ng @2.0.0', uenv=v_uenv)
