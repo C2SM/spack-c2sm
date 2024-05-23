@@ -322,9 +322,16 @@ def test_install_icon_2_6_6_gcc():
 @pytest.mark.no_tsa  # No uenv for Tsa
 @pytest.mark.no_daint  # No uenv for Daint
 @pytest.mark.icon
-@pytest.mark.parametrize("v_uenv", ['v1'])
-def test_install_icon_2_6_6_gcc_for_uenv(uenv, v_uenv):
-    spack_install_and_test('icon @2.6.6 %gcc', uenv=v_uenv)
+@pytest.mark.parametrize("v", ['v1'])
+def test_install_icon_2_6_6_gcc_for_uenv(uenv, v):
+    spack_install_and_test('icon @2.6.6 %gcc', uenv=v)
+
+@pytest.mark.no_tsa  # No uenv for Tsa
+@pytest.mark.no_daint  # No uenv for Daint
+@pytest.mark.icon
+@pytest.mark.parametrize("v", ['v2'])
+def test_install_icon_2_6_6_nvhpc_for_uenv(uenv, v):
+    spack_install_and_test('icon @2.6.6 %nvhpc', uenv=v)
 
 
 @pytest.mark.icon
@@ -672,14 +679,14 @@ def test_install_yaxt_default():
 
 
 @pytest.mark.zlib_ng
-def test_install_zlib_ng_version_2_0_0(uenv):
-    spack_install_and_test('zlib_ng @2.0.0', uenv='v2')
+def test_install_zlib_ng_version_2_0_0():
+    spack_install_and_test('zlib_ng @2.0.0')
 
 
 @pytest.mark.no_tsa  # No uenv for Tsa
 @pytest.mark.no_daint  # No uenv for Daint
 @pytest.mark.zlib_ng
-@pytest.mark.parametrize("v_uenv", ['v1', 'v2'])
-def test_install_zlib_ng_version_2_0_0_for_uenv(uenv, v_uenv):
-    spack_install_and_test('zlib_ng @2.0.0', uenv=v_uenv)
-    spack_install('zlib_ng @2.0.0', uenv=v_uenv)
+@pytest.mark.parametrize("v", ['v1', 'v2'])
+def test_install_zlib_ng_version_2_0_0_for_uenv(uenv, v):
+    spack_install_and_test('zlib_ng @2.0.0', uenv=v)
+    spack_install('zlib_ng @2.0.0', uenv=v)
