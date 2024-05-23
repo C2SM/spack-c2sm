@@ -16,8 +16,9 @@ from src import machine_name, log_with_spack, sanitized_filename
 
 @pytest.fixture(scope="session")
 def uenv(tmp_path_factory):
-    conf_files = ["compilers.yaml", "upstreams.yaml", "packages.yaml"]
     conf_dir = os.path.join(spack_c2sm_path, "sysconfigs/uenv/")
+    conf_files = ["compilers.yaml", "upstreams.yaml", "packages.yaml"]
+
     src_dir = "/user-environment/config"
 
     root_tmp_dir = tmp_path_factory.getbasetemp().parent
@@ -27,11 +28,16 @@ def uenv(tmp_path_factory):
         for conf_file in conf_files:
             src = os.path.join(src_dir, conf_file)
             dst = os.path.join(conf_dir, conf_file)
+            link(src, dst)
 
-            if not os.path.islink(dst):
-                if os.path.exists(dst):
-                    os.remove(dst)
-                os.symlink(src, dst)
+        repos = 'repos/uenv'
+        link('user-environment/repo', repos)
+
+def link(src, dst):
+    if not os.path.islink(dst):
+        if os.path.exists(dst):
+            os.remove(dst)
+        os.symlink(src, dst)
 
 
 @pytest.fixture(scope='function')

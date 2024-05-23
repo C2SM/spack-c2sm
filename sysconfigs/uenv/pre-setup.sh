@@ -22,4 +22,4 @@ fi
 for conf_file in "${conf_files[@]}"; do
     [[ -f "$conf_dir"/"$conf_file" ]] || ln -s "$uenv_mount"/config/"$conf_file" "$conf_dir"
 done
-[[ -d "$parent_dir"/repos/uenv ]] || ln -s "$uenv_mount"/repo "$parent_dir"/repos/uenv
+[[ -L "$parent_dir"/repos/uenv ]] || ln -s "$uenv_mount"/repo "$parent_dir"/repos/uenv
