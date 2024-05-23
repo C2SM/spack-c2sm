@@ -33,6 +33,7 @@ def uenv(tmp_path_factory):
         repos = 'repos/uenv'
         link('/user-environment/repo', repos)
 
+
 def link(src, dst):
     if not os.path.islink(dst):
         if os.path.exists(dst):
@@ -325,6 +326,7 @@ def test_install_icon_2_6_6_gcc():
 @pytest.mark.parametrize("v", ['v1'])
 def test_install_icon_2_6_6_gcc_for_uenv(uenv, v):
     spack_install_and_test('icon @2.6.6 %gcc', uenv=v)
+
 
 @pytest.mark.no_tsa  # No uenv for Tsa
 @pytest.mark.no_daint  # No uenv for Daint
