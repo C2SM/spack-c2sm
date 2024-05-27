@@ -34,9 +34,8 @@ class Libgrib1(MakefilePackage):
 
     version('master', branch='master')
     version('22-01-2020', commit='3d3db9a9a090f6798c2fd4290c271dd58ff694e0')
-
-    # conflicts('@22-01-2020', when='%gcc@11.3.0')
-    # conflicts('@22-01-2020', when='%nvhpc@22.7')
+    patch('patches/22-01-2020/patch.drop_boz_literals',
+          when='@22-01-2020%gcc@11.3.0:')
 
     def edit(self, spec, prefix):
         _makefile_name = 'Makefile.linux'
