@@ -87,6 +87,13 @@ class PyIcon4py(PythonPackage):
                 'interpolation': 'interpolation/stencils',
                 'advection': 'advection',
             },
+            ver('=0.0.11'): {
+                'atm_dyn_iconam': 'dycore',
+                'tools': 'icon4pytools',
+                'diffusion': 'diffusion/stencils',
+                'interpolation': 'interpolation/stencils',
+                'advection': 'advection',
+            },
             ver('=main'): {
                 'atm_dyn_iconam': 'dycore',
                 'tools': 'icon4pytools',
