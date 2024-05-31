@@ -151,7 +151,7 @@ def spack_env_dev_install_and_test(spack_env: str,
     environment, tests 'spack install' and writes the output into the log file.
     If log_filename is None, spack_env is used to create one.
 
-    ICON specials:
+     specials:
     If out_of_source is True, create additional folder and build there, BUT skip testing!
     If build_on_login_node is True, do not run build-step on login node
     """
@@ -314,7 +314,7 @@ class IconTest(unittest.TestCase):
 
     @pytest.mark.no_daint
     def test_install_2024_1_nvhpc(self):
-        spack_install_and_test('icon @2024.1-1 %nvhpc')
+        spack_install_and_test('icon @2024.1-1 %nvhpc ^hdf5@gcc')
 
     @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
     def test_install_conditional_dependencies(self):
@@ -327,7 +327,7 @@ class IconTest(unittest.TestCase):
         # +mpi triggers mpi
         # gpu=openacc+cuda triggers cuda
         spack_install_and_test(
-            'icon @2024.1-1 %nvhpc +coupling +rttov serialization=create +emvorado +mpi gpu=openacc+cuda'
+            'icon @2024.1-1 %nvhpc +coupling +rttov serialization=create +emvorado +mpi gpu=openacc+cuda ^hdf5@gcc'
         )
 
     @pytest.mark.no_daint  # no time for that
