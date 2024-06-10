@@ -16,15 +16,7 @@ class PyGt4py(PythonPackage):
     url = "git@github.com:GridTools/gt4py.git"
 
     version('main', branch='main', git=url)
-    version('1.0.1.1b', tag='icon4py_20230530', git=url)
-    version('1.0.1.6', tag='icon4py_20231124', git=url)
-    version('1.0.1.7', tag='icon4py_20240119', git=url)
-    version('1.0.3', tag='v1.0.3', git=url)
-    version('1.0.3.1', tag='icon4py_20240214', git=url)
-    version('1.0.3.2', tag='icon4py_20240226', git=url)
     version('1.0.3.3', tag='icon4py_20240229', git=url)
-    version('1.0.3.4', tag='icon4py_20240320', git=url)
-    version('1.0.3.5', tag='icon4py_20240322', git=url)
     version('1.0.3.6', tag='icon4py_20240409', git=url)
     version('1.0.3.7', tag='icon4py_20240521', git=url)
 
@@ -61,11 +53,6 @@ class PyGt4py(PythonPackage):
     depends_on('py-ninja@1.10:', type=('build', 'run'))
     depends_on('py-numpy@1.24.2: ~blas ~lapack', type=('build', 'run'))
     depends_on('py-packaging@20.0:', type=('build', 'run'))
-
-    # versions later than 2.9.2 fail to pick to right Python version
-    # for compiled modules.
-    # See: https://github.com/C2SM/spack-c2sm/issues/803
-    depends_on('py-pybind11@2.5:2.9.2', type=('build', 'run'))
 
     depends_on('py-nanobind@1.4.0:', when="@1.0.1.3:", type=('build', 'run'))
     depends_on('py-tabulate@0.8.10:', type=('build', 'run'))
