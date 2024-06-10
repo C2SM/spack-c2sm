@@ -1,71 +1,14 @@
 compilers:
-  - compiler:
-      spec: gcc@=11.4.0
-      paths:
-        cc: /usr/bin/gcc
-        cxx: /usr/bin/g++
-        f77: /usr/bin/gfortran
-        fc: /usr/bin/gfortran
-      flags: {cflags: -O2 -fPIC -ftree-vectorize -march=core-avx2 -mavx2, cxxflags: -O2
-          -fPIC -ftree-vectorize -march=core-avx2 -mavx2, cppflags: -O2 -fPIC -ftree-vectorize
-          -march=core-avx2 -mavx2}
-      operating_system: ubuntu22.04
-      target: x86_64
-      modules: []
-      environment: {}
-      extra_rpaths: []
-  - compiler:
-      spec: dpcpp@=2023.2.0
-      paths:
-        cc: /cluster/software/commercial/intel/2023.2/x86_64/compiler/2023.2.0/linux/bin/icx
-        cxx: /cluster/software/commercial/intel/2023.2/x86_64/compiler/2023.2.0/linux/bin/dpcpp
-        f77: /cluster/software/commercial/intel/2023.2/x86_64/compiler/2023.2.0/linux/bin/ifx
-        fc: /cluster/software/commercial/intel/2023.2/x86_64/compiler/2023.2.0/linux/bin/ifx
-      flags: {}
-      operating_system: ubuntu22.04
-      target: x86_64
-      modules: []
-      environment: {}
-      extra_rpaths: []
-  - compiler:
-      spec: intel@=2021.10.0
-      paths:
-        cc: /cluster/software/commercial/intel/2023.2/x86_64/compiler/2023.2.0/linux/bin/intel64/icc
-        cxx: /cluster/software/commercial/intel/2023.2/x86_64/compiler/2023.2.0/linux/bin/intel64/icpc
-        f77: /cluster/software/commercial/intel/2023.2/x86_64/compiler/2023.2.0/linux/bin/intel64/ifort
-        fc: /cluster/software/commercial/intel/2023.2/x86_64/compiler/2023.2.0/linux/bin/intel64/ifort
-      flags: {}
-      operating_system: ubuntu22.04
-      target: x86_64
-      modules: []
-      environment: {}
-      extra_rpaths: []
-  - compiler:
-      spec: oneapi@=2023.2.0
-      paths:
-        cc: /cluster/software/commercial/intel/2023.2/x86_64/compiler/2023.2.0/linux/bin/icx
-        cxx: /cluster/software/commercial/intel/2023.2/x86_64/compiler/2023.2.0/linux/bin/icpx
-        f77: /cluster/software/commercial/intel/2023.2/x86_64/compiler/2023.2.0/linux/bin/ifx
-        fc: /cluster/software/commercial/intel/2023.2/x86_64/compiler/2023.2.0/linux/bin/ifx
-      flags: {cflags: -O2 -march=core-avx2, cxxflags: -O2 -march=core-avx2, cppflags: -O2
-          -march=core-avx2}
-      operating_system: ubuntu22.04
-      target: x86_64
-      modules: []
-      environment: {}
-      extra_rpaths: []
-  - compiler:
-      spec: gcc@=13.2.0
-      paths:
-        cc: /cluster/software/stacks/2024-05/spack/opt/spack/linux-ubuntu22.04-zen2/gcc-11.4.0/gcc-13.2.0-qnlxvqcbysxs6f7amdxkzbxbnrjxav26/bin/gcc
-        cxx: /cluster/software/stacks/2024-05/spack/opt/spack/linux-ubuntu22.04-zen2/gcc-11.4.0/gcc-13.2.0-qnlxvqcbysxs6f7amdxkzbxbnrjxav26/bin/g++
-        f77: /cluster/software/stacks/2024-05/spack/opt/spack/linux-ubuntu22.04-zen2/gcc-11.4.0/gcc-13.2.0-qnlxvqcbysxs6f7amdxkzbxbnrjxav26/bin/gfortran
-        fc: /cluster/software/stacks/2024-05/spack/opt/spack/linux-ubuntu22.04-zen2/gcc-11.4.0/gcc-13.2.0-qnlxvqcbysxs6f7amdxkzbxbnrjxav26/bin/gfortran
-      flags: {cflags: -O2 -fPIC -ftree-vectorize -march=core-avx2 -mavx2, cxxflags: -O2
-          -fPIC -ftree-vectorize -march=core-avx2 -mavx2, cppflags: -O2 -fPIC -ftree-vectorize
-          -march=core-avx2 -mavx2}
-      operating_system: ubuntu22.04
-      target: x86_64
-      modules: []
-      environment: {}
-      extra_rpaths: []
+- compiler:
+    spec: gcc@=13.2.0
+    paths:
+      cc: /cluster/software/stacks/2024-05/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-11.4.0/gcc-13.2.0-6t2bdhlkrktlyopht3nbmjz3emlsqeog/bin/gcc
+      cxx: /cluster/software/stacks/2024-05/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-11.4.0/gcc-13.2.0-6t2bdhlkrktlyopht3nbmjz3emlsqeog/bin/g++
+      f77: /cluster/software/stacks/2024-05/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-11.4.0/gcc-13.2.0-6t2bdhlkrktlyopht3nbmjz3emlsqeog/bin/gfortran
+      fc: /cluster/software/stacks/2024-05/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-11.4.0/gcc-13.2.0-6t2bdhlkrktlyopht3nbmjz3emlsqeog/bin/gfortran
+    flags: {}
+    operating_system: ubuntu22.04
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
