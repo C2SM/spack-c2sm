@@ -24,8 +24,6 @@ class PyIcon4py(PythonPackage):
     maintainers = ['agopal', 'samkellerhals']
 
     version('main', branch='main', git=git)
-    version('0.0.3.1', tag='v0.0.3.1', git=git)
-    version('0.0.9', tag='v0.0.9', git=git)
     version('0.0.10', tag='v0.0.10', git=git)
     version('0.0.11', tag='v0.0.11', git=git)
 
