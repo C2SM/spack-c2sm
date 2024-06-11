@@ -53,7 +53,7 @@ class PyGt4py(PythonPackage):
     depends_on('py-ninja@1.10:', type=('build', 'run'))
     depends_on('py-numpy@1.24.2: ~blas ~lapack', type=('build', 'run'))
     depends_on('py-packaging@20.0:', type=('build', 'run'))
-
+    depends_on('py-pybind11', type=('build', 'run'))
     depends_on('py-nanobind@1.4.0:', when="@1.0.1.3:", type=('build', 'run'))
     depends_on('py-tabulate@0.8.10:', type=('build', 'run'))
     depends_on('py-typing-extensions@4.2:4.6', type=('build', 'run'))
