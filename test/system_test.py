@@ -406,7 +406,7 @@ class IconHamTest(unittest.TestCase):
 class IconToolsTest(unittest.TestCase):
 
     def test_install_2_5_2(self):
-        spack_install_and_test('icontools @2.5.2')
+        spack_install('icontools @2.5.2')
 
 
 @pytest.mark.no_tsa  # Not supported on Tsa
