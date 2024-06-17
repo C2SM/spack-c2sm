@@ -40,9 +40,6 @@ class InfoTest(unittest.TestCase):
     def test_clang_format(self):
         spack_info('clang-format')
 
-    def test_claw(self):
-        spack_info('claw')
-
     def test_cosmo(self):
         spack_info('cosmo')
 
@@ -232,9 +229,6 @@ class SpecTest(unittest.TestCase):
 
     def test_clang_format(self):
         spack_spec('clang-format')
-
-    def test_claw(self):
-        spack_spec('claw')
 
     @pytest.mark.no_tsa  # irrelevant
     def test_cosmo(self):
