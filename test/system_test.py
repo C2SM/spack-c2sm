@@ -212,7 +212,6 @@ class ClangFormatTest(unittest.TestCase):
         spack_install_and_test('clang-format')
 
 
-
 @pytest.mark.no_balfrin  # cuda arch is not supported
 @pytest.mark.no_tsa  # irrelevant
 class CosmoDycoreTest(unittest.TestCase):
