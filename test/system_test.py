@@ -315,7 +315,7 @@ class IconTest(unittest.TestCase):
         # +eccodes-definitions triggers cosmo-eccodes-definitions
         # +mpi triggers mpi
         # gpu=openacc+cuda triggers cuda
-        
+
         #WORKAROUND: ^libxml2%gcc works around a problem in the concretizer of spack v0.21.1 and /mch-environment/v6
         spack_install_and_test(
             'icon @2024.1-1 %nvhpc +coupling +rttov serialization=create +emvorado +mpi gpu=openacc+cuda ^libxml2%gcc'
