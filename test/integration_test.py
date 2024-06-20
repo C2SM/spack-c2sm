@@ -57,7 +57,7 @@ def test_spack_spec(package: str):
 
 @pytest.mark.icon
 @pytest.mark.parametrize('variant', [
-    'serialization=create claw=std', 'fcgroup=DACE.externals/dace_icon.-O1',
+    'serialization=create', 'fcgroup=DACE.externals/dace_icon.-O1',
     'extra-config-args=--disable-new_feature,--enable-old_config_arg'
 ])
 def test_icon_spec_with_variant(variant: str):
