@@ -3,7 +3,7 @@ spack:
   - cmake@3.26.3%gcc@9.3.0
   - cmake@3.22.2%gcc@9.3.0
   - python@3.10%gcc@9.3.0
-  - py-numpy@1.24.3%gcc@9.3.0~blas~lapack
+  - py-numpy@1.24.3%gcc@9.3.0
   - py-black@23.3.0%gcc@9.3.0
   - py-ninja@1.10.2%gcc@9.3.0
   - py-pytest@7.2.1%gcc@9.3.0
@@ -37,4 +37,4 @@ spack:
   view: false
   config:
     install_tree:
-      root: /project/g110/spack/upstream/daint_v0.20.1.3/icon-dsl
+      root: /project/g110/spack/upstream/daint_v0.21.1.0/icon-dsl

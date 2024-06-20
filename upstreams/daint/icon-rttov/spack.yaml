@@ -12,4 +12,4 @@ spack:
   view: false
   config:
     install_tree:
-      root: /project/g110/spack/upstream/daint_v0.20.1.0/icon-rttov
+      root: /project/g110/spack/upstream/daint_v0.21.1.0/icon-rttov

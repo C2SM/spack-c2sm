@@ -25,6 +25,8 @@ class PyCmake(PythonPackage):
             sha256=
             '52b98c5ee70b5fa30a8623e96482227e065292f78794eb085fdf0fecb204b79b')
 
+    # in newer pip versions --install-option does not exist
+    depends_on("py-pip@:23.0", type="build")
     depends_on('ninja', type='build')
     depends_on('py-scikit-build@0.12:', type='build')
     depends_on('py-setuptools@42:', type='build')

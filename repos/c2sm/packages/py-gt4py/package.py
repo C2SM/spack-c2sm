@@ -51,12 +51,17 @@ class PyGt4py(PythonPackage):
     depends_on('py-lark@1.1.2:', type=('build', 'run'))
     depends_on('py-mako@1.1:', type=('build', 'run'))
     depends_on('py-ninja@1.10:', type=('build', 'run'))
-    depends_on('py-numpy@1.24.2: ~blas ~lapack', type=('build', 'run'))
+    depends_on('py-numpy@1.24.2:', type=('build', 'run'))
     depends_on('py-packaging@20.0:', type=('build', 'run'))
     depends_on('py-pybind11@2.10.1:', type=('build', 'run'))
     depends_on('py-nanobind@1.4.0:', when="@1.0.1.3:", type=('build', 'run'))
     depends_on('py-tabulate@0.8.10:', type=('build', 'run'))
-    depends_on('py-typing-extensions@4.2:4.6', type=('build', 'run'))
+    depends_on('py-typing-extensions@4.5.0',
+               when="@:1.0.3.5",
+               type=('build', 'run'))
+    depends_on('py-typing-extensions@4.10.0',
+               when="@1.0.3.6:",
+               type=('build', 'run'))
     depends_on('py-toolz@0.12.0:', type=('build', 'run'))
     depends_on('py-xxhash@1.4.4:3.0.9', type=('build', 'run'))
     depends_on('py-hypothesis@6.0.0:', type=('build', 'run'))

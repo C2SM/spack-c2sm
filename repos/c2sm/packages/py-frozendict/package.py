@@ -4,22 +4,19 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+from spack.pkg.builtin.py_frozendict import PyFrozendict as SpackPyFrozendict
 
 
-class PyFrozendict(PythonPackage):
-    """frozendict is a simple immutable dictionary."""
+class PyFrozendict(SpackPyFrozendict):
 
-    homepage = "https://github.com/Marco-Sulla/python-frozendict"
-
-    pypi = 'frozendict/frozendict-2.3.4.tar.gz'
-
-    maintainers = ['samkellerhals']
-
-    # FIXME: Add proper versions and checksums here.
-    version('2.3.4',
+    version('2.4.0',
             sha256=
-            '15b4b18346259392b0d27598f240e9390fafbff882137a9c48a1e0104fb17f78')
+            'c26758198e403337933a92b01f417a8240c954f553e1d4b5e0f8e39d9c8e3f0a')
 
-    depends_on('python@3.6:', type=('build', 'run'))
-
-    depends_on('py-setuptools', type='build')
+    # TODO: remove this extension once we have a more recent
+    # version than v0.21.1
+    def setup_build_environment(self, env):
+        # C extension is not supported for 3.11+. See also
+        # https://github.com/Marco-Sulla/python-frozendict/issues/68
+        if self.spec.satisfies("^python@3.11:"):
+            env.set("FROZENDICT_PURE_PY", "1")
