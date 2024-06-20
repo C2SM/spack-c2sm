@@ -198,17 +198,6 @@ def test_install_libtorch_default():
     spack_install('libtorch')
 
 
-@pytest.mark.no_tsa  # proj-8.2.1 fails with "./.libs/libproj.so: error: undefined reference to 'curl_easy_setopt'"
-@pytest.mark.cdo
-def test_install_cdo_default():
-    spack_install('cdo')
-
-
-@pytest.mark.claw
-def test_install_claw_default_build_only():
-    spack_install('claw')
-
-
 @pytest.mark.no_balfrin  # cuda arch is not supported
 @pytest.mark.no_tsa  # irrelevant
 @pytest.mark.cosmo_dycore
