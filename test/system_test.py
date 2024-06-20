@@ -515,9 +515,7 @@ def test_install_version(version, devirt_env):
 
 @pytest.mark.py_gt4py
 @pytest.mark.no_tsa  # Irrelevant
-@pytest.mark.parametrize("version", [
-    '1.0.3.3','1.0.3.6','1.0.3.7'
-])
+@pytest.mark.parametrize("version", ['1.0.3.3', '1.0.3.6', '1.0.3.7'])
 def test_install_py_gt4py_for_version(version, devirt_env):
     spack_install_and_test(f'py-gt4py @{version}')
 
