@@ -516,31 +516,22 @@ def test_install_version(version, devirt_env):
 @pytest.mark.py_gt4py
 @pytest.mark.no_tsa  # Irrelevant
 @pytest.mark.parametrize("version", [
-    '1.0.1.7', '1.0.3', '1.0.3.1', '1.0.3.2', '1.0.3.3', '1.0.3.4', '1.0.3.5',
-    '1.0.3.6'
+    '1.0.3.3','1.0.3.6','1.0.3.7'
 ])
 def test_install_py_gt4py_for_version(version, devirt_env):
     spack_install_and_test(f'py-gt4py @{version}')
 
 
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
-@pytest.mark.no_daint  # problem with gt4py and spack v21.1
 @pytest.mark.py_icon4py
-def test_install_py_icon4py_version_0_0_3_1(devirt_env):
-    spack_install_and_test('py-icon4py @ 0.0.3.1 %gcc ^py-gt4py@1.0.1.1b')
-
-
-@pytest.mark.py_icon4py
-@pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
-@pytest.mark.no_daint  # problem with gt4py and spack v21.1
-def test_install_py_icon4py_version_0_0_9(devirt_env):
-    spack_install_and_test('py-icon4py @ 0.0.9 %gcc ^py-gt4py@1.0.1.6')
-
-
-@pytest.mark.py_icon4py
-@pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 def test_install_py_icon4py_version_0_0_10(devirt_env):
     spack_install_and_test('py-icon4py @ 0.0.10 %gcc ^py-gt4py@1.0.3.3')
+
+
+@pytest.mark.py_icon4py
+@pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
+def test_install_py_icon4py_version_0_0_11(devirt_env):
+    spack_install_and_test('py-icon4py @ 0.0.11 %gcc ^py-gt4py@1.0.3.7')
 
 
 @pytest.mark.py_hatchling
