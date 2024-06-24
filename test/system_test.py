@@ -334,14 +334,7 @@ def test_install_icontools():
 @pytest.mark.infero
 def test_install_infero_tf_c():
     spack_install_and_test(
-        'infero @0.1.2 %gcc +tf_c fflags="-ffree-line-length-1024"')
-
-
-@pytest.mark.no_tsa  # Not supported on Tsa
-@pytest.mark.no_balfrin  # Not supported on Balfrin
-@pytest.mark.infero
-def test_install_infero_onnx():
-    spack_install('infero @0.1.2 %gcc +onnx fflags="-ffree-line-length-1024"')
+        'infero @0.1.2 %gcc +onnx +tf_c fflags="-ffree-line-length-1024"')
 
 
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
