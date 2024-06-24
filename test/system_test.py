@@ -269,58 +269,68 @@ def test_install_fdb_5_11_17_nvhpc():
 
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 @pytest.mark.icon
-def test_install_icon_2_6_6_gcc():
-    spack_install_and_test('icon @2.6.6 %gcc')
+def test_install_icon_24_1_gcc():
+    spack_install_and_test('icon @2024.1-1 %gcc')
 
 
 @pytest.mark.icon
 @pytest.mark.no_daint
 @pytest.mark.no_tsa  # Icon does not run on Tsa
-def test_install_icon_2_6_6_nvhpc():
-    spack_install_and_test('icon @2.6.6 %nvhpc')
+def test_install_2024_1_nvhpc(self):
+    #WORKAROUND: ^libxml2%gcc works around a problem in the concretizer of spack v0.21.1 and /mch-environment/v6
+    spack_install_and_test('icon @2024.1-1 %nvhpc ^libxml2%gcc')
 
-
-@pytest.mark.icon
 @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
 @pytest.mark.no_tsa  # Icon does not run on Tsa
-def test_install_icon_nwp_gpu():
+@pytest.mark.icon
+def test_install_conditional_dependencies(self):
+    # +coupling triggers libfyaml, libxml2, netcdf-c
+    # +rttov triggers rttov
+    # serialization=create triggers serialbox
+    # +cdi-pio triggers libcdi-pio, yaxt                   (but unfortunately this is broken)
+    # +emvorado triggers eccodes, hdf5, zlib
+    # +eccodes-definitions triggers cosmo-eccodes-definitions
+    # +mpi triggers mpi
+    # gpu=openacc+cuda triggers cuda
+
+    #WORKAROUND: ^libxml2%gcc works around a problem in the concretizer of spack v0.21.1 and /mch-environment/v6
     spack_install_and_test(
-        'icon @nwp-master %nvhpc +grib2 +eccodes-definitions +ecrad +art +dace gpu=openacc+cuda +mpi-gpu +realloc-buf +pgi-inlib ~aes ~jsbach ~ocean ~coupling ~rte-rrtmgp ~loop-exchange ~async-io-rma +mixed-precision'
+        'icon @2024.1-1 %nvhpc +coupling +rttov serialization=create +emvorado +mpi gpu=openacc+cuda ^libxml2%gcc'
     )
 
+@pytest.mark.no_balfrin  # config file does not exist for this machine
+@pytest.mark.no_tsa  # Icon does not run on Tsa
+@pytest.mark.icon
+def test_install_c2sm_test_cpu_nvhpc_out_of_source(self):
+    spack_env_dev_install_and_test(
+        'config/cscs/spack/v0.21.1.0/daint_cpu_nvhpc',
+        'git@github.com:C2SM/icon.git',
+        '2024.01.1',
+        'icon',
+        out_of_source=True,
+        build_on_login_node=False)
 
 @pytest.mark.no_balfrin  # config file does not exist for this machine
-@pytest.mark.icon
 @pytest.mark.no_tsa  # Icon does not run on Tsa
-def test_install_icon_c2sm_test_cpu_gcc(devirt_env):
-    spack_env_dev_install_and_test('config/cscs/spack/v0.21.1/daint_cpu_gcc',
-                                   'git@github.com:C2SM/icon.git',
-                                   'spack_v0.21.1',
-                                   'icon',
-                                   build_on_login_node=True)
-
-
 @pytest.mark.icon
-@pytest.mark.no_tsa  # Icon does not run on Tsa
+def test_install_c2sm_test_cpu(self):
+    spack_env_dev_install_and_test(
+        'config/cscs/spack/v0.21.1.0/daint_cpu_nvhpc',
+        'git@github.com:C2SM/icon.git',
+        '2024.01.1',
+        'icon',
+        build_on_login_node=False)
+
 @pytest.mark.no_balfrin  # config file does not exist for this machine
-def test_install_icon_c2sm_test_cpu_nvhpc_out_of_source(devirt_env):
-    spack_env_dev_install_and_test('config/cscs/spack/v0.21.1/daint_cpu_nvhpc',
-                                   'git@github.com:C2SM/icon.git',
-                                   'spack_v0.21.1',
-                                   'icon',
-                                   out_of_source=True,
-                                   build_on_login_node=True)
-
-
-@pytest.mark.icon
 @pytest.mark.no_tsa  # Icon does not run on Tsa
-@pytest.mark.no_balfrin  # config file does not exist for this machine
-def test_install_icon_c2sm_test_gpu(devirt_env):
-    spack_env_dev_install_and_test('config/cscs/spack/v0.21.1/daint_gpu_nvhpc',
-                                   'git@github.com:C2SM/icon.git',
-                                   'spack_v0.21.1',
-                                   'icon',
-                                   build_on_login_node=True)
+@pytest.mark.icon
+def test_install_c2sm_test_gpu(self):
+    spack_env_dev_install_and_test(
+        'config/cscs/spack/v0.21.1.0/daint_gpu_nvhpc',
+        'git@github.com:C2SM/icon.git',
+        '2024.01.1',
+        'icon',
+        build_on_login_node=False)
 
 
 @pytest.mark.no_tsa  # This test is flaky and sometimes fails with: icondelaunay.cpp:29:10: fatal error: version.c: No such file or directory. See issue #781.
