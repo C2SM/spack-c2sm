@@ -268,6 +268,7 @@ def test_install_fdb_5_11_17_nvhpc():
 
 
 @pytest.mark.no_tsa  # Icon does not run on Tsa
+@pytest.mark.no_daint
 @pytest.mark.icon
 def test_install_icon_24_1_gcc():
     spack_install_and_test('icon @2024.1-1 %gcc')
