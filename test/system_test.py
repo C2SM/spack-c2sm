@@ -277,7 +277,7 @@ def test_install_icon_24_1_gcc():
 @pytest.mark.icon
 @pytest.mark.no_daint
 @pytest.mark.no_tsa  # Icon does not run on Tsa
-def test_install_2024_1_nvhpc(self):
+def test_install_2024_1_nvhpc():
     #WORKAROUND: ^libxml2%gcc works around a problem in the concretizer of spack v0.21.1 and /mch-environment/v6
     spack_install_and_test('icon @2024.1-1 %nvhpc ^libxml2%gcc')
 
@@ -285,7 +285,7 @@ def test_install_2024_1_nvhpc(self):
 @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 @pytest.mark.icon
-def test_install_conditional_dependencies(self):
+def test_install_conditional_dependencies():
     # +coupling triggers libfyaml, libxml2, netcdf-c
     # +rttov triggers rttov
     # serialization=create triggers serialbox
@@ -304,7 +304,7 @@ def test_install_conditional_dependencies(self):
 @pytest.mark.no_balfrin  # config file does not exist for this machine
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 @pytest.mark.icon
-def test_install_c2sm_test_cpu_nvhpc_out_of_source(self):
+def test_install_c2sm_test_cpu_nvhpc_out_of_source():
     spack_env_dev_install_and_test(
         'config/cscs/spack/v0.21.1.0/daint_cpu_nvhpc',
         'git@github.com:C2SM/icon.git',
@@ -317,7 +317,7 @@ def test_install_c2sm_test_cpu_nvhpc_out_of_source(self):
 @pytest.mark.no_balfrin  # config file does not exist for this machine
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 @pytest.mark.icon
-def test_install_c2sm_test_cpu(self):
+def test_install_c2sm_test_cpu():
     spack_env_dev_install_and_test(
         'config/cscs/spack/v0.21.1.0/daint_cpu_nvhpc',
         'git@github.com:C2SM/icon.git',
@@ -329,7 +329,7 @@ def test_install_c2sm_test_cpu(self):
 @pytest.mark.no_balfrin  # config file does not exist for this machine
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 @pytest.mark.icon
-def test_install_c2sm_test_gpu(self):
+def test_install_c2sm_test_gpu():
     spack_env_dev_install_and_test(
         'config/cscs/spack/v0.21.1.0/daint_gpu_nvhpc',
         'git@github.com:C2SM/icon.git',
