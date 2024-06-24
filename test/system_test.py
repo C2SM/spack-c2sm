@@ -280,6 +280,7 @@ def test_install_2024_1_nvhpc(self):
     #WORKAROUND: ^libxml2%gcc works around a problem in the concretizer of spack v0.21.1 and /mch-environment/v6
     spack_install_and_test('icon @2024.1-1 %nvhpc ^libxml2%gcc')
 
+
 @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 @pytest.mark.icon
@@ -298,6 +299,7 @@ def test_install_conditional_dependencies(self):
         'icon @2024.1-1 %nvhpc +coupling +rttov serialization=create +emvorado +mpi gpu=openacc+cuda ^libxml2%gcc'
     )
 
+
 @pytest.mark.no_balfrin  # config file does not exist for this machine
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 @pytest.mark.icon
@@ -310,6 +312,7 @@ def test_install_c2sm_test_cpu_nvhpc_out_of_source(self):
         out_of_source=True,
         build_on_login_node=False)
 
+
 @pytest.mark.no_balfrin  # config file does not exist for this machine
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 @pytest.mark.icon
@@ -320,6 +323,7 @@ def test_install_c2sm_test_cpu(self):
         '2024.01.1',
         'icon',
         build_on_login_node=False)
+
 
 @pytest.mark.no_balfrin  # config file does not exist for this machine
 @pytest.mark.no_tsa  # Icon does not run on Tsa
