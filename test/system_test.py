@@ -212,18 +212,6 @@ class ClangFormatTest(unittest.TestCase):
         spack_install_and_test('clang-format')
 
 
-class ClawTest(unittest.TestCase):
-
-    @pytest.mark.no_daint  # Test #1: junit-tatsu fails
-    def test_install_default(self):
-        spack_install_and_test('claw', split_phases=True)
-
-    @pytest.mark.no_tsa  # fallback for Daint
-    @pytest.mark.no_balfrin  # fallback for Daint
-    def test_install_default_build_only(self):
-        spack_install('claw')
-
-
 @pytest.mark.no_balfrin  # cuda arch is not supported
 @pytest.mark.no_tsa  # irrelevant
 class CosmoDycoreTest(unittest.TestCase):
@@ -308,44 +296,66 @@ class FdbTest(unittest.TestCase):
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 class IconTest(unittest.TestCase):
 
-    def test_install_2_6_6_gcc(self):
-        spack_install_and_test('icon @2.6.6 %gcc')
+    @pytest.mark.no_daint
+    def test_install_2024_1_gcc(self):
+        spack_install_and_test('icon @2024.1-1 %gcc')
 
     @pytest.mark.no_daint
-    def test_install_2_6_6_nvhpc(self):
-        spack_install_and_test('icon @2.6.6 %nvhpc')
+    def test_install_2024_1_nvhpc(self):
+        #WORKAROUND: ^libxml2%gcc works around a problem in the concretizer of spack v0.21.1 and /mch-environment/v6
+        spack_install_and_test('icon @2024.1-1 %nvhpc ^libxml2%gcc')
 
     @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
-    def test_install_nwp_gpu(self):
+    def test_install_conditional_dependencies(self):
+        # +coupling triggers libfyaml, libxml2, netcdf-c
+        # +rttov triggers rttov
+        # serialization=create triggers serialbox
+        # +cdi-pio triggers libcdi-pio, yaxt                   (but unfortunately this is broken)
+        # +emvorado triggers eccodes, hdf5, zlib
+        # +eccodes-definitions triggers cosmo-eccodes-definitions
+        # +mpi triggers mpi
+        # gpu=openacc+cuda triggers cuda
+
+        #WORKAROUND: ^libxml2%gcc works around a problem in the concretizer of spack v0.21.1 and /mch-environment/v6
         spack_install_and_test(
-            'icon @nwp-master %nvhpc +grib2 +eccodes-definitions +ecrad +art +dace gpu=openacc+cuda +mpi-gpu +realloc-buf +pgi-inlib ~aes ~jsbach ~ocean ~coupling ~rte-rrtmgp ~loop-exchange ~async-io-rma +mixed-precision'
+            'icon @2024.1-1 %nvhpc +coupling +rttov serialization=create +emvorado +mpi gpu=openacc+cuda ^libxml2%gcc'
         )
 
+    @pytest.mark.no_daint  # no time for that
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_gcc(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.21.1/daint_cpu_gcc',
+            'config/cscs/spack/v0.21.1.0/daint_cpu_gcc',
             'git@github.com:C2SM/icon.git',
-            'spack_v0.21.1',
+            '2024.01.1',
             'icon',
             build_on_login_node=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_cpu_nvhpc_out_of_source(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.21.1/daint_cpu_nvhpc',
+            'config/cscs/spack/v0.21.1.0/daint_cpu_nvhpc',
             'git@github.com:C2SM/icon.git',
-            'spack_v0.21.1',
+            '2024.01.1',
             'icon',
             out_of_source=True,
             build_on_login_node=True)
 
     @pytest.mark.no_balfrin  # config file does not exist for this machine
+    def test_install_c2sm_test_cpu(self):
+        spack_env_dev_install_and_test(
+            'config/cscs/spack/v0.21.1.0/daint_cpu_nvhpc',
+            'git@github.com:C2SM/icon.git',
+            '2024.01.1',
+            'icon',
+            build_on_login_node=True)
+
+    @pytest.mark.no_balfrin  # config file does not exist for this machine
     def test_install_c2sm_test_gpu(self):
         spack_env_dev_install_and_test(
-            'config/cscs/spack/v0.21.1/daint_gpu_nvhpc',
+            'config/cscs/spack/v0.21.1.0/daint_gpu_nvhpc',
             'git@github.com:C2SM/icon.git',
-            'spack_v0.21.1',
+            '2024.01.1',
             'icon',
             build_on_login_node=True)
 
@@ -546,41 +556,14 @@ class PyGridtoolsCppTest(unittest.TestCase):
 @pytest.mark.no_tsa  # Irrelevant
 class PyGt4pyTest(unittest.TestCase):
 
-    @pytest.mark.no_daint  # problem with gt4py and spack v21.1
-    def test_install_version_1_0_1_1(self):
-        spack_install_and_test('py-gt4py @1.0.1.1')
-
-    @pytest.mark.no_daint  # problem with gt4py and spack v21.1
-    def test_install_version_1_0_1_1b(self):
-        spack_install_and_test('py-gt4py @1.0.1.1b')
-
-    @pytest.mark.no_daint  # problem with gt4py and spack v21.1
-    def test_install_version_1_0_1_6(self):
-        spack_install_and_test('py-gt4py @1.0.1.6')
-
-    def test_install_version_1_0_1_7(self):
-        spack_install_and_test('py-gt4py @1.0.1.7')
-
-    def test_install_version_1_0_3(self):
-        spack_install_and_test('py-gt4py @1.0.3')
-
-    def test_install_version_1_0_3_1(self):
-        spack_install_and_test('py-gt4py @1.0.3.1')
-
-    def test_install_version_1_0_3_2(self):
-        spack_install_and_test('py-gt4py @1.0.3.2')
-
     def test_install_version_1_0_3_3(self):
         spack_install_and_test('py-gt4py @1.0.3.3')
 
-    def test_install_version_1_0_3_4(self):
-        spack_install_and_test('py-gt4py @1.0.3.4')
-
-    def test_install_version_1_0_3_5(self):
-        spack_install_and_test('py-gt4py @1.0.3.5')
-
     def test_install_version_1_0_3_6(self):
         spack_install_and_test('py-gt4py @1.0.3.6')
+
+    def test_install_version_1_0_3_7(self):
+        spack_install_and_test('py-gt4py @1.0.3.7')
 
 
 class PyHatchlingTest(unittest.TestCase):
@@ -592,16 +575,11 @@ class PyHatchlingTest(unittest.TestCase):
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 class PyIcon4pyTest(unittest.TestCase):
 
-    @pytest.mark.no_daint  # problem with gt4py and spack v21.1
-    def test_install_version_0_0_3_1(self):
-        spack_install_and_test('py-icon4py @ 0.0.3.1 %gcc ^py-gt4py@1.0.1.1b')
-
-    @pytest.mark.no_daint  # problem with gt4py and spack v21.1
-    def test_install_version_0_0_9(self):
-        spack_install_and_test('py-icon4py @ 0.0.9 %gcc ^py-gt4py@1.0.1.6')
-
     def test_install_version_0_0_10(self):
         spack_install_and_test('py-icon4py @ 0.0.10 %gcc ^py-gt4py@1.0.3.3')
+
+    def test_install_version_0_0_11(self):
+        spack_install_and_test('py-icon4py @ 0.0.11 %gcc ^py-gt4py@1.0.3.7')
 
 
 class PyInflectionTest(unittest.TestCase):

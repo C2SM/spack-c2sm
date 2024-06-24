@@ -52,11 +52,6 @@ modules:
           set:
             SERIALBOX_DIR: '${PREFIX}'
             SERIALBOX_ROOT: '${PREFIX}'
-      claw:
-        environment:
-          set:
-            CLAWDIR: '${PREFIX}'
-            CLAWFC: '${PREFIX}/bin/clawfc'
       ant:
         environment:
           set:

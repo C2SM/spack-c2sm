@@ -1,2 +1,3 @@
-psphinxTheme
-karma-sphinx-theme
+sphinx
+sphinx_rtd_theme
+sphinx-copybutton

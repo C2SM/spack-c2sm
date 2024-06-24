@@ -40,9 +40,6 @@ class InfoTest(unittest.TestCase):
     def test_clang_format(self):
         spack_info('clang-format')
 
-    def test_claw(self):
-        spack_info('claw')
-
     def test_cosmo(self):
         spack_info('cosmo')
 
@@ -233,9 +230,6 @@ class SpecTest(unittest.TestCase):
     def test_clang_format(self):
         spack_spec('clang-format')
 
-    def test_claw(self):
-        spack_spec('claw')
-
     @pytest.mark.no_tsa  # irrelevant
     def test_cosmo(self):
         spack_spec('cosmo')
@@ -275,7 +269,7 @@ class SpecTest(unittest.TestCase):
 
     def test_icon(self):
         spack_spec('icon')
-        spack_spec('icon serialization=create claw=std')
+        spack_spec('icon serialization=create')
         spack_spec('icon fcgroup=DACE.externals/dace_icon.-O1')
         spack_spec(
             'icon extra-config-args=--disable-new_feature,--enable-old_config_arg'
