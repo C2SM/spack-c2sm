@@ -86,15 +86,16 @@ class TimeFormatTest(unittest.TestCase):
 class FilenameSanitizerTest(unittest.TestCase):
 
     def test_example(self):
-        example = 'spack installcosmo --until build --dont-restage --test=root --show-log-on-error -n -v cosmo @6.0 %nvhpc cosmo_target=cpu ~cppdycore ^mpich %nvhpc'
+        example = 'spack installcosmo --until build --dont-restage --test=root --show-log-on-error -n -v cosmo @6.0 %nvhpc cosmo_target=cpu ~cppdycore ^mpich %nvhpc fflags="-O3"'
 
         sanitized = sanitized_filename(example)
 
         self.assertFalse(' ' in sanitized)
         self.assertFalse('%' in sanitized)
+        self.assertFalse('"' in sanitized)
         self.assertEqual(
             sanitized,
-            'spack_installcosmo_cosmo_@6.0_nvhpc_cosmo_target=cpu_~cppdycore_^mpich_nvhpc'
+            'spack_installcosmo_cosmo_@6.0_nvhpc_cosmo_target=cpu_~cppdycore_^mpich_nvhpc_fflags=-O3'
         )
 
 
