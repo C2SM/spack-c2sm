@@ -208,7 +208,7 @@ class Cosmo(MakefilePackage):
             env.set(
                 'NETCDFL', '-L' + self.spec['netcdf-fortran'].prefix +
                 '/lib -lnetcdff -L' + self.spec['netcdf-c'].prefix +
-                '/lib64 -lnetcdf')
+                '/lib -lnetcdf')
             env.set('NETCDFI',
                     '-I' + self.spec['netcdf-fortran'].prefix + '/include')
 
@@ -230,7 +230,7 @@ class Cosmo(MakefilePackage):
 
         # MPI library
         if self.mpi_spec.name == 'openmpi':
-            env.set('MPIL', '-L' + self.mpi_spec.prefix + ' -lmpi_cxx')
+            env.set('MPIL', '-L' + self.mpi_spec.prefix + ' -lmpi')
 
         else:
             env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich')
