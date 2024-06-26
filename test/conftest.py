@@ -5,7 +5,7 @@ import pytest
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                '..')
 sys.path.append(os.path.normpath(spack_c2sm_path))
-from src import machine_name, explicit_scope, package_triggers, all_machines
+from src import machine_name, explicit_scope, package_triggers, all_machines, all_packages_underscore
 
 
 def pytest_configure(config):
@@ -14,6 +14,9 @@ def pytest_configure(config):
             'markers', f'no_{machine}: mark test to not run on {machine}')
     config.addinivalue_line('markers',
                             'serial_only: mark test to only run serial')
+    for package in all_packages_underscore:
+        config.addinivalue_line('markers',
+                                f'{package}: mark test to run for {package}')
 
 
 def pytest_addoption(parser):
