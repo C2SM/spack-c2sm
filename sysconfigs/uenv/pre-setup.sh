@@ -5,8 +5,10 @@ conf_files=(compilers.yaml upstreams.yaml packages.yaml)
 
 # lock the current spack instance to a specific uenv
 if [[ ! -f "$uenv_mount"/meta/hash ]]; then
-    echo "ERROR: file $uenv_mount/meta/hash not found, spack-c2sm cannot be configured for this uenv"
-    return 1
+    # echo "ERROR: file $uenv_mount/meta/hash not found, spack-c2sm cannot be configured for this uenv"
+    # return 1
+    echo "WARNING: file $uenv_mount/meta/hash not found"
+    echo "         spack-c2sm cannot check if this instance was already configured with another uenv"
 fi
 uenv_hash=$(cat "$uenv_mount"/meta/hash)
 if [[ -f "$conf_dir"/uenv.hash ]]; then
