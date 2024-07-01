@@ -9,15 +9,16 @@ if [[ ! -f "$uenv_mount"/meta/hash ]]; then
     # return 1
     echo "WARNING: file $uenv_mount/meta/hash not found"
     echo "         spack-c2sm cannot check if this instance was already configured with another uenv"
-fi
-uenv_hash=$(cat "$uenv_mount"/meta/hash)
-if [[ -f "$conf_dir"/uenv.hash ]]; then
-    local_hash=$(cat "$conf_dir"/uenv.hash)
-    if [[ "$uenv_hash" != "$local_hash" ]]; then
-        echo "WARNNG: This spack-c2sm instance was already once configured with a different uenv."
-    fi
 else
-    echo "$uenv_hash" > "$conf_dir/uenv.hash"
+    uenv_hash=$(cat "$uenv_mount"/meta/hash)
+    if [[ -f "$conf_dir"/uenv.hash ]]; then
+        local_hash=$(cat "$conf_dir"/uenv.hash)
+        if [[ "$uenv_hash" != "$local_hash" ]]; then
+            echo "WARNNG: This spack-c2sm instance was already once configured with a different uenv."
+        fi
+    else
+        echo "$uenv_hash" > "$conf_dir/uenv.hash"
+    fi
 fi
 
 # Link configuration files to sysconfig
