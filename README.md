@@ -10,26 +10,15 @@ Spack is the package manager used by C2SM and MeteoSwiss to install and deploy s
   * [spack-c2sm v0.20.1.4](https://C2SM.github.io/spack-c2sm/v0.20.1.4)
   * [spack-c2sm v0.20.1.3](https://C2SM.github.io/spack-c2sm/v0.20.1.3)
   * [spack-c2sm v0.20.1.0](https://C2SM.github.io/spack-c2sm/v0.20.1.0)
-  * [spack-c2sm v0.18.1.12](https://C2SM.github.io/spack-c2sm/v0.18.1.12)
-  * [spack-c2sm v0.18.1.10](https://C2SM.github.io/spack-c2sm/v0.18.1.10)
-  * [spack-c2sm v0.18.1.9](https://C2SM.github.io/spack-c2sm/v0.18.1.9)
-  * [spack-c2sm v0.18.1.8](https://C2SM.github.io/spack-c2sm/v0.18.1.8)
-  * [spack-c2sm v0.18.1.7](https://C2SM.github.io/spack-c2sm/v0.18.1.7)
-  * [spack-c2sm v0.18.1.6](https://C2SM.github.io/spack-c2sm/v0.18.1.6)
-  * [spack-c2sm v0.18.1.5](https://C2SM.github.io/spack-c2sm/v0.18.1.5)
-  * [spack-c2sm v0.18.1.4](https://C2SM.github.io/spack-c2sm/v0.18.1.4)
-
-  * [spack-c2sm v0.18.1.3](https://C2SM.github.io/spack-c2sm/v0.18.1.3) [deprecated]
-  * [spack-c2sm v0.18.1.2](https://C2SM.github.io/spack-c2sm/v0.18.1.2) [deprecated]
-  * [spack-c2sm v0.18.1.1](https://C2SM.github.io/spack-c2sm/v0.18.1.1) [deprecated]
+  * [spack-c2sm v0.18.x](https://C2SM.github.io/spack-c2sm/v0.18.1.12) [deprecated]
   
 **General infos about spack**
   * [Official spack v0.21.1](https://spack.readthedocs.io/en/v0.21.1/) 
   * [Official spack v0.20.1](https://spack.readthedocs.io/en/v0.20.1/) 
-  * [Official spack v0.18.1](https://spack.readthedocs.io/en/v0.18.1/) 
+  * [Official spack v0.18.1](https://spack.readthedocs.io/en/v0.18.1/) [deprecated]
 
 ## Workflow
-With spack v0.18 we suggest local/individual spack instances and the use of spack environments.
+We suggest local/individual spack instances and the use of spack environments.
 
 A user clones the spack repo
 ```bash
