@@ -81,7 +81,6 @@ class Cosmo(MakefilePackage):
                type=('build', 'link', 'run'))
     depends_on('oasis', when='+oasis', type=('build', 'link', 'run'))
 
-
     variant('serialize',
             default=False,
             description='Build with serialization enabled')
@@ -278,16 +277,15 @@ class Cosmo(MakefilePackage):
             if self.spec.version == Version('empa-ghg'):
                 if '~serialize' in spec:
                     makefile.filter(
-                        'TARGET     :=.*', 'TARGET     := {0}'.format(
-                            'cosmo-ghg_cpu'))
+                        'TARGET     :=.*',
+                        'TARGET     := {0}'.format('cosmo-ghg_cpu'))
                 else:
                     makefile.filter('TARGET     :=.*',
                                     'TARGET     := {0}'.format('cosmo-ghg'))
             else:
                 if '~serialize' in spec:
-                    makefile.filter(
-                        'TARGET     :=.*', 'TARGET     := {0}'.format(
-                            'cosmo_cpu'))
+                    makefile.filter('TARGET     :=.*',
+                                    'TARGET     := {0}'.format('cosmo_cpu'))
                 else:
                     makefile.filter('TARGET     :=.*',
                                     'TARGET     := {0}'.format('cosmo'))
@@ -306,21 +304,14 @@ class Cosmo(MakefilePackage):
                 if '+serialize' in spec:
                     install('cosmo-ghg_serialize', prefix.bin)
                 else:
-                    install(
-                        'cosmo-ghg_cpu', prefix.bin)
-                    install(
-                        'cosmo-ghg_cpu',
-                        'test/testsuite')
+                    install('cosmo-ghg_cpu', prefix.bin)
+                    install('cosmo-ghg_cpu', 'test/testsuite')
             else:
                 if '+serialize' in spec:
                     install('cosmo_serialize', prefix.bin)
                 else:
-                    install(
-                        'cosmo_cpu',
-                        prefix.bin)
-                    install(
-                        'cosmo_cpu',
-                        'test/testsuite')
+                    install('cosmo_cpu', prefix.bin)
+                    install('cosmo_cpu', 'test/testsuite')
 
     @run_after('install')
     @on_package_attributes(run_tests=True)
