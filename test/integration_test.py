@@ -63,6 +63,7 @@ def test_spack_spec(package: str):
 def test_icon_spec_with_variant(variant: str):
     spack_spec(f'icon {variant}')
 
+
 @pytest.mark.infero
 def test_infero_spec():
     spack_spec('infero +onnx +tf_c')
