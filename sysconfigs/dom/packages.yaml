@@ -60,12 +60,7 @@ packages:
     - spec: cmake@3.17.0
       prefix: /usr
   cosmo: # manually added
-    variants: slave=daint cuda_arch=60
-  cosmo-dycore: # manually added
-    variants: slave=daint cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/
-      slurm_partition= "normal" slurm_bin= "srun" slurm_gpu= "-" slurm_opt_nodes=
-      "-N" slurm_nodes= "{0}"  slurm_opt_account= "-A" slurm_account= "g110" slurm_opt_constraint=
-      "-C" slurm_constraint= "gpu"
+    variants: slave=daint
   cuda: # manually added
     buildable: false
     externals:

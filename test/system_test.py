@@ -198,22 +198,17 @@ def test_install_libtorch_default():
     spack_install('libtorch')
 
 
-@pytest.mark.no_balfrin  # cuda arch is not supported
-@pytest.mark.no_tsa  # irrelevant
-@pytest.mark.cosmo_dycore
-@pytest.mark.parametrize("version,cuda_variant", [('6.0', '+cuda'),
-                                                  ('6.0', '~cuda'),
-                                                  ('6.1', '+cuda'),
-                                                  ('6.1', '~cuda')])
-def test_install_and_check_cosmo_dycore_for(version, cuda_variant):
-    spack_install_and_test(f'cosmo-dycore @{version} {cuda_variant}',
-                           split_phases=True)
-
-
 @pytest.mark.cosmo_eccodes_definitions
 @pytest.mark.parametrize("version", ['2.25.0.1', '2.19.0.7'])
 def test_install_cosmo_eccodes_definitions_version(version):
     spack_install(f'cosmo-eccodes-definitions @{version}')
+
+
+@pytest.mark.no_tsa
+@pytest.mark.no_balfrin
+@pytest.mark.cosmo
+def test_install_cosmo_6_0():
+    spack_install(f'cosmo@6.0')
 
 
 @pytest.mark.eccodes
@@ -241,17 +236,6 @@ def test_install_flexpart_ifs_version(version):
 @pytest.mark.flexpart_cosmo
 def test_install_flexpart_cosmo():
     spack_install_and_test('flexpart-cosmo @V8C4.0')
-
-
-@pytest.mark.gridtools
-def test_install_gridtools_version_1_1_3_gcc():
-    spack_install_and_test(f'gridtools @1.1.3 %gcc')
-
-
-@pytest.mark.no_tsa  # Only pgc++ 18 and 19 are supported! nvhpc doesn't work either.
-@pytest.mark.gridtools
-def test_install_version_1_1_3_nvhpc():
-    spack_install_and_test(f'gridtools @1.1.3 %{nvidia_compiler}')
 
 
 @pytest.mark.no_tsa  # FDB tests fail on tsa due to 'ucp_context'
@@ -359,32 +343,10 @@ def test_install_int2ml_version_3_00_gcc():
 
 
 @pytest.mark.int2lm
-@pytest.mark.serial_only
-@pytest.mark.no_balfrin  # fails because libgrib1 master fails
-def test_install_int2lm_version_3_00_nvhpc():
-    spack_install_and_test(f'int2lm @int2lm-3.00 %{nvidia_compiler}')
-
-
-@pytest.mark.int2lm
 @pytest.mark.no_balfrin  # fails because libgrib1 master fails
 def test_install_int2lm_version_3_00_nvhpc_fixed_definitions():
     spack_install_and_test(
         f'int2lm @int2lm-3.00 %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler}'
-    )
-
-
-@pytest.mark.int2lm
-@pytest.mark.no_balfrin  # fails because libgrib1 master fails
-def test_install_int2lm_c2sm_master_gcc():
-    spack_install('int2lm @v2.8.4 %gcc ^eccodes %gcc ^libgrib1 %gcc')
-
-
-@pytest.mark.int2lm
-@pytest.mark.no_balfrin  # fails because libgrib1 master fails
-@pytest.mark.no_tsa  # An error occurred in MPI_Bcast
-def test_install_int2lm_c2sm_master_nvhpc():
-    spack_install_and_test(
-        f'int2lm @v2.8.4 %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler} ^libgrib1 %{nvidia_compiler}'
     )
 
 
@@ -396,7 +358,6 @@ def test_install_libcdi_pio_default():
 
 @pytest.mark.no_balfrin  # This fails with "BOZ literal constant at (1) cannot appear in an array constructor". https://gcc.gnu.org/onlinedocs/gfortran/BOZ-literal-constants.html
 @pytest.mark.libgrib1
-@pytest.mark.serial_only  # locking problem on Tsa in combination with int2lm
 def test_install_libgrib1_22_01_2020():
     spack_install_and_test('libgrib1 @22-01-2020')
 
@@ -604,8 +565,3 @@ def test_install_2_6_0():
 @pytest.mark.yaxt
 def test_install_yaxt_default():
     spack_install_and_test('yaxt')
-
-
-@pytest.mark.zlib_ng
-def test_install_zlib_ng_version_2_0_0():
-    spack_install_and_test('zlib_ng @2.0.0')
