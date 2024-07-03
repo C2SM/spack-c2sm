@@ -203,6 +203,7 @@ def test_install_libtorch_default():
 def test_install_cosmo_eccodes_definitions_version(version):
     spack_install(f'cosmo-eccodes-definitions @{version}')
 
+
 @pytest.mark.cosmo
 def test_install_cosmo_6_0():
     spack_install(f'cosmo@6.0')
