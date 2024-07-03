@@ -5,8 +5,6 @@ packages:
       mpi: [cray-mpich]
   cosmo: # manually added
     variants: slave=tasna
-  cosmo-dycore: # manually added
-    variants: slave=tasna data_path=/scratch/jenkins/data/cosmo/
   icontools: # manually added
     variants: slave=tasna
   int2lm: # manually added

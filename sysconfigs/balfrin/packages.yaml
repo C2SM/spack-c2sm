@@ -5,8 +5,6 @@ packages:
       mpi: [cray-mpich]
   cosmo: # manually added
     variants: slave=balfrin
-  cosmo-dycore: # manually added
-    variants: slave=balfrin data_path=/scratch/jenkins/data/cosmo/
   icontools: # manually added
     variants: slave=balfrin
   int2lm: # manually added

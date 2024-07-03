@@ -203,6 +203,10 @@ def test_install_libtorch_default():
 def test_install_cosmo_eccodes_definitions_version(version):
     spack_install(f'cosmo-eccodes-definitions @{version}')
 
+@pytest.mark.cosmo
+def test_install_cosmo_6_0():
+    spack_install(f'cosmo@6.0')
+
 
 @pytest.mark.eccodes
 def test_install_eccodes_2_19_0():
@@ -229,17 +233,6 @@ def test_install_flexpart_ifs_version(version):
 @pytest.mark.flexpart_cosmo
 def test_install_flexpart_cosmo():
     spack_install_and_test('flexpart-cosmo @V8C4.0')
-
-
-@pytest.mark.gridtools
-def test_install_gridtools_version_1_1_3_gcc():
-    spack_install_and_test(f'gridtools @1.1.3 %gcc')
-
-
-@pytest.mark.no_tsa  # Only pgc++ 18 and 19 are supported! nvhpc doesn't work either.
-@pytest.mark.gridtools
-def test_install_version_1_1_3_nvhpc():
-    spack_install_and_test(f'gridtools @1.1.3 %{nvidia_compiler}')
 
 
 @pytest.mark.no_tsa  # FDB tests fail on tsa due to 'ucp_context'

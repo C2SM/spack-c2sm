@@ -56,9 +56,7 @@ packages:
     - spec: cmake@3.17
       prefix: /usr
   cosmo: # manually added
-    variants: slave=daint cuda_arch=60
-  cosmo-dycore: # manually added
-    variants: slave=daint cuda_arch=60 data_path=/scratch/snx3000/jenkins/data/cosmo/
+    variants: slave=daint
   cuda: # manually added
     buildable: false
     externals:
