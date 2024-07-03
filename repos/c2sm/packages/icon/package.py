@@ -238,7 +238,6 @@ class Icon(AutotoolsPackage, CudaPackage):
     depends_on('pytorch-fortran', when='+pytorch')
 
     depends_on('libfyaml', when='+coupling')
-    depends_on('libxml2', when='+coupling')
     depends_on('libxml2', when='+art')
 
     depends_on('rttov+hdf5', when='+rttov')
