@@ -54,23 +54,14 @@ pipeline {
                         steps {
                             sh """
                             source env/bin/activate
-                            pytest -v -n auto --scope \"""" + env.ghprbCommentBody + " parallel\" test/integration_test.py"
+                            pytest -v -n auto --scope \"""" + env.ghprbCommentBody + " \" test/integration_test.py"
                         }
                     }
-                    stage('System Tests Parallel') {
+                    stage('System Tests') {
                         steps {
                             sh """
                             source env/bin/activate
-                            pytest -v -n auto --maxprocesses=24 --scope \"""" + env.ghprbCommentBody + " parallel\"  test/system_test.py"
-                        }
-                    }
-                    stage('System Tests Serial') {
-                        steps {
-                            sh """
-                            mkdir -p log/${NODENAME}/system_test
-                            touch log/${NODENAME}/system_test/serial_test_run
-                            source env/bin/activate
-                            pytest -v -n auto --maxprocesses=24 --scope \"""" + env.ghprbCommentBody + " serial\" test/system_test.py"
+                            pytest -v -n auto --maxprocesses=24 --scope \"""" + env.ghprbCommentBody + " \"  test/system_test.py"
                         }
                     }
                 }

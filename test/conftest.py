@@ -37,16 +37,5 @@ def pytest_collection_modifyitems(config, items):
                 pytest.mark.skip(
                     reason="test is marked to not run on this machine"))
 
-        if 'serial' in scope:
-            if 'serial_only' not in keywords:
-                item.add_marker(
-                    pytest.mark.skip(
-                        reason="test is marked to run in parallel mode only"))
-        elif 'parallel' in scope:
-            if 'serial_only' in keywords:
-                item.add_marker(
-                    pytest.mark.skip(
-                        reason="test is marked to run in serial mode only"))
-
         if not any(k in triggers for k in keywords):
             item.add_marker(pytest.mark.skip(reason="test not in scope"))

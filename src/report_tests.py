@@ -84,10 +84,6 @@ if __name__ == "__main__":
                 icon = ':red_circle:'
             report += HTML.collapsible(f'{icon} {test_type} test', table)
 
-        if test_type == 'system' and not os.path.isfile(
-                f'log/{machine_name()}/system_test/serial_test_run'):
-            report += '\n\n**WARNING**: Serial tests did not run for system tests'
-
     if not any_tests_ran_on_machine:
         report += f'No tests executed.'
 
