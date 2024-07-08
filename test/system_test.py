@@ -42,6 +42,7 @@ def uenv(tmp_path_factory):
         repos = 'repos/uenv'
         link('/user-environment/repo', repos)
 
+
 @pytest.fixture(scope="function")
 def prepost():
     return '/scratch/mch/leclairm/uenvs/images/pre-post_v0.sqfs'
@@ -238,11 +239,12 @@ nvidia_compiler: str = {
 def test_install_libfyaml_default():
     spack_install('libfyaml')
 
-@pytest.mark.no_tsa # No uenv on Tsa
-@pytest.mark.no_daint # No uenv on Daint
+
+@pytest.mark.no_tsa  # No uenv on Tsa
+@pytest.mark.no_daint  # No uenv on Daint
 @pytest.mark.libfyaml
-def test_install_libfyaml_default_uenv(uenv,prepost):
-    spack_install('libfyaml',uenv=prepost)
+def test_install_libfyaml_default_uenv(uenv, prepost):
+    spack_install('libfyaml', uenv=prepost)
 
 
 @pytest.mark.libtorch
@@ -468,11 +470,12 @@ def test_py_asttokens_install_default(devirt_env):
 def test_py_black_install_default(devirt_env):
     spack_install_and_test('py-black')
 
-@pytest.mark.no_tsa # No uenv on Tsa
-@pytest.mark.no_daint # No uenv on Daint
+
+@pytest.mark.no_tsa  # No uenv on Tsa
+@pytest.mark.no_daint  # No uenv on Daint
 @pytest.mark.py_black
-def test_install_py_black_default_uenv(devirt_env,uenv,prepost):
-    spack_install_and_test('py-black',uenv=prepost)
+def test_install_py_black_default_uenv(devirt_env, uenv, prepost):
+    spack_install_and_test('py-black', uenv=prepost)
 
 
 @pytest.mark.py_boltons
@@ -543,6 +546,7 @@ def test_install_py_icon4py_version_0_0_11(devirt_env):
 @pytest.mark.py_hatchling
 def test_install_py_hatchling_default(devirt_env):
     spack_install_and_test('py-hatchling')
+
 
 @pytest.mark.py_inflection
 def test_install_py_inflection_default(devirt_env):
