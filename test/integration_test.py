@@ -57,24 +57,11 @@ def test_spack_spec(package: str):
 
 @pytest.mark.icon
 @pytest.mark.parametrize('variant', [
-    'serialization=create claw=std', 'fcgroup=DACE.externals/dace_icon.-O1',
+    'serialization=create', 'fcgroup=DACE.externals/dace_icon.-O1',
     'extra-config-args=--disable-new_feature,--enable-old_config_arg'
 ])
 def test_icon_spec_with_variant(variant: str):
     spack_spec(f'icon {variant}')
-
-
-@pytest.mark.cosmo
-@pytest.mark.parametrize(
-    'variant', ['cosmo_target=gpu ~cppdycore', 'cosmo_target=cpu ~cppdycore'])
-def test_cosmo_spec_with_variant(variant: str):
-    spack_spec(f'cosmo {variant}')
-
-
-@pytest.mark.cosmo_dycore
-@pytest.mark.parametrize('variant', ['~cuda +gt1', '+cuda +gt1 +build_tests'])
-def test_cosmo_dycore_spec_with_variant(variant: str):
-    spack_spec(f'cosmo-dycore {variant}')
 
 
 @pytest.mark.infero
@@ -86,9 +73,3 @@ def test_infero_spec():
 @pytest.mark.parametrize('variant', ['+parallel', '~parallel'])
 def test_int2lm_spec_with_variant(variant: str):
     spack_spec(f'int2lm {variant}')
-
-
-@pytest.mark.gridtools
-@pytest.mark.parametrize('variant', ['~cuda', '+cuda'])
-def test_gridtools_spec_with_variant(variant: str):
-    spack_spec(f'gridtools {variant}')

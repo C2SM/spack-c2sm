@@ -59,18 +59,15 @@ def devirt_env():
         pass
 
 
-def compose_logfilename(spec, log_filename: str = None, uenv: str = None):
+def compose_logfilename(spec, log_filename: str = None):
     func_name = inspect.currentframe().f_back.f_back.f_code.co_name.replace(
         'test_', '')
     if log_filename is None:
-        if uenv:
-            return sanitized_filename(func_name + '_' + uenv + '-' + spec)
-        else:
-            return sanitized_filename(func_name + '-' + spec)
+        log_filename = sanitized_filename(func_name + '-' + spec)
     return log_filename
 
 
-def spack_install(spec: str, log_filename: str = None, uenv: str = None):
+def spack_install(spec: str, log_filename: str = None):
     """
     Tests 'spack install' of the given spec and writes the output into the log file.
     """
@@ -99,7 +96,7 @@ def spack_install_and_test(spec: str,
     Tests 'spack install' of the given spec and writes the output into the log file.
     """
 
-    log_filename = compose_logfilename(spec, log_filename, uenv)
+    log_filename = compose_logfilename(spec, log_filename)
 
     command = 'install'
 
@@ -234,33 +231,17 @@ def test_install_libtorch_default():
     spack_install('libtorch')
 
 
-@pytest.mark.no_tsa  # proj-8.2.1 fails with "./.libs/libproj.so: error: undefined reference to 'curl_easy_setopt'"
-@pytest.mark.cdo
-def test_install_cdo_default():
-    spack_install('cdo')
-
-
-@pytest.mark.claw
-def test_install_claw_default_build_only():
-    spack_install('claw')
-
-
-@pytest.mark.no_balfrin  # cuda arch is not supported
-@pytest.mark.no_tsa  # irrelevant
-@pytest.mark.cosmo_dycore
-@pytest.mark.parametrize("version,cuda_variant", [('6.0', '+cuda'),
-                                                  ('6.0', '~cuda'),
-                                                  ('6.1', '+cuda'),
-                                                  ('6.1', '~cuda')])
-def test_install_and_check_cosmo_dycore_for(version, cuda_variant):
-    spack_install_and_test(f'cosmo-dycore @{version} {cuda_variant}',
-                           split_phases=True)
-
-
 @pytest.mark.cosmo_eccodes_definitions
 @pytest.mark.parametrize("version", ['2.25.0.1', '2.19.0.7'])
 def test_install_cosmo_eccodes_definitions_version(version):
     spack_install(f'cosmo-eccodes-definitions @{version}')
+
+
+@pytest.mark.no_tsa
+@pytest.mark.no_balfrin
+@pytest.mark.cosmo
+def test_install_cosmo_6_0():
+    spack_install(f'cosmo@6.0')
 
 
 @pytest.mark.eccodes
@@ -290,17 +271,6 @@ def test_install_flexpart_cosmo():
     spack_install_and_test('flexpart-cosmo @V8C4.0')
 
 
-@pytest.mark.gridtools
-def test_install_gridtools_version_1_1_3_gcc():
-    spack_install_and_test(f'gridtools @1.1.3 %gcc')
-
-
-@pytest.mark.no_tsa  # Only pgc++ 18 and 19 are supported! nvhpc doesn't work either.
-@pytest.mark.gridtools
-def test_install_version_1_1_3_nvhpc():
-    spack_install_and_test(f'gridtools @1.1.3 %{nvidia_compiler}')
-
-
 @pytest.mark.no_tsa  # FDB tests fail on tsa due to 'ucp_context'
 @pytest.mark.fdb
 def test_install_fdb_5_11_17_gcc():
@@ -315,75 +285,74 @@ def test_install_fdb_5_11_17_nvhpc():
 
 
 @pytest.mark.no_tsa  # Icon does not run on Tsa
+@pytest.mark.no_daint
 @pytest.mark.icon
-def test_install_icon_2_6_6_gcc():
-    spack_install_and_test('icon @2.6.6 %gcc')
-
-
-@pytest.mark.no_tsa  # No uenv for Tsa
-@pytest.mark.no_daint  # No uenv for Daint
-@pytest.mark.icon
-@pytest.mark.parametrize("v", ['v1'])
-def test_install_icon_2_6_6_gcc_for_uenv(uenv, v):
-    spack_install_and_test('icon @2.6.6 %gcc', uenv=v)
-
-
-@pytest.mark.no_tsa  # No uenv for Tsa
-@pytest.mark.no_daint  # No uenv for Daint
-@pytest.mark.icon
-@pytest.mark.parametrize("v", ['v2'])
-def test_install_icon_2_6_6_nvhpc_for_uenv(uenv, v):
-    spack_install_and_test('icon @2.6.6 %nvhpc', uenv=v)
+def test_install_icon_24_1_gcc():
+    spack_install_and_test('icon @2024.1-1 %gcc')
 
 
 @pytest.mark.icon
 @pytest.mark.no_daint
 @pytest.mark.no_tsa  # Icon does not run on Tsa
-def test_install_icon_2_6_6_nvhpc():
-    spack_install_and_test('icon @2.6.6 %nvhpc')
+def test_install_2024_1_nvhpc():
+    #WORKAROUND: ^libxml2%gcc works around a problem in the concretizer of spack v0.21.1 and /mch-environment/v6
+    spack_install_and_test('icon @2024.1-1 %nvhpc ^libxml2%gcc')
 
 
-@pytest.mark.icon
 @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
 @pytest.mark.no_tsa  # Icon does not run on Tsa
-def test_install_icon_nwp_gpu():
+@pytest.mark.icon
+def test_install_conditional_dependencies():
+    # +coupling triggers libfyaml, libxml2, netcdf-c
+    # +rttov triggers rttov
+    # serialization=create triggers serialbox
+    # +cdi-pio triggers libcdi-pio, yaxt                   (but unfortunately this is broken)
+    # +emvorado triggers eccodes, hdf5, zlib
+    # +eccodes-definitions triggers cosmo-eccodes-definitions
+    # +mpi triggers mpi
+    # gpu=openacc+cuda triggers cuda
+
+    #WORKAROUND: ^libxml2%gcc works around a problem in the concretizer of spack v0.21.1 and /mch-environment/v6
     spack_install_and_test(
-        'icon @nwp-master %nvhpc +grib2 +eccodes-definitions +ecrad +art +dace gpu=openacc+cuda +mpi-gpu +realloc-buf +pgi-inlib ~aes ~jsbach ~ocean ~coupling ~rte-rrtmgp ~loop-exchange ~async-io-rma +mixed-precision'
+        'icon @2024.1-1 %nvhpc +coupling +rttov serialization=create +emvorado +mpi gpu=openacc+cuda ^libxml2%gcc'
     )
 
 
 @pytest.mark.no_balfrin  # config file does not exist for this machine
-@pytest.mark.icon
 @pytest.mark.no_tsa  # Icon does not run on Tsa
-def test_install_icon_c2sm_test_cpu_gcc(devirt_env):
-    spack_env_dev_install_and_test('config/cscs/spack/v0.21.1/daint_cpu_gcc',
-                                   'git@github.com:C2SM/icon.git',
-                                   'spack_v0.21.1',
-                                   'icon',
-                                   build_on_login_node=True)
+@pytest.mark.icon
+def test_install_c2sm_test_cpu_nvhpc_out_of_source():
+    spack_env_dev_install_and_test(
+        'config/cscs/spack/v0.21.1.0/daint_cpu_nvhpc',
+        'git@github.com:C2SM/icon.git',
+        '2024.01.1',
+        'icon',
+        out_of_source=True,
+        build_on_login_node=False)
 
 
-@pytest.mark.icon
-@pytest.mark.no_tsa  # Icon does not run on Tsa
 @pytest.mark.no_balfrin  # config file does not exist for this machine
-def test_install_icon_c2sm_test_cpu_nvhpc_out_of_source(devirt_env):
-    spack_env_dev_install_and_test('config/cscs/spack/v0.21.1/daint_cpu_nvhpc',
-                                   'git@github.com:C2SM/icon.git',
-                                   'spack_v0.21.1',
-                                   'icon',
-                                   out_of_source=True,
-                                   build_on_login_node=True)
-
-
-@pytest.mark.icon
 @pytest.mark.no_tsa  # Icon does not run on Tsa
+@pytest.mark.icon
+def test_install_c2sm_test_cpu():
+    spack_env_dev_install_and_test(
+        'config/cscs/spack/v0.21.1.0/daint_cpu_nvhpc',
+        'git@github.com:C2SM/icon.git',
+        '2024.01.1',
+        'icon',
+        build_on_login_node=False)
+
+
 @pytest.mark.no_balfrin  # config file does not exist for this machine
-def test_install_icon_c2sm_test_gpu(devirt_env):
-    spack_env_dev_install_and_test('config/cscs/spack/v0.21.1/daint_gpu_nvhpc',
-                                   'git@github.com:C2SM/icon.git',
-                                   'spack_v0.21.1',
-                                   'icon',
-                                   build_on_login_node=True)
+@pytest.mark.no_tsa  # Icon does not run on Tsa
+@pytest.mark.icon
+def test_install_c2sm_test_gpu():
+    spack_env_dev_install_and_test(
+        'config/cscs/spack/v0.21.1.0/daint_gpu_nvhpc',
+        'git@github.com:C2SM/icon.git',
+        '2024.01.1',
+        'icon',
+        build_on_login_node=False)
 
 
 @pytest.mark.no_tsa  # This test is flaky and sometimes fails with: icondelaunay.cpp:29:10: fatal error: version.c: No such file or directory. See issue #781.
@@ -397,14 +366,7 @@ def test_install_icontools():
 @pytest.mark.infero
 def test_install_infero_tf_c():
     spack_install_and_test(
-        'infero @0.1.2 %gcc +tf_c fflags="-ffree-line-length-1024"')
-
-
-@pytest.mark.no_tsa  # Not supported on Tsa
-@pytest.mark.no_balfrin  # Not supported on Balfrin
-@pytest.mark.infero
-def test_install_infero_onnx():
-    spack_install('infero @0.1.2 %gcc +onnx fflags="-ffree-line-length-1024"')
+        'infero @0.1.2 %gcc +onnx +tf_c fflags="-ffree-line-length-1024"')
 
 
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
@@ -414,32 +376,10 @@ def test_install_int2ml_version_3_00_gcc():
 
 
 @pytest.mark.int2lm
-@pytest.mark.serial_only
-@pytest.mark.no_balfrin  # fails because libgrib1 master fails
-def test_install_int2lm_version_3_00_nvhpc():
-    spack_install_and_test(f'int2lm @int2lm-3.00 %{nvidia_compiler}')
-
-
-@pytest.mark.int2lm
 @pytest.mark.no_balfrin  # fails because libgrib1 master fails
 def test_install_int2lm_version_3_00_nvhpc_fixed_definitions():
     spack_install_and_test(
         f'int2lm @int2lm-3.00 %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler}'
-    )
-
-
-@pytest.mark.int2lm
-@pytest.mark.no_balfrin  # fails because libgrib1 master fails
-def test_install_int2lm_c2sm_master_gcc():
-    spack_install('int2lm @v2.8.4 %gcc ^eccodes %gcc ^libgrib1 %gcc')
-
-
-@pytest.mark.int2lm
-@pytest.mark.no_balfrin  # fails because libgrib1 master fails
-@pytest.mark.no_tsa  # An error occurred in MPI_Bcast
-def test_install_int2lm_c2sm_master_nvhpc():
-    spack_install_and_test(
-        f'int2lm @v2.8.4 %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler} ^libgrib1 %{nvidia_compiler}'
     )
 
 
@@ -451,7 +391,6 @@ def test_install_libcdi_pio_default():
 
 @pytest.mark.no_balfrin  # This fails with "BOZ literal constant at (1) cannot appear in an array constructor". https://gcc.gnu.org/onlinedocs/gfortran/BOZ-literal-constants.html
 @pytest.mark.libgrib1
-@pytest.mark.serial_only  # locking problem on Tsa in combination with int2lm
 def test_install_libgrib1_22_01_2020():
     spack_install_and_test('libgrib1 @22-01-2020')
 
@@ -559,40 +498,21 @@ def test_py_gridtools_cpp_install_default(devirt_env):
 
 @pytest.mark.py_gt4py
 @pytest.mark.no_tsa  # Irrelevant
-@pytest.mark.no_daint  # problem with gt4py and spack v21.1
-@pytest.mark.parametrize("version", ['1.0.1.1', '1.0.1.1b', '1.0.1.6'])
-def test_install_version(version, devirt_env):
-    spack_install_and_test(f'py-gt4py @{version}')
-
-
-@pytest.mark.py_gt4py
-@pytest.mark.no_tsa  # Irrelevant
-@pytest.mark.parametrize("version", [
-    '1.0.1.7', '1.0.3', '1.0.3.1', '1.0.3.2', '1.0.3.3', '1.0.3.4', '1.0.3.5',
-    '1.0.3.6'
-])
+@pytest.mark.parametrize("version", ['1.0.3.3', '1.0.3.6', '1.0.3.7'])
 def test_install_py_gt4py_for_version(version, devirt_env):
     spack_install_and_test(f'py-gt4py @{version}')
 
 
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
-@pytest.mark.no_daint  # problem with gt4py and spack v21.1
 @pytest.mark.py_icon4py
-def test_install_py_icon4py_version_0_0_3_1(devirt_env):
-    spack_install_and_test('py-icon4py @ 0.0.3.1 %gcc ^py-gt4py@1.0.1.1b')
-
-
-@pytest.mark.py_icon4py
-@pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
-@pytest.mark.no_daint  # problem with gt4py and spack v21.1
-def test_install_py_icon4py_version_0_0_9(devirt_env):
-    spack_install_and_test('py-icon4py @ 0.0.9 %gcc ^py-gt4py@1.0.1.6')
-
-
-@pytest.mark.py_icon4py
-@pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 def test_install_py_icon4py_version_0_0_10(devirt_env):
     spack_install_and_test('py-icon4py @ 0.0.10 %gcc ^py-gt4py@1.0.3.3')
+
+
+@pytest.mark.py_icon4py
+@pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
+def test_install_py_icon4py_version_0_0_11(devirt_env):
+    spack_install_and_test('py-icon4py @ 0.0.11 %gcc ^py-gt4py@1.0.3.7')
 
 
 @pytest.mark.py_hatchling
@@ -678,17 +598,3 @@ def test_install_2_6_0():
 @pytest.mark.yaxt
 def test_install_yaxt_default():
     spack_install_and_test('yaxt')
-
-
-@pytest.mark.zlib_ng
-def test_install_zlib_ng_version_2_0_0():
-    spack_install_and_test('zlib_ng @2.0.0')
-
-
-@pytest.mark.no_tsa  # No uenv for Tsa
-@pytest.mark.no_daint  # No uenv for Daint
-@pytest.mark.zlib_ng
-@pytest.mark.parametrize("v", ['v1', 'v2'])
-def test_install_zlib_ng_version_2_0_0_for_uenv(uenv, v):
-    spack_install_and_test('zlib_ng @2.0.0', uenv=v)
-    spack_install('zlib_ng @2.0.0', uenv=v)

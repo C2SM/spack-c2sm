@@ -1,13 +1,29 @@
 compilers:
+# upstream 2024-05
 - compiler:
-    spec: gcc@=9.3.0
+    spec: gcc@=13.2.0
     paths:
-      cc: /cluster/apps/gcc-4.8.5/gcc-9.3.0-mjmsvu3362usxjr7tas4ywkd2e4ko5x3/bin/gcc
-      cxx: /cluster/apps/gcc-4.8.5/gcc-9.3.0-mjmsvu3362usxjr7tas4ywkd2e4ko5x3/bin/g++
-      f77: /cluster/apps/gcc-4.8.5/gcc-9.3.0-mjmsvu3362usxjr7tas4ywkd2e4ko5x3/bin/gfortran
-      fc: /cluster/apps/gcc-4.8.5/gcc-9.3.0-mjmsvu3362usxjr7tas4ywkd2e4ko5x3/bin/gfortran
+      cc: /cluster/software/stacks/2024-05/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-11.4.0/gcc-13.2.0-6t2bdhlkrktlyopht3nbmjz3emlsqeog/bin/gcc
+      cxx: /cluster/software/stacks/2024-05/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-11.4.0/gcc-13.2.0-6t2bdhlkrktlyopht3nbmjz3emlsqeog/bin/g++
+      f77: /cluster/software/stacks/2024-05/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-11.4.0/gcc-13.2.0-6t2bdhlkrktlyopht3nbmjz3emlsqeog/bin/gfortran
+      fc: /cluster/software/stacks/2024-05/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-11.4.0/gcc-13.2.0-6t2bdhlkrktlyopht3nbmjz3emlsqeog/bin/gfortran
     flags: {}
-    operating_system: centos7
+    operating_system: ubuntu22.04
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+
+# upstream 2024-04
+- compiler:
+    spec: gcc@=8.5.0
+    paths:
+      cc: /cluster/software/stacks/2024-04/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-11.4.0/gcc-8.5.0-negtblh6hyfq2jghbmz6pz56l64sa4t3/bin/gcc
+      cxx: /cluster/software/stacks/2024-04/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-11.4.0/gcc-8.5.0-negtblh6hyfq2jghbmz6pz56l64sa4t3/bin/g++
+      f77: /cluster/software/stacks/2024-04/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-11.4.0/gcc-8.5.0-negtblh6hyfq2jghbmz6pz56l64sa4t3/bin/gfortran
+      fc: /cluster/software/stacks/2024-04/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-11.4.0/gcc-8.5.0-negtblh6hyfq2jghbmz6pz56l64sa4t3/bin/gfortran
+    flags: {}
+    operating_system: ubuntu22.04
     target: x86_64
     modules: []
     environment: {}

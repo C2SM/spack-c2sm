@@ -26,6 +26,8 @@ def sanitized_filename(filename: str) -> str:
         (' -v', ''),  # irrelevant in filename
         ('%', ''),  # causes problems in web browsers
         (' ', '_'),  # causes problems in bash
+        ('"', ''),  # causes problems with parameter expansion in bash
+        ("'", ""),  # causes problems with parameter expansion in bash
     ]
     for old, new in replacements:
         filename = filename.replace(old, new)

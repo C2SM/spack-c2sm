@@ -40,14 +40,14 @@ def check_variant_extra_config_args(extra_config_arg):
 class Icon(AutotoolsPackage, CudaPackage):
     """Icosahedral Nonhydrostatic Weather and Climate Model."""
 
-    homepage = 'https://code.mpimet.mpg.de/projects/iconpublic'
-    url = 'https://gitlab.dkrz.de/icon/icon/-/archive/icon-2.6.6/icon-icon-2.6.6.tar.gz'
+    homepage = "https://www.icon-model.org"
+    url = "https://gitlab.dkrz.de/icon/icon-model/-/archive/icon-2024.01-public/icon-model-icon-2024.01-public.tar.gz"
     git = 'git@gitlab.dkrz.de:icon/icon.git'
 
     maintainers = ['jonasjucker', 'dominichofer']
 
     version('develop', submodules=True)
-    version('2.6.6', tag='icon-2.6.6', submodules=True)
+    version("2024.01-1", tag="icon-2024.01-1", submodules=True)
     version('exclaim-master',
             branch='master',
             git='git@github.com:C2SM/icon-exclaim.git',
@@ -62,15 +62,12 @@ class Icon(AutotoolsPackage, CudaPackage):
 
     # The variants' default follow those of ICON
     # as described here
-    # https://gitlab.dkrz.de/icon/icon/-/blob/icon-2.6.6/configure#L1457-1563
+    # https://gitlab.dkrz.de/icon/icon/-/blob/icon-2024.01/configure?ref_type=tags#L1492-1638
 
     # Model Features:
     variant('atmo',
             default=True,
             description='Enable the atmosphere component')
-    variant('edmf',
-            default=True,
-            description='Enable the EDMF turbulence component')
     variant('les',
             default=True,
             description='Enable the Large-Eddy Simulation component')
@@ -84,6 +81,7 @@ class Icon(AutotoolsPackage, CudaPackage):
             description='Enable the surface wave component')
     variant('coupling', default=True, description='Enable the coupling')
     variant('aes', default=True, description='Enable the AES physics package')
+    variant('nwp', default=True, description='Enable the NWP physics package')
     variant('ecrad',
             default=False,
             description='Enable usage of the ECMWF radiation scheme')
@@ -104,6 +102,12 @@ class Icon(AutotoolsPackage, CudaPackage):
     variant('art',
             default=False,
             description='Enable the aerosols and reactive trace component ART')
+    variant('art-gpl',
+            default=False,
+            description='Enable GPL-licensed code parts of the ART component')
+    variant('comin',
+            default=False,
+            description='Enable the ICON community interfaces')
     variant(
         'acm-license',
         default=False,
@@ -144,12 +148,6 @@ class Icon(AutotoolsPackage, CudaPackage):
     variant('sct', default=False, description='Enable the SCT timer')
     variant('yaxt', default=False, description='Enable the YAXT data exchange')
 
-    claw_values = ('std', 'validate')
-    variant('claw',
-            default='none',
-            values=('none', ) + claw_values,
-            description='Enable CLAW preprocessing')
-
     serialization_values = ('read', 'perturb', 'create')
     variant('serialization',
             default='none',
@@ -186,10 +184,7 @@ class Icon(AutotoolsPackage, CudaPackage):
         description=
         'Enable PGI/NVIDIA cross-file function inlining via an inline library')
     variant('nccl', default=False, description='Enable NCCL for communication')
-    variant('cuda-graphs',
-            default=False,
-            description=
-            'Enable CUDA graphs. Warning! This is an experimental feature')
+    variant('cuda-graphs', default=False, description='Enable CUDA graphs.')
     variant(
         'fcgroup',
         default='none',
@@ -243,15 +238,13 @@ class Icon(AutotoolsPackage, CudaPackage):
     depends_on('pytorch-fortran', when='+pytorch')
 
     depends_on('libfyaml', when='+coupling')
-    depends_on('libxml2', when='+coupling')
     depends_on('libxml2', when='+art')
 
     depends_on('rttov+hdf5', when='+rttov')
     depends_on('rttov~openmp', when='~openmp+rttov')
 
     for x in serialization_values:
-        depends_on('serialbox+fortran~shared',
-                   when='serialization={0}'.format(x))
+        depends_on('serialbox+fortran', when='serialization={0}'.format(x))
 
     depends_on('libcdi-pio+fortran+netcdf', when='+cdi-pio')
     depends_on('libcdi-pio grib2=eccodes', when='+cdi-pio+grib2')
@@ -281,14 +274,6 @@ class Icon(AutotoolsPackage, CudaPackage):
     depends_on('python', type='build')
     depends_on('perl', type='build')
     depends_on('cmake@3.18:', type='build')
-
-    for x in claw_values:
-        depends_on('claw', type='build', when='claw={0}'.format(x))
-
-    conflicts('claw=validate', when='serialization=none')
-
-    for x in claw_values:
-        conflicts('+sct', when='claw={0}'.format(x))
 
     conflicts('+dace', when='~mpi')
     conflicts('+emvorado', when='~mpi')
@@ -327,13 +312,12 @@ class Icon(AutotoolsPackage, CudaPackage):
             env.set("BOOST_ROOT", self.spec['boost'].prefix)
 
     def configure_args(self):
-        config_args = ['--disable-rpaths']
-        config_vars = defaultdict(list)
+        args = ['--disable-rpaths']
+        flags = defaultdict(list)
         libs = LibraryList([])
 
         for x in [
                 'atmo',
-                'edmf',
                 'les',
                 'upatmo',
                 'ocean',
@@ -341,12 +325,15 @@ class Icon(AutotoolsPackage, CudaPackage):
                 'waves',
                 'coupling',
                 'aes',
+                'nwp',
                 'ecrad',
                 'rte-rrtmgp',
                 'rttov',
                 'dace',
                 'emvorado',
                 'art',
+                'art-gpl',
+                'comin',
                 'acm-license',
                 'mpi',
                 'active-target-sync',
@@ -368,19 +355,19 @@ class Icon(AutotoolsPackage, CudaPackage):
                 'silent-rules',
                 'comin',
         ]:
-            config_args += self.enable_or_disable(x)
+            args += self.enable_or_disable(x)
 
         if '+cdi-pio' in self.spec:
-            config_args.extend([
+            args.extend([
                 '--enable-cdi-pio', '--with-external-cdi',
                 '--with-external-yaxt'
             ])
 
         if self.compiler.name == 'gcc':
-            config_vars['CFLAGS'].append('-g')
-            config_vars['ICON_CFLAGS'].append('-O3')
-            config_vars['ICON_BUNDLED_CFLAGS'].append('-O2')
-            config_vars['FCFLAGS'].extend([
+            flags['CFLAGS'].append('-g')
+            flags['ICON_CFLAGS'].append('-O3')
+            flags['ICON_BUNDLED_CFLAGS'].append('-O2')
+            flags['FCFLAGS'].extend([
                 '-g',
                 '-fmodule-private',
                 '-fimplicit-none',
@@ -393,48 +380,46 @@ class Icon(AutotoolsPackage, CudaPackage):
                 '-Wno-surprising',
                 '-fall-intrinsics',
             ])
-            config_vars['ICON_FCFLAGS'].extend([
+            flags['ICON_FCFLAGS'].extend([
                 '-O2', '-fbacktrace', '-fbounds-check',
                 '-fstack-protector-all', '-finit-real=nan',
                 '-finit-integer=-2147483648', '-finit-character=127'
             ])
-            config_vars['ICON_OCEAN_FCFLAGS'].append('-O3')
+            flags['ICON_OCEAN_FCFLAGS'].append('-O3')
 
             # Version-specific workarounds:
             fc_version = self.compiler.version
             if fc_version >= ver(10):
-                config_vars['ICON_FCFLAGS'].append('-fallow-argument-mismatch')
-                config_vars['ICON_OCEAN_FCFLAGS'].append(
-                    '-fallow-argument-mismatch')
+                flags['ICON_FCFLAGS'].append('-fallow-argument-mismatch')
+                flags['ICON_OCEAN_FCFLAGS'].append('-fallow-argument-mismatch')
                 if '+ecrad' in self.spec:
                     # For externals/ecrad/ifsaux/random_numbers_mix.F90:
-                    config_vars['ICON_ECRAD_FCFLAGS'].append(
-                        '-fallow-invalid-boz')
+                    flags['ICON_ECRAD_FCFLAGS'].append('-fallow-invalid-boz')
         elif self.compiler.name == 'intel':
-            config_vars['CFLAGS'].extend(
+            flags['CFLAGS'].extend(
                 ['-g', '-gdwarf-4', '-O3', '-qno-opt-dynamic-align', '-ftz'])
-            config_vars['FCFLAGS'].extend(
+            flags['FCFLAGS'].extend(
                 ['-g', '-gdwarf-4', '-traceback', '-fp-model source'])
-            config_vars['ICON_FCFLAGS'].extend(
+            flags['ICON_FCFLAGS'].extend(
                 ['-O2', '-assume realloc_lhs', '-ftz'])
-            config_vars['ICON_OCEAN_FCFLAGS'].extend([
+            flags['ICON_OCEAN_FCFLAGS'].extend([
                 '-O3', '-assume norealloc_lhs', '-reentrancy threaded',
                 '-qopt-report-file=stdout', '-qopt-report=0',
                 '-qopt-report-phase=vec'
             ])
-            config_args.append('--enable-intel-consistency')
+            args.append('--enable-intel-consistency')
         elif self.compiler.name == 'nag':
-            config_vars['CFLAGS'].append('-g')
-            config_vars['ICON_CFLAGS'].append('-O3')
-            config_vars['ICON_BUNDLED_CFLAGS'].append('-O2')
-            config_vars['FCFLAGS'].extend([
+            flags['CFLAGS'].append('-g')
+            flags['ICON_CFLAGS'].append('-O3')
+            flags['ICON_BUNDLED_CFLAGS'].append('-O2')
+            flags['FCFLAGS'].extend([
                 '-g', '-Wc,-g', '-O0', '-colour', '-f2008', '-w=uep',
                 '-float-store', '-nan'
             ])
             if '~openmp' in self.spec:
                 # The -openmp option is incompatible with the -gline option:
-                config_vars['FCFLAGS'].append('-gline')
-            config_vars['ICON_FCFLAGS'].extend([
+                flags['FCFLAGS'].append('-gline')
+            flags['ICON_FCFLAGS'].extend([
                 '-Wc,-pipe',
                 '-Wc,--param,max-vartrack-size=200000000',
                 '-Wc,-mno-fma',
@@ -452,41 +437,41 @@ class Icon(AutotoolsPackage, CudaPackage):
                 '-C=pointer',
                 '-C=recursion'
             ])
-            config_vars['ICON_BUNDLED_FCFLAGS'] = []
+            flags['ICON_BUNDLED_FCFLAGS'] = []
         elif self.compiler.name in ['pgi', 'nvhpc']:
-            config_vars['CFLAGS'].extend(['-g', '-O2'])
-            config_vars['FCFLAGS'].extend(
+            flags['CFLAGS'].extend(['-g', '-O2'])
+            flags['FCFLAGS'].extend(
                 ['-g', '-O', '-Mrecursive', '-Mallocatable=03', '-Mbackslash'])
 
             if self.spec.variants['gpu'].value == 'openacc+cuda':
-                config_vars['FCFLAGS'].extend([
+                flags['FCFLAGS'].extend([
                     '-acc=verystrict', '-Minfo=accel,inline',
                     '-gpu=cc{0}'.format(
                         self.spec.variants['cuda_arch'].value[0])
                 ])
         elif self.compiler.name == 'cce':
-            config_vars['CFLAGS'].append('-g')
-            config_vars['ICON_CFLAGS'].append('-O3')
+            flags['CFLAGS'].append('-g')
+            flags['ICON_CFLAGS'].append('-O3')
             if self.spec.satisfies('%cce@13.0.0+coupling'):
                 # For externals/yac/tests/test_interpolation_method_conserv.c:
-                config_vars['ICON_YAC_CFLAGS'].append('-O2')
-            config_vars['FCFLAGS'].extend([
+                flags['ICON_YAC_CFLAGS'].append('-O2')
+            flags['FCFLAGS'].extend([
                 '-hadd_paren', '-r am', '-Ktrap=divz,ovf,inv',
                 '-hflex_mp=intolerant', '-hfp0', '-O0'
             ])
             if self.spec.variants['gpu'].value == 'openacc+cuda':
-                config_vars['FCFLAGS'].extend(['-hacc'])
+                flags['FCFLAGS'].extend(['-hacc'])
         elif self.compiler.name == 'aocc':
-            config_vars['CFLAGS'].extend(['-g', '-O2'])
-            config_vars['FCFLAGS'].extend(['-g', '-O2'])
+            flags['CFLAGS'].extend(['-g', '-O2'])
+            flags['FCFLAGS'].extend(['-g', '-O2'])
             if self.spec.satisfies('~cdi-pio+yaxt'):
                 # Enable the PGI/Cray (NO_2D_PARAM) workaround for the test
                 # suite of the bundled YAXT (apply also when not self.run_tests
                 # to make sure we get identical installations):
-                config_vars['ICON_YAXT_FCFLAGS'].append('-DNO_2D_PARAM')
+                flags['ICON_YAXT_FCFLAGS'].append('-DNO_2D_PARAM')
         else:
-            config_vars['CFLAGS'].extend(['-g', '-O2'])
-            config_vars['FCFLAGS'].extend(['-g', '-O2'])
+            flags['CFLAGS'].extend(['-g', '-O2'])
+            flags['FCFLAGS'].extend(['-g', '-O2'])
 
         if '+coupling' in self.spec or '+art' in self.spec:
             xml2_spec = self.spec['libxml2']
@@ -501,23 +486,20 @@ class Icon(AutotoolsPackage, CudaPackage):
                     d for d in xml2_headers.directories
                     if not is_system_path(d)
                 ]
-                config_vars['CPPFLAGS'].append(xml2_headers.include_flags)
+                flags['CPPFLAGS'].append(xml2_headers.include_flags)
 
         if '+coupling' in self.spec:
             libs += self.spec['libfyaml'].libs
 
         serialization = self.spec.variants['serialization'].value
         if serialization == 'none':
-            config_args.append('--disable-serialization')
+            args.append('--disable-serialization')
         else:
-            config_args.extend([
+            args.extend([
                 '--enable-serialization={0}'.format(serialization),
-                '--enable-explicit-fpp',
                 'SB2PP={0}'.format(self.spec['serialbox'].pp_ser)
             ])
             libs += self.spec['serialbox:fortran'].libs
-            # static libs from serialbox need libstdc++ to link
-            config_vars['LIBS'].extend(['-lstdc++ -lstdc++fs'])
 
         if '+cdi-pio' in self.spec:
             libs += self.spec['libcdi-pio:fortran'].libs
@@ -550,7 +532,7 @@ class Icon(AutotoolsPackage, CudaPackage):
             libs += self.spec['zlib'].libs
 
         if '+mpi' in self.spec:
-            config_args.extend([
+            args.extend([
                 'CC=' + self.spec['mpi'].mpicc,
                 'FC=' + self.spec['mpi'].mpifc,
                 # We cannot provide a universal value for MPI_LAUNCH, therefore
@@ -566,28 +548,14 @@ class Icon(AutotoolsPackage, CudaPackage):
         fcgroup = self.spec.variants['fcgroup'].value
         # ('none',) is the values spack assign if fcgroup is not set
         if fcgroup != ('none', ):
-            config_args.extend(self.fcgroup_to_config_arg())
-            config_vars.update(self.fcgroup_to_config_var())
-
-        claw = self.spec.variants['claw'].value
-        if claw == 'none':
-            config_args.append('--disable-claw')
-        else:
-            config_args.extend([
-                '--enable-claw={0}'.format(claw),
-                'CLAW={0}'.format(self.spec['claw'].prefix.bin.clawfc)
-            ])
-            config_vars['CLAWFLAGS'].append(
-                self.spec['netcdf-fortran'].headers.include_flags)
-            if '+cdi-pio' in self.spec:
-                config_vars['CLAWFLAGS'].append(
-                    self.spec['libcdi-pio'].headers.include_flags)
+            args.extend(self.fcgroup_to_config_arg())
+            flags.update(self.fcgroup_to_config_var())
 
         gpu = self.spec.variants['gpu'].value
         if gpu == 'no':
-            config_args.append('--disable-gpu')
+            args.append('--disable-gpu')
         else:
-            config_args.extend([
+            args.extend([
                 '--enable-gpu={0}'.format(gpu),
                 'NVCC={0}'.format(self.spec['cuda'].prefix.bin.nvcc)
             ])
@@ -598,65 +566,64 @@ class Icon(AutotoolsPackage, CudaPackage):
             cuda_host_compiler_stdcxx_libs = self.compiler.stdcxx_libs
 
             if 'none' in self.spec.variants['dsl'].value:
-                config_vars['NVCFLAGS'].extend(
+                flags['NVCFLAGS'].extend(
                     ['-ccbin {0}'.format(cuda_host_compiler)])
 
-            config_vars['NVCFLAGS'].extend([
+            flags['NVCFLAGS'].extend([
                 '-g', '-O3',
                 '-arch=sm_{0}'.format(self.spec.variants['cuda_arch'].value[0])
             ])
             # cuda_host_compiler_stdcxx_libs might contain compiler-specific
             # flags (i.e. not the linker -l<library> flags), therefore we put
             # the value to the config_flags directly.
-            config_vars['LIBS'].extend(cuda_host_compiler_stdcxx_libs)
+            flags['LIBS'].extend(cuda_host_compiler_stdcxx_libs)
 
         # Check for DSL variants and set corresponding Liskov options
         dsl = self.spec.variants['dsl'].value
         if dsl != ('none', ):
             if 'substitute' in dsl:
-                config_args.append('--enable-liskov=substitute')
+                args.append('--enable-liskov=substitute')
             elif 'verify' in dsl:
-                config_args.append('--enable-liskov=verify')
+                args.append('--enable-liskov=verify')
             elif 'serialize' in dsl:
                 raise error.UnsupportedPlatformError(
                     'serialize mode is not supported yet by icon-liskov')
 
             if 'lam' in dsl:
-                config_args.append('--enable-dsl-local')
+                args.append('--enable-dsl-local')
             if 'nvtx' in dsl:
-                config_args.append('--enable-nvtx')
+                args.append('--enable-nvtx')
             if 'fused' in dsl:
                 raise error.UnsupportedPlatformError(
                     'liskov does not support fusing just yet')
 
-            config_vars['LOC_GT4PY'].append(self.spec['py-gt4py'].prefix)
-            config_vars['LOC_ICON4PY_BIN'].append(
-                self.spec['py-icon4py'].prefix)
+            flags['LOC_GT4PY'].append(self.spec['py-gt4py'].prefix)
+            flags['LOC_ICON4PY_BIN'].append(self.spec['py-icon4py'].prefix)
 
-            config_vars['LOC_ICON4PY_ATM_DYN_ICONAM'].append(
+            flags['LOC_ICON4PY_ATM_DYN_ICONAM'].append(
                 self.spec['py-icon4py:atm_dyn_iconam'].headers.directories[0])
 
             if self.spec['py-icon4py'].version < Version("0.0.4"):
-                config_vars['LOC_ICON4PY_UTILS'].append(
+                flags['LOC_ICON4PY_UTILS'].append(
                     os.path.dirname(
                         self.spec['py-icon4py:utils'].headers.directories[0]))
             else:
-                config_vars['LOC_ICON4PY_TOOLS'].append(
+                flags['LOC_ICON4PY_TOOLS'].append(
                     self.spec['py-icon4py:tools'].headers.directories[0])
                 if self.spec['py-icon4py'].version > Version("0.0.7"):
-                    config_vars['LOC_ICON4PY_DIFFUSION'].append(
+                    flags['LOC_ICON4PY_DIFFUSION'].append(
                         self.spec['py-icon4py:diffusion'].headers.
                         directories[0])
-                    config_vars['LOC_ICON4PY_INTERPOLATION'].append(
+                    flags['LOC_ICON4PY_INTERPOLATION'].append(
                         self.spec['py-icon4py:interpolation'].headers.
                         directories[0])
                 if self.spec['py-icon4py'].version > Version("0.0.8"):
-                    config_vars['LOC_ICON4PY_ADVECTION'].append(
+                    flags['LOC_ICON4PY_ADVECTION'].append(
                         self.spec['py-icon4py:advection'].headers.
                         directories[0])
-            config_vars['LOC_GRIDTOOLS'].append(
+            flags['LOC_GRIDTOOLS'].append(
                 self.spec['py-gridtools-cpp:data'].headers.directories[0])
-            config_vars['GT4PYNVCFLAGS'] = config_vars['NVCFLAGS']
+            flags['GT4PYNVCFLAGS'] = flags['NVCFLAGS']
 
         # add configure arguments not yet available as variant
         extra_config_args = self.spec.variants['extra-config-args'].value
@@ -665,31 +632,30 @@ class Icon(AutotoolsPackage, CudaPackage):
                 # prevent configure-args already available as variant
                 # to be set through variant extra_config_args
                 self.validate_extra_config_args(x)
-                config_args.append(x)
+                args.append(x)
             tty.warn(
                 'You use variant extra-config-args. Injecting non-variant configure arguments may potentially disrupt the build process!'
             )
 
         # Finalize the LIBS variable (we always put the real collected
         # libraries to the front):
-        config_vars['LIBS'].insert(0, libs.link_flags)
+        flags['LIBS'].insert(0, libs.link_flags)
 
         # Help the libtool scripts of the bundled libraries find the correct
         # paths to the external libraries. Specify the library search (-L) flags
         # in the reversed order
         # (see https://gitlab.dkrz.de/icon/icon#icon-dependencies):
         # and for non-system directories only:
-        config_vars['LDFLAGS'].extend([
+        flags['LDFLAGS'].extend([
             '-L{0}'.format(d) for d in reversed(libs.directories)
             if not is_system_path(d)
         ])
 
-        config_args.extend([
-            '{0}={1}'.format(var, ' '.join(val))
-            for var, val in config_vars.items()
+        args.extend([
+            '{0}={1}'.format(var, ' '.join(val)) for var, val in flags.items()
         ])
 
-        return config_args
+        return args
 
     def fcgroup_to_config_arg(self):
         arg = []
@@ -735,19 +701,6 @@ class Icon(AutotoolsPackage, CudaPackage):
                             'icon.mk',
                             string=True,
                             backup=False)
-
-    def build(self, spec, prefix):
-        claw = self.spec.variants['claw'].value
-        if claw != 'none' and make_jobs > 8:
-            # Limit CLAW preprocessing to 8 parallel jobs to avoid
-            # claw_f_lib.sh: fork: retry: Resource temporarily unavailable
-            # ...
-            # Error: Could not create the Java Virtual Machine.
-            # Error: A fatal exception has occurred. Program will exit.
-            make.jobs = 8
-            make('preprocess')
-            make.jobs = make_jobs
-        make(*self.build_targets)
 
     def check(self):
         # By default "check" calls make with targets "check" and "test".

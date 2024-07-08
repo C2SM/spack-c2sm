@@ -5,8 +5,7 @@
 
 #
 from spack import *
-from distutils.dir_util import copy_tree
-from llnl.util.filesystem import working_dir
+from llnl.util.filesystem import working_dir, install_tree
 
 
 class FlexpartCosmo(MakefilePackage):
@@ -51,5 +50,5 @@ class FlexpartCosmo(MakefilePackage):
         mkdir(prefix.share)
         mkdir(prefix.share + '/test/')
         mkdir(prefix.share + '/options/')
-        copy_tree('options/', prefix.share + '/options/')
+        install_tree('options/', prefix.share + '/options/')
         install('bin/FLEXPART', prefix.bin)
