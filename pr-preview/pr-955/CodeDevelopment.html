@@ -99,10 +99,10 @@ development workflow which is maintained by C2SM.</p>
 <h2>Plain dev-build<a class="headerlink" href="#plain-dev-build" title="Link to this heading"></a></h2>
 <p>This is the easiest way to build local sources.
 Enter the root of your source repository and execute:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>dev-build<span class="w">  </span>&lt;package&gt;<span class="w"> </span>@develop<span class="w"> </span>&lt;variant&gt;
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>dev-build<span class="w"> </span>--until<span class="w"> </span>build<span class="w"> </span>&lt;package&gt;<span class="w"> </span>@&lt;version&gt;
 </pre></div>
 </div>
-<p>This will install the package as is. The downside of this approach is that
+<p>This will build the package as is. The downside of this approach is that
 you need to go through all phases of a package build.</p>
 </section>
 <section id="dev-build-in-combination-with-build-env">
@@ -136,9 +136,8 @@ For more information about environments in general, consider reading the
 <span class="nt">spack</span><span class="p">:</span>
 <span class="w">  </span><span class="c1"># add package specs to the `specs` list</span>
 <span class="w">  </span><span class="nt">specs</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">icon@develop%nvhpc +ecrad +rte-rrtmgp claw=std +cuda</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">icon@develop%nvhpc +ecrad +rte-rrtmgp +cuda</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eccodes@2.19.0%nvhpc</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claw@2.0.3%nvhpc</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-blas%nvhpc</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-lapack%nvhpc</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">libxml2@2.9.13%gcc</span>
@@ -147,7 +146,7 @@ For more information about environments in general, consider reading the
 <span class="w">    </span><span class="nt">unify</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">develop</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">icon</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">spec</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">icon@develop%nvhpc +ecrad +rte-rrtmgp claw=std +cuda</span>
+<span class="w">      </span><span class="nt">spec</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">icon@develop%nvhpc +ecrad +rte-rrtmgp +cuda</span>
 <span class="w">      </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">../../../../</span>
 </pre></div>
 </div>
@@ -183,7 +182,7 @@ It is possible to specify multiple packages under <code class="docutils literal 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2020-2023, C2SM.</p>
+    <p>&#169; Copyright 2020-2024, C2SM.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
