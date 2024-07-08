@@ -16,6 +16,15 @@ from src import machine_name, log_with_spack, sanitized_filename
 
 @pytest.fixture(scope="session")
 def uenv(tmp_path_factory):
+    '''
+    Uenv is a squashfs image that contains the user environment.
+    It is mounted to /user-environment/.
+    In order to make the configs of that uenv available to spack,
+    we link the config files to the sysconfigs/uenv/ directory.
+
+    Use Filelock to prevent race-condition when multiple tests are run in parallel.
+    '''
+
     conf_dir = os.path.join(spack_c2sm_path, "sysconfigs/uenv/")
     conf_files = ["compilers.yaml", "upstreams.yaml", "packages.yaml"]
 
@@ -32,6 +41,10 @@ def uenv(tmp_path_factory):
 
         repos = 'repos/uenv'
         link('/user-environment/repo', repos)
+
+@pytest.fixture(scope="function")
+def prepost():
+    return '/scratch/mch/leclairm/uenvs/images/pre-post_v0.sqfs'
 
 
 def link(src, dst):
@@ -67,7 +80,7 @@ def compose_logfilename(spec, log_filename: str = None):
     return log_filename
 
 
-def spack_install(spec: str, log_filename: str = None):
+def spack_install(spec: str, log_filename: str = None, uenv: str = None):
     """
     Tests 'spack install' of the given spec and writes the output into the log file.
     """
@@ -122,7 +135,7 @@ def spack_install_and_test(spec: str,
         log_with_spack(f'spack {command} --test=root -n -v {spec}',
                        'system_test',
                        log_filename,
-                       srun=not spec.startswith('icon '),
+                       srun=True,
                        uenv=uenv)
 
 
@@ -224,6 +237,12 @@ nvidia_compiler: str = {
 @pytest.mark.libfyaml
 def test_install_libfyaml_default():
     spack_install('libfyaml')
+
+@pytest.mark.no_tsa # No uenv on Tsa
+@pytest.mark.no_daint # No uenv on Daint
+@pytest.mark.libfyaml
+def test_install_libfyaml_default_uenv(uenv,prepost):
+    spack_install('libfyaml',uenv=prepost)
 
 
 @pytest.mark.libtorch
@@ -449,6 +468,12 @@ def test_py_asttokens_install_default(devirt_env):
 def test_py_black_install_default(devirt_env):
     spack_install_and_test('py-black')
 
+@pytest.mark.no_tsa # No uenv on Tsa
+@pytest.mark.no_daint # No uenv on Daint
+@pytest.mark.py_black
+def test_install_py_black_default_uenv(devirt_env,uenv,prepost):
+    spack_install_and_test('py-black',uenv=prepost)
+
 
 @pytest.mark.py_boltons
 def test_py_boltons_install_default(devirt_env):
@@ -518,7 +543,6 @@ def test_install_py_icon4py_version_0_0_11(devirt_env):
 @pytest.mark.py_hatchling
 def test_install_py_hatchling_default(devirt_env):
     spack_install_and_test('py-hatchling')
-
 
 @pytest.mark.py_inflection
 def test_install_py_inflection_default(devirt_env):

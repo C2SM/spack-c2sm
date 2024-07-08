@@ -32,14 +32,10 @@ def log_with_spack(command: str,
     else:
         spack_env = f'. {spack_c2sm_path}/setup-env.sh'
 
-    lookup_uenv = {
-        'v1': '/scratch/mch/leclairm/uenv/images/pre-post_v0.sqfs',
-        'v2': '/scratch/mch/leclairm/uenv/images/icon.v1.a100.sqfs'
-    }
     if uenv and srun:
-        uenv_args = f'--uenv={lookup_uenv[uenv]}:/user-environment'
+        uenv_args = f'--uenv={uenv}:/user-environment'
     elif uenv and not srun:
-        uenv_args = f'squashfs-mount {lookup_uenv[uenv]}:/user-environment/ -- '
+        uenv_args = f'squashfs-mount {uenv}:/user-environment/ -- '
     else:
         uenv_args = ''
 
@@ -48,7 +44,7 @@ def log_with_spack(command: str,
         # The '-c' argument should be in sync with
         # sysconfig/<machine>/config.yaml config:build_jobs for max efficiency
         srun = {
-            'balfrin': 'srun -t 00:10:00 -p postproc -c 24',
+            'balfrin': 'srun -t 02:00:00  -c 24',
             'daint': 'srun -t 02:00:00 -C gpu -A g110 -c 12 -n 1',
             'tsa': 'srun -t 02:00:00 -c 6',
         }[machine_name()]
