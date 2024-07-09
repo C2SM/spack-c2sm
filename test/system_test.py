@@ -13,9 +13,7 @@ sys.path.append(os.path.normpath(spack_c2sm_path))
 from src import machine_name, log_with_spack, sanitized_filename
 
 
-@pytest.fixture(scope="function")
-def prepost():
-    return '/scratch/mch/leclairm/uenvs/images/pre-post_v0.sqfs'
+PREPOST = '/scratch/mch/leclairm/uenvs/images/pre-post_v0.sqfs'
 
 
 @pytest.fixture(scope='function')
@@ -99,7 +97,7 @@ def spack_install_and_test(spec: str,
         log_with_spack(f'spack {command} --test=root -n -v {spec}',
                        'system_test',
                        log_filename,
-                       srun=not spec.startswith('icon')
+                       srun=not spec.startswith('icon ')
                        or not machine_name() == 'balfrin',
                        uenv=uenv)
 
@@ -207,8 +205,8 @@ def test_install_libfyaml_default():
 @pytest.mark.no_tsa  # No uenv on Tsa
 @pytest.mark.no_daint  # No uenv on Daint
 @pytest.mark.libfyaml
-def test_install_libfyaml_default_uenv(prepost):
-    spack_install('libfyaml', uenv=prepost)
+def test_install_libfyaml_default_uenv():
+    spack_install('libfyaml', uenv=PREPOST)
 
 
 @pytest.mark.libtorch
@@ -438,8 +436,8 @@ def test_py_black_install_default(devirt_env):
 @pytest.mark.no_tsa  # No uenv on Tsa
 @pytest.mark.no_daint  # No uenv on Daint
 @pytest.mark.py_black
-def test_install_py_black_default_uenv(devirt_env, prepost):
-    spack_install_and_test('py-black', uenv=prepost)
+def test_install_py_black_default_uenv(devirt_env):
+    spack_install_and_test('py-black', uenv=PREPOST)
 
 
 @pytest.mark.py_boltons

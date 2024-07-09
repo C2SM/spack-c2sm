@@ -31,12 +31,13 @@ def log_with_spack(command: str,
     if uenv:
         spack_env += ' /user-environment'
 
-    if uenv and srun:
-        uenv_args = f'--uenv={uenv}:/user-environment'
-    elif uenv and not srun:
-        uenv_args = f'squashfs-mount {uenv}:/user-environment/ -- '
-    else:
-        uenv_args = ''
+    uenv_args = ''
+    if uenv:
+        uenv_mount_point += f'{uenv}:/user-environment'
+        if srun:
+            uenv_args = '--uenv=' + uenv_mount_point
+        else:
+            uenv_args = 'squashfs-mount ' + uenv_mount_point + ' -- '
 
     # Distribute work with 'srun'
     if srun:
