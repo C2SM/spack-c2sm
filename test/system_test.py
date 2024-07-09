@@ -46,13 +46,11 @@ def spack_install(spec: str):
 
     log_filename = compose_logfilename(spec)
 
-    command = 'install'
-
     log_with_spack(f'spack spec {spec}',
                    'system_test',
                    log_filename,
                    srun=False)
-    log_with_spack(f'spack {command} -n -v {spec}',
+    log_with_spack(f'spack install -n -v {spec}',
                    'system_test',
                    log_filename,
                    srun=True)
@@ -65,13 +63,11 @@ def spack_install_and_test(spec: str):
 
     log_filename = compose_logfilename(spec)
 
-    command = 'install'
-
     log_with_spack(f'spack spec {spec}',
                    'system_test',
                    log_filename,
                    srun=False)
-    log_with_spack(f'spack {command} --test=root -n -v {spec}',
+    log_with_spack(f'spack install --test=root -n -v {spec}',
                    'system_test',
                    log_filename,
                    srun=not spec.startswith('icon '))
