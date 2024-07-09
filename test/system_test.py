@@ -12,7 +12,6 @@ spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 sys.path.append(os.path.normpath(spack_c2sm_path))
 from src import machine_name, log_with_spack, sanitized_filename
 
-
 PREPOST = '/scratch/mch/leclairm/uenvs/images/pre-post_v0.sqfs'
 
 
