@@ -33,20 +33,18 @@ def devirt_env():
         pass
 
 
-def compose_logfilename(spec, log_filename: str = None):
+def compose_logfilename(spec):
     func_name = inspect.currentframe().f_back.f_back.f_code.co_name.replace(
         'test_', '')
-    if log_filename is None:
-        log_filename = sanitized_filename(func_name + '-' + spec)
-    return log_filename
+    return sanitized_filename(func_name + '-' + spec)
 
 
-def spack_install(spec: str, log_filename: str = None):
+def spack_install(spec: str):
     """
     Tests 'spack install' of the given spec and writes the output into the log file.
     """
 
-    log_filename = compose_logfilename(spec, log_filename)
+    log_filename = compose_logfilename(spec)
 
     command = 'install'
 
@@ -60,12 +58,12 @@ def spack_install(spec: str, log_filename: str = None):
                    srun=True)
 
 
-def spack_install_and_test(spec: str, log_filename: str = None):
+def spack_install_and_test(spec: str):
     """
     Tests 'spack install' of the given spec and writes the output into the log file.
     """
 
-    log_filename = compose_logfilename(spec, log_filename)
+    log_filename = compose_logfilename(spec)
 
     command = 'install'
 
