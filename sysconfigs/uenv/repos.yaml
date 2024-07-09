@@ -1,3 +1,2 @@
 repos:
   - '$spack/../repos/c2sm'
-  - '$spack/../repos/uenv'

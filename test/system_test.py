@@ -5,7 +5,6 @@ import os
 import uuid
 import shutil
 import inspect
-from filelock import FileLock
 
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                '..')
@@ -14,45 +13,9 @@ sys.path.append(os.path.normpath(spack_c2sm_path))
 from src import machine_name, log_with_spack, sanitized_filename
 
 
-@pytest.fixture(scope="session")
-def uenv(tmp_path_factory):
-    '''
-    Uenv is a squashfs image that contains the user environment.
-    It is mounted to /user-environment/.
-    In order to make the configs of that uenv available to spack,
-    we link the config files to the sysconfigs/uenv/ directory.
-
-    Use Filelock to prevent race-condition when multiple tests are run in parallel.
-    '''
-
-    conf_dir = os.path.join(spack_c2sm_path, "sysconfigs/uenv/")
-    conf_files = ["compilers.yaml", "upstreams.yaml", "packages.yaml"]
-
-    src_dir = "/user-environment/config"
-
-    root_tmp_dir = tmp_path_factory.getbasetemp().parent
-    fn = root_tmp_dir / 'link_config_yaml.lock'
-
-    with FileLock(fn):
-        for conf_file in conf_files:
-            src = os.path.join(src_dir, conf_file)
-            dst = os.path.join(conf_dir, conf_file)
-            link(src, dst)
-
-        repos = 'repos/uenv'
-        link('/user-environment/repo', repos)
-
-
 @pytest.fixture(scope="function")
 def prepost():
     return '/scratch/mch/leclairm/uenvs/images/pre-post_v0.sqfs'
-
-
-def link(src, dst):
-    if not os.path.islink(dst):
-        if os.path.exists(dst):
-            os.remove(dst)
-        os.symlink(src, dst)
 
 
 @pytest.fixture(scope='function')
@@ -244,7 +207,7 @@ def test_install_libfyaml_default():
 @pytest.mark.no_tsa  # No uenv on Tsa
 @pytest.mark.no_daint  # No uenv on Daint
 @pytest.mark.libfyaml
-def test_install_libfyaml_default_uenv(uenv, prepost):
+def test_install_libfyaml_default_uenv( prepost):
     spack_install('libfyaml', uenv=prepost)
 
 
@@ -475,7 +438,7 @@ def test_py_black_install_default(devirt_env):
 @pytest.mark.no_tsa  # No uenv on Tsa
 @pytest.mark.no_daint  # No uenv on Daint
 @pytest.mark.py_black
-def test_install_py_black_default_uenv(devirt_env, uenv, prepost):
+def test_install_py_black_default_uenv(devirt_env, prepost):
     spack_install_and_test('py-black', uenv=prepost)
 
 

@@ -11,18 +11,15 @@ fi
 if [[ ${machine:0:1} == "/" ]]; then
     uenv_mount=$machine
     machine=uenv
-fi
-
-presetup="$parent_dir"/sysconfigs/"$machine"/pre-setup.sh
-if [[ -f $presetup ]]; then
-    source ${presetup}
-fi
-
-if [[ $? == 0 ]]; then
+    export SPACK_SYSTEM_CONFIG_PATH="$uenv_mount"/config
+    export SPACK_USER_CONFIG_PATH="$parent_dir"/sysconfigs/"$machine"
+else
     export SPACK_SYSTEM_CONFIG_PATH="$parent_dir"/sysconfigs/"$machine"
     export SPACK_USER_CONFIG_PATH="$parent_dir"/user-config
-    export SPACK_USER_CACHE_PATH="$parent_dir"/user-cache
-    . "$parent_dir"/spack/share/spack/setup-env.sh
-
-    echo Spack configured for "$machine".
 fi
+
+export SPACK_USER_CACHE_PATH="$parent_dir"/user-cache
+
+. "$parent_dir"/spack/share/spack/setup-env.sh
+
+echo Spack configured for "$machine".

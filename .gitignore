@@ -12,8 +12,8 @@ user-config/
 user-cache/
 
 # links to uenv, created by setup-env.sh
-sysconfigs/uenv/compilers.yaml
-sysconfigs/uenv/packages.yaml
-sysconfigs/uenv/upstreams.yaml
-sysconfigs/uenv/uenv.hash
-repos/uenv
+#sysconfigs/uenv/compilers.yaml
+#sysconfigs/uenv/packages.yaml
+#sysconfigs/uenv/upstreams.yaml
+#sysconfigs/uenv/uenv.hash
+#repos/uenv
