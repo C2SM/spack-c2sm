@@ -59,56 +59,6 @@ def spack_install(spec: str, test_root: bool = True):
                    srun=not spec.startswith('icon '))
 
 
-def spack_env_dev_install_and_test(spack_env: str,
-                                url: str,
-                                branch: str,
-                                name: str,
-                                out_of_source: bool = False):
-    """
-    Clones repo with given branch into unique folder, activates the given spack
-    environment, tests 'spack install' and writes the output into the log file.
-
-    ICON specials:
-    If out_of_source is True, create additional folder and build there, BUT skip testing!
-    """
-
-    if name != 'icon' and out_of_source:
-        raise ValueError('out-of-source only possible with Icon')
-
-    unique_folder = name + '_' + uuid.uuid4(
-    ).hex  # to avoid cloning into the same folder and having race conditions
-    subprocess.run(
-        f'git clone --depth 1 --recurse-submodules -b {branch} {url} {unique_folder}',
-        check=True,
-        shell=True)
-
-    if out_of_source:
-        build_dir = os.path.join(unique_folder, 'build')
-        os.makedirs(build_dir, exist_ok=True)
-        shutil.copytree(os.path.join(unique_folder, 'config'),
-                        os.path.join(build_dir, 'config'))
-        unique_folder = build_dir
-
-    log_filename = sanitized_filename(spack_env) + '_out_of_source'
-    log_with_spack('spack install -n -v',
-                   'system_test',
-                   log_filename,
-                   cwd=unique_folder,
-                   env=spack_env,
-                   srun=True)
-
-    # for out-of-source build we can't run tests because required files
-    # like scripts/spack/test.py or scripts/buildbot_script are not synced
-    # in our spack-recipe to the build-folder
-    if not out_of_source:
-        log_with_spack('spack install --test=root -n -v',
-                       'system_test',
-                       log_filename,
-                       cwd=unique_folder,
-                       env=spack_env,
-                       srun=False)
-
-
 nvidia_compiler: str = {
     'daint': 'nvhpc',
     'tsa': 'pgi',
@@ -214,38 +164,61 @@ def test_install_conditional_dependencies():
     )
 
 
+def icon_env_test(spack_env: str, out_of_source: bool = False):
+    # avoids race conditions on the same folder
+    unique_folder = 'icon_' + uuid.uuid4().hex
+    subprocess.run(
+        f'git clone --depth 1 --recurse-submodules -b 2024.01.1 git@github.com:C2SM/icon.git {unique_folder}',
+        check=True,
+        shell=True)
+
+    if out_of_source:
+        build_dir = os.path.join(unique_folder, 'build')
+        os.makedirs(build_dir, exist_ok=True)
+        shutil.copytree(os.path.join(unique_folder, 'config'),
+                        os.path.join(build_dir, 'config'))
+        unique_folder = build_dir
+
+    log_filename = sanitized_filename(spack_env) + '_out_of_source'
+    log_with_spack('spack install -n -v',
+                   'system_test',
+                   log_filename,
+                   cwd=unique_folder,
+                   env=spack_env,
+                   srun=True)
+
+    # for out-of-source build we can't run tests because required files
+    # like scripts/spack/test.py or scripts/buildbot_script are not synced
+    # in our spack-recipe to the build-folder
+    if out_of_source:
+        return
+
+    log_with_spack('spack install --test=root -n -v',
+                    'system_test',
+                    log_filename,
+                    cwd=unique_folder,
+                    env=spack_env,
+                    srun=False)
+
 @pytest.mark.no_balfrin  # config file does not exist for this machine
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 @pytest.mark.icon
 def test_install_c2sm_test_cpu_nvhpc_out_of_source():
-    spack_env_dev_install_and_test(
-        'config/cscs/spack/v0.21.1.0/daint_cpu_nvhpc',
-        'git@github.com:C2SM/icon.git',
-        '2024.01.1',
-        'icon',
-        out_of_source=True)
+    icon_env_test('config/cscs/spack/v0.21.1.0/daint_cpu_nvhpc', out_of_source=True)
 
 
 @pytest.mark.no_balfrin  # config file does not exist for this machine
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 @pytest.mark.icon
 def test_install_c2sm_test_cpu():
-    spack_env_dev_install_and_test(
-        'config/cscs/spack/v0.21.1.0/daint_cpu_nvhpc',
-        'git@github.com:C2SM/icon.git',
-        '2024.01.1',
-        'icon')
+    icon_env_test('config/cscs/spack/v0.21.1.0/daint_cpu_nvhpc')
 
 
 @pytest.mark.no_balfrin  # config file does not exist for this machine
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 @pytest.mark.icon
 def test_install_c2sm_test_gpu():
-    spack_env_dev_install_and_test(
-        'config/cscs/spack/v0.21.1.0/daint_gpu_nvhpc',
-        'git@github.com:C2SM/icon.git',
-        '2024.01.1',
-        'icon')
+    icon_env_test('config/cscs/spack/v0.21.1.0/daint_gpu_nvhpc')
 
 
 @pytest.mark.no_tsa  # This test is flaky and sometimes fails with: icondelaunay.cpp:29:10: fatal error: version.c: No such file or directory. See issue #781.
