@@ -27,10 +27,9 @@ def log_with_spack(command: str,
         spack_c2sm_path) / 'log' / machine_name() / test_category / filename
 
     # Setup spack env
+    spack_env = f'. {spack_c2sm_path}/setup-env.sh'
     if uenv:
-        spack_env = f'. {spack_c2sm_path}/setup-env.sh /user-environment'
-    else:
-        spack_env = f'. {spack_c2sm_path}/setup-env.sh'
+        spack_env += ' /user-environment'
 
     if uenv and srun:
         uenv_args = f'--uenv={uenv}:/user-environment'
