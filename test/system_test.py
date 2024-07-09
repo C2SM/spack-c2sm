@@ -79,9 +79,7 @@ def spack_install_and_test(spec: str, log_filename: str = None):
                    srun=not spec.startswith('icon '))
 
 
-def spack_devbuild_and_test(spec: str,
-                            log_filename: str = None,
-                            cwd=None):
+def spack_devbuild_and_test(spec: str, log_filename: str = None, cwd=None):
     """
     Tests 'spack dev-build' of the given spec and writes the output into the log file.
     """
