@@ -31,7 +31,7 @@ class PyGt4py(PythonPackage):
     depends_on('py-setuptools@63:', type='build')
 
     depends_on('cmake@3.22:', type=('build', 'run'))
-    depends_on('boost@1.65.1:', type=('build', 'run'))
+    depends_on('boost@1.85.0:', type=('build', 'run'))
     depends_on('clang-format@9:', type=('build', 'run'))
 
     # Python dependencies from setup.cfg
