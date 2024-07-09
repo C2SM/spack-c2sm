@@ -194,17 +194,19 @@ def icon_env_test(spack_env: str, out_of_source: bool = False):
         return
 
     log_with_spack('spack install --test=root -n -v',
-                    'system_test',
-                    log_filename,
-                    cwd=unique_folder,
-                    env=spack_env,
-                    srun=False)
+                   'system_test',
+                   log_filename,
+                   cwd=unique_folder,
+                   env=spack_env,
+                   srun=False)
+
 
 @pytest.mark.no_balfrin  # config file does not exist for this machine
 @pytest.mark.no_tsa  # Icon does not run on Tsa
 @pytest.mark.icon
 def test_install_c2sm_test_cpu_nvhpc_out_of_source():
-    icon_env_test('config/cscs/spack/v0.21.1.0/daint_cpu_nvhpc', out_of_source=True)
+    icon_env_test('config/cscs/spack/v0.21.1.0/daint_cpu_nvhpc',
+                  out_of_source=True)
 
 
 @pytest.mark.no_balfrin  # config file does not exist for this machine
@@ -296,14 +298,15 @@ def test_install_oasis_version_4_0_nvhpc():
 @pytest.mark.pytorch_fortran
 def test_install_pytorch_fortran_version_0_4(devirt_env):
     spack_install(
-        'pytorch-fortran@0.4%nvhpc ^pytorch-fortran-proxy@0.4%gcc ^python@3.10 ^gmake%gcc ^cmake%gcc', test_root=False
-    )
+        'pytorch-fortran@0.4%nvhpc ^pytorch-fortran-proxy@0.4%gcc ^python@3.10 ^gmake%gcc ^cmake%gcc',
+        test_root=False)
 
 
 @pytest.mark.no_tsa
 @pytest.mark.pytorch_fortran_proxy
 def test_install_pytorch_fortran_proxy_version_0_4(devirt_env):
-    spack_install('pytorch-fortran-proxy@0.4%gcc ^python@3.10', test_root=False)
+    spack_install('pytorch-fortran-proxy@0.4%gcc ^python@3.10',
+                  test_root=False)
 
 
 @pytest.mark.py_asttokens
