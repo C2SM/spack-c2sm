@@ -79,22 +79,6 @@ def spack_install_and_test(spec: str, log_filename: str = None):
                    srun=not spec.startswith('icon '))
 
 
-def spack_devbuild_and_test(spec: str, log_filename: str = None, cwd=None):
-    """
-    Tests 'spack dev-build' of the given spec and writes the output into the log file.
-    """
-
-    log_filename = compose_logfilename(spec, log_filename)
-
-    command = 'dev-build'
-
-    log_with_spack(f'spack {command} --test=root -n {spec}',
-                   'system_test',
-                   log_filename,
-                   cwd=cwd,
-                   srun=True)
-
-
 def spack_env_dev_install_and_test(spack_env: str,
                                    url: str,
                                    branch: str,
