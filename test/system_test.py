@@ -64,8 +64,7 @@ def spack_env_dev_install_and_test(spack_env: str,
                                    branch: str,
                                    name: str,
                                    log_filename: str = None,
-                                   out_of_source: bool = False,
-                                   build_on_login_node: bool = False):
+                                   out_of_source: bool = False):
     """
     Clones repo with given branch into unique folder, activates the given spack
     environment, tests 'spack install' and writes the output into the log file.
@@ -73,7 +72,6 @@ def spack_env_dev_install_and_test(spack_env: str,
 
     ICON specials:
     If out_of_source is True, create additional folder and build there, BUT skip testing!
-    If build_on_login_node is True, do not run build-step on login node
     """
 
     if name != 'icon' and out_of_source:
@@ -101,7 +99,7 @@ def spack_env_dev_install_and_test(spack_env: str,
                    log_filename,
                    cwd=unique_folder,
                    env=spack_env,
-                   srun=not build_on_login_node)
+                   srun=True)
 
     # for out-of-source build we can't run tests because required files
     # like scripts/spack/test.py or scripts/buildbot_script are not synced
@@ -229,8 +227,7 @@ def test_install_c2sm_test_cpu_nvhpc_out_of_source():
         'git@github.com:C2SM/icon.git',
         '2024.01.1',
         'icon',
-        out_of_source=True,
-        build_on_login_node=False)
+        out_of_source=True)
 
 
 @pytest.mark.no_balfrin  # config file does not exist for this machine
@@ -241,8 +238,7 @@ def test_install_c2sm_test_cpu():
         'config/cscs/spack/v0.21.1.0/daint_cpu_nvhpc',
         'git@github.com:C2SM/icon.git',
         '2024.01.1',
-        'icon',
-        build_on_login_node=False)
+        'icon')
 
 
 @pytest.mark.no_balfrin  # config file does not exist for this machine
@@ -253,8 +249,7 @@ def test_install_c2sm_test_gpu():
         'config/cscs/spack/v0.21.1.0/daint_gpu_nvhpc',
         'git@github.com:C2SM/icon.git',
         '2024.01.1',
-        'icon',
-        build_on_login_node=False)
+        'icon')
 
 
 @pytest.mark.no_tsa  # This test is flaky and sometimes fails with: icondelaunay.cpp:29:10: fatal error: version.c: No such file or directory. See issue #781.
