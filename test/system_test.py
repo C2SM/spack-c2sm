@@ -60,15 +60,13 @@ def spack_install(spec: str, test_root: bool = True):
 
 
 def spack_env_dev_install_and_test(spack_env: str,
-                                   url: str,
-                                   branch: str,
-                                   name: str,
-                                   log_filename: str = None,
-                                   out_of_source: bool = False):
+                                url: str,
+                                branch: str,
+                                name: str,
+                                out_of_source: bool = False):
     """
     Clones repo with given branch into unique folder, activates the given spack
     environment, tests 'spack install' and writes the output into the log file.
-    If log_filename is None, spack_env is used to create one.
 
     ICON specials:
     If out_of_source is True, create additional folder and build there, BUT skip testing!
@@ -84,16 +82,14 @@ def spack_env_dev_install_and_test(spack_env: str,
         check=True,
         shell=True)
 
-    log_filename = sanitized_filename(log_filename or spack_env)
-
     if out_of_source:
         build_dir = os.path.join(unique_folder, 'build')
         os.makedirs(build_dir, exist_ok=True)
         shutil.copytree(os.path.join(unique_folder, 'config'),
                         os.path.join(build_dir, 'config'))
         unique_folder = build_dir
-        log_filename = f'{log_filename}_out_of_source'
 
+    log_filename = sanitized_filename(spack_env) + '_out_of_source'
     log_with_spack('spack install -n -v',
                    'system_test',
                    log_filename,
