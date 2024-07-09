@@ -15,6 +15,11 @@ class PyGridtoolsCpp(PythonPackage):
 
     maintainers = ['havogt']
 
+    version("2.3.4",
+            url=whl_url_prefix + "gridtools_cpp-2.3.4-py3-none-any.whl",
+            sha256=
+            "c35f906d1b5e9f37252116181cb9fcdd8b190b71c4eae770d2dc62c3a7189c2b",
+            expand=False)
     version("2.3.1",
             url=whl_url_prefix + "gridtools_cpp-2.3.1-py3-none-any.whl",
             sha256=
