@@ -58,7 +58,7 @@ def spack_install(spec: str, log_filename: str = None, uenv: str = None):
     log_with_spack(f'spack {command} -n -v {spec}',
                    'system_test',
                    log_filename,
-                   srun=not machine_name() == 'balfrin',
+                   srun=machine_name() != 'balfrin',
                    uenv=uenv)
 
 
@@ -84,7 +84,7 @@ def spack_install_and_test(spec: str,
             f'spack {command} --until build --test=root -n -v {spec}',
             'system_test',
             log_filename,
-            srun=not machine_name() == 'balfrin',
+            srun=machine_name() != 'balfrin',
             uenv=uenv)
         log_with_spack(
             f'spack {command} --dont-restage --test=root -n -v {spec}',
@@ -96,8 +96,7 @@ def spack_install_and_test(spec: str,
         log_with_spack(f'spack {command} --test=root -n -v {spec}',
                        'system_test',
                        log_filename,
-                       srun=not spec.startswith('icon ')
-                       or not machine_name() == 'balfrin',
+                       srun=(not spec.startswith('icon ') and machine_name() != 'balfrin'),
                        uenv=uenv)
 
 

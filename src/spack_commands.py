@@ -70,13 +70,13 @@ def log_with_spack(command: str,
     # '2>&1' redirects stderr to stdout.
     if env is None:
         ret = subprocess.run(
-            f'{srun} {uenv_args} bash -c "{spack_env}; {command} >> {log_file} 2>&1" ',
+            f'({srun} {uenv_args} bash -c "{spack_env}; {command}") >> {log_file} 2>&1 ',
             cwd=cwd,
             check=False,
             shell=True)
     else:
         ret = subprocess.run(
-            f'{srun} {uenv_args} bash -c "{spack_env}; spack env activate -d {env}; {command} >> {log_file} 2>&1" ',
+            f'({srun} {uenv_args} bash -c "{spack_env}; spack env activate -d {env}; {command}") >> {log_file} 2>&1 ',
             cwd=cwd,
             check=False,
             shell=True)

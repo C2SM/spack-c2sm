@@ -9,10 +9,8 @@ else
 fi
 
 if [[ ${machine:0:1} == "/" ]]; then
-    uenv_mount=$machine
-    machine=uenv
-    export SPACK_SYSTEM_CONFIG_PATH="$uenv_mount"/config
-    export SPACK_USER_CONFIG_PATH="$parent_dir"/sysconfigs/"$machine"
+    export SPACK_SYSTEM_CONFIG_PATH="$machine"/config
+    export SPACK_USER_CONFIG_PATH="$parent_dir"/sysconfigs/uenv
 else
     export SPACK_SYSTEM_CONFIG_PATH="$parent_dir"/sysconfigs/"$machine"
     export SPACK_USER_CONFIG_PATH="$parent_dir"/user-config
