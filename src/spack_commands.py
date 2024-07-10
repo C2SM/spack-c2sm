@@ -16,7 +16,7 @@ def log_with_spack(command: str,
                    log_filename: str = None,
                    cwd=None,
                    env=None,
-                   srun=False,
+                   allow_srun=False,
                    uenv=None) -> None:
     """
     Executes the given command while spack is loaded and writes the output into the log file.
@@ -31,16 +31,19 @@ def log_with_spack(command: str,
     if uenv:
         spack_env += ' /user-environment'
 
+    # Only use srun as Jenkins user and not on balfrin
+    use_srun = allow_srun and getpass.getuser() == 'jenkins' and machine_name() != 'balfrin'
+
     uenv_args = ''
     if uenv:
         uenv_mount_point = f'{uenv}:/user-environment'
-        if srun:
+        if use_srun:
             uenv_args = '--uenv=' + uenv_mount_point
         else:
             uenv_args = 'squashfs-mount ' + uenv_mount_point + ' -- '
 
     # Distribute work with 'srun'
-    if srun:
+    if use_srun:
         # The '-c' argument should be in sync with
         # sysconfig/<machine>/config.yaml config:build_jobs for max efficiency
 

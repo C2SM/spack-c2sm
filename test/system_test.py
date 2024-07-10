@@ -50,15 +50,14 @@ def spack_install(spec: str, test_root: bool = True, uenv: str = None):
     log_with_spack(f'spack spec {spec}',
                    'system_test',
                    log_filename,
-                   srun=False,
+                   allow_srun=False,
                    uenv=uenv)
 
     test_arg = "--test=root" if test_root else ""
     log_with_spack(f'spack install -n -v {test_arg} {spec}',
                    'system_test',
                    log_filename,
-                   srun=(not spec.startswith('icon ')
-                         and machine_name() != 'balfrin'),
+                   allow_srun=not spec.startswith('icon '),
                    uenv=uenv)
 
 
@@ -195,7 +194,7 @@ def icon_env_test(spack_env: str, out_of_source: bool = False):
                    log_filename,
                    cwd=unique_folder,
                    env=spack_env,
-                   srun=True)
+                   allow_srun=True)
 
     # for out-of-source build we can't run tests because required files
     # like scripts/spack/test.py or scripts/buildbot_script are not synced
@@ -208,7 +207,7 @@ def icon_env_test(spack_env: str, out_of_source: bool = False):
                    log_filename,
                    cwd=unique_folder,
                    env=spack_env,
-                   srun=False)
+                   allow_srun=False)
 
 
 @pytest.mark.no_balfrin  # config file does not exist for this machine
