@@ -65,21 +65,15 @@ def log_with_spack(command: str,
         f.write(command)
         f.write('\n\n')
 
+    env_activate = f'spack env activate -d {env};' if env else ''
     start = time.time()
     # The output is streamed as directly as possible to the log_file to avoid buffering and potentially losing buffered content.
     # '2>&1' redirects stderr to stdout.
-    if env is None:
-        ret = subprocess.run(
-            f'({srun} {uenv_args} bash -c "{spack_env}; {command}") >> {log_file} 2>&1 ',
-            cwd=cwd,
-            check=False,
-            shell=True)
-    else:
-        ret = subprocess.run(
-            f'({srun} {uenv_args} bash -c "{spack_env}; spack env activate -d {env}; {command}") >> {log_file} 2>&1 ',
-            cwd=cwd,
-            check=False,
-            shell=True)
+    ret = subprocess.run(
+        f'({srun} {uenv_args} bash -c "{spack_env}; {env_activate} {command}") >> {log_file} 2>&1',
+        cwd=cwd,
+        check=False,
+        shell=True)
     end = time.time()
 
     # Log time and success
