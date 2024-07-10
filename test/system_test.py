@@ -79,11 +79,11 @@ def spack_install_and_test(spec: str,
                    srun=False,
                    uenv=uenv)
     log_with_spack(f'spack {command} --test=root -n -v {spec}',
-                    'system_test',
-                    log_filename,
-                    srun=(not spec.startswith('icon ')
-                            and machine_name() != 'balfrin'),
-                    uenv=uenv)
+                   'system_test',
+                   log_filename,
+                   srun=(not spec.startswith('icon ')
+                         and machine_name() != 'balfrin'),
+                   uenv=uenv)
 
 
 def spack_devbuild_and_test(spec: str, log_filename: str = None, cwd=None):
