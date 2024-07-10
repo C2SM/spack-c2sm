@@ -33,7 +33,7 @@ def log_with_spack(command: str,
 
     uenv_args = ''
     if uenv:
-        uenv_mount_point += f'{uenv}:/user-environment'
+        uenv_mount_point = f'{uenv}:/user-environment'
         if srun:
             uenv_args = '--uenv=' + uenv_mount_point
         else:
