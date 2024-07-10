@@ -32,7 +32,8 @@ def log_with_spack(command: str,
         spack_env += ' /user-environment'
 
     # Only use srun as Jenkins user and not on balfrin
-    use_srun = allow_srun and getpass.getuser() == 'jenkins' and machine_name() != 'balfrin'
+    use_srun = allow_srun and getpass.getuser() == 'jenkins' and machine_name(
+    ) != 'balfrin'
 
     uenv_args = ''
     if uenv:
