@@ -96,7 +96,8 @@ def spack_install_and_test(spec: str,
         log_with_spack(f'spack {command} --test=root -n -v {spec}',
                        'system_test',
                        log_filename,
-                       srun=(not spec.startswith('icon ') and machine_name() != 'balfrin'),
+                       srun=(not spec.startswith('icon ')
+                             and machine_name() != 'balfrin'),
                        uenv=uenv)
 
 
