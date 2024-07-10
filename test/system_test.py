@@ -465,8 +465,7 @@ def test_py_gridtools_cpp_install_default(devirt_env):
 
 @pytest.mark.py_gt4py
 @pytest.mark.no_tsa  # Irrelevant
-@pytest.mark.parametrize("version",
-                         ['1.0.3.3', '1.0.3.6', '1.0.3.7', '1.0.3.8'])
+@pytest.mark.parametrize("version", ['1.0.3.3', '1.0.3.7', '1.0.3.8'])
 def test_install_py_gt4py_for_version(version, devirt_env):
     spack_install_and_test(f'py-gt4py @{version}')
 
@@ -481,6 +480,12 @@ def test_install_py_icon4py_version_0_0_10(devirt_env):
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 def test_install_py_icon4py_version_0_0_11(devirt_env):
     spack_install_and_test('py-icon4py @ 0.0.11 %gcc ^py-gt4py@1.0.3.7')
+
+
+@pytest.mark.py_icon4py
+@pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
+def test_install_py_icon4py_version_0_0_12(devirt_env):
+    spack_install_and_test('py-icon4py @ 0.0.12 %gcc ^py-gt4py@1.0.3.8')
 
 
 @pytest.mark.py_hatchling
