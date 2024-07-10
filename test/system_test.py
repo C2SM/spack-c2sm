@@ -64,7 +64,6 @@ def spack_install(spec: str, log_filename: str = None, uenv: str = None):
 
 def spack_install_and_test(spec: str,
                            log_filename: str = None,
-                           split_phases=False,
                            uenv: str = None):
     """
     Tests 'spack install' of the given spec and writes the output into the log file.
@@ -79,32 +78,15 @@ def spack_install_and_test(spec: str,
                    log_filename,
                    srun=False,
                    uenv=uenv)
-    if split_phases:
-        log_with_spack(
-            f'spack {command} --until build --test=root -n -v {spec}',
-            'system_test',
-            log_filename,
-            srun=machine_name() != 'balfrin',
-            uenv=uenv)
-        log_with_spack(
-            f'spack {command} --dont-restage --test=root -n -v {spec}',
-            'system_test',
-            log_filename,
-            srun=False,
-            uenv=uenv)
-    else:
-        log_with_spack(f'spack {command} --test=root -n -v {spec}',
-                       'system_test',
-                       log_filename,
-                       srun=(not spec.startswith('icon ')
-                             and machine_name() != 'balfrin'),
-                       uenv=uenv)
+    log_with_spack(f'spack {command} --test=root -n -v {spec}',
+                    'system_test',
+                    log_filename,
+                    srun=(not spec.startswith('icon ')
+                            and machine_name() != 'balfrin'),
+                    uenv=uenv)
 
 
-def spack_devbuild_and_test(spec: str,
-                            log_filename: str = None,
-                            cwd=None,
-                            split_phases=False):
+def spack_devbuild_and_test(spec: str, log_filename: str = None, cwd=None):
     """
     Tests 'spack dev-build' of the given spec and writes the output into the log file.
     """
@@ -113,23 +95,11 @@ def spack_devbuild_and_test(spec: str,
 
     command = 'dev-build'
 
-    if split_phases:
-        log_with_spack(f'spack {command} --until build --test=root -n {spec}',
-                       'system_test',
-                       log_filename,
-                       cwd=cwd,
-                       srun=True)
-        log_with_spack(f'spack {command} --dont-restage --test=root -n {spec}',
-                       'system_test',
-                       log_filename,
-                       cwd=cwd,
-                       srun=False)
-    else:
-        log_with_spack(f'spack {command} --test=root -n {spec}',
-                       'system_test',
-                       log_filename,
-                       cwd=cwd,
-                       srun=True)
+    log_with_spack(f'spack {command} --test=root -n {spec}',
+                   'system_test',
+                   log_filename,
+                   cwd=cwd,
+                   srun=True)
 
 
 def spack_env_dev_install_and_test(spack_env: str,
