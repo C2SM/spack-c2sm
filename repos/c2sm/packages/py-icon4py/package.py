@@ -26,6 +26,7 @@ class PyIcon4py(PythonPackage):
     version('main', branch='main', git=git)
     version('0.0.10', tag='v0.0.10', git=git)
     version('0.0.11', tag='v0.0.11', git=git)
+    version('0.0.12', tag='v0.0.12', git=git)
 
     depends_on('py-wheel', type='build')
     depends_on('py-setuptools', type='build')
@@ -36,7 +37,7 @@ class PyIcon4py(PythonPackage):
     depends_on('py-fprettify@0.3.7:', type=('build', 'run'))
     depends_on('py-gt4py', type=('build', 'run'))
     depends_on('py-pytest', type=('build', 'run'))
-    depends_on('boost@1.65.1:', type=('build', 'run'))
+    depends_on('boost@1.73.0:', type=('build', 'run'))
 
     def patch(self):
         spack_pytest_ini = 'jenkins/spack/pytest.ini'

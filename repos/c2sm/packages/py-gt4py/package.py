@@ -17,8 +17,8 @@ class PyGt4py(PythonPackage):
 
     version('main', branch='main', git=url)
     version('1.0.3.3', tag='icon4py_20240229', git=url)
-    version('1.0.3.6', tag='icon4py_20240409', git=url)
     version('1.0.3.7', tag='icon4py_20240521', git=url)
+    version('1.0.3.8', tag='icon4py_20240711', git=url)
 
     maintainers = ['samkellerhals']
 
@@ -30,7 +30,7 @@ class PyGt4py(PythonPackage):
     depends_on('py-setuptools@63:', type='build')
 
     depends_on('cmake@3.22:', type=('build', 'run'))
-    depends_on('boost@1.65.1:', type=('build', 'run'))
+    depends_on('boost@1.73.0:', type=('build', 'run'))
     depends_on('clang-format@9:', type=('build', 'run'))
 
     # Python dependencies from setup.cfg
@@ -44,7 +44,7 @@ class PyGt4py(PythonPackage):
     depends_on('py-deepdiff@5.6.0:', type=('build', 'run'))
     depends_on('py-devtools@0.6:', type=('build', 'run'))
     depends_on('py-frozendict@2.3:', type=('build', 'run'))
-    depends_on('py-gridtools-cpp@2.3.1:', type=(
+    depends_on('py-gridtools-cpp@2.3.4:', type=(
         'build', 'run'
     ))  #gridtools-cpp is backwards compatible with older gt4py versions
     depends_on('py-jinja2@3.0.0:', type=('build', 'run'))
