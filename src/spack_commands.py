@@ -31,19 +31,8 @@ def log_with_spack(command: str,
     if uenv:
         spack_env += ' /user-environment'
 
-    # Only use srun as Jenkins user
-    use_srun = allow_srun and getpass.getuser() == 'jenkins'
-
-    uenv_args = ''
-    if uenv:
-        uenv_mount_point = f'{uenv}:/user-environment'
-        if use_srun:
-            uenv_args = '--uenv=' + uenv_mount_point
-        else:
-            uenv_args = 'squashfs-mount ' + uenv_mount_point + ' -- '
-
-    # Distribute work with 'srun'
-    if use_srun:
+    # Distribute work with 'srun', but only if the user is 'jenkins'
+    if allow_srun and getpass.getuser() == 'jenkins':
         # The '-c' argument should be in sync with
         # sysconfig/<machine>/config.yaml config:build_jobs for max efficiency
         srun = {
@@ -53,6 +42,12 @@ def log_with_spack(command: str,
         }[machine_name()]
     else:
         srun = ''
+
+    if uenv:
+        if srun:
+            srun += f' --uenv={uenv}:/user-environment'
+        else:
+            mount = f'squashfs-mount {uenv}:/user-environment --'
 
     # Make Directory
     log_file.parent.mkdir(exist_ok=True, parents=True)
@@ -72,7 +67,7 @@ def log_with_spack(command: str,
     # The output is streamed as directly as possible to the log_file to avoid buffering and potentially losing buffered content.
     # '2>&1' redirects stderr to stdout.
     ret = subprocess.run(
-        f'{spack_env}; {env_activate} ({srun} {uenv_args} {command}) >> {log_file} 2>&1',
+        f'{mount}; {spack_env}; {env_activate} ({srun} {command}) >> {log_file} 2>&1',
         cwd=cwd,
         check=False,
         shell=True)
