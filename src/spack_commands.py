@@ -43,6 +43,7 @@ def log_with_spack(command: str,
     else:
         srun = ''
 
+    mount = ''
     if uenv:
         if srun:
             srun += f' --uenv={uenv}:/user-environment'
