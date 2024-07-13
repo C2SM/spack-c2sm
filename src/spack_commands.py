@@ -26,29 +26,38 @@ def log_with_spack(command: str,
     log_file = Path(
         spack_c2sm_path) / 'log' / machine_name() / test_category / filename
 
+    if allow_srun and getpass.getuser() == 'jenkins':
+        # Wrap the command with srun.
+        # The '-c' argument should be in sync with
+        # sysconfig/<machine>/config.yaml config:build_jobs for max efficiency
+        sruns = {
+            'daint': 'srun -t 02:00:00 -C gpu -A g110 -c 12 -n 1',
+            'tsa': 'srun -t 02:00:00 -c 6',
+        }
+        if machine_name() in sruns:
+            srun = sruns[machine_name()]
+            if uenv:
+                srun += f' --uenv={uenv}:/user-environment'
+
+            command = f'{srun} {command}'
+
     # Setup spack env
     spack_env = f'. {spack_c2sm_path}/setup-env.sh'
     if uenv:
         spack_env += ' /user-environment'
 
-    # Distribute work with 'srun', but only if the user is 'jenkins'
-    if allow_srun and getpass.getuser() == 'jenkins':
-        # The '-c' argument should be in sync with
-        # sysconfig/<machine>/config.yaml config:build_jobs for max efficiency
-        srun = {
-            'balfrin': '',
-            'daint': 'srun -t 02:00:00 -C gpu -A g110 -c 12 -n 1',
-            'tsa': 'srun -t 02:00:00 -c 6',
-        }[machine_name()]
-    else:
-        srun = ''
+    if env:
+        spack_env += f'; spack env activate -d {env}'
 
-    mount = ''
+    # Redirect output to log file.
+    # This is done on the command line level to avoid buffering and potentially losing buffered content.
+    # Without parentheses, srun errors would not be captured.
+    # '2>&1' redirects stderr to stdout.
+    command = f'{spack_env}; ({srun} {command}) >> {log_file} 2>&1'
+
+    # Mount user environment
     if uenv:
-        if srun:
-            srun += f' --uenv={uenv}:/user-environment'
-        else:
-            mount = f'squashfs-mount {uenv}:/user-environment --'
+        command = f'squashfs-mount {uenv}:/user-environment -- bash -c "{command}"'
 
     # Make Directory
     log_file.parent.mkdir(exist_ok=True, parents=True)
@@ -63,12 +72,11 @@ def log_with_spack(command: str,
         f.write(command)
         f.write('\n\n')
 
-    env_activate = f'spack env activate -d {env};' if env else ''
     start = time.time()
     # The output is streamed as directly as possible to the log_file to avoid buffering and potentially losing buffered content.
     # '2>&1' redirects stderr to stdout.
     ret = subprocess.run(
-        f'{mount} ({spack_env}; {env_activate} ({srun} {command}) >> {log_file} 2>&1)',
+        command,
         cwd=cwd,
         check=False,
         shell=True)
