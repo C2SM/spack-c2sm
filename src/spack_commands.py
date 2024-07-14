@@ -53,7 +53,7 @@ def log_with_spack(command: str,
     # This is done on the command line level to avoid buffering and potentially losing buffered content.
     # Without parentheses, srun errors would not be captured.
     # '2>&1' redirects stderr to stdout.
-    command = f'{spack_env}; ({srun} {command}) >> {log_file} 2>&1'
+    command = f'{spack_env}; ({command}) >> {log_file} 2>&1'
 
     # Mount user environment
     if uenv:
