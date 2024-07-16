@@ -47,7 +47,6 @@ def log_with_spack(command: str,
         # The '-c' argument should be in sync with
         # sysconfig/<machine>/config.yaml config:build_jobs for max efficiency
 
-        # No entry for balfrin, trigger and error instead if requested to run with srun
         srun = {
             'daint': 'srun -t 02:00:00 -C gpu -A g110 -c 12 -n 1',
             'tsa': 'srun -t 02:00:00 -c 6',
