@@ -4,6 +4,7 @@
 Spack is the package manager used by C2SM and MeteoSwiss to install and deploy software on supercomputers, local machines and the cloud.
 
 ## Documentations
+path
 
 **Infos about c2sm-supported software and machines**
   * [spack-c2sm latest](https://C2SM.github.io/spack-c2sm/latest)
