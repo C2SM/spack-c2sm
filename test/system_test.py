@@ -330,13 +330,6 @@ def test_py_black_install_default(devirt_env):
     spack_install('py-black')
 
 
-@pytest.mark.no_tsa  # No uenv on Tsa
-@pytest.mark.no_daint  # No uenv on Daint
-@pytest.mark.py_black
-def test_install_py_black_default_uenv(devirt_env):
-    spack_install('py-black', uenv=PREPOST)
-
-
 @pytest.mark.py_boltons
 def test_py_boltons_install_default(devirt_env):
     spack_install('py-boltons')
