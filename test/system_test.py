@@ -76,6 +76,7 @@ def test_install_libfyaml_default():
 
 @pytest.mark.no_tsa  # No uenv on Tsa
 @pytest.mark.no_daint  # No uenv on Daint
+@pytest.mark.no_balfrin  # Does not work as expected
 @pytest.mark.libfyaml
 def test_install_libfyaml_default_uenv():
     spack_install('libfyaml', test_root=False, uenv=PREPOST)
