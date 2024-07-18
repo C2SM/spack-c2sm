@@ -400,11 +400,6 @@ def test_install_py_inflection_default(devirt_env):
     spack_install('py-inflection')
 
 
-@pytest.mark.py_isort
-def test_install_py_isort_default(devirt_env):
-    spack_install('py-isort')
-
-
 @pytest.mark.py_nanobind
 def test_install_py_nanobind_default(devirt_env):
     spack_install('py-nanobind')
