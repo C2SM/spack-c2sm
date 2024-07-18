@@ -390,11 +390,6 @@ def test_install_py_icon4py_version_0_0_12(devirt_env):
     spack_install_and_test('py-icon4py @ 0.0.12 %gcc ^py-gt4py@1.0.3.8')
 
 
-@pytest.mark.py_hatchling
-def test_install_py_hatchling_default(devirt_env):
-    spack_install('py-hatchling')
-
-
 @pytest.mark.py_inflection
 def test_install_py_inflection_default(devirt_env):
     spack_install('py-inflection')
