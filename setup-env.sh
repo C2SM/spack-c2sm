@@ -11,12 +11,13 @@ fi
 if [[ ${machine:0:1} == "/" ]]; then
     export SPACK_SYSTEM_CONFIG_PATH="$machine"/config
     export SPACK_USER_CONFIG_PATH="$parent_dir"/sysconfigs/uenv
+    export SPACK_USER_CACHE_PATH="$parent_dir"/user-cache/uenv
 else
     export SPACK_SYSTEM_CONFIG_PATH="$parent_dir"/sysconfigs/"$machine"
     export SPACK_USER_CONFIG_PATH="$parent_dir"/user-config
+    export SPACK_USER_CACHE_PATH="$parent_dir"/user-cache/"$machine"
 fi
 
-export SPACK_USER_CACHE_PATH="$parent_dir"/user-cache
 
 . "$parent_dir"/spack/share/spack/setup-env.sh
 
