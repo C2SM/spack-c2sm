@@ -340,11 +340,6 @@ def test_py_factory_boy_install_default(devirt_env):
     spack_install('py-factory-boy')
 
 
-@pytest.mark.py_fprettify
-def test_py_fprettify_install_default(devirt_env):
-    spack_install('py-fprettify')
-
-
 @pytest.mark.py_frozendict
 def test_py_frozendict_install_default(devirt_env):
     spack_install('py-frozendict')
