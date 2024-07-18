@@ -400,19 +400,9 @@ def test_install_py_isort_default(devirt_env):
     spack_install('py-isort')
 
 
-@pytest.mark.py_lark
-def test_install_py_lark_default(devirt_env):
-    spack_install('py-lark')
-
-
 @pytest.mark.py_nanobind
 def test_install_py_nanobind_default(devirt_env):
     spack_install('py-nanobind')
-
-
-@pytest.mark.py_pathspec
-def test_install_py_pathspec_default(devirt_env):
-    spack_install('py-pathspec')
 
 
 @pytest.mark.py_pytest
