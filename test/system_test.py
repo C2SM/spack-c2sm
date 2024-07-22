@@ -330,11 +330,6 @@ def test_py_devtools_install_default(devirt_env):
     spack_install('py-devtools')
 
 
-@pytest.mark.py_editables
-def test_py_editables_install_default(devirt_env):
-    spack_install('py-editables')
-
-
 @pytest.mark.py_factory_boy
 def test_py_factory_boy_install_default(devirt_env):
     spack_install('py-factory-boy')
