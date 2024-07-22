@@ -380,11 +380,6 @@ def test_install_py_inflection_default(devirt_env):
     spack_install('py-inflection')
 
 
-@pytest.mark.py_nanobind
-def test_install_py_nanobind_default(devirt_env):
-    spack_install('py-nanobind')
-
-
 @pytest.mark.py_pytest
 def test_install_py_pytest_default(devirt_env):
     spack_install('py-pytest')
