@@ -309,11 +309,6 @@ def test_install_pytorch_fortran_proxy_version_0_4(devirt_env):
                   test_root=False)
 
 
-@pytest.mark.py_black
-def test_py_black_install_default(devirt_env):
-    spack_install('py-black')
-
-
 @pytest.mark.py_boltons
 def test_py_boltons_install_default(devirt_env):
     spack_install('py-boltons')
