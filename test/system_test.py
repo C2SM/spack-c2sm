@@ -385,16 +385,6 @@ def test_install_py_pytest_factoryboy_default(devirt_env):
     spack_install('py-pytest-factoryboy')
 
 
-@pytest.mark.py_setuptools
-def test_install_py_setuptools_default(devirt_env):
-    spack_install('py-setuptools')
-
-
-@pytest.mark.py_sphinxcontrib_jquery
-def test_install_py_sphinxcontrib_jquery_default(devirt_env):
-    spack_install('py-sphinxcontrib-jquery')
-
-
 @pytest.mark.py_tabulate
 def test_install_py_tabulate_default(devirt_env):
     spack_install('py-tabulate')
