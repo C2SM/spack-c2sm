@@ -367,7 +367,7 @@ def test_install_py_icon4py_version_0_0_11(devirt_env):
 @pytest.mark.py_icon4py
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 def test_install_py_icon4py_version_0_0_12(devirt_env):
-    spack_install_and_test('py-icon4py @ 0.0.12 %gcc ^py-gt4py@1.0.3.8')
+    spack_install('py-icon4py @ 0.0.12 %gcc ^py-gt4py@1.0.3.8')
 
 
 @pytest.mark.py_hatchling
