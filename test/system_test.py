@@ -309,7 +309,6 @@ def test_install_pytorch_fortran_proxy_version_0_4(devirt_env):
                   test_root=False)
 
 
-@pytest.mark.no_balfrin  # Preparing metadata (pyproject.toml): finished with status 'error: metadata-generation-failed'.
 @pytest.mark.py_cytoolz
 def test_py_cytoolz_install_default(devirt_env):
     spack_install('py-cytoolz')
