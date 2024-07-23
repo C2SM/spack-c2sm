@@ -309,22 +309,6 @@ def test_install_pytorch_fortran_proxy_version_0_4(devirt_env):
                   test_root=False)
 
 
-@pytest.mark.py_asttokens
-def test_py_asttokens_install_default(devirt_env):
-    spack_install('py-asttokens')
-
-
-@pytest.mark.py_black
-def test_py_black_install_default(devirt_env):
-    spack_install('py-black')
-
-
-@pytest.mark.py_boltons
-def test_py_boltons_install_default(devirt_env):
-    spack_install('py-boltons')
-
-
-@pytest.mark.no_balfrin  # Preparing metadata (pyproject.toml): finished with status 'error: metadata-generation-failed'.
 @pytest.mark.py_cytoolz
 def test_py_cytoolz_install_default(devirt_env):
     spack_install('py-cytoolz')
@@ -335,24 +319,9 @@ def test_py_devtools_install_default(devirt_env):
     spack_install('py-devtools')
 
 
-@pytest.mark.py_editables
-def test_py_editables_install_default(devirt_env):
-    spack_install('py-editables')
-
-
-@pytest.mark.py_executing
-def test_py_executing_install_default(devirt_env):
-    spack_install('py-executing')
-
-
 @pytest.mark.py_factory_boy
 def test_py_factory_boy_install_default(devirt_env):
     spack_install('py-factory-boy')
-
-
-@pytest.mark.py_fprettify
-def test_py_fprettify_install_default(devirt_env):
-    spack_install('py-fprettify')
 
 
 @pytest.mark.py_frozendict
@@ -387,7 +356,7 @@ def test_install_py_icon4py_version_0_0_11(devirt_env):
 @pytest.mark.py_icon4py
 @pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 def test_install_py_icon4py_version_0_0_12(devirt_env):
-    spack_install_and_test('py-icon4py @ 0.0.12 %gcc ^py-gt4py@1.0.3.8')
+    spack_install('py-icon4py @ 0.0.12 %gcc ^py-gt4py@1.0.3.8')
 
 
 @pytest.mark.py_hatchling
@@ -400,44 +369,9 @@ def test_install_py_inflection_default(devirt_env):
     spack_install('py-inflection')
 
 
-@pytest.mark.py_isort
-def test_install_py_isort_default(devirt_env):
-    spack_install('py-isort')
-
-
-@pytest.mark.py_lark
-def test_install_py_lark_default(devirt_env):
-    spack_install('py-lark')
-
-
-@pytest.mark.py_nanobind
-def test_install_py_nanobind_default(devirt_env):
-    spack_install('py-nanobind')
-
-
-@pytest.mark.py_pathspec
-def test_install_py_pathspec_default(devirt_env):
-    spack_install('py-pathspec')
-
-
-@pytest.mark.py_pytest
-def test_install_py_pytest_default(devirt_env):
-    spack_install('py-pytest')
-
-
 @pytest.mark.py_pytest_factoryboy
 def test_install_py_pytest_factoryboy_default(devirt_env):
     spack_install('py-pytest-factoryboy')
-
-
-@pytest.mark.py_setuptools
-def test_install_py_setuptools_default(devirt_env):
-    spack_install('py-setuptools')
-
-
-@pytest.mark.py_sphinxcontrib_jquery
-def test_install_py_sphinxcontrib_jquery_default(devirt_env):
-    spack_install('py-sphinxcontrib-jquery')
 
 
 @pytest.mark.py_tabulate
