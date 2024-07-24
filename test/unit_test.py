@@ -105,17 +105,17 @@ class ScopeTest(unittest.TestCase):
         self.assertTrue('icon' in all_packages)
 
     def test_explicit_scope_1_machine_1_package(self):
-        scope = explicit_scope('tsa cosmo')
+        scope = explicit_scope('tsa fdb')
         self.assertEqual(sorted(scope), sorted(['tsa', 'cosmo']))
 
     def test_explicit_scope_2_machines_2_packages(self):
-        scope = explicit_scope('tsa cosmo daint icon')
+        scope = explicit_scope('tsa fdb daint icon')
         self.assertEqual(sorted(scope),
-                         sorted(['tsa', 'daint', 'cosmo', 'icon']))
+                         sorted(['tsa', 'daint', 'fdb', 'icon']))
 
     def test_explicit_scope_0_machines_1_package(self):
-        scope = explicit_scope('cosmo')
-        self.assertEqual(sorted(scope), sorted(all_machines + ['cosmo']))
+        scope = explicit_scope('fdb')
+        self.assertEqual(sorted(scope), sorted(all_machines + ['fdb']))
 
     def test_explicit_scope_0_machines_0_packages(self):
         scope = explicit_scope('launch jenkins')
@@ -126,7 +126,7 @@ class ScopeTest(unittest.TestCase):
     def test_explicit_scope_allows_unknowns(self):
         scope = explicit_scope('launch jenkins tsa cosmo')
         self.assertEqual(sorted(scope),
-                         sorted(['launch', 'jenkins', 'tsa', 'cosmo']))
+                         sorted(['launch', 'jenkins', 'tsa', 'fdb']))
 
     def test_package_triggers(self):
         triggers = package_triggers(['py-gt4py'])
