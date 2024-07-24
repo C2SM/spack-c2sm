@@ -28,7 +28,7 @@ Setup the shell environment.
 ```bash
 . spack-c2sm/setup-env.sh
 ```
-Sourcing these files will put the spack command in your PATH, set up your MODULEPATH to use Spack’s packages, and add other useful shell integration for certain commands, environments, and modules. For bash, it also sets up tab completion. (source: [spack docu](https://spack.readthedocs.io/en/v0.21.1/getting_started.html#shell-support))
+Sourcing this file will put the spack command in your PATH, set up your MODULEPATH to use Spack’s packages, and add other useful shell integration for certain commands, environments, and modules. For bash, it also sets up tab completion. (source: [spack docu](https://spack.readthedocs.io/en/v0.21.1/getting_started.html#shell-support))
 
 Optionally activate a spack environment
 ```bash
