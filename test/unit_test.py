@@ -106,7 +106,7 @@ class ScopeTest(unittest.TestCase):
 
     def test_explicit_scope_1_machine_1_package(self):
         scope = explicit_scope('tsa fdb')
-        self.assertEqual(sorted(scope), sorted(['tsa', 'cosmo']))
+        self.assertEqual(sorted(scope), sorted(['tsa', 'fdb']))
 
     def test_explicit_scope_2_machines_2_packages(self):
         scope = explicit_scope('tsa fdb daint icon')
@@ -124,7 +124,7 @@ class ScopeTest(unittest.TestCase):
             sorted(['launch', 'jenkins'] + all_machines + all_packages))
 
     def test_explicit_scope_allows_unknowns(self):
-        scope = explicit_scope('launch jenkins tsa cosmo')
+        scope = explicit_scope('launch jenkins tsa fdb')
         self.assertEqual(sorted(scope),
                          sorted(['launch', 'jenkins', 'tsa', 'fdb']))
 
