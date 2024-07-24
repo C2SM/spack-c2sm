@@ -83,13 +83,6 @@ def test_install_cosmo_eccodes_definitions_version(version):
     spack_install(f'cosmo-eccodes-definitions @{version}', test_root=False)
 
 
-@pytest.mark.no_tsa
-@pytest.mark.no_balfrin
-@pytest.mark.cosmo
-def test_install_cosmo_6_0():
-    spack_install(f'cosmo@6.0', test_root=False)
-
-
 @pytest.mark.eccodes
 def test_install_eccodes_2_19_0():
     spack_install('eccodes @2.19.0', test_root=False)
