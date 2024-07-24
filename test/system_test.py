@@ -1,11 +1,9 @@
-import unittest
 import pytest
 import subprocess
 import sys
 import os
 import uuid
 import shutil
-from pathlib import Path
 import inspect
 
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
@@ -13,6 +11,8 @@ spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 
 sys.path.append(os.path.normpath(spack_c2sm_path))
 from src import machine_name, log_with_spack, sanitized_filename
+
+PREPOST = '/scratch/mch/leclairm/uenvs/images/pre-post_v0.sqfs'
 
 
 @pytest.fixture(scope='function')
@@ -39,7 +39,7 @@ def compose_logfilename(spec):
     return sanitized_filename(func_name + '-' + spec)
 
 
-def spack_install(spec: str, test_root: bool = True):
+def spack_install(spec: str, test_root: bool = True, uenv: str = None):
     """
     Tests 'spack install' of the given spec and writes the output into the log file.
     """
@@ -50,13 +50,15 @@ def spack_install(spec: str, test_root: bool = True):
     log_with_spack(f'spack spec {spec}',
                    'system_test',
                    log_filename,
-                   srun=False)
+                   allow_srun=False,
+                   uenv=uenv)
 
     test_arg = "--test=root" if test_root else ""
     log_with_spack(f'spack install -n -v {test_arg} {spec}',
                    'system_test',
                    log_filename,
-                   srun=not spec.startswith('icon '))
+                   allow_srun=not spec.startswith('icon '),
+                   uenv=uenv)
 
 
 nvidia_compiler: str = {
@@ -70,6 +72,14 @@ nvidia_compiler: str = {
 @pytest.mark.libfyaml
 def test_install_libfyaml_default():
     spack_install('libfyaml', test_root=False)
+
+
+@pytest.mark.no_tsa  # No uenv on Tsa
+@pytest.mark.no_daint  # No uenv on Daint
+@pytest.mark.no_balfrin  # Does not work as expected
+@pytest.mark.libfyaml
+def test_install_libfyaml_default_uenv():
+    spack_install('libfyaml', test_root=False, uenv=PREPOST)
 
 
 @pytest.mark.libtorch
@@ -172,20 +182,22 @@ def icon_env_test(spack_env: str, out_of_source: bool = False):
         check=True,
         shell=True)
 
+    log_filename = sanitized_filename(spack_env)
+
     if out_of_source:
         build_dir = os.path.join(unique_folder, 'build')
         os.makedirs(build_dir, exist_ok=True)
         shutil.copytree(os.path.join(unique_folder, 'config'),
                         os.path.join(build_dir, 'config'))
         unique_folder = build_dir
+        log_filename += '_out_of_source'
 
-    log_filename = sanitized_filename(spack_env) + '_out_of_source'
     log_with_spack('spack install -n -v',
                    'system_test',
                    log_filename,
                    cwd=unique_folder,
                    env=spack_env,
-                   srun=True)
+                   allow_srun=True)
 
     # for out-of-source build we can't run tests because required files
     # like scripts/spack/test.py or scripts/buildbot_script are not synced
@@ -198,7 +210,7 @@ def icon_env_test(spack_env: str, out_of_source: bool = False):
                    log_filename,
                    cwd=unique_folder,
                    env=spack_env,
-                   srun=False)
+                   allow_srun=False)
 
 
 @pytest.mark.no_balfrin  # config file does not exist for this machine

@@ -16,7 +16,8 @@ def log_with_spack(command: str,
                    log_filename: str = None,
                    cwd=None,
                    env=None,
-                   srun=False) -> None:
+                   allow_srun=False,
+                   uenv=None) -> None:
     """
     Executes the given command while spack is loaded and writes the output into the log file.
     If log_filename is None, command is used to create one.
@@ -27,13 +28,27 @@ def log_with_spack(command: str,
 
     # Setup spack env
     spack_env = f'. {spack_c2sm_path}/setup-env.sh'
+    if uenv:
+        spack_env += ' /user-environment'
+
+    # Only use srun as Jenkins user and on machines where it is available
+    use_srun = allow_srun and getpass.getuser() == 'jenkins' and machine_name(
+    ) in ['daint', 'tsa']
+
+    uenv_args = ''
+    if uenv:
+        uenv_mount_point = f'{uenv}:/user-environment'
+        if use_srun:
+            uenv_args = '--uenv=' + uenv_mount_point
+        else:
+            uenv_args = 'squashfs-mount ' + uenv_mount_point + ' -- '
 
     # Distribute work with 'srun'
-    if srun and getpass.getuser() == 'jenkins':
+    if use_srun:
         # The '-c' argument should be in sync with
         # sysconfig/<machine>/config.yaml config:build_jobs for max efficiency
+
         srun = {
-            'balfrin': '',
             'daint': 'srun -t 02:00:00 -C gpu -A g110 -c 12 -n 1',
             'tsa': 'srun -t 02:00:00 -c 6',
         }[machine_name()]
@@ -47,6 +62,9 @@ def log_with_spack(command: str,
     with log_file.open('a') as f:
         f.write(machine_name())
         f.write('\n')
+        if uenv:
+            f.write(f'uenv: {uenv}')
+            f.write('\n')
         f.write(command)
         f.write('\n\n')
 
@@ -55,7 +73,7 @@ def log_with_spack(command: str,
     # The output is streamed as directly as possible to the log_file to avoid buffering and potentially losing buffered content.
     # '2>&1' redirects stderr to stdout.
     ret = subprocess.run(
-        f'{spack_env}; {env_activate} ({srun} {command}) >> {log_file} 2>&1',
+        f'({srun} {uenv_args} bash -c "{spack_env}; {env_activate} {command}") >> {log_file} 2>&1',
         cwd=cwd,
         check=False,
         shell=True)
