@@ -16,16 +16,6 @@ pipeline {
                     """
                 }
             }
-            stage('Install Upstream Icon-DSL') {
-                steps {
-                    sh"""
-                    . ./setup-env.sh
-                    spack clean -a
-                    spack env activate upstreams/daint/icon-dsl
-                    spack install -v
-                    """
-                }
-            }
             stage('Install Upstream Icon-rttov') {
                 steps {
                     sh"""

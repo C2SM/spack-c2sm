@@ -13,13 +13,6 @@ pipeline {
                     """
                 }
             }
-            stage('Uninstall Upstream Icon-DSL') {
-                steps {
-                    sh"""
-                    python3 src/upstream.py upstreams/daint/icon-dsl
-                    """
-                }
-            }
             stage('Uninstall Upstream Icon-rttov') {
                 steps {
                     sh"""
