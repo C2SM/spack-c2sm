@@ -20,15 +20,17 @@ Spack is the package manager used by C2SM and MeteoSwiss to install and deploy s
 ## Workflow
 We suggest local/individual spack instances and the use of spack environments.
 
-A user clones the spack repo
+Clone the repository
 ```bash
 git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.20.1.5 https://github.com/C2SM/spack-c2sm.git
 ```
-gets spack in the command line
+Setup the shell environment.
 ```bash
 . spack-c2sm/setup-env.sh
 ```
-activates an environment
+Sourcing these files will put the spack command in your PATH, set up your MODULEPATH to use Spack’s packages, and add other useful shell integration for certain commands, environments, and modules. For bash, it also sets up tab completion. (source: [spack docu](https://spack.readthedocs.io/en/v0.21.1/getting_started.html#shell-support))
+
+Optionally activate a spack environment
 ```bash
 spack env activate <path_to_env>
 ```
@@ -37,25 +39,25 @@ and starts exploring
 spack info <package>
 spack spec <spec>
 ```
-and building
+and installing
 ```bash
 spack install <spec>
 spack dev-build <spec>
 ```
-a package.
+packages.
 
 Updating spack-c2sm is in the hands of the user.
 ```bash
 git pull
 git submodule update --recursive
 ```
-After an update we advice to clean
+Before an update we advice to clean your instance
 ```bash
 spack uninstall -a
 spack clean -a
 rm -rf ~/.spack
 ```
-and rebuild.
+After an update we advice to rebuild packages in a new shell.
 
 ## Command cheat sheet
 |  | Command |
