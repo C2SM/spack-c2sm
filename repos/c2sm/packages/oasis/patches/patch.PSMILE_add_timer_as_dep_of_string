@@ -1,0 +1,13 @@
+diff --git a/lib/psmile/src/Makefile b/lib/psmile/src/Makefile
+index 50086e0d..94762839 100755
+--- a/lib/psmile/src/Makefile
++++ b/lib/psmile/src/Makefile
+@@ -65,7 +65,7 @@ mod_oasis_mpi.o: mod_oasis_kinds.o mod_oasis_data.o mod_oasis_sys.o mod_oasis_ti
+ mod_oasis_reprosum.o: mod_oasis_kinds.o mod_oasis_data.o mod_oasis_sys.o \
+         mod_oasis_timer.o shr_reprosumx86.o mod_oasis_mpi.o
+ mod_oasis_string.o: mod_oasis_kinds.o mod_oasis_data.o mod_oasis_sys.o \
+-        mod_oasis_parameters.o
++        mod_oasis_parameters.o mod_oasis_timer.o
+ mod_oasis_namcouple.o: mod_oasis_kinds.o mod_oasis_data.o mod_oasis_sys.o \
+         mod_oasis_parameters.o mod_oasis_mpi.o mod_oasis_string.o
+ mod_oasis_part.o: mod_oasis_kinds.o mod_oasis_data.o mod_oasis_sys.o \
