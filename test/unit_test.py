@@ -110,8 +110,8 @@ class ScopeTest(unittest.TestCase):
 
     def test_explicit_scope_2_machines_2_packages(self):
         scope = explicit_scope('tsa fdb daint icon')
-        self.assertEqual(sorted(scope),
-                         sorted(['tsa', 'daint', 'fdb', 'icon']))
+        self.assertEqual(sorted(scope), sorted(['tsa', 'daint', 'fdb',
+                                                'icon']))
 
     def test_explicit_scope_0_machines_1_package(self):
         scope = explicit_scope('fdb')
