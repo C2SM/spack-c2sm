@@ -57,7 +57,7 @@ spack uninstall -a
 spack clean -a
 rm -rf ~/.spack
 ```
-After an update we advice to rebuild packages in a new shell.
+After an update we advice to rebuild packages, preferably in a new shell so that no outdated shell variables are retained.
 
 ## Command cheat sheet
 |  | Command |
