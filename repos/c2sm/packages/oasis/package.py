@@ -33,6 +33,8 @@ class Oasis(MakefilePackage):
         'rename mct modules xxx as xxx_oasis to solve conflict with other mct instance at runtime'
     )
 
+    patch('patches/patch.PSMILE_add_timer_as_dep_of_string', when='@4.0')
+
     build_directory = 'util/make_dir'
 
     makefile_file = 'TopMakefileOasis3'
