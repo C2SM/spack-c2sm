@@ -82,10 +82,9 @@ def test_install_cosmo_eccodes_definitions_version(version):
 
 
 @pytest.mark.no_tsa
-@pytest.mark.no_balfrin
 @pytest.mark.cosmo
 def test_install_cosmo_6_0():
-    spack_install(f'cosmo@6.0', test_root=False)
+    spack_install(f'cosmo@6.0%nvhpc', test_root=False)
 
 
 @pytest.mark.eccodes
@@ -242,7 +241,6 @@ def test_install_int2ml_version_3_00_gcc():
 
 
 @pytest.mark.int2lm
-@pytest.mark.no_balfrin  # fails because libgrib1 master fails
 def test_install_int2lm_version_3_00_nvhpc_fixed_definitions():
     spack_install(
         f'int2lm @int2lm-3.00 %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler}'
@@ -284,7 +282,6 @@ def test_install_default_onnx_runtime():
     spack_install('onnx-runtime')
 
 
-@pytest.mark.no_balfrin  # Coupling only needed on Daint
 @pytest.mark.no_tsa  # Coupling only needed on Daint
 @pytest.mark.oasis
 def test_install_oasis_version_4_0_nvhpc():
