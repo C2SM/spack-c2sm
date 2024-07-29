@@ -1,11 +1,9 @@
-import unittest
 import pytest
 import subprocess
 import sys
 import os
 import uuid
 import shutil
-from pathlib import Path
 import inspect
 
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
@@ -257,10 +255,9 @@ def test_install_libcdi_pio_default():
     spack_install('libcdi-pio')
 
 
-@pytest.mark.no_balfrin  # This fails with "BOZ literal constant at (1) cannot appear in an array constructor". https://gcc.gnu.org/onlinedocs/gfortran/BOZ-literal-constants.html
 @pytest.mark.libgrib1
-def test_install_libgrib1_22_01_2020():
-    spack_install('libgrib1 @22-01-2020')
+def test_install_libgrib1_22_01_2020_nvhpc():
+    spack_install(f'libgrib1 @22-01-2020%{nvidia_compiler}')
 
 
 @pytest.mark.makedepf90
