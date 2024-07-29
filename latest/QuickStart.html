@@ -50,7 +50,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#at-cscs-daint-tsa-balfrin">At CSCS (Daint, Tsa, Balfrin)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#at-cscs-ethz-daint-tsa-balfrin-and-euler">At CSCS/ETHZ (Daint, Tsa, Balfrin and Euler)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#local-machines-and-containers">Local machines and Containers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-packages">Use packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#icon">ICON</a></li>
@@ -93,8 +93,8 @@
              
   <section id="quick-start">
 <h1>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h1>
-<section id="at-cscs-daint-tsa-balfrin">
-<h2>At CSCS (Daint, Tsa, Balfrin)<a class="headerlink" href="#at-cscs-daint-tsa-balfrin" title="Link to this heading"></a></h2>
+<section id="at-cscs-ethz-daint-tsa-balfrin-and-euler">
+<h2>At CSCS/ETHZ (Daint, Tsa, Balfrin and Euler)<a class="headerlink" href="#at-cscs-ethz-daint-tsa-balfrin-and-euler" title="Link to this heading"></a></h2>
 <p>To set up a Spack instance, clone the repository using a specific Spack tag (latest <code class="docutils literal notranslate"><span class="pre">SPACK_TAG=v0.20.1.5</span></code>).</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>--recurse-submodules<span class="w"> </span>--shallow-submodules<span class="w"> </span>-b<span class="w"> </span><span class="nv">$SPACK_TAG</span><span class="w"> </span>https://github.com/C2SM/spack-c2sm.git
 </pre></div>
@@ -199,7 +199,11 @@ only works if the build-folder is located inside the Git repo of ICON.</p>
 </section>
 <section id="cosmo">
 <h2>COSMO<a class="headerlink" href="#cosmo" title="Link to this heading"></a></h2>
-<p>Building COSMO is not supported anymore starting with spack-c2sm v0.20.1.0!</p>
+<p>Building COSMO is not supported anymore starting with spack-c2sm v0.20.1.0 for CSCS.</p>
+<p>For Euler Cluster a CPU-only setup is supported using GCC 8.5.0</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>install<span class="w"> </span>cosmo%gcc@8.5.0
+</pre></div>
+</div>
 </section>
 </section>
 

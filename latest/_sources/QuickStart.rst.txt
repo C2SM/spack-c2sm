@@ -2,8 +2,8 @@ Quick Start
 ===========
 
 
-At CSCS (Daint, Tsa, Balfrin)
------------------------------
+At CSCS/ETHZ (Daint, Tsa, Balfrin and Euler)
+------------------------------------------------
 
 To set up a Spack instance, clone the repository using a specific Spack tag (latest ``SPACK_TAG=v0.20.1.5``).
 
@@ -140,4 +140,10 @@ Out-of-source builds are possible as follows:
 COSMO
 -----
 
-Building COSMO is not supported anymore starting with spack-c2sm v0.20.1.0!
+Building COSMO is not supported anymore starting with spack-c2sm v0.20.1.0 for CSCS.
+
+For Euler Cluster a CPU-only setup is supported using GCC 8.5.0
+
+.. code-block:: console
+
+    $ spack install cosmo%gcc@8.5.0
