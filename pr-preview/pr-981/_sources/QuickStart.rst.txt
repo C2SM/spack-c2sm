@@ -3,7 +3,7 @@ Quick Start
 
 
 At CSCS/ETHZ (Daint, Tsa, Balfrin and Euler)
------------------------------
+------------------------------------------------
 
 To set up a Spack instance, clone the repository using a specific Spack tag (latest ``SPACK_TAG=v0.20.1.5``).
 
