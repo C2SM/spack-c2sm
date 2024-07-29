@@ -251,7 +251,7 @@ def test_install_int2lm_version_3_00_nvhpc_fixed_definitions():
 @pytest.mark.int2lm
 def test_install_int2lm_version_3_00_nvhpc_fixed_definitions_serial():
     spack_install(
-        f'int2lm @int2lm-3.00 %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler} ~parallel',
+        f'int2lm @int2lm-3.00 %{nvidia_compiler} ~parallel ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler}',
         test_root=False)
 
 
