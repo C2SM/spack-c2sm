@@ -240,10 +240,17 @@ def test_install_int2ml_version_3_00_gcc():
     spack_install('int2lm @int2lm-3.00 %gcc', test_root=False)
 
 
+@pytest.mark.no_balfrin  # ld undefined reference to mpi_recv_
 @pytest.mark.int2lm
 def test_install_int2lm_version_3_00_nvhpc_fixed_definitions():
     spack_install(
         f'int2lm @int2lm-3.00 %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler}'
+    )
+
+@pytest.mark.int2lm
+def test_install_int2lm_version_3_00_nvhpc_fixed_definitions_serial():
+    spack_install(
+        f'int2lm @int2lm-3.00 %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler} ~parallel', test_root=False
     )
 
 
@@ -282,7 +289,7 @@ def test_install_default_onnx_runtime():
     spack_install('onnx-runtime')
 
 
-@pytest.mark.no_tsa  # Coupling only needed on Daint
+@pytest.mark.no_tsa  # Coupling not needed on Tsa
 @pytest.mark.oasis
 def test_install_oasis_version_4_0_nvhpc():
     spack_install('oasis @4.0 %nvhpc')
