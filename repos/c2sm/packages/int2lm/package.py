@@ -60,7 +60,7 @@ class Int2lm(MakefilePackage):
         msg=
         'int2lm-org is currently broken with pollen, set variant pollen=False')
 
-    conflicts('%cce',msg='cce compiler not supported for int2lm')
+    conflicts('%cce', msg='cce compiler not supported for int2lm')
 
     build_directory = 'TESTSUITE'
 
@@ -117,7 +117,7 @@ class Int2lm(MakefilePackage):
             env.set('LD', 'pgf90 -D__PGI_FORTRAN__')
         elif self.compiler.name == 'nvhpc':
             env.set('F90', self.spec['mpi'].mpifc + '  -D__PGI_FORTRAN__')
-            env.set('LD', self.spec['mpi'].mpifc+ '  -D__PGI_FORTRAN__')
+            env.set('LD', self.spec['mpi'].mpifc + '  -D__PGI_FORTRAN__')
         else:
             env.set('F90', self.spec['mpi'].mpifc)
             env.set('LD', self.spec['mpi'].mpifc)
