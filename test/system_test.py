@@ -176,7 +176,7 @@ def icon_env_test(spack_env: str, out_of_source: bool = False):
         shutil.copytree(os.path.join(unique_folder, 'config'),
                         os.path.join(build_dir, 'config'))
         unique_folder = build_dir
-        log_filename+= '_out_of_source'
+        log_filename += '_out_of_source'
 
     log_with_spack('spack install -n -v',
                    'system_test',
