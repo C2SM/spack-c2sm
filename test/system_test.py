@@ -1,11 +1,9 @@
-import unittest
 import pytest
 import subprocess
 import sys
 import os
 import uuid
 import shutil
-from pathlib import Path
 import inspect
 
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
@@ -84,10 +82,9 @@ def test_install_cosmo_eccodes_definitions_version(version):
 
 
 @pytest.mark.no_tsa
-@pytest.mark.no_balfrin
 @pytest.mark.cosmo
 def test_install_cosmo_6_0():
-    spack_install(f'cosmo@6.0', test_root=False)
+    spack_install(f'cosmo@6.0%nvhpc', test_root=False)
 
 
 @pytest.mark.eccodes
@@ -172,14 +169,15 @@ def icon_env_test(spack_env: str, out_of_source: bool = False):
         check=True,
         shell=True)
 
+    log_filename = sanitized_filename(spack_env)
     if out_of_source:
         build_dir = os.path.join(unique_folder, 'build')
         os.makedirs(build_dir, exist_ok=True)
         shutil.copytree(os.path.join(unique_folder, 'config'),
                         os.path.join(build_dir, 'config'))
         unique_folder = build_dir
+        log_filename += '_out_of_source'
 
-    log_filename = sanitized_filename(spack_env) + '_out_of_source'
     log_with_spack('spack install -n -v',
                    'system_test',
                    log_filename,
@@ -244,11 +242,10 @@ def test_install_int2ml_version_3_00_gcc():
 
 
 @pytest.mark.int2lm
-@pytest.mark.no_balfrin  # fails because libgrib1 master fails
 def test_install_int2lm_version_3_00_nvhpc_fixed_definitions():
     spack_install(
-        f'int2lm @int2lm-3.00 %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler}'
-    )
+        f'int2lm @int2lm-3.00 %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler}',
+        test_root='balfrin' not in machine_name())
 
 
 @pytest.mark.no_tsa  # Test is too expensive. It takes over 5h.
@@ -257,10 +254,9 @@ def test_install_libcdi_pio_default():
     spack_install('libcdi-pio')
 
 
-@pytest.mark.no_balfrin  # This fails with "BOZ literal constant at (1) cannot appear in an array constructor". https://gcc.gnu.org/onlinedocs/gfortran/BOZ-literal-constants.html
 @pytest.mark.libgrib1
-def test_install_libgrib1_22_01_2020():
-    spack_install('libgrib1 @22-01-2020')
+def test_install_libgrib1_22_01_2020_nvhpc():
+    spack_install(f'libgrib1 @22-01-2020%{nvidia_compiler}')
 
 
 @pytest.mark.makedepf90
@@ -287,8 +283,7 @@ def test_install_default_onnx_runtime():
     spack_install('onnx-runtime')
 
 
-@pytest.mark.no_balfrin  # Coupling only needed on Daint
-@pytest.mark.no_tsa  # Coupling only needed on Daint
+@pytest.mark.no_tsa  # Coupling not needed on Tsa
 @pytest.mark.oasis
 def test_install_oasis_version_4_0_nvhpc():
     spack_install('oasis @4.0 %nvhpc')

@@ -60,6 +60,8 @@ class Int2lm(MakefilePackage):
         msg=
         'int2lm-org is currently broken with pollen, set variant pollen=False')
 
+    conflicts('%cce', msg='cce compiler not supported for int2lm')
+
     build_directory = 'TESTSUITE'
 
     def setup_build_environment(self, env):
@@ -108,21 +110,14 @@ class Int2lm(MakefilePackage):
         if self.spec['mpi'].name == 'openmpi':
             env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpi_mpifh')
             env.set('MPII', '-I' + self.spec['mpi'].prefix + '/include')
-        else:
-            env.set('MPII', '-I' + self.spec['mpi'].prefix + '/include')
-            if self.compiler.name != 'gcc':
-                env.set('MPIL', '-L' + self.spec['mpi'].prefix + ' -lmpich')
 
         # Compiler & linker variables
         if self.compiler.name == 'pgi':
             env.set('F90', 'pgf90 -D__PGI_FORTRAN__')
             env.set('LD', 'pgf90 -D__PGI_FORTRAN__')
         elif self.compiler.name == 'nvhpc':
-            env.set('F90', 'nvfortran -D__PGI_FORTRAN__')
-            env.set('LD', 'nvfortran -D__PGI_FORTRAN__')
-        elif self.compiler.name == 'cce':
-            env.set('F90', 'ftn -D__CRAY_FORTRAN__')
-            env.set('LD', 'ftn -D__CRAY_FORTRAN__')
+            env.set('F90', self.spec['mpi'].mpifc + '  -D__PGI_FORTRAN__')
+            env.set('LD', self.spec['mpi'].mpifc + '  -D__PGI_FORTRAN__')
         else:
             env.set('F90', self.spec['mpi'].mpifc)
             env.set('LD', self.spec['mpi'].mpifc)
