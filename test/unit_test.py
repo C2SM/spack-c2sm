@@ -1,9 +1,7 @@
 import unittest
-import pytest
 import sys
 import os
 import re
-from pathlib import Path
 
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                '..')
@@ -105,13 +103,13 @@ class ScopeTest(unittest.TestCase):
         self.assertTrue('icon' in all_packages)
 
     def test_explicit_scope_1_machine_1_package(self):
-        scope = explicit_scope('tsa cosmo')
-        self.assertEqual(sorted(scope), sorted(['tsa', 'cosmo']))
+        scope = explicit_scope('balfrin cosmo')
+        self.assertEqual(sorted(scope), sorted(['balfrin', 'cosmo']))
 
     def test_explicit_scope_2_machines_2_packages(self):
-        scope = explicit_scope('tsa cosmo daint icon')
+        scope = explicit_scope('balfrin cosmo daint icon')
         self.assertEqual(sorted(scope),
-                         sorted(['tsa', 'daint', 'cosmo', 'icon']))
+                         sorted(['balfrin', 'daint', 'cosmo', 'icon']))
 
     def test_explicit_scope_0_machines_1_package(self):
         scope = explicit_scope('cosmo')
@@ -124,9 +122,9 @@ class ScopeTest(unittest.TestCase):
             sorted(['launch', 'jenkins'] + all_machines + all_packages))
 
     def test_explicit_scope_allows_unknowns(self):
-        scope = explicit_scope('launch jenkins tsa cosmo')
+        scope = explicit_scope('launch jenkins balfrin cosmo')
         self.assertEqual(sorted(scope),
-                         sorted(['launch', 'jenkins', 'tsa', 'cosmo']))
+                         sorted(['launch', 'jenkins', 'balfrin', 'cosmo']))
 
     def test_package_triggers(self):
         triggers = package_triggers(['py-gt4py'])

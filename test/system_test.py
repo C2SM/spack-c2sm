@@ -57,14 +57,6 @@ def spack_install(spec: str, test_root: bool = True):
                    srun=not spec.startswith('icon '))
 
 
-nvidia_compiler: str = {
-    'daint': 'nvhpc',
-    'tsa': 'pgi',
-    'balfrin': 'nvhpc',
-    'unknown': '',
-}[machine_name()]
-
-
 @pytest.mark.libfyaml
 def test_install_libfyaml_default():
     spack_install('libfyaml', test_root=False)
@@ -81,10 +73,9 @@ def test_install_cosmo_eccodes_definitions_version(version):
     spack_install(f'cosmo-eccodes-definitions @{version}', test_root=False)
 
 
-@pytest.mark.no_tsa
 @pytest.mark.cosmo
 def test_install_cosmo_6_0():
-    spack_install(f'cosmo@6.0%nvhpc', test_root=False)
+    spack_install('cosmo@6.0%nvhpc', test_root=False)
 
 
 @pytest.mark.eccodes
@@ -108,26 +99,22 @@ def test_install_flexpart_ifs_version(version):
     spack_install(f'flexpart-ifs @{version}', test_root=False)
 
 
-@pytest.mark.no_tsa  # No one uses spack for flexpart-cosmo on Tsa
 @pytest.mark.flexpart_cosmo
 def test_install_flexpart_cosmo():
     spack_install('flexpart-cosmo @V8C4.0')
 
 
-@pytest.mark.no_tsa  # FDB tests fail on tsa due to 'ucp_context'
 @pytest.mark.fdb
 def test_install_fdb_5_11_17_gcc():
     spack_install('fdb @5.11.17 %gcc')
 
 
-@pytest.mark.no_tsa  # FDB tests fail on tsa due to 'ucp_context'
 @pytest.mark.fdb
 def test_install_fdb_5_11_17_nvhpc():
     # tests fail because compiler emitted warnings.
-    spack_install(f'fdb @5.11.17 %{nvidia_compiler}', test_root=False)
+    spack_install('fdb @5.11.17 %nvhpc', test_root=False)
 
 
-@pytest.mark.no_tsa  # Icon does not run on Tsa
 @pytest.mark.no_daint
 @pytest.mark.icon
 def test_install_icon_24_1_gcc():
@@ -136,14 +123,12 @@ def test_install_icon_24_1_gcc():
 
 @pytest.mark.icon
 @pytest.mark.no_daint
-@pytest.mark.no_tsa  # Icon does not run on Tsa
 def test_install_2024_1_nvhpc():
     #WORKAROUND: ^libxml2%gcc works around a problem in the concretizer of spack v0.21.1 and /mch-environment/v6
     spack_install('icon @2024.1-1 %nvhpc ^libxml2%gcc')
 
 
 @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
-@pytest.mark.no_tsa  # Icon does not run on Tsa
 @pytest.mark.icon
 def test_install_conditional_dependencies():
     # +coupling triggers libfyaml, libxml2, netcdf-c
@@ -200,7 +185,6 @@ def icon_env_test(spack_env: str, out_of_source: bool = False):
 
 
 @pytest.mark.no_balfrin  # config file does not exist for this machine
-@pytest.mark.no_tsa  # Icon does not run on Tsa
 @pytest.mark.icon
 def test_install_c2sm_test_cpu_nvhpc_out_of_source():
     icon_env_test('config/cscs/spack/v0.21.1.0/daint_cpu_nvhpc',
@@ -208,26 +192,22 @@ def test_install_c2sm_test_cpu_nvhpc_out_of_source():
 
 
 @pytest.mark.no_balfrin  # config file does not exist for this machine
-@pytest.mark.no_tsa  # Icon does not run on Tsa
 @pytest.mark.icon
 def test_install_c2sm_test_cpu():
     icon_env_test('config/cscs/spack/v0.21.1.0/daint_cpu_nvhpc')
 
 
 @pytest.mark.no_balfrin  # config file does not exist for this machine
-@pytest.mark.no_tsa  # Icon does not run on Tsa
 @pytest.mark.icon
 def test_install_c2sm_test_gpu():
     icon_env_test('config/cscs/spack/v0.21.1.0/daint_gpu_nvhpc')
 
 
-@pytest.mark.no_tsa  # This test is flaky and sometimes fails with: icondelaunay.cpp:29:10: fatal error: version.c: No such file or directory. See issue #781.
 @pytest.mark.icontools
 def test_install_icontools():
     spack_install('icontools @2.5.2')
 
 
-@pytest.mark.no_tsa  # Not supported on Tsa
 @pytest.mark.no_balfrin  # Not supported on Balfrin
 @pytest.mark.infero
 def test_install_infero_tf_c():
@@ -244,11 +224,10 @@ def test_install_int2ml_version_3_00_gcc():
 @pytest.mark.int2lm
 def test_install_int2lm_version_3_00_nvhpc_fixed_definitions():
     spack_install(
-        f'int2lm @int2lm-3.00 %{nvidia_compiler} ^cosmo-eccodes-definitions@2.19.0.7%{nvidia_compiler}',
+        'int2lm @int2lm-3.00 %nvhpc ^cosmo-eccodes-definitions@2.19.0.7%nvhpc',
         test_root='balfrin' not in machine_name())
 
 
-@pytest.mark.no_tsa  # Test is too expensive. It takes over 5h.
 @pytest.mark.libcdi_pio
 def test_install_libcdi_pio_default():
     spack_install('libcdi-pio')
@@ -256,7 +235,7 @@ def test_install_libcdi_pio_default():
 
 @pytest.mark.libgrib1
 def test_install_libgrib1_22_01_2020_nvhpc():
-    spack_install(f'libgrib1 @22-01-2020%{nvidia_compiler}')
+    spack_install('libgrib1 @22-01-2020%nvhpc')
 
 
 @pytest.mark.makedepf90
@@ -265,14 +244,12 @@ def test_install_makedepf90():
 
 
 @pytest.mark.no_balfrin  # Package is a workaround, only needed on Daint.
-@pytest.mark.no_tsa  # Package is a workaround, only needed on Daint.
 @pytest.mark.nvidia_blas
 def test_install_default_nvidia_blas():
     spack_install('nvidia-blas')
 
 
 @pytest.mark.no_balfrin  # Package is a workaround, only needed on Daint.
-@pytest.mark.no_tsa  # Package is a workaround, only needed on Daint.
 @pytest.mark.nvidia_lapack
 def test_install_default_nvidia_lapack():
     spack_install('nvidia-lapack')
@@ -283,13 +260,11 @@ def test_install_default_onnx_runtime():
     spack_install('onnx-runtime')
 
 
-@pytest.mark.no_tsa  # Coupling not needed on Tsa
 @pytest.mark.oasis
 def test_install_oasis_version_4_0_nvhpc():
     spack_install('oasis @4.0 %nvhpc')
 
 
-@pytest.mark.no_tsa
 @pytest.mark.pytorch_fortran
 def test_install_pytorch_fortran_version_0_4(devirt_env):
     spack_install(
@@ -297,7 +272,6 @@ def test_install_pytorch_fortran_version_0_4(devirt_env):
         test_root=False)
 
 
-@pytest.mark.no_tsa
 @pytest.mark.pytorch_fortran_proxy
 def test_install_pytorch_fortran_proxy_version_0_4(devirt_env):
     spack_install('pytorch-fortran-proxy@0.4%gcc ^python@3.10',
@@ -330,26 +304,22 @@ def test_py_gridtools_cpp_install_default(devirt_env):
 
 
 @pytest.mark.py_gt4py
-@pytest.mark.no_tsa  # Irrelevant
 @pytest.mark.parametrize("version", ['1.0.3.3', '1.0.3.7', '1.0.3.8'])
 def test_install_py_gt4py_for_version(version, devirt_env):
     spack_install(f'py-gt4py @{version}')
 
 
-@pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 @pytest.mark.py_icon4py
 def test_install_py_icon4py_version_0_0_10(devirt_env):
     spack_install('py-icon4py @ 0.0.10 %gcc ^py-gt4py@1.0.3.3')
 
 
 @pytest.mark.py_icon4py
-@pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 def test_install_py_icon4py_version_0_0_11(devirt_env):
     spack_install('py-icon4py @ 0.0.11 %gcc ^py-gt4py@1.0.3.7')
 
 
 @pytest.mark.py_icon4py
-@pytest.mark.no_tsa  # py-isort install fails with: No module named 'poetry'.
 def test_install_py_icon4py_version_0_0_12(devirt_env):
     spack_install('py-icon4py @ 0.0.12 %gcc ^py-gt4py@1.0.3.8')
 
@@ -379,7 +349,6 @@ def test_install_py_typing_extensions_default(devirt_env):
     spack_install('py-typing-extensions')
 
 
-@pytest.mark.no_tsa  # Irrelevant
 @pytest.mark.no_balfrin  #Irrelevant
 @pytest.mark.rttov
 @pytest.mark.parametrize("compiler", ['gcc', 'nvhpc'])
@@ -387,7 +356,6 @@ def test_install_rttov(compiler):
     spack_install(f'rttov @13.1 %{compiler}')
 
 
-@pytest.mark.no_tsa  # Fails with "C compiler cannot create executables"
 @pytest.mark.scales_ppm
 def test_install_default():
     spack_install('scales-ppm')
@@ -398,7 +366,6 @@ def test_install_2_6_0():
     spack_install('tensorflowc @2.6.0')
 
 
-@pytest.mark.no_tsa  # Fails with "C compiler cannot create executables"
 @pytest.mark.yaxt
 def test_install_yaxt_default():
     spack_install('yaxt')

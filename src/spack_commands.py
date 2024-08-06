@@ -35,7 +35,6 @@ def log_with_spack(command: str,
         srun = {
             'balfrin': '',
             'daint': 'srun -t 02:00:00 -C gpu -A g110 -c 12 -n 1',
-            'tsa': 'srun -t 02:00:00 -c 6',
         }[machine_name()]
     else:
         srun = ''

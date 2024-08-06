@@ -34,12 +34,10 @@ Examples
 ^^^^^^^^
 
 *   ``launch jenkins int2lm daint`` tests int2lm on daint.
-*   ``launch jenkins cosmo int2lm daint tsa`` tests
+*   ``launch jenkins cosmo int2lm daint`` tests
 
     *   cosmo on daint
-    *   cosmo on tsa
     *   int2lm on daint
-    *   int2lm on tsa
 
 *   ``launch jenkins cosmo icon`` tests cosmo and icon on all machines.
 *   ``launch jenkins daint`` tests all packages on daint.
@@ -53,4 +51,3 @@ Supported machines:
 
 *   balfrin
 *   daint
-*   tsa
