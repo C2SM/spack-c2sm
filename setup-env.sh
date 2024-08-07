@@ -8,7 +8,6 @@ else
     machine="$( "$parent_dir"/src/machine.sh )"
     if [[ "$machine" == "balfrin" || "$machine" == "tasna" ]]; then
         machine="$USER_ENV_ROOT"
-        exit 1
     fi
 fi
 
