@@ -222,7 +222,6 @@ def test_install_icontools():
     spack_install('icontools @2.5.2')
 
 
-
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
 @pytest.mark.int2lm
 def test_install_int2ml_version_3_00_gcc():
