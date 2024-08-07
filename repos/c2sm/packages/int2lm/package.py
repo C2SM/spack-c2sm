@@ -35,6 +35,9 @@ class Int2lm(MakefilePackage):
     version('int2lm-3.00', git=orggit, tag='int2lm-3.00')
 
     depends_on('eccodes +fortran')
+    # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
+    depends_on('eccodes %nvhpc', when='%nvhpc')
+    depends_on('eccodes %gcc', when='%gcc')
     depends_on('cosmo-eccodes-definitions', type=('build', 'run'))
     depends_on('libgrib1 @22-01-2020', type='build')
     depends_on('mpi', type=('build', 'link', 'run'), when='+parallel')
