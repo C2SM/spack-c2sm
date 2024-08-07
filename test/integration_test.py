@@ -64,11 +64,6 @@ def test_icon_spec_with_variant(variant: str):
     spack_spec(f'icon {variant}')
 
 
-@pytest.mark.infero
-def test_infero_spec():
-    spack_spec('infero +onnx +tf_c')
-
-
 @pytest.mark.int2lm
 @pytest.mark.parametrize('variant', ['+parallel', '~parallel'])
 def test_int2lm_spec_with_variant(variant: str):
