@@ -21,13 +21,13 @@ Example output:
   
     ==> 8 installed packages
     -- linux-rhel7-skylake_avx512 / gcc@8.3.0 -----------------------
-    cosmo@master cosmo_target=cpu ~cppdycore~debug+dycoretest+eccodes+parallel~pollen~production real_type=double ~serialize slave=tsa ~verbose
-    cosmo@master cosmo_target=cpu ~cppdycore~debug+dycoretest+eccodes+parallel~pollen~production real_type=float ~serialize slave=tsa ~verbose
+    cosmo@master cosmo_target=cpu ~cppdycore~debug+dycoretest+eccodes+parallel~pollen~production real_type=double ~serialize ~verbose
+    cosmo@master cosmo_target=cpu ~cppdycore~debug+dycoretest+eccodes+parallel~pollen~production real_type=float ~serialize ~verbose
   
     -- linux-rhel7-skylake_avx512 / pgi@19.9 ------------------------
-    cosmo@dev-build cosmo_target=cpu ~cppdycore~debug+dycoretest~eccodes+parallel~pollen~production real_type=float +serialize slave=tsa ~verbose
-    cosmo@5.07.mch1.0.p6 cosmo_target=gpu +cppdycore~debug+eccodes+parallel+pollen+production real_type=double ~serialize slave=tsa ~verbose
-    cosmo@5.07.mch1.0.p6 cosmo_target=gpu +cppdycore~debug+eccodes+parallel+pollen+production real_type=float ~serialize slave=tsa ~verbose
+    cosmo@dev-build cosmo_target=cpu ~cppdycore~debug+dycoretest~eccodes+parallel~pollen~production real_type=float +serialize ~verbose
+    cosmo@5.07.mch1.0.p6 cosmo_target=gpu +cppdycore~debug+eccodes+parallel+pollen+production real_type=double ~serialize ~verbose
+    cosmo@5.07.mch1.0.p6 cosmo_target=gpu +cppdycore~debug+eccodes+parallel+pollen+production real_type=float ~serialize ~verbose
   
 Options (spack find)
 ^^^^^^^^^^^^^^^^^^^^^
@@ -50,22 +50,22 @@ Example output:
 .. code-block:: console
 
     $ spack find --format "{prefix}" cosmo
-    /project/g110/spack-install/tsa/cosmo/apn_5.09a.mch1.2.p2/pgi/qh4lqyvz73zcm2emfwwhcfue6kkm3xyo
-    /project/g110/spack-install/tsa/cosmo/apn_5.09a.mch1.2.p2/pgi/ssezzpu36dc4j5lc35rkytuieicoptfr
-    /project/g110/spack-install/tsa/cosmo/mch/pgi/4h7b7x62dcpvrctghjv23jrpnkep4ela
-    /project/g110/spack-install/tsa/cosmo/mch/pgi/6ijz5756a65p6wblxbr3enllmpdzcvh5
-    /project/g110/spack-install/tsa/cosmo/5.09a.mch1.2.p1/pgi/us5kk56wraktww7e543cxi4dbud2lalv
-    /project/g110/spack-install/tsa/cosmo/5.09a.mch1.2.p1/pgi/o3jtuao2gwrz7uwyekvxvr7ylltwnt4w
-    /project/g110/spack-install/tsa/cosmo/master/gcc/aejk4rps3es6o5trdwppzew3f2j37kl6
-    /project/g110/spack-install/tsa/cosmo/master/pgi/vkwywww3z52ttmlzzpn4df5jnr5paiw4
-    /project/g110/spack-install/tsa/cosmo/master/gcc/l52ikknglfrfolr462lc4ez6abulmphs
-    /project/g110/spack-install/tsa/cosmo/master/pgi/bbjwypwllbba6nmkvronktzo2vt6k3dw
-    /project/g110/spack-install/tsa/cosmo/master/pgi/gnm6i4pya3lrscgdnvvzgt77bssbfcab
-    /project/g110/spack-install/tsa/cosmo/master/pgi/koaxr3hlillunjtywkh46vcpzgrarnxc
-    /project/g110/spack-install/tsa/cosmo/master/pgi/i72unz2dzlp4donztoi7kxbubj4kfqtw
-    /project/g110/spack-install/tsa/cosmo/master/pgi/rvqs2tqltwlohpkyedzwnjggtwtgu4ly
-    /project/g110/spack-install/tsa/cosmo/master/pgi/i2hc4rhlhhapga6gheq3tcnbyrytadoy
-    /project/g110/spack-install/tsa/cosmo/master/pgi/kmrbrer2mlzz2rkn3ykhxr6h6glbwptn
+    /project/g110/spack-install/daint/cosmo/apn_5.09a.mch1.2.p2/pgi/qh4lqyvz73zcm2emfwwhcfue6kkm3xyo
+    /project/g110/spack-install/daint/cosmo/apn_5.09a.mch1.2.p2/pgi/ssezzpu36dc4j5lc35rkytuieicoptfr
+    /project/g110/spack-install/daint/cosmo/mch/pgi/4h7b7x62dcpvrctghjv23jrpnkep4ela
+    /project/g110/spack-install/daint/cosmo/mch/pgi/6ijz5756a65p6wblxbr3enllmpdzcvh5
+    /project/g110/spack-install/daint/cosmo/5.09a.mch1.2.p1/pgi/us5kk56wraktww7e543cxi4dbud2lalv
+    /project/g110/spack-install/daint/cosmo/5.09a.mch1.2.p1/pgi/o3jtuao2gwrz7uwyekvxvr7ylltwnt4w
+    /project/g110/spack-install/daint/cosmo/master/gcc/aejk4rps3es6o5trdwppzew3f2j37kl6
+    /project/g110/spack-install/daint/cosmo/master/pgi/vkwywww3z52ttmlzzpn4df5jnr5paiw4
+    /project/g110/spack-install/daint/cosmo/master/gcc/l52ikknglfrfolr462lc4ez6abulmphs
+    /project/g110/spack-install/daint/cosmo/master/pgi/bbjwypwllbba6nmkvronktzo2vt6k3dw
+    /project/g110/spack-install/daint/cosmo/master/pgi/gnm6i4pya3lrscgdnvvzgt77bssbfcab
+    /project/g110/spack-install/daint/cosmo/master/pgi/koaxr3hlillunjtywkh46vcpzgrarnxc
+    /project/g110/spack-install/daint/cosmo/master/pgi/i72unz2dzlp4donztoi7kxbubj4kfqtw
+    /project/g110/spack-install/daint/cosmo/master/pgi/rvqs2tqltwlohpkyedzwnjggtwtgu4ly
+    /project/g110/spack-install/daint/cosmo/master/pgi/i2hc4rhlhhapga6gheq3tcnbyrytadoy
+    /project/g110/spack-install/daint/cosmo/master/pgi/kmrbrer2mlzz2rkn3ykhxr6h6glbwptn
 
 ..  tip::
     If you want just any installation folder that matches the spec,

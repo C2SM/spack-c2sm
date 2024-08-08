@@ -149,13 +149,13 @@
 
 <span class="go">==&gt; 8 installed packages</span>
 <span class="go">-- linux-rhel7-skylake_avx512 / gcc@8.3.0 -----------------------</span>
-<span class="go">cosmo@master cosmo_target=cpu ~cppdycore~debug+dycoretest+eccodes+parallel~pollen~production real_type=double ~serialize slave=tsa ~verbose</span>
-<span class="go">cosmo@master cosmo_target=cpu ~cppdycore~debug+dycoretest+eccodes+parallel~pollen~production real_type=float ~serialize slave=tsa ~verbose</span>
+<span class="go">cosmo@master cosmo_target=cpu ~cppdycore~debug+dycoretest+eccodes+parallel~pollen~production real_type=double ~serialize ~verbose</span>
+<span class="go">cosmo@master cosmo_target=cpu ~cppdycore~debug+dycoretest+eccodes+parallel~pollen~production real_type=float ~serialize ~verbose</span>
 
 <span class="go">-- linux-rhel7-skylake_avx512 / pgi@19.9 ------------------------</span>
-<span class="go">cosmo@dev-build cosmo_target=cpu ~cppdycore~debug+dycoretest~eccodes+parallel~pollen~production real_type=float +serialize slave=tsa ~verbose</span>
-<span class="go">cosmo@5.07.mch1.0.p6 cosmo_target=gpu +cppdycore~debug+eccodes+parallel+pollen+production real_type=double ~serialize slave=tsa ~verbose</span>
-<span class="go">cosmo@5.07.mch1.0.p6 cosmo_target=gpu +cppdycore~debug+eccodes+parallel+pollen+production real_type=float ~serialize slave=tsa ~verbose</span>
+<span class="go">cosmo@dev-build cosmo_target=cpu ~cppdycore~debug+dycoretest~eccodes+parallel~pollen~production real_type=float +serialize ~verbose</span>
+<span class="go">cosmo@5.07.mch1.0.p6 cosmo_target=gpu +cppdycore~debug+eccodes+parallel+pollen+production real_type=double ~serialize ~verbose</span>
+<span class="go">cosmo@5.07.mch1.0.p6 cosmo_target=gpu +cppdycore~debug+eccodes+parallel+pollen+production real_type=float ~serialize ~verbose</span>
 </pre></div>
 </div>
 </section>
@@ -174,22 +174,22 @@
 </div>
 <p>Example output:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>find<span class="w"> </span>--format<span class="w"> </span><span class="s2">&quot;{prefix}&quot;</span><span class="w"> </span>cosmo
-<span class="go">/project/g110/spack-install/tsa/cosmo/apn_5.09a.mch1.2.p2/pgi/qh4lqyvz73zcm2emfwwhcfue6kkm3xyo</span>
-<span class="go">/project/g110/spack-install/tsa/cosmo/apn_5.09a.mch1.2.p2/pgi/ssezzpu36dc4j5lc35rkytuieicoptfr</span>
-<span class="go">/project/g110/spack-install/tsa/cosmo/mch/pgi/4h7b7x62dcpvrctghjv23jrpnkep4ela</span>
-<span class="go">/project/g110/spack-install/tsa/cosmo/mch/pgi/6ijz5756a65p6wblxbr3enllmpdzcvh5</span>
-<span class="go">/project/g110/spack-install/tsa/cosmo/5.09a.mch1.2.p1/pgi/us5kk56wraktww7e543cxi4dbud2lalv</span>
-<span class="go">/project/g110/spack-install/tsa/cosmo/5.09a.mch1.2.p1/pgi/o3jtuao2gwrz7uwyekvxvr7ylltwnt4w</span>
-<span class="go">/project/g110/spack-install/tsa/cosmo/master/gcc/aejk4rps3es6o5trdwppzew3f2j37kl6</span>
-<span class="go">/project/g110/spack-install/tsa/cosmo/master/pgi/vkwywww3z52ttmlzzpn4df5jnr5paiw4</span>
-<span class="go">/project/g110/spack-install/tsa/cosmo/master/gcc/l52ikknglfrfolr462lc4ez6abulmphs</span>
-<span class="go">/project/g110/spack-install/tsa/cosmo/master/pgi/bbjwypwllbba6nmkvronktzo2vt6k3dw</span>
-<span class="go">/project/g110/spack-install/tsa/cosmo/master/pgi/gnm6i4pya3lrscgdnvvzgt77bssbfcab</span>
-<span class="go">/project/g110/spack-install/tsa/cosmo/master/pgi/koaxr3hlillunjtywkh46vcpzgrarnxc</span>
-<span class="go">/project/g110/spack-install/tsa/cosmo/master/pgi/i72unz2dzlp4donztoi7kxbubj4kfqtw</span>
-<span class="go">/project/g110/spack-install/tsa/cosmo/master/pgi/rvqs2tqltwlohpkyedzwnjggtwtgu4ly</span>
-<span class="go">/project/g110/spack-install/tsa/cosmo/master/pgi/i2hc4rhlhhapga6gheq3tcnbyrytadoy</span>
-<span class="go">/project/g110/spack-install/tsa/cosmo/master/pgi/kmrbrer2mlzz2rkn3ykhxr6h6glbwptn</span>
+<span class="go">/project/g110/spack-install/daint/cosmo/apn_5.09a.mch1.2.p2/pgi/qh4lqyvz73zcm2emfwwhcfue6kkm3xyo</span>
+<span class="go">/project/g110/spack-install/daint/cosmo/apn_5.09a.mch1.2.p2/pgi/ssezzpu36dc4j5lc35rkytuieicoptfr</span>
+<span class="go">/project/g110/spack-install/daint/cosmo/mch/pgi/4h7b7x62dcpvrctghjv23jrpnkep4ela</span>
+<span class="go">/project/g110/spack-install/daint/cosmo/mch/pgi/6ijz5756a65p6wblxbr3enllmpdzcvh5</span>
+<span class="go">/project/g110/spack-install/daint/cosmo/5.09a.mch1.2.p1/pgi/us5kk56wraktww7e543cxi4dbud2lalv</span>
+<span class="go">/project/g110/spack-install/daint/cosmo/5.09a.mch1.2.p1/pgi/o3jtuao2gwrz7uwyekvxvr7ylltwnt4w</span>
+<span class="go">/project/g110/spack-install/daint/cosmo/master/gcc/aejk4rps3es6o5trdwppzew3f2j37kl6</span>
+<span class="go">/project/g110/spack-install/daint/cosmo/master/pgi/vkwywww3z52ttmlzzpn4df5jnr5paiw4</span>
+<span class="go">/project/g110/spack-install/daint/cosmo/master/gcc/l52ikknglfrfolr462lc4ez6abulmphs</span>
+<span class="go">/project/g110/spack-install/daint/cosmo/master/pgi/bbjwypwllbba6nmkvronktzo2vt6k3dw</span>
+<span class="go">/project/g110/spack-install/daint/cosmo/master/pgi/gnm6i4pya3lrscgdnvvzgt77bssbfcab</span>
+<span class="go">/project/g110/spack-install/daint/cosmo/master/pgi/koaxr3hlillunjtywkh46vcpzgrarnxc</span>
+<span class="go">/project/g110/spack-install/daint/cosmo/master/pgi/i72unz2dzlp4donztoi7kxbubj4kfqtw</span>
+<span class="go">/project/g110/spack-install/daint/cosmo/master/pgi/rvqs2tqltwlohpkyedzwnjggtwtgu4ly</span>
+<span class="go">/project/g110/spack-install/daint/cosmo/master/pgi/i2hc4rhlhhapga6gheq3tcnbyrytadoy</span>
+<span class="go">/project/g110/spack-install/daint/cosmo/master/pgi/kmrbrer2mlzz2rkn3ykhxr6h6glbwptn</span>
 </pre></div>
 </div>
 <div class="admonition tip">
