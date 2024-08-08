@@ -7,7 +7,7 @@ if [[ "$#" == 1 ]]; then
 else
     machine="$( "$parent_dir"/src/machine.sh )"
     if [[ "$machine" == "balfrin" || "$machine" == "tasna" ]]; then
-        machine="$USER_ENV_ROOT"
+        machine="/mch-environment/v6"
     fi
 fi
 
