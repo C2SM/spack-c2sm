@@ -124,13 +124,6 @@ class Icontools(AutotoolsPackage):
                     '-p', 'normal', './C2SM/test/jenkins/test.sh'
                 ],
                                               stderr=subprocess.STDOUT)
-
-            if self.spec.variants['slave'].value == 'tsa':
-                test_process = subprocess.run([
-                    'sbatch', '-W', '--time=00:15:00', '-p', 'debug',
-                    './C2SM/test/jenkins/test.sh'
-                ],
-                                              stderr=subprocess.STDOUT)
             if test_process.returncode != 0:
                 cat_submit_process = subprocess.run(['cat', 'job.out'],
                                                     stderr=subprocess.STDOUT,
