@@ -38,7 +38,7 @@ Setup Spack environment
 
 ``setup-env.sh`` automatically detects the machine it is running on, or falls back to a generic configuration called 'unknown'.
 ``setup-env.sh <machine>`` forces a machine. This also works with 'unknown' as a machine, which is useful in a container.
-It prints which machine it detected. Currently it's able to detect Balfrin, Piz Daint and Tsa.
+It prints which machine it detected. Currently it's able to detect Balfrin and Piz Daint.
 You may simply execute
 
 .. code-block:: console
