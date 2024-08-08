@@ -83,11 +83,6 @@ def test_install_eccodes_2_19_0():
     spack_install('eccodes @2.19.0', test_root=False)
 
 
-@pytest.mark.fckit
-def test_install_and_check_fckit_0_9_0():
-    spack_install('fckit@0.9.0')
-
-
 @pytest.mark.fdb_fortran
 def test_install_fdb_fortran():
     spack_install('fdb-fortran')
@@ -208,13 +203,6 @@ def test_install_icontools():
     spack_install('icontools @2.5.2')
 
 
-@pytest.mark.no_balfrin  # Not supported on Balfrin
-@pytest.mark.infero
-def test_install_infero_tf_c():
-    spack_install(
-        'infero @0.1.2 %gcc +onnx +tf_c fflags="-ffree-line-length-1024"')
-
-
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
 @pytest.mark.int2lm
 def test_install_int2ml_version_3_00_gcc():
@@ -253,11 +241,6 @@ def test_install_default_nvidia_blas():
 @pytest.mark.nvidia_lapack
 def test_install_default_nvidia_lapack():
     spack_install('nvidia-lapack')
-
-
-@pytest.mark.onnx_runtime
-def test_install_default_onnx_runtime():
-    spack_install('onnx-runtime')
 
 
 @pytest.mark.oasis
@@ -359,11 +342,6 @@ def test_install_rttov(compiler):
 @pytest.mark.scales_ppm
 def test_install_default():
     spack_install('scales-ppm')
-
-
-@pytest.mark.tensorflowc
-def test_install_2_6_0():
-    spack_install('tensorflowc @2.6.0')
 
 
 @pytest.mark.yaxt

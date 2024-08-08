@@ -199,13 +199,6 @@ class Icon(AutotoolsPackage, CudaPackage):
             default=True,
             description='Enable silent-rules for build-process')
 
-    # C2SM specific Features:
-    variant(
-        'infero',
-        default=False,
-        description=
-        'Build with infero for inference with machine-learning models. Experimental, needs non-standard codebase!'
-    )
     variant(
         'pytorch',
         default=False,
@@ -234,7 +227,6 @@ class Icon(AutotoolsPackage, CudaPackage):
         depends_on('boost', when='dsl={0}'.format(x))
         conflicts('^python@:3.9,3.11:', when='dsl={0}'.format(x))
 
-    depends_on('infero +quiet +tf_c +onnx', when='+infero')
     depends_on('pytorch-fortran', when='+pytorch')
 
     depends_on('libfyaml', when='+coupling')
@@ -278,7 +270,6 @@ class Icon(AutotoolsPackage, CudaPackage):
     conflicts('+dace', when='~mpi')
     conflicts('+emvorado', when='~mpi')
     conflicts('+cuda', when='%gcc')
-    conflicts('~infero', when='+pytorch')
 
     # The gpu=openacc+cuda relies on the cuda variant
     conflicts('~cuda', when='gpu=openacc+cuda')
@@ -542,8 +533,6 @@ class Icon(AutotoolsPackage, CudaPackage):
 
         if '+pytorch' in self.spec:
             libs += self.spec['pytorch-fortran'].libs
-        if '+infero' in self.spec:
-            libs += self.spec['infero'].libs
 
         fcgroup = self.spec.variants['fcgroup'].value
         # ('none',) is the values spack assign if fcgroup is not set
