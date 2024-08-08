@@ -89,10 +89,6 @@ class Icon(AutotoolsPackage, CudaPackage):
             default=True,
             description='Enable usage of the RTE+RRTMGP toolbox '
             'for radiation calculations')
-    variant(
-        'rttov',
-        default=False,
-        description='Enable usage of the radiative transfer model for TOVS')
     variant('dace',
             default=False,
             description='Enable the DACE modules for data assimilation')
@@ -240,9 +236,6 @@ class Icon(AutotoolsPackage, CudaPackage):
     depends_on('libfyaml', when='+coupling')
     depends_on('libxml2', when='+art')
 
-    depends_on('rttov+hdf5', when='+rttov')
-    depends_on('rttov~openmp', when='~openmp+rttov')
-
     for x in serialization_values:
         depends_on('serialbox+fortran', when='serialization={0}'.format(x))
 
@@ -328,7 +321,6 @@ class Icon(AutotoolsPackage, CudaPackage):
                 'nwp',
                 'ecrad',
                 'rte-rrtmgp',
-                'rttov',
                 'dace',
                 'emvorado',
                 'art',
@@ -513,9 +505,6 @@ class Icon(AutotoolsPackage, CudaPackage):
         if '+cdi-pio' in self.spec:
             libs += self.spec['yaxt:fortran'].libs
 
-        if '+rttov' in self.spec:
-            libs += self.spec['rttov'].libs
-
         libs += self.spec['lapack:fortran'].libs
         libs += self.spec['blas:fortran'].libs
         libs += self.spec['netcdf-fortran'].libs
@@ -523,7 +512,7 @@ class Icon(AutotoolsPackage, CudaPackage):
         if '+coupling' in self.spec or '~cdi-pio' in self.spec:
             libs += self.spec['netcdf-c'].libs
 
-        if '+emvorado' in self.spec or '+rttov' in self.spec:
+        if '+emvorado' in self.spec:
             libs += self.spec['hdf5:fortran,hl'].libs
         elif '+sct' in self.spec:
             libs += self.spec['hdf5'].libs
@@ -690,17 +679,6 @@ class Icon(AutotoolsPackage, CudaPackage):
                 f'The value "{arg}" for the extra_config_args variant conflicts '
                 f'with the existing variant {variant_from_arg}. Set this variant instead.'
             )
-
-    @run_after('configure')
-    def adjust_rttov_macro(self):
-        if '+rttov' in self.spec:
-            rttov_major_version = self.spec['rttov'].version.up_to(1)
-            if rttov_major_version != ver(13):
-                filter_file('_RTTOV_VERSION=13',
-                            '_RTTOV_VERSION={0}'.format(rttov_major_version),
-                            'icon.mk',
-                            string=True,
-                            backup=False)
 
     def check(self):
         # By default "check" calls make with targets "check" and "test".
