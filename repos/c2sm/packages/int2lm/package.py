@@ -83,16 +83,12 @@ class Int2lm(MakefilePackage):
             env.set('GRIBAPII', '')
 
         # Netcdf library
-        if self.spec.variants['slave'].value == 'daint':
-            env.set('NETCDFL', '-L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf')
-            env.set('NETCDFI', '-I$(NETCDF_DIR)/include')
-        else:
-            env.set(
-                'NETCDFL', '-L' + self.spec['netcdf-fortran'].prefix +
-                '/lib -lnetcdff -L' + self.spec['netcdf-c'].prefix +
-                '/lib64 -lnetcdf')
-            env.set('NETCDFI',
-                    '-I' + self.spec['netcdf-fortran'].prefix + '/include')
+        env.set(
+            'NETCDFL', '-L' + self.spec['netcdf-fortran'].prefix +
+            '/lib -lnetcdff -L' + self.spec['netcdf-c'].prefix +
+            '/lib64 -lnetcdf')
+        env.set('NETCDFI',
+                '-I' + self.spec['netcdf-fortran'].prefix + '/include')
 
         # Grib1 library
         if self.compiler.name == 'gcc':

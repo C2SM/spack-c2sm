@@ -107,9 +107,9 @@ class ScopeTest(unittest.TestCase):
         self.assertEqual(sorted(scope), sorted(['balfrin', 'cosmo']))
 
     def test_explicit_scope_2_machines_2_packages(self):
-        scope = explicit_scope('balfrin cosmo daint icon')
+        scope = explicit_scope('balfrin cosmo icon')
         self.assertEqual(sorted(scope),
-                         sorted(['balfrin', 'daint', 'cosmo', 'icon']))
+                         sorted(['balfrin', 'cosmo', 'icon']))
 
     def test_explicit_scope_0_machines_1_package(self):
         scope = explicit_scope('cosmo')
@@ -130,45 +130,6 @@ class ScopeTest(unittest.TestCase):
         triggers = package_triggers(['py-gt4py'])
         self.assertTrue('py-gt4py' in triggers)  # package name included
         self.assertTrue('py_gt4py' in triggers)  # marker name included
-
-
-class UpstreamTest(unittest.TestCase):
-
-    @unittest.expectedFailure
-    def test_non_existent_spack_yaml(self):
-        read_upstream_from_spack_yaml('/inexistent_path/to_yaml')
-
-    def test_upstream_from_config(self):
-        upstream_base = read_upstream_from_spack_yaml(
-            os.path.join(os.path.normpath(spack_c2sm_path),
-                         'upstreams/daint/base'))
-        self.assertEqual('/project/g110/spack/upstream/daint_v0.21.1.0/base',
-                         upstream_base)
-
-    def test_upstream_from_another_tag(self):
-        upstream_base = os.path.join(os.path.normpath(spack_c2sm_path),
-                                     'upstreams/daint/base')
-
-        self.assertEqual('/project/g110/spack/upstream/daint_v0.18.1.4/base',
-                         upstream_from_another_tag(upstream_base, 'v0.18.1.4'))
-
-        # mch_env_3 does not contain upstream_base -> None
-        self.assertEqual(None,
-                         upstream_from_another_tag(upstream_base, 'mch_env_3'))
-
-    def test_current_tag(self):
-        self.assertTrue(current_tag())
-
-    def test_git_version(self):
-        self.assertTrue(re.match(r'^\d+(\.\d+)*$', git_version()) is not None)
-
-    def test_current_commit(self):
-        self.assertTrue(current_commit())
-
-    @unittest.skipUnless(2 <= int(git_version().split(".")[0]),
-                         'needs git version > 2.0.0')
-    def test_newer_tags(self):
-        self.assertGreater(len(newer_tags('v0.18.1.0')), 5)
 
 
 if __name__ == '__main__':
