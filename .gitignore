@@ -3,10 +3,9 @@
 **.swp
 **.swo
 log/
-env/
 .venv/
 spack-build_stage/
 spack-test_stage/
 spack-misc_cache/
-user-config/
+user-config/linux
 user-cache/

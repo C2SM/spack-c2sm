@@ -30,15 +30,14 @@ To get an instance, clone spack-c2sm and its submodule spack.
 
 The arguments ``--depth 1`` and ``--shallow-submodules`` are optional, but they reduce the amount of downloaded data.
 It is recommended to clone ``spack-c2sm`` in a location that does **not** undergo a
-regular cleanup. On Piz Daint, ``$SCRATCH`` enforces the deletion of all files older than 30 days.
-This may corrupt your Spack instance, therefore ``/project/XYZ/`` is a safer location.
+regular cleanup.
 
 Setup Spack environment
 -----------------------
 
 ``setup-env.sh`` automatically detects the machine it is running on, or falls back to a generic configuration called 'unknown'.
 ``setup-env.sh <machine>`` forces a machine. This also works with 'unknown' as a machine, which is useful in a container.
-It prints which machine it detected. Currently it's able to detect Balfrin and Piz Daint.
+It prints which machine it detected.
 You may simply execute
 
 .. code-block:: console

@@ -33,14 +33,14 @@ The order is irrelevant.
 Examples
 ^^^^^^^^
 
-*   ``launch jenkins int2lm daint`` tests int2lm on daint.
-*   ``launch jenkins cosmo int2lm daint`` tests
+*   ``launch jenkins int2lm balfrin`` tests int2lm on balfrin.
+*   ``launch jenkins cosmo int2lm balfrin`` tests
 
-    *   cosmo on daint
-    *   int2lm on daint
+    *   cosmo on balfrin
+    *   int2lm on balfrin
 
 *   ``launch jenkins cosmo icon`` tests cosmo and icon on all machines.
-*   ``launch jenkins daint`` tests all packages on daint.
+*   ``launch jenkins balfrin`` tests all packages on balfrin.
 *   ``launch jenkins`` tests all packages on all machines.
 *   ``launch jenkins all`` tests all packages on all machines.
 
@@ -50,4 +50,3 @@ Supported packages: all folder names in folder `packages <https://github.com/C2S
 Supported machines:
 
 *   balfrin
-*   daint
