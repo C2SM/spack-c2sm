@@ -60,6 +60,7 @@ pipeline {
                             sh """
                             source .venv/bin/activate
                             source ./setup-env.sh $USER_ENV_ROOT
+                            spack config --scope user add config:build_stage:/tmp/spack-build_stage
                             pytest -v -n auto test/system_test.py
                             """
                         }
