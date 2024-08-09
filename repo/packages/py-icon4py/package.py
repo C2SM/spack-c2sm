@@ -48,7 +48,8 @@ class PyIcon4py(PythonPackage):
         super().test()
         # unit tests
 
-        python("-m", "pytest", "-v", "-s", "-n", "auto", "-m", "not slow_tests")
+        python("-m", "pytest", "-v", "-s", "-n", "auto", "-m",
+               "not slow_tests")
 
     @property
     def headers(self):
@@ -72,7 +73,8 @@ class PyIcon4py(PythonPackage):
 
         for param, folder in folder_name.items():
             if param in query_parameters:
-                return self._find_folder_and_add_dummy_header(self.prefix, folder)
+                return self._find_folder_and_add_dummy_header(
+                    self.prefix, folder)
 
         return HeaderList([])
 
@@ -83,6 +85,7 @@ class PyIcon4py(PythonPackage):
 
 
 class PythonPipBuilder(PythonPipBuilder):
+
     def install(self, pkg, spec, prefix):
         """Install everything from build directory."""
 
@@ -93,8 +96,8 @@ class PythonPipBuilder(PythonPipBuilder):
                 raise SpecError(
                     "'{}' package uses 'config_settings' which is only supported by "
                     "pip 22.1+. Add the following line to the package to fix this:\n\n"
-                    '    depends_on("py-pip@22.1:", type="build")'.format(spec.name)
-                )
+                    '    depends_on("py-pip@22.1:", type="build")'.format(
+                        spec.name))
 
             args.append("--config-settings={}={}".format(key, value))
 
