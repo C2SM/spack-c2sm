@@ -16,7 +16,7 @@ def test_install_cosmo_eccodes_definitions_version(version):
 
 
 def test_install_cosmo_6_0():
-    spack_install('cosmo@6.0%nvhpc', test_root=False)
+    spack_install('cosmo @6.0 %nvhpc', test_root=False)
 
 
 def test_install_eccodes_2_19_0():
@@ -73,15 +73,8 @@ def test_install_icontools():
 
 
 @pytest.mark.int2lm
-def test_install_int2ml_version_3_00_gcc():
-    spack_install('int2lm @int2lm-3.00 %gcc', test_root=False)
-
-
-@pytest.mark.int2lm
-def test_install_int2lm_version_3_00_nvhpc_fixed_definitions():
-    spack_install(
-        'int2lm @int2lm-3.00 %nvhpc ^cosmo-eccodes-definitions@2.19.0.7%nvhpc',
-        test_root=False)
+def test_install_int2lm_3_00_nvhpc():
+    spack_install('int2lm @int2lm-3.00 %nvhpc', test_root=False)
 
 
 def test_install_libcdi_pio_default():
@@ -89,7 +82,7 @@ def test_install_libcdi_pio_default():
 
 
 def test_install_libgrib1_22_01_2020_nvhpc():
-    spack_install('libgrib1 @22-01-2020%nvhpc')
+    spack_install('libgrib1 @22-01-2020 %nvhpc')
 
 
 def test_install_makedepf90():
@@ -111,42 +104,34 @@ def test_install_pytorch_fortran_proxy_version_0_4():
                   test_root=False)
 
 
-def test_py_cytoolz_install_default():
+def test_install_py_cytoolz_install_default():
     spack_install('py-cytoolz')
 
 
-def test_py_devtools_install_default():
+def test_install_py_devtools_install_default():
     spack_install('py-devtools')
 
 
-def test_py_factory_boy_install_default():
+def test_install_py_factory_boy_install_default():
     spack_install('py-factory-boy')
 
 
-def test_py_frozendict_install_default():
+def test_install_py_frozendict_install_default():
     spack_install('py-frozendict')
 
 
-def test_py_gridtools_cpp_install_default():
+def test_install_py_gridtools_cpp_install_default():
     spack_install('py-gridtools-cpp')
 
 
-@pytest.mark.parametrize("version", ['1.0.3.3', '1.0.3.7', '1.0.3.8'])
+@pytest.mark.parametrize("version", ['1.0.3.3', '1.0.3.5', '1.0.3.8'])
 def test_install_py_gt4py_for_version(version, ):
     spack_install(f'py-gt4py @{version}')
 
 
-@pytest.mark.py_icon4py
-def test_install_py_icon4py_version_0_0_10():
-    spack_install('py-icon4py @ 0.0.10 %gcc ^py-gt4py@1.0.3.3')
-
-
-def test_install_py_icon4py_version_0_0_11():
-    spack_install('py-icon4py @ 0.0.11 %gcc ^py-gt4py@1.0.3.7')
-
-
-def test_install_py_icon4py_version_0_0_12():
-    spack_install('py-icon4py @ 0.0.12 %gcc ^py-gt4py@1.0.3.8')
+@pytest.mark.parametrize("version", ['0.0.10', '0.0.11', '0.0.12'])
+def test_install_py_icon4py_version_0_0_10(version, ):
+    spack_install(f'py-icon4py @{version}')
 
 
 def test_install_py_hatchling_default():

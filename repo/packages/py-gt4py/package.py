@@ -12,13 +12,13 @@ class PyGt4py(PythonPackage):
     domain-specific language (DSL). """
 
     homepage = "https://gridtools.github.io/gt4py/latest/index.html"
-
+    git = "git@github.com:GridTools/gt4py.git"
     url = "git@github.com:GridTools/gt4py.git"
 
     version('main', branch='main', git=url)
-    version('1.0.3.3', tag='icon4py_20240229', git=url)
-    version('1.0.3.7', tag='icon4py_20240521', git=url)
-    version('1.0.3.8', tag='icon4py_20240711', git=url)
+    version('1.0.3.8', tag='icon4py_20240711')
+    version('1.0.3.5', tag='icon4py_20240322')
+    version('1.0.3.3', tag='icon4py_20240229')
 
     maintainers = ['samkellerhals']
 
