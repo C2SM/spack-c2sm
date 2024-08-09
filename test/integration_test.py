@@ -1,54 +1,34 @@
 import pytest
-import sys
-import os
-
-spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                               '..')
-
-sys.path.append(os.path.normpath(spack_c2sm_path))
-from src import log_with_spack, sanitized_filename, all_packages, machine_name
+from spack_commands import ALL_PACKAGES, spack_info, spack_spec
 
 
-def spack_info(spec: str, log_filename: str = None):
-    """
-    Tests 'spack info' of the given spec and writes the output into the log file.
-    """
-
-    if log_filename is None:
-        log_filename = sanitized_filename(f'{spec}-spack_info')
-    log_with_spack(f'spack info {spec}', 'integration_test', log_filename)
-
-
-def spack_spec(spec: str, log_filename: str = None):
-    """
-    Tests 'spack info' of the given spec and writes the output into the log file.
-    """
-
-    if log_filename is None:
-        log_filename = sanitized_filename(f'{spec}-spack_spec')
-    log_with_spack(f'spack spec {spec}', 'integration_test', log_filename)
-
-
-@pytest.mark.parametrize('package', all_packages)
-def test_spack_info(package: str):
+@pytest.mark.parametrize("package", ALL_PACKAGES)
+def test_info(package: str):
+    "Tests that the command 'spack info <package>' works."
     spack_info(package)
 
 
-@pytest.mark.parametrize('package', all_packages)
-def test_spack_spec(package: str):
+@pytest.mark.parametrize("package", ALL_PACKAGES)
+def test_spec(package: str):
+    "Tests that the command 'spack spec <package>' works."
     spack_spec(package)
 
 
-@pytest.mark.icon
-@pytest.mark.parametrize('variant', [
-    'serialization=create', 'fcgroup=DACE.externals/dace_icon.-O1',
-    'extra-config-args=--disable-new_feature,--enable-old_config_arg'
-])
-def test_icon_spec_with_variant(variant: str):
-    spack_spec(f'icon {variant}')
+def test_icon_serialization():
+    spack_spec("icon serialization=create")
 
 
-@pytest.mark.int2lm
-@pytest.mark.parametrize('variant', ['+parallel', '~parallel'])
-def test_int2lm_spec_with_variant(variant: str):
-    spack_spec(f'int2lm {variant}')
+def test_icon_fcgroup():
+    spack_spec("icon fcgroup=DACE.externals/dace_icon.-O1")
+
+
+def test_icon_extra_config_args():
+    spack_spec("icon extra-config-args=--disable-new_feature,--enable-old_config_arg")
+
+
+def test_int2lm_parallel():
+    spack_spec("int2lm +parallel")
+
+
+def test_int2lm_no_parallel():
+    spack_spec("int2lm ~parallel")
