@@ -84,9 +84,9 @@ class Int2lm(MakefilePackage):
 
         # Netcdf library
         env.set(
-            'NETCDFL', '-L' + self.spec['netcdf-fortran'].prefix +
-            '/lib -lnetcdff -L' + self.spec['netcdf-c'].prefix +
-            '/lib64 -lnetcdf')
+            'NETCDFL',
+            '-L' + self.spec['netcdf-fortran'].prefix + '/lib -lnetcdff -L' +
+            self.spec['netcdf-c'].prefix + '/lib64 -lnetcdf')
         env.set('NETCDFI',
                 '-I' + self.spec['netcdf-fortran'].prefix + '/include')
 

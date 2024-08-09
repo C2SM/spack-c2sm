@@ -49,9 +49,11 @@ class Icontools(AutotoolsPackage):
     depends_on('eccodes@2.19.0 +fortran ~aec', type=('build', 'link', 'run'))
     depends_on('jasper@1.900.1', type=('build', 'link'))
 
-    variant('slave',
-            default='none',
-            description='Build on described slave machine',)
+    variant(
+        'slave',
+        default='none',
+        description='Build on described slave machine',
+    )
     variant('slurm_account',
             default='g110',
             description=
