@@ -45,11 +45,11 @@ def test_install_fdb_5_11_17_nvhpc():
     spack_install('fdb @5.11.17 %nvhpc', test_root=False)
 
 
-def test_install_icon_24_1_gcc():
+def test_install_icon_2024_1_gcc():
     spack_install('icon @2024.1-1 %gcc')
 
 
-def test_install_2024_1_nvhpc():
+def test_install_icon_2024_1_nvhpc():
     spack_install('icon @2024.1-1 %nvhpc')
 
 
@@ -100,76 +100,76 @@ def test_install_oasis_version_4_0_nvhpc():
     spack_install('oasis @4.0 %nvhpc')
 
 
-def test_install_pytorch_fortran_version_0_4(devirt_env):
+def test_install_pytorch_fortran_version_0_4():
     spack_install(
         'pytorch-fortran@0.4%nvhpc ^pytorch-fortran-proxy@0.4%gcc ^python@3.10 ^gmake%gcc ^cmake%gcc',
         test_root=False)
 
 
-def test_install_pytorch_fortran_proxy_version_0_4(devirt_env):
+def test_install_pytorch_fortran_proxy_version_0_4():
     spack_install('pytorch-fortran-proxy@0.4%gcc ^python@3.10',
                   test_root=False)
 
 
-def test_py_cytoolz_install_default(devirt_env):
+def test_py_cytoolz_install_default():
     spack_install('py-cytoolz')
 
 
-def test_py_devtools_install_default(devirt_env):
+def test_py_devtools_install_default():
     spack_install('py-devtools')
 
 
-def test_py_factory_boy_install_default(devirt_env):
+def test_py_factory_boy_install_default():
     spack_install('py-factory-boy')
 
 
-def test_py_frozendict_install_default(devirt_env):
+def test_py_frozendict_install_default():
     spack_install('py-frozendict')
 
 
-def test_py_gridtools_cpp_install_default(devirt_env):
+def test_py_gridtools_cpp_install_default():
     spack_install('py-gridtools-cpp')
 
 
 @pytest.mark.parametrize("version", ['1.0.3.3', '1.0.3.7', '1.0.3.8'])
-def test_install_py_gt4py_for_version(version, devirt_env):
+def test_install_py_gt4py_for_version(version, ):
     spack_install(f'py-gt4py @{version}')
 
 
 @pytest.mark.py_icon4py
-def test_install_py_icon4py_version_0_0_10(devirt_env):
+def test_install_py_icon4py_version_0_0_10():
     spack_install('py-icon4py @ 0.0.10 %gcc ^py-gt4py@1.0.3.3')
 
 
-def test_install_py_icon4py_version_0_0_11(devirt_env):
+def test_install_py_icon4py_version_0_0_11():
     spack_install('py-icon4py @ 0.0.11 %gcc ^py-gt4py@1.0.3.7')
 
 
-def test_install_py_icon4py_version_0_0_12(devirt_env):
+def test_install_py_icon4py_version_0_0_12():
     spack_install('py-icon4py @ 0.0.12 %gcc ^py-gt4py@1.0.3.8')
 
 
-def test_install_py_hatchling_default(devirt_env):
+def test_install_py_hatchling_default():
     spack_install('py-hatchling')
 
 
-def test_install_py_inflection_default(devirt_env):
+def test_install_py_inflection_default():
     spack_install('py-inflection')
 
 
-def test_install_py_pytest_factoryboy_default(devirt_env):
+def test_install_py_pytest_factoryboy_default():
     spack_install('py-pytest-factoryboy')
 
 
-def test_install_py_tabulate_default(devirt_env):
+def test_install_py_tabulate_default():
     spack_install('py-tabulate')
 
 
-def test_install_py_typing_extensions_default(devirt_env):
+def test_install_py_typing_extensions_default():
     spack_install('py-typing-extensions')
 
 
-def test_install_default():
+def test_install_scales_ppm_default():
     spack_install('scales-ppm')
 
 
