@@ -1,14 +1,11 @@
 import unittest
 import sys
 import os
-import re
 
 spack_c2sm_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                '..')
 sys.path.append(os.path.normpath(spack_c2sm_path))
 from src import machine_name, Markdown, HTML, time_format, sanitized_filename, all_machines, all_packages, explicit_scope, package_triggers
-
-from src.upstream import *
 
 
 class MachineDetection(unittest.TestCase):
