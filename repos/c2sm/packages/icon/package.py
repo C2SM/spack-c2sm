@@ -237,6 +237,9 @@ class Icon(AutotoolsPackage, CudaPackage):
 
     for x in serialization_values:
         depends_on('serialbox+fortran', when='serialization={0}'.format(x))
+        # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
+        depends_on('serialbox %nvhpc', when='%nvhpc')
+        depends_on('serialbox %gcc', when='%gcc')
 
     depends_on('libcdi-pio+fortran+netcdf', when='+cdi-pio')
     depends_on('libcdi-pio grib2=eccodes', when='+cdi-pio+grib2')

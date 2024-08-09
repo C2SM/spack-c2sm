@@ -119,8 +119,7 @@ def test_install_icon_24_1_gcc():
 @pytest.mark.icon
 @pytest.mark.no_daint
 def test_install_2024_1_nvhpc():
-    #WORKAROUND: ^libxml2%gcc works around a problem in the concretizer of spack v0.21.1 and /mch-environment/v6
-    spack_install('icon @2024.1-1 %nvhpc ^libxml2%gcc')
+    spack_install('icon @2024.1-1 %nvhpc')
 
 
 @pytest.mark.no_daint  # libxml2 %nvhpc fails to build
@@ -135,9 +134,8 @@ def test_install_conditional_dependencies():
     # +mpi triggers mpi
     # gpu=openacc+cuda triggers cuda
 
-    #WORKAROUND: ^libxml2%gcc works around a problem in the concretizer of spack v0.21.1 and /mch-environment/v6
     spack_install(
-        'icon @2024.1-1 %nvhpc +coupling +rttov serialization=create +emvorado +mpi gpu=openacc+cuda ^libxml2%gcc'
+        'icon @2024.1-1 %nvhpc +coupling +rttov serialization=create +emvorado +mpi gpu=openacc+cuda cuda_arch=80'
     )
 
 

@@ -71,6 +71,9 @@ class Cosmo(MakefilePackage):
     depends_on('netcdf-c +mpi')
     depends_on('jasper@1.900.1')
     depends_on('eccodes +fortran')
+    # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
+    depends_on('eccodes %nvhpc', when='%nvhpc')
+    depends_on('eccodes %gcc', when='%gcc')
 
     # run dependency
     depends_on('slurm', type='run')
