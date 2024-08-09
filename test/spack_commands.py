@@ -6,10 +6,10 @@ from pathlib import Path
 REPO_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 PACKAGES_DIR = os.path.join(REPO_DIR, "repo", "packages")
 ALL_PACKAGES = [
-    name
-    for name in os.listdir(PACKAGES_DIR)
+    name for name in os.listdir(PACKAGES_DIR)
     if os.path.isdir(os.path.join(PACKAGES_DIR, name))
 ]
+
 
 def time_format(seconds) -> str:
     "Returns a string formatted as 'XXh YYm ZZ.ZZs'."
