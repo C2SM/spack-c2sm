@@ -2,7 +2,7 @@ Quick Start
 ===========
 
 
-At CSCS/ETHZ (Daint, Balfrin and Euler)
+At CSCS/ETHZ (Balfrin and Euler)
 ------------------------------------------------
 
 To set up a Spack instance, clone the repository using a specific Spack tag (latest ``SPACK_TAG=v0.20.1.5``).
@@ -22,7 +22,7 @@ You can force a machine with an argument. The name has to match a folder in sysc
 
 .. code-block:: console
 
-  $ . spack-c2sm/setup-env.sh daint
+  $ . spack-c2sm/setup-env.sh balfrin
 
 
 Local machines and Containers

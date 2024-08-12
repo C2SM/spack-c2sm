@@ -35,6 +35,9 @@ class Int2lm(MakefilePackage):
     version('int2lm-3.00', git=orggit, tag='int2lm-3.00')
 
     depends_on('eccodes +fortran')
+    # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
+    depends_on('eccodes %nvhpc', when='%nvhpc')
+    depends_on('eccodes %gcc', when='%gcc')
     depends_on('cosmo-eccodes-definitions', type=('build', 'run'))
     depends_on('libgrib1 @22-01-2020', type='build')
     depends_on('mpi', type=('build', 'link', 'run'), when='+parallel')
@@ -80,16 +83,12 @@ class Int2lm(MakefilePackage):
             env.set('GRIBAPII', '')
 
         # Netcdf library
-        if self.spec.variants['slave'].value == 'daint':
-            env.set('NETCDFL', '-L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf')
-            env.set('NETCDFI', '-I$(NETCDF_DIR)/include')
-        else:
-            env.set(
-                'NETCDFL', '-L' + self.spec['netcdf-fortran'].prefix +
-                '/lib -lnetcdff -L' + self.spec['netcdf-c'].prefix +
-                '/lib64 -lnetcdf')
-            env.set('NETCDFI',
-                    '-I' + self.spec['netcdf-fortran'].prefix + '/include')
+        env.set(
+            'NETCDFL',
+            '-L' + self.spec['netcdf-fortran'].prefix + '/lib -lnetcdff -L' +
+            self.spec['netcdf-c'].prefix + '/lib64 -lnetcdf')
+        env.set('NETCDFI',
+                '-I' + self.spec['netcdf-fortran'].prefix + '/include')
 
         # Grib1 library
         if self.compiler.name == 'gcc':

@@ -1,3 +1,0 @@
-repos:
-  - '$spack/../repos/alps'
-  - '$spack/../repos/c2sm'

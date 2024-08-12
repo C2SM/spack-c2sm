@@ -6,6 +6,9 @@ if [[ "$#" == 1 ]]; then
     machine="$1"
 else
     machine="$( "$parent_dir"/src/machine.sh )"
+    if [[ "$machine" == "balfrin" || "$machine" == "tasna" ]]; then
+        machine="/mch-environment/v6"
+    fi
 fi
 
 if [[ ${machine:0:1} == "/" ]]; then

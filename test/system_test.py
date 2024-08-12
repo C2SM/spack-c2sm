@@ -83,11 +83,6 @@ def test_install_eccodes_2_19_0():
     spack_install('eccodes @2.19.0', test_root=False)
 
 
-@pytest.mark.fckit
-def test_install_and_check_fckit_0_9_0():
-    spack_install('fckit@0.9.0')
-
-
 @pytest.mark.fdb_fortran
 def test_install_fdb_fortran():
     spack_install('fdb-fortran')
@@ -115,20 +110,16 @@ def test_install_fdb_5_11_17_nvhpc():
     spack_install('fdb @5.11.17 %nvhpc', test_root=False)
 
 
-@pytest.mark.no_daint
 @pytest.mark.icon
 def test_install_icon_24_1_gcc():
     spack_install('icon @2024.1-1 %gcc')
 
 
 @pytest.mark.icon
-@pytest.mark.no_daint
 def test_install_2024_1_nvhpc():
-    #WORKAROUND: ^libxml2%gcc works around a problem in the concretizer of spack v0.21.1 and /mch-environment/v6
-    spack_install('icon @2024.1-1 %nvhpc ^libxml2%gcc')
+    spack_install('icon @2024.1-1 %nvhpc')
 
 
-@pytest.mark.no_daint  # libxml2 %nvhpc fails to build
 @pytest.mark.icon
 def test_install_conditional_dependencies():
     # +coupling triggers libfyaml, libxml2, netcdf-c
@@ -139,79 +130,14 @@ def test_install_conditional_dependencies():
     # +mpi triggers mpi
     # gpu=openacc+cuda triggers cuda
 
-    #WORKAROUND: ^libxml2%gcc works around a problem in the concretizer of spack v0.21.1 and /mch-environment/v6
     spack_install(
-        'icon @2024.1-1 %nvhpc +coupling serialization=create +emvorado +mpi gpu=openacc+cuda ^libxml2%gcc'
+        'icon @2024.1-1 %nvhpc +coupling serialization=create +emvorado +mpi gpu=openacc+cuda cuda_arch=80'
     )
-
-
-def icon_env_test(spack_env: str, out_of_source: bool = False):
-    # avoids race conditions on the same folder
-    unique_folder = 'icon_' + uuid.uuid4().hex
-    subprocess.run(
-        f'git clone --depth 1 --recurse-submodules -b 2024.01.1 git@github.com:C2SM/icon.git {unique_folder}',
-        check=True,
-        shell=True)
-
-    log_filename = sanitized_filename(spack_env)
-    if out_of_source:
-        build_dir = os.path.join(unique_folder, 'build')
-        os.makedirs(build_dir, exist_ok=True)
-        shutil.copytree(os.path.join(unique_folder, 'config'),
-                        os.path.join(build_dir, 'config'))
-        unique_folder = build_dir
-        log_filename += '_out_of_source'
-
-    log_with_spack('spack install -n -v',
-                   'system_test',
-                   log_filename,
-                   cwd=unique_folder,
-                   env=spack_env,
-                   srun=True)
-
-    # for out-of-source build we can't run tests because required files
-    # like scripts/spack/test.py or scripts/buildbot_script are not synced
-    # in our spack-recipe to the build-folder
-    if out_of_source:
-        return
-
-    log_with_spack('spack install --test=root -n -v',
-                   'system_test',
-                   log_filename,
-                   cwd=unique_folder,
-                   env=spack_env,
-                   srun=False)
-
-
-@pytest.mark.no_balfrin  # config file does not exist for this machine
-@pytest.mark.icon
-def test_install_c2sm_test_cpu_nvhpc_out_of_source():
-    icon_env_test('config/cscs/spack/v0.21.1.0/daint_cpu_nvhpc',
-                  out_of_source=True)
-
-
-@pytest.mark.no_balfrin  # config file does not exist for this machine
-@pytest.mark.icon
-def test_install_c2sm_test_cpu():
-    icon_env_test('config/cscs/spack/v0.21.1.0/daint_cpu_nvhpc')
-
-
-@pytest.mark.no_balfrin  # config file does not exist for this machine
-@pytest.mark.icon
-def test_install_c2sm_test_gpu():
-    icon_env_test('config/cscs/spack/v0.21.1.0/daint_gpu_nvhpc')
 
 
 @pytest.mark.icontools
 def test_install_icontools():
     spack_install('icontools @2.5.2')
-
-
-@pytest.mark.no_balfrin  # Not supported on Balfrin
-@pytest.mark.infero
-def test_install_infero_tf_c():
-    spack_install(
-        'infero @0.1.2 %gcc +onnx +tf_c fflags="-ffree-line-length-1024"')
 
 
 @pytest.mark.no_balfrin  # int2lm depends on 'libgrib1 @22-01-2020', which fails.
@@ -240,23 +166,6 @@ def test_install_libgrib1_22_01_2020_nvhpc():
 @pytest.mark.makedepf90
 def test_install_makedepf90():
     spack_install('makedepf90 @3.0.1', test_root=False)
-
-
-@pytest.mark.no_balfrin  # Package is a workaround, only needed on Daint.
-@pytest.mark.nvidia_blas
-def test_install_default_nvidia_blas():
-    spack_install('nvidia-blas')
-
-
-@pytest.mark.no_balfrin  # Package is a workaround, only needed on Daint.
-@pytest.mark.nvidia_lapack
-def test_install_default_nvidia_lapack():
-    spack_install('nvidia-lapack')
-
-
-@pytest.mark.onnx_runtime
-def test_install_default_onnx_runtime():
-    spack_install('onnx-runtime')
 
 
 @pytest.mark.oasis
@@ -351,11 +260,6 @@ def test_install_py_typing_extensions_default(devirt_env):
 @pytest.mark.scales_ppm
 def test_install_default():
     spack_install('scales-ppm')
-
-
-@pytest.mark.tensorflowc
-def test_install_2_6_0():
-    spack_install('tensorflowc @2.6.0')
 
 
 @pytest.mark.yaxt

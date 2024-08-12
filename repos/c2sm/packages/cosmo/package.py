@@ -71,6 +71,9 @@ class Cosmo(MakefilePackage):
     depends_on('netcdf-c +mpi')
     depends_on('jasper@1.900.1')
     depends_on('eccodes +fortran')
+    # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
+    depends_on('eccodes %nvhpc', when='%nvhpc')
+    depends_on('eccodes %gcc', when='%gcc')
 
     # run dependency
     depends_on('slurm', type='run')
@@ -162,16 +165,12 @@ class Cosmo(MakefilePackage):
             env.set('AECI', '-I' + self.spec['libaec'].prefix + '/include')
 
         # Netcdf library
-        if self.spec.variants['slave'].value == 'daint':
-            env.set('NETCDFL', '-L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf')
-            env.set('NETCDFI', '-I$(NETCDF_DIR)/include')
-        else:
-            env.set(
-                'NETCDFL', '-L' + self.spec['netcdf-fortran'].prefix +
-                '/lib -lnetcdff -L' + self.spec['netcdf-c'].prefix +
-                '/lib -lnetcdf')
-            env.set('NETCDFI',
-                    '-I' + self.spec['netcdf-fortran'].prefix + '/include')
+        env.set(
+            'NETCDFL',
+            '-L' + self.spec['netcdf-fortran'].prefix + '/lib -lnetcdff -L' +
+            self.spec['netcdf-c'].prefix + '/lib -lnetcdf')
+        env.set('NETCDFI',
+                '-I' + self.spec['netcdf-fortran'].prefix + '/include')
 
         # Grib1 library
         if self.compiler.name == 'gcc':
