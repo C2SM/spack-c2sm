@@ -50,7 +50,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#at-cscs-ethz-daint-balfrin-and-euler">At CSCS/ETHZ (Daint, Balfrin and Euler)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#at-cscs-ethz-balfrin-and-euler">At CSCS/ETHZ (Balfrin and Euler)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#local-machines-and-containers">Local machines and Containers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-packages">Use packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#icon">ICON</a></li>
@@ -93,8 +93,8 @@
              
   <section id="quick-start">
 <h1>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h1>
-<section id="at-cscs-ethz-daint-balfrin-and-euler">
-<h2>At CSCS/ETHZ (Daint, Balfrin and Euler)<a class="headerlink" href="#at-cscs-ethz-daint-balfrin-and-euler" title="Link to this heading"></a></h2>
+<section id="at-cscs-ethz-balfrin-and-euler">
+<h2>At CSCS/ETHZ (Balfrin and Euler)<a class="headerlink" href="#at-cscs-ethz-balfrin-and-euler" title="Link to this heading"></a></h2>
 <p>To set up a Spack instance, clone the repository using a specific Spack tag (latest <code class="docutils literal notranslate"><span class="pre">SPACK_TAG=v0.20.1.5</span></code>).</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>--recurse-submodules<span class="w"> </span>--shallow-submodules<span class="w"> </span>-b<span class="w"> </span><span class="nv">$SPACK_TAG</span><span class="w"> </span>https://github.com/C2SM/spack-c2sm.git
 </pre></div>
@@ -105,7 +105,7 @@
 </div>
 <p>This auto-detects your machine and configures your instance for it.
 You can force a machine with an argument. The name has to match a folder in sysconfigs.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>.<span class="w"> </span>spack-c2sm/setup-env.sh<span class="w"> </span>daint
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>.<span class="w"> </span>spack-c2sm/setup-env.sh<span class="w"> </span>balfrin
 </pre></div>
 </div>
 </section>

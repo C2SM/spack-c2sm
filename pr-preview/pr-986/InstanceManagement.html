@@ -117,14 +117,13 @@ For automated systems that regularly set up a new Spack instance, using a fixed 
 </div>
 <p>The arguments <code class="docutils literal notranslate"><span class="pre">--depth</span> <span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">--shallow-submodules</span></code> are optional, but they reduce the amount of downloaded data.
 It is recommended to clone <code class="docutils literal notranslate"><span class="pre">spack-c2sm</span></code> in a location that does <strong>not</strong> undergo a
-regular cleanup. On Piz Daint, <code class="docutils literal notranslate"><span class="pre">$SCRATCH</span></code> enforces the deletion of all files older than 30 days.
-This may corrupt your Spack instance, therefore <code class="docutils literal notranslate"><span class="pre">/project/XYZ/</span></code> is a safer location.</p>
+regular cleanup.</p>
 </section>
 <section id="setup-spack-environment">
 <h2>Setup Spack environment<a class="headerlink" href="#setup-spack-environment" title="Link to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">setup-env.sh</span></code> automatically detects the machine it is running on, or falls back to a generic configuration called ‘unknown’.
 <code class="docutils literal notranslate"><span class="pre">setup-env.sh</span> <span class="pre">&lt;machine&gt;</span></code> forces a machine. This also works with ‘unknown’ as a machine, which is useful in a container.
-It prints which machine it detected. Currently it’s able to detect Balfrin and Piz Daint.
+It prints which machine it detected.
 You may simply execute</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>.<span class="w"> </span>spack-c2sm/setup-env.sh
 </pre></div>
