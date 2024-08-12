@@ -49,9 +49,11 @@ class Icontools(AutotoolsPackage):
     depends_on('eccodes@2.19.0 +fortran ~aec', type=('build', 'link', 'run'))
     depends_on('jasper@1.900.1', type=('build', 'link'))
 
-    variant('slave',
-            default='none',
-            description='Build on described slave (e.g daint)')
+    variant(
+        'slave',
+        default='none',
+        description='Build on described slave machine',
+    )
     variant('slurm_account',
             default='g110',
             description=
@@ -76,10 +78,6 @@ class Icontools(AutotoolsPackage):
         return args
 
     def setup_build_environment(self, env):
-        # Daint specific flags since cray-modules setting not recognized
-        if self.spec.variants['slave'].value == 'daint':
-            env.set('NETCDF_DIR', '{}'.format(self.spec['netcdf-c'].prefix))
-
         #Setting CFLAGS
         env.append_flags('CFLAGS', '-O2')
         env.append_flags('CFLAGS', '-g')
@@ -116,14 +114,6 @@ class Icontools(AutotoolsPackage):
 
         # only c2sm-versions have script for CSCS
         if self.spec.version in (Version('c2sm-master'), ):
-
-            if self.spec.variants['slave'].value == 'daint':
-                test_process = subprocess.run([
-                    'sbatch', '-W', '--time=00:15:00', '-A',
-                    self.spec.variants['slurm_account'].value, '-C', 'gpu',
-                    '-p', 'normal', './C2SM/test/jenkins/test.sh'
-                ],
-                                              stderr=subprocess.STDOUT)
             if test_process.returncode != 0:
                 cat_submit_process = subprocess.run(['cat', 'job.out'],
                                                     stderr=subprocess.STDOUT,
