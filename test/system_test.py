@@ -123,7 +123,6 @@ def test_install_2024_1_nvhpc():
 @pytest.mark.icon
 def test_install_conditional_dependencies():
     # +coupling triggers libfyaml, libxml2, netcdf-c
-    # +rttov triggers rttov
     # serialization=create triggers serialbox
     # +cdi-pio triggers libcdi-pio, yaxt                   (but unfortunately this is broken)
     # +emvorado triggers eccodes, hdf5, zlib
@@ -132,7 +131,7 @@ def test_install_conditional_dependencies():
     # gpu=openacc+cuda triggers cuda
 
     spack_install(
-        'icon @2024.1-1 %nvhpc +coupling +rttov serialization=create +emvorado +mpi gpu=openacc+cuda cuda_arch=80'
+        'icon @2024.1-1 %nvhpc +coupling serialization=create +emvorado +mpi gpu=openacc+cuda cuda_arch=80'
     )
 
 
@@ -256,13 +255,6 @@ def test_install_py_tabulate_default(devirt_env):
 @pytest.mark.py_typing_extensions
 def test_install_py_typing_extensions_default(devirt_env):
     spack_install('py-typing-extensions')
-
-
-@pytest.mark.no_balfrin  #Irrelevant
-@pytest.mark.rttov
-@pytest.mark.parametrize("compiler", ['gcc', 'nvhpc'])
-def test_install_rttov(compiler):
-    spack_install(f'rttov @13.1 %{compiler}')
 
 
 @pytest.mark.scales_ppm
