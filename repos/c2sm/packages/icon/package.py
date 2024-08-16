@@ -20,49 +20,71 @@ class Icon(AutotoolsPackage):
 
     license("BSD-3-Clause")
 
-    version("2024.01-1", sha256="3e57608b7e1e3cf2f4cb318cfe2fdb39678bd53ca093955d99570bd6d7544184")
-    version("2024.01", sha256="d9408fdd6a9ebf5990298e9a09c826e8c15b1e79b45be228f7a5670a3091a613")
+    version("2024.01-1",
+            sha256=
+            "3e57608b7e1e3cf2f4cb318cfe2fdb39678bd53ca093955d99570bd6d7544184")
+    version("2024.01",
+            sha256=
+            "d9408fdd6a9ebf5990298e9a09c826e8c15b1e79b45be228f7a5670a3091a613")
 
     # Model Features:
-    variant("atmo", default=True, description="Enable the atmosphere component")
-    variant("les", default=True, description="Enable the Large-Eddy Simulation component")
-    variant("upatmo", default=True, description="Enable the upper atmosphere component")
+    variant("atmo",
+            default=True,
+            description="Enable the atmosphere component")
+    variant("les",
+            default=True,
+            description="Enable the Large-Eddy Simulation component")
+    variant("upatmo",
+            default=True,
+            description="Enable the upper atmosphere component")
     variant("ocean", default=True, description="Enable the ocean component")
-    variant("jsbach", default=True, description="Enable the land component JSBACH")
-    variant("waves", default=True, description="Enable the ocean surface wave component")
+    variant("jsbach",
+            default=True,
+            description="Enable the land component JSBACH")
+    variant("waves",
+            default=True,
+            description="Enable the ocean surface wave component")
     variant("coupling", default=True, description="Enable the coupling")
     variant("aes", default=True, description="Enable the AES physics package")
     variant("nwp", default=True, description="Enable the NWP physics package")
-    variant(
-        "ecrad", default=False, description="Enable usage of the ECMWF radiation scheme (ECRAD)"
-    )
+    variant("ecrad",
+            default=False,
+            description="Enable usage of the ECMWF radiation scheme (ECRAD)")
     variant(
         "rte-rrtmgp",
         default=True,
-        description="Enable usage of the RTE+RRTMGP toolbox for radiation calculations",
+        description=
+        "Enable usage of the RTE+RRTMGP toolbox for radiation calculations",
     )
-    variant(
-        "art", default=False, description="Enable the aerosols and reactive trace component ART"
-    )
+    variant("art",
+            default=False,
+            description="Enable the aerosols and reactive trace component ART")
 
     # Infrastructural Features:
-    variant("mpi", default=True, description="Enable MPI (parallelization) support")
+    variant("mpi",
+            default=True,
+            description="Enable MPI (parallelization) support")
     variant("openmp", default=False, description="Enable OpenMP support")
 
-    nvidia_targets = {"nvidia-{0}".format(cc): cc for cc in CudaPackage.cuda_arch_values}
+    nvidia_targets = {
+        "nvidia-{0}".format(cc): cc
+        for cc in CudaPackage.cuda_arch_values
+    }
     # TODO: add AMD GPU support
 
     variant(
         "gpu",
         default="none",
-        values=("none",) + tuple(nvidia_targets.keys()),
+        values=("none", ) + tuple(nvidia_targets.keys()),
         description="Enable GPU support for the specified architecture",
     )
     for __x in nvidia_targets.keys():
         # Other compilers are not yet tested or supported, older NVHPC versions are not supported:
         requires("%nvhpc@21.3:", when="gpu={0}".format(__x))
 
-    variant("mpi-gpu", default=True, description="Enable usage of the GPU-aware MPI features")
+    variant("mpi-gpu",
+            default=True,
+            description="Enable usage of the GPU-aware MPI features")
     requires("+mpi", when="+mpi-gpu")
     conflicts("gpu=none", when="+mpi-gpu")
 
@@ -75,7 +97,9 @@ class Icon(AutotoolsPackage):
     )
     requires("+mpi", when="+parallel-netcdf")
 
-    variant("cdi-pio", default=False, description="Enable usage of the parallel features of CDI")
+    variant("cdi-pio",
+            default=False,
+            description="Enable usage of the parallel features of CDI")
     requires("+mpi", when="+cdi-pio")
 
     variant("yaxt", default=False, description="Enable the YAXT data exchange")
@@ -85,14 +109,18 @@ class Icon(AutotoolsPackage):
     variant(
         "serialization",
         default="none",
-        values=("none",) + serialization_values,
+        values=("none", ) + serialization_values,
         description="Enable the Serialbox2 serialization",
     )
 
-    variant("comin", default=False, description="Enable the ICON community interfaces")
+    variant("comin",
+            default=False,
+            description="Enable the ICON community interfaces")
 
     # Optimization Features:
-    variant("mixed-precision", default=False, description="Enable mixed-precision dynamical core")
+    variant("mixed-precision",
+            default=False,
+            description="Enable mixed-precision dynamical core")
 
     depends_on("python", type="build")
     depends_on("perl", type="build")
@@ -121,22 +149,22 @@ class Icon(AutotoolsPackage):
         libs = LibraryList([])
 
         for x in [
-            "atmo",
-            "les",
-            "upatmo",
-            "jsbach",
-            "waves",
-            "aes",
-            "nwp",
-            "ecrad",
-            "rte-rrtmgp",
-            "openmp",
-            "mpi-gpu",
-            "parallel-netcdf",
-            "cdi-pio",
-            "yaxt",
-            "mixed-precision",
-            "comin",
+                "atmo",
+                "les",
+                "upatmo",
+                "jsbach",
+                "waves",
+                "aes",
+                "nwp",
+                "ecrad",
+                "rte-rrtmgp",
+                "openmp",
+                "mpi-gpu",
+                "parallel-netcdf",
+                "cdi-pio",
+                "yaxt",
+                "mixed-precision",
+                "comin",
         ]:
             args += self.enable_or_disable(x)
 
@@ -156,12 +184,10 @@ class Icon(AutotoolsPackage):
         if serialization == "none":
             args.append("--disable-serialization")
         else:
-            args.extend(
-                [
-                    "--enable-serialization={0}".format(serialization),
-                    "SB2PP={0}".format(self.spec["serialbox"].pp_ser),
-                ]
-            )
+            args.extend([
+                "--enable-serialization={0}".format(serialization),
+                "SB2PP={0}".format(self.spec["serialbox"].pp_ser),
+            ])
             libs += self.spec["serialbox:fortran"].libs
 
         if "+grib2" in self.spec:
@@ -176,16 +202,14 @@ class Icon(AutotoolsPackage):
         libs += self.spec["netcdf-c"].libs
 
         if "+mpi" in self.spec:
-            args.extend(
-                [
-                    "--enable-mpi",
-                    # We cannot provide a universal value for MPI_LAUNCH, therefore we have to
-                    # disable the MPI checks:
-                    "--disable-mpi-checks",
-                    "CC=" + self.spec["mpi"].mpicc,
-                    "FC=" + self.spec["mpi"].mpifc,
-                ]
-            )
+            args.extend([
+                "--enable-mpi",
+                # We cannot provide a universal value for MPI_LAUNCH, therefore we have to
+                # disable the MPI checks:
+                "--disable-mpi-checks",
+                "CC=" + self.spec["mpi"].mpicc,
+                "FC=" + self.spec["mpi"].mpifc,
+            ])
         else:
             args.append("--disable-mpi")
 
@@ -211,57 +235,60 @@ class Icon(AutotoolsPackage):
             flags["FCFLAGS"].append("-g")
             flags["ICON_FCFLAGS"].append("-O2")
             if "+ocean" in self.spec:
-                flags["ICON_OCEAN_FCFLAGS"].extend(["-O3", "-fno-tree-loop-vectorize"])
-                args.extend(
-                    ["--enable-fcgroup-OCEAN", "ICON_OCEAN_PATH=src/hamocc:src/ocean:src/sea_ice"]
-                )
+                flags["ICON_OCEAN_FCFLAGS"].extend(
+                    ["-O3", "-fno-tree-loop-vectorize"])
+                args.extend([
+                    "--enable-fcgroup-OCEAN",
+                    "ICON_OCEAN_PATH=src/hamocc:src/ocean:src/sea_ice"
+                ])
 
         elif self.compiler.name in ["intel", "oneapi"]:
             args.append("--enable-intel-consistency")
 
-            flags["CFLAGS"].extend(["-g", "-ftz", "-fma", "-ip", "-qno-opt-dynamic-align"])
+            flags["CFLAGS"].extend(
+                ["-g", "-ftz", "-fma", "-ip", "-qno-opt-dynamic-align"])
             flags["ICON_CFLAGS"].append("-O3")
             flags["ICON_BUNDLED_CFLAGS"].append("-O2")
             flags["FCFLAGS"].extend(["-g", "-fp-model source"])
-            flags["ICON_FCFLAGS"].extend(
-                [
-                    "-O3",
-                    "-ftz",
-                    "-qoverride-limits",
-                    "-assume realloc_lhs",
-                    "-align array64byte",
-                    "-fma",
-                    "-ip",
-                ]
-            )
+            flags["ICON_FCFLAGS"].extend([
+                "-O3",
+                "-ftz",
+                "-qoverride-limits",
+                "-assume realloc_lhs",
+                "-align array64byte",
+                "-fma",
+                "-ip",
+            ])
 
             if "%oneapi+coupling" in self.spec:
                 flags["ICON_YAC_CFLAGS"].extend(["-O2", "-fp-model precise"])
 
             if "+ocean" in self.spec:
                 flags["ICON_OCEAN_FCFLAGS"].extend(
-                    ["-O3", "-assume norealloc_lhs", "-reentrancy threaded"]
-                )
-                args.extend(
-                    ["--enable-fcgroup-OCEAN", "ICON_OCEAN_PATH=src/hamocc:src/ocean:src/sea_ice"]
-                )
+                    ["-O3", "-assume norealloc_lhs", "-reentrancy threaded"])
+                args.extend([
+                    "--enable-fcgroup-OCEAN",
+                    "ICON_OCEAN_PATH=src/hamocc:src/ocean:src/sea_ice"
+                ])
 
                 if "+openmp" in self.spec:
                     flags["ICON_OCEAN_FCFLAGS"].extend(["-DOCE_SOLVE_OMP"])
 
             if "+ecrad" in self.spec:
-                flags["ICON_ECRAD_FCFLAGS"].extend(["-qno-opt-dynamic-align", "-no-fma", "-fpe0"])
+                flags["ICON_ECRAD_FCFLAGS"].extend(
+                    ["-qno-opt-dynamic-align", "-no-fma", "-fpe0"])
 
         elif self.compiler.name == "nvhpc":
             flags["CFLAGS"].extend(["-g", "-O2"])
-            flags["FCFLAGS"].extend(
-                ["-g", "-O2", "-Mrecursive", "-Mallocatable=03", "-Mstack_arrays"]
-            )
+            flags["FCFLAGS"].extend([
+                "-g", "-O2", "-Mrecursive", "-Mallocatable=03",
+                "-Mstack_arrays"
+            ])
 
             if gpu in self.nvidia_targets:
-                flags["FCFLAGS"].extend(
-                    ["-acc=gpu", "-gpu=cc{0}".format(self.nvidia_targets[gpu])]
-                )
+                flags["FCFLAGS"].extend([
+                    "-acc=gpu", "-gpu=cc{0}".format(self.nvidia_targets[gpu])
+                ])
 
             if "%nvhpc@:23.9+coupling" in self.spec:
                 args.append("yac_cv_fc_is_contiguous_works=yes")
@@ -270,7 +297,10 @@ class Icon(AutotoolsPackage):
             flags["CFLAGS"].extend(["-g", "-O2"])
             flags["FCFLAGS"].extend(["-g", "-O2"])
 
-        args.extend(["{0}={1}".format(name, " ".join(value)) for name, value in flags.items()])
+        args.extend([
+            "{0}={1}".format(name, " ".join(value))
+            for name, value in flags.items()
+        ])
         args.append("LIBS={0}".format(libs.link_flags))
 
         return args
