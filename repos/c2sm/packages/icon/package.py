@@ -260,6 +260,7 @@ class Icon(AutotoolsPackage, CudaPackage):
     depends_on('yaxt+fortran', when='+cdi-pio')
     depends_on('lapack')
     depends_on('blas')
+    depends_on('cutensor')
     depends_on('netcdf-fortran')
 
     depends_on('netcdf-c', when='~cdi-pio')
@@ -449,7 +450,7 @@ class Icon(AutotoolsPackage, CudaPackage):
         elif self.compiler.name in ['pgi', 'nvhpc']:
             config_vars['CFLAGS'].extend(['-g', '-O2'])
             config_vars['FCFLAGS'].extend(
-                ['-g', '-O', '-Mrecursive', '-Mallocatable=03', '-Mbackslash'])
+                ['-g', '-O', '-Mrecursive', '-Mallocatable=03', '-Mbackslash', '-cudalib=cutensor'])
 
             if self.spec.variants['gpu'].value == 'openacc+cuda':
                 config_vars['FCFLAGS'].extend([
@@ -529,6 +530,7 @@ class Icon(AutotoolsPackage, CudaPackage):
 
         libs += self.spec['lapack:fortran'].libs
         libs += self.spec['blas:fortran'].libs
+        libs += self.spec['cutensor'].libs
         libs += self.spec['netcdf-fortran'].libs
 
         if '+coupling' in self.spec or '~cdi-pio' in self.spec:
