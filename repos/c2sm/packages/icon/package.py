@@ -456,7 +456,7 @@ class Icon(AutotoolsPackage, CudaPackage):
             if self.spec.variants['gpu'].value == 'openacc+cuda':
                 config_vars['FCFLAGS'].extend([
                     '-acc=verystrict', '-Minfo=accel,inline',
-                    '-gpu=cc{0}'.format(
+                    '-gpu=cc{0},fastmath'.format(
                         self.spec.variants['cuda_arch'].value[0])
                 ])
         elif self.compiler.name == 'cce':
