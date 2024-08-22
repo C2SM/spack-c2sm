@@ -208,6 +208,16 @@ class Icon(AutotoolsPackage, CudaPackage):
         description=
         'Enable extension of eccodes with center specific definition files')
 
+    variant('address_sanizier', default=False, description='Enable ASAN')
+    variant('kernel_address_sanizier', default=False, description='Enable KASAN')
+    variant('hwaddress_sanizier', default=False, description='Enable HWASAN')
+    variant('kernel_hwaddress_sanizier', default=False, description='Enable KHWASAN')
+    variant('pointer_compare_sanitizer', default=False, description='Enable PCSAN')
+    variant('pointer_subtract_sanitizer', default=False, description='Enable PSSAN')
+    variant('thread_sanizier', default=False, description='Enable TSAN')
+    variant('leak_sanizier', default=False, description='Enable LSAN')
+    variant('undefined_sanizier', default=False, description='Enable UBSAN')
+
     # EXCLAIM-GT4Py specific features:
     dsl_values = ('substitute', 'verify', 'serialize', 'fused', 'nvtx', 'lam')
     variant('dsl',
@@ -262,6 +272,13 @@ class Icon(AutotoolsPackage, CudaPackage):
     depends_on('python', type='build')
     depends_on('perl', type='build')
     depends_on('cmake@3.18:', type='build')
+
+    conflicts('+thread_sanizier', when='+address_sanizier')
+    conflicts('+hwaddress_sanizier', when='+address_sanizier')
+    conflicts('+thread_sanizier', when='+hwaddress_sanizier')
+    conflicts('+address_sanizier', when='+hwaddress_sanizier')
+    conflicts('+thread_sanizier', when='+pointer_compare_sanitizer')
+    conflicts('+leak_sanizier', when='+thread_sanizier')
 
     conflicts('+dace', when='~mpi')
     conflicts('+emvorado', when='~mpi')
@@ -381,6 +398,26 @@ class Icon(AutotoolsPackage, CudaPackage):
                 if '+ecrad' in self.spec:
                     # For externals/ecrad/ifsaux/random_numbers_mix.F90:
                     flags['ICON_ECRAD_FCFLAGS'].append('-fallow-invalid-boz')
+            
+            if '+address_sanizier' in self.spec:
+                flags['FCFLAGS'].append('-fsanitize=address')
+            if '+kernel_address_sanizier' in self.spec:
+                flags['FCFLAGS'].append('-fsanitize=kernel-address')
+            if '+hwaddress_sanizier' in self.spec:
+                flags['FCFLAGS'].append('-fsanitize=hwaddress')
+            if '+kernel_hwaddress_sanizier' in self.spec:
+                flags['FCFLAGS'].append('-fsanitize=kernel-hwaddress')
+            if '+pointer_compare_sanitizer' in self.spec:
+                flags['FCFLAGS'].append('-fsanitize=pointer-compare')
+            if '+pointer_subtract_sanitizer' in self.spec:
+                flags['FCFLAGS'].append('-fsanitize=pointer-subtract')
+            if '+thread_sanizier' in self.spec:
+                flags['FCFLAGS'].append('-fsanitize=thread')
+            if '+leak_sanizier' in self.spec:
+                flags['FCFLAGS'].append('-fsanitize=leak')
+            if '+undefined_sanizier' in self.spec:
+                flags['FCFLAGS'].append('-fsanitize=undefined')
+
         elif self.compiler.name == 'intel':
             flags['CFLAGS'].extend(
                 ['-g', '-gdwarf-4', '-O3', '-qno-opt-dynamic-align', '-ftz'])
