@@ -209,11 +209,19 @@ class Icon(AutotoolsPackage, CudaPackage):
         'Enable extension of eccodes with center specific definition files')
 
     variant('address_sanizier', default=False, description='Enable ASAN')
-    variant('kernel_address_sanizier', default=False, description='Enable KASAN')
+    variant('kernel_address_sanizier',
+            default=False,
+            description='Enable KASAN')
     variant('hwaddress_sanizier', default=False, description='Enable HWASAN')
-    variant('kernel_hwaddress_sanizier', default=False, description='Enable KHWASAN')
-    variant('pointer_compare_sanitizer', default=False, description='Enable PCSAN')
-    variant('pointer_subtract_sanitizer', default=False, description='Enable PSSAN')
+    variant('kernel_hwaddress_sanizier',
+            default=False,
+            description='Enable KHWASAN')
+    variant('pointer_compare_sanitizer',
+            default=False,
+            description='Enable PCSAN')
+    variant('pointer_subtract_sanitizer',
+            default=False,
+            description='Enable PSSAN')
     variant('thread_sanizier', default=False, description='Enable TSAN')
     variant('leak_sanizier', default=False, description='Enable LSAN')
     variant('undefined_sanizier', default=False, description='Enable UBSAN')
@@ -398,7 +406,7 @@ class Icon(AutotoolsPackage, CudaPackage):
                 if '+ecrad' in self.spec:
                     # For externals/ecrad/ifsaux/random_numbers_mix.F90:
                     flags['ICON_ECRAD_FCFLAGS'].append('-fallow-invalid-boz')
-            
+
             if '+address_sanizier' in self.spec:
                 flags['FCFLAGS'].append('-fsanitize=address')
             if '+kernel_address_sanizier' in self.spec:
