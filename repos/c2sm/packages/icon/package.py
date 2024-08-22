@@ -190,6 +190,8 @@ class Icon(AutotoolsPackage, CudaPackage):
         'Create a Fortran compile group: GROUP;files;flag \nNote: flag can only be one single value, i.e. -O1'
     )
 
+    variant('nvtx', default=False, description='Enable NVTX for profiling')
+
     # verbosity
     variant('silent-rules',
             default=True,
@@ -278,6 +280,11 @@ class Icon(AutotoolsPackage, CudaPackage):
     conflicts('+cuda-graphs', when='%nvhpc@:23.2')
 
     conflicts('+loop-exchange', when='gpu=openacc+cuda')
+
+    # nvtx is only supported for nvhpc
+    conflicts('+nvtx', when='%cce')
+    conflicts('+nvtx', when='%gcc')
+    conflicts('+nvtx', when='%intel')
 
     # Flag to mark if we build out-of-source
     # Needed to trigger sync of input files for experiments
@@ -525,6 +532,10 @@ class Icon(AutotoolsPackage, CudaPackage):
 
         if '+pytorch' in self.spec:
             libs += self.spec['pytorch-fortran'].libs
+
+        if '+nvtx' in self.spec:
+            flags['FCFLAGS'].append('-D_USE_NVTX')
+            flags['LIBS'].append('-lnvhpcwrapnvtx')
 
         fcgroup = self.spec.variants['fcgroup'].value
         # ('none',) is the values spack assign if fcgroup is not set
