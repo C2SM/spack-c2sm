@@ -55,7 +55,7 @@ class Claw(CMakePackage):
     # Otherwise, they are cached to the user's home directory.
     patch('ivy_local_cache.patch', when='@:2.0.3')
 
-    patch('xcodeml-tools.patch', working_dir="xcodeml-tools")
+    patch('xcodeml-tools.patch', working_dir="omni-compiler")
 
     # https://github.com/claw-project/claw-compiler/pull/586
     conflicts('%nag', when='@:2.0.1')
