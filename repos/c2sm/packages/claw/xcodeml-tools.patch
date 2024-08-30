@@ -1,0 +1,36 @@
+--- a/C-FrontEnd/src/c-xcodeml.c
++++ b/C-FrontEnd/src/c-xcodeml.c
+@@ -251,7 +251,8 @@ outxTag(FILE *fp, int indent, CExpr *expr, const char *tag, int xattrFlag,
+         voutxTag(fp, indent, expr, tag, xattrFlag, attrFmt, args);
+         va_end(args);
+     } else {
+-        voutxTag(fp, indent, expr, tag, xattrFlag, attrFmt, NULL);
++	va_list empty_va_list = va_list();
++        voutxTag(fp, indent, expr, tag, xattrFlag, attrFmt, empty_va_list);
+     }
+ }
+ 
+@@ -282,9 +283,10 @@ outxTagForStmt(FILE *fp, int indent, CExpr *expr, const char *tag, int addXattrF
+             attrFmt, args);
+         va_end(args);
+     } else {
++	va_list empty_va_list = va_list();
+         voutxTag(fp, indent, expr, tag,
+             XATTR_LINENO|XATTR_COMMON|addXattrFlag,
+-            attrFmt, NULL);
++            attrFmt, empty_va_list);
+     }
+ }
+ 
+@@ -301,9 +303,10 @@ outxTagForExpr(FILE *fp, int indent, CExpr *expr, const char *tag, int addXattrF
+             attrFmt, args);
+         va_end(args);
+     } else {
++	va_list empty_va_list = va_list();
+         voutxTag(fp, indent, expr, tag,
+             XATTR_TYPE|XATTR_IS_GCCEXTENSION|XATTR_COMMON|addXattrFlag,
+-            attrFmt, NULL);
++            attrFmt, empty_va_list);
+     }
+ }
+ 
