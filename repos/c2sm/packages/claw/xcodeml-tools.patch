@@ -5,7 +5,7 @@
          va_end(args);
      } else {
 -        voutxTag(fp, indent, expr, tag, xattrFlag, attrFmt, NULL);
-+	va_list empty_va_list = va_list();
++        va_list empty_va_list;
 +        voutxTag(fp, indent, expr, tag, xattrFlag, attrFmt, empty_va_list);
      }
  }
@@ -14,7 +14,7 @@
              attrFmt, args);
          va_end(args);
      } else {
-+	va_list empty_va_list = va_list();
++        va_list empty_va_list;
          voutxTag(fp, indent, expr, tag,
              XATTR_LINENO|XATTR_COMMON|addXattrFlag,
 -            attrFmt, NULL);
@@ -26,7 +26,7 @@
              attrFmt, args);
          va_end(args);
      } else {
-+	va_list empty_va_list = va_list();
++        va_list empty_va_list;
          voutxTag(fp, indent, expr, tag,
              XATTR_TYPE|XATTR_IS_GCCEXTENSION|XATTR_COMMON|addXattrFlag,
 -            attrFmt, NULL);
