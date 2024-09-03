@@ -212,7 +212,8 @@ def test_py_gridtools_cpp_install_default(devirt_env):
 
 
 @pytest.mark.py_gt4py
-@pytest.mark.parametrize("version", ['1.0.3.3', '1.0.3.7', '1.0.3.8', '1.0.3.9'])
+@pytest.mark.parametrize("version",
+                         ['1.0.3.3', '1.0.3.7', '1.0.3.8', '1.0.3.9'])
 def test_install_py_gt4py_for_version(version, devirt_env):
     spack_install(f'py-gt4py @{version}')
 
