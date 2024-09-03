@@ -1,5 +1,6 @@
 from spack import *
 from spack.pkg.c2sm.icon import Icon as C2SMIcon
+from collections import defaultdict
 
 
 class IconHam(C2SMIcon):
@@ -27,6 +28,8 @@ class IconHam(C2SMIcon):
     def configure_args(self):
         args = super().configure_args()
 
+        flags = defaultdict(list)
+
         claw = self.spec.variants['claw'].value
         if claw == 'none':
             args.append('--disable-claw')
@@ -43,6 +46,10 @@ class IconHam(C2SMIcon):
 
         args.append('--enable-atm-phy-echam-submodels')
         args.append('--enable-hammoz')
+
+        args.extend([
+            '{0}={1}'.format(var, ' '.join(val)) for var, val in flags.items()
+        ])
 
         return args
 
