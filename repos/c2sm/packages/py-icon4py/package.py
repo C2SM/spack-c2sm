@@ -27,6 +27,7 @@ class PyIcon4py(PythonPackage):
     version('0.0.10', tag='v0.0.10', git=git)
     version('0.0.11', tag='v0.0.11', git=git)
     version('0.0.12', tag='v0.0.12', git=git)
+    version('0.0.13', tag='v0.0.13', git=git)
 
     depends_on('py-wheel', type='build')
     depends_on('py-setuptools', type='build')
