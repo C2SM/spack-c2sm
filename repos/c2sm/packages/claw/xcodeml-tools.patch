@@ -1,3 +1,5 @@
+diff --git a/C-FrontEnd/src/c-xcodeml.c b/C-FrontEnd/src/c-xcodeml.c
+index b7b8dcc4..55ed807b 100644
 --- a/C-FrontEnd/src/c-xcodeml.c
 +++ b/C-FrontEnd/src/c-xcodeml.c
 @@ -251,7 +251,8 @@ outxTag(FILE *fp, int indent, CExpr *expr, const char *tag, int xattrFlag,
@@ -34,3 +36,143 @@
      }
  }
  
+diff --git a/F-FrontEnd/src/F-output-xcodeml.c b/F-FrontEnd/src/F-output-xcodeml.c
+index 6784bc3e..9fd858aa 100644
+--- a/F-FrontEnd/src/F-output-xcodeml.c
++++ b/F-FrontEnd/src/F-output-xcodeml.c
+@@ -7,6 +7,7 @@
+ #include "module-manager.h"
+ #include <limits.h>
+ #include "external/klib/khash.h"
++#include <stdbool.h>
+ 
+ #define CHAR_BUF_SIZE 65536
+ 
+@@ -1059,11 +1060,11 @@ static void outx_lineno(lineno_info *li)
+  * output tag with format and lineno attribute
+  */
+ static void outx_vtagLineno(int l, const char *tag, lineno_info *li,
+-                            va_list args)
++                            va_list args, bool args_is_null)
+ {
+     static char buf1[CHAR_BUF_SIZE], buf2[CHAR_BUF_SIZE];
+     snprintf(buf1, sizeof(buf1), "<%s", tag);
+-    if (args != NULL) {
++    if (!args_is_null) {
+         vsnprintf(buf2, sizeof(buf2), buf1, args);
+     } else {
+         strncpy(buf2, buf1, sizeof(buf2));
+@@ -1076,7 +1077,8 @@ static void outx_vtagLineno(int l, const char *tag, lineno_info *li,
+ 
+ static void outx_tagOfStatement(int l, expv v)
+ {
+-    outx_vtagLineno(l, XTAG(v), EXPR_LINE(v), NULL);
++    va_list empty_va_list;
++    outx_vtagLineno(l, XTAG(v), EXPR_LINE(v), empty_va_list, true);
+     outx_puts(">\n");
+ }
+ 
+@@ -1085,20 +1087,22 @@ static void outx_tagOfStatement1(int l, expv v, const char *attrs, ...)
+     sprintf(s_charBuf, "%s%s", XTAG(v), attrs ? attrs : "");
+     va_list args;
+     va_start(args, attrs);
+-    outx_vtagLineno(l, s_charBuf, EXPR_LINE(v), args);
++    outx_vtagLineno(l, s_charBuf, EXPR_LINE(v), args, false);
+     va_end(args);
+     outx_puts(">\n");
+ }
+ 
+ static void outx_tagOfStatement2(int l, expv v)
+ {
+-    outx_vtagLineno(l, XTAG(v), EXPR_LINE(v), NULL);
++    va_list empty_va_list;
++    outx_vtagLineno(l, XTAG(v), EXPR_LINE(v), empty_va_list, true);
+     outx_print(">");
+ }
+ 
+ static void outx_tagOfStatement3(int l, const char *tag, lineno_info *li)
+ {
+-    outx_vtagLineno(l, tag, li, NULL);
++    va_list empty_va_list;
++    outx_vtagLineno(l, tag, li, empty_va_list, true);
+     outx_print(">\n");
+ }
+ 
+@@ -1114,7 +1118,8 @@ static void outx_tagOfStatementWithConstructName(int l, expv v, expv cv,
+     else
+         strcpy(s_charBuf, XTAG(v));
+ 
+-    outx_vtagLineno(l, s_charBuf, EXPR_LINE(v), NULL);
++    va_list empty_va_list;
++    outx_vtagLineno(l, s_charBuf, EXPR_LINE(v), empty_va_list, true);
+     if (hasChild)
+         outx_puts(">\n");
+     else
+@@ -1126,7 +1131,7 @@ static void outx_tagOfStatementNoChild(int l, expv v, const char *attrs, ...)
+     sprintf(s_charBuf, "%s%s", XTAG(v), attrs ? attrs : "");
+     va_list args;
+     va_start(args, attrs);
+-    outx_vtagLineno(l, s_charBuf, EXPR_LINE(v), args);
++    outx_vtagLineno(l, s_charBuf, EXPR_LINE(v), args, false);
+     va_end(args);
+     outx_puts("/>\n");
+ }
+@@ -1134,7 +1139,7 @@ static void outx_tagOfStatementNoChild(int l, expv v, const char *attrs, ...)
+ static void outx_vtagOfDecl(int l, const char *tag, lineno_info *li,
+                             va_list args)
+ {
+-    outx_vtagLineno(l, tag, li, args);
++    outx_vtagLineno(l, tag, li, args, false);
+ }
+ 
+ static void outx_tagOfDecl1(int l, const char *tag, lineno_info *li, ...)
+@@ -1926,7 +1931,8 @@ static void outx_caseLabel(int l, expv v)
+ static void outx_typeGuard(int l, expv v, int is_class)
+ {
+     const int l1 = l + 1;
+-    outx_vtagLineno(l, XTAG(v), EXPR_LINE(v), NULL);
++    va_list empty_va_list;
++    outx_vtagLineno(l, XTAG(v), EXPR_LINE(v), empty_va_list, true);
+     if (EXPR_ARG3(v) != NULL) { // construct name
+         outx_print(" construct_name=\"%s\"", SYM_NAME(EXPV_NAME(EXPR_ARG3(v))));
+     }
+@@ -2018,7 +2024,8 @@ static void outx_IFWHERE_Statement(int l, expv v)
+ 
+     if (EXPR_ARG3(v)) {
+         if (EXPR_ARG5(v)) {
+-            outx_vtagLineno(l1, "else", EXPR_LINE(EXPR_ARG5(v)), NULL);
++            va_list empty_va_list;
++            outx_vtagLineno(l1, "else", EXPR_LINE(EXPR_ARG5(v)), empty_va_list, true);
+             outx_puts(">\n");
+         } else {
+             outx_tag(l1, "else");
+@@ -3867,7 +3874,8 @@ static void outx_FORALL_statement(int l, expv v)
+     expv body = EXPR_ARG2(v);
+     const char *tid = NULL;
+ 
+-    outx_vtagLineno(l, XTAG(v), EXPR_LINE(v), NULL);
++    va_list empty_va_list;
++    outx_vtagLineno(l, XTAG(v), EXPR_LINE(v), empty_va_list, true);
+ 
+     if (EXPR_HAS_ARG4(v) && EXPR_ARG4(v) != NULL) {
+         outx_print(" construct_name=\"%s\"", SYM_NAME(EXPR_SYM(EXPR_ARG4(v))));
+@@ -3934,7 +3942,8 @@ static void outx_DOCONCURRENT_statement(int l, expv v)
+     expv body = EXPR_ARG2(v);
+     const char *tid = NULL;
+ 
+-    outx_vtagLineno(l, XTAG(v), EXPR_LINE(v), NULL);
++    va_list empty_va_list;
++    outx_vtagLineno(l, XTAG(v), EXPR_LINE(v), empty_va_list, true);
+ 
+     if (EXPR_HAS_ARG3(v) && EXPR_ARG3(v) != NULL) {
+         outx_print(" construct_name=\"%s\"", SYM_NAME(EXPR_SYM(EXPR_ARG3(v))));
+@@ -3974,7 +3983,8 @@ static void outx_ASSOCIATE_statement(int l, expv v)
+     BLOCK_ENV block = EXPR_BLOCK(v);
+     expv body = EXPR_ARG1(v);
+ 
+-    outx_vtagLineno(l, XTAG(v), EXPR_LINE(v), NULL);
++    va_list empty_va_list;
++    outx_vtagLineno(l, XTAG(v), EXPR_LINE(v), empty_va_list, true);
+     if (EXPR_HAS_ARG2(v) && EXPR_ARG2(v) != NULL) {
+         outx_print(" construct_name=\"%s\"", SYM_NAME(EXPR_SYM(EXPR_ARG2(v))));
+     }
