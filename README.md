@@ -22,11 +22,14 @@ We suggest local/individual spack instances and the use of spack environments.
 
 Clone the repository
 ```bash
-git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.20.1.5 https://github.com/C2SM/spack-c2sm.git
+git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.21.1.3 https://github.com/C2SM/spack-c2sm.git
 ```
-Setup the shell environment.
+Setup the shell environment and optionally specify an upstream, where spack will look for installed software, i.e.
 ```bash
 . spack-c2sm/setup-env.sh
+. spack-c2sm/setup-env.sh /user-environment
+. spack-c2sm/setup-env.sh /mch-environment/v6
+. spack-c2sm/setup-env.sh /mch-environment/v7
 ```
 Sourcing this file will put the spack command in your PATH, set up your MODULEPATH to use Spack’s packages, and add other useful shell integration for certain commands, environments, and modules. For bash, it also sets up tab completion. (source: [spack docu](https://spack.readthedocs.io/en/v0.21.1/getting_started.html#shell-support))
 
