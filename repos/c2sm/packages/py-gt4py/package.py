@@ -19,7 +19,7 @@ class PyGt4py(PythonPackage):
     version('1.0.3.3', tag='icon4py_20240229', git=url)
     version('1.0.3.7', tag='icon4py_20240521', git=url)
     version('1.0.3.8', tag='icon4py_20240711', git=url)
-    version('1.0.3.9', tag='icon4py_20240903', git=url)
+    version('1.0.3.9', tag='icon4py_20240909', git=url)
 
     maintainers = ['samkellerhals']
 
