@@ -546,10 +546,6 @@ class Icon(AutotoolsPackage, CudaPackage):
             cuda_host_compiler = self.compiler.cxx
             cuda_host_compiler_stdcxx_libs = self.compiler.stdcxx_libs
 
-            if 'none' in self.spec.variants['dsl'].value:
-                flags['NVCFLAGS'].extend(
-                    ['-ccbin {0}'.format(cuda_host_compiler)])
-
             flags['NVCFLAGS'].extend([
                 '-g', '-O3',
                 '-arch=sm_{0}'.format(self.spec.variants['cuda_arch'].value[0])
