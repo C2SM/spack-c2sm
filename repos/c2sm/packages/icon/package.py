@@ -541,7 +541,10 @@ class Icon(AutotoolsPackage, CudaPackage):
                 'NVCC={0}'.format(self.spec['cuda'].prefix.bin.nvcc)
             ])
 
-            libs += self.spec['cuda'].libs
+            # -cuda is an umbrella flag for NVHPC
+            # that pulls in all the needed CUDA libraries and wrappers
+            # It can't go into libs as spack prepends -l
+            config_vars['LDFLAGS'].extend(['-cuda'])
 
             cuda_host_compiler = self.compiler.cxx
             cuda_host_compiler_stdcxx_libs = self.compiler.stdcxx_libs
