@@ -55,7 +55,6 @@ def test_install_icon_2024_1_nvhpc():
 
 def test_install_conditional_dependencies():
     # +coupling triggers libfyaml, libxml2, netcdf-c
-    # +rttov triggers rttov
     # serialization=create triggers serialbox
     # +cdi-pio triggers libcdi-pio, yaxt                   (but unfortunately this is broken)
     # +emvorado triggers eccodes, hdf5, zlib
@@ -64,7 +63,7 @@ def test_install_conditional_dependencies():
     # gpu=openacc+cuda triggers cuda
 
     spack_install(
-        'icon @2024.1-1 %nvhpc +coupling +rttov serialization=create +emvorado +mpi gpu=openacc+cuda cuda_arch=80'
+        'icon @2024.1-1 %nvhpc +coupling serialization=create +emvorado +mpi gpu=openacc+cuda cuda_arch=80'
     )
 
 
@@ -124,8 +123,8 @@ def test_install_py_gridtools_cpp_install_default():
     spack_install('py-gridtools-cpp')
 
 
-@pytest.mark.parametrize("version", ['1.0.3.3', '1.0.3.5', '1.0.3.8'])
-def test_install_py_gt4py_for_version(version, ):
+@pytest.mark.parametrize("version", ['1.0.3.3', '1.0.3.7', '1.0.3.8', '1.0.3.9'])
+def test_install_py_gt4py_for_version(version):
     spack_install(f'py-gt4py @{version}')
 
 
