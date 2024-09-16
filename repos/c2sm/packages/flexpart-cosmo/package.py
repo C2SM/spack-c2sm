@@ -5,7 +5,17 @@
 
 #
 from spack import *
+import spack.error as error
+
 from llnl.util.filesystem import working_dir, install_tree
+
+
+def validate_mode(mode):
+    if 'none' in mode and any(
+        [x in mode for x in ('omp', 'opt', 'ncdfout', 'debug')]):
+        raise error.SpecError(
+            'Cannot have mode none in addition to other modes (omp, opt, ncdfout, debug) in the same build'
+        )
 
 
 class FlexpartCosmo(MakefilePackage):
@@ -27,6 +37,27 @@ class FlexpartCosmo(MakefilePackage):
     conflicts('%pgi')
     conflicts('%cce')
 
+    # Make mode/Compile time options of Flexpart as defined in:
+    # https://github.com/C2SM-RCM/flexpart/blob/main/documentation/installation.md#compile-time-options
+    variant(
+        'none',
+        default=False,
+        description=
+        'Enable default flags only (do not combine with other variants); serial model.'
+    )
+    variant('omp',
+            default=False,
+            description='Specify OpenMP parallelism explicitly in mode.')
+    variant('opt',
+            default=False,
+            description='Specify code optimization explicitly in mode.')
+    variant('ncdfout',
+            default=False,
+            description='Specify netcdf output explicitly in mode.')
+    variant('debug',
+            default=False,
+            description='Specify netcdf output explicitly in mode.')
+
     build_directory = 'src'
 
     makefile_file = "Makefile.spack"
@@ -41,9 +72,19 @@ class FlexpartCosmo(MakefilePackage):
 
     def build(self, spec, prefix):
 
+        mode = ''
+
+        for x in ['none', 'omp', 'opt', 'ncdfout', 'debug']:
+            if f'+{x}' in self.spec:
+                mode += x
+
         with working_dir(self.build_directory):
             make.jobs = 1
-            make('-f', self.makefile_file)
+            if mode:
+                validate_mode(mode)
+                make('-f', self.makefile_file, f"mode={mode}")
+            else:
+                make('-f', self.makefile_file)
 
     def install(self, spec, prefix):
         mkdir(prefix.bin)

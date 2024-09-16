@@ -99,6 +99,11 @@ def test_install_flexpart_cosmo():
     spack_install('flexpart-cosmo @V8C4.0')
 
 
+@pytest.mark.flexpart_cosmo
+def test_install_flexpart_cosmo_omp():
+    spack_install('flexpart-cosmo @V8C4.0 +omp')
+
+
 @pytest.mark.fdb
 def test_install_fdb_5_11_17_gcc():
     spack_install('fdb @5.11.17 %gcc')
