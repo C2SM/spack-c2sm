@@ -100,7 +100,7 @@ def test_install_flexpart_cosmo():
 
 
 @pytest.mark.flexpart_cosmo
-def test_install_flexpart_cosmo():
+def test_install_flexpart_cosmo_omp():
     spack_install('flexpart-cosmo @V8C4.0 +omp')
 
 
