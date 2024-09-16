@@ -9,11 +9,14 @@ import spack.error as error
 
 from llnl.util.filesystem import working_dir, install_tree
 
+
 def validate_mode(mode):
-    if 'none' in mode and any([x in mode for x in ('omp', 'opt', 'ncdfout', 'debug')]):
+    if 'none' in mode and any(
+        [x in mode for x in ('omp', 'opt', 'ncdfout', 'debug')]):
         raise error.SpecError(
             'Cannot have mode none in addition to other modes (omp, opt, ncdfout, debug) in the same build'
         )
+
 
 class FlexpartCosmo(MakefilePackage):
     """flexpart is a Lagrangian dispersion model"""
@@ -36,9 +39,12 @@ class FlexpartCosmo(MakefilePackage):
 
     # Make mode/Compile time options of Flexpart as defined in:
     # https://github.com/C2SM-RCM/flexpart/blob/main/documentation/installation.md#compile-time-options
-    variant('none',
-            default=False,
-            description='Enable default flags only (do not combine with other variants); serial model.')
+    variant(
+        'none',
+        default=False,
+        description=
+        'Enable default flags only (do not combine with other variants); serial model.'
+    )
     variant('omp',
             default=False,
             description='Specify OpenMP parallelism explicitly in mode.')
@@ -68,12 +74,7 @@ class FlexpartCosmo(MakefilePackage):
 
         mode = ''
 
-        for x in [
-            'none',
-            'omp',
-            'opt',
-            'ncdfout',
-            'debug']:
+        for x in ['none', 'omp', 'opt', 'ncdfout', 'debug']:
             if f'+{x}' in self.spec:
                 mode += x
 
