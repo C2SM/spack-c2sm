@@ -440,8 +440,10 @@ class Icon(AutotoolsPackage, CudaPackage):
             flags['ICON_BUNDLED_FCFLAGS'] = []
         elif self.compiler.name in ['pgi', 'nvhpc']:
             flags['CFLAGS'].extend(['-g', '-O2'])
-            flags['FCFLAGS'].extend(
-                ['-g', '-O', '-Mrecursive', '-Mallocatable=03', '-Mbackslash'])
+            flags['FCFLAGS'].extend([
+                '-g', '-O2', '-Mrecursive', '-Mallocatable=03', '-Mbackslash',
+                '-Mstack_arrays'
+            ]
 
             if self.spec.variants['gpu'].value == 'openacc+cuda':
                 flags['FCFLAGS'].extend([
