@@ -44,6 +44,9 @@ class IconHam(C2SMIcon):
                 flags['CLAWFLAGS'].append(
                     self.spec['libcdi-pio'].headers.include_flags)
 
+        if '+mpi' in self.spec:
+            args.append('MPI_LAUNCH=false')
+
         args.append('--enable-atm-phy-echam-submodels')
         args.append('--enable-hammoz')
 
