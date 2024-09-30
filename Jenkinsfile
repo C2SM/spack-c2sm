@@ -32,6 +32,15 @@ pipeline {
                             """
                         }
                     }
+                    stage('Bootstrap spack') {
+                        steps {
+                            sh """
+                            source env/bin/activate
+                            source ./setup-env.sh
+                            spack spec gnuconfig
+                            """
+                        }
+                    }
                     stage('Unit Tests') {
                         steps {
                             sh """
@@ -41,19 +50,11 @@ pipeline {
                             """
                         }
                     }
-                    stage('Bootstrap spack') {
-                        steps {
-                            sh """
-                            source env/bin/activate
-                            . ./setup-env.sh
-                            spack spec gnuconfig
-                            """
-                        }
-                    }
                     stage('Integration Tests') {
                         steps {
                             sh """
                             source env/bin/activate
+                            source ./setup-env.sh $USER_ENV_ROOT
                             pytest -v -n auto --scope \"""" + env.ghprbCommentBody + " \" test/integration_test.py"
                         }
                     }
@@ -61,6 +62,7 @@ pipeline {
                         steps {
                             sh """
                             source env/bin/activate
+                            source ./setup-env.sh $USER_ENV_ROOT
                             pytest -v -n auto --maxprocesses=24 --scope \"""" + env.ghprbCommentBody + " \"  test/system_test.py"
                         }
                     }
