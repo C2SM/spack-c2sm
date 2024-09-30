@@ -21,7 +21,7 @@ class PyIcon4py(PythonPackage):
     maintainers = ["agopal", "samkellerhals"]
 
     version("main", branch="main")
-    version("0.0.12", tag="v0.0.12")
+    version("0.0.13", tag="v0.0.13")
 
     depends_on("py-wheel", type="build")
     depends_on("py-setuptools", type="build")
