@@ -443,7 +443,7 @@ class Icon(AutotoolsPackage, CudaPackage):
             flags['FCFLAGS'].extend([
                 '-g', '-O2', '-Mrecursive', '-Mallocatable=03', '-Mbackslash',
                 '-Mstack_arrays'
-            ]
+            ])
 
             if self.spec.variants['gpu'].value == 'openacc+cuda':
                 flags['FCFLAGS'].extend([
