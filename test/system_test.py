@@ -71,7 +71,6 @@ def test_install_icontools():
     spack_install('icontools @2.5.2')
 
 
-@pytest.mark.int2lm
 def test_install_int2lm_3_00_nvhpc():
     spack_install('int2lm @int2lm-3.00 %nvhpc', test_root=False)
 
