@@ -4,7 +4,7 @@ import time
 from pathlib import Path
 
 REPO_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-PACKAGES_DIR = os.path.join(REPO_DIR, "repo", "packages")
+PACKAGES_DIR = os.path.join(REPO_DIR, "repos", "c2sm", "packages")
 ALL_PACKAGES = [
     name for name in os.listdir(PACKAGES_DIR)
     if os.path.isdir(os.path.join(PACKAGES_DIR, name))
