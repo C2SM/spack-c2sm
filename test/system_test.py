@@ -153,9 +153,10 @@ def test_install_int2lm_version_3_00_nvhpc_fixed_definitions():
         test_root='balfrin' not in machine_name())
 
 
-@pytest.mark.libcdi_pio
-def test_install_libcdi_pio_default():
-    spack_install('libcdi-pio')
+# This test fails because the link to scales-ppm's repo is dead.
+# @pytest.mark.libcdi_pio
+# def test_install_libcdi_pio_default():
+#     spack_install('libcdi-pio')
 
 
 @pytest.mark.libgrib1
@@ -257,9 +258,10 @@ def test_install_py_typing_extensions_default(devirt_env):
     spack_install('py-typing-extensions')
 
 
-@pytest.mark.scales_ppm
-def test_install_default():
-    spack_install('scales-ppm')
+# This test fails because the link to its repo is dead.
+# @pytest.mark.scales_ppm
+# def test_install_default():
+#     spack_install('scales-ppm')
 
 
 @pytest.mark.yaxt
