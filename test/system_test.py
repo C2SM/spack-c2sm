@@ -151,6 +151,7 @@ def test_install_int2lm_version_3_00_nvhpc_fixed_definitions():
         'int2lm @int2lm-3.00 %nvhpc ^cosmo-eccodes-definitions@2.19.0.7%nvhpc',
         test_root='balfrin' not in machine_name())
 
+
 @pytest.mark.libgrib1
 def test_install_libgrib1_22_01_2020_nvhpc():
     spack_install('libgrib1 @22-01-2020%nvhpc')
@@ -248,6 +249,7 @@ def test_install_py_tabulate_default(devirt_env):
 @pytest.mark.py_typing_extensions
 def test_install_py_typing_extensions_default(devirt_env):
     spack_install('py-typing-extensions')
+
 
 @pytest.mark.yaxt
 def test_install_yaxt_default():
