@@ -138,9 +138,6 @@ class Icon(AutotoolsPackage, CudaPackage):
     variant('parallel-netcdf',
             default=False,
             description='Enable usage of the parallel features of NetCDF')
-    variant('cdi-pio',
-            default=False,
-            description='Enable usage of the parallel features of CDI')
     variant('sct', default=False, description='Enable the SCT timer')
     variant('yaxt', default=False, description='Enable the YAXT data exchange')
 
@@ -234,24 +231,18 @@ class Icon(AutotoolsPackage, CudaPackage):
         depends_on('serialbox %nvhpc', when='%nvhpc')
         depends_on('serialbox %gcc', when='%gcc')
 
-    depends_on('libcdi-pio+fortran+netcdf', when='+cdi-pio')
-    depends_on('libcdi-pio grib2=eccodes', when='+cdi-pio+grib2')
-    depends_on('libcdi-pio+mpi', when='+cdi-pio+mpi')
-
     depends_on('eccodes +fortran', when='+emvorado')
-    depends_on('eccodes', when='+grib2 ~cdi-pio')
+    depends_on('eccodes', when='+grib2')
     depends_on('cosmo-eccodes-definitions',
                type=('build', 'run'),
                when='+eccodes-definitions')
 
-    depends_on('yaxt+fortran', when='+cdi-pio')
     depends_on('lapack')
     depends_on('blas')
     depends_on('netcdf-fortran')
 
-    depends_on('netcdf-c', when='~cdi-pio')
-    depends_on('netcdf-c', when='+coupling')
-    depends_on('netcdf-c+mpi', when='+parallel-netcdf~cdi-pio')
+    depends_on('netcdf-c')
+    depends_on('netcdf-c+mpi', when='+parallel-netcdf')
 
     depends_on('hdf5 +szip +hl +fortran', when='+emvorado')
     depends_on('hdf5 +szip', when='+sct')
@@ -342,12 +333,6 @@ class Icon(AutotoolsPackage, CudaPackage):
                 'comin',
         ]:
             args += self.enable_or_disable(x)
-
-        if '+cdi-pio' in self.spec:
-            args.extend([
-                '--enable-cdi-pio', '--with-external-cdi',
-                '--with-external-yaxt'
-            ])
 
         if self.compiler.name == 'gcc':
             flags['CFLAGS'].append('-g')
@@ -450,7 +435,7 @@ class Icon(AutotoolsPackage, CudaPackage):
         elif self.compiler.name == 'aocc':
             flags['CFLAGS'].extend(['-g', '-O2'])
             flags['FCFLAGS'].extend(['-g', '-O2'])
-            if self.spec.satisfies('~cdi-pio+yaxt'):
+            if self.spec.satisfies('+yaxt'):
                 # Enable the PGI/Cray (NO_2D_PARAM) workaround for the test
                 # suite of the bundled YAXT (apply also when not self.run_tests
                 # to make sure we get identical installations):
@@ -487,23 +472,17 @@ class Icon(AutotoolsPackage, CudaPackage):
             ])
             libs += self.spec['serialbox:fortran'].libs
 
-        if '+cdi-pio' in self.spec:
-            libs += self.spec['libcdi-pio:fortran'].libs
-
         if '+emvorado' in self.spec:
             libs += self.spec['eccodes:fortran'].libs
 
-        if '+grib2~cdi-pio' in self.spec:
+        if '+grib2' in self.spec:
             libs += self.spec['eccodes:c'].libs
-
-        if '+cdi-pio' in self.spec:
-            libs += self.spec['yaxt:fortran'].libs
 
         libs += self.spec['lapack:fortran'].libs
         libs += self.spec['blas:fortran'].libs
         libs += self.spec['netcdf-fortran'].libs
 
-        if '+coupling' in self.spec or '~cdi-pio' in self.spec:
+        if '+coupling' in self.spec:
             libs += self.spec['netcdf-c'].libs
 
         if '+emvorado' in self.spec:
