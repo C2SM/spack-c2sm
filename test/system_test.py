@@ -56,7 +56,6 @@ def test_install_icon_2024_1_nvhpc():
 def test_install_conditional_dependencies():
     # +coupling triggers libfyaml, libxml2, netcdf-c
     # serialization=create triggers serialbox
-    # +cdi-pio triggers libcdi-pio, yaxt                   (but unfortunately this is broken)
     # +emvorado triggers eccodes, hdf5, zlib
     # +eccodes-definitions triggers cosmo-eccodes-definitions
     # +mpi triggers mpi
@@ -73,11 +72,6 @@ def test_install_icontools():
 
 def test_install_int2lm_3_00_nvhpc():
     spack_install('int2lm @int2lm-3.00 %nvhpc', test_root=False)
-
-
-# This test fails because the link to scales-ppm's repo is dead.
-# def test_install_libcdi_pio_default():
-#     spack_install('libcdi-pio')
 
 
 def test_install_libgrib1_22_01_2020_nvhpc():
@@ -150,11 +144,6 @@ def test_install_py_tabulate_default():
 
 def test_install_py_typing_extensions_default():
     spack_install('py-typing-extensions')
-
-
-# This test fails because the link to its repo is dead.
-# def test_install_default():
-#     spack_install('scales-ppm')
 
 
 def test_install_yaxt_default():
