@@ -7,7 +7,7 @@ if [[ "$#" == 1 ]]; then
     export SPACK_UENV_PATH="$uenv"
     export SPACK_SYSTEM_CONFIG_PATH="$uenv"/config
 
-    if [[ uenv == "euler" ]]; then
+    if [[ $uenv == "euler" ]]; then
         export SPACK_SYSTEM_CONFIG_PATH="$parent_dir"/sysconfigs/euler
     fi
 fi
