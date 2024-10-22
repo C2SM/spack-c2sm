@@ -24,28 +24,7 @@ This is a common way to do it.
 Pull Request Testing for spack-c2sm on GitHub
 ---------------------------------------------
 
-To test a PR, create a comment ``launch jenkins [<packages>] [<machines>]``.
-
-It will test the listed packages on the listed machines.
-No package means all packages. No machine means all machines.
-The order is irrelevant.
-
-Examples
-^^^^^^^^
-
-*   ``launch jenkins int2lm balfrin`` tests int2lm on balfrin.
-*   ``launch jenkins cosmo int2lm balfrin`` tests
-
-    *   cosmo on balfrin
-    *   int2lm on balfrin
-
-*   ``launch jenkins cosmo icon`` tests cosmo and icon on all machines.
-*   ``launch jenkins balfrin`` tests all packages on balfrin.
-*   ``launch jenkins`` tests all packages on all machines.
-*   ``launch jenkins all`` tests all packages on all machines.
-
-
-Supported packages: all folder names in folder `packages <https://github.com/C2SM/spack-c2sm/tree/main/packages>`__.
+To test a PR, create a comment ``launch jenkins``.
 
 Supported machines:
 
