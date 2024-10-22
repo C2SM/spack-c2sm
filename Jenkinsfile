@@ -12,13 +12,10 @@ pipeline {
                 }
                 post {
                     always {
-                        archiveArtifacts artifacts: 'log/**/*.log', allowEmptyArchive: true
-                        withCredentials([string(credentialsId: 'd976fe24-cabf-479e-854f-587c152644bc', variable: 'GITHUB_AUTH_TOKEN')]) {
-                            sh """
-                            source env/bin/activate
-                            python3 src/report_tests.py --auth_token ${GITHUB_AUTH_TOKEN} --build_id ${BUILD_ID} --issue_id ${ghprbPullId}
-                            """
-                        }
+                        sh """
+                        python3 tools/summarize_logs.py || true
+                        """
+                        archiveArtifacts artifacts: 'log/*', allowEmptyArchive: true
                         deleteDir()
                     }
                 }
@@ -32,21 +29,20 @@ pipeline {
                             """
                         }
                     }
-                    stage('Unit Tests') {
-                        steps {
-                            sh """
-                            mkdir -p log/${NODENAME}/unit_test
-                            source env/bin/activate
-                            python3 test/unit_test.py ${NODENAME} > log/${NODENAME}/unit_test/summary.log 2>&1
-                            """
-                        }
-                    }
                     stage('Bootstrap spack') {
                         steps {
                             sh """
                             source env/bin/activate
-                            . ./setup-env.sh
+                            source ./setup-env.sh
                             spack spec gnuconfig
+                            """
+                        }
+                    }
+                    stage('Unit Tests') {
+                        steps {
+                            sh """
+                            source env/bin/activate
+                            python3 test/unit_test.py
                             """
                         }
                     }
@@ -54,14 +50,18 @@ pipeline {
                         steps {
                             sh """
                             source env/bin/activate
-                            pytest -v -n auto --scope \"""" + env.ghprbCommentBody + " \" test/integration_test.py"
+                            source ./setup-env.sh $USER_ENV_ROOT
+                            pytest -v -n auto test/integration_test.py
+                            """
                         }
                     }
                     stage('System Tests') {
                         steps {
                             sh """
                             source env/bin/activate
-                            pytest -v -n auto --maxprocesses=24 --scope \"""" + env.ghprbCommentBody + " \"  test/system_test.py"
+                            source ./setup-env.sh $USER_ENV_ROOT
+                            pytest -v -n auto test/system_test.py
+                            """
                         }
                     }
                 }
