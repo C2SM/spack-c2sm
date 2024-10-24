@@ -30,6 +30,7 @@ pipeline {
                         }
                     }
                     stage('Bootstrap spack') {
+                        // Bootstrapping spack is a separate stage to avoid problems with concurrently bootstrapping spack in the tests.
                         steps {
                             sh """
                             source env/bin/activate
