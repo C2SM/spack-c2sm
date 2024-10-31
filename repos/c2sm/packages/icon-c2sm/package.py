@@ -37,7 +37,7 @@ def check_variant_extra_config_args(extra_config_arg):
         return False
 
 
-class Icon(AutotoolsPackage, CudaPackage):
+class IconC2SM(AutotoolsPackage, CudaPackage):
     """Icosahedral Nonhydrostatic Weather and Climate Model."""
 
     homepage = "https://www.icon-model.org"

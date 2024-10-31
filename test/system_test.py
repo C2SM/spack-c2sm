@@ -45,15 +45,15 @@ def test_install_fdb_5_11_17_nvhpc():
     spack_install('fdb @5.11.17 %nvhpc', test_root=False)
 
 
-def test_install_icon_2024_1_gcc():
-    spack_install('icon @2024.1-1 %gcc')
+def test_install_icon_mch_2024_01_gcc():
+    spack_install('icon-mch @2024.01 %gcc')
 
 
-def test_install_icon_2024_1_nvhpc():
-    spack_install('icon @2024.1-1 %nvhpc')
+def test_install_icon_mch_2024_01_nvhpc():
+    spack_install('icon-mch @2024.01 %nvhpc')
 
 
-def test_install_conditional_dependencies():
+def test_install_icon_mch_conditional_dependencies():
     # +coupling triggers libfyaml, libxml2, netcdf-c
     # serialization=create triggers serialbox
     # +emvorado triggers eccodes, hdf5, zlib
@@ -62,7 +62,7 @@ def test_install_conditional_dependencies():
     # gpu=openacc+cuda triggers cuda
 
     spack_install(
-        'icon @2024.1-1 %nvhpc +coupling serialization=create +emvorado +mpi gpu=openacc+cuda cuda_arch=80'
+        'icon-mch @2024.01 %nvhpc +coupling serialization=create +emvorado +mpi gpu=openacc+cuda cuda_arch=80'
     )
 
 
