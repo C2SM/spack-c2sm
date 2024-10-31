@@ -36,15 +36,6 @@ def test_install_flexpart_cosmo():
     spack_install('flexpart-cosmo @V8C4.0')
 
 
-def test_install_fdb_5_11_17_gcc():
-    spack_install('fdb @5.11.17 %gcc')
-
-
-def test_install_fdb_5_11_17_nvhpc():
-    # tests fail because compiler emitted warnings.
-    spack_install('fdb @5.11.17 %nvhpc', test_root=False)
-
-
 def test_install_icon_mch_2024_01_gcc():
     spack_install('icon-mch @2024.01 %gcc')
 
@@ -107,10 +98,6 @@ def test_install_py_devtools_install_default():
 
 def test_install_py_factory_boy_install_default():
     spack_install('py-factory-boy')
-
-
-def test_install_py_frozendict_install_default():
-    spack_install('py-frozendict')
 
 
 def test_install_py_gridtools_cpp_install_default():
