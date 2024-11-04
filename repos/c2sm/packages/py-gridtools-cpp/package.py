@@ -19,7 +19,7 @@ class PyGridtoolsCpp(PythonPackage):
             sha256=
             "9d047e66558fd5b8b677f6805c61a41b4add0cafde0969e5ee09c339108c4e1f",
             expand=False)
-    
+
     depends_on("python@3.10:")
     depends_on("py-setuptools", type="build")
 
