@@ -63,6 +63,7 @@ pipeline {
                             sh """
                             source env/bin/activate
                             source $WORKSPACE/etc/profile.d/uenv.sh
+                            uenv start mch/prgenv-icon:rc1
                             source ./setup-env.sh /user-environment
                             pytest -v -n auto test/integration_test.py
                             """
@@ -73,6 +74,7 @@ pipeline {
                             sh """
                             source env/bin/activate
                             source $WORKSPACE/etc/profile.d/uenv.sh
+                            uenv start mch/prgenv-icon:rc1
                             source ./setup-env.sh /user-environment
                             pytest -v -n auto test/system_test.py
                             """
