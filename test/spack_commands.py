@@ -54,12 +54,10 @@ def run_with_spack(command: str, log: Path) -> None:
 
     start = time.time()
     # Direct stream to avoid buffering.
-    # 'env -i' clears the environment.
-    # 'bash -l' makes it a login shell.
-    # 'bash -c' reads commands from string.
+    # 'deactivate' deactivates the python virtual environment.
     # '2>&1' redirects stderr to stdout.
     ret = subprocess.run(
-        f'env -i bash -l -c "(. {REPO_DIR}/setup-env.sh {uenv}; {command}) >> {log} 2>&1"',
+        f'deactivate; . {REPO_DIR}/setup-env.sh {uenv}; {command}) >> {log} 2>&1',
         check=False,
         shell=True,
     )
