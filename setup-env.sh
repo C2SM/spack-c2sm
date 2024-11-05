@@ -4,7 +4,6 @@ parent_dir=$( cd "$(dirname "${BASH_SOURCE[0]:-${(%):-%x}}")" ; pwd -P )
 
 if [[ "$#" == 1 ]]; then
     uenv="$1"
-    export SPACK_UENV_PATH="$uenv"
     export SPACK_SYSTEM_CONFIG_PATH="$uenv"/config
 
     if [[ $uenv == "euler" ]]; then
