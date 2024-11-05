@@ -1,5 +1,11 @@
 import pytest
-from spack_commands import ALL_PACKAGES, spack_info, spack_spec
+from spack_commands import (
+    ALL_PACKAGES,
+    spack_info,
+    spack_spec,
+    run_with_spack,
+    log_file,
+)
 
 
 @pytest.mark.parametrize("package", ALL_PACKAGES)
@@ -34,3 +40,11 @@ def test_int2lm_parallel():
 
 def test_int2lm_no_parallel():
     spack_spec("int2lm ~parallel")
+
+
+def test_compilers():
+    run_with_spack("spack compilers", log=log_file("compilers"))
+
+
+def test_find():
+    run_with_spack("spack find", log=log_file("find"))
