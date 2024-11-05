@@ -44,7 +44,7 @@ class PyGt4py(PythonPackage):
     depends_on('py-deepdiff@5.6.0:', type=('build', 'run'))
     depends_on('py-devtools@0.6:', type=('build', 'run'))
     depends_on('py-frozendict@2.3:', type=('build', 'run'))
-    depends_on('py-gridtools-cpp@2.3.4:', type=(
+    depends_on('py-gridtools-cpp@2.3.6:', type=(
         'build', 'run'
     ))  #gridtools-cpp is backwards compatible with older gt4py versions
     depends_on('py-jinja2@3.0.0:', type=('build', 'run'))
