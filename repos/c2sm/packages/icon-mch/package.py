@@ -11,23 +11,41 @@ class IconMch(SpackIcon):
     version('icon-2.6.6-mch2a', submodules=True)
 
     # Model Features:
-    variant('dace', default=False, description='Enable the DACE modules for data assimilation')
+    variant('dace',
+            default=False,
+            description='Enable the DACE modules for data assimilation')
     requires("+mpi", when="+dace")
 
-    variant('emvorado', default=False, description='Enable the radar forward operator EMVORADO')
+    variant('emvorado',
+            default=False,
+            description='Enable the radar forward operator EMVORADO')
     requires("+mpi", when="+emvorado")
 
     # Infrastructural Features:
-    variant('async-io-rma', default=True, description='Enable remote memory access (RMA) for async I/O')
-    variant('realloc-buf', default=False, description='Enable reallocatable communication buffer')
+    variant('async-io-rma',
+            default=True,
+            description='Enable remote memory access (RMA) for async I/O')
+    variant('realloc-buf',
+            default=False,
+            description='Enable reallocatable communication buffer')
 
     # Optimization Features:
-    variant('pgi-inlib', default=False, description='Enable PGI/NVIDIA cross-file function inlining via an inline library')
+    variant(
+        'pgi-inlib',
+        default=False,
+        description=
+        'Enable PGI/NVIDIA cross-file function inlining via an inline library')
 
     # MCH specific features:
-    variant('eccodes-definitions', default=False, description='Enable extension of eccodes with center specific definition files')
+    variant(
+        'eccodes-definitions',
+        default=False,
+        description=
+        'Enable extension of eccodes with center specific definition files')
 
-    depends_on('cosmo-eccodes-definitions', type='run', when='+eccodes-definitions')
+    depends_on('cosmo-eccodes-definitions',
+               type='run',
+               when='+eccodes-definitions')
 
     with when('+emvorado'):
         depends_on('eccodes +fortran')

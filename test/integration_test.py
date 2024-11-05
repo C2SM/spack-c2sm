@@ -24,7 +24,8 @@ def test_icon_c2sm_fcgroup():
 
 def test_icon_extra_config_args():
     spack_spec(
-        "icon-c2sm extra-config-args=--disable-new_feature,--enable-old_config_arg")
+        "icon-c2sm extra-config-args=--disable-new_feature,--enable-old_config_arg"
+    )
 
 
 def test_int2lm_parallel():
