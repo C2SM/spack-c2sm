@@ -14,29 +14,11 @@ class PyGridtoolsCpp(PythonPackage):
     whl_url_prefix = "https://pypi.io/packages/py3/g/gridtools-cpp/"
 
     maintainers = ['havogt']
-
-    version("2.3.4",
-            url=whl_url_prefix + "gridtools_cpp-2.3.4-py3-none-any.whl",
+    version("2.3.6",
+            url=whl_url_prefix + "gridtools_cpp-2.3.6-py3-none-any.whl",
             sha256=
-            "c35f906d1b5e9f37252116181cb9fcdd8b190b71c4eae770d2dc62c3a7189c2b",
+            "9d047e66558fd5b8b677f6805c61a41b4add0cafde0969e5ee09c339108c4e1f",
             expand=False)
-    version("2.3.1",
-            url=whl_url_prefix + "gridtools_cpp-2.3.1-py3-none-any.whl",
-            sha256=
-            "90cf40287c4df7586bc497f9e612b1b79d5751cb41c62ac557d2d4999aaed954",
-            expand=False)
-    version("2.3.0",
-            url=whl_url_prefix + "gridtools_cpp-2.3.0-py3-none-any.whl",
-            sha256=
-            "0af02845a538a7c20791ecaeeb3b68c8b976b653ef8593a00beea60445ec38b6",
-            expand=False)
-    version("2.2.2",
-            sha256=
-            "d45316379440b6d96d04b3fb47f6a432946e9f9d906bcb10af51d9a92e95353e")
-
-    version("2.2.3",
-            sha256=
-            "0bc4b72c9f2786f70c80092bba7bd2eedd216d8c16946b7b32704d248e0d97e6")
 
     depends_on("python@3.10:")
     depends_on("py-setuptools", type="build")
