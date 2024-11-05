@@ -20,12 +20,23 @@ pipeline {
                     }
                 }
                 stages {
-                    stage('Create environment') {
+                    stage('Create python environment') {
                         steps {
                             sh """
                             python3 -m venv env
                             source env/bin/activate
                             pip install -r requirements.txt
+                            """
+                        }
+                    }
+                    stage('Create uenv') {
+                        steps {
+                            sh """
+                            git clone -b fix/jenkins https://github.com/eth-cscs/uenv.git
+                            ./uenv/install --yes --destdir=$WORKSPACE
+                            source $WORKSPACE/etc/profile.d/uenv.sh
+                            uenv repo create
+                            uenv image pull mch/prgenv-icon:rc1
                             """
                         }
                     }
@@ -51,7 +62,8 @@ pipeline {
                         steps {
                             sh """
                             source env/bin/activate
-                            source ./setup-env.sh $USER_ENV_ROOT
+                            source $WORKSPACE/etc/profile.d/uenv.sh
+                            source ./setup-env.sh /user-environment
                             pytest -v -n auto test/integration_test.py
                             """
                         }
@@ -60,7 +72,8 @@ pipeline {
                         steps {
                             sh """
                             source env/bin/activate
-                            source ./setup-env.sh $USER_ENV_ROOT
+                            source $WORKSPACE/etc/profile.d/uenv.sh
+                            source ./setup-env.sh /user-environment
                             pytest -v -n auto test/system_test.py
                             """
                         }
