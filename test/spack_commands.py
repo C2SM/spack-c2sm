@@ -55,7 +55,7 @@ def run_with_spack(command: str, log: Path) -> None:
         # Filter out any paths related to the virtual environment
         env['PATH'] = ':'.join(
             p for p in env['PATH'].split(':')
-            if 'venv' not in p
+            if '.venv' not in p
         )
     # Direct stream to avoid buffering.
     # '2>&1' redirects stderr to stdout.

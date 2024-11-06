@@ -23,8 +23,8 @@ pipeline {
                     stage('Create python environment') {
                         steps {
                             sh """
-                            python3 -m venv env
-                            source env/bin/activate
+                            python3 -m venv .venv
+                            source .venv/bin/activate
                             pip install -r requirements.txt
                             """
                         }
@@ -44,7 +44,7 @@ pipeline {
                         // Bootstrapping spack is a separate stage to avoid problems with concurrently bootstrapping spack in the tests.
                         steps {
                             sh """
-                            source env/bin/activate
+                            source .venv/bin/activate
                             source ./setup-env.sh
                             spack spec gnuconfig
                             """
@@ -53,7 +53,7 @@ pipeline {
                     stage('Unit Tests') {
                         steps {
                             sh """
-                            source env/bin/activate
+                            source .venv/bin/activate
                             python3 test/unit_test.py
                             """
                         }
@@ -61,7 +61,7 @@ pipeline {
                     stage('Integration Tests') {
                         steps {
                             sh """
-                            source env/bin/activate
+                            source .venv/bin/activate
                             source $WORKSPACE/etc/profile.d/uenv.sh
                             uenv start mch/v8:rc1
                             source ./setup-env.sh /user-environment
@@ -72,7 +72,7 @@ pipeline {
                     stage('System Tests') {
                         steps {
                             sh """
-                            source env/bin/activate
+                            source .venv/bin/activate
                             source $WORKSPACE/etc/profile.d/uenv.sh
                             uenv start mch/v8:rc1
                             source ./setup-env.sh /user-environment
