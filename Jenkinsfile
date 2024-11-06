@@ -36,7 +36,7 @@ pipeline {
                             ./uenv/install --yes --destdir=$WORKSPACE
                             source $WORKSPACE/etc/profile.d/uenv.sh
                             uenv repo create
-                            uenv image pull mch/prgenv-icon:rc1
+                            uenv image pull mch/v8:rc1
                             """
                         }
                     }
@@ -63,7 +63,7 @@ pipeline {
                             sh """
                             source env/bin/activate
                             source $WORKSPACE/etc/profile.d/uenv.sh
-                            uenv start mch/prgenv-icon:rc1
+                            uenv start mch/v8:rc1
                             source ./setup-env.sh /user-environment
                             pytest -v -n auto test/integration_test.py
                             """
@@ -74,7 +74,7 @@ pipeline {
                             sh """
                             source env/bin/activate
                             source $WORKSPACE/etc/profile.d/uenv.sh
-                            uenv start mch/prgenv-icon:rc1
+                            uenv start mch/v8:rc1
                             source ./setup-env.sh /user-environment
                             pytest -v -n auto test/system_test.py
                             """
