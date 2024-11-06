@@ -47,13 +47,23 @@ def run_with_spack(command: str, log: Path) -> None:
         f.write(f"{command}\n\n")
 
     start = time.time()
+    # Remove python virtual environment paths for this subprocess call
+    env = os.environ.copy()
+    if 'VIRTUAL_ENV' in env:
+        del env['VIRTUAL_ENV']
+    if 'PATH' in env:
+        # Filter out any paths related to the virtual environment
+        env['PATH'] = ':'.join(
+            p for p in env['PATH'].split(':')
+            if 'venv' not in p
+        )
     # Direct stream to avoid buffering.
-    # 'deactivate' deactivates the python virtual environment.
     # '2>&1' redirects stderr to stdout.
     ret = subprocess.run(
         f'{command} >> {log} 2>&1',
         check=False,
         shell=True,
+        env=env,
     )
     end = time.time()
 
