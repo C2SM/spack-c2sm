@@ -51,7 +51,7 @@ def run_with_spack(command: str, log: Path) -> None:
     # 'deactivate' deactivates the python virtual environment.
     # '2>&1' redirects stderr to stdout.
     ret = subprocess.run(
-        f'deactivate; {command} >> {log} 2>&1',
+        f'{command} >> {log} 2>&1',
         check=False,
         shell=True,
     )
