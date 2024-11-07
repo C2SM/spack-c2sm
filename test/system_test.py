@@ -27,12 +27,12 @@ def test_install_flexpart_cosmo():
     spack_install('flexpart-cosmo @V8C4.0')
 
 
-def test_install_icon_mch_2024_01_gcc():
-    spack_install('icon-mch @2024.01 %gcc')
+def test_install_icon_mch_2_6_6_mch2b_gcc():
+    spack_install('icon-mch @icon-2.6.6-mch2b %gcc')
 
 
-def test_install_icon_mch_2024_01_nvhpc():
-    spack_install('icon-mch @2024.01 %nvhpc')
+def test_install_icon_mch_2_6_6_mch2b_nvhpc():
+    spack_install('icon-mch @icon-2.6.6-mch2b %nvhpc')
 
 
 def test_install_icon_mch_conditional_dependencies():
@@ -41,10 +41,10 @@ def test_install_icon_mch_conditional_dependencies():
     # +emvorado triggers eccodes, hdf5, zlib
     # +eccodes-definitions triggers cosmo-eccodes-definitions
     # +mpi triggers mpi
-    # gpu=openacc+cuda triggers cuda
+    # gpu=nvidia-80 triggers cuda
 
     spack_install(
-        'icon-mch @2024.01 %nvhpc +coupling serialization=create +emvorado +mpi gpu=openacc+cuda cuda_arch=80'
+        'icon-mch @icon-2.6.6-mch2b %nvhpc +coupling serialization=create +emvorado +mpi gpu=nvidia-80'
     )
 
 
