@@ -37,8 +37,6 @@ pipeline {
                             source $WORKSPACE/etc/profile.d/uenv.sh
                             uenv repo create
                             uenv image pull mch/v8:rc1
-                            uenv start mch/v8:rc1
-                            ls /user-environment
                             """
                         }
                     }
@@ -63,10 +61,9 @@ pipeline {
                         steps {
                             sh """
                             source $WORKSPACE/etc/profile.d/uenv.sh
-                            uenv start mch/v8:rc1
                             source ./setup-env.sh /user-environment
                             source .venv/bin/activate
-                            pytest -v -n auto test/integration_test.py
+                            uenv run mch/v8:rc1 -- pytest -v -n auto test/integration_test.py
                             """
                         }
                     }
@@ -74,10 +71,9 @@ pipeline {
                         steps {
                             sh """
                             source $WORKSPACE/etc/profile.d/uenv.sh
-                            uenv start mch/v8:rc1
                             source ./setup-env.sh /user-environment
                             source .venv/bin/activate
-                            pytest -v -n auto test/system_test.py
+                            uenv run mch/v8:rc1 -- pytest -v -n auto test/system_test.py
                             """
                         }
                     }
