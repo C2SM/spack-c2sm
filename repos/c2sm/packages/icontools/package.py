@@ -39,15 +39,15 @@ class Icontools(AutotoolsPackage):
     depends_on('libtool', type='build')
     depends_on('m4', type='build')
 
-    depends_on('netcdf-fortran', type=('build', 'link'))
-    depends_on('netcdf-c ~mpi', type=('build', 'link'))
-    depends_on('hdf5 ~mpi +hl', type=('build', 'link'))
+    depends_on('netcdf-fortran %gcc')  # WORKAROUND: '%gcc' should not be necessary, but without it, spack concretizes to nvhpc.
+    depends_on('netcdf-c ~mpi')
+    depends_on('hdf5 ~mpi +hl')
     depends_on(
         'mpi',
         type=('build', 'link', 'run'),
     )
     depends_on('eccodes@2.19.0 +fortran ~aec', type=('build', 'link', 'run'))
-    depends_on('jasper@1.900.1', type=('build', 'link'))
+    depends_on('jasper@1.900.1')
 
     variant(
         'slave',
