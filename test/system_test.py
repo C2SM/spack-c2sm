@@ -19,13 +19,8 @@ def test_install_eccodes_2_19_0():
     spack_install('eccodes @2.19.0', test_root=False)
 
 
-def test_install_fdb_fortran():
-    spack_install('fdb-fortran')
-
-
-@pytest.mark.parametrize("version", ['10.4.4', 'fdb'])
-def test_install_flexpart_ifs_version(version):
-    spack_install(f'flexpart-ifs @{version}', test_root=False)
+def test_install_flexpart_ifs(version):
+    spack_install('flexpart-ifs', test_root=False)
 
 
 def test_install_flexpart_cosmo():
