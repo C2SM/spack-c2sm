@@ -32,7 +32,7 @@ pipeline {
                     stage('Create uenv') {
                         steps {
                             sh """
-                            git clone -b fix/jenkins https://github.com/eth-cscs/uenv.git
+                            git clone -b fix_jenkins https://github.com/dominichofer/uenv.git
                             ./uenv/install --yes --destdir=$WORKSPACE
                             source $WORKSPACE/etc/profile.d/uenv.sh
                             uenv repo create
@@ -44,7 +44,6 @@ pipeline {
                         // Bootstrapping spack is a separate stage to avoid problems with concurrently bootstrapping spack in the tests.
                         steps {
                             sh """
-                            source .venv/bin/activate
                             source ./setup-env.sh
                             spack spec gnuconfig
                             """
@@ -61,10 +60,11 @@ pipeline {
                     stage('Integration Tests') {
                         steps {
                             sh """
-                            source .venv/bin/activate
                             source $WORKSPACE/etc/profile.d/uenv.sh
                             uenv start mch/v8:rc1
+                            ls /user-environment
                             source ./setup-env.sh /user-environment
+                            source .venv/bin/activate
                             pytest -v -n auto test/integration_test.py
                             """
                         }
@@ -72,10 +72,10 @@ pipeline {
                     stage('System Tests') {
                         steps {
                             sh """
-                            source .venv/bin/activate
                             source $WORKSPACE/etc/profile.d/uenv.sh
                             uenv start mch/v8:rc1
                             source ./setup-env.sh /user-environment
+                            source .venv/bin/activate
                             pytest -v -n auto test/system_test.py
                             """
                         }
