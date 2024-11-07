@@ -32,11 +32,13 @@ pipeline {
                     stage('Create uenv') {
                         steps {
                             sh """
-                            git clone -b fix_jenkins https://github.com/dominichofer/uenv.git
+                            git clone -b fix/jenkins https://github.com/eth-cscs/uenv.git
                             ./uenv/install --yes --destdir=$WORKSPACE
                             source $WORKSPACE/etc/profile.d/uenv.sh
                             uenv repo create
                             uenv image pull mch/v8:rc1
+                            uenv start mch/v8:rc1
+                            ls /user-environment
                             """
                         }
                     }
@@ -62,7 +64,6 @@ pipeline {
                             sh """
                             source $WORKSPACE/etc/profile.d/uenv.sh
                             uenv start mch/v8:rc1
-                            ls /user-environment
                             source ./setup-env.sh /user-environment
                             source .venv/bin/activate
                             pytest -v -n auto test/integration_test.py
