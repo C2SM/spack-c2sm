@@ -76,6 +76,7 @@ class PyGt4py(PythonPackage):
     depends_on('py-pytest-cov@2.8:', type=('build', 'run'))
     depends_on('py-pytest-factoryboy@2.0.3:', type=('build', 'run'))
     depends_on('py-pytest@7.0:', type=('build', 'run'))
+    depends_on('py-diskcache@5.2:', type=('build', 'run'))
     # setup.cfg requires newer version, but not available yet
     depends_on('py-tox@3.14:', type=('build', 'run'))
 
