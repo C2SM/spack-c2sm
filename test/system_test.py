@@ -28,7 +28,9 @@ def test_install_flexpart_cosmo():
 
 
 def test_install_icon_mch_2_6_6_mch2b_nvhpc():
-    spack_install('icon-mch @icon-2.6.6-mch2b %nvhpc ^cray-mpich%nvhpc ^netcdf-fortran%nvhpc')
+    spack_install(
+        'icon-mch @icon-2.6.6-mch2b %nvhpc ^cray-mpich%nvhpc ^netcdf-fortran%nvhpc'
+    )
 
 
 def test_install_icon_mch_conditional_dependencies():

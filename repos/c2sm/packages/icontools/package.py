@@ -39,7 +39,9 @@ class Icontools(AutotoolsPackage):
     depends_on('libtool', type='build')
     depends_on('m4', type='build')
 
-    depends_on('netcdf-fortran %gcc')  # WORKAROUND: '%gcc' should not be necessary, but without it, spack concretizes to nvhpc.
+    depends_on(
+        'netcdf-fortran %gcc'
+    )  # WORKAROUND: '%gcc' should not be necessary, but without it, spack concretizes to nvhpc.
     depends_on('netcdf-c ~mpi')
     depends_on('hdf5 ~mpi +hl')
     depends_on(
