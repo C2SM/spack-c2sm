@@ -1,0 +1,22 @@
+diff --git a/cosmo/ACC/test/tools/test_cosmo.py b/cosmo/ACC/test/tools/test_cosmo.py
+index 733bde4a..c2c60f2b 100755
+--- a/cosmo/ACC/test/tools/test_cosmo.py
++++ b/cosmo/ACC/test/tools/test_cosmo.py
+@@ -16,7 +16,16 @@ def main():
+     parser.add_argument('-b', '--base_directory', type=str, help='Cosmo base directory')
+     args=parser.parse_args()
+ 
+-    test_cosmo(Spec(args.spec), args.base_directory)
++    try:
++        # assume spec is passed as a yaml-file
++        with open(args.spec,"r") as f:
++          cosmo_spec = Spec.from_yaml(f)
++    except:
++        # assume spec is passed as a string
++        cosmo_spec = Spec(args.spec)
++
++
++    test_cosmo(cosmo_spec, args.base_directory)
+ 
+ def test_cosmo(cosmo_spec, base_directory):
+ 
