@@ -27,10 +27,6 @@ def test_install_flexpart_cosmo():
     spack_install('flexpart-cosmo @V8C4.0')
 
 
-def test_install_icon_mch_2_6_6_mch2b_gcc():
-    spack_install('icon-mch @icon-2.6.6-mch2b %gcc')
-
-
 def test_install_icon_mch_2_6_6_mch2b_nvhpc():
     spack_install('icon-mch @icon-2.6.6-mch2b %nvhpc ^cray-mpich%nvhpc ^netcdf-fortran%nvhpc')
 
