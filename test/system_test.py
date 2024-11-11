@@ -44,7 +44,7 @@ def test_install_icon_mch_conditional_dependencies():
     # gpu=nvidia-80 triggers cuda
 
     spack_install(
-        'icon-mch @icon-2.6.6-mch2b %nvhpc ^cray-mpich%nvhpc ^netcdf-fortran%nvhpc +coupling serialization=create +emvorado +mpi gpu=nvidia-80'
+        'icon-mch @icon-2.6.6-mch2b %nvhpc +coupling serialization=create +emvorado +mpi gpu=nvidia-80 ^cray-mpich%nvhpc ^netcdf-fortran%nvhpc'
     )
 
 
