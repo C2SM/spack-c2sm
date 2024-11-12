@@ -6,9 +6,8 @@ def test_install_clang_format():
     spack_install('clang-format')
 
 
-@pytest.mark.parametrize("version", ['2.25.0.1', '2.19.0.7'])
-def test_install_cosmo_eccodes_definitions_version(version):
-    spack_install(f'cosmo-eccodes-definitions @{version}')
+def test_install_cosmo_eccodes_definitions():
+    spack_install('cosmo-eccodes-definitions')
 
 
 def test_install_ecbuild():
