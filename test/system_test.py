@@ -52,7 +52,7 @@ def test_install_icontools():
 
 def test_install_int2lm_3_00_nvhpc():
     spack_install('int2lm @int2lm-3.00 %nvhpc')
-    
+
 
 def test_install_libfyaml():
     spack_install('libfyaml')
@@ -121,7 +121,8 @@ def test_install_py_typing_extensions():
 
 def test_install_pytorch_fortran():
     spack_install(
-        'pytorch-fortran %nvhpc ^pytorch-fortran-proxy@0.4%gcc ^python@3.10 ^gmake%gcc ^cmake%gcc')
+        'pytorch-fortran %nvhpc ^pytorch-fortran-proxy@0.4%gcc ^python@3.10 ^gmake%gcc ^cmake%gcc'
+    )
 
 
 def test_install_pytorch_fortran_proxy():
