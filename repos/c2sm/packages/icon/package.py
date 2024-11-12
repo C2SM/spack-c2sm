@@ -581,6 +581,7 @@ class Icon(AutotoolsPackage, CudaPackage):
         # Check for DSL variants and set corresponding Liskov options
         dsl = self.spec.variants['dsl'].value
         if dsl != ('none', ):
+            args.append('--disable-venv-activation')
             if 'substitute' in dsl:
                 args.append('--enable-liskov=substitute')
             elif 'verify' in dsl:
