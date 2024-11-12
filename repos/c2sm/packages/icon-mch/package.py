@@ -48,9 +48,27 @@ class IconMch(SpackIcon):
                when='+eccodes-definitions')
 
     with when('+emvorado'):
-        depends_on('eccodes +fortran')
         depends_on('hdf5 +szip +hl +fortran')
         depends_on('zlib')
+        depends_on('eccodes +fortran')
+        # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
+        depends_on('eccodes %nvhpc', when='%nvhpc')
+        depends_on('eccodes %gcc', when='%gcc')
+        
+    # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
+    for __x in SpackIcon.serialization_values:
+        with when("serialization={0}".format(__x)):
+            depends_on('serialbox %nvhpc', when='%nvhpc')
+            depends_on('serialbox %gcc', when='%gcc')
+
+    # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
+    depends_on('netcdf-fortran %nvhpc', when='%nvhpc')
+    depends_on('netcdf-fortran %gcc', when='%gcc')
+
+    # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
+    with when('+mpi'):
+        depends_on('mpi %nvhpc', when='%nvhpc')
+        depends_on('mpi %gcc', when='%gcc')
 
     def configure_args(self):
         args = super().configure_args()
