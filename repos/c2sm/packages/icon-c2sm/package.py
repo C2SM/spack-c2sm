@@ -306,7 +306,10 @@ class IconC2sm(SpackIcon):
             if not is_system_path(d)
         ])
 
-        args.extend(["{0}={1}".format(name, " ".join(value)) for name, value in flags.items()])
+        args.extend([
+            "{0}={1}".format(name, " ".join(value))
+            for name, value in flags.items()
+        ])
         args.append(f"{super_libs} {libs.link_flags}")
         return args
 

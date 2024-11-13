@@ -54,7 +54,7 @@ class IconMch(SpackIcon):
         # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
         depends_on('eccodes %nvhpc', when='%nvhpc')
         depends_on('eccodes %gcc', when='%gcc')
-        
+
     # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
     for __x in SpackIcon.serialization_values:
         with when("serialization={0}".format(__x)):

@@ -32,7 +32,9 @@ def test_install_flexpart_ifs():
 
 @pytest.mark.parametrize("compiler", ['gcc', 'nvhpc'])
 def test_install_icon_c2sm(compiler):
-    spack_install(f'icon-c2sm %{compiler} ^cray-mpich%{compiler} ^netcdf-fortran%{compiler} ^eccodes%{compiler} ^serialbox%{compiler}')
+    spack_install(
+        f'icon-c2sm %{compiler} ^cray-mpich%{compiler} ^netcdf-fortran%{compiler} ^eccodes%{compiler} ^serialbox%{compiler}'
+    )
 
 
 #TODO: Add test for icon-ham
