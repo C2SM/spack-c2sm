@@ -11,7 +11,7 @@ def test_install_cosmo_eccodes_definitions():
 
 
 def test_install_ecbuild():
-    # Tests are disabled because they fail:
+    # Tests are disabled because they fail with:
     # The following tests FAILED:
     # 	  1 - ECBUILD-359 (Failed)
     # 	  2 - ECBUILD-401 (Failed)
@@ -61,7 +61,10 @@ def test_install_icontools():
 
 
 def test_install_int2lm_3_00_nvhpc():
-    spack_install('int2lm @int2lm-3.00 %nvhpc')
+    # Tests are disabled because they fail with:
+    # Error: cmake is a duplicate dependency, with conflicting dependency types
+    # which stems from the package's 'test_int2lm.py'.
+    spack_install('int2lm @int2lm-3.00 %nvhpc', test_root=False)
 
 
 def test_install_libfyaml():
@@ -77,7 +80,9 @@ def test_install_libtorch():
 
 
 def test_install_makedepf90():
-    spack_install('makedepf90')
+    # Tests are disabled because they fail with:
+    # test1.sh: No such file or directory
+    spack_install('makedepf90', test_root=False)
 
 
 def test_install_oasis_nvhpc():
