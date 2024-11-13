@@ -65,11 +65,6 @@ class IconMch(SpackIcon):
     depends_on('netcdf-fortran %nvhpc', when='%nvhpc')
     depends_on('netcdf-fortran %gcc', when='%gcc')
 
-    # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
-    with when('+mpi'):
-        depends_on('mpi %nvhpc', when='%nvhpc')
-        depends_on('mpi %gcc', when='%gcc')
-
     def configure_args(self):
         args = super().configure_args()
         super_libs = args.pop()
