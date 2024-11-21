@@ -60,7 +60,7 @@ pipeline {
                         steps {
                             sh """
                             source env/bin/activate
-                            source ./setup-env.sh /mch-environment/v6
+                            source ./setup-env.sh /mch-environment/v7
                             pytest -v -n auto test/system_test.py
                             """
                         }
