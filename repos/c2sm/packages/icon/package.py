@@ -483,9 +483,7 @@ class Icon(AutotoolsPackage, CudaPackage):
         libs += self.spec['lapack:fortran'].libs
         libs += self.spec['blas:fortran'].libs
         libs += self.spec['netcdf-fortran'].libs
-
-        if '+coupling' in self.spec:
-            libs += self.spec['netcdf-c'].libs
+        libs += self.spec['netcdf-c'].libs
 
         if '+emvorado' in self.spec:
             libs += self.spec['hdf5:fortran,hl'].libs
