@@ -380,24 +380,3 @@ class IconC2sm(SpackIcon):
                 os.environ['PYTHONHOME'] = PYTHONHOME
         else:
             tty.warn('Cannot find test.py -> skipping tests')
-
-    @run_after('configure')
-    def copy_runscript_related_input_files(self):
-        if self.out_of_source_build:
-            with working_dir(self.build_directory):
-                Rsync = which('rsync', required=True)
-                icon_dir = self.configure_directory
-                Rsync("-uavz", f"{icon_dir}/run", ".", "--exclude=*.in",
-                      "--exclude=.*", "--exclude=standard_*")
-                Rsync("-uavz", f"{icon_dir}/externals", ".", "--exclude=.git",
-                      "--exclude=*.f90", "--exclude=*.F90", "--exclude=*.c",
-                      "--exclude=*.h", "--exclude=*.Po", "--exclude=tests",
-                      "--exclude=*.mod", "--exclude=*.o")
-                Rsync("-uavz", f"{icon_dir}/make_runscripts", ".")
-
-                Ln = which('ln', required=True)
-                dirs = glob.glob(f"{icon_dir}/run/standard_*")
-                for dir in dirs:
-                    Ln("-sf", "-t", "run/", f"{dir}")
-                Ln("-sf", f"{icon_dir}/data")
-                Ln("-sf", f"{icon_dir}/vertical_coord_tables")
