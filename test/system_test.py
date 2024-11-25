@@ -40,9 +40,9 @@ def test_install_icon_c2sm(compiler):
 #TODO: Add test for icon-ham
 
 
-@pytest.mark.parametrize("compiler", ['gcc', 'nvhpc'])
-def test_install_icon_mch(compiler):
-    spack_install(f'icon-mch %{compiler} ^cray-mpich%{compiler}')
+@pytest.mark.parametrize('version', ['2.6.6-mch2a', '2.6.6-mch2b'])
+def test_install_icon_mch(version):
+    spack_install(f'icon-mch @{version} %nvhpc ^cray-mpich%nvhpc')
 
 
 def test_install_icon_mch_conditional_dependencies():
@@ -54,7 +54,7 @@ def test_install_icon_mch_conditional_dependencies():
     # gpu=nvidia-80 triggers cuda
 
     spack_install(
-        'icon-mch %nvhpc +coupling serialization=create +emvorado +mpi gpu=nvidia-80 ^cray-mpich%nvhpc'
+        'icon-mch @2.6.6-mch2b %nvhpc +coupling serialization=create +emvorado +mpi gpu=nvidia-80 ^cray-mpich%nvhpc'
     )
 
 

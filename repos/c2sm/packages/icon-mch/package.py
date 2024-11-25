@@ -6,9 +6,9 @@ class IconMch(SpackIcon):
 
     maintainers("dominichofer")
 
-    version('master', submodules=True)
-    version('icon-2.6.6-mch2b', submodules=True)
-    version('icon-2.6.6-mch2a', submodules=True)
+    version('master', branch='master', submodules=True)
+    version('2.6.6-mch2b', tag='icon-2.6.6-mch2b', submodules=True)
+    version('2.6.6-mch2a', tag='icon-2.6.6-mch2a', submodules=True)
 
     # Model Features:
     variant('dace',
