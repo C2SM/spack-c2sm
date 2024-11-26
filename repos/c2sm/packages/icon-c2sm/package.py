@@ -41,7 +41,7 @@ def check_variant_extra_config_args(extra_config_arg):
 class IconC2sm(SpackIcon):
     git = 'git@gitlab.dkrz.de:icon/icon.git'
 
-    maintainers('jonasjucker', 'dominichofer')
+    maintainers('jonasjucker', 'huppd')
 
     version('develop', submodules=True)
     version("2024.01-1", tag="icon-2024.01-1", submodules=True)
