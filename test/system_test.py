@@ -88,12 +88,12 @@ def test_install_oasis_version_4_0_nvhpc():
 
 def test_install_pytorch_fortran_version_0_4():
     spack_install(
-        'pytorch-fortran@0.4%nvhpc ^pytorch-fortran-proxy@0.4%gcc ^python@3.10 ^gmake%gcc ^cmake%gcc',
+        'pytorch-fortran@0.4%nvhpc ^pytorch-fortran-proxy@0.4%gcc ^cuda@12.3.0',
         test_root=False)
 
 
 def test_install_pytorch_fortran_proxy_version_0_4():
-    spack_install('pytorch-fortran-proxy@0.4%gcc ^python@3.10',
+    spack_install('pytorch-fortran-proxy@0.4%gcc ^cuda@12.3.0',
                   test_root=False)
 
 

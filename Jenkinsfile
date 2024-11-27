@@ -51,7 +51,7 @@ pipeline {
                         steps {
                             sh """
                             source env/bin/activate
-                            source ./setup-env.sh $USER_ENV_ROOT
+                            source ./setup-env.sh /mch-environment/v7
                             pytest -v -n auto test/integration_test.py
                             """
                         }
@@ -60,7 +60,7 @@ pipeline {
                         steps {
                             sh """
                             source env/bin/activate
-                            source ./setup-env.sh $USER_ENV_ROOT
+                            source ./setup-env.sh /mch-environment/v7
                             pytest -v -n auto test/system_test.py
                             """
                         }

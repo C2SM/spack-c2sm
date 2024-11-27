@@ -226,10 +226,12 @@ class Icon(AutotoolsPackage, CudaPackage):
     depends_on('libxml2', when='+art')
 
     for x in serialization_values:
-        depends_on('serialbox+fortran', when='serialization={0}'.format(x))
+
         # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
-        depends_on('serialbox %nvhpc', when='%nvhpc')
-        depends_on('serialbox %gcc', when='%gcc')
+        depends_on('serialbox+fortran %nvhpc',
+                   when='serialization={0} %nvhpc'.format(x))
+        depends_on('serialbox+fortran %gcc',
+                   when='serialization={0} %gcc'.format(x))
 
     depends_on('eccodes +fortran', when='+emvorado')
     depends_on('eccodes', when='+grib2')
@@ -481,9 +483,7 @@ class Icon(AutotoolsPackage, CudaPackage):
         libs += self.spec['lapack:fortran'].libs
         libs += self.spec['blas:fortran'].libs
         libs += self.spec['netcdf-fortran'].libs
-
-        if '+coupling' in self.spec:
-            libs += self.spec['netcdf-c'].libs
+        libs += self.spec['netcdf-c'].libs
 
         if '+emvorado' in self.spec:
             libs += self.spec['hdf5:fortran,hl'].libs
