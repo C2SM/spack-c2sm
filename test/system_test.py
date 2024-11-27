@@ -123,9 +123,9 @@ def test_install_py_gt4py_for_version(version):
 
 
 @pytest.mark.parametrize("gt4py_version", ['1.0.3.10'])
-@pytest.mark.parametrize("version", ['main'])
+@pytest.mark.parametrize("version", ['main', 'v0.0.14'])
 def test_install_py_icon4py(version, gt4py_version):
-    spack_install(f'py-icon4py@{version} ^py-gt4py{gt4py_version}')
+    spack_install(f'py-icon4py@{version} ^py-gt4py@{gt4py_version}')
 
 
 def test_install_py_hatchling_default():
