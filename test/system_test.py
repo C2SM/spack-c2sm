@@ -141,13 +141,11 @@ def test_install_py_typing_extensions():
 
 
 def test_install_pytorch_fortran():
-    spack_install(
-        'pytorch-fortran %nvhpc ^pytorch-fortran-proxy@0.4%gcc ^python@3.10 ^gmake%gcc ^cmake%gcc'
-    )
+    spack_install('pytorch-fortran %nvhpc')
 
 
 def test_install_pytorch_fortran_proxy():
-    spack_install('pytorch-fortran-proxy %gcc ^python@3.10')
+    spack_install('pytorch-fortran-proxy')
 
 
 def test_install_yaxt():
