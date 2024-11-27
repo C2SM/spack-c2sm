@@ -1,10 +1,9 @@
 from spack.pkg.builtin.icon import Icon as SpackIcon
-import os, glob, re
+import os
+import re
 from collections import defaultdict
-
 from llnl.util import tty
 from spack.util.environment import is_system_path
-from spack.util.executable import which
 import spack.error as error
 
 
@@ -38,13 +37,15 @@ def check_variant_extra_config_args(extra_config_arg):
         return False
 
 
-class IconC2sm(SpackIcon):
+class Icon(SpackIcon):
     git = 'git@gitlab.dkrz.de:icon/icon.git'
 
     maintainers('jonasjucker', 'huppd')
 
     version('develop', submodules=True)
     version("2024.01-1", tag="icon-2024.01-1", submodules=True)
+    version('2.6.6-mch2b', tag='icon-nwp/icon-2.6.6-mch2b', submodules=True)
+    version('2.6.6-mch2a', tag='icon-nwp/icon-2.6.6-mch2a', submodules=True)
     version('exclaim-master',
             branch='master',
             git='git@github.com:C2SM/icon-exclaim.git',
@@ -171,6 +172,19 @@ class IconC2sm(SpackIcon):
         depends_on('eccodes +fortran')
         depends_on('hdf5 +szip +hl +fortran')
         depends_on('zlib')
+        # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
+        depends_on('eccodes %nvhpc', when='%nvhpc')
+        depends_on('eccodes %gcc', when='%gcc')
+
+    # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
+    for __x in SpackIcon.serialization_values:
+        with when("serialization={0}".format(__x)):
+            depends_on('serialbox %nvhpc', when='%nvhpc')
+            depends_on('serialbox %gcc', when='%gcc')
+
+    # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
+    depends_on('netcdf-fortran %nvhpc', when='%nvhpc')
+    depends_on('netcdf-fortran %gcc', when='%gcc')
 
     depends_on('pytorch-fortran', when='+pytorch')
     depends_on('hdf5 +szip', when='+sct')
