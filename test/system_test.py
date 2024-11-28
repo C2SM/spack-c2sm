@@ -122,8 +122,7 @@ def test_install_py_gt4py_for_version(version):
     spack_install(f'py-gt4py @{version}')
 
 
-@pytest.mark.parametrize("gt4py_version", ['1.0.3.10'])
-@pytest.mark.parametrize("version", ['0.0.13', '0.0.14'])
+@pytest.mark.parametrize("version, gt4py_version", [('0.0.13', '1.0.3.9'), ('0.0.14', '1.0.3.10')])
 def test_install_py_icon4py(version, gt4py_version):
     spack_install(f'py-icon4py@{version} ^py-gt4py@{gt4py_version}')
 
