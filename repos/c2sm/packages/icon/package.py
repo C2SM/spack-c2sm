@@ -277,13 +277,6 @@ class Icon(AutotoolsPackage, CudaPackage):
     out_of_source_build = False
     out_of_source_configure_directory = ''
 
-    # patch_libtool is a function from Autotoolspackage.
-    # For BB we cannot use it because it finds all files
-    # named "libtool". spack-c2sm is cloned into icon-repo,
-    # therefore this function detects not only "libtool" files, but
-    # also the folder where libtool package itself is installed.
-    patch_libtool = False
-
     def setup_build_environment(self, env):
         # help cmake to build dsl-stencils
         if 'none' not in self.spec.variants['dsl'].value:
@@ -649,12 +642,6 @@ class Icon(AutotoolsPackage, CudaPackage):
                 f'The value "{arg}" for the extra_config_args variant conflicts '
                 f'with the existing variant {variant_from_arg}. Set this variant instead.'
             )
-
-    def check(self):
-        # By default "check" calls make with targets "check" and "test".
-        # This testing is beyond the scope of BuildBot test at CSCS.
-        # Therefore override this function, saves a lot of time too.
-        pass
 
     @run_after('install')
     @on_package_attributes(run_tests=True)
