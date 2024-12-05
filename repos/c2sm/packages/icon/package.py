@@ -7,7 +7,6 @@ from spack.util.environment import is_system_path
 import spack.error as error
 
 
-
 def check_variant_fcgroup(fcgroup):
     pattern = re.compile(r"^[A-Z]+\..+\..")
     # fcgroup is False as default
@@ -268,20 +267,20 @@ class Icon(SpackIcon):
 
     @run_after('configure')
     def copy_runscript_related_input_files(self):
-          with working_dir(self.build_directory):
-              Rsync = which('rsync', required=True)
-              icon_dir = self.configure_directory
-              Rsync("-uavz", f"{icon_dir}/run", ".", "--exclude=*.in",
-                    "--exclude=.*", "--exclude=standard_*")
-              Rsync("-uavz", f"{icon_dir}/externals", ".", "--exclude=.git",
-                    "--exclude=*.f90", "--exclude=*.F90", "--exclude=*.c",
-                    "--exclude=*.h", "--exclude=*.Po", "--exclude=tests",
-                    "--exclude=*.mod", "--exclude=*.o")
-              Rsync("-uavz", f"{icon_dir}/make_runscripts", ".")
+        with working_dir(self.build_directory):
+            Rsync = which('rsync', required=True)
+            icon_dir = self.configure_directory
+            Rsync("-uavz", f"{icon_dir}/run", ".", "--exclude=*.in",
+                  "--exclude=.*", "--exclude=standard_*")
+            Rsync("-uavz", f"{icon_dir}/externals", ".", "--exclude=.git",
+                  "--exclude=*.f90", "--exclude=*.F90", "--exclude=*.c",
+                  "--exclude=*.h", "--exclude=*.Po", "--exclude=tests",
+                  "--exclude=*.mod", "--exclude=*.o")
+            Rsync("-uavz", f"{icon_dir}/make_runscripts", ".")
 
-              Ln = which('ln', required=True)
-              dirs = glob.glob(f"{icon_dir}/run/standard_*")
-              for dir in dirs:
-                  Ln("-sf", "-t", "run/", f"{dir}")
-              Ln("-sf", f"{icon_dir}/data")
-              Ln("-sf", f"{icon_dir}/vertical_coord_tables")
+            Ln = which('ln', required=True)
+            dirs = glob.glob(f"{icon_dir}/run/standard_*")
+            for dir in dirs:
+                Ln("-sf", "-t", "run/", f"{dir}")
+            Ln("-sf", f"{icon_dir}/data")
+            Ln("-sf", f"{icon_dir}/vertical_coord_tables")
