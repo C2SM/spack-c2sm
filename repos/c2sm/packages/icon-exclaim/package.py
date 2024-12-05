@@ -1,6 +1,4 @@
-# from spack.pkg.builtin.icon import Icon as SpackIcon
 from spack.pkg.c2sm.icon import Icon as IconC2sm
-from spack.pkg.c2sm.icon import check_variant_fcgroup, check_variant_extra_config_args
 
 import os
 import re
