@@ -6,7 +6,6 @@ import os
 import re
 from collections import defaultdict
 from llnl.util import tty
-from spack.util.environment import is_system_path
 import spack.error as error
 
 
