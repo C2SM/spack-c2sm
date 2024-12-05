@@ -37,7 +37,6 @@ class IconExclaim(IconC2sm):
     # as described here
     # https://gitlab.dkrz.de/icon/icon/-/blob/icon-2024.01/configure?ref_type=tags#L1492-1638
 
-
     # EXCLAIM-GT4Py specific features:
     dsl_values = ('substitute', 'verify', 'serialize', 'fused', 'nvtx', 'lam')
     variant('dsl',
@@ -58,7 +57,7 @@ class IconExclaim(IconC2sm):
                when='+eccodes-definitions')
 
     def setup_build_environment(self, env):
-        super().set_build_envirionment(self,env)
+        super().set_build_envirionment(self, env)
         # help cmake to build dsl-stencils
         if 'none' not in self.spec.variants['dsl'].value:
             env.set("CUDAARCHS", self.spec.variants['cuda_arch'].value[0])
