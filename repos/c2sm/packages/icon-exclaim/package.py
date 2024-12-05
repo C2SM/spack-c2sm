@@ -5,7 +5,6 @@ from spack.pkg.c2sm.icon import check_variant_fcgroup, check_variant_extra_confi
 import os
 import re
 from collections import defaultdict
-from llnl.util import tty
 import spack.error as error
 
 
