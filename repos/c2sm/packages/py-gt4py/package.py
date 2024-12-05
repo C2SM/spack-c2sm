@@ -87,8 +87,10 @@ class PyGt4py(PythonPackage):
     def test(self):
         python_spec = self.spec['python']
         python_version = python_spec.version.up_to(2)
-        install_path = join_path(self.prefix, 'lib', f"python{python_version}", 'site-packages')
-        os.environ['PYTHONPATH'] = f"{install_path}:{os.environ.get('PYTHONPATH', '')}"
+        install_path = join_path(self.prefix, 'lib', f"python{python_version}",
+                                 'site-packages')
+        os.environ[
+            'PYTHONPATH'] = f"{install_path}:{os.environ.get('PYTHONPATH', '')}"
 
         python('-m', 'pytest', '-v', '-s', '-n', 'auto', '-k', '.run_gtfn]',
                'tests/next_tests', 'tests/eve_tests')
