@@ -85,6 +85,7 @@ class PyGt4py(PythonPackage):
     depends_on('py-pytest-xdist', type=('build', 'run'))
 
     def test(self):
+        # workaround for not finding own python module
         python_spec = self.spec['python']
         python_version = python_spec.version.up_to(2)
         install_path = join_path(self.prefix, 'lib', f"python{python_version}",
