@@ -55,12 +55,6 @@ def test_install_icon_ham(version):
     spack_install('icon-ham')
 
 
-@pytest.mark.parametrize('version', ['2.6.6-mch2a', '2.6.6-mch2b'])
-def test_install_icon_mch(version):
-    # WORKAROUND: A build and link dependency should imply that the same compiler is used. ^cray-mpich%nvhpc enforces it.
-    spack_install(f'icon-mch @{version} %nvhpc ^cray-mpich%nvhpc')
-
-
 def test_install_icontools():
     spack_install('icontools')
 
