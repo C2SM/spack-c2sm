@@ -23,8 +23,10 @@ def test_spec(package: str):
 def test_icon_serialization():
     spack_spec("icon serialization=create")
 
+
 def test_icon_exclaim_dsl():
     spack_spec("icon-exclaim dsl=substitute")
+
 
 def test_icon_fcgroup():
     spack_spec("icon fcgroup=DACE.externals/dace_icon.-O1")
