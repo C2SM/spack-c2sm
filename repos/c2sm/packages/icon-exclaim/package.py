@@ -16,22 +16,13 @@ def validate_variant_dsl(pkg, name, value):
 
 
 class IconExclaim(IconC2sm):
-    git = 'git@gitlab.dkrz.de:icon/icon.git'
+    git='git@github.com:C2SM/icon-exclaim.git',
 
     maintainers('jonasjucker', 'huppd')
 
-    version('exclaim-master',
-            branch='master',
-            git='git@github.com:C2SM/icon-exclaim.git',
-            submodules=True)
-    version('exclaim',
+    version('icon-dsl',
             branch='icon-dsl',
-            git='git@github.com:C2SM/icon-exclaim.git',
             submodules=True)
-
-    # The variants' default follow those of ICON
-    # as described here
-    # https://gitlab.dkrz.de/icon/icon/-/blob/icon-2024.01/configure?ref_type=tags#L1492-1638
 
     # EXCLAIM-GT4Py specific features:
     dsl_values = ('substitute', 'verify', 'serialize', 'fused', 'nvtx', 'lam')
