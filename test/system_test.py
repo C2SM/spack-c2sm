@@ -51,7 +51,7 @@ def test_install_icon_conditional_dependencies():
     )
 
 
-def test_install_icon_ham(version):
+def test_install_icon_ham():
     spack_install('icon-ham')
 
 
