@@ -31,16 +31,15 @@ def check_variant_extra_config_args(extra_config_arg):
 
 class Icon(SpackIcon):
     git = 'git@gitlab.dkrz.de:icon/icon-nwp.git'
+    
 
     maintainers('jonasjucker', 'huppd')
 
     version('develop', submodules=True)
-    version("2024.01-1", tag="icon-2024.01-1", submodules=True)
+    version("2024.01-1", tag="icon-2024.01-1",git='git@gitlab.dkrz.de:icon/icon.git', submodules=True)
     version('2.6.6-mch2b', tag='icon-nwp/icon-2.6.6-mch2b', submodules=True)
     version('2.6.6-mch2a', tag='icon-nwp/icon-2.6.6-mch2a', submodules=True)
-    version('nwp-master',
-            git='git@gitlab.dkrz.de:icon/icon-nwp.git',
-            submodules=True)
+    version('nwp-master', submodules=True)
 
     # The variants' default follow those of ICON
     # as described here
