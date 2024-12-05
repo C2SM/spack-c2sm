@@ -4,7 +4,7 @@ from spack.pkg.builtin.icon import Icon as SpackIcon
 class IconMch(SpackIcon):
     git = 'git@gitlab.dkrz.de:icon/icon-nwp.git'
 
-    maintainers("dominichofer")
+    maintainers("huppd")
 
     version('master', branch='master', submodules=True)
     version('2.6.6-mch2b', tag='icon-nwp/icon-2.6.6-mch2b', submodules=True)

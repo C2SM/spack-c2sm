@@ -30,22 +30,14 @@ def test_install_flexpart_ifs():
     spack_install('flexpart-ifs')
 
 
-@pytest.mark.parametrize("compiler", ['gcc', 'nvhpc'])
-def test_install_icon_c2sm(compiler):
-    spack_install(
-        f'icon-c2sm %{compiler} ^cray-mpich%{compiler} ^netcdf-fortran%{compiler} ^eccodes%{compiler} ^serialbox%{compiler}'
-    )
+@pytest.mark.parametrize('version',
+                         ['2024.01-1', '2.6.6-mch2a', '2.6.6-mch2b'])
+def test_install_icon(version):
+    # WORKAROUND: A build and link dependency should imply that the same compiler is used. ^cray-mpich%nvhpc enforces it.
+    spack_install(f'icon @{version} %nvhpc ^cray-mpich%nvhpc')
 
 
-#TODO: Add test for icon-ham
-
-
-@pytest.mark.parametrize('version', ['2.6.6-mch2a', '2.6.6-mch2b'])
-def test_install_icon_mch(version):
-    spack_install(f'icon-mch @{version} %nvhpc ^cray-mpich%nvhpc')
-
-
-def test_install_icon_mch_conditional_dependencies():
+def test_install_icon_conditional_dependencies():
     # +coupling triggers libfyaml, libxml2, netcdf-c
     # serialization=create triggers serialbox
     # +emvorado triggers eccodes, hdf5, zlib
@@ -53,9 +45,20 @@ def test_install_icon_mch_conditional_dependencies():
     # +mpi triggers mpi
     # gpu=nvidia-80 triggers cuda
 
+    # WORKAROUND: A build and link dependency should imply that the same compiler is used. ^cray-mpich%nvhpc enforces it.
     spack_install(
-        'icon-mch @2.6.6-mch2b %nvhpc +coupling serialization=create +emvorado +mpi gpu=nvidia-80 ^cray-mpich%nvhpc'
+        'icon @2.6.6-mch2b %nvhpc +coupling serialization=create +emvorado +mpi gpu=nvidia-80 ^cray-mpich%nvhpc'
     )
+
+
+def test_install_icon_ham(version):
+    spack_install('icon-ham')
+
+
+@pytest.mark.parametrize('version', ['2.6.6-mch2a', '2.6.6-mch2b'])
+def test_install_icon_mch(version):
+    # WORKAROUND: A build and link dependency should imply that the same compiler is used. ^cray-mpich%nvhpc enforces it.
+    spack_install(f'icon-mch @{version} %nvhpc ^cray-mpich%nvhpc')
 
 
 def test_install_icontools():
@@ -73,7 +76,7 @@ def test_install_libfyaml():
     spack_install('libfyaml')
 
 
-def test_install_libgrib1_22_01_2020_nvhpc():
+def test_install_libgrib1_nvhpc():
     spack_install('libgrib1 %nvhpc')
 
 
@@ -107,13 +110,15 @@ def test_install_py_gridtools_cpp():
     spack_install('py-gridtools-cpp')
 
 
-@pytest.mark.parametrize("version", ['1.0.3.7', '1.0.3.9'])
-def test_install_py_gt4py_version(version):
+@pytest.mark.parametrize("version", ['1.0.3.7', '1.0.3.9', '1.0.3.10'])
+def test_install_py_gt4py_for_version(version):
     spack_install(f'py-gt4py @{version}')
 
 
-def test_install_py_icon4py():
-    spack_install('py-icon4py')
+@pytest.mark.parametrize("version, gt4py_version", [('0.0.13', '1.0.3.9'),
+                                                    ('0.0.14', '1.0.3.10')])
+def test_install_py_icon4py(version, gt4py_version):
+    spack_install(f'py-icon4py@{version} ^py-gt4py@{gt4py_version}')
 
 
 def test_install_py_hatchling():
@@ -137,13 +142,11 @@ def test_install_py_typing_extensions():
 
 
 def test_install_pytorch_fortran():
-    spack_install(
-        'pytorch-fortran %nvhpc ^pytorch-fortran-proxy@0.4%gcc ^python@3.10 ^gmake%gcc ^cmake%gcc'
-    )
+    spack_install('pytorch-fortran %nvhpc')
 
 
 def test_install_pytorch_fortran_proxy():
-    spack_install('pytorch-fortran-proxy %gcc ^python@3.10')
+    spack_install('pytorch-fortran-proxy')
 
 
 def test_install_yaxt():

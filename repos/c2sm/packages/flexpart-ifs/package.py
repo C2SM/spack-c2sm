@@ -13,12 +13,10 @@ class FlexpartIfs(MakefilePackage):
     version('10.4.4', tag='10.4.4')
 
     depends_on('eccodes +fortran')
-    depends_on(
-        'netcdf-fortran %gcc'
-    )  # WORKAROUND: '%gcc' should not be necessary, but without it, spack concretizes to nvhpc.
+    # WORKAROUND: '%gcc' should not be necessary, but without it, spack concretizes to nvhpc.
+    depends_on('netcdf-fortran %gcc')
 
-    conflicts('%nvhpc')
-    conflicts('%pgi')
+    requires('%gcc')
 
     build_directory = 'src'
 
