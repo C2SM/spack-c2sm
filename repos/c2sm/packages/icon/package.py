@@ -271,7 +271,8 @@ class Icon(SpackIcon):
         with working_dir(self.build_directory):
             icon_dir = self.configure_directory
             # only synchronize if out-of-source build
-            if os.path.abspath(icon_dir) != os.path.abspath(self.build_directory):
+            if os.path.abspath(icon_dir) != os.path.abspath(
+                    self.build_directory):
                 Rsync = which('rsync', required=True)
                 Rsync("-uavz", f"{icon_dir}/run", ".", "--exclude=*.in",
                       "--exclude=.*", "--exclude=standard_*")
