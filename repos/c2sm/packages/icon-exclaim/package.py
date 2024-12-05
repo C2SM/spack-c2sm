@@ -48,9 +48,6 @@ class IconExclaim(IconC2sm):
         depends_on('boost', when='dsl={0}'.format(x))
         conflicts('^python@:3.9,3.11:', when='dsl={0}'.format(x))
 
-    depends_on('cosmo-eccodes-definitions',
-               type='run',
-               when='+eccodes-definitions')
 
     def setup_build_environment(self, env):
         super().set_build_envirionment(self, env)
