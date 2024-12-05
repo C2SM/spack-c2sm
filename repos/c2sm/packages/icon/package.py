@@ -7,14 +7,6 @@ from spack.util.environment import is_system_path
 import spack.error as error
 
 
-def validate_variant_dsl(pkg, name, value):
-    set_mutual_excl = set(['substitute', 'verify', 'serialize'])
-    set_input_var = set(value)
-    if len(set_mutual_excl.intersection(set_input_var)) > 1:
-        raise error.SpecError(
-            'Cannot have more than one of (substitute, verify, serialize) in the same build'
-        )
-
 
 def check_variant_fcgroup(fcgroup):
     pattern = re.compile(r"^[A-Z]+\..+\..")
@@ -46,14 +38,6 @@ class Icon(SpackIcon):
     version("2024.01-1", tag="icon-2024.01-1", submodules=True)
     version('2.6.6-mch2b', tag='icon-nwp/icon-2.6.6-mch2b', submodules=True)
     version('2.6.6-mch2a', tag='icon-nwp/icon-2.6.6-mch2a', submodules=True)
-    version('exclaim-master',
-            branch='master',
-            git='git@github.com:C2SM/icon-exclaim.git',
-            submodules=True)
-    version('exclaim',
-            branch='icon-dsl',
-            git='git@github.com:C2SM/icon-exclaim.git',
-            submodules=True)
     version('nwp-master',
             git='git@gitlab.dkrz.de:icon/icon-nwp.git',
             submodules=True)
@@ -138,31 +122,10 @@ class Icon(SpackIcon):
             default=True,
             description='Enable silent-rules for build-process')
     variant(
-        'pytorch',
-        default=False,
-        description=
-        'Build with pytorch for inference with machine-learning models. Experimental, needs non-standard codebase!'
-    )
-    variant(
         'eccodes-definitions',
         default=False,
         description=
         'Enable extension of eccodes with center specific definition files')
-
-    # EXCLAIM-GT4Py specific features:
-    dsl_values = ('substitute', 'verify', 'serialize', 'fused', 'nvtx', 'lam')
-    variant('dsl',
-            default='none',
-            validator=validate_variant_dsl,
-            values=('none', ) + dsl_values,
-            description='Build with GT4Py dynamical core',
-            multi=True)
-
-    for x in dsl_values:
-        depends_on('py-icon4py', when='dsl={0}'.format(x))
-        depends_on('py-gridtools-cpp', when='dsl={0}'.format(x))
-        depends_on('boost', when='dsl={0}'.format(x))
-        conflicts('^python@:3.9,3.11:', when='dsl={0}'.format(x))
 
     depends_on('cosmo-eccodes-definitions',
                type='run',
@@ -186,7 +149,6 @@ class Icon(SpackIcon):
     depends_on('netcdf-fortran %nvhpc', when='%nvhpc')
     depends_on('netcdf-fortran %gcc', when='%gcc')
 
-    depends_on('pytorch-fortran', when='+pytorch')
     depends_on('hdf5 +szip', when='+sct')
 
     # patch_libtool is a function from Autotoolspackage.
@@ -195,13 +157,6 @@ class Icon(SpackIcon):
     # therefore this function detects not only "libtool" files, but
     # also the folder where libtool package itself is installed.
     patch_libtool = False
-
-    def setup_build_environment(self, env):
-        # help cmake to build dsl-stencils
-        if 'none' not in self.spec.variants['dsl'].value:
-            env.set("CUDAARCHS", self.spec.variants['cuda_arch'].value[0])
-            env.unset("CUDAHOSTCXX")
-            env.set("BOOST_ROOT", self.spec['boost'].prefix)
 
     def configure_args(self):
         args = super().configure_args()
@@ -238,61 +193,11 @@ class Icon(SpackIcon):
         if '+sct' in self.spec:
             libs += self.spec['hdf5'].libs
 
-        if '+pytorch' in self.spec:
-            libs += self.spec['pytorch-fortran'].libs
-
         fcgroup = self.spec.variants['fcgroup'].value
         # ('none',) is the values spack assign if fcgroup is not set
         if fcgroup != ('none', ):
             args.extend(self.fcgroup_to_config_arg())
             flags.update(self.fcgroup_to_config_var())
-
-        # Check for DSL variants and set corresponding Liskov options
-        dsl = self.spec.variants['dsl'].value
-        if dsl != ('none', ):
-            if 'substitute' in dsl:
-                args.append('--enable-liskov=substitute')
-            elif 'verify' in dsl:
-                args.append('--enable-liskov=verify')
-            elif 'serialize' in dsl:
-                raise error.UnsupportedPlatformError(
-                    'serialize mode is not supported yet by icon-liskov')
-
-            if 'lam' in dsl:
-                args.append('--enable-dsl-local')
-            if 'nvtx' in dsl:
-                args.append('--enable-nvtx')
-            if 'fused' in dsl:
-                raise error.UnsupportedPlatformError(
-                    'liskov does not support fusing just yet')
-
-            flags['LOC_GT4PY'].append(self.spec['py-gt4py'].prefix)
-            flags['LOC_ICON4PY_BIN'].append(self.spec['py-icon4py'].prefix)
-
-            flags['LOC_ICON4PY_ATM_DYN_ICONAM'].append(
-                self.spec['py-icon4py:atm_dyn_iconam'].headers.directories[0])
-
-            if self.spec['py-icon4py'].version < Version("0.0.4"):
-                flags['LOC_ICON4PY_UTILS'].append(
-                    os.path.dirname(
-                        self.spec['py-icon4py:utils'].headers.directories[0]))
-            else:
-                flags['LOC_ICON4PY_TOOLS'].append(
-                    self.spec['py-icon4py:tools'].headers.directories[0])
-                if self.spec['py-icon4py'].version > Version("0.0.7"):
-                    flags['LOC_ICON4PY_DIFFUSION'].append(
-                        self.spec['py-icon4py:diffusion'].headers.
-                        directories[0])
-                    flags['LOC_ICON4PY_INTERPOLATION'].append(
-                        self.spec['py-icon4py:interpolation'].headers.
-                        directories[0])
-                if self.spec['py-icon4py'].version > Version("0.0.8"):
-                    flags['LOC_ICON4PY_ADVECTION'].append(
-                        self.spec['py-icon4py:advection'].headers.
-                        directories[0])
-            flags['LOC_GRIDTOOLS'].append(
-                self.spec['py-gridtools-cpp:data'].headers.directories[0])
-            flags['GT4PYNVCFLAGS'] = flags['NVCFLAGS']
 
         # add configure arguments not yet available as variant
         extra_config_args = self.spec.variants['extra-config-args'].value
@@ -361,36 +266,22 @@ class Icon(SpackIcon):
                 f'with the existing variant {variant_from_arg}. Set this variant instead.'
             )
 
-    def check(self):
-        # By default "check" calls make with targets "check" and "test".
-        # This testing is beyond the scope of BuildBot test at CSCS.
-        # Therefore override this function, saves a lot of time too.
-        pass
+    @run_after('configure')
+    def copy_runscript_related_input_files(self):
+          with working_dir(self.build_directory):
+              Rsync = which('rsync', required=True)
+              icon_dir = self.configure_directory
+              Rsync("-uavz", f"{icon_dir}/run", ".", "--exclude=*.in",
+                    "--exclude=.*", "--exclude=standard_*")
+              Rsync("-uavz", f"{icon_dir}/externals", ".", "--exclude=.git",
+                    "--exclude=*.f90", "--exclude=*.F90", "--exclude=*.c",
+                    "--exclude=*.h", "--exclude=*.Po", "--exclude=tests",
+                    "--exclude=*.mod", "--exclude=*.o")
+              Rsync("-uavz", f"{icon_dir}/make_runscripts", ".")
 
-    @run_after('install')
-    @on_package_attributes(run_tests=True)
-    def checksuite(self):
-        # script needs cdo to work, but not listed as dep of ICON
-        test_script = 'scripts/spack/test.py'
-        if os.path.exists(test_script):
-            test_py = Executable(test_script)
-
-            # test.py fails if PYTHONHOME has any value,
-            # even '' or ' ' is failing, therefore delete
-            # it temporary from env
-            if 'PYTHONHOME' in os.environ:
-                PYTHONHOME = os.environ['PYTHONHOME']
-                os.environ.pop('PYTHONHOME')
-                pythonhome_is_set = True
-            else:
-                pythonhome_is_set = False
-
-            with open('spec.yaml', mode='w') as f:
-                f.write(self.spec.to_yaml())
-            test_py('--spec', 'spec.yaml', fail_on_error=True)
-
-            # restore PYTHONHOME after test.py
-            if pythonhome_is_set:
-                os.environ['PYTHONHOME'] = PYTHONHOME
-        else:
-            tty.warn('Cannot find test.py -> skipping tests')
+              Ln = which('ln', required=True)
+              dirs = glob.glob(f"{icon_dir}/run/standard_*")
+              for dir in dirs:
+                  Ln("-sf", "-t", "run/", f"{dir}")
+              Ln("-sf", f"{icon_dir}/data")
+              Ln("-sf", f"{icon_dir}/vertical_coord_tables")
