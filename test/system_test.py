@@ -110,7 +110,6 @@ def test_install_py_gridtools_cpp():
     spack_install('py-gridtools-cpp')
 
 
-
 @pytest.mark.parametrize("version", ['1.0.3.7', '1.0.3.9', '1.0.3.10'])
 def test_install_py_gt4py_for_version(version):
     spack_install(f'py-gt4py @{version}')
