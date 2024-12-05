@@ -4,6 +4,8 @@ from spack.pkg.builtin.icon import Icon as SpackIcon
 
 class IconHam(SpackIcon):
 
+    maintainers('stelliom')
+
     @run_before('build')
     def generate_hammoz_nml(self):
         with working_dir(self.configure_directory +
