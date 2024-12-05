@@ -108,6 +108,7 @@ def test_install_py_gridtools_cpp():
 def test_install_py_gt4py_for_version(version):
     spack_install(f'py-gt4py @{version}')
 
+
 # fails due to sql error
 def test_build_only_py_gt4py_for_1_0_3_10():
     spack_install('py-gt4py @1.0.3.10', test_root=False)
