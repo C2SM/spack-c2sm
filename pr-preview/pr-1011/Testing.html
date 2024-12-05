@@ -54,6 +54,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Testing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#test-packages-pr-mr-ci-cd">Test packages (PR/MR/CI/CD)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pull-request-testing-for-spack-c2sm-on-github">Pull Request Testing for spack-c2sm on GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#jenkins-test-with-uenv">Jenkins test with uenv</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="CodeDevelopment.html">Develop packages</a></li>
@@ -110,6 +111,29 @@ This is a common way to do it.</p>
 <ul class="simple">
 <li><p>balfrin</p></li>
 </ul>
+</section>
+<section id="jenkins-test-with-uenv">
+<h2>Jenkins test with uenv<a class="headerlink" href="#jenkins-test-with-uenv" title="Link to this heading"></a></h2>
+<p>To test spack-c2sm with an uenv, add a stage</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>stage<span class="o">(</span><span class="s1">&#39;Create uenv&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<span class="w">    </span>steps<span class="w"> </span><span class="o">{</span>
+<span class="w">        </span>sh<span class="w"> </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        git clone -b fix/jenkins https://github.com/eth-cscs/uenv.git</span>
+<span class="s2">        ./uenv/install --yes --destdir=</span><span class="nv">$WORKSPACE</span>
+<span class="s2">        source </span><span class="nv">$WORKSPACE</span><span class="s2">/etc/profile.d/uenv.sh</span>
+<span class="s2">        uenv repo create</span>
+<span class="s2">        uenv image pull mch/v8:rc2</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>and run the tests in the uenv</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span><span class="nv">$WORKSPACE</span>/etc/profile.d/uenv.sh
+<span class="nb">source</span><span class="w"> </span>./setup-env.sh<span class="w"> </span>/user-environment
+uenv<span class="w"> </span>run<span class="w"> </span>mch/v8:rc2<span class="w"> </span>--<span class="w"> </span>pytest<span class="w"> </span>-v<span class="w"> </span>-n<span class="w"> </span>auto<span class="w"> </span>test/integration_test.py
+</pre></div>
+</div>
 </section>
 </section>
 
