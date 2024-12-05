@@ -29,3 +29,29 @@ To test a PR, create a comment ``launch jenkins``.
 Supported machines:
 
 *   balfrin
+
+Jenkins test with uenv
+----------------------
+To test spack-c2sm with an uenv, add a stage
+
+.. code-block:: bash
+
+    stage('Create uenv') {
+        steps {
+            sh """
+            git clone -b fix/jenkins https://github.com/eth-cscs/uenv.git
+            ./uenv/install --yes --destdir=$WORKSPACE
+            source $WORKSPACE/etc/profile.d/uenv.sh
+            uenv repo create
+            uenv image pull mch/v8:rc2
+            """
+        }
+    }
+
+and run the tests in the uenv
+
+.. code-block:: bash
+
+    source $WORKSPACE/etc/profile.d/uenv.sh
+    source ./setup-env.sh /user-environment
+    uenv run mch/v8:rc2 -- pytest -v -n auto test/integration_test.py
