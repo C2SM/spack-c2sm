@@ -95,7 +95,6 @@ class Icon(SpackIcon):
     )
 
     # Optimization Features:
-    variant('loop-exchange', default=True, description='Enable loop exchange')
     variant('vectorized-lrtm',
             default=False,
             description='Enable the parallelization-invariant version of LRTM')
