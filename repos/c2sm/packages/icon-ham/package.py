@@ -1,8 +1,10 @@
 from spack import *
-from spack.pkg.c2sm.icon import Icon as C2SMIcon
+from spack.pkg.builtin.icon import Icon as SpackIcon
 
 
-class IconHam(C2SMIcon):
+class IconHam(SpackIcon):
+
+    maintainers('stelliom')
 
     @run_before('build')
     def generate_hammoz_nml(self):

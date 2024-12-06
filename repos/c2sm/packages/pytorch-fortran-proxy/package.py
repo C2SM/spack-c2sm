@@ -27,6 +27,8 @@ class PytorchFortranProxy(CMakePackage):
     depends_on('libtorch')
     depends_on('py-pybind11')
 
+    requires('%gcc')
+
     root_cmakelists_dir = 'src/proxy_lib'
 
     def cmake_args(self):
