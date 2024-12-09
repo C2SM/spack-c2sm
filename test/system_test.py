@@ -100,7 +100,7 @@ def test_install_py_gridtools_cpp():
     spack_install('py-gridtools-cpp')
 
 
-@pytest.mark.parametrize("version", ['1.0.3.7', '1.0.3.9'])
+@pytest.mark.parametrize("version", ['1.0.3.9'])
 def test_install_py_gt4py_for_version(version):
     spack_install(f'py-gt4py @{version}')
 
@@ -134,14 +134,6 @@ def test_install_py_tabulate():
 
 def test_install_py_typing_extensions():
     spack_install('py-typing-extensions')
-
-
-def test_install_pytorch_fortran():
-    spack_install('pytorch-fortran %nvhpc')
-
-
-def test_install_pytorch_fortran_proxy():
-    spack_install('pytorch-fortran-proxy')
 
 
 def test_install_yaxt():

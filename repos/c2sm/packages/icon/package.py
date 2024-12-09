@@ -81,10 +81,6 @@ class Icon(SpackIcon):
             default=False,
             description='Enable reallocatable communication buffer')
     variant('sct', default=False, description='Enable the SCT timer')
-    variant('testbed',
-            default=False,
-            description='Enable ICON Testbed infrastructure')
-
     variant(
         'extra-config-args',
         default='none',
@@ -142,9 +138,10 @@ class Icon(SpackIcon):
 
     # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
     for __x in SpackIcon.serialization_values:
-        with when("serialization={0}".format(__x)):
-            depends_on('serialbox %nvhpc', when='%nvhpc')
-            depends_on('serialbox %gcc', when='%gcc')
+        depends_on('serialbox+fortran %nvhpc',
+                   when='serialization={0} %nvhpc'.format(__x))
+        depends_on('serialbox+fortran %gcc',
+                   when='serialization={0} %gcc'.format(__x))
 
     # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
     depends_on('netcdf-fortran %nvhpc', when='%nvhpc')
@@ -176,7 +173,6 @@ class Icon(SpackIcon):
                 'realloc-buf',
                 'parallel-netcdf',
                 'sct',
-                'testbed',
                 'loop-exchange',
                 'vectorized-lrtm',
                 'pgi-inlib',
