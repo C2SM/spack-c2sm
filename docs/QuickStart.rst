@@ -89,16 +89,6 @@ For ICON, they are located in ``config/cscs/spack/<version>/<machine>_<target>_<
 They work with a special Spack tag, that is provided in the ICON repository at ``config/cscs/SPACK_TAG_*``.
 So make sure you clone Spack with the specified tag.
 
-..  tip::
-    **On Balfrin:** 
-    In case your Spack environment requires Python, a compatability issue
-    with `openssl` and `git` appears.
-
-    ``/usr/bin/ssh: symbol lookup error: /usr/bin/ssh: undefined symbol: EVP_KDF_CTX_free, version OPENSSL_1_1_1d``
-   
-    To circumvent that simply do
-    ``spack load git`` prior to activation of the environment.
-
 To activate the Spack environment, type
 
 .. code-block:: console
@@ -127,15 +117,14 @@ Out-of-source builds are possible as follows:
 
 .. code-block:: console
 
-    $ mkdir cpu && cd cpu
-    $ cp -r ../config .
-    $ spack env activate -d config/cscs/spack/v0.20.1.5/daint_cpu_nvhpc
+    $ mkdir cpu
+    $ spack env activate config/cscs/spack/v0.20.1.5/daint_cpu_nvhpc
+    $ # tell spack to build icon in folder cpu
+    $ spack develop --build-directory cpu icon@develop
     $ spack install
 
-..  attention::
-    Out-of-source build for AutotoolsPackages is not supported by Spack.
-    The implementation for ICON relies on some hacks inside package.py and
-    only works if the build-folder is located inside the Git repo of ICON.
+By executing the commands above, spack will add some lines directly into ``spack.yaml``:
+
 
 COSMO
 -----
