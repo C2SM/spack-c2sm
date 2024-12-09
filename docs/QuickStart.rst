@@ -125,6 +125,17 @@ Out-of-source builds are possible as follows:
 
 By executing the commands above, spack will add some lines directly into ``spack.yaml``:
 
+.. code-block:: yaml
+
+  spack:                                                                                                                                                                                                                          
+    packages:                                                                                                                                                                                                                     
+      icon:                                                                                                                                                                                                                       
+        package_attributes:                                                                                                                                                                                                       
+          build_directory: /scratch/mch/juckerj/icon-nwp/cpu
+
+Any further ``spack install`` command will use the build directory specified in the ``spack.yaml`` file.
+In case you want to change the build directory, edit the ``spack.yaml`` file or remove the ``build_directory`` line
+and run ``spack concretize -f`` afterwards.
 
 COSMO
 -----
