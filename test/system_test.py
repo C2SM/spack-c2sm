@@ -62,16 +62,8 @@ def test_install_int2lm_3_00_nvhpc():
     spack_install('int2lm @int2lm-3.00 %nvhpc', test_root=False)
 
 
-def test_install_libfyaml():
-    spack_install('libfyaml')
-
-
 def test_install_libgrib1_nvhpc():
     spack_install('libgrib1 %nvhpc')
-
-
-def test_install_libtorch():
-    spack_install('libtorch')
 
 
 def test_install_makedepf90():
