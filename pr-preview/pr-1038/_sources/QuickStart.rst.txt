@@ -11,19 +11,17 @@ To set up a Spack instance, clone the repository using a specific Spack tag (lat
 
   $ git clone --depth 1 --recurse-submodules --shallow-submodules -b $SPACK_TAG https://github.com/C2SM/spack-c2sm.git
 
-To load it into your command line, execute
+To load it into your command line, execute one of the following commands:
 
 .. code-block:: console
 
   $ . spack-c2sm/setup-env.sh
+  $ . spack-c2sm/setup-env.sh /user-environment
+  $ . spack-c2sm/setup-env.sh /mch-environment/v6
+  $ . spack-c2sm/setup-env.sh /mch-environment/v7
+  $ . spack-c2sm/setup-env.sh any_other_upstream
 
-This auto-detects your machine and configures your instance for it.
-You can force a machine with an argument. The name has to match a folder in sysconfigs.
-
-.. code-block:: console
-
-  $ . spack-c2sm/setup-env.sh balfrin
-
+This will make upstream installation from user-environment available in spack-c2sm.
 
 Local machines and Containers
 -----------------------------
