@@ -263,6 +263,55 @@ class Icon(SpackIcon):
                 f'with the existing variant {variant_from_arg}. Set this variant instead.'
             )
 
+    def configure(self, spec, prefix):
+        if os.path.exists(
+                os.path.join(self.build_directory,
+                             'icon.mk')) and self.build_uses_same_spec():
+            tty.warn(
+                'icon.mk already present -> skip configure stage',
+                '\t delete "icon.mk" or run "make distclean" to not skip configure'
+            )
+            return
+
+        # Call configure of Autotools
+        super().configure(spec, prefix)
+
+    def build_uses_same_spec(self):
+        """
+        Ensure that configure is rerun in case spec has changed,
+        otherwise for the case below
+
+            $ spack dev-build icon @develop ~dace
+            $ spack dev-build icon @develop +dace
+
+        configure is skipped for the latter.
+        """
+
+        is_same_spec = False
+
+        previous_spec = os.path.join(self.build_directory,
+                                     '.previous_spec.yaml')
+
+        # not the first build in self.build_directory
+        if os.path.exists(previous_spec):
+            with open(previous_spec, mode='r') as f:
+                if self.spec == Spec.from_yaml(f):
+                    is_same_spec = True
+                else:
+                    is_same_spec = False
+                    tty.warn(
+                        'Cannot skip configure phase because spec changed')
+
+        # first build in self.build_directory, no worries
+        else:
+            is_same_spec = True
+
+        # dump spec of new build
+        with open(previous_spec, mode='w') as f:
+            f.write(self.spec.to_yaml())
+
+        return is_same_spec
+
     @run_after('configure')
     def copy_runscript_related_input_files(self):
         with working_dir(self.build_directory):
