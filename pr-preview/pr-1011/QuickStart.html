@@ -175,7 +175,7 @@ need to reconfigure you can either delete the file or run <code class="docutils 
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir<span class="w"> </span>cpu
 <span class="gp">$ </span>spack<span class="w"> </span>env<span class="w"> </span>activate<span class="w"> </span>config/cscs/spack/v0.20.1.5/daint_cpu_nvhpc
 <span class="gp">$ </span><span class="c1"># tell spack to build icon in folder cpu</span>
-<span class="gp">$ </span>spack<span class="w"> </span>develop<span class="w"> </span>--build-directory<span class="w"> </span>cpu<span class="w"> </span>icon@develop
+<span class="gp">$ </span>spack<span class="w"> </span>develop<span class="w"> </span>--path<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="w"> </span>--build-directory<span class="w"> </span>cpu<span class="w"> </span>icon@develop
 <span class="gp">$ </span>spack<span class="w"> </span>install
 </pre></div>
 </div>
