@@ -118,7 +118,7 @@ Out-of-source builds are possible as follows:
     $ mkdir cpu
     $ spack env activate config/cscs/spack/v0.20.1.5/daint_cpu_nvhpc
     $ # tell spack to build icon in folder cpu
-    $ spack develop --build-directory cpu icon@develop
+    $ spack develop --path $(pwd) --build-directory cpu icon@develop
     $ spack install
 
 By executing the commands above, spack will add some lines directly into ``spack.yaml``:
