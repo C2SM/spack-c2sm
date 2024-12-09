@@ -180,6 +180,16 @@ need to reconfigure you can either delete the file or run <code class="docutils 
 </pre></div>
 </div>
 <p>By executing the commands above, spack will add some lines directly into <code class="docutils literal notranslate"><span class="pre">spack.yaml</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">spack</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">packages</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">icon</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">package_attributes</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">build_directory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/scratch/mch/juckerj/icon-nwp/cpu</span>
+</pre></div>
+</div>
+<p>Any further <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span></code> command will use the build directory specified in the <code class="docutils literal notranslate"><span class="pre">spack.yaml</span></code> file.
+In case you want to change the build directory, edit the <code class="docutils literal notranslate"><span class="pre">spack.yaml</span></code> file or remove the <code class="docutils literal notranslate"><span class="pre">build_directory</span></code> line
+and run <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">concretize</span> <span class="pre">-f</span></code> afterwards.</p>
 </section>
 <section id="cosmo">
 <h2>COSMO<a class="headerlink" href="#cosmo" title="Link to this heading"></a></h2>
