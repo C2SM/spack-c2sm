@@ -53,6 +53,7 @@ class PyIcon4py(PythonPackage):
         # check if all installed module can be imported
         super().test()
         # unit tests
+        os.environ['GT4PY_BUILD_CACHE_DIR'] = self.build_directory
 
         python('-m', 'pytest', '-v', '-s', '-n', 'auto', '-m',
                'not slow_tests')
