@@ -161,7 +161,7 @@ class PythonPipBuilder(PythonPipBuilder):
             build_dirs = [
                 'tools', 'model/atmosphere/dycore',
                 'model/atmosphere/diffusion', 'model/atmosphere/advection',
-                'model/common/'
+                'model/common/', 'model/testing/'
             ]
 
         for dir in build_dirs:
