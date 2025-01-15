@@ -8,17 +8,21 @@ class CosmoEccodesDefinitions(Package):
     url = "https://github.com/COSMO-ORG/eccodes-cosmo-resources.git"
     git = 'https://github.com/COSMO-ORG/eccodes-cosmo-resources.git'
 
-    maintainers = ['petrabaumann']
+    maintainers = ['huppd,lxavier']
 
+    version('2.36.0.3', tag='v2.36.0.3')
     version('2.25.0.3', tag='v2.25.0.3')
     version('2.25.0.2', tag='v2.25.0.2')
     version('2.25.0.1', tag='v2.25.0.1')
     version('2.18.0.1', tag='v2.18.0.1')
 
     depends_on('eccodes')
+    depends_on('eccodes@2.36.4',
+               type=('build', 'link', 'run'),
+               when='@2.36.0.3')
     depends_on('eccodes@2.25.0',
                type=('build', 'link', 'run'),
-               when='@2.25.0.1:')
+               when='@2.25.0.1:2.25.0.3')
     depends_on('eccodes@2.18.0',
                type=('build', 'link', 'run'),
                when='@2.18.0.1')
