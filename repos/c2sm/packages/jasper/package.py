@@ -22,7 +22,7 @@ class Jasper(Package):
     variant("jpeg", default=True, description="Enable the use of the JPEG library")
     variant("opengl", default=False, description="Enable the use of the OpenGL and GLUT libraries")
     variant("shared", default=True, description="Enable the building of shared libraries")
-    variant("aarch64", default=False, description="Build for aarch64 architecture")
+    variant("aarch64", default=True, description="Build for aarch64 architecture")
     variant(
         "build_type",
         default="Release",
