@@ -131,7 +131,7 @@ class Icon(SpackIcon):
     with when('+emvorado'):
         depends_on('eccodes +fortran')
         depends_on('hdf5 +szip +hl +fortran')
-        depends_on('zlib')
+        depends_on('zlib-ng')
         # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
         depends_on('eccodes %nvhpc', when='%nvhpc')
         depends_on('eccodes %gcc', when='%gcc')
@@ -185,7 +185,7 @@ class Icon(SpackIcon):
         if '+emvorado' in self.spec:
             libs += self.spec['eccodes:fortran'].libs
             libs += self.spec['hdf5:fortran,hl'].libs
-            libs += self.spec['zlib'].libs
+            libs += self.spec['zlib-ng'].libs
 
         if '+sct' in self.spec:
             libs += self.spec['hdf5'].libs
