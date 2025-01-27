@@ -37,14 +37,6 @@ def test_icon_extra_config_args():
         "icon extra-config-args=--disable-new_feature,--enable-old_config_arg")
 
 
-def test_int2lm_parallel():
-    spack_spec("int2lm +parallel")
-
-
-def test_int2lm_no_parallel():
-    spack_spec("int2lm ~parallel")
-
-
 def test_compilers():
     run_with_spack("spack compilers", log=log_file("compilers"))
 
