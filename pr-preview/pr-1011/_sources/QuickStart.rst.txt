@@ -82,8 +82,16 @@ ICON
 ----
 
 ICON is built using environments.
+
+For convenience, ICON provides bash scripts to set up the environment and install ICON for in-source
+and out-of-source builds.
+These scripts are located in ``config/cscs``, e.g. ``config/cscs/alps_mch.cpu.nvidia``.
+
+For development, sometimes it is necessary to build ICON in a more customized way.
+To do so please follow the instructions below.
+
 Environments are located in a folder named after the environment and are defined in a ``spack.yaml`` file.
-For ICON, they are located in ``config/cscs/spack/<version>/<machine>_<target>_<compiler>``.
+For ICON, they are located in ``config/cscs/spack/<machine>_<target>_<compiler>``.
 They work with a special Spack tag, that is provided in the ICON repository at ``config/cscs/SPACK_TAG_*``.
 So make sure you clone Spack with the specified tag.
 
@@ -97,14 +105,16 @@ To install the environment and so ICON, type
 
 .. code-block:: console
     
+    $ spack develop --path $(pwd) icon@develop
     $ spack install
 
-Example to build ICON for CPU with NVHPC on Piz Daint:
+Example to build ICON for CPU with NVHPC on Balfrin:
 
 .. code-block:: console
 
-    $ SPACK_TAG=$(cat "config/cscs/SPACK_TAG_DAINT")
-    $ spack env activate -d config/cscs/spack/$SPACK_TAG/daint_cpu_nvhpc
+    $ SPACK_TAG=$(cat "config/cscs/SPACK_TAG_MCH")
+    $ spack env activate -d config/cscs/spack/mch_cpu_double
+    $ spack develop --path $(pwd) icon@develop
     $ spack install
 
 ..  attention::
@@ -116,7 +126,7 @@ Out-of-source builds are possible as follows:
 .. code-block:: console
 
     $ mkdir cpu
-    $ spack env activate config/cscs/spack/v0.20.1.5/daint_cpu_nvhpc
+    $ spack env activate -d config/cscs/spack/mch_cpu_double
     $ # tell spack to build icon in folder cpu
     $ spack develop --path $(pwd) --build-directory cpu icon@develop
     $ spack install
@@ -134,14 +144,3 @@ By executing the commands above, spack will add some lines directly into ``spack
 Any further ``spack install`` command will use the build directory specified in the ``spack.yaml`` file.
 In case you want to change the build directory, edit the ``spack.yaml`` file or remove the ``build_directory`` line
 and run ``spack concretize -f`` afterwards.
-
-COSMO
------
-
-Building COSMO is not supported anymore starting with spack-c2sm v0.20.1.0 for CSCS.
-
-For Euler Cluster a CPU-only setup is supported using GCC 8.5.0
-
-.. code-block:: console
-
-    $ spack install cosmo%gcc@8.5.0
