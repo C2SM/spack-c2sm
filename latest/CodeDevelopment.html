@@ -53,9 +53,8 @@
 <li class="toctree-l1"><a class="reference internal" href="SpackCommands.html">Important Spack Commands</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Develop packages</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#plain-dev-build">Plain dev-build</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#dev-build-in-combination-with-build-env">Dev-build in combination with build-env</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#environments-with-spack-develop">Environments with Spack develop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plain-dev-build">Plain dev-build</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="SpackChoice.html">Target Users of spack-c2sm</a></li>
@@ -89,36 +88,7 @@
   <section id="develop-packages">
 <h1>Develop packages<a class="headerlink" href="#develop-packages" title="Link to this heading"></a></h1>
 <p>Spack offers several options for package development.
-Depending on your workflow, one or the other option is preferred.
-Also some packages like ICON or COSMO have their own
-development workflow which is maintained by C2SM.</p>
-<section id="plain-dev-build">
-<h2>Plain dev-build<a class="headerlink" href="#plain-dev-build" title="Link to this heading"></a></h2>
-<p>This is the easiest way to build local sources.
-Enter the root of your source repository and execute:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>dev-build<span class="w"> </span>--until<span class="w"> </span>build<span class="w"> </span>&lt;package&gt;<span class="w"> </span>@&lt;version&gt;
-</pre></div>
-</div>
-<p>This will build the package as is. The downside of this approach is that
-you need to go through all phases of a package build.</p>
-</section>
-<section id="dev-build-in-combination-with-build-env">
-<h2>Dev-build in combination with build-env<a class="headerlink" href="#dev-build-in-combination-with-build-env" title="Link to this heading"></a></h2>
-<p>We assume that developers of a package are familiar with its build system.
-Therefore, we reccomend to use Spack to set up the environment for the package.
-Building and testing should be done with the package’s build and test system.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>Load<span class="w"> </span>Spack!
-<span class="gp">$ </span>spack<span class="w"> </span>dev-build<span class="w"> </span>--before<span class="w"> </span>build<span class="w"> </span>&lt;package&gt;<span class="w"> </span>@develop<span class="w"> </span>&lt;variant&gt;<span class="w"> </span><span class="c1"># stops dev-build before executing the phase &#39;build&#39;</span>
-<span class="gp">$ </span>spack<span class="w"> </span>build-env<span class="w"> </span>&lt;package&gt;<span class="w"> </span>@develop<span class="w"> </span>&lt;variant&gt;<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span><span class="c1"># nests a bash shell with the build env vars loaded</span>
-<span class="gp"># </span>Work<span class="w"> </span>on<span class="w"> </span>the<span class="w"> </span>package!
-<span class="gp"># </span>Use<span class="w"> </span>the<span class="w"> </span>build<span class="w"> </span>system<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>package!<span class="w"> </span><span class="o">(</span>e.g.<span class="w"> </span><span class="s1">&#39;make&#39;</span><span class="o">)</span>
-<span class="gp"># </span>Use<span class="w"> </span>the<span class="w"> </span>testing<span class="w"> </span>infrastructure<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>package!
-<span class="gp">$ </span><span class="nb">exit</span><span class="w"> </span><span class="c1"># to exit the nested bash</span>
-</pre></div>
-</div>
-<p>If you want multiple dev-builds at the same time, label them with separate <code class="docutils literal notranslate"><span class="pre">&#64;&lt;your-label&gt;</span></code>.
-The identifier <code class="docutils literal notranslate"><span class="pre">&#64;develop</span></code> is common in the Spack documentation but you can use any string.</p>
-</section>
+Depending on your workflow, one or the other option is preferred.</p>
 <section id="environments-with-spack-develop">
 <h2>Environments with Spack develop<a class="headerlink" href="#environments-with-spack-develop" title="Link to this heading"></a></h2>
 <p>Environments sit in a folder with a name and are defined in a <code class="docutils literal notranslate"><span class="pre">spack.yaml</span></code> file.
@@ -165,6 +135,16 @@ It is possible to specify multiple packages under <code class="docutils literal 
 </div>
 <p>Most of the Spack commands are sensitive to environments, see
 <a class="reference external" href="https://spack.readthedocs.io/en/latest/environments.html#environment-sensitive-commands">Spack docs</a>.</p>
+</section>
+<section id="plain-dev-build">
+<h2>Plain dev-build<a class="headerlink" href="#plain-dev-build" title="Link to this heading"></a></h2>
+<p>This is the easiest way to build local sources.
+Enter the root of your source repository and execute:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>dev-build<span class="w"> </span>--until<span class="w"> </span>build<span class="w"> </span>&lt;package&gt;<span class="w"> </span>@&lt;version&gt;
+</pre></div>
+</div>
+<p>This will build the package as is. The downside of this approach is that
+you need to go through all phases of a package build.</p>
 </section>
 </section>
 

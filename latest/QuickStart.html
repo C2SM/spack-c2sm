@@ -52,7 +52,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#local-machines-and-containers">Local machines and Containers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-packages">Use packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#icon">ICON</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#cosmo">COSMO</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="C2SMGuidelines.html">C2SM Guidelines for Spack</a></li>
@@ -96,15 +95,15 @@
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>--recurse-submodules<span class="w"> </span>--shallow-submodules<span class="w"> </span>-b<span class="w"> </span><span class="nv">$SPACK_TAG</span><span class="w"> </span>https://github.com/C2SM/spack-c2sm.git
 </pre></div>
 </div>
-<p>To load it into your command line, execute</p>
+<p>To load it into your command line, execute one of the following commands:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>.<span class="w"> </span>spack-c2sm/setup-env.sh
+<span class="gp">$ </span>.<span class="w"> </span>spack-c2sm/setup-env.sh<span class="w"> </span>/user-environment
+<span class="gp">$ </span>.<span class="w"> </span>spack-c2sm/setup-env.sh<span class="w"> </span>/mch-environment/v6
+<span class="gp">$ </span>.<span class="w"> </span>spack-c2sm/setup-env.sh<span class="w"> </span>/mch-environment/v7
+<span class="gp">$ </span>.<span class="w"> </span>spack-c2sm/setup-env.sh<span class="w"> </span>any_other_upstream
 </pre></div>
 </div>
-<p>This auto-detects your machine and configures your instance for it.
-You can force a machine with an argument. The name has to match a folder in sysconfigs.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>.<span class="w"> </span>spack-c2sm/setup-env.sh<span class="w"> </span>balfrin
-</pre></div>
-</div>
+<p>This will make upstream installation from user-environment available in spack-c2sm.</p>
 </section>
 <section id="local-machines-and-containers">
 <h2>Local machines and Containers<a class="headerlink" href="#local-machines-and-containers" title="Link to this heading"></a></h2>
@@ -147,31 +146,29 @@ You can force a machine with an argument. The name has to match a folder in sysc
 </section>
 <section id="icon">
 <h2>ICON<a class="headerlink" href="#icon" title="Link to this heading"></a></h2>
-<p>ICON is built using environments.
-Environments are located in a folder named after the environment and are defined in a <code class="docutils literal notranslate"><span class="pre">spack.yaml</span></code> file.
-For ICON, they are located in <code class="docutils literal notranslate"><span class="pre">config/cscs/spack/&lt;version&gt;/&lt;machine&gt;_&lt;target&gt;_&lt;compiler&gt;</span></code>.
+<p>ICON is built using environments.</p>
+<p>For convenience, ICON provides bash scripts to set up the environment and install ICON for in-source
+and out-of-source builds.
+These scripts are located in <code class="docutils literal notranslate"><span class="pre">config/cscs</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">config/cscs/alps_mch.cpu.nvidia</span></code>.</p>
+<p>For development, sometimes it is necessary to build ICON in a more customized way.
+To do so please follow the instructions below.</p>
+<p>Environments are located in a folder named after the environment and are defined in a <code class="docutils literal notranslate"><span class="pre">spack.yaml</span></code> file.
+For ICON, they are located in <code class="docutils literal notranslate"><span class="pre">config/cscs/spack/&lt;machine&gt;_&lt;target&gt;_&lt;compiler&gt;</span></code>.
 They work with a special Spack tag, that is provided in the ICON repository at <code class="docutils literal notranslate"><span class="pre">config/cscs/SPACK_TAG_*</span></code>.
 So make sure you clone Spack with the specified tag.</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p><strong>On Balfrin:</strong>
-In case your Spack environment requires Python, a compatability issue
-with <cite>openssl</cite> and <cite>git</cite> appears.</p>
-<p><code class="docutils literal notranslate"><span class="pre">/usr/bin/ssh:</span> <span class="pre">symbol</span> <span class="pre">lookup</span> <span class="pre">error:</span> <span class="pre">/usr/bin/ssh:</span> <span class="pre">undefined</span> <span class="pre">symbol:</span> <span class="pre">EVP_KDF_CTX_free,</span> <span class="pre">version</span> <span class="pre">OPENSSL_1_1_1d</span></code></p>
-<p>To circumvent that simply do
-<code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">load</span> <span class="pre">git</span></code> prior to activation of the environment.</p>
-</div>
 <p>To activate the Spack environment, type</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>env<span class="w"> </span>activate<span class="w"> </span>-d<span class="w"> </span>&lt;path_to_folder_with_spack_yaml&gt;
 </pre></div>
 </div>
 <p>To install the environment and so ICON, type</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>install
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>develop<span class="w"> </span>--path<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="w"> </span>icon@develop
+<span class="gp">$ </span>spack<span class="w"> </span>install
 </pre></div>
 </div>
-<p>Example to build ICON for CPU with NVHPC on Piz Daint:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">SPACK_TAG</span><span class="o">=</span><span class="k">$(</span>cat<span class="w"> </span><span class="s2">&quot;config/cscs/SPACK_TAG_DAINT&quot;</span><span class="k">)</span>
-<span class="gp">$ </span>spack<span class="w"> </span>env<span class="w"> </span>activate<span class="w"> </span>-d<span class="w"> </span>config/cscs/spack/<span class="nv">$SPACK_TAG</span>/daint_cpu_nvhpc
+<p>Example to build ICON for CPU with NVHPC on Balfrin:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">SPACK_TAG</span><span class="o">=</span><span class="k">$(</span>cat<span class="w"> </span><span class="s2">&quot;config/cscs/SPACK_TAG_MCH&quot;</span><span class="k">)</span>
+<span class="gp">$ </span>spack<span class="w"> </span>env<span class="w"> </span>activate<span class="w"> </span>-d<span class="w"> </span>config/cscs/spack/mch_cpu_double
+<span class="gp">$ </span>spack<span class="w"> </span>develop<span class="w"> </span>--path<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="w"> </span>icon@develop
 <span class="gp">$ </span>spack<span class="w"> </span>install
 </pre></div>
 </div>
@@ -181,26 +178,24 @@ with <cite>openssl</cite> and <cite>git</cite> appears.</p>
 need to reconfigure you can either delete the file or run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">distclean</span></code>.</p>
 </div>
 <p>Out-of-source builds are possible as follows:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir<span class="w"> </span>cpu<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>cpu
-<span class="gp">$ </span>cp<span class="w"> </span>-r<span class="w"> </span>../config<span class="w"> </span>.
-<span class="gp">$ </span>spack<span class="w"> </span>env<span class="w"> </span>activate<span class="w"> </span>-d<span class="w"> </span>config/cscs/spack/v0.20.1.5/daint_cpu_nvhpc
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir<span class="w"> </span>cpu
+<span class="gp">$ </span>spack<span class="w"> </span>env<span class="w"> </span>activate<span class="w"> </span>-d<span class="w"> </span>config/cscs/spack/mch_cpu_double
+<span class="gp">$ </span><span class="c1"># tell spack to build icon in folder cpu</span>
+<span class="gp">$ </span>spack<span class="w"> </span>develop<span class="w"> </span>--path<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="w"> </span>--build-directory<span class="w"> </span>cpu<span class="w"> </span>icon@develop
 <span class="gp">$ </span>spack<span class="w"> </span>install
 </pre></div>
 </div>
-<div class="admonition attention">
-<p class="admonition-title">Attention</p>
-<p>Out-of-source build for AutotoolsPackages is not supported by Spack.
-The implementation for ICON relies on some hacks inside package.py and
-only works if the build-folder is located inside the Git repo of ICON.</p>
-</div>
-</section>
-<section id="cosmo">
-<h2>COSMO<a class="headerlink" href="#cosmo" title="Link to this heading"></a></h2>
-<p>Building COSMO is not supported anymore starting with spack-c2sm v0.20.1.0 for CSCS.</p>
-<p>For Euler Cluster a CPU-only setup is supported using GCC 8.5.0</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>install<span class="w"> </span>cosmo%gcc@8.5.0
+<p>By executing the commands above, spack will add some lines directly into <code class="docutils literal notranslate"><span class="pre">spack.yaml</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">spack</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">packages</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">icon</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">package_attributes</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">build_directory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/scratch/mch/juckerj/icon-nwp/cpu</span>
 </pre></div>
 </div>
+<p>Any further <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span></code> command will use the build directory specified in the <code class="docutils literal notranslate"><span class="pre">spack.yaml</span></code> file.
+In case you want to change the build directory, edit the <code class="docutils literal notranslate"><span class="pre">spack.yaml</span></code> file or remove the <code class="docutils literal notranslate"><span class="pre">build_directory</span></code> line
+and run <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">concretize</span> <span class="pre">-f</span></code> afterwards.</p>
 </section>
 </section>
 
