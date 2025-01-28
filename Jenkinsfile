@@ -20,12 +20,23 @@ pipeline {
                     }
                 }
                 stages {
-                    stage('Create environment') {
+                    stage('Create python environment') {
                         steps {
                             sh """
-                            python3 -m venv env
-                            source env/bin/activate
+                            python3 -m venv .venv
+                            source .venv/bin/activate
                             pip install -r requirements.txt
+                            """
+                        }
+                    }
+                    stage('Create uenv') {
+                        steps {
+                            sh """
+                            git clone -b fix/jenkins https://github.com/eth-cscs/uenv.git
+                            ./uenv/install --yes --destdir=$WORKSPACE
+                            source $WORKSPACE/etc/profile.d/uenv.sh
+                            uenv repo create
+                            uenv image pull mch/v8:rc4
                             """
                         }
                     }
@@ -33,7 +44,6 @@ pipeline {
                         // Bootstrapping spack is a separate stage to avoid problems with concurrently bootstrapping spack in the tests.
                         steps {
                             sh """
-                            source env/bin/activate
                             source ./setup-env.sh
                             spack spec gnuconfig
                             """
@@ -42,7 +52,7 @@ pipeline {
                     stage('Unit Tests') {
                         steps {
                             sh """
-                            source env/bin/activate
+                            source .venv/bin/activate
                             python3 test/unit_test.py
                             """
                         }
@@ -50,18 +60,20 @@ pipeline {
                     stage('Integration Tests') {
                         steps {
                             sh """
-                            source env/bin/activate
-                            source ./setup-env.sh /mch-environment/v7
-                            pytest -v -n auto test/integration_test.py
+                            source $WORKSPACE/etc/profile.d/uenv.sh
+                            source ./setup-env.sh /user-environment
+                            source .venv/bin/activate
+                            uenv run mch/v8:rc4 -- pytest -v -n auto test/integration_test.py
                             """
                         }
                     }
                     stage('System Tests') {
                         steps {
                             sh """
-                            source env/bin/activate
-                            source ./setup-env.sh /mch-environment/v7
-                            pytest -v -n auto test/system_test.py
+                            source $WORKSPACE/etc/profile.d/uenv.sh
+                            source ./setup-env.sh /user-environment
+                            source .venv/bin/activate
+                            uenv run mch/v8:rc4 -- pytest -v -n auto test/system_test.py
                             """
                         }
                     }

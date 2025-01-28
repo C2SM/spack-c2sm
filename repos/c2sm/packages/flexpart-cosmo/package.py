@@ -19,13 +19,11 @@ class FlexpartCosmo(MakefilePackage):
     version('main', branch='main')
 
     depends_on('eccodes +fortran')
-    depends_on('netcdf-fortran')
+    # WORKAROUND: '%gcc' should not be necessary, but without it, spack concretizes to nvhpc.
+    depends_on('netcdf-fortran %gcc')
     depends_on('makedepf90')
 
-    conflicts('%gcc@:10')
-    conflicts('%nvhpc')
-    conflicts('%pgi')
-    conflicts('%cce')
+    requires('%gcc@11:')
 
     build_directory = 'src'
 

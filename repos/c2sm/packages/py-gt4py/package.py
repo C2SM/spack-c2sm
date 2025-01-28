@@ -2,7 +2,7 @@
 # Spack Project Developers. See the top-level COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
-
+import os
 from spack import *
 
 
@@ -85,5 +85,13 @@ class PyGt4py(PythonPackage):
     depends_on('py-pytest-xdist', type=('build', 'run'))
 
     def test(self):
+        # workaround for not finding own python module
+        python_spec = self.spec['python']
+        python_version = python_spec.version.up_to(2)
+        install_path = join_path(self.prefix, 'lib', f"python{python_version}",
+                                 'site-packages')
+        os.environ[
+            'PYTHONPATH'] = f"{install_path}:{os.environ.get('PYTHONPATH', '')}"
+
         python('-m', 'pytest', '-v', '-s', '-n', 'auto', '-k', '.run_gtfn]',
                'tests/next_tests', 'tests/eve_tests')

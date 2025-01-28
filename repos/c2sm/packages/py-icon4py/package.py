@@ -50,6 +50,13 @@ class PyIcon4py(PythonPackage):
         env.set("CMAKE_INCLUDE_PATH", self.spec['boost'].prefix.include)
 
     def test(self):
+        # workaround for not finding own python module
+        python_spec = self.spec['python']
+        python_version = python_spec.version.up_to(2)
+        install_path = join_path(self.prefix, 'lib', f"python{python_version}",
+                                 'site-packages')
+        os.environ[
+            'PYTHONPATH'] = f"{install_path}:{os.environ.get('PYTHONPATH', '')}"
         # check if all installed module can be imported
         super().test()
         # unit tests
