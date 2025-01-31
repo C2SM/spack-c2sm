@@ -29,17 +29,6 @@ pipeline {
                             """
                         }
                     }
-                    stage('Create uenv') {
-                        steps {
-                            sh """
-                            git clone -b fix/jenkins https://github.com/eth-cscs/uenv.git
-                            ./uenv/install --yes --destdir=$WORKSPACE
-                            source $WORKSPACE/etc/profile.d/uenv.sh
-                            uenv repo create
-                            uenv image pull mch/v8:rc4
-                            """
-                        }
-                    }
                     stage('Bootstrap spack') {
                         // Bootstrapping spack is a separate stage to avoid problems with concurrently bootstrapping spack in the tests.
                         steps {
@@ -60,20 +49,18 @@ pipeline {
                     stage('Integration Tests') {
                         steps {
                             sh """
-                            source $WORKSPACE/etc/profile.d/uenv.sh
-                            source ./setup-env.sh /user-environment
+                            source ./setup-env.sh /mch-environment/v8
                             source .venv/bin/activate
-                            uenv run mch/v8:rc4 -- pytest -v -n auto test/integration_test.py
+                            pytest -v -n auto test/integration_test.py
                             """
                         }
                     }
                     stage('System Tests') {
                         steps {
                             sh """
-                            source $WORKSPACE/etc/profile.d/uenv.sh
-                            source ./setup-env.sh /user-environment
+                            source ./setup-env.sh /mch-environment/v8
                             source .venv/bin/activate
-                            uenv run mch/v8:rc4 -- pytest -v -n auto test/system_test.py
+                            pytest -v -n auto test/system_test.py
                             """
                         }
                     }
