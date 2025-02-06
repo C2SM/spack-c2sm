@@ -25,11 +25,10 @@ class Icontools(AutotoolsPackage):
     version('dkrz-master', git=dkrz, branch='master', submodules=True)
     version('2.5.2', git=dkrz, tag='icontools-2.5.2', submodules=True)
 
-    variant('mpi', default=True,
-            description='enable MPI support')
-    variant('grib2', default=True,
-            description='enable GRIB2 support')
-    variant('szip', default=True,
+    variant('mpi', default=True, description='enable MPI support')
+    variant('grib2', default=True, description='enable GRIB2 support')
+    variant('szip',
+            default=True,
             description='enable szip compression for GRIB1')
 
     depends_on('python', type='build')
@@ -111,7 +110,8 @@ class Icontools(AutotoolsPackage):
             # we specify path to netcdf-c here to make CDI happy (we also have
             # to provide the prefix regardless of whether it is in the system
             # path because the configure script of icontools fails otherwise):
-            '--with-netcdf={0}'.format(self.spec['netcdf-c'].prefix)]
+            '--with-netcdf={0}'.format(self.spec['netcdf-c'].prefix)
+        ]
 
         flags = defaultdict(list)
 
@@ -151,19 +151,18 @@ class Icontools(AutotoolsPackage):
 
         if '+mpi' in self.spec:
             mpi_spec = self.spec['mpi']
-            args.extend(['FC=' + mpi_spec.mpifc,
-                         'CXX=' + mpi_spec.mpicxx])
+            args.extend(['FC=' + mpi_spec.mpifc, 'CXX=' + mpi_spec.mpicxx])
 
             # We need to link C++ programs to Fortran MPI libraries:
             mpifc_libs = None
             try:
                 mpifc_exe = Executable(mpi_spec.mpifc)
                 mpifc_libs = ' '.join(
-                    re.findall(r'\s(-l\s*[^\s]+)',
-                               mpifc_exe('-show',
-                                         output=str,
-                                         error=os.devnull)))
+                    re.findall(
+                        r'\s(-l\s*[^\s]+)',
+                        mpifc_exe('-show', output=str, error=os.devnull)))
             except ProcessError:
+
                 def find_mpi_fc_link_flags(*libnames):
                     for shared in [True, False]:
                         libraries = find_libraries(libnames,
@@ -203,8 +202,8 @@ class Icontools(AutotoolsPackage):
         else:
             tty.warn('unable to detect Fortran runtime libraries')
 
-        args.extend(['{0}={1}'.format(var, ' '.join(val))
-                     for var, val in flags.items()])
+        args.extend([
+            '{0}={1}'.format(var, ' '.join(val)) for var, val in flags.items()
+        ])
 
         return args
-
