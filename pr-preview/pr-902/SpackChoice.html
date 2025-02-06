@@ -1,26 +1,24 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Target Users of spack-c2sm &mdash; C2SM Spack  documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
-        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="_static/copybutton.js?v=a5fa425f"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=a5fa425f"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -53,7 +51,6 @@
 <li class="toctree-l1"><a class="reference internal" href="InstanceManagement.html">How to manage your own Spack instance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SpackCommands.html">Important Spack Commands</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="UpstreamManagement.html">Upstream management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CodeDevelopment.html">Develop packages</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Target Users of spack-c2sm</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#researchers-from-c2sm-community">Researchers from C2SM-community</a></li>
@@ -90,15 +87,15 @@
            <div itemprop="articleBody">
              
   <section id="target-users-of-spack-c2sm">
-<h1>Target Users of spack-c2sm<a class="headerlink" href="#target-users-of-spack-c2sm" title="Permalink to this heading"></a></h1>
+<h1>Target Users of spack-c2sm<a class="headerlink" href="#target-users-of-spack-c2sm" title="Link to this heading"></a></h1>
 <section id="researchers-from-c2sm-community">
-<h2>Researchers from C2SM-community<a class="headerlink" href="#researchers-from-c2sm-community" title="Permalink to this heading"></a></h2>
+<h2>Researchers from C2SM-community<a class="headerlink" href="#researchers-from-c2sm-community" title="Link to this heading"></a></h2>
 <p>These users generally have little knowledge about programming or packaging.
 They want spack-c2sm to compile their code in a oneliner. No modifications
 in recipes or the model/libraries they use.</p>
 </section>
 <section id="buildbot-as-part-of-the-icon-consortium-ci">
-<h2>BuildBot as part of the ICON-consortium CI<a class="headerlink" href="#buildbot-as-part-of-the-icon-consortium-ci" title="Permalink to this heading"></a></h2>
+<h2>BuildBot as part of the ICON-consortium CI<a class="headerlink" href="#buildbot-as-part-of-the-icon-consortium-ci" title="Link to this heading"></a></h2>
 <p>The CI running at CSCS is using spack-c2sm to build ICON.
 The main focus here is on reliability and reproducability. We do not want any
 inconsistencies to be introduced by spack-c2sm. Therefore a strict versioning
@@ -107,12 +104,12 @@ Also all recipes used for ICON builds need to have
 predefined versions. Defining a spack version of a package simply as a branch is a no-go.</p>
 </section>
 <section id="sofware-engineers">
-<h2>Sofware Engineers<a class="headerlink" href="#sofware-engineers" title="Permalink to this heading"></a></h2>
+<h2>Sofware Engineers<a class="headerlink" href="#sofware-engineers" title="Link to this heading"></a></h2>
 <p>Software experts belong to this user-group. They are able to add new recipes or edit existing ones.
 Experiment with new setups and ways to build software.</p>
 </section>
 <section id="maintainers-of-spack-c2sm">
-<h2>Maintainers of spack-c2sm<a class="headerlink" href="#maintainers-of-spack-c2sm" title="Permalink to this heading"></a></h2>
+<h2>Maintainers of spack-c2sm<a class="headerlink" href="#maintainers-of-spack-c2sm" title="Link to this heading"></a></h2>
 <p>Staff from C2SM core-team and MeteoSwiss maintain spack-c2sm. They install upstream instances providing pre-built
 libraries or manage integration of spack-c2sm in ICON etc. Also upgrade spack to newer versions
 or extend it to new system like Vial or Balfrin.
@@ -120,7 +117,7 @@ or extend it to new system like Vial or Balfrin.
 </section>
 </section>
 <section id="why-was-spack-chosen-by-meteoswiss">
-<h1>Why was Spack chosen by MeteoSwiss?<a class="headerlink" href="#why-was-spack-chosen-by-meteoswiss" title="Permalink to this heading"></a></h1>
+<h1>Why was Spack chosen by MeteoSwiss?<a class="headerlink" href="#why-was-spack-chosen-by-meteoswiss" title="Link to this heading"></a></h1>
 <p><em>by Carlos Osuna, MeteoSwiss</em></p>
 <p>So the question came up why Spack was chosen as the package manager for MeteoSwiss
 and I wanted to try to answer this here so that others can see this as well
@@ -202,7 +199,7 @@ regularly encounter issues with them.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2020-2023, C2SM.</p>
+    <p>&#169; Copyright 2020-2024, C2SM.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

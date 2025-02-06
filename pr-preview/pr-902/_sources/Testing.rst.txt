@@ -24,33 +24,34 @@ This is a common way to do it.
 Pull Request Testing for spack-c2sm on GitHub
 ---------------------------------------------
 
-To test a PR, create a comment ``launch jenkins [<packages>] [<machines>]``.
-
-It will test the listed packages on the listed machines.
-No package means all packages. No machine means all machines.
-The order is irrelevant.
-
-Examples
-^^^^^^^^
-
-*   ``launch jenkins int2lm daint`` tests int2lm on daint.
-*   ``launch jenkins cosmo int2lm daint tsa`` tests
-
-    *   cosmo on daint
-    *   cosmo on tsa
-    *   int2lm on daint
-    *   int2lm on tsa
-
-*   ``launch jenkins cosmo icon`` tests cosmo and icon on all machines.
-*   ``launch jenkins daint`` tests all packages on daint.
-*   ``launch jenkins`` tests all packages on all machines.
-*   ``launch jenkins all`` tests all packages on all machines.
-
-
-Supported packages: all folder names in folder `packages <https://github.com/C2SM/spack-c2sm/tree/main/packages>`__.
+To test a PR, create a comment ``launch jenkins``.
 
 Supported machines:
 
 *   balfrin
-*   daint
-*   tsa
+
+Jenkins test with uenv
+----------------------
+To test spack-c2sm with an uenv, add a stage
+
+.. code-block:: bash
+
+    stage('Create uenv') {
+        steps {
+            sh """
+            git clone -b fix/jenkins https://github.com/eth-cscs/uenv.git
+            ./uenv/install --yes --destdir=$WORKSPACE
+            source $WORKSPACE/etc/profile.d/uenv.sh
+            uenv repo create
+            uenv image pull mch/v8:rc2
+            """
+        }
+    }
+
+and run the tests in the uenv
+
+.. code-block:: bash
+
+    source $WORKSPACE/etc/profile.d/uenv.sh
+    source ./setup-env.sh /user-environment
+    uenv run mch/v8:rc2 -- pytest -v -n auto test/integration_test.py

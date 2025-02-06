@@ -1,26 +1,24 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>C2SM Spack &mdash; C2SM Spack  documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
-        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="_static/copybutton.js?v=a5fa425f"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=a5fa425f"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -53,7 +51,6 @@
 <li class="toctree-l1"><a class="reference internal" href="InstanceManagement.html">How to manage your own Spack instance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SpackCommands.html">Important Spack Commands</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="UpstreamManagement.html">Upstream management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CodeDevelopment.html">Develop packages</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SpackChoice.html">Target Users of spack-c2sm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SpackChoice.html#why-was-spack-chosen-by-meteoswiss">Why was Spack chosen by MeteoSwiss?</a></li>
@@ -84,7 +81,7 @@
            <div itemprop="articleBody">
              
   <section id="c2sm-spack">
-<h1>C2SM Spack<a class="headerlink" href="#c2sm-spack" title="Permalink to this heading"></a></h1>
+<h1>C2SM Spack<a class="headerlink" href="#c2sm-spack" title="Link to this heading"></a></h1>
 <p>Spack is the package manager used by <a class="reference external" href="https://c2sm.ethz.ch/">C2SM</a>
 and <a class="reference external" href="https://www.meteoswiss.admin.ch/">MeteoSwiss</a> to install
 and deploy our software on supercomputers, mostly at the
@@ -93,11 +90,10 @@ and deploy our software on supercomputers, mostly at the
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="QuickStart.html">Quick Start</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="QuickStart.html#at-cscs-daint-tsa-balfrin">At CSCS (Daint, Tsa, Balfrin)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="QuickStart.html#at-cscs-ethz-balfrin-and-euler">At CSCS/ETHZ (Balfrin and Euler)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="QuickStart.html#local-machines-and-containers">Local machines and Containers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="QuickStart.html#use-packages">Use packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="QuickStart.html#icon">ICON</a></li>
-<li class="toctree-l2"><a class="reference internal" href="QuickStart.html#cosmo">COSMO</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="C2SMGuidelines.html">C2SM Guidelines for Spack</a><ul>
@@ -132,17 +128,12 @@ and deploy our software on supercomputers, mostly at the
 <li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="Testing.html#test-packages-pr-mr-ci-cd">Test packages (PR/MR/CI/CD)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Testing.html#pull-request-testing-for-spack-c2sm-on-github">Pull Request Testing for spack-c2sm on GitHub</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="UpstreamManagement.html">Upstream management</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="UpstreamManagement.html#install-upstream">Install upstream</a></li>
-<li class="toctree-l2"><a class="reference internal" href="UpstreamManagement.html#uninstall-upstream">Uninstall upstream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Testing.html#jenkins-test-with-uenv">Jenkins test with uenv</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="CodeDevelopment.html">Develop packages</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="CodeDevelopment.html#plain-dev-build">Plain dev-build</a></li>
-<li class="toctree-l2"><a class="reference internal" href="CodeDevelopment.html#dev-build-in-combination-with-build-env">Dev-build in combination with build-env</a></li>
 <li class="toctree-l2"><a class="reference internal" href="CodeDevelopment.html#environments-with-spack-develop">Environments with Spack develop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CodeDevelopment.html#plain-dev-build">Plain dev-build</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="SpackChoice.html">Target Users of spack-c2sm</a><ul>
@@ -167,7 +158,7 @@ and deploy our software on supercomputers, mostly at the
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2020-2023, C2SM.</p>
+    <p>&#169; Copyright 2020-2024, C2SM.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -1,26 +1,24 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>C2SM Guidelines for Spack &mdash; C2SM Spack  documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
-        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
-        <script src="_static/copybutton.js?v=a5fa425f"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=a5fa425f"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -66,7 +64,6 @@
 <li class="toctree-l1"><a class="reference internal" href="InstanceManagement.html">How to manage your own Spack instance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SpackCommands.html">Important Spack Commands</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="UpstreamManagement.html">Upstream management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CodeDevelopment.html">Develop packages</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SpackChoice.html">Target Users of spack-c2sm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SpackChoice.html#why-was-spack-chosen-by-meteoswiss">Why was Spack chosen by MeteoSwiss?</a></li>
@@ -97,7 +94,7 @@
            <div itemprop="articleBody">
              
   <section id="c2sm-guidelines-for-spack">
-<h1>C2SM Guidelines for Spack<a class="headerlink" href="#c2sm-guidelines-for-spack" title="Permalink to this heading"></a></h1>
+<h1>C2SM Guidelines for Spack<a class="headerlink" href="#c2sm-guidelines-for-spack" title="Link to this heading"></a></h1>
 <p>Spack enables users to install software in a very user-friendly way,
 for example by allowing different versions or specifications
 of the same package to be installed simultaneously, or installing
@@ -107,12 +104,12 @@ version/specification being installed. For this reason, C2SM has
 the following guidelines for building, running and installing your
 libraries and executables.</p>
 <section id="building">
-<h2>Building<a class="headerlink" href="#building" title="Permalink to this heading"></a></h2>
+<h2>Building<a class="headerlink" href="#building" title="Link to this heading"></a></h2>
 <p>There are two possible ways of building software with Spack:
 <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span></code> and  <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">dev-build</span></code>.
 Both are good, but have some special features that need to be taken into account.</p>
 <section id="option-1-spack-install">
-<h3>Option 1: spack install<a class="headerlink" href="#option-1-spack-install" title="Permalink to this heading"></a></h3>
+<h3>Option 1: spack install<a class="headerlink" href="#option-1-spack-install" title="Link to this heading"></a></h3>
 <p>Every <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span></code> command needs a version suffix,
 i.e. <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span> <span class="pre">&lt;package&gt;&#64;&lt;version-suffix&gt;</span></code>
 This version-suffix can have different meanings:</p>
@@ -157,13 +154,13 @@ software with <code class="docutils literal notranslate"><span class="pre">spack
 </div>
 </section>
 <section id="option-2-spack-dev-build">
-<h3>Option 2: spack dev-build<a class="headerlink" href="#option-2-spack-dev-build" title="Permalink to this heading"></a></h3>
+<h3>Option 2: spack dev-build<a class="headerlink" href="#option-2-spack-dev-build" title="Link to this heading"></a></h3>
 <p>In order to install software with <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">dev-build</span></code>, one needs a
 local source code.  Spack will then compile the code as it is locally
 present. Contrary to <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span></code>, the version suffix
 (<code class="docutils literal notranslate"><span class="pre">&#64;master</span></code>, <code class="docutils literal notranslate"><span class="pre">&#64;v2.7.9</span></code>, etc.) does not have any effect on the code version compiled,
-since spack will always use the local source.
-Nonetheless, it is important to use the correct version suffix, i.e. <code class="docutils literal notranslate"><span class="pre">c2sm-master</span></code>
+since Spack will always use the local source.</p>
+<p>Nonetheless, it is important to use the correct version suffix, i.e. <code class="docutils literal notranslate"><span class="pre">c2sm-master</span></code>
 for all your COSMO versions that build on top of the <code class="docutils literal notranslate"><span class="pre">c2sm-master</span></code> branch.
 The same applies to <code class="docutils literal notranslate"><span class="pre">c2sm-features</span></code> etc.
 The reason for this is that there are some patches Spack applies based on the version suffix.
@@ -176,22 +173,17 @@ Spack will tell you that this particular spec is already installed.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>To circumvent the above conflict, you can keep your executable alive in your source folder,
-but uninstall it with Spack using <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">uninstall</span> <span class="pre">&lt;your</span> <span class="pre">cosmo</span> <span class="pre">spec&gt;</span></code>.
-Another option is to use a different string in <code class="docutils literal notranslate"><span class="pre">&#64;&lt;string&gt;</span></code> for every flavor you build.
-For example, <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">dev-build</span> <span class="pre">icon</span> <span class="pre">&#64;cpu</span></code>, <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">dev-build</span> <span class="pre">icon</span> <span class="pre">&#64;gpu</span></code>,
-<code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">dev-build</span> <span class="pre">icon</span> <span class="pre">&#64;my-new-feature</span></code> etc.
-Then, they will all coexist and you can individually <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">load</span> <span class="pre">icon</span> <span class="pre">&#64;my-new-feature</span></code>
-or uninstall and rebuild them.</p>
+but omit the installation phase using <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">dev-build</span> <span class="pre">--until</span> <span class="pre">build</span> <span class="pre">&lt;your_spec&gt;</span></code>.</p>
 </div>
 </section>
 </section>
 <section id="running">
-<h2>Running<a class="headerlink" href="#running" title="Permalink to this heading"></a></h2>
+<h2>Running<a class="headerlink" href="#running" title="Link to this heading"></a></h2>
 <p>When used properly, Spack is able to manage many different
 configurations of a package along with the corresponding
 run environment.</p>
 <section id="load-run-environment-of-a-package">
-<h3>Load run environment of a package<a class="headerlink" href="#load-run-environment-of-a-package" title="Permalink to this heading"></a></h3>
+<h3>Load run environment of a package<a class="headerlink" href="#load-run-environment-of-a-package" title="Link to this heading"></a></h3>
 <p>Spack provides the command <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">load</span></code> to load an installation into your environment.
 This could either be a Python installation or required variables that
 a specific binary needs to run correctly. There are two different ways of using it
@@ -223,7 +215,7 @@ executions of an executable installed by Spack!</p>
 </section>
 </section>
 <section id="spack-in-scripts">
-<h2>Spack in scripts<a class="headerlink" href="#spack-in-scripts" title="Permalink to this heading"></a></h2>
+<h2>Spack in scripts<a class="headerlink" href="#spack-in-scripts" title="Link to this heading"></a></h2>
 <p>The Spack commands are rather tailored for interacive use. For example,
 it is very possible for commands such as <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">find</span></code> or <code class="docutils literal notranslate"><span class="pre">spack</span>
 <span class="pre">location</span></code> to complain about multiple potential installed <code class="docutils literal notranslate"><span class="pre">SPECS</span></code> satisfying
@@ -246,7 +238,7 @@ the environment of the running job from the environment at submission time.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2020-2023, C2SM.</p>
+    <p>&#169; Copyright 2020-2024, C2SM.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
