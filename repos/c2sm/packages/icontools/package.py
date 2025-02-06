@@ -3,15 +3,6 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-# ----------------------------------------------------------------------------
-#     spack install icontools
-#
-# You can edit this file again by typing:
-#
-#     spack edit icontools
-#
-# See the Spack documentation for more information on packaging.
-# ----------------------------------------------------------------------------
 import os
 import re
 from collections import defaultdict
@@ -27,12 +18,12 @@ class Icontools(AutotoolsPackage):
 
     homepage = 'https://gitlab.dkrz.de/dwd-sw/dwd_icon_tools'
     url = 'https://gitlab.dkrz.de/dwd-sw/dwd_icon_tools'
-    git = 'git@gitlab.dkrz.de:dwd-sw/dwd_icon_tools.git'
+    dkrz = 'git@gitlab.dkrz.de:dwd-sw/dwd_icon_tools.git'
+    c2sm = 'git@github.com:C2SM/icontools.git'
 
-    version('master', branch='master', submodules=True)
-    version('2.5.1', tag='icontools-2.5.1', submodules=True)
-    version('2.4.12', tag='icontools-2.4.12', submodules=True)
-    version('2.4.6', tag='icontools-2.4.6', submodules=True)
+    version('c2sm-master', git=c2sm, branch='master', submodules=True)
+    version('dkrz-master', git=dkrz, branch='master', submodules=True)
+    version('2.5.2', git=dkrz, tag='icontools-2.5.2', submodules=True)
 
     variant('mpi', default=True,
             description='enable MPI support')
@@ -67,6 +58,7 @@ class Icontools(AutotoolsPackage):
     #   PGF90-S-0081-Illegal selector - KIND value must be non-negative
     #     (libiconbase/mo_delaunay_types.f90: 332)
     conflicts('%pgi')
+    conflicts('%nvhpc')
 
     def flag_handler(self, name, flags):
         if name == 'cflags' or name == 'cxxflags':
