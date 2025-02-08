@@ -101,6 +101,13 @@ class Icon(SpackIcon):
             default=False,
             description='Enable usage of the HAMMOZ module')
 
+    variant('lagtraj',
+            default=False,
+            description='Enable usage of the lagrangian trajectories module ')
+
+    variant('dbgstream',
+            default=False,
+            description='Enable usage of the debug stream module ')
 
     # Optimization Features:
     variant('loop-exchange', default=False, description='Enable loop exchange')
@@ -193,6 +200,8 @@ class Icon(SpackIcon):
                 'silent-rules',
                 'atm-phy-echam-submodels',
                 'hammoz',
+                'lagtraj',
+                'dbgstream',
         ]:
             args += self.enable_or_disable(x)
 
