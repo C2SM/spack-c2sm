@@ -52,9 +52,7 @@ def test_install_icon_conditional_dependencies():
 
 
 def test_install_icontools():
-    spack_install(
-        'icontools @c2sm-master %gcc ~mpi ^netcdf-fortran%gcc'
-    )
+    spack_install('icontools @c2sm-master %gcc ~mpi ^netcdf-fortran%gcc')
 
 
 def test_install_libgrib1_nvhpc():
