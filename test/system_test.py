@@ -53,7 +53,7 @@ def test_install_icon_conditional_dependencies():
 
 def test_install_icontools():
     spack_install(
-        'icontools%gcc ~mpi fflags="-fallow-argument-mismatch" ^netcdf-fortran%gcc'
+        'icontools @c2sm-master %gcc ~mpi ^netcdf-fortran%gcc'
     )
 
 
