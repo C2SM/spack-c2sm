@@ -170,6 +170,14 @@ class Icon(AutotoolsPackage, CudaPackage):
             description='Enable usage of ComIn toolbox '
             'for building plugins.')
 
+    variant('lagtraj',
+            default=False,
+            description='Enable usage of the lagrangian trajectories module ')
+
+    variant('dbgstream',
+            default=False,
+            description='Enable usage of the debug stream module ')
+
     # Optimization Features:
     variant('loop-exchange', default=True, description='Enable loop exchange')
     variant('vectorized-lrtm',
@@ -354,6 +362,8 @@ class Icon(AutotoolsPackage, CudaPackage):
                 'cuda-graphs',
                 'silent-rules',
                 'comin',
+                'lagtraj',
+                'dbgstream',
         ]:
             args += self.enable_or_disable(x)
 
