@@ -96,7 +96,7 @@ def test_build_only_py_gt4py_for_1_0_3_10():
 
 # fails due to sql error
 def test_build_only_py_icon4py_for_0_0_14():
-    spack_install('py-icon4py@ 0.0.14 ^pypy-gt4py @1.0.3.10', test_root=False)
+    spack_install('py-icon4py@ 0.0.14 ^py-gt4py @1.0.3.10', test_root=False)
 
 
 @pytest.mark.parametrize("version, gt4py_version", [('0.0.13', '1.0.3.9')])
