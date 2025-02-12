@@ -109,6 +109,10 @@ class Icon(SpackIcon):
             default=False,
             description='Enable usage of the debug stream module ')
 
+    variant('cosp',
+            default=False,
+            description='Enable usage of the cosp (satellite emulator) module ')
+
     # Optimization Features:
     variant('loop-exchange', default=False, description='Enable loop exchange')
     variant('vectorized-lrtm',
@@ -202,6 +206,7 @@ class Icon(SpackIcon):
                 'hammoz',
                 'lagtraj',
                 'dbgstream',
+                'cosp',
         ]:
             args += self.enable_or_disable(x)
 
