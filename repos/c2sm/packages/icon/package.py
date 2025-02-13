@@ -178,9 +178,10 @@ class Icon(AutotoolsPackage, CudaPackage):
             default=False,
             description='Enable usage of the debug stream module ')
 
-    variant('cosp',
-            default=False,
-            description='Enable usage of the cosp (satellite emulator) module ')
+    variant(
+        'cosp',
+        default=False,
+        description='Enable usage of the cosp (satellite emulator) module ')
 
     # Optimization Features:
     variant('loop-exchange', default=True, description='Enable loop exchange')
