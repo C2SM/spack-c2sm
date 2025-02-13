@@ -87,6 +87,18 @@ For convenience, ICON provides bash scripts to set up the environment and instal
 and out-of-source builds.
 These scripts are located in ``config/cscs``, e.g. ``config/cscs/alps_mch.cpu.nvidia``.
 
+For in-source builds, you need the run the configure scripts from your ICON root folder:
+
+.. code-block:: console
+
+    $ ./config/cscs/alps_mch.cpu.nvidia
+
+For out-of-source builds, navigate into your out-of-source directory (e.g., `cd cpu`) and run the configure scripts from there:
+
+.. code-block:: console
+
+    $ ./../config/cscs/alps_mch.cpu.nvidia
+
 For development, sometimes it is necessary to build ICON in a more customized way.
 To do so please follow the instructions below.
 
