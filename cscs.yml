@@ -5,11 +5,10 @@ include:
   extends: .f7t-baremetal-runner
   variables:
     FIRECREST_SYSTEM: 'santis'
-    # needed for uenv to see sw-stack from todi
     ARCH: 'aarch64'
     F7T_URL: 'https://api.cscs.ch/cw/firecrest/v1'
 
-Hello World:
+.Hello World:
   extends: .baremetal-runner-santis-gh200
   script:
     - echo "Hello World"
