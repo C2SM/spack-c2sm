@@ -1,0 +1,15 @@
+include:
+  - remote: 'https://gitlab.com/cscs-ci/recipes/-/raw/master/templates/v2/.ci-ext.yml'
+
+.baremetal-runner-santis-gh200:
+  extends: .f7t-baremetal-runner
+  variables:
+    FIRECREST_SYSTEM: 'santis'
+    # needed for uenv to see sw-stack from todi
+    ARCH: 'aarch64'
+    F7T_URL: 'https://api.cscs.ch/cw/firecrest/v1'
+
+Hello World:
+  extends: .baremetal-runner-santis-gh200
+  scripts:
+    - echo "Hello World"
