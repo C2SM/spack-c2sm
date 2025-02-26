@@ -11,5 +11,5 @@ include:
 
 Hello World:
   extends: .baremetal-runner-santis-gh200
-  scripts:
+  script:
     - echo "Hello World"
