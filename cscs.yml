@@ -8,7 +8,7 @@ include:
     ARCH: 'aarch64'
     F7T_URL: 'https://api.cscs.ch/cw/firecrest/v1'
 
-.Hello World:
+Hello World:
   extends: .baremetal-runner-santis-gh200
   script:
     - echo "Hello World"
