@@ -62,6 +62,7 @@ Summarize Logfile:
   image: python:3.9
   script:
     - !reference [.setup_python, script]
+    - mkdir -p log
     - python3 tools/summarize_logs.py || true
   when: always
   needs:
