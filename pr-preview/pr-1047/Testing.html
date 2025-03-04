@@ -106,10 +106,12 @@ This is a common way to do it.</p>
 </section>
 <section id="pull-request-testing-for-spack-c2sm-on-github">
 <h2>Pull Request Testing for spack-c2sm on GitHub<a class="headerlink" href="#pull-request-testing-for-spack-c2sm-on-github" title="Link to this heading"></a></h2>
-<p>To test a PR, create a comment <code class="docutils literal notranslate"><span class="pre">launch</span> <span class="pre">jenkins</span></code>.</p>
+<p>To test a PR, create a comment <code class="docutils literal notranslate"><span class="pre">launch</span> <span class="pre">jenkins</span></code>. This will trigger a Jenkins job that will test the PR.
+To test on Alps (Santis) create an additional comment <code class="docutils literal notranslate"><span class="pre">cscs-ci</span> <span class="pre">run</span> <span class="pre">santis</span></code>.</p>
 <p>Supported machines:</p>
 <ul class="simple">
 <li><p>balfrin</p></li>
+<li><p>santis</p></li>
 </ul>
 </section>
 <section id="jenkins-test-with-uenv">
