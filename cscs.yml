@@ -41,13 +41,14 @@ Unit Test:
     - !reference [.setup_uenv, script]
     - !reference [.bootstrap_spack, script]
     - !reference [.setup_spack, script]
+    - uenv run ${UENV} -- pytest -v -n auto ${TEST}
 
 Integration Test:
   extends: .test_common
-  script:
-    - uenv run ${UENV} -- pytest -v -n auto test/integration_test.py
+  variables:
+    TEST: test/integration_test.py
 
 System Test:
   extends: .test_common
-  script:
-    - uenv run ${UENV} -- pytest -v -n auto test/system_test.py
+  variables:
+    TEST: test/system_test.py
