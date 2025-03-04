@@ -57,7 +57,7 @@ System Test:
   variables:
     TEST: test/system_test.py
 
-Summarize Logfile:
+Summarize Logs:
   extends: .container-runner-lightweight-zen2
   image: python:3.9
   script:
@@ -67,6 +67,7 @@ Summarize Logfile:
   when: always
   needs:
     - Integration Test
+    - System Test
   artifacts:
       paths:
       - log/**/*
