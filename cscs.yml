@@ -3,6 +3,9 @@ include:
 
 variables:
   UENV: 'icon/25.2:v1'
+  GIT_STRATEGY: fetch
+  GIT_SUBMODULE_STRATEGY: recursive
+
 
 .setup_python:
   script:
