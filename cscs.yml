@@ -1,6 +1,9 @@
 include:
   - remote: 'https://gitlab.com/cscs-ci/recipes/-/raw/master/templates/v2/.ci-ext.yml'
 
+variables:
+  UENV: 'icon/25.2:v1'
+
 .setup_python:
   script:
     - python3 -m venv .venv
@@ -8,9 +11,18 @@ include:
     - pip install -r requirements.txt
     - source .venv/bin/activate
 
+.bootstrap_spack:
+  script:
+    - source ./setup-env.sh
+    - spack spec gnuconfig
+
+.setup_spack:
+  script:
+    -  source ./setup-env.sh /user-environment
+
 .setup_uenv:
   script:
-    - uenv image pull icon-wcp/v1:rc4
+    - uenv image pull ${UENV}
 
 
 Unit Test:
@@ -18,3 +30,12 @@ Unit Test:
   script:
     - !reference [.setup_python, script]
     - python3 test/unit_test.py
+
+Integration Test:
+  extends: .baremetal-runner-santis-gh200
+  script:
+    - !reference [.setup_python, script]
+    - !reference [.setup_uenv, script]
+    - !reference [.bootstrap_spack, script]
+    - !reference [.setup_spack, script]
+    - uenv run ${UENV} -- pytest -v -n auto test/integration_test.py
