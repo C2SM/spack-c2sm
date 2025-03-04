@@ -22,7 +22,6 @@ def test_install_ecbuild():
     spack_install('ecbuild @3.7.2', test_root=False)
 
 
-
 def test_install_makedepf90():
     # Tests are disabled because they fail with:
     # test1.sh: No such file or directory
@@ -63,5 +62,3 @@ def test_install_py_tabulate():
 
 def test_install_py_typing_extensions():
     spack_install('py-typing-extensions')
-
-

@@ -1,6 +1,7 @@
 import pytest
 from spack_commands import spack_install
 
+
 @pytest.mark.parametrize('version',
                          ['2024.01-1', '2.6.6-mch2a', '2.6.6-mch2b'])
 def test_install_icon(version):
@@ -21,14 +22,17 @@ def test_install_icon_conditional_dependencies():
         'icon @2.6.6-mch2b %nvhpc +coupling serialization=create +emvorado +mpi gpu=nvidia-80 ^cray-mpich%nvhpc'
     )
 
+
 # make check of external cdi fails with
 # Error: Type mismatch in argument 'size_dummy' at (1); passed INTEGER(8) to INTEGER(4) cdi_write_f2003.f90:31:37
 def test_install_icontools():
     spack_install('icontools @c2sm-master %gcc ~mpi ^netcdf-fortran%gcc',
                   test_root=False)
 
+
 def test_install_libgrib1_nvhpc():
     spack_install('libgrib1 %nvhpc')
+
 
 @pytest.mark.parametrize("version", ['1.0.3.9'])
 def test_install_py_gt4py_for_version(version):
@@ -49,8 +53,10 @@ def test_build_only_py_icon4py_for_0_0_14():
 def test_install_py_icon4py(version, gt4py_version):
     spack_install(f'py-icon4py@{version} ^py-gt4py@{gt4py_version}')
 
+
 def test_install_yaxt():
     spack_install('yaxt')
+
 
 def test_install_flexpart_cosmo():
     spack_install('flexpart-cosmo')
