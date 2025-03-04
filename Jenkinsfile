@@ -73,7 +73,7 @@ pipeline {
                             source $WORKSPACE/etc/profile.d/uenv.sh
                             source ./setup-env.sh /user-environment
                             source .venv/bin/activate
-                            uenv run mch/v8:rc4 -- pytest -v -n auto test/system_test.py test/balfrin_system_test.py
+                            uenv run mch/v8:rc4 -- pytest -v -n auto test/common_system_test.py test/balfrin_system_test.py
                             """
                         }
                     }

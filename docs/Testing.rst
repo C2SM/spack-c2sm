@@ -24,11 +24,14 @@ This is a common way to do it.
 Pull Request Testing for spack-c2sm on GitHub
 ---------------------------------------------
 
-To test a PR, create a comment ``launch jenkins``.
+To test a PR, create a comment ``launch jenkins``. This will trigger a Jenkins job that will test the PR.
+To test on Alps (Santis) create an additional comment ``cscs-ci run santis``.
+
 
 Supported machines:
 
 *   balfrin
+*   santis
 
 Jenkins test with uenv
 ----------------------

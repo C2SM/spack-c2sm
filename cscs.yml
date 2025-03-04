@@ -56,7 +56,7 @@ Integration Test:
 System Test:
   extends: .test_common
   variables:
-    TEST: test/system_test.py
+    TEST: test/common_system_test.py test/santis_system_test.py
 
 Summarize Logs:
   extends: .container-runner-lightweight-zen2
