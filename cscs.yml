@@ -34,11 +34,20 @@ Unit Test:
     - !reference [.setup_python, script]
     - python3 test/unit_test.py
 
-Integration Test:
+.test_common:
   extends: .baremetal-runner-santis-gh200
   script:
     - !reference [.setup_python, script]
     - !reference [.setup_uenv, script]
     - !reference [.bootstrap_spack, script]
     - !reference [.setup_spack, script]
+
+Integration Test:
+  extends: .test_common
+  script:
     - uenv run ${UENV} -- pytest -v -n auto test/integration_test.py
+
+System Test:
+  extends: .test_common
+  script:
+    - uenv run ${UENV} -- pytest -v -n auto test/system_test.py
