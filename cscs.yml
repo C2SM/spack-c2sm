@@ -69,5 +69,5 @@ Summarize Logfile:
     - Integration Test
   artifacts:
       paths:
-      - log/**/*.html
+      - log/**/*
       when: always
