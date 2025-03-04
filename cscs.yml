@@ -2,7 +2,6 @@ include:
   - remote: 'https://gitlab.com/cscs-ci/recipes/-/raw/master/templates/v2/.ci-ext.yml'
 
 variables:
-  UENV: 'icon/25.2:v1'
   GIT_STRATEGY: fetch
   GIT_SUBMODULE_STRATEGY: recursive
 
@@ -36,6 +35,8 @@ Unit Test:
 
 .test_common:
   extends: .baremetal-runner-santis-gh200
+  variables:
+    UENV: 'icon/25.2:v1'
   script:
     - !reference [.setup_python, script]
     - !reference [.setup_uenv, script]
