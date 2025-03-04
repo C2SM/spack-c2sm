@@ -1,14 +1,20 @@
 include:
   - remote: 'https://gitlab.com/cscs-ci/recipes/-/raw/master/templates/v2/.ci-ext.yml'
 
-.baremetal-runner-santis-gh200:
-  extends: .f7t-baremetal-runner
-  variables:
-    FIRECREST_SYSTEM: 'santis'
-    ARCH: 'aarch64'
-    F7T_URL: 'https://api.cscs.ch/cw/firecrest/v1'
+.setup_python:
+  script:
+    - python3 -m venv .venv
+    - source .venv/bin/activate
+    - pip install -r requirements.txt
+    - source .venv/bin/activate
 
-Hello World:
+.setup_uenv:
+  script:
+    - uenv image pull icon-wcp/v1:rc4
+
+
+Unit Test:
   extends: .baremetal-runner-santis-gh200
   script:
-    - echo "Hello World"
+    - !reference [.setup_python, script]
+    - python3 test/unit_test.py
