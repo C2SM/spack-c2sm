@@ -42,6 +42,10 @@ Unit Test:
     - !reference [.bootstrap_spack, script]
     - !reference [.setup_spack, script]
     - uenv run ${UENV} -- pytest -v -n auto ${TEST}
+  artifacts:
+      paths:
+      - log/**/*
+      when: always
 
 Integration Test:
   extends: .test_common
@@ -52,3 +56,17 @@ System Test:
   extends: .test_common
   variables:
     TEST: test/system_test.py
+
+Summarize Logfile:
+  extends: .container-runner-lightweight-zen2
+  image: python:3.9
+  script:
+    - !reference [.setup_python, script]
+    - python3 tools/summarize_logs.py || true
+  when: always
+  needs:
+    - Integration Test
+  artifacts:
+      paths:
+      - log/**/*.html
+      when: always
