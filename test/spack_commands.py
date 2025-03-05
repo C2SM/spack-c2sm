@@ -26,6 +26,7 @@ def time_format(seconds) -> str:
         parts.append(f"{s:.2f}s")
     return " ".join(parts)
 
+
 def git_config():
     git_config_count = os.getenv('GIT_CONFIG_COUNT')
     if git_config_count is None:
@@ -51,6 +52,7 @@ def git_config():
         var_export.append(f' export {value_var}="{value}"')
     return ";".join(var_export)
 
+
 def log_file(command: str) -> Path:
     # Filter out flags
     # and join by underscore, because spaces cause problems in bash.
@@ -75,7 +77,6 @@ def run_with_spack(command: str, log: Path) -> None:
         uenv = os.environ["SPACK_UENV_PATH"]
     else:
         uenv = ""
-
 
     start = time.time()
     # Direct stream to avoid buffering.

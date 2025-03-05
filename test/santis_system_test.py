@@ -5,6 +5,7 @@ from spack_commands import spack_install
 def test_install_py_tabulate_0_8_10():
     spack_install('py-tabulate@0.8.10')
 
+
 def test_install_icon_conditional_dependencies():
     # +coupling triggers libfyaml, libxml2, netcdf-c
     # serialization=create triggers serialbox
