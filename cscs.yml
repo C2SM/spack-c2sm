@@ -39,6 +39,8 @@ Git Clone:
     - echo $GIT_CONFIG_VALUE_1
     - echo $GIT_CONFIG_VALUE_0
     - git clone git@github.com:C2SM/icontools.git
+    - git clone git@gitlab.dkrz.de:icon/icon-nwp.git
+    - git clone git@github.com:C2SM-RCM/flexpart.git
 Unit Test:
   extends: .baremetal-runner-santis-gh200
   script:
@@ -77,6 +79,7 @@ Summarize Logs:
     - !reference [.setup_python, script]
     - mkdir -p log
     - python3 tools/summarize_logs.py || true
+    - cat log/artifacts_summary.html
   when: always
   needs:
     - Integration Test
