@@ -11,6 +11,9 @@ variables:
   GIT_CONFIG_VALUE_1: "git@github.com:"
 
 
+stages:
+  - test
+  - summary
 
 .setup_python:
   script:
@@ -35,6 +38,7 @@ variables:
 
 Unit Test:
   extends: .baremetal-runner-santis-gh200
+  stage: test
   script:
     - !reference [.setup_python, script]
     - python3 test/unit_test.py
@@ -56,16 +60,19 @@ Unit Test:
 
 Integration Test:
   extends: .test_common
+  stage: test
   variables:
     TEST: test/integration_test.py
 
 System Test:
   extends: .test_common
+  stage: test
   variables:
     TEST: test/common_system_test.py test/santis_system_test.py
 
-Summarize Logs:
+Collect Logfiles:
   extends: .container-runner-lightweight-zen2
+  stage: summary
   image: python:3.9
   script:
     - !reference [.setup_python, script]
