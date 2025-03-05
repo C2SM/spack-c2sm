@@ -27,33 +27,6 @@ def time_format(seconds) -> str:
     return " ".join(parts)
 
 
-def git_config():
-    git_config_count = os.getenv('GIT_CONFIG_COUNT')
-    if git_config_count is None:
-        return
-
-    try:
-        git_config_count = int(git_config_count)
-    except ValueError:
-        return
-
-    var_export = []
-    var_export.append(f' export GIT_CONFIG_COUNT={git_config_count}')
-    for i in range(git_config_count):
-        key_var = f'GIT_CONFIG_KEY_{i}'
-        value_var = f'GIT_CONFIG_VALUE_{i}'
-
-        key = os.getenv(key_var)
-        value = os.getenv(value_var)
-
-        if key is None or value is None:
-            continue
-
-        var_export.append(f'export {key_var}="{key}"')
-        var_export.append(f' export {value_var}="{value}"')
-    return ";".join(var_export)
-
-
 def log_file(command: str) -> Path:
     # Filter out flags
     # and join by underscore, because spaces cause problems in bash.
@@ -81,12 +54,11 @@ def run_with_spack(command: str, log: Path) -> None:
 
     start = time.time()
     # Direct stream to avoid buffering.
-    # 'env -i' clears the environment.
     # 'bash -l' makes it a login shell.
     # 'bash -c' reads commands from string.
     # '2>&1' redirects stderr to stdout.
     ret = subprocess.run(
-        f'env -i bash -l -c "(. {REPO_DIR}/setup-env.sh {uenv}; {git_config()}; {command}) >> {log} 2>&1"',
+        f'bash -l -c "(. {REPO_DIR}/setup-env.sh {uenv}; {command}) >> {log} 2>&1"',
         check=False,
         shell=True,
     )
@@ -118,4 +90,4 @@ def spack_install(spec: str, test_root: bool = True):
     run_with_spack(f"spack spec {spec}", log)
 
     test_arg = "--test=root" if test_root else ""
-    run_with_spack(f"spack -dd install --verbose {test_arg} {spec}", log)
+    run_with_spack(f"spack install --verbose {test_arg} {spec}", log)

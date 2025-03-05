@@ -33,14 +33,6 @@ variables:
     - uenv image pull ${UENV}
 
 
-Git Clone: 
-  extends: .baremetal-runner-santis-gh200
-  script:
-    - echo $GIT_CONFIG_VALUE_1
-    - echo $GIT_CONFIG_VALUE_0
-    - git clone git@github.com:C2SM/icontools.git
-    - git clone git@gitlab.dkrz.de:icon/icon-nwp.git
-    - git clone git@github.com:C2SM-RCM/flexpart.git
 Unit Test:
   extends: .baremetal-runner-santis-gh200
   script:

@@ -23,6 +23,7 @@ def test_install_icon_conditional_dependencies():
     )
 
 
+
 def test_install_libgrib1_nvhpc():
     spack_install('libgrib1 %nvhpc')
 
@@ -49,3 +50,11 @@ def test_install_py_icon4py(version, gt4py_version):
 
 def test_install_yaxt():
     spack_install('yaxt')
+
+
+def test_install_flexpart_cosmo():
+    spack_install('flexpart-cosmo')
+
+
+def test_install_flexpart_ifs():
+    spack_install('flexpart-ifs')
