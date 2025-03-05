@@ -23,7 +23,6 @@ def test_install_icon_conditional_dependencies():
     )
 
 
-
 def test_install_libgrib1_nvhpc():
     spack_install('libgrib1 %nvhpc')
 

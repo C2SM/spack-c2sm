@@ -21,6 +21,7 @@ def test_install_ecbuild():
     # 	 17 - test_ecbuild_find_package (Failed)
     spack_install('ecbuild @3.7.2', test_root=False)
 
+
 def test_install_makedepf90():
     # Tests are disabled because they fail with:
     # test1.sh: No such file or directory

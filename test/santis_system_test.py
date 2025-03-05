@@ -1,6 +1,7 @@
 import pytest
 from spack_commands import spack_install
 
+
 def test_install_icon_conditional_dependencies():
     # +coupling triggers libfyaml, libxml2, netcdf-c
     # +emvorado triggers eccodes, hdf5, zlib
