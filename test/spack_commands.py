@@ -38,6 +38,7 @@ def git_config():
         return
 
     var_export = []
+    var_export.append(f' export GIT_CONFIG_COUNT={git_config_count}')
     for i in range(git_config_count):
         key_var = f'GIT_CONFIG_KEY_{i}'
         value_var = f'GIT_CONFIG_VALUE_{i}'
