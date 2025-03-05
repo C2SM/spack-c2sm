@@ -4,11 +4,11 @@ include:
 variables:
   GIT_STRATEGY: fetch
   GIT_SUBMODULE_STRATEGY: recursive
-  GIT_CONFIG_COUNT: 2
+  GIT_CONFIG_COUNT: 1
   GIT_CONFIG_KEY_0: url.https://oauth2:${GITLAB_TOKEN}@gitlab.dkrz.de/.insteadOf
   GIT_CONFIG_VALUE_0: "git@gitlab.dkrz.de:"
-  GIT_CONFIG_KEY_1: url.https://${GITHUB_TOKEN}@github.com/.insteadOf
-  GIT_CONFIG_VALUE_1: "git@github.com:"
+  #GIT_CONFIG_KEY_1: url.https://${GITHUB_TOKEN}@github.com/.insteadOf
+  #GIT_CONFIG_VALUE_1: "git@github.com:"
 
 
 
