@@ -35,11 +35,13 @@ def test_install_makedepf90():
     # test1.sh: No such file or directory
     spack_install('makedepf90', test_root=False)
 
+
 @pytest.mark.parametrize('version',
                          ['2024.01-1', '2.6.6-mch2a', '2.6.6-mch2b'])
 def test_install_icon(version):
     # WORKAROUND: A build and link dependency should imply that the same compiler is used. ^cray-mpich%nvhpc enforces it.
     spack_install(f'icon @{version} %nvhpc ^cray-mpich%nvhpc')
+
 
 def test_install_icon_conditional_dependencies():
     # +coupling triggers libfyaml, libxml2, netcdf-c
