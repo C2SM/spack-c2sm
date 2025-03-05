@@ -21,11 +21,24 @@ def test_install_ecbuild():
     # 	 17 - test_ecbuild_find_package (Failed)
     spack_install('ecbuild @3.7.2', test_root=False)
 
+def test_install_flexpart_cosmo():
+    spack_install('flexpart-cosmo')
+
+
+def test_install_flexpart_ifs():
+    spack_install('flexpart-ifs')
+
 
 def test_install_makedepf90():
     # Tests are disabled because they fail with:
     # test1.sh: No such file or directory
     spack_install('makedepf90', test_root=False)
+
+# make check of external cdi fails with
+# Error: Type mismatch in argument 'size_dummy' at (1); passed INTEGER(8) to INTEGER(4) cdi_write_f2003.f90:31:37
+def test_install_icontools():
+    spack_install('icontools @c2sm-master %gcc ~mpi ^netcdf-fortran%gcc',
+                  test_root=False)
 
 
 def test_install_py_cytoolz():
