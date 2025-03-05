@@ -35,6 +35,25 @@ def test_install_makedepf90():
     # test1.sh: No such file or directory
     spack_install('makedepf90', test_root=False)
 
+@pytest.mark.parametrize('version',
+                         ['2024.01-1', '2.6.6-mch2a', '2.6.6-mch2b'])
+def test_install_icon(version):
+    # WORKAROUND: A build and link dependency should imply that the same compiler is used. ^cray-mpich%nvhpc enforces it.
+    spack_install(f'icon @{version} %nvhpc ^cray-mpich%nvhpc')
+
+def test_install_icon_conditional_dependencies():
+    # +coupling triggers libfyaml, libxml2, netcdf-c
+    # serialization=create triggers serialbox
+    # +emvorado triggers eccodes, hdf5, zlib
+    # +eccodes-definitions triggers cosmo-eccodes-definitions
+    # +mpi triggers mpi
+    # gpu=nvidia-90 triggers cuda
+
+    # WORKAROUND: A build and link dependency should imply that the same compiler is used. ^cray-mpich%nvhpc enforces it.
+    spack_install(
+        'icon @2.6.6-mch2b %nvhpc +coupling serialization=create +emvorado +mpi gpu=nvidia-90 ^cray-mpich%nvhpc'
+    )
+
 
 # make check of external cdi fails with
 # Error: Type mismatch in argument 'size_dummy' at (1); passed INTEGER(8) to INTEGER(4) cdi_write_f2003.f90:31:37
