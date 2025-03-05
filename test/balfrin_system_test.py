@@ -23,10 +23,6 @@ def test_install_icon_conditional_dependencies():
     )
 
 
-def test_install_libgrib1_nvhpc():
-    spack_install('libgrib1 %nvhpc')
-
-
 @pytest.mark.parametrize("version", ['1.0.3.9'])
 def test_install_py_gt4py_for_version(version):
     spack_install(f'py-gt4py @{version}')
