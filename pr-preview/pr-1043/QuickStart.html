@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quick Start &mdash; C2SM Spack  documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
 
@@ -150,6 +150,14 @@
 <p>For convenience, ICON provides bash scripts to set up the environment and install ICON for in-source
 and out-of-source builds.
 These scripts are located in <code class="docutils literal notranslate"><span class="pre">config/cscs</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">config/cscs/alps_mch.cpu.nvidia</span></code>.</p>
+<p>For in-source builds, you need the run the configure scripts from your ICON root folder:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>./config/cscs/alps_mch.cpu.nvidia
+</pre></div>
+</div>
+<p>For out-of-source builds, navigate into your out-of-source directory (e.g., <cite>cd cpu</cite>) and run the configure scripts from there:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>./../config/cscs/alps_mch.cpu.nvidia
+</pre></div>
+</div>
 <p>For development, sometimes it is necessary to build ICON in a more customized way.
 To do so please follow the instructions below.</p>
 <p>Environments are located in a folder named after the environment and are defined in a <code class="docutils literal notranslate"><span class="pre">spack.yaml</span></code> file.

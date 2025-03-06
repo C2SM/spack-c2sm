@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Important Spack Commands &mdash; C2SM Spack  documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
 
@@ -197,7 +197,7 @@ If you want the installation folder of the spec that matches your spec,
 filled with the current defaults, you have to use Python.</p>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env spack python</span>
-<span class="kn">from</span> <span class="nn">spack.spec</span> <span class="kn">import</span> <span class="n">Spec</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">spack.spec</span><span class="w"> </span><span class="kn">import</span> <span class="n">Spec</span>
 <span class="n">s</span> <span class="o">=</span> <span class="n">Spec</span><span class="p">(</span><span class="s1">&#39;cosmo&#39;</span><span class="p">)</span>
 <span class="n">s</span><span class="o">.</span><span class="n">concretize</span><span class="p">()</span>
 <span class="n">install_dir</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{prefix}</span><span class="s1">&#39;</span><span class="p">)</span>
