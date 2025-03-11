@@ -67,7 +67,7 @@ Integration Test:
   stage: test
   variables:
     TEST: test/integration_test.py
-    SLURM_TIMELIMIT: 01:00:00
+    SLURM_TIMELIMIT: '01:00:00'
 
 System Test:
   extends: .test_common
@@ -75,7 +75,7 @@ System Test:
   stage: test
   variables:
     TEST: test/common_system_test.py test/santis_system_test.py
-    SLURM_TIMELIMIT: 06:00:00
+    SLURM_TIMELIMIT: '04:00:00'
 
 Collect Logfiles:
   extends: .container-runner-lightweight-zen2
