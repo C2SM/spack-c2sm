@@ -39,9 +39,12 @@ stages:
 Unit Test:
   extends: .baremetal-runner-santis-gh200
   stage: test
+  timeout: 6h
   script:
     - !reference [.setup_python, script]
     - python3 test/unit_test.py
+  variables:
+    SLURM_TIMELIMIT: 00:10:00
 
 .test_common:
   extends: .baremetal-runner-santis-gh200
@@ -60,18 +63,23 @@ Unit Test:
 
 Integration Test:
   extends: .test_common
+  timeout: 6h
   stage: test
   variables:
     TEST: test/integration_test.py
+    SLURM_TIMELIMIT: 01:00:00
 
 System Test:
   extends: .test_common
+  timeout: 6h
   stage: test
   variables:
     TEST: test/common_system_test.py test/santis_system_test.py
+    SLURM_TIMELIMIT: 06:00:00
 
 Collect Logfiles:
   extends: .container-runner-lightweight-zen2
+  timeout: 6h
   stage: summary
   image: python:3.9
   script:
