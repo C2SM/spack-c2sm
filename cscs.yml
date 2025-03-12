@@ -1,0 +1,97 @@
+include:
+  - remote: 'https://gitlab.com/cscs-ci/recipes/-/raw/master/templates/v2/.ci-ext.yml'
+
+variables:
+  GIT_STRATEGY: fetch
+  GIT_SUBMODULE_STRATEGY: recursive
+  GIT_CONFIG_COUNT: 2
+  GIT_CONFIG_KEY_0: url.https://oauth2:${GITLAB_TOKEN}@gitlab.dkrz.de/.insteadOf
+  GIT_CONFIG_VALUE_0: "git@gitlab.dkrz.de:"
+  GIT_CONFIG_KEY_1: url.https://${GITHUB_TOKEN}@github.com/.insteadOf
+  GIT_CONFIG_VALUE_1: "git@github.com:"
+
+
+stages:
+  - test
+  - summary
+
+.setup_python:
+  script:
+    - python3 -m venv .venv
+    - source .venv/bin/activate
+    - pip install -r requirements.txt
+    - source .venv/bin/activate
+
+.bootstrap_spack:
+  script:
+    - source ./setup-env.sh
+    - spack spec gnuconfig
+
+.setup_spack:
+  script:
+    -  source ./setup-env.sh /user-environment
+
+.setup_uenv:
+  script:
+    - uenv image pull ${UENV}
+
+
+Unit Test:
+  extends: .baremetal-runner-santis-gh200
+  stage: test
+  timeout: 6h
+  script:
+    - !reference [.setup_python, script]
+    - python3 test/unit_test.py
+  variables:
+    SLURM_TIMELIMIT: 00:10:00
+
+.test_common:
+  extends: .baremetal-runner-santis-gh200
+  variables:
+    UENV: 'icon/25.2:v1'
+  script:
+    - !reference [.setup_python, script]
+    - !reference [.setup_uenv, script]
+    - !reference [.bootstrap_spack, script]
+    - !reference [.setup_spack, script]
+    - uenv run ${UENV} -- pytest -v -n auto ${TEST}
+  artifacts:
+      paths:
+      - log/**/*
+      when: always
+
+Integration Test:
+  extends: .test_common
+  timeout: 6h
+  stage: test
+  variables:
+    TEST: test/integration_test.py
+    SLURM_TIMELIMIT: '01:00:00'
+
+System Test:
+  extends: .test_common
+  timeout: 6h
+  stage: test
+  variables:
+    TEST: test/common_system_test.py test/santis_system_test.py
+    SLURM_TIMELIMIT: '04:00:00'
+
+Collect Logfiles:
+  extends: .container-runner-lightweight-zen2
+  timeout: 6h
+  stage: summary
+  image: python:3.9
+  script:
+    - !reference [.setup_python, script]
+    - mkdir -p log
+    - python3 tools/summarize_logs.py || true
+    - cat log/artifacts_summary.html
+  when: always
+  needs:
+    - Integration Test
+    - System Test
+  artifacts:
+      paths:
+      - log/**/*
+      when: always
