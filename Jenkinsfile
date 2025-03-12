@@ -60,7 +60,7 @@ pipeline {
                             sh """
                             source ./setup-env.sh /mch-environment/v8
                             source .venv/bin/activate
-                            pytest -v -n auto test/system_test.py
+                            pytest -v -n auto test/common_system_test.py test/balfrin_system_test.py
                             """
                         }
                     }
