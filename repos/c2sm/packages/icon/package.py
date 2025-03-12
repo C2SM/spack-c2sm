@@ -35,6 +35,10 @@ class Icon(SpackIcon):
     maintainers('jonasjucker', 'huppd')
 
     version('develop', submodules=True)
+    version("2024.10",
+            tag="icon-2024.10",
+            git='git@gitlab.dkrz.de:icon/icon.git',
+            submodules=True)
     version("2024.01-1",
             tag="icon-2024.01-1",
             git='git@gitlab.dkrz.de:icon/icon.git',
