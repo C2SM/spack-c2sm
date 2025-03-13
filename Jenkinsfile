@@ -1,5 +1,8 @@
 pipeline {
     agent none
+    environment {
+        upstream = '/mch-environment/v8'
+    }
     stages {
         stage('Tests') {
             matrix {
@@ -49,7 +52,7 @@ pipeline {
                     stage('Integration Tests') {
                         steps {
                             sh """
-                            source ./setup-env.sh /mch-environment/v8
+                            source ./setup-env.sh ${upstream}
                             source .venv/bin/activate
                             pytest -v -n auto test/integration_test.py
                             """
@@ -58,7 +61,7 @@ pipeline {
                     stage('System Tests') {
                         steps {
                             sh """
-                            source ./setup-env.sh /mch-environment/v8
+                            source ./setup-env.sh ${upstream}
                             source .venv/bin/activate
                             pytest -v -n auto test/common_system_test.py test/balfrin_system_test.py
                             """
