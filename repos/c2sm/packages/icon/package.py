@@ -338,3 +338,4 @@ class Icon(SpackIcon):
                     Ln("-sf", "-t", "run/", f"{dir}")
                 Ln("-sf", f"{icon_dir}/data")
                 Ln("-sf", f"{icon_dir}/vertical_coord_tables")
+                Ln("-sf", f"{icon_dir}/scripts")
