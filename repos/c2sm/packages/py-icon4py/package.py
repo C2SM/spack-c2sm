@@ -47,7 +47,15 @@ class PyIcon4py(PythonPackage):
 
     # cmake in unit-tests needs this path
     def setup_build_environment(self, env):
+        """Wrapper until spack has a real implementation of setup_test_environment()"""
+        if self.run_tests:
+            self.setup_test_environment(env)
+
         env.set("CMAKE_INCLUDE_PATH", self.spec['boost'].prefix.include)
+
+    def setup_test_environment(self, env):
+        """Configure the regression test suite like Debian's openssh-tests package"""
+        env.set("GT4PY_BUILD_CACHE_DIR", self.build_directory)
 
     def test(self):
         # workaround for not finding own python module
@@ -60,7 +68,6 @@ class PyIcon4py(PythonPackage):
         # check if all installed module can be imported
         super().test()
         # unit tests
-
         python('-m', 'pytest', '-v', '-s', '-n', 'auto', '-m',
                'not slow_tests')
 
@@ -168,7 +175,7 @@ class PythonPipBuilder(PythonPipBuilder):
             build_dirs = [
                 'tools', 'model/atmosphere/dycore',
                 'model/atmosphere/diffusion', 'model/atmosphere/advection',
-                'model/common/'
+                'model/common/', 'model/testing/'
             ]
 
         for dir in build_dirs:
