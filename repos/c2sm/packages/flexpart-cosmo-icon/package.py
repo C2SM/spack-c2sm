@@ -8,11 +8,11 @@ from spack import *
 from llnl.util.filesystem import working_dir, install_tree
 
 
-class FlexpartCosmo(MakefilePackage):
+class FlexpartCosmoIcon(MakefilePackage):
     """flexpart is a Lagrangian dispersion model"""
 
-    homepage = 'https://github.com/C2SM-RCM/flexpart'
-    git = 'git@github.com:C2SM-RCM/flexpart.git'
+    homepage = 'https://github.com/C2SM/flexpart-cosmo-icon'
+    git = 'git@github.com:C2SM/flexpart-cosmo-icon.git'
     maintainers = ['pirmink']
 
     version('V8C4.0', tag='V8C4.0')
