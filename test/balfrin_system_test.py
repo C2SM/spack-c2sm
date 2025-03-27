@@ -30,8 +30,8 @@ def test_install_yaxt():
     spack_install('yaxt')
 
 
-def test_install_flexpart_cosmo():
-    spack_install('flexpart-cosmo')
+def test_install_flexpart_cosmo_icon():
+    spack_install('flexpart-cosmo-icon')
 
 
 def test_install_flexpart_ifs():
