@@ -157,8 +157,4 @@ Any further ``spack install`` command will use the build directory specified in 
 In case you want to change the build directory, edit the ``spack.yaml`` file or remove the ``build_directory`` line
 and run ``spack concretize -f`` afterwards.
 
-Configure flags can be added with ``fflags="-my_flag1 -my_flag2"`` to the ``specs`` in the spack.yaml file:
-
-.. code-block:: console
-
-  $ spack config edit
+Compiler flags can be added with ``fflags="-my_flag1 -my_flag2"`` to the ``specs`` in the ``spack.yaml`` file. The spec syntax accepts ``cppflags``, ``cflags``, ``cxxflags``, ``fflags``, ``ldflags``, and ``ldlibs`` parameters.
