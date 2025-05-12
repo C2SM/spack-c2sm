@@ -99,7 +99,7 @@ Alternatively, any of the following commands can be started with:
 
 For convenience, ICON provides bash scripts to set up the environment and install ICON for in-source
 and out-of-source builds.
-These scripts are located in ``config/cscs``, e.g. ``config/cscs/alps_mch.cpu.nvidia``.
+These scripts are located in ``config/cscs``, e.g. ``alps_mch.cpu.nvidia`` for Balfrin and ``santis.cpu.nvhpc`` for Säntis.
 
 For in-source builds, you need the run the configure scripts from your ICON root folder:
 
