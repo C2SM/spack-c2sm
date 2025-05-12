@@ -2,10 +2,10 @@ Quick Start
 ===========
 
 
-At CSCS/ETHZ (Balfrin and Euler)
+At CSCS/ETHZ (Balfrin, Säntis and Euler)
 ------------------------------------------------
 
-To set up a Spack instance, clone the repository using a specific Spack tag (latest ``SPACK_TAG=v0.20.1.5``).
+To set up a Spack instance, clone the repository using a specific Spack tag (latest ``SPACK_TAG=v0.22.2.2``).
 
 .. code-block:: console
 
@@ -83,9 +83,23 @@ ICON
 
 ICON is built using environments.
 
+On the Alps cluster Säntis, a user environment has to be loaded first.
+This can be done by executing
+
+.. code-block:: console
+
+    $ UENV_VERSION=$(cat config/cscs/SANTIS_ENV_TAG)
+    $ uenv start ${UENV_VERSION}
+
+Alternatively, any of the following commands can be started with:
+
+.. code-block:: console
+
+    $ uenv run ${UENV_VERSION} -- <command>
+
 For convenience, ICON provides bash scripts to set up the environment and install ICON for in-source
 and out-of-source builds.
-These scripts are located in ``config/cscs``, e.g. ``config/cscs/alps_mch.cpu.nvidia``.
+These scripts are located in ``config/cscs``, e.g. ``alps_mch.cpu.nvidia`` for Balfrin and ``santis.cpu.nvhpc`` for Säntis.
 
 For in-source builds, you need the run the configure scripts from your ICON root folder:
 
