@@ -48,7 +48,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#at-cscs-ethz-balfrin-and-euler">At CSCS/ETHZ (Balfrin and Euler)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#at-cscs-ethz-balfrin-santis-and-euler">At CSCS/ETHZ (Balfrin, Säntis and Euler)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#local-machines-and-containers">Local machines and Containers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-packages">Use packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#icon">ICON</a></li>
@@ -89,9 +89,9 @@
              
   <section id="quick-start">
 <h1>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h1>
-<section id="at-cscs-ethz-balfrin-and-euler">
-<h2>At CSCS/ETHZ (Balfrin and Euler)<a class="headerlink" href="#at-cscs-ethz-balfrin-and-euler" title="Link to this heading"></a></h2>
-<p>To set up a Spack instance, clone the repository using a specific Spack tag (latest <code class="docutils literal notranslate"><span class="pre">SPACK_TAG=v0.20.1.5</span></code>).</p>
+<section id="at-cscs-ethz-balfrin-santis-and-euler">
+<h2>At CSCS/ETHZ (Balfrin, Säntis and Euler)<a class="headerlink" href="#at-cscs-ethz-balfrin-santis-and-euler" title="Link to this heading"></a></h2>
+<p>To set up a Spack instance, clone the repository using a specific Spack tag (latest <code class="docutils literal notranslate"><span class="pre">SPACK_TAG=v0.22.2.2</span></code>).</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>--recurse-submodules<span class="w"> </span>--shallow-submodules<span class="w"> </span>-b<span class="w"> </span><span class="nv">$SPACK_TAG</span><span class="w"> </span>https://github.com/C2SM/spack-c2sm.git
 </pre></div>
 </div>
@@ -147,9 +147,19 @@
 <section id="icon">
 <h2>ICON<a class="headerlink" href="#icon" title="Link to this heading"></a></h2>
 <p>ICON is built using environments.</p>
+<p>On the Alps cluster Säntis, a user environment has to be loaded first.
+This can be done by executing</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">UENV_VERSION</span><span class="o">=</span><span class="k">$(</span>cat<span class="w"> </span>config/cscs/SANTIS_ENV_TAG<span class="k">)</span>
+<span class="gp">$ </span>uenv<span class="w"> </span>start<span class="w"> </span><span class="si">${</span><span class="nv">UENV_VERSION</span><span class="si">}</span>
+</pre></div>
+</div>
+<p>Alternatively, any of the following commands can be started with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>uenv<span class="w"> </span>run<span class="w"> </span><span class="si">${</span><span class="nv">UENV_VERSION</span><span class="si">}</span><span class="w"> </span>--<span class="w"> </span>&lt;command&gt;
+</pre></div>
+</div>
 <p>For convenience, ICON provides bash scripts to set up the environment and install ICON for in-source
 and out-of-source builds.
-These scripts are located in <code class="docutils literal notranslate"><span class="pre">config/cscs</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">config/cscs/alps_mch.cpu.nvidia</span></code>.</p>
+These scripts are located in <code class="docutils literal notranslate"><span class="pre">config/cscs</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">alps_mch.cpu.nvidia</span></code> for Balfrin and <code class="docutils literal notranslate"><span class="pre">santis.cpu.nvhpc</span></code> for Säntis.</p>
 <p>For in-source builds, you need the run the configure scripts from your ICON root folder:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>./config/cscs/alps_mch.cpu.nvidia
 </pre></div>
