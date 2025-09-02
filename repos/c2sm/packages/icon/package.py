@@ -226,6 +226,14 @@ class Icon(SpackIcon):
             if not is_system_path(d)
         ])
 
+        # Temporary back port fix from upstream package for building comin on cpu
+        # See https://github.com/spack/spack-packages/commit/b992c44bb52d034fe57637f3da42483501442af3
+        # TODO: Remove this dupplicate once spack-c2sm points to an upstream spack containing the fix.
+        if self.spec.variants[
+                "gpu"].value in self.nvidia_targets or self.spec.satisfies(
+                    "+comin"):
+            flags["ICON_LDFLAGS"].extend(self.compiler.stdcxx_libs)
+
         args.extend([
             "{0}={1}".format(name, " ".join(value))
             for name, value in flags.items()
