@@ -32,9 +32,10 @@ class IconDsl(Icon):
             multi=True)
 
     for x in dsl_values:
-        depends_on('py-icon4py', when='dsl={0}'.format(x))
-        depends_on('py-gridtools-cpp', when='dsl={0}'.format(x))
-        depends_on('boost', when='dsl={0}'.format(x))
+        # depends_on('py-icon4py', when='dsl={0}'.format(x))
+        depends_on('icon4py', when='dsl={0}'.format(x))
+        # depends_on('py-gridtools-cpp', when='dsl={0}'.format(x))
+        # depends_on('boost', when='dsl={0}'.format(x))
         conflicts('^python@:3.9,3.11:', when='dsl={0}'.format(x))
 
     # def setup_build_environment(self, env):
@@ -66,33 +67,33 @@ class IconDsl(Icon):
             if 'nvtx' in dsl:
                 args.append('--enable-nvtx')
 
-            flags['LOC_GT4PY'].append(self.spec['py-gt4py'].prefix)
-            flags['LOC_ICON4PY_BIN'].append(self.spec['py-icon4py'].prefix)
+            # flags['LOC_GT4PY'].append(self.spec['py-gt4py'].prefix)
+            # flags['LOC_ICON4PY_BIN'].append(self.spec['py-icon4py'].prefix)
 
-            flags['LOC_ICON4PY_ATM_DYN_ICONAM'].append(
-                self.spec['py-icon4py:atm_dyn_iconam'].headers.directories[0])
+            # flags['LOC_ICON4PY_ATM_DYN_ICONAM'].append(
+            #     self.spec['py-icon4py:atm_dyn_iconam'].headers.directories[0])
 
-            if self.spec['py-icon4py'].version < Version("0.0.4"):
-                flags['LOC_ICON4PY_UTILS'].append(
-                    os.path.dirname(
-                        self.spec['py-icon4py:utils'].headers.directories[0]))
-            else:
-                flags['LOC_ICON4PY_TOOLS'].append(
-                    self.spec['py-icon4py:tools'].headers.directories[0])
-                if self.spec['py-icon4py'].version > Version("0.0.7"):
-                    flags['LOC_ICON4PY_DIFFUSION'].append(
-                        self.spec['py-icon4py:diffusion'].headers.
-                        directories[0])
-                    flags['LOC_ICON4PY_INTERPOLATION'].append(
-                        self.spec['py-icon4py:interpolation'].headers.
-                        directories[0])
-                if self.spec['py-icon4py'].version > Version("0.0.8"):
-                    flags['LOC_ICON4PY_ADVECTION'].append(
-                        self.spec['py-icon4py:advection'].headers.
-                        directories[0])
-            flags['LOC_GRIDTOOLS'].append(
-                self.spec['py-gridtools-cpp:data'].headers.directories[0])
-            flags['GT4PYNVCFLAGS'] = flags['NVCFLAGS']
+            # if self.spec['py-icon4py'].version < Version("0.0.4"):
+            #     flags['LOC_ICON4PY_UTILS'].append(
+            #         os.path.dirname(
+            #             self.spec['py-icon4py:utils'].headers.directories[0]))
+            # else:
+            #     flags['LOC_ICON4PY_TOOLS'].append(
+            #         self.spec['py-icon4py:tools'].headers.directories[0])
+            #     if self.spec['py-icon4py'].version > Version("0.0.7"):
+            #         flags['LOC_ICON4PY_DIFFUSION'].append(
+            #             self.spec['py-icon4py:diffusion'].headers.
+            #             directories[0])
+            #         flags['LOC_ICON4PY_INTERPOLATION'].append(
+            #             self.spec['py-icon4py:interpolation'].headers.
+            #             directories[0])
+            #     if self.spec['py-icon4py'].version > Version("0.0.8"):
+            #         flags['LOC_ICON4PY_ADVECTION'].append(
+            #             self.spec['py-icon4py:advection'].headers.
+            #             directories[0])
+            # flags['LOC_GRIDTOOLS'].append(
+            #     self.spec['py-gridtools-cpp:data'].headers.directories[0])
+            # flags['GT4PYNVCFLAGS'] = flags['NVCFLAGS']
 
         args.extend([
             "{0}={1}".format(name, " ".join(value))
