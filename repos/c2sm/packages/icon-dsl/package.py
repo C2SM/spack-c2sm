@@ -1,4 +1,5 @@
 from spack.pkg.c2sm.icon import Icon
+import shutil
 import os
 import re
 from collections import defaultdict
@@ -10,7 +11,7 @@ def validate_variant_dsl(pkg, name, value):
     set_input_var = set(value)
     if len(set_mutual_excl.intersection(set_input_var)) > 1:
         raise error.SpecError(
-            'Cannot have more than one of (substitute, verify, serialize) in the same build'
+          'Cannot have more than one of (substitute, verify, serialize) in the same build'
         )
 
 
@@ -33,18 +34,24 @@ class IconDsl(Icon):
 
     for x in dsl_values:
         # depends_on('py-icon4py', when='dsl={0}'.format(x))
-        depends_on('icon4py', when='dsl={0}'.format(x))
+        depends_on('icon4py', type="build", when=f"dsl={x}")
         # depends_on('py-gridtools-cpp', when='dsl={0}'.format(x))
         # depends_on('boost', when='dsl={0}'.format(x))
         conflicts('^python@:3.9,3.11:', when='dsl={0}'.format(x))
 
-    # def setup_build_environment(self, env):
-    #     super().setup_build_environment(env)
-    #     # help cmake to build dsl-stencils
-    #     if 'none' not in self.spec.variants['dsl'].value:
-    #         env.set("CUDAARCHS", self.spec.variants['cuda_arch'].value[0])
-    #         env.unset("CUDAHOSTCXX")
-    #         env.set("BOOST_ROOT", self.spec['boost'].prefix)
+    def setup_build_environment(self, env):
+        super().setup_build_environment(env)
+
+        # path to the generated py2fgen wrappers
+        build_py2f = os.path.join(self.stage.source_path, "src", "build_py2f")
+
+        env.set("PY2F_CPU_LDFLAGS", f"-L{build_py2f}")
+        env.set("PY2F_CPU_CFLAGS", f"-I{build_py2f}")
+        env.set("PY2F_GPU_LDFLAGS", f"-L{build_py2f}")
+        env.set("PY2F_GPU_CFLAGS", f"-I{build_py2f}")
+
+        env.set("PY2F_LIBS", "-licon4py_bindings")
+
 
     def configure_args(self):
         args = super().configure_args()
@@ -67,33 +74,26 @@ class IconDsl(Icon):
             if 'nvtx' in dsl:
                 args.append('--enable-nvtx')
 
-            # flags['LOC_GT4PY'].append(self.spec['py-gt4py'].prefix)
-            # flags['LOC_ICON4PY_BIN'].append(self.spec['py-icon4py'].prefix)
+            # path to the generated py2fgen wrappers
+            build_py2f = os.path.join(self.stage.source_path, "src", "build_py2f")
 
-            # flags['LOC_ICON4PY_ATM_DYN_ICONAM'].append(
-            #     self.spec['py-icon4py:atm_dyn_iconam'].headers.directories[0])
+            # Copy bindings into the ICON source tree so autotools can see them
+            icon4py_prefix = self.spec["icon4py"].prefix
+            print(f"icon4py_prefix: {icon4py_prefix}")
+            bindings_dir = os.path.join(icon4py_prefix, "src")
+            print(f"bindings_dir: {bindings_dir}")
 
-            # if self.spec['py-icon4py'].version < Version("0.0.4"):
-            #     flags['LOC_ICON4PY_UTILS'].append(
-            #         os.path.dirname(
-            #             self.spec['py-icon4py:utils'].headers.directories[0]))
-            # else:
-            #     flags['LOC_ICON4PY_TOOLS'].append(
-            #         self.spec['py-icon4py:tools'].headers.directories[0])
-            #     if self.spec['py-icon4py'].version > Version("0.0.7"):
-            #         flags['LOC_ICON4PY_DIFFUSION'].append(
-            #             self.spec['py-icon4py:diffusion'].headers.
-            #             directories[0])
-            #         flags['LOC_ICON4PY_INTERPOLATION'].append(
-            #             self.spec['py-icon4py:interpolation'].headers.
-            #             directories[0])
-            #     if self.spec['py-icon4py'].version > Version("0.0.8"):
-            #         flags['LOC_ICON4PY_ADVECTION'].append(
-            #             self.spec['py-icon4py:advection'].headers.
-            #             directories[0])
-            # flags['LOC_GRIDTOOLS'].append(
-            #     self.spec['py-gridtools-cpp:data'].headers.directories[0])
-            # flags['GT4PYNVCFLAGS'] = flags['NVCFLAGS']
+            print(f"dst_dir: {build_py2f}")
+            os.makedirs(build_py2f, exist_ok=True)
+
+            if os.path.isdir(bindings_dir):
+                # copy into a subdir of the current build dir
+                for f in os.listdir(bindings_dir):
+                    src_file = os.path.join(bindings_dir, f)
+                    dst_file = os.path.join(build_py2f, f)
+                    if os.path.isfile(src_file):
+                        shutil.copy2(src_file, dst_file)
+                    print(f"dst_file: {os.path.realpath(dst_file)}")
 
         args.extend([
             "{0}={1}".format(name, " ".join(value))
