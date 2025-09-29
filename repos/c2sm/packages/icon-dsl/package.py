@@ -107,7 +107,8 @@ class IconDsl(Icon):
         if dsl != ('none', ):
             icon4py_prefix = self.spec["icon4py"].prefix
             bindings_dir = os.path.join(icon4py_prefix, "src")
-            args.append(f"{super_ldflags} -L{bindings_dir} -Wl,-rpath,{bindings_dir}")
+            args.append(
+                f"{super_ldflags} -L{bindings_dir} -Wl,-rpath,{bindings_dir}")
             args.append(f"{super_libs} {libs.link_flags} -licon4py_bindings")
         else:
             args.append(f"{super_ldflags}")
@@ -120,14 +121,15 @@ class IconDsl(Icon):
     def build(self, spec, prefix):
         # Check the variant
         dsl = self.spec.variants['dsl'].value
-        if dsl != ('none',):
+        if dsl != ('none', ):
             f = "icon4py_bindings.f90"
             # src_file = "/path/to/original/icon4py_bindings.f90"
             icon4py_prefix = self.spec["icon4py"].prefix
             bindings_dir = os.path.join(icon4py_prefix, "src")
             src_file = os.path.join(bindings_dir, f)
             # dest_file = os.path.join(self.stage.source_path, "icon4py_bindings.f90")
-            build_py2f = os.path.join(self.stage.source_path, "src", "build_py2f")
+            build_py2f = os.path.join(self.stage.source_path, "src",
+                                      "build_py2f")
             os.makedirs(build_py2f, exist_ok=True)
             dest_file = os.path.join(build_py2f, f)
 
