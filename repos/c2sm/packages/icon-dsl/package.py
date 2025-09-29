@@ -105,7 +105,7 @@ class IconDsl(Icon):
         if dsl != ('none', ):
             icon4py_prefix = self.spec["icon4py"].prefix
             bindings_dir = os.path.join(icon4py_prefix, "src")
-            args.append(f"{super_ldflags} -L{bindings_dir}")
+            args.append(f"{super_ldflags} -L{bindings_dir} -Wl,-rpath,{bindings_dir}")
             args.append(f"{super_libs} {libs.link_flags} -licon4py_bindings")
         else:
             args.append(f"{super_ldflags}")
