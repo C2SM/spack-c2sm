@@ -4,6 +4,8 @@ import os
 import re
 from collections import defaultdict
 import spack.error as error
+# from spack.util.tty import tty  # explicit import
+import spack.util.tty as tty
 
 
 def validate_variant_dsl(pkg, name, value):
@@ -39,18 +41,18 @@ class IconDsl(Icon):
         # depends_on('boost', when='dsl={0}'.format(x))
         conflicts('^python@:3.9,3.11:', when='dsl={0}'.format(x))
 
-    def setup_build_environment(self, env):
-        super().setup_build_environment(env)
+    # def setup_build_environment(self, env):
+    #     super().setup_build_environment(env)
 
-        # # path to the generated py2fgen wrappers
-        # build_py2f = os.path.join(self.stage.source_path, "src", "build_py2f")
+    #     # # path to the generated py2fgen wrappers
+    #     # build_py2f = os.path.join(self.stage.source_path, "src", "build_py2f")
 
-        # env.set("PY2F_CPU_LDFLAGS", f"-L{build_py2f}")
-        # env.set("PY2F_CPU_CFLAGS", f"-I{build_py2f}")
-        # env.set("PY2F_GPU_LDFLAGS", f"-L{build_py2f}")
-        # env.set("PY2F_GPU_CFLAGS", f"-I{build_py2f}")
+    #     # env.set("PY2F_CPU_LDFLAGS", f"-L{build_py2f}")
+    #     # env.set("PY2F_CPU_CFLAGS", f"-I{build_py2f}")
+    #     # env.set("PY2F_GPU_LDFLAGS", f"-L{build_py2f}")
+    #     # env.set("PY2F_GPU_CFLAGS", f"-I{build_py2f}")
 
-        # env.set("PY2F_LIBS", "-licon4py_bindings")
+    #     # env.set("PY2F_LIBS", "-licon4py_bindings")
 
     def configure_args(self):
         args = super().configure_args()
@@ -114,3 +116,25 @@ class IconDsl(Icon):
         print('ICON DSL args:', args)
         print()
         return args
+
+    def build(self, spec, prefix):
+        # Check the variant
+        dsl = self.spec.variants['dsl'].value
+        if dsl != ('none',):
+            f = "icon4py_bindings.f90"
+            # src_file = "/path/to/original/icon4py_bindings.f90"
+            icon4py_prefix = self.spec["icon4py"].prefix
+            bindings_dir = os.path.join(icon4py_prefix, "src")
+            src_file = os.path.join(bindings_dir, f)
+            # dest_file = os.path.join(self.stage.source_path, "icon4py_bindings.f90")
+            build_py2f = os.path.join(self.stage.source_path, "src", "build_py2f")
+            os.makedirs(build_py2f, exist_ok=True)
+            dest_file = os.path.join(build_py2f, f)
+
+            # Copy only if the file is missing
+            if not os.path.exists(dest_file):
+                shutil.copy(src_file, dest_file)
+                # tty.info(f"Copied {src_file} to build directory because +dsl is enabled")
+
+        # Proceed with the normal build
+        super().build(spec, prefix)
