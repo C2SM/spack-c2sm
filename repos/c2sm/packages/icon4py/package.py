@@ -25,7 +25,8 @@ class Icon4py(Package):
 
     version(
         "icon_20250328",
-        sha256="8573ef031d207438f549511e859f522c60163ea660aafea93ef4991b9010739a",
+        sha256=
+        "8573ef031d207438f549511e859f522c60163ea660aafea93ef4991b9010739a",
         extension="zip",
     )
 
@@ -37,7 +38,8 @@ class Icon4py(Package):
         python_spec = spec["python"]
         venv_path = prefix.share.venv
 
-        tty.msg(f"creating venv using spack python at: {python_spec.command.path}")
+        tty.msg(
+            f"creating venv using spack python at: {python_spec.command.path}")
         uv(
             "venv",
             "--seed",
@@ -95,7 +97,8 @@ def prepare_uv():
 
 def get_installed_pkg(pip):
     return [
-        item["name"] for item in json.loads(pip("list", "--format", "json", output=str))
+        item["name"]
+        for item in json.loads(pip("list", "--format", "json", output=str))
     ]
 
 

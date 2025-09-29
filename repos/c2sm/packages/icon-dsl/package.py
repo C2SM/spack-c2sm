@@ -11,7 +11,7 @@ def validate_variant_dsl(pkg, name, value):
     set_input_var = set(value)
     if len(set_mutual_excl.intersection(set_input_var)) > 1:
         raise error.SpecError(
-          'Cannot have more than one of (substitute, verify, serialize) in the same build'
+            'Cannot have more than one of (substitute, verify, serialize) in the same build'
         )
 
 
@@ -52,7 +52,6 @@ class IconDsl(Icon):
 
         # env.set("PY2F_LIBS", "-licon4py_bindings")
 
-
     def configure_args(self):
         args = super().configure_args()
         print()
@@ -82,7 +81,6 @@ class IconDsl(Icon):
                 raise error.UnsupportedPlatformError(
                     'serialize mode is not supported yet by icon-liskov')
 
-
             # path to the generated py2fgen wrappers
             # build_py2f = os.path.join(self.stage.source_path, "src", "build_py2f")
 
@@ -104,15 +102,14 @@ class IconDsl(Icon):
         #                 shutil.copy2(src_file, dst_file)
         #             print(f"dst_file: {os.path.realpath(dst_file)}")
 
-
         if dsl != ('none', ):
-          icon4py_prefix = self.spec["icon4py"].prefix
-          bindings_dir = os.path.join(icon4py_prefix, "src")
-          args.append(f"{super_ldflags} -L{bindings_dir}")
-          args.append(f"{super_libs} {libs.link_flags} -licon4py_bindings")
+            icon4py_prefix = self.spec["icon4py"].prefix
+            bindings_dir = os.path.join(icon4py_prefix, "src")
+            args.append(f"{super_ldflags} -L{bindings_dir}")
+            args.append(f"{super_libs} {libs.link_flags} -licon4py_bindings")
         else:
-          args.append(f"{super_ldflags}")
-          args.append(f"{super_libs} {libs.link_flags}")
+            args.append(f"{super_ldflags}")
+            args.append(f"{super_libs} {libs.link_flags}")
         print()
         print('ICON DSL args:', args)
         print()
