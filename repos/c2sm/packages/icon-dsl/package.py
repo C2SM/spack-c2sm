@@ -42,25 +42,36 @@ class IconDsl(Icon):
     def setup_build_environment(self, env):
         super().setup_build_environment(env)
 
-        # path to the generated py2fgen wrappers
-        build_py2f = os.path.join(self.stage.source_path, "src", "build_py2f")
+        # # path to the generated py2fgen wrappers
+        # build_py2f = os.path.join(self.stage.source_path, "src", "build_py2f")
 
-        env.set("PY2F_CPU_LDFLAGS", f"-L{build_py2f}")
-        env.set("PY2F_CPU_CFLAGS", f"-I{build_py2f}")
-        env.set("PY2F_GPU_LDFLAGS", f"-L{build_py2f}")
-        env.set("PY2F_GPU_CFLAGS", f"-I{build_py2f}")
+        # env.set("PY2F_CPU_LDFLAGS", f"-L{build_py2f}")
+        # env.set("PY2F_CPU_CFLAGS", f"-I{build_py2f}")
+        # env.set("PY2F_GPU_LDFLAGS", f"-L{build_py2f}")
+        # env.set("PY2F_GPU_CFLAGS", f"-I{build_py2f}")
 
-        env.set("PY2F_LIBS", "-licon4py_bindings")
+        # env.set("PY2F_LIBS", "-licon4py_bindings")
 
 
     def configure_args(self):
         args = super().configure_args()
+        print()
+        print("super args: ", args)
+        print()
         super_libs = args.pop()
+        print()
+        print('super libs', super_libs)
+        print()
+        super_ldflags = args.pop()
+        print()
+        print('super ldflags', super_ldflags)
+        print()
+        print(args)
 
         libs = LibraryList([])
         flags = defaultdict(list)
 
-        # Check for DSL variants and set corresponding Liskov options
+        # Check for DSL variants and set corresponding options
         dsl = self.spec.variants['dsl'].value
         if dsl != ('none', ):
             if 'substitute' in dsl:
@@ -71,33 +82,38 @@ class IconDsl(Icon):
                 raise error.UnsupportedPlatformError(
                     'serialize mode is not supported yet by icon-liskov')
 
-            if 'nvtx' in dsl:
-                args.append('--enable-nvtx')
 
             # path to the generated py2fgen wrappers
-            build_py2f = os.path.join(self.stage.source_path, "src", "build_py2f")
+            # build_py2f = os.path.join(self.stage.source_path, "src", "build_py2f")
 
-            # Copy bindings into the ICON source tree so autotools can see them
-            icon4py_prefix = self.spec["icon4py"].prefix
-            print(f"icon4py_prefix: {icon4py_prefix}")
-            bindings_dir = os.path.join(icon4py_prefix, "src")
-            print(f"bindings_dir: {bindings_dir}")
+            # # Copy bindings into the ICON source tree so autotools can see them
+            # icon4py_prefix = self.spec["icon4py"].prefix
+            # #     print(f"icon4py_prefix: {icon4py_prefix}")
+            # bindings_dir = os.path.join(icon4py_prefix, "src")
+            # print(f"bindings_dir: {bindings_dir}")
 
-            print(f"dst_dir: {build_py2f}")
-            os.makedirs(build_py2f, exist_ok=True)
+        #     print(f"dst_dir: {build_py2f}")
+        #     os.makedirs(build_py2f, exist_ok=True)
 
-            if os.path.isdir(bindings_dir):
-                # copy into a subdir of the current build dir
-                for f in os.listdir(bindings_dir):
-                    src_file = os.path.join(bindings_dir, f)
-                    dst_file = os.path.join(build_py2f, f)
-                    if os.path.isfile(src_file):
-                        shutil.copy2(src_file, dst_file)
-                    print(f"dst_file: {os.path.realpath(dst_file)}")
+        #     if os.path.isdir(bindings_dir):
+        #         # copy into a subdir of the current build dir
+        #         for f in os.listdir(bindings_dir):
+        #             src_file = os.path.join(bindings_dir, f)
+        #             dst_file = os.path.join(build_py2f, f)
+        #             if os.path.isfile(src_file):
+        #                 shutil.copy2(src_file, dst_file)
+        #             print(f"dst_file: {os.path.realpath(dst_file)}")
 
-        args.extend([
-            "{0}={1}".format(name, " ".join(value))
-            for name, value in flags.items()
-        ])
-        args.append(f"{super_libs} {libs.link_flags}")
+
+        if dsl != ('none', ):
+          icon4py_prefix = self.spec["icon4py"].prefix
+          bindings_dir = os.path.join(icon4py_prefix, "src")
+          args.append(f"{super_ldflags} -L{bindings_dir}")
+          args.append(f"{super_libs} {libs.link_flags} -licon4py_bindings")
+        else:
+          args.append(f"{super_ldflags}")
+          args.append(f"{super_libs} {libs.link_flags}")
+        print()
+        print('ICON DSL args:', args)
+        print()
         return args
