@@ -39,7 +39,6 @@ class IconDsl(Icon):
         # depends_on('boost', when='dsl={0}'.format(x))
         conflicts('^python@:3.9,3.11:', when='dsl={0}'.format(x))
 
-
     def configure_args(self):
         args = super().configure_args()
 
@@ -72,20 +71,23 @@ class IconDsl(Icon):
     def build(self, spec, prefix):
         # Check the variant
         dsl = self.spec.variants['dsl'].value
-        if dsl != ('none',):
+        if dsl != ('none', ):
             file = "icon4py_bindings.f90"
 
             bindings_dir = os.path.join(self.spec["icon4py"].prefix, "src")
             src_file = os.path.join(bindings_dir, file)
 
-            build_py2f_dir = os.path.join(self.stage.source_path, "src", "build_py2f")
+            build_py2f_dir = os.path.join(self.stage.source_path, "src",
+                                          "build_py2f")
             os.makedirs(build_py2f_dir, exist_ok=True)
             dest_file = os.path.join(build_py2f_dir, file)
 
             # Copy only if the file is missing
             if not os.path.exists(dest_file):
                 shutil.copy(src_file, dest_file)
-                print(f"Copied {src_file} to build directory {dest_file} because +dsl is enabled")
+                print(
+                    f"Copied {src_file} to build directory {dest_file} because +dsl is enabled"
+                )
 
         # Proceed with the normal build
         super().build(spec, prefix)
