@@ -4,8 +4,6 @@ import os
 import re
 from collections import defaultdict
 import spack.error as error
-# from spack.util.tty import tty  # explicit import
-import spack.util.tty as tty
 
 
 def validate_variant_dsl(pkg, name, value):
@@ -41,33 +39,9 @@ class IconDsl(Icon):
         # depends_on('boost', when='dsl={0}'.format(x))
         conflicts('^python@:3.9,3.11:', when='dsl={0}'.format(x))
 
-    # def setup_build_environment(self, env):
-    #     super().setup_build_environment(env)
-
-    #     # # path to the generated py2fgen wrappers
-    #     # build_py2f = os.path.join(self.stage.source_path, "src", "build_py2f")
-
-    #     # env.set("PY2F_CPU_LDFLAGS", f"-L{build_py2f}")
-    #     # env.set("PY2F_CPU_CFLAGS", f"-I{build_py2f}")
-    #     # env.set("PY2F_GPU_LDFLAGS", f"-L{build_py2f}")
-    #     # env.set("PY2F_GPU_CFLAGS", f"-I{build_py2f}")
-
-    #     # env.set("PY2F_LIBS", "-licon4py_bindings")
 
     def configure_args(self):
         args = super().configure_args()
-        print()
-        print("super args: ", args)
-        print()
-        super_libs = args.pop()
-        print()
-        print('super libs', super_libs)
-        print()
-        super_ldflags = args.pop()
-        print()
-        print('super ldflags', super_ldflags)
-        print()
-        print(args)
 
         libs = LibraryList([])
         flags = defaultdict(list)
@@ -83,60 +57,35 @@ class IconDsl(Icon):
                 raise error.UnsupportedPlatformError(
                     'serialize mode is not supported yet by icon-liskov')
 
-            # path to the generated py2fgen wrappers
-            # build_py2f = os.path.join(self.stage.source_path, "src", "build_py2f")
-
-            # # Copy bindings into the ICON source tree so autotools can see them
-            # icon4py_prefix = self.spec["icon4py"].prefix
-            # #     print(f"icon4py_prefix: {icon4py_prefix}")
-            # bindings_dir = os.path.join(icon4py_prefix, "src")
-            # print(f"bindings_dir: {bindings_dir}")
-
-        #     print(f"dst_dir: {build_py2f}")
-        #     os.makedirs(build_py2f, exist_ok=True)
-
-        #     if os.path.isdir(bindings_dir):
-        #         # copy into a subdir of the current build dir
-        #         for f in os.listdir(bindings_dir):
-        #             src_file = os.path.join(bindings_dir, f)
-        #             dst_file = os.path.join(build_py2f, f)
-        #             if os.path.isfile(src_file):
-        #                 shutil.copy2(src_file, dst_file)
-        #             print(f"dst_file: {os.path.realpath(dst_file)}")
-
-        if dsl != ('none', ):
             icon4py_prefix = self.spec["icon4py"].prefix
             bindings_dir = os.path.join(icon4py_prefix, "src")
             args.append(
                 f"{super_ldflags} -L{bindings_dir} -Wl,-rpath,{bindings_dir}")
             args.append(f"{super_libs} {libs.link_flags} -licon4py_bindings")
+
         else:
             args.append(f"{super_ldflags}")
             args.append(f"{super_libs} {libs.link_flags}")
-        print()
-        print('ICON DSL args:', args)
-        print()
+
         return args
 
     def build(self, spec, prefix):
         # Check the variant
         dsl = self.spec.variants['dsl'].value
-        if dsl != ('none', ):
-            f = "icon4py_bindings.f90"
-            # src_file = "/path/to/original/icon4py_bindings.f90"
-            icon4py_prefix = self.spec["icon4py"].prefix
-            bindings_dir = os.path.join(icon4py_prefix, "src")
-            src_file = os.path.join(bindings_dir, f)
-            # dest_file = os.path.join(self.stage.source_path, "icon4py_bindings.f90")
-            build_py2f = os.path.join(self.stage.source_path, "src",
-                                      "build_py2f")
-            os.makedirs(build_py2f, exist_ok=True)
-            dest_file = os.path.join(build_py2f, f)
+        if dsl != ('none',):
+            file = "icon4py_bindings.f90"
+
+            bindings_dir = os.path.join(self.spec["icon4py"].prefix, "src")
+            src_file = os.path.join(bindings_dir, file)
+
+            build_py2f_dir = os.path.join(self.stage.source_path, "src", "build_py2f")
+            os.makedirs(build_py2f_dir, exist_ok=True)
+            dest_file = os.path.join(build_py2f_dir, file)
 
             # Copy only if the file is missing
             if not os.path.exists(dest_file):
                 shutil.copy(src_file, dest_file)
-                # tty.info(f"Copied {src_file} to build directory because +dsl is enabled")
+                print(f"Copied {src_file} to build directory {dest_file} because +dsl is enabled")
 
         # Proceed with the normal build
         super().build(spec, prefix)
