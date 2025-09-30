@@ -33,10 +33,7 @@ class IconDsl(Icon):
             multi=True)
 
     for x in dsl_values:
-        # depends_on('py-icon4py', when='dsl={0}'.format(x))
         depends_on('icon4py', type="build", when=f"dsl={x}")
-        # depends_on('py-gridtools-cpp', when='dsl={0}'.format(x))
-        # depends_on('boost', when='dsl={0}'.format(x))
         conflicts('^python@:3.9,3.11:', when='dsl={0}'.format(x))
 
     def configure_args(self):
