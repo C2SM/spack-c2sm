@@ -42,6 +42,9 @@ class IconDsl(Icon):
     def configure_args(self):
         args = super().configure_args()
 
+        super_libs = args.pop()
+        super_ldflags = args.pop()
+
         libs = LibraryList([])
         flags = defaultdict(list)
 
