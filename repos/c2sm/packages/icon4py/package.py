@@ -12,7 +12,6 @@ class Icon4py(Package):
     depends_on("python@3.11:")
 
     depends_on("git")
-    depends_on("boost@1.85:+mpi+python", type=("build", "run"))
     depends_on("uv@0.7:", type="build")
     depends_on("bzip2", type="build")
     depends_on("py-numpy")
@@ -23,6 +22,10 @@ class Icon4py(Package):
     depends_on("py-cupy +cuda")
     depends_on("ghex +python +cuda")
 
+    homepage = "https://github.com/C2SM/icon4py"
+    git      = "https://github.com/C2SM/icon4py.git"
+
+    version("main", branch="main")
     version(
         "icon_20250328",
         sha256=
