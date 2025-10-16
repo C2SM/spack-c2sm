@@ -23,7 +23,7 @@ class Icon4py(Package):
     depends_on("ghex +python +cuda")
 
     homepage = "https://github.com/C2SM/icon4py"
-    git      = "https://github.com/C2SM/icon4py.git"
+    git = "https://github.com/C2SM/icon4py.git"
 
     version("main", branch="main")
     version(
