@@ -20,8 +20,7 @@ class IconDsl(Icon):
 
     maintainers('jonasjucker', 'huppd')
 
-    version('develop', submodules=True)
-    version('icon-dsl', branch='use_icon4py_from_uenv', submodules=True)
+    version('develop', branch='icon-dsl', submodules=True)
 
     # EXCLAIM-GT4Py specific features:
     dsl_values = ('substitute', 'verify', 'serialize', 'nvtx')
