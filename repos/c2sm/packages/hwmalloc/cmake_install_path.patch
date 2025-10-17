@@ -1,0 +1,27 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index d5420e0..35dbe56 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -105,11 +105,11 @@ install(FILES ${PROJECT_BINARY_DIR}/include/hwmalloc/config.hpp
+ install(EXPORT HWMALLOC-targets
+   FILE HWMALLOC-targets.cmake
+   NAMESPACE HWMALLOC::
+-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake)
++  DESTINATION ${CMAKE_INSTALL_LIBDIR}/hwmalloc/cmake)
+ 
+ configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/HWMALLOCConfig.cmake.in
+     ${CMAKE_CURRENT_BINARY_DIR}/HWMALLOCConfig.cmake
+-    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake)
++    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/hwmalloc/cmake)
+ 
+ write_basic_package_version_file(HWMALLOCConfigVersion.cmake
+     VERSION ${PROJECT_VERSION} COMPATIBILITY SameMajorVersion)
+@@ -120,7 +120,7 @@ install(
+         ${CMAKE_CURRENT_BINARY_DIR}/HWMALLOCConfigVersion.cmake
+         ${CMAKE_CURRENT_LIST_DIR}/cmake/FindNUMA.cmake
+     DESTINATION
+-        ${CMAKE_INSTALL_LIBDIR}/cmake)
++        ${CMAKE_INSTALL_LIBDIR}/hwmalloc/cmake)
+ 
+ export(EXPORT HWMALLOC-targets
+   FILE "${CMAKE_CURRENT_BINARY_DIR}/HWMALLOC-targets.cmake")
