@@ -61,9 +61,8 @@ class Ghex(CMakePackage, CudaPackage, ROCmPackage):
             self.define("GHEX_USE_BUNDLED_GRIDTOOLS", True),
             self.define("GHEX_USE_BUNDLED_GTEST", self.run_tests),
             self.define("GHEX_USE_BUNDLED_OOMPH", False),
-            self.define(
-                "GHEX_TRANSPORT_BACKEND", spec.variants["backend"].value.upper()
-            ),
+            self.define("GHEX_TRANSPORT_BACKEND",
+                        spec.variants["backend"].value.upper()),
             self.define_from_variant("GHEX_USE_XPMEM", "xpmem"),
             self.define_from_variant("GHEX_BUILD_PYTHON_BINDINGS", "python"),
             self.define("GHEX_WITH_TESTING", self.run_tests),

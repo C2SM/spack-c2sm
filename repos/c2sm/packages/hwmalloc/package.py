@@ -9,9 +9,15 @@ class Hwmalloc(CMakePackage, CudaPackage, ROCmPackage):
     git = "https://github.com/ghex-org/hwmalloc.git"
     maintainers = ["boeschf"]
 
-    version("0.3.0", sha256="d4d4ac6087a806600d79fb62c02719ca3d58a412968fe1ef4a2fd58d9e7ee950")
-    version("0.2.0", sha256="734758a390a3258b86307e4aef50a7ca2e5d0e2e579f18aeefcd05397e114419")
-    version("0.1.0", sha256="06e9bfcef0ecce4d19531ccbe03592b502d1281c7a092bc0ff51ca187899b21c")
+    version("0.3.0",
+            sha256=
+            "d4d4ac6087a806600d79fb62c02719ca3d58a412968fe1ef4a2fd58d9e7ee950")
+    version("0.2.0",
+            sha256=
+            "734758a390a3258b86307e4aef50a7ca2e5d0e2e579f18aeefcd05397e114419")
+    version("0.1.0",
+            sha256=
+            "06e9bfcef0ecce4d19531ccbe03592b502d1281c7a092bc0ff51ca187899b21c")
     version("master", branch="master")
 
     depends_on("cxx", type="build")
@@ -27,7 +33,9 @@ class Hwmalloc(CMakePackage, CudaPackage, ROCmPackage):
         default=False,
         description="True if numa_tools may throw during initialization",
     )
-    variant("numa-local", default=True, description="Use numa_tools for local node allocations")
+    variant("numa-local",
+            default=True,
+            description="Use numa_tools for local node allocations")
     variant("logging", default=False, description="print logging info to cerr")
 
     patch("cmake_install_path.patch", when="@:0.3.0", level=1)
