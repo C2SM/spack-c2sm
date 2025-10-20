@@ -15,7 +15,7 @@ def validate_variant_dsl(pkg, name, value):
         )
 
 
-class IconDsl(Icon):
+class IconExclaim(Icon):
     git = 'git@github.com:C2SM/icon-exclaim.git'
 
     maintainers('jonasjucker', 'huppd')
