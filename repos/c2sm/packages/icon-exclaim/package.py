@@ -82,7 +82,7 @@ class IconExclaim(Icon):
             dest_file = os.path.join(build_py2f_dir, file)
 
             # Copy only if the file is missing
-            if not os.path.exists(dest_file):
+            if not os.path.exists(dest_file) or os.path.getmtime(src_file) > os.path.getmtime(dest_file):
                 shutil.copy(src_file, dest_file)
                 print(
                     f"Copied {src_file} to build directory {dest_file} because +dsl is enabled"
