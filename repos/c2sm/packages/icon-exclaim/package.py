@@ -23,7 +23,7 @@ class IconExclaim(Icon):
     version('develop', branch='icon-dsl', submodules=True)
 
     # EXCLAIM-GT4Py specific features:
-    dsl_values = ('substitute', 'verify', 'serialize', 'nvtx')
+    dsl_values = ('substitute', 'verify')
     variant('dsl',
             default='none',
             validator=validate_variant_dsl,
@@ -51,9 +51,11 @@ class IconExclaim(Icon):
                 args.append('--enable-py2f=substitute')
             elif 'verify' in dsl:
                 args.append('--enable-py2f=verify')
-            elif 'serialize' in dsl:
-                raise error.UnsupportedPlatformError(
-                    'serialize mode is not supported yet by icon-liskov')
+            else:
+                raise ValueError(
+                    f"Unknown DSL variant '{val}'. "
+                    f"Valid options are: {', '.join(('none',) + dsl_values)}"
+                )
 
             icon4py_prefix = self.spec["icon4py"].prefix
             bindings_dir = os.path.join(icon4py_prefix, "src")
