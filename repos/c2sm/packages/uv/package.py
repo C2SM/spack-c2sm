@@ -33,6 +33,8 @@ class Uv(Package):
         "189108cd026c25d40fb086eaaf320aac52c3f7aab63e185bac51305a1576fc7e",
         ("0.7.12", "unknown-linux-gnu", "aarch64"):
         "23233d2e950ed8187858350da5c6803b14cbbeaef780382093bb2f2bc4ba1200",
+        ("0.7.12", "unknown-linux-gnu", "x86_64"):
+        "735891fb553d0be129f3aa39dc8e9c4c49aaa76ec17f7dfb6a732e79a714873a",
         ("0.7.20", "unknown-linux-gnu", "aarch64"):
         "675165f879d6833aa313ecb25ac44781e131933a984727e180b3218d2cd6c1e9",
         ("0.7.20", "unknown-linux-gnu", "x86_64"):
