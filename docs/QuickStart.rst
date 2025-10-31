@@ -2,10 +2,10 @@ Quick Start
 ===========
 
 
-At CSCS/ETHZ (Balfrin and Euler)
+At CSCS/ETHZ (Balfrin, Säntis and Euler)
 ------------------------------------------------
 
-To set up a Spack instance, clone the repository using a specific Spack tag (latest ``SPACK_TAG=v0.20.1.5``).
+To set up a Spack instance, clone the repository using a specific Spack tag (latest ``SPACK_TAG=v0.22.2.2``).
 
 .. code-block:: console
 
@@ -83,9 +83,35 @@ ICON
 
 ICON is built using environments.
 
+On the Alps cluster Säntis, a user environment has to be loaded first.
+This can be done by executing
+
+.. code-block:: console
+
+    $ UENV_VERSION=$(cat config/cscs/SANTIS_ENV_TAG)
+    $ uenv start ${UENV_VERSION}
+
+Alternatively, any of the following commands can be started with:
+
+.. code-block:: console
+
+    $ uenv run ${UENV_VERSION} -- <command>
+
 For convenience, ICON provides bash scripts to set up the environment and install ICON for in-source
 and out-of-source builds.
-These scripts are located in ``config/cscs``, e.g. ``config/cscs/alps_mch.cpu.nvidia``.
+These scripts are located in ``config/cscs``, e.g. ``alps_mch.cpu.nvidia`` for Balfrin and ``santis.cpu.nvhpc`` for Säntis.
+
+For in-source builds, you need the run the configure scripts from your ICON root folder:
+
+.. code-block:: console
+
+    $ ./config/cscs/alps_mch.cpu.nvidia
+
+For out-of-source builds, navigate into your out-of-source directory (e.g., `cd cpu`) and run the configure scripts from there:
+
+.. code-block:: console
+
+    $ ./../config/cscs/alps_mch.cpu.nvidia
 
 For development, sometimes it is necessary to build ICON in a more customized way.
 To do so please follow the instructions below.
@@ -144,3 +170,5 @@ By executing the commands above, spack will add some lines directly into ``spack
 Any further ``spack install`` command will use the build directory specified in the ``spack.yaml`` file.
 In case you want to change the build directory, edit the ``spack.yaml`` file or remove the ``build_directory`` line
 and run ``spack concretize -f`` afterwards.
+
+Compiler flags can be added with ``fflags="-my_flag1 -my_flag2"`` to the ``specs`` in the ``spack.yaml`` file. The spec syntax accepts ``cppflags``, ``cflags``, ``cxxflags``, ``fflags``, ``ldflags``, and ``ldlibs`` parameters.
