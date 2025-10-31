@@ -2,7 +2,17 @@ from spack.package import *
 
 
 class Oomph(CMakePackage, CudaPackage, ROCmPackage):
-    """Oomph is a non-blocking callback-based point-to-point communication library."""
+    """
+    Oomph is a non-blocking callback-based point-to-point communication library.
+
+    This Spack package was originally copied from:
+      https://github.com/ghex-org/spack-repos/tree/main/packages/oomph
+
+    Modifications from the original version:
+      - removed version below 0.4
+
+    License: ghex-org
+    """
 
     homepage = "https://github.com/ghex-org/oomph"
     url = "https://github.com/ghex-org/oomph/archive/refs/tags/v0.4.0.tar.gz"

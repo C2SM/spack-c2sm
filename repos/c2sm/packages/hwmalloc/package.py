@@ -2,7 +2,14 @@ from spack.package import *
 
 
 class Hwmalloc(CMakePackage, CudaPackage, ROCmPackage):
-    """HWMALLOC is a allocator which supports memory registration for e.g. remote memory access"""
+    """
+    HWMALLOC is a allocator which supports memory registration for e.g. remote memory access
+
+    This Spack package was originally copied from:
+      https://github.com/ghex-org/spack-repos/blob/main/packages/hwmalloc/package.py
+
+    License: ghex-org
+    """
 
     homepage = "https://github.com/ghex-org/hwmalloc"
     url = "https://github.com/ghex-org/hwmalloc/archive/refs/tags/v0.3.0.tar.gz"
