@@ -5,22 +5,13 @@ class Oomph(CMakePackage, CudaPackage, ROCmPackage):
     """Oomph is a non-blocking callback-based point-to-point communication library."""
 
     homepage = "https://github.com/ghex-org/oomph"
-    url = "https://github.com/ghex-org/oomph/archive/refs/tags/v0.2.0.tar.gz"
+    url = "https://github.com/ghex-org/oomph/archive/refs/tags/v0.4.0.tar.gz"
     git = "https://github.com/ghex-org/oomph.git"
     maintainers = ["boeschf"]
 
     version("0.4.0",
             sha256=
             "e342c872dfe4832be047f172dc55c12951950c79da2630b071c61607ef913144")
-    version("0.3.0",
-            sha256=
-            "61e346d1ba28a859745de47f37edce39c7f5c5e1aab716493dc964e158fd99ec")
-    version("0.2.0",
-            sha256=
-            "135cdb856aa817c053b6af1617869dbcd0ee97d34607e78874dd775ea389434e")
-    version("0.1.0",
-            sha256=
-            "0ff36db0a5f30ae1bb02f6db6d411ea72eadd89688c00f76b4e722bd5a9ba90b")
     version("main", branch="main")
 
     depends_on("cxx", type="build")
@@ -87,11 +78,7 @@ class Oomph(CMakePackage, CudaPackage, ROCmPackage):
 
     depends_on("mpi")
     depends_on("boost+thread")
-
     depends_on("googletest", type=("build", "test"))
-
-    patch("install_0.2.patch", when="@:0.2.0", level=1)
-    patch("install_0.3.patch", when="@0.3.0", level=1)
 
     def cmake_args(self):
         args = [
