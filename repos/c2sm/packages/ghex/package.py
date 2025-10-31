@@ -2,7 +2,14 @@ from spack.package import *
 
 
 class Ghex(CMakePackage, CudaPackage, ROCmPackage):
-    """GHEX is a generic halo-exchange library."""
+    """
+    GHEX is a generic halo-exchange library.
+
+    This Spack package was originally copied from:
+      https://github.com/ghex-org/spack-repos/blob/main/packages/ghex/package.py
+
+    License: ghex-org
+    """
 
     homepage = "https://github.com/ghex-org/GHEX"
     url = "https://github.com/ghex-org/GHEX/archive/refs/tags/v0.3.0.tar.gz"

@@ -33,7 +33,6 @@ class IconExclaim(Icon):
 
     for x in dsl_values:
         depends_on('icon4py', type="build", when=f"dsl={x}")
-        conflicts('^python@:3.9,3.11:', when='dsl={0}'.format(x))
 
     def configure_args(self):
         args = super().configure_args()
