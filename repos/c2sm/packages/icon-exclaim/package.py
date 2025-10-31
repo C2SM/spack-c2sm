@@ -54,8 +54,7 @@ class IconExclaim(Icon):
             else:
                 raise ValueError(
                     f"Unknown DSL variant '{val}'. "
-                    f"Valid options are: {', '.join(('none',) + dsl_values)}"
-                )
+                    f"Valid options are: {', '.join(('none',) + dsl_values)}")
 
             icon4py_prefix = self.spec["icon4py"].prefix
             bindings_dir = os.path.join(icon4py_prefix, "src")
