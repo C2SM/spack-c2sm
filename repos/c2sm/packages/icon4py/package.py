@@ -27,14 +27,13 @@ class Icon4py(Package):
 
     version("main", branch="main")
     version(
-        "icon_20250328",
-        sha256=
-        "8573ef031d207438f549511e859f522c60163ea660aafea93ef4991b9010739a",
+        "0.0.14",
+        sha256="8aadb6fe7af55fc41d09daa4e74739bd7ab01b4e",
         extension="zip",
     )
 
     def url_for_version(self, version):
-        return f"https://github.com/c2sm/icon4py/archive/refs/heads/{version}.zip"
+        return f"https://github.com/c2sm/icon4py/archive/refs/tags/v{version}.zip"
 
     def install(self, spec, prefix):
         uv = prepare_uv()
@@ -70,7 +69,11 @@ class Icon4py(Package):
             "--python",
             str(venv_path.bin.python),
             *no_install_options([*spack_installed, "cupy-cuda12x", "ghex"]),
-            extra_env={"VIRTUAL_ENV": str(venv_path)},
+            extra_env={
+                "VIRTUAL_ENV": str(venv_path),
+                "CC": "gcc",
+                "CXX": "g++",
+            },        
         )
 
         tty.msg(f"linking spack installed packages into venv")
@@ -86,7 +89,11 @@ class Icon4py(Package):
             "icon4py_bindings",
             "-o",
             prefix.src,
-            extra_env={"VIRTUAL_ENV": str(venv_path)},
+            extra_env={
+                "VIRTUAL_ENV": str(venv_path),
+                "CC": "gcc",
+                "CXX": "g++",
+            },        
         )
 
 
