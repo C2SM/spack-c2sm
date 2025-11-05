@@ -35,37 +35,59 @@ class IconExclaim(Icon):
         depends_on('icon4py', type="build", when=f"dsl={x}")
 
     def configure_args(self):
-        args = super().configure_args()
+        raw_args = super().configure_args()
 
-        super_libs = args.pop()
-        super_ldflags = args.pop()
+        # Split into categories
+        args_flags = []
+        icon_ldflags = []
+        ldflags = []
+        libs = []
 
-        libs = LibraryList([])
-        flags = defaultdict(list)
+        for a in raw_args:
+            if a.startswith("LIBS="):
+                libs.append(a.split("=", 1)[1].strip())
+            elif a.startswith("ICON_LDFLAGS="):
+                icon_ldflags.append(a.split("=", 1)[1].strip())
+            elif a.startswith("LDFLAGS="):
+                ldflags.append(a.split("=", 1)[1].strip())
+            else:
+                args_flags.append(a)
 
-        # Check for DSL variants and set corresponding options
+        # Handle DSL variants
         dsl = self.spec.variants['dsl'].value
         if dsl != ('none', ):
             if 'substitute' in dsl:
-                args.append('--enable-py2f=substitute')
+                args_flags.append('--enable-py2f=substitute')
             elif 'verify' in dsl:
-                args.append('--enable-py2f=verify')
+                args_flags.append('--enable-py2f=verify')
             else:
                 raise ValueError(
-                    f"Unknown DSL variant '{val}'. "
-                    f"Valid options are: {', '.join(('none',) + dsl_values)}")
+                    f"Unknown DSL variant '{dsl}'. "
+                    f"Valid options are: {', '.join(('none',) + dsl_values)}"
+                )
 
+            # Add icon4py paths and libs
             icon4py_prefix = self.spec["icon4py"].prefix
             bindings_dir = os.path.join(icon4py_prefix, "src")
-            args.append(
-                f"{super_ldflags} -L{bindings_dir} -Wl,-rpath,{bindings_dir}")
-            args.append(f"{super_libs} {libs.link_flags} -licon4py_bindings")
 
-        else:
-            args.append(f"{super_ldflags}")
-            args.append(f"{super_libs} {libs.link_flags}")
+            ldflags.append(f"-L{bindings_dir} -Wl,-rpath,{bindings_dir}")
+            libs.append("-licon4py_bindings")
 
-        return args
+        # Remove duplicates
+        icon_ldflags = list(dict.fromkeys(icon_ldflags))
+        ldflags = list(dict.fromkeys(ldflags))
+        libs = list(dict.fromkeys(libs))
+
+        # Reconstruct final configure args
+        final_args = args_flags
+        if icon_ldflags:
+            final_args.append("ICON_LDFLAGS=" + " ".join(icon_ldflags))
+        if ldflags:
+            final_args.append("LDFLAGS=" + " ".join(ldflags))
+        if libs:
+            final_args.append("LIBS=" + " ".join(libs))
+
+        return final_args
 
     def build(self, spec, prefix):
         # Check the variant
