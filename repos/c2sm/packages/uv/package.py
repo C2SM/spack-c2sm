@@ -2,14 +2,17 @@ from spack.package import *
 
 
 def translate_platform(platform_name: str) -> str:
+    if platform_name is None:
+        return "unknown-linux-gnu"
     if platform_name == "darwin":
         return "apple-darwin"
     elif platform_name == "linux":
         return "unknown-linux-gnu"
     return "unknown-linux-gnu"
 
-
 def translate_arch(arch_name: str) -> str:
+    if arch_name is None:
+        return "aarch64"
     if arch_name in ["m1", "m2", "neoverse_v2"]:
         return "aarch64"
     if arch_name in ["zen3"]:
@@ -50,14 +53,14 @@ class Uv(Package):
     }
 
     def url_for_version(self, version):
-        arch = translate_arch(getattr(self.spec, "target", None))
-        platform = translate_platform(getattr(self.spec, "platform", None))
+        arch = translate_arch(getattr(self.spec, "target", "aarch64"))
+        platform = translate_platform(getattr(self.spec, "platform", "unknown-linux-gnu"))
         return f"https://github.com/astral-sh/uv/releases/download/{version}/uv-{arch}-{platform}.tar.gz"
 
     def do_stage(self, mirror_only=False):
         version = str(self.spec.version)
-        arch = translate_arch(self.spec.target)
-        platform = translate_platform(self.spec.platform)
+        arch = translate_arch(getattr(self.spec, "target", "aarch64"))
+        platform = translate_platform(getattr(self.spec, "platform", "unknown-linux-gnu"))
         key = (version, platform, arch)
 
         if key not in self.checksums:
