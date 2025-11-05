@@ -6,7 +6,7 @@ def translate_platform(platform_name: str) -> str:
         return "apple-darwin"
     elif platform_name == "linux":
         return "unknown-linux-gnu"
-    return platform_name
+    return "unknown-linux-gnu"
 
 
 def translate_arch(arch_name: str) -> str:
@@ -14,7 +14,7 @@ def translate_arch(arch_name: str) -> str:
         return "aarch64"
     if arch_name in ["zen3"]:
         return "x86_64"
-    return arch_name
+    return "aarch64"
 
 
 class Uv(Package):
@@ -50,8 +50,8 @@ class Uv(Package):
     }
 
     def url_for_version(self, version):
-        arch = translate_arch(self.spec.target)
-        platform = translate_platform(self.spec.platform)
+        arch = translate_arch(getattr(self.spec, "target", None))
+        platform = translate_platform(getattr(self.spec, "platform", None))
         return f"https://github.com/astral-sh/uv/releases/download/{version}/uv-{arch}-{platform}.tar.gz"
 
     def do_stage(self, mirror_only=False):
