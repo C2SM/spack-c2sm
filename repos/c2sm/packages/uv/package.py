@@ -10,6 +10,7 @@ def translate_platform(platform_name: str) -> str:
         return "unknown-linux-gnu"
     return "unknown-linux-gnu"
 
+
 def translate_arch(arch_name: str) -> str:
     if arch_name is None:
         return "aarch64"
@@ -54,13 +55,15 @@ class Uv(Package):
 
     def url_for_version(self, version):
         arch = translate_arch(getattr(self.spec, "target", "aarch64"))
-        platform = translate_platform(getattr(self.spec, "platform", "unknown-linux-gnu"))
+        platform = translate_platform(
+            getattr(self.spec, "platform", "unknown-linux-gnu"))
         return f"https://github.com/astral-sh/uv/releases/download/{version}/uv-{arch}-{platform}.tar.gz"
 
     def do_stage(self, mirror_only=False):
         version = str(self.spec.version)
         arch = translate_arch(getattr(self.spec, "target", "aarch64"))
-        platform = translate_platform(getattr(self.spec, "platform", "unknown-linux-gnu"))
+        platform = translate_platform(
+            getattr(self.spec, "platform", "unknown-linux-gnu"))
         key = (version, platform, arch)
 
         if key not in self.checksums:
