@@ -73,7 +73,7 @@ class Icon4py(Package):
                 "VIRTUAL_ENV": str(venv_path),
                 "CC": "gcc",
                 "CXX": "g++",
-            },        
+            },
         )
 
         tty.msg(f"linking spack installed packages into venv")
@@ -93,7 +93,7 @@ class Icon4py(Package):
                 "VIRTUAL_ENV": str(venv_path),
                 "CC": "gcc",
                 "CXX": "g++",
-            },        
+            },
         )
 
 
