@@ -35,6 +35,22 @@ class Icon(SpackIcon):
     maintainers('jonasjucker', 'huppd')
 
     version('develop', submodules=True)
+    version("icon-2025.10",
+            tag="icon-2025.10",
+            git='git@gitlab.dkrz.de:icon/icon.git',
+            submodules=True)
+    version("icon-2025.04-2",
+            tag="icon-2025.04-2",
+            git='git@gitlab.dkrz.de:icon/icon.git',
+            submodules=True)
+    version("icon-2025.04-1",
+            tag="icon-2025.04-1",
+            git='git@gitlab.dkrz.de:icon/icon.git',
+            submodules=True)
+    version("icon-2025.04",
+            tag="icon-2025.04",
+            git='git@gitlab.dkrz.de:icon/icon.git',
+            submodules=True)
     version("2024.10",
             tag="icon-2024.10",
             git='git@gitlab.dkrz.de:icon/icon.git',
@@ -43,8 +59,9 @@ class Icon(SpackIcon):
             tag="icon-2024.01-1",
             git='git@gitlab.dkrz.de:icon/icon.git',
             submodules=True)
-    version('2.6.6-mch2b', tag='icon-nwp/icon-2.6.6-mch2b', submodules=True)
-    version('2.6.6-mch2a', tag='icon-nwp/icon-2.6.6-mch2a', submodules=True)
+    version('2024.10-mch-1.0', tag='icon-2024.10-mch-1.0', submodules=True)
+    version('2024.01-mch-2.1', tag='icon-2024.01-mch-2.1', submodules=True)
+    version('2024.01-mch-2.0', tag='icon-2024.01-mch-2.0', submodules=True)
     version('nwp-master', submodules=True)
 
     # The variants' default follow those of ICON
