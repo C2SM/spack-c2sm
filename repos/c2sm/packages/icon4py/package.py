@@ -57,8 +57,7 @@ class Icon4py(Package):
             if cuda_arch == "none":
                 tty.warn(
                     "Building with +cuda but no cuda_arch set. "
-                    "Consider specifying e.g. cuda_arch=80 or cuda_arch=90."
-                )
+                    "Consider specifying e.g. cuda_arch=80 or cuda_arch=90.")
             else:
                 env.set("SPACK_CUDA_ARCH", cuda_arch)
                 tty.msg(f"Building for CUDA architecture: {cuda_arch}")
@@ -69,7 +68,8 @@ class Icon4py(Package):
         python_spec = spec["python"]
         venv_path = prefix.share.venv
 
-        tty.msg(f"Creating venv using Spack Python at: {python_spec.command.path}")
+        tty.msg(
+            f"Creating venv using Spack Python at: {python_spec.command.path}")
         uv(
             "venv",
             "--seed",
