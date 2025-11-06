@@ -2,12 +2,37 @@ import json
 import os
 import pathlib
 
-import llnl
 from llnl.util import tty
 from spack import *
 
 
 class Icon4py(Package):
+    """ICON4Py Python interface package."""
+
+    homepage = "https://github.com/C2SM/icon4py"
+    git = "https://github.com/C2SM/icon4py.git"
+
+    # --- Versions ---
+    version("main", branch="main")
+    version(
+        "0.0.14",
+        sha256="8aadb6fe7af55fc41d09daa4e74739bd7ab01b4e",
+        extension="zip",
+    )
+
+    def url_for_version(self, version):
+        return f"https://github.com/C2SM/icon4py/archive/refs/tags/v{version}.zip"
+
+    # --- Variants ---
+    variant("cuda", default=True, description="Enable CUDA support")
+    variant(
+        "cuda_arch",
+        default="none",
+        description="CUDA architecture (e.g. 80 for A100, 90 for H100)",
+        values=lambda x: True,  # accept any user-specified string
+    )
+
+    # --- Dependencies ---
     extends("python")
     depends_on("python@3.11:")
 
@@ -19,29 +44,32 @@ class Icon4py(Package):
     depends_on("py-pybind11")
     depends_on("py-nanobind")
     depends_on("py-mpi4py")
-    depends_on("py-cupy +cuda")
-    depends_on("ghex +python +cuda")
 
-    homepage = "https://github.com/C2SM/icon4py"
-    git = "https://github.com/C2SM/icon4py.git"
+    with when("+cuda"):
+        depends_on("py-cupy +cuda")
+        depends_on("ghex +python +cuda")
 
-    version("main", branch="main")
-    version(
-        "0.0.14",
-        sha256="8aadb6fe7af55fc41d09daa4e74739bd7ab01b4e",
-        extension="zip",
-    )
+    # --- Environment setup ---
+    def setup_build_environment(self, env):
+        """Propagate CUDA architecture to dependencies."""
+        cuda_arch = self.spec.variants["cuda_arch"].value
+        if "+cuda" in self.spec:
+            if cuda_arch == "none":
+                tty.warn(
+                    "Building with +cuda but no cuda_arch set. "
+                    "Consider specifying e.g. cuda_arch=80 or cuda_arch=90."
+                )
+            else:
+                env.set("SPACK_CUDA_ARCH", cuda_arch)
+                tty.msg(f"Building for CUDA architecture: {cuda_arch}")
 
-    def url_for_version(self, version):
-        return f"https://github.com/c2sm/icon4py/archive/refs/tags/v{version}.zip"
-
+    # --- Build/install logic ---
     def install(self, spec, prefix):
         uv = prepare_uv()
         python_spec = spec["python"]
         venv_path = prefix.share.venv
 
-        tty.msg(
-            f"creating venv using spack python at: {python_spec.command.path}")
+        tty.msg(f"Creating venv using Spack Python at: {python_spec.command.path}")
         uv(
             "venv",
             "--seed",
@@ -52,11 +80,11 @@ class Icon4py(Package):
             python_spec.command.path,
         )
 
-        tty.msg(f"grabbing spack installed packages (distributions)")
+        tty.msg("Grabbing Spack-installed packages (distributions)")
         pip = Executable(venv_path.bin.pip)
         spack_installed = get_installed_pkg(pip)
 
-        tty.msg(f"installing missing packages")
+        tty.msg("Installing missing packages via uv sync")
         uv(
             "sync",
             "--active",
@@ -76,12 +104,12 @@ class Icon4py(Package):
             },
         )
 
-        tty.msg(f"linking spack installed packages into venv")
+        tty.msg("Linking Spack-installed packages into venv")
         pathlib.Path(
             f"{venv_path.lib.python}{python_spec.version.up_to(2)}/site-packages/spack_installed.pth"
         ).write_text(pythonpath_to_pth())
 
-        tty.msg(f"running py2fgen")
+        tty.msg("Running py2fgen code generator")
         py2fgen = Executable(venv_path.bin.py2fgen)
         py2fgen(
             "icon4py.tools.py2fgen.wrappers.all_bindings",
@@ -119,4 +147,4 @@ def no_install_options(installed):
 
 
 def pythonpath_to_pth():
-    return "\n".join(os.environ["PYTHONPATH"].split(":"))
+    return "\n".join(os.environ.get("PYTHONPATH", "").split(":"))
