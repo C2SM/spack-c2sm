@@ -28,7 +28,8 @@ def test_install_makedepf90():
     spack_install('makedepf90', test_root=False)
 
 
-@pytest.mark.parametrize('version', ['2024.10', '2024.01-mch-2.1', '2024.10-mch-1.0'])
+@pytest.mark.parametrize('version',
+                         ['2024.10', '2024.01-mch-2.1', '2024.10-mch-1.0'])
 def test_install_icon(version):
     # WORKAROUND: A build and link dependency should imply that the same compiler is used. ^cray-mpich%nvhpc enforces it.
     spack_install(f'icon @{version} %nvhpc ^cray-mpich%nvhpc')
