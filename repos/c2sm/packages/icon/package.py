@@ -32,7 +32,7 @@ def check_variant_extra_config_args(extra_config_arg):
 class Icon(SpackIcon):
     git = 'git@gitlab.dkrz.de:icon/icon-nwp.git'
 
-    maintainers('jonasjucker', 'huppd')
+    maintainers('huppd')
 
     version('develop', submodules=True)
     version("icon-2025.10",
