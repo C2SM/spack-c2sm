@@ -62,6 +62,8 @@ class Icon(SpackIcon):
     version('2024.10-mch-1.0', tag='icon-2024.10-mch-1.0', submodules=True)
     version('2024.01-mch-2.1', tag='icon-2024.01-mch-2.1', submodules=True)
     version('2024.01-mch-2.0', tag='icon-2024.01-mch-2.0', submodules=True)
+    version('2.6.6-mch2b', tag='icon-nwp/icon-2.6.6-mch2b', submodules=True)
+    version('2.6.6-mch2a', tag='icon-nwp/icon-2.6.6-mch2a', submodules=True)
     version('nwp-master', submodules=True)
 
     # The variants' default follow those of ICON
