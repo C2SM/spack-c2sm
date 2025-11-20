@@ -10,7 +10,7 @@ pipeline {
                 axes {
                     axis {
                         name 'NODENAME'
-                        values 'balfrinew'
+                        values 'balfrin'
                     }
                 }
                 post {
