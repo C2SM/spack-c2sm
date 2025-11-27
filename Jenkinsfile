@@ -54,7 +54,7 @@ pipeline {
                             sh """
                             source ./setup-env.sh ${upstream}
                             source .venv/bin/activate
-                            pytest -v -n auto test/integration_test.py
+                            pytest -v -n 64 test/integration_test.py
                             """
                         }
                     }
@@ -63,7 +63,7 @@ pipeline {
                             sh """
                             source ./setup-env.sh ${upstream}
                             source .venv/bin/activate
-                            pytest -v -n auto test/common_system_test.py test/balfrin_system_test.py
+                            pytest -v -n 64 test/common_system_test.py test/balfrin_system_test.py
                             """
                         }
                     }
