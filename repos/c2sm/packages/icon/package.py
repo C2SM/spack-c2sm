@@ -231,10 +231,6 @@ class Icon(SpackIcon):
                 'You use variant extra-config-args. Injecting non-variant configure arguments may potentially disrupt the build process!'
             )
 
-        # Finalize the LIBS variable (we always put the real collected
-        # libraries to the front):
-        flags['LIBS'].insert(0, libs.link_flags)
-
         # Help the libtool scripts of the bundled libraries find the correct
         # paths to the external libraries. Specify the library search (-L) flags
         # in the reversed order
