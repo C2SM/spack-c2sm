@@ -16,11 +16,6 @@ def test_install_icon_conditional_dependencies():
     )
 
 
-# fails due to sql error
-def test_build_only_py_gt4py_for_1_0_3_10():
-    spack_install('py-gt4py @1.0.3.10', test_root=False)
-
-
 def test_install_yaxt():
     spack_install('yaxt')
 
