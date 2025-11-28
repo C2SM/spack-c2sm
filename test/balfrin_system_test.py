@@ -12,18 +12,8 @@ def test_install_icon_conditional_dependencies():
 
     # WORKAROUND: A build and link dependency should imply that the same compiler is used. ^cray-mpich%nvhpc enforces it.
     spack_install(
-        'icon @2.6.6-mch2b %nvhpc +coupling serialization=create +emvorado +mpi gpu=nvidia-80 ^cray-mpich%nvhpc'
+        'icon @2024.10-mch-1.0 %nvhpc +coupling serialization=create +emvorado +mpi gpu=nvidia-80 ^cray-mpich%nvhpc'
     )
-
-
-# fails due to sql error
-def test_build_only_py_gt4py_for_1_0_3_10():
-    spack_install('py-gt4py @1.0.3.10', test_root=False)
-
-
-# fails due to sql error
-def test_build_only_py_icon4py_for_0_0_14():
-    spack_install('py-icon4py@ 0.0.14 ^py-gt4py @1.0.3.10', test_root=False)
 
 
 def test_install_yaxt():

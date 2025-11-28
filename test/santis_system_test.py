@@ -13,5 +13,5 @@ def test_install_icon_conditional_dependencies():
 
     # WORKAROUND: A build and link dependency should imply that the same compiler is used. ^cray-mpich%nvhpc enforces it.
     spack_install(
-        'icon @2.6.6-mch2b %nvhpc +coupling +emvorado +mpi gpu=nvidia-90 ^cray-mpich%nvhpc'
+        'icon @2024.10-mch-1.0 %nvhpc +coupling +emvorado +mpi gpu=nvidia-90 ^cray-mpich%nvhpc'
     )
