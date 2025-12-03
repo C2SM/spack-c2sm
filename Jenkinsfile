@@ -12,6 +12,10 @@ pipeline {
                         name 'NODENAME'
                         values 'balfrin'
                     }
+                    axis {
+                        name 'NTHREADS'
+                        values '32'
+                    }
                 }
                 post {
                     always {
@@ -54,7 +58,7 @@ pipeline {
                             sh """
                             source ./setup-env.sh ${upstream}
                             source .venv/bin/activate
-                            pytest -v -n auto test/integration_test.py
+                            pytest -v -n  ${NTHREADS} test/integration_test.py
                             """
                         }
                     }
@@ -63,7 +67,7 @@ pipeline {
                             sh """
                             source ./setup-env.sh ${upstream}
                             source .venv/bin/activate
-                            pytest -v -n auto test/common_system_test.py test/balfrin_system_test.py
+                            pytest -v -n  ${NTHREADS} test/common_system_test.py test/balfrin_system_test.py
                             """
                         }
                     }
