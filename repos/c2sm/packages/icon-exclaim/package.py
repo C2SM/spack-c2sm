@@ -1,4 +1,5 @@
-from spack.pkg.c2sm.icon import Icon
+# from spack.pkg.c2sm.icon import Icon
+from ..icon.package import Icon
 import shutil
 import os
 import re
