@@ -64,6 +64,16 @@ rm -rf ~/.spack
 ```
 After an update we advice to rebuild packages, preferably in a new shell so that no outdated shell variables are retained.
 
+## Releases/Tags
+
+When creating a new release tag please follow the naming convention below:
+
+```
+v${SPACK_VERSION}.${SPACK_C2SM_VERSION}
+```
+
+Where `SPACK_VERSION` corresponds to the upstream Spack version this repo is based on, e.g. `SPACK_VERSION=0.22.2`. `SPACK_C2SM_VERSION` is the number of releases based on a specific `SPACK_VERSION`, starting from 0, which corresponds to the release adapting spack-c2sm to a new upstream Spack version. So, for example v0.22.2.5 is the fifth (sixth if you count the transitional release v0.22.2.0) spack-c2sm release based on Spack v0.22.2.
+
 ## Command cheat sheet
 |  | Command |
 | --- | --- |
