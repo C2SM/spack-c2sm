@@ -65,6 +65,8 @@ rm -rf ~/.spack
 After an update we advice to rebuild packages, preferably in a new shell so that no outdated shell variables are retained.
 
 ## Releases/Tags
+Release tags are created by the Spack-Admin GitHub Team as needed or upon request.
+The creation of a new release tag is coordinated within the admin team.
 
 When creating a new release tag please follow the naming convention below:
 
