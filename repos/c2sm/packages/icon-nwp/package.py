@@ -23,7 +23,6 @@ from spack_repo.builtin.packages.icon.package import Icon
 from spack.package import *
 
 
-
 def check_variant_fcgroup(fcgroup):
     pattern = re.compile(r"^[A-Z]+\..+\..")
     # fcgroup is False as default
@@ -32,6 +31,7 @@ def check_variant_fcgroup(fcgroup):
     else:
         tty.warn('Variant fcgroup needs format GROUP.files.flag')
         return False
+
 
 def check_variant_extra_config_args(extra_config_arg):
     pattern = re.compile(r'--(enable|disable)-\S+')
@@ -141,11 +141,9 @@ class IconNwp(Icon):
         default=False,
         description=
         'Enable extension of eccodes with center specific definition files')
-    depends_on(
-        'eccodes-cosmo-resources',
-        type='run',
-        when='+eccodes-definitions'
-    )
+    depends_on('eccodes-cosmo-resources',
+               type='run',
+               when='+eccodes-definitions')
 
     with when('+emvorado'):
         depends_on('eccodes +fortran')
@@ -358,5 +356,3 @@ class IconNwp(Icon):
                 Ln("-sf", f"{icon_dir}/data")
                 Ln("-sf", f"{icon_dir}/vertical_coord_tables")
                 Ln("-sf", f"{icon_dir}/scripts")
-
-    
