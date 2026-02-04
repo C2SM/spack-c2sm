@@ -1,16 +1,14 @@
 name: Nightly tests
 on:
-  issue_comment:
-    types: [created]
+  push:
+    branches:
+      - update-ci
   schedule:
     - cron: '0 0 * * *'  # Run this workflow every day at midnight
   workflow_dispatch:
 
 jobs:
   spec-test:
-    if: |
-      github.event.comment.body == 'test workflow' &&
-      github.event.issue.pull_request
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
