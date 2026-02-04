@@ -1,5 +1,8 @@
 name: Short tests for PR
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - main
@@ -18,7 +21,7 @@ jobs:
           submodules: recursive  # --recurse-submodules
 
       - name: Create Python VENV
-        run : |
+        run: |
           python3 -m venv .venv
           source .venv/bin/activate
           pip install -r requirements.txt
