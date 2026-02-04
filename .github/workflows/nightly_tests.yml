@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  spec-test:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -17,8 +17,18 @@ jobs:
           fetch-depth: 1              # --depth 1 and --shallow-submodules
           submodules: recursive       # --recurse-submodules
 
-      - name: Setup environment
+      - name: Create Python VENV
+        run : |
+          python3 -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Spack spec test
         run: |
-          echo $(pwd)
           source ./setup-env.sh
           spack spec gnuconfig
+
+      - name: Unit test
+        run: |
+          source .venv/bin/activate
+          python3 test/unit_test.py
