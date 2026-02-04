@@ -15,4 +15,6 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup environment
-        run: . setup-env.sh
+        run: |
+          source ./setup-env.sh
+          spack spec gnuconfig
