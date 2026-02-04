@@ -3,14 +3,13 @@ on:
   push:
     branches:
       - update-ci
-  schedule:
-    - cron: '0 0 * * *'  # Run this workflow every day at midnight
+      - main
   workflow_dispatch:
 
 env:
   NTHREADS: 2
 jobs:
-  test:
+  short-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -35,7 +34,7 @@ jobs:
           source .venv/bin/activate
           python3 test/unit_test.py
 
-      - name: Unit test
+      - name: Integration test
         run: |
           source ./setup-env.sh
           source .venv/bin/activate
