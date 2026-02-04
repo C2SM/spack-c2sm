@@ -2,7 +2,6 @@ name: Short tests for PR
 on:
   push:
     branches:
-      - update-ci
       - main
   workflow_dispatch:
 
