@@ -16,5 +16,6 @@ jobs:
 
       - name: Setup environment
         run: |
+          echo $(pwd)
           source ./setup-env.sh
           spack spec gnuconfig
