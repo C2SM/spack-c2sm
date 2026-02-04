@@ -14,5 +14,5 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Test echo
-        run: echo "Hello"
+      - name: Setup environment
+        run: . spack-c2sm/setup-env.sh
