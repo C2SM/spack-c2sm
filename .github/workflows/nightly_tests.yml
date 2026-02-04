@@ -1,7 +1,7 @@
 name: Nightly tests
 on:
   schedule:
-    - cron: '0 0 * * *'  # Run this workflow every day at midnight
+    - cron: '12 11 * * *'  # Run this workflow every day at midnight
   workflow_dispatch:
 
 jobs:
