@@ -24,6 +24,7 @@ class Oomph(CMakePackage, CudaPackage, ROCmPackage):
             "e342c872dfe4832be047f172dc55c12951950c79da2630b071c61607ef913144")
     version("main", branch="main")
 
+    depends_on("c", type="build")
     depends_on("cxx", type="build")
     depends_on("fortran", type="build", when="+fortran-bindings")
 
