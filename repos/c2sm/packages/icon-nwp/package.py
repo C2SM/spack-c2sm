@@ -19,6 +19,12 @@
 # See the Spack documentation for more information on packaging.
 # ----------------------------------------------------------------------------
 
+import os
+import os
+import re
+import glob
+from collections import defaultdict
+
 from spack_repo.builtin.packages.icon.package import Icon
 from spack.package import *
 
@@ -56,13 +62,14 @@ class IconNwp(Icon):
 
     maintainers('stelliom', 'leclairm', 'huppd')
 
-    version('develop', submodules=True)
-    version('2024.10-mch-1.0', tag='icon-2024.10-mch-1.0', submodules=True)
-    version('2024.01-mch-2.1', tag='icon-2024.01-mch-2.1', submodules=True)
-    version('2024.01-mch-2.0', tag='icon-2024.01-mch-2.0', submodules=True)
-    version('2.6.6-mch2b', tag='icon-nwp/icon-2.6.6-mch2b', submodules=True)
-    version('2.6.6-mch2a', tag='icon-nwp/icon-2.6.6-mch2a', submodules=True)
-    version('nwp-master', submodules=True)
+    version('develop', branch='master')
+    version('main', branch='master')
+
+    version('2024.10-mch-1.0', tag='icon-2024.10-mch-1.0', preferred=True)
+    version('2024.01-mch-2.1', tag='icon-2024.01-mch-2.1')
+    version('2024.01-mch-2.0', tag='icon-2024.01-mch-2.0')
+    version('2.6.6-mch2b', tag='icon-nwp/icon-2.6.6-mch2b')
+    version('2.6.6-mch2a', tag='icon-nwp/icon-2.6.6-mch2a')
 
     # Model Features:
     variant('dace',
