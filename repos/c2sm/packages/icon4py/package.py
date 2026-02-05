@@ -2,8 +2,9 @@ import json
 import os
 import pathlib
 
-from llnl.util import tty
-from spack import *
+from spack.package import *
+
+from spack_repo.builtin.build_systems.generic import Package
 
 
 class Icon4py(Package):
