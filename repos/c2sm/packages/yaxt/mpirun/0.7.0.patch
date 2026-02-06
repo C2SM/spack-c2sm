@@ -32,7 +32,7 @@
    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
  $as_echo "yes" >&6; }
  fi
- 
+
 -# check MPI defects
 -
 -# Check whether --with-regard-for-quality was given.
@@ -82,7 +82,7 @@
 @@ -22376,6 +22375,7 @@ done
        unset acx_suffix
        unset acx_subtestname
- 
+
 +fi
  fi
  if test "x$MPI_LAUNCH" = xtrue; then :

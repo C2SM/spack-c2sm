@@ -7,8 +7,8 @@ from spack.package import *
 
 
 class Makedepf90(AutotoolsPackage):
-    """ Makedepf90 is a program for automatic creation of
-        Makefile-style dependency lists for Fortran source code."""
+    """Makedepf90 is a program for automatic creation of
+    Makefile-style dependency lists for Fortran source code."""
 
     homepage = "https://salsa.debian.org/science-team/makedepf90"
     git = "https://salsa.debian.org/science-team/makedepf90.git"
@@ -23,10 +23,10 @@ class Makedepf90(AutotoolsPackage):
     depends_on("libtool", type="build")
     depends_on("m4", type="build")
 
-    version('3.0.1', branch='debian/3.0.1-1')
+    version("3.0.1", branch="debian/3.0.1-1")
 
     def configure_args(self):
-        return ['--bindir={0}'.format(self.prefix.bin)]
+        return ["--bindir={0}".format(self.prefix.bin)]
 
     def autoreconf(self, spec, prefix):
         autoreconf("--install", "--verbose", "--force")

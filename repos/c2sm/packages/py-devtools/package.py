@@ -13,16 +13,17 @@ class PyDevtools(PythonPackage):
 
     pypi = "devtools/devtools-0.10.0.tar.gz"
 
-    maintainers = ['samkellerhals']
+    maintainers = ["samkellerhals"]
 
-    version('0.10.0',
-            sha256=
-            '6eb7c4fa7c4b90e5cfe623537a9961d1dc3199d8be0981802c6931cd8f02418f')
+    version(
+        "0.10.0",
+        sha256="6eb7c4fa7c4b90e5cfe623537a9961d1dc3199d8be0981802c6931cd8f02418f",
+    )
 
-    depends_on('py-setuptools', type='build')
+    depends_on("py-setuptools", type="build")
 
-    depends_on('python@3.7:', type=('build', 'run'))
-    depends_on('py-hatchling', type=('build', 'run'))
+    depends_on("python@3.7:", type=("build", "run"))
+    depends_on("py-hatchling", type=("build", "run"))
 
-    depends_on('py-executing@1.1.1:', type=('build', 'run'))
-    depends_on('py-asttokens@2.0.0:2.9', type=('build', 'run'))
+    depends_on("py-executing@1.1.1:", type=("build", "run"))
+    depends_on("py-asttokens@2.0.0:2.9", type=("build", "run"))
