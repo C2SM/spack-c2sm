@@ -118,20 +118,20 @@
 <p>To get information about a package, query Spack</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>info<span class="w"> </span>&lt;package&gt;
 <span class="gp"># </span>e.g.
-<span class="gp">$ </span>spack<span class="w"> </span>info<span class="w"> </span>icon
+<span class="gp">$ </span>spack<span class="w"> </span>info<span class="w"> </span>icon-nwp
 </pre></div>
 </div>
 <p>To see what <code class="docutils literal notranslate"><span class="pre">spack</span> <span class="pre">install</span></code> would install, ask for a spec</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>spec<span class="w"> </span>&lt;variant&gt;
 <span class="gp"># </span>e.g.
-<span class="gp">$ </span>spack<span class="w"> </span>spec<span class="w"> </span>icon<span class="w"> </span>@master<span class="w"> </span>+ocean
+<span class="gp">$ </span>spack<span class="w"> </span>spec<span class="w"> </span>icon-nwp<span class="w"> </span>@master<span class="w"> </span>+ocean
 </pre></div>
 </div>
 <p>An unspecfied variant (e.g. <code class="docutils literal notranslate"><span class="pre">ocean</span></code>) can be concretized to ANY of its values. Spack isn’t required to use the default value when a variant is unspecified. The default value only serves as a tiebreaker.</p>
 <p>To install a package</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>install<span class="w"> </span>&lt;variant&gt;
 <span class="gp"># </span>e.g.
-<span class="gp">$ </span>spack<span class="w"> </span>install<span class="w"> </span>icon<span class="w"> </span>@master<span class="w"> </span>%gcc<span class="w"> </span>+ocean
+<span class="gp">$ </span>spack<span class="w"> </span>install<span class="w"> </span>icon-nwp<span class="w"> </span>@master<span class="w"> </span>%gcc<span class="w"> </span>+ocean
 </pre></div>
 </div>
 <p>To locate your install, query Spack</p>
@@ -179,14 +179,14 @@ So make sure you clone Spack with the specified tag.</p>
 </pre></div>
 </div>
 <p>To install the environment and so ICON, type</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>develop<span class="w"> </span>--path<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="w"> </span>icon@develop
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>spack<span class="w"> </span>develop<span class="w"> </span>--path<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="w"> </span>icon-nwp@develop
 <span class="gp">$ </span>spack<span class="w"> </span>install
 </pre></div>
 </div>
 <p>Example to build ICON for CPU with NVHPC on Balfrin:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">SPACK_TAG</span><span class="o">=</span><span class="k">$(</span>cat<span class="w"> </span><span class="s2">&quot;config/cscs/SPACK_TAG_MCH&quot;</span><span class="k">)</span>
 <span class="gp">$ </span>spack<span class="w"> </span>env<span class="w"> </span>activate<span class="w"> </span>-d<span class="w"> </span>config/cscs/spack/mch_cpu_double
-<span class="gp">$ </span>spack<span class="w"> </span>develop<span class="w"> </span>--path<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="w"> </span>icon@develop
+<span class="gp">$ </span>spack<span class="w"> </span>develop<span class="w"> </span>--path<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="w"> </span>icon-nwp@develop
 <span class="gp">$ </span>spack<span class="w"> </span>install
 </pre></div>
 </div>
@@ -199,14 +199,14 @@ need to reconfigure you can either delete the file or run <code class="docutils 
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mkdir<span class="w"> </span>cpu
 <span class="gp">$ </span>spack<span class="w"> </span>env<span class="w"> </span>activate<span class="w"> </span>-d<span class="w"> </span>config/cscs/spack/mch_cpu_double
 <span class="gp">$ </span><span class="c1"># tell spack to build icon in folder cpu</span>
-<span class="gp">$ </span>spack<span class="w"> </span>develop<span class="w"> </span>--path<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="w"> </span>--build-directory<span class="w"> </span>cpu<span class="w"> </span>icon@develop
+<span class="gp">$ </span>spack<span class="w"> </span>develop<span class="w"> </span>--path<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="w"> </span>--build-directory<span class="w"> </span>cpu<span class="w"> </span>icon-nwp@develop
 <span class="gp">$ </span>spack<span class="w"> </span>install
 </pre></div>
 </div>
 <p>By executing the commands above, spack will add some lines directly into <code class="docutils literal notranslate"><span class="pre">spack.yaml</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">spack</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">packages</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">icon</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">icon-nwp</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">package_attributes</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">build_directory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/scratch/mch/juckerj/icon-nwp/cpu</span>
 </pre></div>

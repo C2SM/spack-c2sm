@@ -21,7 +21,7 @@ For more information about environments in general, consider reading the
     spack:
       # add package specs to the `specs` list
       specs:
-      - icon@develop%nvhpc +ecrad +rte-rrtmgp +cuda
+      - icon-nwp@develop%nvhpc +ecrad +rte-rrtmgp +cuda
       - eccodes@2.19.0%nvhpc
       - nvidia-blas%nvhpc
       - nvidia-lapack%nvhpc
@@ -30,8 +30,8 @@ For more information about environments in general, consider reading the
       concretizer:
         unify: true
       develop:
-        icon:
-          spec: icon@develop%nvhpc +ecrad +rte-rrtmgp +cuda
+        icon-nwp:
+          spec: icon-nwp@develop%nvhpc +ecrad +rte-rrtmgp +cuda
           path: ../../../../
 
 The key part of the environments is the ``develop`` keyword.
