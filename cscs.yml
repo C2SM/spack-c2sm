@@ -63,7 +63,7 @@ Collect Logfiles:
   extends: .container-runner-lightweight-zen2
   timeout: 6h
   stage: summary
-  image: python:3.9
+  image: python:3.10
   script:
     - !reference [.setup_python, script]
     - mkdir -p log
