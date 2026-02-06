@@ -1,2 +1,4 @@
 repos:
-  - '$spack/../repos/c2sm'
+  c2sm: $spack/../repos/c2sm
+  builtin:
+    commit: 5e506ab69aed5199b6d01083016fa592f4fb4296
