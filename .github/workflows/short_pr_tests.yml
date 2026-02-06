@@ -1,0 +1,43 @@
+name: Short tests for PR
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  NTHREADS: 2
+jobs:
+  short-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1         # --depth 1 and --shallow-submodules
+          submodules: recursive  # --recurse-submodules
+
+      - name: Create Python VENV
+        run: |
+          python3 -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Spack spec test
+        run: |
+          source ./setup-env.sh
+          spack spec gnuconfig
+
+      - name: Unit test
+        run: |
+          source .venv/bin/activate
+          python3 test/unit_test.py
+
+      - name: Integration test
+        run: |
+          source ./setup-env.sh
+          source .venv/bin/activate
+          pytest -v -n  ${NTHREADS} test/integration_test.py
