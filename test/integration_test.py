@@ -30,7 +30,8 @@ def test_icon_fcgroup():
 
 def test_icon_extra_config_args():
     spack_spec(
-        "icon-nwp extra-config-args=--disable-new_feature,--enable-old_config_arg")
+        "icon-nwp extra-config-args=--disable-new_feature,--enable-old_config_arg"
+    )
 
 
 def test_compilers():
