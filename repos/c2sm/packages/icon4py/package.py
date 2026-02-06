@@ -88,7 +88,6 @@ class Icon4py(Package):
 
         # --- Handle CUDA vs non-CUDA extras ---
         extras = ["all"]
-        # no_install = [*spack_installed, "ghex", "numba", "llvmlite"]
         no_install = [*spack_installed, "ghex"]
 
         if "+cuda" in spec:
