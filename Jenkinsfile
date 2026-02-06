@@ -32,7 +32,7 @@ pipeline {
                             sh """
                             module use ${upstream}/modules
                             module load python/3.10.13
-                              
+
                             python3 -m venv .venv
                             source .venv/bin/activate
                             pip install -r requirements.txt
