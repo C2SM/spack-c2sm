@@ -98,7 +98,7 @@ class Icon4py(Package):
         uv(
             "sync",
             "--active",
-           *sum([["--extra", e] for e in extras], []), 
+            *sum([["--extra", e] for e in extras], []),
             "--inexact",
             "--no-editable",
             "--python",
