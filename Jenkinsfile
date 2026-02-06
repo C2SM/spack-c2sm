@@ -30,12 +30,9 @@ pipeline {
                     stage('Create python environment') {
                         steps {
                             sh """
-                            module use ${upstream}/modules
-                            module load python/3.10.13
-
                             python3 -m venv .venv
                             source .venv/bin/activate
-                            pip install -r requirements.txt
+                            pip install -r requirements/test.txt
                             """
                         }
                     }

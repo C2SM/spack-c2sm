@@ -74,7 +74,8 @@ source .venv/bin/activate
 Install pinned dev tools
 ```bash
 pip install --upgrade pip
-pip install -r requirements.txt
+pip install -r requirements/dev.txt
+pip install -r requirements/test.txt
 ```
 Install pre-commit hooks locally (optional)
 ```bash
