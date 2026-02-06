@@ -1,1 +1,2 @@
-pytest-xdist
+pre-commit==4.5.1
+pytest-xdist==3.8.0
