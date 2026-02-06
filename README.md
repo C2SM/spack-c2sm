@@ -68,7 +68,7 @@ After an update we advice to rebuild packages, preferably in a new shell so that
 
 Create a virtual environment
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
 ```
 Install pinned dev tools
