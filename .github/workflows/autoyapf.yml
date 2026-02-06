@@ -30,5 +30,3 @@ jobs:
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git commit -am "GitHub Action: Apply Pep8-formatting"
           git push
-
-

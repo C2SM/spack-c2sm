@@ -1,38 +1,38 @@
 from spack.pkg.c2sm.icon import Icon
 import shutil
 import os
-import re
-from collections import defaultdict
 import spack.error as error
 
 
 def validate_variant_dsl(pkg, name, value):
-    set_mutual_excl = set(['substitute', 'verify', 'serialize'])
+    set_mutual_excl = set(["substitute", "verify", "serialize"])
     set_input_var = set(value)
     if len(set_mutual_excl.intersection(set_input_var)) > 1:
         raise error.SpecError(
-            'Cannot have more than one of (substitute, verify, serialize) in the same build'
+            "Cannot have more than one of (substitute, verify, serialize) in the same build"
         )
 
 
 class IconExclaim(Icon):
-    git = 'git@github.com:C2SM/icon-exclaim.git'
+    git = "git@github.com:C2SM/icon-exclaim.git"
 
-    maintainers('jonasjucker', 'huppd')
+    maintainers("jonasjucker", "huppd")
 
-    version('develop', branch='icon-dsl', submodules=True)
+    version("develop", branch="icon-dsl", submodules=True)
 
     # EXCLAIM-GT4Py specific features:
-    dsl_values = ('substitute', 'verify')
-    variant('dsl',
-            default='none',
-            validator=validate_variant_dsl,
-            values=('none', ) + dsl_values,
-            description='Build with GT4Py dynamical core',
-            multi=True)
+    dsl_values = ("substitute", "verify")
+    variant(
+        "dsl",
+        default="none",
+        validator=validate_variant_dsl,
+        values=("none",) + dsl_values,
+        description="Build with GT4Py dynamical core",
+        multi=True,
+    )
 
     for x in dsl_values:
-        depends_on('icon4py', type="build", when=f"dsl={x}")
+        depends_on("icon4py", type="build", when=f"dsl={x}")
 
     def configure_args(self):
         raw_args = super().configure_args()
@@ -54,16 +54,17 @@ class IconExclaim(Icon):
                 args_flags.append(a)
 
         # Handle DSL variants
-        dsl = self.spec.variants['dsl'].value
-        if dsl != ('none', ):
-            if 'substitute' in dsl:
-                args_flags.append('--enable-py2f=substitute')
-            elif 'verify' in dsl:
-                args_flags.append('--enable-py2f=verify')
+        dsl = self.spec.variants["dsl"].value
+        if dsl != ("none",):
+            if "substitute" in dsl:
+                args_flags.append("--enable-py2f=substitute")
+            elif "verify" in dsl:
+                args_flags.append("--enable-py2f=verify")
             else:
                 raise ValueError(
                     f"Unknown DSL variant '{dsl}'. "
-                    f"Valid options are: {', '.join(('none',) + dsl_values)}")
+                    f"Valid options are: {', '.join(('none',) + dsl_values)}"
+                )
 
             # Add icon4py paths and libs
             icon4py_prefix = self.spec["icon4py"].prefix
@@ -90,15 +91,14 @@ class IconExclaim(Icon):
 
     def build(self, spec, prefix):
         # Check the variant
-        dsl = self.spec.variants['dsl'].value
-        if dsl != ('none', ):
+        dsl = self.spec.variants["dsl"].value
+        if dsl != ("none",):
             file = "icon4py_bindings.f90"
 
             bindings_dir = os.path.join(self.spec["icon4py"].prefix, "src")
             src_file = os.path.join(bindings_dir, file)
 
-            build_py2f_dir = os.path.join(self.stage.source_path, "src",
-                                          "build_py2f")
+            build_py2f_dir = os.path.join(self.stage.source_path, "src", "build_py2f")
             os.makedirs(build_py2f_dir, exist_ok=True)
             dest_file = os.path.join(build_py2f_dir, file)
 

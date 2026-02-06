@@ -5,7 +5,7 @@ index 37f632d..21c27f0 100644
 @@ -37,12 +37,12 @@ factory_boy = ">=2.10.0"
  pytest = ">=5.0.0"
  typing_extensions = "*"
- 
+
 -[tool.poetry.group.dev.dependencies]
 -mypy = "^0.991"
 -tox = "^3.27.0"
@@ -18,6 +18,6 @@ index 37f632d..21c27f0 100644
 +#packaging = "^21.3"
 +#importlib-metadata = { version = "^5.0.0", python = "<3.8" }
 +#coverage = {extras = ["toml"], version = "^6.5.0"}
- 
+
  [build-system]
  requires = ["poetry-core>=1.0.0"]
