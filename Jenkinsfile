@@ -45,23 +45,6 @@ pipeline {
                             """
                         }
                     }
-                    stage('Unit Tests') {
-                        steps {
-                            sh """
-                            source .venv/bin/activate
-                            python3 test/unit_test.py
-                            """
-                        }
-                    }
-                    stage('Integration Tests') {
-                        steps {
-                            sh """
-                            source ./setup-env.sh ${upstream}
-                            source .venv/bin/activate
-                            pytest -v -n  ${NTHREADS} test/integration_test.py
-                            """
-                        }
-                    }
                     stage('System Tests') {
                         steps {
                             sh """

@@ -90,6 +90,18 @@ pre-commit run --all-files
 > * Checks YAML, formatting, and other configured hooks
 > * Shows errors/warnings for anything that cannot be auto-fixed
 
+## Testing strategy
+For more information on the different types of tests see the [README in the test directory](test/README.md).
+
+### PR tests
+To merge PRs into the `main` branch we require short (taking ~5 minutes) [unit](test/unit_test.py) and [integration](test/intergation_test.py) tests to run successfully. These tests are ran via a GitHub Action that runs automatically after any push to a PR branch.
+
+### Nightly tests
+Each day at 3 a.m. [system tests](test/common_system_test.py) run on [Säntis](test/santis_system_test.py) (via CSCS CI) and [Balfrin](test/balfrin_system_test.py) (via Jenkins) to test the installation of different packages with Spack on the systems. Since these tests may take longer to complete we decided to not require them to merge PRs, however special comments can still be used on PRs to trigger them nonetheless:
+
+- For Säntis: type `cscs-ci run` in a PR comment.
+- For Balfrin: type `launch jenkins` in a PR comment.
+
 ## Releases/Tags
 Release tags are created by the Spack-Admin GitHub Team as needed or upon request.
 The creation of a new release tag is coordinated within the admin team.
