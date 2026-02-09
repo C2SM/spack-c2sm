@@ -15,6 +15,7 @@ def validate_variant_dsl(pkg, name, value):
             'Cannot have more than one of (substitute, verify, serialize) in the same build'
         )
 
+
 class IconExclaim(IconNwp):
     """ICON - is a modeling framework for weather, climate, and environmental
     prediction.
@@ -116,4 +117,4 @@ class IconExclaim(IconNwp):
             )
 
         # Proceed with the normal build
-        super().build(spec, prefix)  
+        super().build(spec, prefix)

@@ -74,14 +74,16 @@ class IconNwp(Icon):
     variant(
         "acm-license",
         default=False,
-        description="Enable code parts that require accepting the ACM Software License",
+        description=
+        "Enable code parts that require accepting the ACM Software License",
     )
 
     # Infrastructural Features:
     variant(
         "active-target-sync",
         default=False,
-        description="Enable MPI active target mode (otherwise, passive target mode is used)",
+        description=
+        "Enable MPI active target mode (otherwise, passive target mode is used)",
     )
     variant(
         "async-io-rma",
@@ -99,7 +101,8 @@ class IconNwp(Icon):
         default="none",
         multi=True,
         values=check_variant_extra_config_args,
-        description="Inject any configure argument not yet available as variant\nUse this feature cautiously, as injecting non-variant configure arguments may potentially disrupt the build process",
+        description=
+        "Inject any configure argument not yet available as variant\nUse this feature cautiously, as injecting non-variant configure arguments may potentially disrupt the build process",
     )
 
     # Optimization Features:
@@ -112,7 +115,8 @@ class IconNwp(Icon):
     variant(
         "pgi-inlib",
         default=False,
-        description="Enable PGI/NVIDIA cross-file function inlining via an inline library",
+        description=
+        "Enable PGI/NVIDIA cross-file function inlining via an inline library",
     )
     variant("nccl", default=False, description="Enable NCCL for communication")
 
@@ -124,7 +128,8 @@ class IconNwp(Icon):
         default="none",
         multi=True,
         values=check_variant_fcgroup,
-        description="Create a Fortran compile group: GROUP;files;flag \nNote: flag can only be one single value, i.e. -O1",
+        description=
+        "Create a Fortran compile group: GROUP;files;flag \nNote: flag can only be one single value, i.e. -O1",
     )
 
     # verbosity
@@ -137,9 +142,12 @@ class IconNwp(Icon):
     variant(
         "eccodes-definitions",
         default=False,
-        description="Enable extension of eccodes with center specific definition files",
+        description=
+        "Enable extension of eccodes with center specific definition files",
     )
-    depends_on("eccodes-cosmo-resources", type="run", when="+eccodes-definitions")
+    depends_on("eccodes-cosmo-resources",
+               type="run",
+               when="+eccodes-definitions")
 
     with when("+emvorado"):
         depends_on("eccodes +fortran")
@@ -151,10 +159,10 @@ class IconNwp(Icon):
 
     # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
     for __x in Icon.serialization_values:
-        depends_on(
-            "serialbox+fortran %nvhpc", when="serialization={0} %nvhpc".format(__x)
-        )
-        depends_on("serialbox+fortran %gcc", when="serialization={0} %gcc".format(__x))
+        depends_on("serialbox+fortran %nvhpc",
+                   when="serialization={0} %nvhpc".format(__x))
+        depends_on("serialbox+fortran %gcc",
+                   when="serialization={0} %gcc".format(__x))
 
     # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
     depends_on("netcdf-fortran %nvhpc", when="%nvhpc")
@@ -177,21 +185,21 @@ class IconNwp(Icon):
         flags = defaultdict(list)
 
         for x in [
-            "dace",
-            "emvorado",
-            "art-gpl",
-            "acm-license",
-            "active-target-sync",
-            "async-io-rma",
-            "realloc-buf",
-            "parallel-netcdf",
-            "sct",
-            "loop-exchange",
-            "vectorized-lrtm",
-            "pgi-inlib",
-            "nccl",
-            "cuda-graphs",
-            "silent-rules",
+                "dace",
+                "emvorado",
+                "art-gpl",
+                "acm-license",
+                "active-target-sync",
+                "async-io-rma",
+                "realloc-buf",
+                "parallel-netcdf",
+                "sct",
+                "loop-exchange",
+                "vectorized-lrtm",
+                "pgi-inlib",
+                "nccl",
+                "cuda-graphs",
+                "silent-rules",
         ]:
             args += self.enable_or_disable(x)
 
@@ -205,13 +213,13 @@ class IconNwp(Icon):
 
         fcgroup = self.spec.variants["fcgroup"].value
         # ('none',) is the values spack assign if fcgroup is not set
-        if fcgroup != ("none",):
+        if fcgroup != ("none", ):
             args.extend(self.fcgroup_to_config_arg())
             flags.update(self.fcgroup_to_config_var())
 
         # add configure arguments not yet available as variant
         extra_config_args = self.spec.variants["extra-config-args"].value
-        if extra_config_args != ("none",):
+        if extra_config_args != ("none", ):
             for x in extra_config_args:
                 # prevent configure-args already available as variant
                 # to be set through variant extra_config_args
@@ -226,25 +234,23 @@ class IconNwp(Icon):
         # in the reversed order
         # (see https://gitlab.dkrz.de/icon/icon#icon-dependencies):
         # and for non-system directories only:
-        flags["LDFLAGS"].extend(
-            [
-                "-L{0}".format(d)
-                for d in reversed(libs.directories)
-                if not is_system_path(d)
-            ]
-        )
+        flags["LDFLAGS"].extend([
+            "-L{0}".format(d) for d in reversed(libs.directories)
+            if not is_system_path(d)
+        ])
 
         # Temporary back port fix from upstream package for building comin on cpu
         # See https://github.com/spack/spack-packages/commit/b992c44bb52d034fe57637f3da42483501442af3
         # TODO: Remove this dupplicate once spack-c2sm points to an upstream spack containing the fix.
         if self.spec.variants[
-            "gpu"
-        ].value in self.nvidia_targets or self.spec.satisfies("+comin"):
+                "gpu"].value in self.nvidia_targets or self.spec.satisfies(
+                    "+comin"):
             flags["ICON_LDFLAGS"].extend(self.compiler.stdcxx_libs)
 
-        args.extend(
-            ["{0}={1}".format(name, " ".join(value)) for name, value in flags.items()]
-        )
+        args.extend([
+            "{0}={1}".format(name, " ".join(value))
+            for name, value in flags.items()
+        ])
         args.append(f"{super_libs} {libs.link_flags}")
         return args
 
@@ -270,7 +276,7 @@ class IconNwp(Icon):
 
         for prefix in prefixes:
             if variant_string.startswith(prefix):
-                return variant_string[len(prefix) :]
+                return variant_string[len(prefix):]
 
         raise ValueError
 
@@ -283,10 +289,8 @@ class IconNwp(Icon):
             )
 
     def configure(self, spec, prefix):
-        if (
-            os.path.exists(os.path.join(self.build_directory, "icon.mk"))
-            and self.build_uses_same_spec()
-        ):
+        if (os.path.exists(os.path.join(self.build_directory, "icon.mk"))
+                and self.build_uses_same_spec()):
             tty.warn(
                 "icon.mk already present -> skip configure stage",
                 '\t delete "icon.mk" or run "make distclean" to not skip configure',
@@ -309,7 +313,8 @@ class IconNwp(Icon):
 
         is_same_spec = False
 
-        previous_spec = os.path.join(self.build_directory, ".previous_spec.yaml")
+        previous_spec = os.path.join(self.build_directory,
+                                     ".previous_spec.yaml")
 
         # not the first build in self.build_directory
         if os.path.exists(previous_spec):
@@ -318,7 +323,8 @@ class IconNwp(Icon):
                     is_same_spec = True
                 else:
                     is_same_spec = False
-                    tty.warn("Cannot skip configure phase because spec changed")
+                    tty.warn(
+                        "Cannot skip configure phase because spec changed")
 
         # first build in self.build_directory, no worries
         else:
@@ -335,7 +341,8 @@ class IconNwp(Icon):
         with working_dir(self.build_directory):
             icon_dir = self.configure_directory
             # only synchronize if out-of-source build
-            if os.path.abspath(icon_dir) != os.path.abspath(self.build_directory):
+            if os.path.abspath(icon_dir) != os.path.abspath(
+                    self.build_directory):
                 Rsync = which("rsync", required=True)
                 Rsync(
                     "-uavz",
