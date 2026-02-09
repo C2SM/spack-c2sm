@@ -2,7 +2,7 @@ from spack.package import *
 
 
 class Ghex(CMakePackage, CudaPackage, ROCmPackage):
-       """
+    """
     GHEX is a generic halo-exchange library.
 
     This Spack package was originally copied from:
