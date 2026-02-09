@@ -10,7 +10,7 @@ version/specification being installed. For this reason, C2SM has
 the following guidelines for building, running and installing your
 libraries and executables.
 
-Building 
+Building
 ^^^^^^^^
 
 There are two possible ways of building software with Spack:
@@ -20,7 +20,7 @@ Both are good, but have some special features that need to be taken into account
 Option 1: spack install
 -----------------------
 
-Every ``spack install`` command needs a version suffix, 
+Every ``spack install`` command needs a version suffix,
 i.e. ``spack install <package>@<version-suffix>``
 This version-suffix can have different meanings:
 
@@ -54,7 +54,7 @@ Here, there are three different git repositories available for the ``cosmo`` pac
 * COSMO-ORG/cosmo.git: version-suffix ``org-master``
 * MeteoSwiss-APN/cosmo.git: version-suffix ``apn-mch``
 * C2SM-RCM/cosmo.git: version-suffix ``c2sm-master``
-* C2SM-RCM/cosmo.git: version-suffix ``c2sm-features`` 
+* C2SM-RCM/cosmo.git: version-suffix ``c2sm-features``
 
 It is clear that only using ``spack install <package>@5.09`` will
 always result in the same code, all other version only point to a
@@ -79,12 +79,12 @@ since Spack will always use the local source.
 Nonetheless, it is important to use the correct version suffix, i.e. ``c2sm-master``
 for all your COSMO versions that build on top of the ``c2sm-master`` branch.
 The same applies to ``c2sm-features`` etc.
-The reason for this is that there are some patches Spack applies based on the version suffix. 
+The reason for this is that there are some patches Spack applies based on the version suffix.
 Using the wrong version suffix may break your code.
 
 ..  attention::
     You may run into a conflict if you try to install the same spec using ``dev-build``.
-    Spack will tell you that this particular spec is already installed. 
+    Spack will tell you that this particular spec is already installed.
 
 ..  tip::
     To circumvent the above conflict, you can keep your executable alive in your source folder,
@@ -141,7 +141,7 @@ The Spack commands are rather tailored for interacive use. For example,
 it is very possible for commands such as ``spack find`` or ``spack
 location`` to complain about multiple potential installed ``SPECS`` satisfying
 the command line input. For this reason, it is advisable to
-avoid spack commands in scripts. However, for ``spack find`` and 
+avoid spack commands in scripts. However, for ``spack find`` and
 ``spack location``, this should not be aproblem. For ``spack load``, we rather
 recommend to use it from the login nodes before submitting jobs, inheriting
 the environment of the running job from the environment at submission time.

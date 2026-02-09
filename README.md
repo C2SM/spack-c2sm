@@ -11,15 +11,15 @@ Spack is the package manager used by C2SM and MeteoSwiss to install and deploy s
   * [spack-c2sm v0.20.1.3](https://C2SM.github.io/spack-c2sm/v0.20.1.3)
   * [spack-c2sm v0.20.1.0](https://C2SM.github.io/spack-c2sm/v0.20.1.0)
   * [spack-c2sm v0.18.x](https://C2SM.github.io/spack-c2sm/v0.18.1.12) [deprecated]
-  
+
 **General infos about spack**
-  * [Official spack v0.21.1](https://spack.readthedocs.io/en/v0.21.1/) 
-  * [Official spack v0.20.1](https://spack.readthedocs.io/en/v0.20.1/) 
+  * [Official spack v0.21.1](https://spack.readthedocs.io/en/v0.21.1/)
+  * [Official spack v0.20.1](https://spack.readthedocs.io/en/v0.20.1/)
   * [Official spack v0.18.1](https://spack.readthedocs.io/en/v0.18.1/) [deprecated]
 
 The first 3 numbers of every spack-c2sm version match with the version of spack it uses as a submodule.
 
-## Workflow
+## Workflow for Users
 We suggest local/individual spack instances and the use of spack environments.
 
 Clone the repository
@@ -108,4 +108,3 @@ Where `SPACK_VERSION` corresponds to the upstream Spack version this repo is bas
 | [Load env](https://spack.readthedocs.io/en/v0.21.1/command_index.html?highlight=spack%20load#spack-load) | `spack load <spec>` loads run environment |
 | [Activate env](https://spack.readthedocs.io/en/v0.21.1/environments.html) | `spack env activate <env_name>` |
 | [Deactivate env](https://spack.readthedocs.io/en/v0.21.1/environments.html) | `spack deactivate` |
-

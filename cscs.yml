@@ -19,7 +19,7 @@ stages:
   script:
     - python3 -m venv .venv
     - source .venv/bin/activate
-    - pip install -r requirements.txt
+    - pip install -r requirements/test.txt
     - source .venv/bin/activate
 
 .bootstrap_spack:
@@ -63,7 +63,7 @@ Collect Logfiles:
   extends: .container-runner-lightweight-zen2
   timeout: 6h
   stage: summary
-  image: python:3.9
+  image: python:3.10
   script:
     - !reference [.setup_python, script]
     - mkdir -p log

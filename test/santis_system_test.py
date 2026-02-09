@@ -1,4 +1,3 @@
-import pytest
 from spack_commands import spack_install
 
 

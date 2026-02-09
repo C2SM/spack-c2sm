@@ -1,4 +1,3 @@
-import pytest
 from spack_commands import spack_install
 
 
@@ -17,12 +16,12 @@ def test_install_icon_conditional_dependencies():
 
 
 def test_install_yaxt():
-    spack_install('yaxt')
+    spack_install("yaxt")
 
 
 def test_install_flexpart_cosmo_icon():
-    spack_install('flexpart-cosmo-icon')
+    spack_install("flexpart-cosmo-icon")
 
 
 def test_install_flexpart_ifs():
-    spack_install('flexpart-ifs')
+    spack_install("flexpart-ifs")

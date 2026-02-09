@@ -19,9 +19,10 @@ class Oomph(CMakePackage, CudaPackage, ROCmPackage):
     git = "https://github.com/ghex-org/oomph.git"
     maintainers = ["boeschf"]
 
-    version("0.4.0",
-            sha256=
-            "e342c872dfe4832be047f172dc55c12951950c79da2630b071c61607ef913144")
+    version(
+        "0.4.0",
+        sha256="e342c872dfe4832be047f172dc55c12951950c79da2630b071c61607ef913144",
+    )
     version("main", branch="main")
 
     depends_on("c", type="build")
@@ -31,15 +32,15 @@ class Oomph(CMakePackage, CudaPackage, ROCmPackage):
     generator("ninja")
 
     backends = ("mpi", "ucx", "libfabric")
-    variant("backend",
-            default="mpi",
-            description="Transport backend",
-            values=backends,
-            multi=False)
+    variant(
+        "backend",
+        default="mpi",
+        description="Transport backend",
+        values=backends,
+        multi=False,
+    )
 
-    variant("fortran-bindings",
-            default=False,
-            description="Build Fortran bindings")
+    variant("fortran-bindings", default=False, description="Build Fortran bindings")
     with when("+fortran-bindings"):
         variant(
             "fortran-fp",
@@ -48,9 +49,7 @@ class Oomph(CMakePackage, CudaPackage, ROCmPackage):
             values=("float", "double"),
             multi=False,
         )
-        variant("fortran-openmp",
-                default=True,
-                description="Compile with OpenMP")
+        variant("fortran-openmp", default=True, description="Compile with OpenMP")
 
     variant(
         "enable-barrier",
@@ -66,12 +65,12 @@ class Oomph(CMakePackage, CudaPackage, ROCmPackage):
         depends_on("ucx+thread_multiple")
         depends_on("ucx+cuda", when="+cuda")
         depends_on("ucx+rocm", when="+rocm")
-        variant("use-pmix",
-                default="False",
-                description="Use PMIx to establish out-of-band setup")
-        variant("use-spin-lock",
-                default="False",
-                description="Use pthread spin locks")
+        variant(
+            "use-pmix",
+            default="False",
+            description="Use PMIx to establish out-of-band setup",
+        )
+        variant("use-spin-lock", default="False", description="Use pthread spin locks")
         depends_on("pmix", when="+use-pmix")
 
     libfabric_providers = ("cxi", "efa", "gni", "psm2", "tcp", "verbs")
@@ -84,8 +83,9 @@ class Oomph(CMakePackage, CudaPackage, ROCmPackage):
             multi=False,
         )
         for provider in libfabric_providers:
-            depends_on(f"libfabric fabrics={provider}",
-                       when=f"libfabric-provider={provider}")
+            depends_on(
+                f"libfabric fabrics={provider}", when=f"libfabric-provider={provider}"
+            )
 
     depends_on("mpi")
     depends_on("boost+thread")
@@ -93,12 +93,10 @@ class Oomph(CMakePackage, CudaPackage, ROCmPackage):
 
     def cmake_args(self):
         args = [
-            self.define_from_variant("OOMPH_BUILD_FORTRAN",
-                                     "fortran-bindings"),
+            self.define_from_variant("OOMPH_BUILD_FORTRAN", "fortran-bindings"),
             self.define_from_variant("OOMPH_FORTRAN_OPENMP", "fortran-openmp"),
             self.define_from_variant("OOMPH_UCX_USE_PMI", "use-pmix"),
-            self.define_from_variant("OOMPH_UCX_USE_SPIN_LOCK",
-                                     "use-spin-lock"),
+            self.define_from_variant("OOMPH_UCX_USE_SPIN_LOCK", "use-spin-lock"),
             self.define_from_variant("OOMPH_ENABLE_BARRIER", "enable-barrier"),
             self.define("OOMPH_WITH_TESTING", self.run_tests),
             self.define("OOMPH_GIT_SUBMODULE", False),
@@ -108,19 +106,25 @@ class Oomph(CMakePackage, CudaPackage, ROCmPackage):
         if self.run_tests and self.spec.satisfies("^openmpi"):
             args.append(self.define("MPIEXEC_PREFLAGS", "--oversubscribe"))
 
-        if self.spec.variants["fortran-bindings"].value == True:
+        if self.spec.variants["fortran-bindings"].value:
             args.append(
-                self.define("OOMPH_FORTRAN_FP",
-                            self.spec.variants["fortran-fp"].value))
+                self.define("OOMPH_FORTRAN_FP", self.spec.variants["fortran-fp"].value)
+            )
 
         for backend in self.backends:
             args.append(
-                self.define(f"OOMPH_WITH_{backend.upper()}",
-                            self.spec.variants["backend"].value == backend))
+                self.define(
+                    f"OOMPH_WITH_{backend.upper()}",
+                    self.spec.variants["backend"].value == backend,
+                )
+            )
 
         if self.spec.satisfies("backend=libfabric"):
             args.append(
-                self.define("OOMPH_LIBFABRIC_PROVIDER",
-                            self.spec.variants["libfabric-provider"].value))
+                self.define(
+                    "OOMPH_LIBFABRIC_PROVIDER",
+                    self.spec.variants["libfabric-provider"].value,
+                )
+            )
 
         return args
