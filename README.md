@@ -64,6 +64,33 @@ rm -rf ~/.spack
 ```
 After an update we advice to rebuild packages, preferably in a new shell so that no outdated shell variables are retained.
 
+## Workflow for Local Spack Development (Linting & Testing)
+
+Create a virtual environment
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+Install pinned dev tools
+```bash
+pip install --upgrade pip
+pip install -r requirements/dev.txt
+pip install -r requirements/test.txt
+```
+Install pre-commit hooks locally (optional)
+```bash
+pre-commit install
+```
+> Hooks run automatically on `git commit`
+
+Run all hooks manually (recommended before push)
+```bash
+pre-commit run --all-files
+```
+> * Lints and auto-fixes safe issues (like unused imports)
+> * Checks YAML, formatting, and other configured hooks
+> * Shows errors/warnings for anything that cannot be auto-fixed
+
 ## Testing strategy
 For more information on the different types of tests see the [README in the test directory](test/README.md).
 
