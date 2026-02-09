@@ -13,15 +13,16 @@ class PyInflection(PythonPackage):
 
     pypi = "inflection/inflection-0.5.1.tar.gz"
 
-    maintainers = ['samkellerhals']
+    maintainers = ["samkellerhals"]
 
-    version('0.5.1',
-            sha256=
-            '1a29730d366e996aaacffb2f1f1cb9593dc38e2ddd30c91250c6dde09ea9b417')
+    version(
+        "0.5.1",
+        sha256="1a29730d366e996aaacffb2f1f1cb9593dc38e2ddd30c91250c6dde09ea9b417",
+    )
 
-    depends_on('python@3.5:', type=('build', 'run'))
-    depends_on('py-isort', type=('build', 'run'))
-    depends_on('py-flake8', type=('build', 'run'))
-    depends_on('py-pytest', type=('build', 'run'))
+    depends_on("python@3.5:", type=("build", "run"))
+    depends_on("py-isort", type=("build", "run"))
+    depends_on("py-flake8", type=("build", "run"))
+    depends_on("py-pytest", type=("build", "run"))
 
-    depends_on('py-setuptools', type='build')
+    depends_on("py-setuptools", type="build")

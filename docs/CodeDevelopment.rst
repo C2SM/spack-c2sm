@@ -8,12 +8,12 @@ Environments with Spack develop
 -------------------------------
 
 Environments sit in a folder with a name and are defined in a ``spack.yaml`` file.
-For more information about environments in general, consider reading the 
+For more information about environments in general, consider reading the
 `official Spack docs <https://spack.readthedocs.io/en/latest/environments.html>`__.
 
 .. code-block:: yaml
     :caption: Example environment for ICON
-  
+
     # This is a Spack Environment file.
     #
     # It describes a set of packages to be installed, along with
@@ -47,7 +47,7 @@ To activate a Spack environment, type
 To install the environment, type
 
 .. code-block:: console
-    
+
     $ spack install
 
 To deactivate a Spack environment, type
@@ -56,7 +56,7 @@ To deactivate a Spack environment, type
 
     $ spack env deactivate
 
-Most of the Spack commands are sensitive to environments, see 
+Most of the Spack commands are sensitive to environments, see
 `Spack docs <https://spack.readthedocs.io/en/latest/environments.html#environment-sensitive-commands>`__.
 
 Plain dev-build
