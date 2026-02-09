@@ -130,7 +130,7 @@ To activate the Spack environment, type
 To install the environment and so ICON, type
 
 .. code-block:: console
-    
+
     $ spack develop --path $(pwd) icon-nwp@develop
     $ spack install
 
@@ -161,10 +161,10 @@ By executing the commands above, spack will add some lines directly into ``spack
 
 .. code-block:: yaml
 
-  spack:                                                                                                                                                                                                                          
-    packages:                                                                                                                                                                                                                     
-      icon-nwp:                                                                                                                                                                                                                       
-        package_attributes:                                                                                                                                                                                                       
+  spack:
+    packages:
+      icon-nwp:
+        package_attributes:
           build_directory: /scratch/mch/juckerj/icon-nwp/cpu
 
 Any further ``spack install`` command will use the build directory specified in the ``spack.yaml`` file.

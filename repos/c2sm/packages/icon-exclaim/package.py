@@ -25,9 +25,9 @@ class IconExclaim(IconNwp):
     This is for additional options from the upstream ICON-NWP for exclaime
     specific features."""
 
-    git = 'git@github.com:C2SM/icon-exclaim.git'
+    git = "git@github.com:C2SM/icon-exclaim.git"
 
-    maintainers('stelliom', 'leclairm', 'huppd')
+    maintainers("stelliom", "leclairm", "huppd")
 
     version("develop", branch="icon-dsl", submodules=True)
 

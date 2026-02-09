@@ -20,11 +20,13 @@ class Ghex(CMakePackage, CudaPackage, ROCmPackage):
     generator("ninja")
 
     backends = ("mpi", "ucx", "libfabric")
-    variant("backend",
-            default="mpi",
-            description="Transport backend",
-            values=backends,
-            multi=False)
+    variant(
+        "backend",
+        default="mpi",
+        description="Transport backend",
+        values=backends,
+        multi=False,
+    )
     variant("xpmem", default=False, description="Use xpmem shared memory")
     variant("python", default=True, description="Build Python bindings")
 
