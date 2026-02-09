@@ -106,8 +106,8 @@ class Icon4py(Package):
             *no_install_options(no_install),
             extra_env={
                 "VIRTUAL_ENV": str(venv_path),
-                "CC": "gcc",
-                "CXX": "g++",
+                "CC": self.compiler.cc,
+                "CXX": self.compiler.cxx,
             },
         )
 
@@ -126,8 +126,8 @@ class Icon4py(Package):
             prefix.src,
             extra_env={
                 "VIRTUAL_ENV": str(venv_path),
-                "CC": "gcc",
-                "CXX": "g++",
+                "CC": self.compiler.cc,
+                "CXX": self.compiler.cxx,
             },
         )
 
