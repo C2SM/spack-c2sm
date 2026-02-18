@@ -1,11 +1,10 @@
-from spack.pkg.builtin.icon import Icon as SpackIcon
 import os
 import re
 import glob
 from collections import defaultdict
-from llnl.util import tty
-from spack.util.environment import is_system_path
-import spack.error as error
+
+from spack_repo.builtin.packages.icon.package import Icon
+from spack.package import *
 
 
 def check_variant_fcgroup(fcgroup):
@@ -29,58 +28,28 @@ def check_variant_extra_config_args(extra_config_arg):
         return False
 
 
-class Icon(SpackIcon):
+class IconNwp(Icon):
+    """ICON - is a modeling framework for weather, climate, and environmental
+    prediction.
+    It solves the full three-dimensional non-hydrostatic and compressible
+    Navier-Stokes equations on an icosahedral grid and allows seamless
+    predictions from local to global scales.
+    This is for additional options from the upstream ICON for NWP specific features."""
+
+    homepage = "https://gitlab.dkrz.de/icon/icon-nwp"
     git = "git@gitlab.dkrz.de:icon/icon-nwp.git"
+    submodules = True
 
-    maintainers("huppd")
+    maintainers("stelliom", "leclairm", "huppd")
 
-    version("develop", submodules=True)
-    version(
-        "icon-2025.10",
-        tag="icon-2025.10",
-        git="git@gitlab.dkrz.de:icon/icon.git",
-        submodules=True,
-    )
-    version(
-        "icon-2025.04-2",
-        tag="icon-2025.04-2",
-        git="git@gitlab.dkrz.de:icon/icon.git",
-        submodules=True,
-    )
-    version(
-        "icon-2025.04-1",
-        tag="icon-2025.04-1",
-        git="git@gitlab.dkrz.de:icon/icon.git",
-        submodules=True,
-    )
-    version(
-        "icon-2025.04",
-        tag="icon-2025.04",
-        git="git@gitlab.dkrz.de:icon/icon.git",
-        submodules=True,
-    )
-    version(
-        "2024.10",
-        tag="icon-2024.10",
-        git="git@gitlab.dkrz.de:icon/icon.git",
-        submodules=True,
-    )
-    version(
-        "2024.01-1",
-        tag="icon-2024.01-1",
-        git="git@gitlab.dkrz.de:icon/icon.git",
-        submodules=True,
-    )
-    version("2024.10-mch-1.0", tag="icon-2024.10-mch-1.0", submodules=True)
-    version("2024.01-mch-2.1", tag="icon-2024.01-mch-2.1", submodules=True)
-    version("2024.01-mch-2.0", tag="icon-2024.01-mch-2.0", submodules=True)
-    version("2.6.6-mch2b", tag="icon-nwp/icon-2.6.6-mch2b", submodules=True)
-    version("2.6.6-mch2a", tag="icon-nwp/icon-2.6.6-mch2a", submodules=True)
-    version("nwp-master", submodules=True)
+    version("develop", branch="master")
+    version("main", branch="master")
 
-    # The variants' default follow those of ICON
-    # as described here
-    # https://gitlab.dkrz.de/icon/icon/-/blob/icon-2024.01/configure?ref_type=tags#L1492-1638
+    version("2024.10-mch-1.0", tag="icon-2024.10-mch-1.0", preferred=True)
+    version("2024.01-mch-2.1", tag="icon-2024.01-mch-2.1")
+    version("2024.01-mch-2.0", tag="icon-2024.01-mch-2.0")
+    version("2.6.6-mch2b", tag="icon-nwp/icon-2.6.6-mch2b")
+    version("2.6.6-mch2a", tag="icon-nwp/icon-2.6.6-mch2a")
 
     # Model Features:
     variant(
@@ -164,13 +133,13 @@ class Icon(SpackIcon):
         default=True,
         description="Enable silent-rules for build-process",
     )
+
     variant(
         "eccodes-definitions",
         default=False,
         description="Enable extension of eccodes with center specific definition files",
     )
-
-    depends_on("cosmo-eccodes-definitions", type="run", when="+eccodes-definitions")
+    depends_on("eccodes-cosmo-resources", type="run", when="+eccodes-definitions")
 
     with when("+emvorado"):
         depends_on("eccodes +fortran")
@@ -181,7 +150,7 @@ class Icon(SpackIcon):
         depends_on("eccodes %gcc", when="%gcc")
 
     # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
-    for __x in SpackIcon.serialization_values:
+    for __x in Icon.serialization_values:
         depends_on(
             "serialbox+fortran %nvhpc", when="serialization={0} %nvhpc".format(__x)
         )

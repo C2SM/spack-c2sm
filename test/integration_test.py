@@ -21,15 +21,17 @@ def test_spec(package: str):
 
 
 def test_icon_serialization():
-    spack_spec("icon serialization=create")
+    spack_spec("icon-nwp serialization=create")
 
 
 def test_icon_fcgroup():
-    spack_spec("icon fcgroup=DACE.externals/dace_icon.-O1")
+    spack_spec("icon-nwp fcgroup=DACE.externals/dace_icon.-O1")
 
 
 def test_icon_extra_config_args():
-    spack_spec("icon extra-config-args=--disable-new_feature,--enable-old_config_arg")
+    spack_spec(
+        "icon-nwp extra-config-args=--disable-new_feature,--enable-old_config_arg"
+    )
 
 
 def test_compilers():

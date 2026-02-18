@@ -43,7 +43,7 @@ To get information about a package, query Spack
 
   $ spack info <package>
   # e.g.
-  $ spack info icon
+  $ spack info icon-nwp
 
 To see what ``spack install`` would install, ask for a spec
 
@@ -51,7 +51,7 @@ To see what ``spack install`` would install, ask for a spec
 
   $ spack spec <variant>
   # e.g.
-  $ spack spec icon @master +ocean
+  $ spack spec icon-nwp @master +ocean
 
 An unspecfied variant (e.g. ``ocean``) can be concretized to ANY of its values. Spack isn't required to use the default value when a variant is unspecified. The default value only serves as a tiebreaker.
 
@@ -61,7 +61,7 @@ To install a package
 
   $ spack install <variant>
   # e.g.
-  $ spack install icon @master %gcc +ocean
+  $ spack install icon-nwp @master %gcc +ocean
 
 To locate your install, query Spack
 
@@ -131,7 +131,7 @@ To install the environment and so ICON, type
 
 .. code-block:: console
 
-    $ spack develop --path $(pwd) icon@develop
+    $ spack develop --path $(pwd) icon-nwp@develop
     $ spack install
 
 Example to build ICON for CPU with NVHPC on Balfrin:
@@ -140,7 +140,7 @@ Example to build ICON for CPU with NVHPC on Balfrin:
 
     $ SPACK_TAG=$(cat "config/cscs/SPACK_TAG_MCH")
     $ spack env activate -d config/cscs/spack/mch_cpu_double
-    $ spack develop --path $(pwd) icon@develop
+    $ spack develop --path $(pwd) icon-nwp@develop
     $ spack install
 
 ..  attention::
@@ -154,7 +154,7 @@ Out-of-source builds are possible as follows:
     $ mkdir cpu
     $ spack env activate -d config/cscs/spack/mch_cpu_double
     $ # tell spack to build icon in folder cpu
-    $ spack develop --path $(pwd) --build-directory cpu icon@develop
+    $ spack develop --path $(pwd) --build-directory cpu icon-nwp@develop
     $ spack install
 
 By executing the commands above, spack will add some lines directly into ``spack.yaml``:
@@ -163,7 +163,7 @@ By executing the commands above, spack will add some lines directly into ``spack
 
   spack:
     packages:
-      icon:
+      icon-nwp:
         package_attributes:
           build_directory: /scratch/mch/juckerj/icon-nwp/cpu
 

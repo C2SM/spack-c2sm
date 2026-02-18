@@ -1,7 +1,10 @@
-from spack.pkg.c2sm.icon import Icon
 import shutil
 import os
+
 import spack.error as error
+from spack.package import *
+
+from spack.pkg.c2sm.icon_nwp import IconNwp
 
 
 def validate_variant_dsl(pkg, name, value):
@@ -13,10 +16,18 @@ def validate_variant_dsl(pkg, name, value):
         )
 
 
-class IconExclaim(Icon):
+class IconExclaim(IconNwp):
+    """ICON - is a modeling framework for weather, climate, and environmental
+    prediction.
+    It solves the full three-dimensional non-hydrostatic and compressible
+    Navier-Stokes equations on an icosahedral grid and allows seamless
+    predictions from local to global scales.
+    This is for additional options from the upstream ICON-NWP for exclaime
+    specific features."""
+
     git = "git@github.com:C2SM/icon-exclaim.git"
 
-    maintainers("jonasjucker", "huppd")
+    maintainers("stelliom", "leclairm", "huppd")
 
     version("develop", branch="icon-dsl", submodules=True)
 

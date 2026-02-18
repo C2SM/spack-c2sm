@@ -16,7 +16,7 @@ def translate_arch(arch_name: str) -> str:
         return "aarch64"
     if arch_name in ["m1", "m2", "neoverse_v2"]:
         return "aarch64"
-    if arch_name in ["zen3"]:
+    if arch_name in ["zen3", "icelake", "sapphirerapids", "skylake"]:
         return "x86_64"
     return "aarch64"
 

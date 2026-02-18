@@ -21,6 +21,7 @@ class Ghex(CMakePackage, CudaPackage, ROCmPackage):
     version("0.3.0", tag="v0.3.0", submodules=True)
     version("master", branch="master", submodules=True)
 
+    depends_on("c", type="build")
     depends_on("cxx", type="build")
 
     generator("ninja")
@@ -86,7 +87,7 @@ class Ghex(CMakePackage, CudaPackage, ROCmPackage):
             arch_str = ";".join(spec.variants["cuda_arch"].value)
             args.append(self.define("CMAKE_CUDA_ARCHITECTURES", arch_str))
             args.append(self.define("GHEX_USE_GPU", True))
-            args.append(self.define("GHEX_GPU_TYPE", "NVIDIA"))
+            args.append(self.define("GHEX_GPU_TYPE", "CUDA"))
 
         if "+rocm" in spec and spec.variants["amdgpu_target"].value != "none":
             arch_str = ";".join(spec.variants["amdgpu_target"].value)

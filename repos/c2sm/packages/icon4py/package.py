@@ -2,8 +2,8 @@ import json
 import os
 import pathlib
 
-from llnl.util import tty
-from spack import *
+from spack.package import *
+from spack_repo.builtin.build_systems.generic import Package
 
 
 class Icon4py(Package):
@@ -14,11 +14,6 @@ class Icon4py(Package):
 
     # --- Versions ---
     version("main", branch="main")
-    version(
-        "0.0.14",
-        sha256="8aadb6fe7af55fc41d09daa4e74739bd7ab01b4e",
-        extension="zip",
-    )
 
     def url_for_version(self, version):
         return f"https://github.com/C2SM/icon4py/archive/refs/tags/v{version}.zip"
@@ -34,7 +29,10 @@ class Icon4py(Package):
 
     # --- Dependencies ---
     extends("python")
-    depends_on("python@3.11:")
+    depends_on("python@3.11:3.12")
+
+    depends_on("c", type="build")
+    depends_on("cxx", type="build")
 
     depends_on("git")
     depends_on("uv@0.7:", type="build")
@@ -48,6 +46,9 @@ class Icon4py(Package):
     with when("+cuda"):
         depends_on("py-cupy +cuda")
         depends_on("ghex +python +cuda")
+
+    with when("~cuda"):
+        depends_on("ghex +python ~cuda")
 
     # --- Environment setup ---
     def setup_build_environment(self, env):
@@ -83,24 +84,30 @@ class Icon4py(Package):
         tty.msg("Grabbing Spack-installed packages (distributions)")
         pip = Executable(venv_path.bin.pip)
         spack_installed = get_installed_pkg(pip)
+        tty.msg(f"Found spack_installed packages: {spack_installed}")
+
+        # --- Handle CUDA vs non-CUDA extras ---
+        extras = ["all"]
+        no_install = [*spack_installed, "ghex"]
+
+        if "+cuda" in spec:
+            extras.append("cuda12")
+            no_install.append("cupy-cuda12x")
 
         tty.msg("Installing missing packages via uv sync")
         uv(
             "sync",
             "--active",
-            "--extra",
-            "all",
-            "--extra",
-            "cuda12",
+            *sum([["--extra", e] for e in extras], []),
             "--inexact",
             "--no-editable",
             "--python",
             str(venv_path.bin.python),
-            *no_install_options([*spack_installed, "cupy-cuda12x", "ghex"]),
+            *no_install_options(no_install),
             extra_env={
                 "VIRTUAL_ENV": str(venv_path),
-                "CC": "gcc",
-                "CXX": "g++",
+                "CC": self.compiler.cc,
+                "CXX": self.compiler.cxx,
             },
         )
 
@@ -119,8 +126,8 @@ class Icon4py(Package):
             prefix.src,
             extra_env={
                 "VIRTUAL_ENV": str(venv_path),
-                "CC": "gcc",
-                "CXX": "g++",
+                "CC": self.compiler.cc,
+                "CXX": self.compiler.cxx,
             },
         )
 
