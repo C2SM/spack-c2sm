@@ -1,4 +1,5 @@
 repos:
   c2sm: $spack/../repos/c2sm
   builtin:
+    git: https://github.com/spack/spack-packages.git
     commit: 5e506ab69aed5199b6d01083016fa592f4fb4296
