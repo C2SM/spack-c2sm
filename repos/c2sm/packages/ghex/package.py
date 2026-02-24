@@ -20,7 +20,12 @@ class Ghex(CMakePackage, CudaPackage, ROCmPackage):
     version("0.4.0", tag="v0.4.0", submodules=True)
     version("0.3.0", tag="v0.3.0", submodules=True)
     version("master", branch="master", submodules=True)
-    version("async-mpi", git="https://github.com/msimberg/GHEX.git", branch="async-mpi", submodules=True)
+    version(
+        "async-mpi",
+        git="https://github.com/msimberg/GHEX.git",
+        branch="async-mpi",
+        submodules=True,
+    )
 
     depends_on("cxx", type="build")
 
