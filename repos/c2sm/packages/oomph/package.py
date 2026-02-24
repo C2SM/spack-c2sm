@@ -24,6 +24,7 @@ class Oomph(CMakePackage, CudaPackage, ROCmPackage):
         sha256="e342c872dfe4832be047f172dc55c12951950c79da2630b071c61607ef913144",
     )
     version("main", branch="main")
+    version("async-mpi", commit="2814e2a7d66b96737f1845c510dadd1b816ab5eb")
 
     depends_on("cxx", type="build")
     depends_on("fortran", type="build", when="+fortran-bindings")
@@ -57,6 +58,7 @@ class Oomph(CMakePackage, CudaPackage, ROCmPackage):
     )
 
     depends_on("hwmalloc+cuda", when="+cuda")
+    depends_on("hwmalloc@async-mpi", when="@async-mpi")
     depends_on("hwmalloc+rocm", when="+rocm")
     depends_on("hwmalloc", when="~cuda~rocm")
 
