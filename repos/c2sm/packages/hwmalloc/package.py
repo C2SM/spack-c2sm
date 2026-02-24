@@ -51,7 +51,7 @@ class Hwmalloc(CMakePackage, CudaPackage, ROCmPackage):
     )
     variant("logging", default=False, description="print logging info to cerr")
 
-    patch("cmake_install_path.patch", when="@:0.3.0", level=1)
+    patch("cmake_install_path.patch", when="@0:0.3.0", level=1)
 
     def cmake_args(self):
         args = [
