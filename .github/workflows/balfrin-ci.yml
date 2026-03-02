@@ -4,7 +4,7 @@
 #  Please, refer to the LICENSE file in the root directory.
 #  SPDX-License-Identifier: BSD-3-Clause
 #
-name: CI
+name: Balfrin-CI
 
 # Controls when the workflow will run
 on:
@@ -40,7 +40,7 @@ jobs:
       - name: install python packages
         run: |
           python -m pip install --upgrade pip
-          pip install -r ci-requirements.txt
+          pip install -r requirements/ci.txt
 
       - name: Run testing script
         env:
