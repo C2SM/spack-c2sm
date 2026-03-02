@@ -47,7 +47,9 @@ def check_mandatory_env_var(env_var):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--system", default=os.environ.get("FIRECREST_SYSTEM"), help="choose system to run"
+        "--system",
+        default=os.environ.get("FIRECREST_SYSTEM"),
+        help="choose system to run",
     )
     parser.add_argument("--branch", default="main", help="branch to be tested")
     parser.add_argument("--account", default="csstaff", help="branch to be tested")
@@ -85,13 +87,11 @@ def main():
         print(f"System `{system_name}` is not available")
         exit(1)
 
-    print(f'System info: {system_state}')
+    print(f"System info: {system_state}")
 
     # scheduler information
     scheduler_health_info = select_dict_by_name(
-        "scheduler",
-        system_state["servicesHealth"],
-        "serviceType"
+        "scheduler", system_state["servicesHealth"], "serviceType"
     )
 
     if scheduler_health_info["healthy"]:
@@ -118,34 +118,35 @@ def main():
                 print(f"Job is in final state: {state}")
                 break
 
-            print(
-                f"Status of the job is {state}, "
-                f"will try again in 10 seconds"
-            )
+            print(f"Status of the job is {state}, will try again in 10 seconds")
             time.sleep(10)
 
-        stdout_file_path = os.path.join(SYSTEM_WORKING_DIR, 'job.out')
-        stderr_file_path = os.path.join(SYSTEM_WORKING_DIR, 'job.err')
+        stdout_file_path = os.path.join(SYSTEM_WORKING_DIR, "job.out")
+        stderr_file_path = os.path.join(SYSTEM_WORKING_DIR, "job.err")
 
         print(f"\nSTDOUT in {stdout_file_path}")
-        stdout_content = client.tail(system_name, path=stdout_file_path, num_lines=1000)["content"]
+        stdout_content = client.tail(
+            system_name, path=stdout_file_path, num_lines=1000
+        )["content"]
         print(stdout_content)
 
         print(f"\nSTDERR in {stderr_file_path}")
-        stderr_content = client.tail(system_name, path=stderr_file_path, num_lines=1000)["content"]
+        stderr_content = client.tail(
+            system_name, path=stderr_file_path, num_lines=1000
+        )["content"]
         print(stderr_content)
 
         # Some sanity checks:
         if poll_result[0]["status"]["state"] != "COMPLETED":
-            print(f"Job was not successful, status: {poll_result[0]['status']['state']}")
+            print(
+                f"Job was not successful, status: {poll_result[0]['status']['state']}"
+            )
             exit(1)
 
         util.check_output(stdout_content)
 
     else:
-        print(
-            f"Scheduler of system `{system_name}` is not healthy"
-        )
+        print(f"Scheduler of system `{system_name}` is not healthy")
         exit(1)
 
 
