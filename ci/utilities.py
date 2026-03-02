@@ -31,6 +31,9 @@ def create_batch_script(
 # rm -rf firecrest-ci
 git clone -b {branch} {repo} firecrest-ci
 cd firecrest-ci
+realpath .
+ls .
+
 """
 
     if custom_modules:
@@ -38,15 +41,16 @@ cd firecrest-ci
 
     script += """
 python -m venv testing-venv
-. ./testing-venv/bin/activate
+source ./testing-venv/bin/activate
 python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
+python -m pip install -r requirements/dev.txt
+python -m pip install -r requirements/test.txt
 
 python --version
 
-srun python -m timeit --setup='import mylib; import numpy as np; \
-    p = np.arange(1000); q = np.arange(1000) + 2' \
-    'mylib.simple_numpy_dist(p, q)'
+# srun python -m timeit --setup='import mylib; import numpy as np; \
+#     p = np.arange(1000); q = np.arange(1000) + 2' \
+#     'mylib.simple_numpy_dist(p, q)'
 """
 
     return script

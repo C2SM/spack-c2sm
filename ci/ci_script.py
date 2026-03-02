@@ -74,13 +74,13 @@ def main():
     system_names = [system["name"] for system in all_systems]
     print(f"Available systems: {', '.join(system_names)}")
 
-    # script_content = util.create_batch_script(
-    #     repo=args.repo,
-    #     num_nodes=2,
-    #     account=args.account,
-    #     custom_modules=["cray", "cray-python"],
-    #     branch=ref,
-    # )
+    script_content = util.create_batch_script(
+        repo=args.repo,
+        # num_nodes=2,
+        # account=args.account,
+        # custom_modules=["cray", "cray-python"],
+        branch=ref,
+    )
 
     # system_state = select_dict_by_name(system_name, all_systems)
     # if not system_state:
