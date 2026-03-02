@@ -10,7 +10,7 @@ def create_batch_script(
     repo, num_nodes=1, account=None, custom_modules=None, branch="main", constraint=None
 ):
     script = f"""#!/bin/bash -l
-#SBATCH --job-name="ci_job"
+#SBATCH --job-name="ci_job-spack-c2sm"
 #SBATCH --output=job.out
 #SBATCH --error=job.err
 #SBATCH --time=0:10:0
@@ -43,14 +43,14 @@ ls .
 python -m venv testing-venv
 source ./testing-venv/bin/activate
 python -m pip install --upgrade pip
-python -m pip install -r requirements/dev.txt
 python -m pip install -r requirements/test.txt
 
 python --version
 
-# srun python -m timeit --setup='import mylib; import numpy as np; \
-#     p = np.arange(1000); q = np.arange(1000) + 2' \
-#     'mylib.simple_numpy_dist(p, q)'
+source ./setup-env.sh
+spack spec gnuconfig
+
+srun pytest -v -n 64 test/common_system_test.py test/balfrin_system_test.py 
 """
 
     return script
