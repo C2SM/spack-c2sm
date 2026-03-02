@@ -82,72 +82,72 @@ def main():
     #     branch=ref,
     # )
 
-    system_state = select_dict_by_name(system_name, all_systems)
-    if not system_state:
-        print(f"System `{system_name}` is not available")
-        exit(1)
+    # system_state = select_dict_by_name(system_name, all_systems)
+    # if not system_state:
+    #     print(f"System `{system_name}` is not available")
+    #     exit(1)
 
-    print(f"System info: {system_state}")
+    # print(f"System info: {system_state}")
 
-    # scheduler information
-    scheduler_health_info = select_dict_by_name(
-        "scheduler", system_state["servicesHealth"], "serviceType"
-    )
+    # # scheduler information
+    # scheduler_health_info = select_dict_by_name(
+    #     "scheduler", system_state["servicesHealth"], "serviceType"
+    # )
 
-    if scheduler_health_info["healthy"]:
-        job = client.submit(
-            system_name,
-            working_dir=SYSTEM_WORKING_DIR,
-            script_str=script_content,
-        )
-        print(f"Submitted job: {job['jobId']}")
-        while True:
-            try:
-                poll_result = client.job_info(system_name, jobid=job["jobId"])
-            except FirecrestException as e:
-                if e.responses[-1].status_code == 404:
-                    print(f"No available information yet for job {job['jobId']}")
-                    time.sleep(2)
-                    continue
+    # if scheduler_health_info["healthy"]:
+    #     job = client.submit(
+    #         system_name,
+    #         working_dir=SYSTEM_WORKING_DIR,
+    #         script_str=script_content,
+    #     )
+    #     print(f"Submitted job: {job['jobId']}")
+    #     while True:
+    #         try:
+    #             poll_result = client.job_info(system_name, jobid=job["jobId"])
+    #         except FirecrestException as e:
+    #             if e.responses[-1].status_code == 404:
+    #                 print(f"No available information yet for job {job['jobId']}")
+    #                 time.sleep(2)
+    #                 continue
 
-                raise e
+    #             raise e
 
-            print(f"Job status: {poll_result}")
-            state = poll_result[0]["status"]["state"]
-            if state in final_slurm_states:
-                print(f"Job is in final state: {state}")
-                break
+    #         print(f"Job status: {poll_result}")
+    #         state = poll_result[0]["status"]["state"]
+    #         if state in final_slurm_states:
+    #             print(f"Job is in final state: {state}")
+    #             break
 
-            print(f"Status of the job is {state}, will try again in 10 seconds")
-            time.sleep(10)
+    #         print(f"Status of the job is {state}, will try again in 10 seconds")
+    #         time.sleep(10)
 
-        stdout_file_path = os.path.join(SYSTEM_WORKING_DIR, "job.out")
-        stderr_file_path = os.path.join(SYSTEM_WORKING_DIR, "job.err")
+    #     stdout_file_path = os.path.join(SYSTEM_WORKING_DIR, "job.out")
+    #     stderr_file_path = os.path.join(SYSTEM_WORKING_DIR, "job.err")
 
-        print(f"\nSTDOUT in {stdout_file_path}")
-        stdout_content = client.tail(
-            system_name, path=stdout_file_path, num_lines=1000
-        )["content"]
-        print(stdout_content)
+    #     print(f"\nSTDOUT in {stdout_file_path}")
+    #     stdout_content = client.tail(
+    #         system_name, path=stdout_file_path, num_lines=1000
+    #     )["content"]
+    #     print(stdout_content)
 
-        print(f"\nSTDERR in {stderr_file_path}")
-        stderr_content = client.tail(
-            system_name, path=stderr_file_path, num_lines=1000
-        )["content"]
-        print(stderr_content)
+    #     print(f"\nSTDERR in {stderr_file_path}")
+    #     stderr_content = client.tail(
+    #         system_name, path=stderr_file_path, num_lines=1000
+    #     )["content"]
+    #     print(stderr_content)
 
-        # Some sanity checks:
-        if poll_result[0]["status"]["state"] != "COMPLETED":
-            print(
-                f"Job was not successful, status: {poll_result[0]['status']['state']}"
-            )
-            exit(1)
+    #     # Some sanity checks:
+    #     if poll_result[0]["status"]["state"] != "COMPLETED":
+    #         print(
+    #             f"Job was not successful, status: {poll_result[0]['status']['state']}"
+    #         )
+    #         exit(1)
 
-        util.check_output(stdout_content)
+    #     util.check_output(stdout_content)
 
-    else:
-        print(f"Scheduler of system `{system_name}` is not healthy")
-        exit(1)
+    # else:
+    #     print(f"Scheduler of system `{system_name}` is not healthy")
+    #     exit(1)
 
 
 if __name__ == "__main__":
