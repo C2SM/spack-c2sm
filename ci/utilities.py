@@ -13,7 +13,7 @@ def create_batch_script(
 #SBATCH --job-name="ci_job-spack-c2sm"
 #SBATCH --output=job.out
 #SBATCH --error=job.err
-#SBATCH --time=0:10:0
+#SBATCH --time=0:50:00
 #SBATCH --nodes={num_nodes}
 """
 
