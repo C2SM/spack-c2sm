@@ -16,8 +16,8 @@ class Icon4py(Package):
     version("main", branch="main")
     version(
         "0.0.15",
-        # commit="944e2db1874fd3082006fbc9f911363ad87e1d23"
-        commit="9a7f7d68f0e8be18f746044879c49e4d87e20ff6"
+        commit="944e2db1874fd3082006fbc9f911363ad87e1d23"
+        # commit="9a7f7d68f0e8be18f746044879c49e4d87e20ff6"
     )
     version(
         "0.0.14",
