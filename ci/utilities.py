@@ -50,7 +50,7 @@ python --version
 source ./setup-env.sh
 spack spec gnuconfig
 
-srun pytest -v -n 64 test/common_system_test.py test/balfrin_system_test.py 
+srun pytest -v -n 64 test/common_system_test.py test/balfrin_system_test.py
 """
 
     return script
