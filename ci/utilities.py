@@ -33,8 +33,6 @@ if [ -d "firecrest-ci" ]; then
 fi
 git clone --depth 1 --shallow-submodules --recurse-submodules -b {branch} {repo} firecrest-ci
 cd firecrest-ci
-realpath .
-ls .
 
 module use /mch-environment/v8/modules
 module load python/3.11.7
