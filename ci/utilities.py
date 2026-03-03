@@ -28,12 +28,14 @@ def create_batch_script(
 # Clone command will fail if the directory already exists
 # Remove this first if you are using the same working directory
 # every time
-# rm -rf firecrest-ci
+rm -rf firecrest-ci
 git clone -b {branch} {repo} firecrest-ci
 cd firecrest-ci
 realpath .
 ls .
 
+module use /mch-environment/v8/modules
+module load python/3.11.7
 """
 
     if custom_modules:
