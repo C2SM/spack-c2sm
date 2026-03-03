@@ -19,7 +19,7 @@ class IconExclaim(Icon):
     maintainers("huppd", "leclairm", "stelliom")
 
     version("develop", branch="icon-dsl", submodules=True)
-    version("0.0.15", commit="9a7f7d68f0e8be18f746044879c49e4d87e20ff6", submodules=True)
+    version("0.3.0", commit="9a7f7d68f0e8be18f746044879c49e4d87e20ff6", submodules=True)
 
     # EXCLAIM-GT4Py specific features:
     dsl_values = ("substitute", "verify")
@@ -34,7 +34,7 @@ class IconExclaim(Icon):
 
     for x in dsl_values:
         depends_on("icon4py", type="build", when=f"dsl={x}")
-        depends_on("icon4py@0.0.15", when="@0.0.15")
+        depends_on("icon4py@0.0.15", when="@0.3.0")
 
     def configure_args(self):
         raw_args = super().configure_args()
