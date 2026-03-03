@@ -35,9 +35,9 @@ class IconExclaim(Icon):
         multi=True,
     )
 
+    depends_on("icon4py@0.0.15", when="@0.3.0")
     for x in dsl_values:
         depends_on("icon4py", type="build", when=f"dsl={x}")
-        depends_on("icon4py@0.0.15", when="@0.3.0")
 
     def configure_args(self):
         raw_args = super().configure_args()
