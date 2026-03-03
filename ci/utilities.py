@@ -28,7 +28,9 @@ def create_batch_script(
 # Clone command will fail if the directory already exists
 # Remove this first if you are using the same working directory
 # every time
-rm -rf firecrest-ci
+if [ -d "firecrest-ci" ]; then
+    rm -rf firecrest-ci
+fi
 git clone --depth 1 --shallow-submodules --recurse-submodules -b {branch} {repo} firecrest-ci
 cd firecrest-ci
 realpath .
