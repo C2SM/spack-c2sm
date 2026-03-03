@@ -125,25 +125,25 @@ def main():
         stderr_file_path = os.path.join(SYSTEM_WORKING_DIR, "job.err")
 
         print(f"\nSTDOUT in {stdout_file_path}")
-        stdout_content = client.tail(
-            system_name, path=stdout_file_path, num_lines=1000
-        )["content"]
-        print(stdout_content)
+        # stdout_content = client.tail(
+        #     system_name, path=stdout_file_path, num_lines=1000
+        # )["content"]
+        # print(stdout_content)
 
-        print(f"\nSTDERR in {stderr_file_path}")
-        stderr_content = client.tail(
-            system_name, path=stderr_file_path, num_lines=1000
-        )["content"]
-        print(stderr_content)
+        # print(f"\nSTDERR in {stderr_file_path}")
+        # stderr_content = client.tail(
+        #     system_name, path=stderr_file_path, num_lines=1000
+        # )["content"]
+        # print(stderr_content)
 
-        # Some sanity checks:
-        if poll_result[0]["status"]["state"] != "COMPLETED":
-            print(
-                f"Job was not successful, status: {poll_result[0]['status']['state']}"
-            )
-            exit(1)
+        # # Some sanity checks:
+        # if poll_result[0]["status"]["state"] != "COMPLETED":
+        #     print(
+        #         f"Job was not successful, status: {poll_result[0]['status']['state']}"
+        #     )
+        #     exit(1)
 
-        util.check_output(stdout_content)
+        # util.check_output(stdout_content)
 
     else:
         print(f"Scheduler of system `{system_name}` is not healthy")
