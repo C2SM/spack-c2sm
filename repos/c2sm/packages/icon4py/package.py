@@ -16,7 +16,6 @@ class Icon4py(Package):
     version("main", branch="main")
     version(
         "0.0.15",
-        branch="main",
         commit="944e2db1874fd3082006fbc9f911363ad87e1d23"
     )
     version(
@@ -49,6 +48,8 @@ class Icon4py(Package):
     depends_on("py-pybind11")
     depends_on("py-nanobind")
     depends_on("py-mpi4py")
+    depends_on("ghex@async-mpi", when="@0.0.15")
+    depends_on("ghex@async-mpi", when="@main")
 
     with when("+cuda"):
         depends_on("py-cupy +cuda")
