@@ -46,12 +46,15 @@ python -m venv testing-venv
 source ./testing-venv/bin/activate
 python -m pip install --upgrade pip
 python -m pip install -r requirements/test.txt
+deactivate
 
 python --version
 
 source ./setup-env.sh
 spack spec gnuconfig
 
+source ./setup-env.sh /mch-environment/v8
+source ./testing-venv/bin/activate
 srun pytest -v -n 64 test/common_system_test.py test/balfrin_system_test.py
 """
 
