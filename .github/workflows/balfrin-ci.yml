@@ -50,7 +50,18 @@ jobs:
           AUTH_TOKEN_URL: ${{ secrets.F7T_TOKEN_URL }}
           SYSTEM_WORKING_DIR: ${{ vars.F7T_SYSTEM_WORKING_DIR }}
         run: |
-            echo "github.ref_name: ${{ github.ref_name }}"
-            echo "github.head_ref: ${{ github.head_ref }}"
-            echo "github.event_name: ${{ github.event_name }}"
-            python ci/ci_script.py --system=${{ matrix.system_name }} --branch=replace_jenkins_ci --repo=${{ github.server_url }}/${{ github.repository }}.git --account=s83
+            echo "Event name: ${{ github.event_name }}"
+            echo "Head ref: ${{ github.head_ref }}"
+            echo "Ref name: ${{ github.ref_name }}"
+            if [ "${{ github.event_name }}" = "pull_request" ]; then
+              echo "Using branch: ${{ github.head_ref }}"
+              BRANCH_NAME="${{ github.head_ref }}"
+            else
+              echo "Using branch: ${{ github.ref_name }}"
+              BRANCH_NAME="${{ github.ref_name }}"
+            fi
+            python ci/ci_script.py \
+              --system=${{ matrix.system_name }} \
+              --branch="$BRANCH_NAME" \
+              --repo=${{ github.server_url }}/${{ github.repository }}.git \
+              --account=s83
