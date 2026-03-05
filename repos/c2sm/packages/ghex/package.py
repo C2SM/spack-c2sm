@@ -20,6 +20,13 @@ class Ghex(CMakePackage, CudaPackage, ROCmPackage):
     version("0.4.0", tag="v0.4.0", submodules=True)
     version("0.3.0", tag="v0.3.0", submodules=True)
     version("master", branch="master", submodules=True)
+    version(
+        "async-mpi",
+        git="https://github.com/msimberg/GHEX.git",
+        # Pinned commit from https://github.com/msimberg/GHEX/commits/async-mpi/
+        commit="6d896166994cedbcfc50da1873239a5edb212e3f",
+        submodules=True,
+    )
 
     depends_on("cxx", type="build")
 
@@ -41,7 +48,7 @@ class Ghex(CMakePackage, CudaPackage, ROCmPackage):
     depends_on("boost")
     depends_on("xpmem", when="+xpmem", type=("build", "run"))
 
-    depends_on("oomph")
+    depends_on("oomph@async-mpi", when="@async-mpi")
     for backend in backends:
         depends_on(f"oomph backend={backend}", when=f"backend={backend}")
     depends_on("oomph+cuda", when="+cuda")
