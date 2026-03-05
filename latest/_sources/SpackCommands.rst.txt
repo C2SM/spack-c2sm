@@ -10,7 +10,7 @@ Usage (spack find)
 ^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: console
-  
+
     $ spack find <package>@<version>%<compiler> +<variants>
 
 Example output:
@@ -18,17 +18,17 @@ Example output:
 .. code-block:: console
 
     $ spack find -v cosmo
-  
+
     ==> 8 installed packages
     -- linux-rhel7-skylake_avx512 / gcc@8.3.0 -----------------------
     cosmo@master cosmo_target=cpu ~cppdycore~debug+dycoretest+eccodes+parallel~pollen~production real_type=double ~serialize ~verbose
     cosmo@master cosmo_target=cpu ~cppdycore~debug+dycoretest+eccodes+parallel~pollen~production real_type=float ~serialize ~verbose
-  
+
     -- linux-rhel7-skylake_avx512 / pgi@19.9 ------------------------
     cosmo@dev-build cosmo_target=cpu ~cppdycore~debug+dycoretest~eccodes+parallel~pollen~production real_type=float +serialize ~verbose
     cosmo@5.07.mch1.0.p6 cosmo_target=gpu +cppdycore~debug+eccodes+parallel+pollen+production real_type=double ~serialize ~verbose
     cosmo@5.07.mch1.0.p6 cosmo_target=gpu +cppdycore~debug+eccodes+parallel+pollen+production real_type=float ~serialize ~verbose
-  
+
 Options (spack find)
 ^^^^^^^^^^^^^^^^^^^^^
 
@@ -103,7 +103,7 @@ Usage (spack list)
 Spack info
 ----------
 
-Get a list of all possible building configuration available such as: 
+Get a list of all possible building configuration available such as:
 
 *   versions available
 *   list of dependencies
@@ -122,7 +122,7 @@ Usage (spack info)
 Spack spec
 ----------
 
-Check how your package will be installed (i.e. the spec of your package and its dependencies) 
+Check how your package will be installed (i.e. the spec of your package and its dependencies)
 before actually installing it.
 
 Usage (spack spec)
@@ -135,13 +135,13 @@ Usage (spack spec)
 Spack install
 -------------
 
-This will clone the package, build it and install the chosen package 
+This will clone the package, build it and install the chosen package
 plus all its dependencies under ``/scratch/$USER/spack-install/<your_machine>``
-(see ``config.yaml`` in the maching specific config file section for details). 
-The build-stage of your package and its dependencies are not kept 
-(add ``--keep-stage`` after the install command in order to keep it). 
+(see ``config.yaml`` in the maching specific config file section for details).
+The build-stage of your package and its dependencies are not kept
+(add ``--keep-stage`` after the install command in order to keep it).
 Module files are also created during this process and installed under
-``/scratch/$USER/modules/``. 
+``/scratch/$USER/modules/``.
 
 However, being able to compile any other package might require
 installing your Spack instance if that package is installed by a Jenkins plan.
@@ -149,18 +149,18 @@ An attempt to build your working copy with the command
 
 .. code-block:: console
 
-    $ spack install <package>@master ... 
+    $ spack install <package>@master ...
 
 will not perform any compilation if Spack identifies that the requested version
-of the software was already installed by a Jenkins plan. 
+of the software was already installed by a Jenkins plan.
 
-That problem is circumvented for COSMO, C++ dycore and other C2SM-hosted software 
-by reserving a specific version (``dev-build``) of the spack recipe of the package 
-(see `int2lm package <https://github.com/MeteoSwiss-APN/spack-mch/blob/37908c7ac7171c4d886fe5ccf84051056e12ec0e/packages/int2lm/package.py#L25>`__), 
+That problem is circumvented for COSMO, C++ dycore and other C2SM-hosted software
+by reserving a specific version (``dev-build``) of the spack recipe of the package
+(see `int2lm package <https://github.com/MeteoSwiss-APN/spack-mch/blob/37908c7ac7171c4d886fe5ccf84051056e12ec0e/packages/int2lm/package.py#L25>`__),
 which will not be used by Jenkins. Therefore, ``spack install int2lm@dev-build``
 will find that version among the installed ones in the default Spack instance.
 For any other package that does not contain this ``dev-build`` version,
-you need to install our own spack instance. 
+you need to install our own spack instance.
 
 Usage (spack install)
 ^^^^^^^^^^^^^^^^^^^^^
@@ -185,17 +185,17 @@ Support stopped for ``installcosmo`` starting from spack-c2sm v0.20.1.0!
 Spack dev-build
 ---------------
 
-If you do not want Spack to clone the source of the package you want to install, 
-especially if you are developing, you can use a local source in 
-order to install your package. In order to do so, first go to the base directory 
+If you do not want Spack to clone the source of the package you want to install,
+especially if you are developing, you can use a local source in
+order to install your package. In order to do so, first go to the base directory
 of the package and then use ``spack dev-build`` instead of ``spack install``.
 
-However being able to compile any other package might require installing your spack instance, 
+However being able to compile any other package might require installing your spack instance,
 f that package is installed by a Jenkins plan.
 
 Notice that once installed, the package will not be rebuilt at the next attempt
-to ``spack dev-build``, even if the sources of the local directory have changed. 
-In order to force spack to build the local developments anytime, 
+to ``spack dev-build``, even if the sources of the local directory have changed.
+In order to force spack to build the local developments anytime,
 you need to avoid the installation phase (see option ``--until`` below).
 
 Usage (spack dev-build)
@@ -203,7 +203,7 @@ Usage (spack dev-build)
 
 .. code-block:: console
 
-    $ cd </path/to/package> 
+    $ cd </path/to/package>
     $ spack dev-build <package>@<version>%<compiler>
 
 Options (spack dev-build)
@@ -287,7 +287,7 @@ Usage (spack edit)
 Spack load
 ----------
 
-Add package to the user environment. It can be used to set all runtime paths 
+Add package to the user environment. It can be used to set all runtime paths
 like ``LD_LIBRARY_PATH`` as defined in the respective package.
 `More information in the official Spack documentation <https://spack.readthedocs.io/en/latest/command_index.html?highlight=spack%20load#spack-load>`_
 
@@ -298,7 +298,7 @@ Usage (spack load)
 ^^^^^^^^^^^^^^^^^^
 
 .. code-block:: console
-  
+
     $ spack load <spec>
 
 Options (spack load)
