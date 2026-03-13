@@ -21,6 +21,13 @@ class Ghex(CMakePackage, CudaPackage, ROCmPackage):
     version("0.3.0", tag="v0.3.0", submodules=True)
     version("master", branch="master", submodules=True)
     version(
+        "philip-async-mpi",
+        git="https://github.com/philip-paul-mueller/GHEX.git",
+        # Pinned commit from https://github.com/ghex-org/GHEX/pull/190
+        commit="a1de2a6a16b728ad08df7ec0793e30591e61e4c7",
+        submodules=True,
+    )
+    version(
         "async-mpi",
         git="https://github.com/msimberg/GHEX.git",
         # Pinned commit from https://github.com/msimberg/GHEX/commits/async-mpi/
