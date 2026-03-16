@@ -24,7 +24,7 @@ class Ghex(CMakePackage, CudaPackage, ROCmPackage):
         "philip-async-mpi",
         git="https://github.com/philip-paul-mueller/GHEX.git",
         # Pinned commit from https://github.com/ghex-org/GHEX/pull/190
-        commit="a1de2a6a16b728ad08df7ec0793e30591e61e4c7",
+        commit="9c09f3c52d2d76816074cdff869e2f90d005137c",
         submodules=True,
     )
     version(
