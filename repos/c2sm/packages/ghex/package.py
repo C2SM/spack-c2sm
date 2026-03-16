@@ -59,6 +59,7 @@ class Ghex(CMakePackage, CudaPackage, ROCmPackage):
     depends_on("xpmem", when="+xpmem", type=("build", "run"))
 
     depends_on("oomph@async-mpi", when="@async-mpi")
+    depends_on("oomph@async-mpi", when="@philip-async-mpi")
     for backend in backends:
         depends_on(f"oomph backend={backend}", when=f"backend={backend}")
     depends_on("oomph+cuda", when="+cuda")
