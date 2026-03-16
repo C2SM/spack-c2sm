@@ -13,7 +13,10 @@ class Ghex(CMakePackage, CudaPackage, ROCmPackage):
 
     homepage = "https://github.com/ghex-org/GHEX"
     url = "https://github.com/ghex-org/GHEX/archive/refs/tags/v0.3.0.tar.gz"
-    git = "https://github.com/ghex-org/GHEX.git"
+    # TODO: Change this back. This is only to allow @git.<hash> syntax to pull
+    # from the correct repo. We only care about philip-async-mpi at the moment.
+    # git = "https://github.com/ghex-org/GHEX.git"
+    git = "https://github.com/philip-paul-mueller/GHEX.git"
     maintainers = ["boeschf"]
 
     version("0.4.1", tag="v0.4.1", submodules=True)
