@@ -93,6 +93,14 @@ class Icon(SpackIcon):
         description=
         'Inject any configure argument not yet available as variant\nUse this feature cautiously, as injecting non-variant configure arguments may potentially disrupt the build process'
     )
+    variant('atm-phy-echam-submodels',
+            default=False,
+            description='Enable usage of the atmospheric physics echam submodels')
+
+    variant('hammoz',
+            default=False,
+            description='Enable usage of the HAMMOZ module')
+
 
     # Optimization Features:
     variant('loop-exchange', default=False, description='Enable loop exchange')
@@ -183,6 +191,8 @@ class Icon(SpackIcon):
                 'nccl',
                 'cuda-graphs',
                 'silent-rules',
+                'atm-phy-echam-submodels',
+                'hammoz',
         ]:
             args += self.enable_or_disable(x)
 
