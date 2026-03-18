@@ -15,8 +15,6 @@ class Icon4py(Package):
     # --- Versions ---
     version("main", branch="main")
     version("0.0.15", commit="9a7f7d68f0e8be18f746044879c49e4d87e20ff6")
-    version("phimuell__async_mpi_test", branch="phimuell__async_mpi_test")
-    version("blueline_staging_2026-03-16", branch="blueline_staging_2026-03-16")
     version(
         "0.0.14",
         sha256="8aadb6fe7af55fc41d09daa4e74739bd7ab01b4e",
@@ -47,8 +45,7 @@ class Icon4py(Package):
     depends_on("py-pybind11")
     depends_on("py-nanobind")
     depends_on("py-mpi4py")
-    depends_on("ghex@async-mpi", when="@0.0.15")
-    depends_on("ghex@async-mpi", when="@main")
+    depends_on("ghex")
 
     with when("+cuda"):
         depends_on("py-cupy +cuda")
