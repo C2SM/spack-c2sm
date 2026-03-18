@@ -93,9 +93,10 @@ class Icon(SpackIcon):
         description=
         'Inject any configure argument not yet available as variant\nUse this feature cautiously, as injecting non-variant configure arguments may potentially disrupt the build process'
     )
-    variant('atm-phy-echam-submodels',
-            default=False,
-            description='Enable usage of the atmospheric physics echam submodels')
+    variant(
+        'atm-phy-echam-submodels',
+        default=False,
+        description='Enable usage of the atmospheric physics echam submodels')
 
     variant('hammoz',
             default=False,
@@ -109,9 +110,10 @@ class Icon(SpackIcon):
             default=False,
             description='Enable usage of the debug stream module ')
 
-    variant('cosp',
-            default=False,
-            description='Enable usage of the cosp (satellite emulator) module ')
+    variant(
+        'cosp',
+        default=False,
+        description='Enable usage of the cosp (satellite emulator) module ')
 
     # Optimization Features:
     variant('loop-exchange', default=False, description='Enable loop exchange')
