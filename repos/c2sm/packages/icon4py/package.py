@@ -45,8 +45,7 @@ class Icon4py(Package):
     depends_on("py-pybind11")
     depends_on("py-nanobind")
     depends_on("py-mpi4py")
-    depends_on("ghex@async-mpi", when="@0.0.15")
-    depends_on("ghex@async-mpi", when="@main")
+    depends_on("ghex")
 
     with when("+cuda"):
         depends_on("py-cupy +cuda")
