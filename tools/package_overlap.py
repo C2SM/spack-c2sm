@@ -6,6 +6,9 @@ spack_c2sm = set(os.listdir("./repos/c2sm/packages"))
 
 overlapping_packages = sorted(spack & spack_c2sm)
 
+# Allow duplicate icon package only before update to Spack v1.1
+overlapping_packages.remove("icon")
+
 if not overlapping_packages:
     print("::notice::No overlapping packages!")
 else:
