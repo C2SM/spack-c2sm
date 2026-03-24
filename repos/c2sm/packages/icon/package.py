@@ -4,7 +4,7 @@ import re
 import glob
 from collections import defaultdict
 from llnl.util import tty
-from spack.util.environment import is_system_path
+from spack.util.environment import is_system_path, find_libraries
 import spack.error as error
 
 
@@ -158,6 +158,9 @@ class Icon(SpackIcon):
         description="Create a Fortran compile group: GROUP;files;flag \nNote: flag can only be one single value, i.e. -O1",
     )
 
+    variant("nvtx", default=False, description="Enable NVTX for profiling")
+    requires("%nvhpc", when="+nvtx")  # NVTX is only supported for nvhpc
+
     # verbosity
     variant(
         "silent-rules",
@@ -233,6 +236,15 @@ class Icon(SpackIcon):
 
         if "+sct" in self.spec:
             libs += self.spec["hdf5"].libs
+
+        if "+nvtx" in self.spec:
+            flags["FCFLAGS"].append("-D_USE_NVTX")
+            nvtx_libs = find_libraries("nvhpcwrapnvtx", root=self.compiler.prefix, recursive=True)
+
+            if not nvtx_libs:
+                raise RuntimeError("NVTX requested but nvhpcwrapnvtx not found!")
+
+            libs += nvtx_libs
 
         fcgroup = self.spec.variants["fcgroup"].value
         # ('none',) is the values spack assign if fcgroup is not set
