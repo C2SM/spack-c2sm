@@ -39,7 +39,7 @@ stages:
 .test_common:
   extends: .baremetal-runner-santis-gh200
   variables:
-    UENV: 'icon/25.2:v1'
+    UENV: 'icon/25.2:v4'
   script:
     - !reference [.setup_python, script]
     - !reference [.setup_uenv, script]
