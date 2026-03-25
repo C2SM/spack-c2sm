@@ -63,7 +63,7 @@ class Libcxi(AutotoolsPackage):
         sh = which("sh", required=True)
         sh("autogen.sh")
 
-    def setup_build_environment(self, env: EnvironmentModifications) -> None:
+    def setup_build_environment(self, env):
         env.append_flags("CFLAGS", f"-I{self.spec['cassini-headers'].prefix.include}")
 
     def configure_args(self):
