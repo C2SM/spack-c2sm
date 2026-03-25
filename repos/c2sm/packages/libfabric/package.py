@@ -10,7 +10,7 @@ import spack.platforms.cray
 from spack.package import *
 
 
-class Libfabric(AutotoolsPackage):
+class Libfabric(AutotoolsPackage, CudaPackage):
     """The Open Fabrics Interfaces (OFI) is a framework focused on exporting
     fabric communication services to applications."""
 
