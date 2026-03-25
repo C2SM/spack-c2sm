@@ -23,7 +23,7 @@ class Ghex(CMakePackage, CudaPackage, ROCmPackage):
 
     generator("ninja")
 
-    backends = ("mpi", "ucx", "libfabric")
+    backends = ("mpi", "ucx", "libfabric", "nccl")
     variant(
         "backend",
         default="mpi",

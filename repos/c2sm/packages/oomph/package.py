@@ -30,7 +30,7 @@ class Oomph(CMakePackage, CudaPackage, ROCmPackage):
 
     generator("ninja")
 
-    backends = ("mpi", "ucx", "libfabric")
+    backends = ("mpi", "ucx", "libfabric", "nccl")
     variant(
         "backend",
         default="mpi",
@@ -88,6 +88,9 @@ class Oomph(CMakePackage, CudaPackage, ROCmPackage):
             depends_on(
                 f"libfabric fabrics={provider}", when=f"libfabric-provider={provider}"
             )
+
+    depends_on("nccl", when="backend=nccl")
+    requires("+cuda", when="backend=nccl")
 
     depends_on("mpi")
     depends_on("boost+thread")
