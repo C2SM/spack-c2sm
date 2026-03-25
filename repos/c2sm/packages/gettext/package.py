@@ -21,6 +21,9 @@ class Gettext(AutotoolsPackage, GNUMirrorPackage):
 
     license("GPL-3.0-or-later AND LGPL-2.1-or-later AND MIT")
 
+    version("1.0", sha256="71132a3fb71e68245b8f2ac4e9e97137d3e5c02f415636eb508ae607bc01add7")
+    version("0.26", sha256="d1fb86e260cfe7da6031f94d2e44c0da55903dbae0a2fa0fae78c91ae1b56f00")
+    version("0.23.1", sha256="c1f97a72a7385b7e71dd07b5fea6cdaf12c9b88b564976b23bd8c11857af2970")
     version("0.22.5", sha256="fe10c37353213d78a5b83d48af231e005c4da84db5ce88037d88355938259640")
     version("0.22.4", sha256="29217f1816ee2e777fa9a01f9956a14139c0c23cc1b20368f06b2888e8a34116")
     version("0.22.3", sha256="b838228b3f8823a6c1eddf07297197c4db13f7e1b173b9ef93f3f945a63080b6")
@@ -78,16 +81,17 @@ class Gettext(AutotoolsPackage, GNUMirrorPackage):
         # From the configure script: "we don't want to use an external libxml, because its
         # dependencies and their dynamic relocations have an impact on the startup time", well,
         # *we* do.
-        filter_file(
-            "gl_cv_libxml_force_included=yes",
-            "gl_cv_libxml_force_included=no",
-            "libtextstyle/configure",
-            string=True,
-        )
+        if self.spec.satisfies("@0.20:+libxml2"):  # libtextstyle/configure not present prior
+            filter_file(
+                "gl_cv_libxml_force_included=yes",
+                "gl_cv_libxml_force_included=no",
+                "libtextstyle/configure",
+                string=True,
+            )
 
     def flag_handler(self, name, flags):
         # this goes together with gl_cv_libxml_force_included=no
-        if name == "ldflags":
+        if name == "ldflags" and self.spec.satisfies("+libxml2"):
             flags.append("-lxml2")
         return (flags, None, None)
 
