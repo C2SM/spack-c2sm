@@ -245,7 +245,7 @@ class Icon(SpackIcon):
             else:
                 flags["FCFLAGS"].append("-D_USE_NVTX")
 
-            libs += LibraryList(["-lnvhpcwrapnvtx"])
+            libs += LibraryList(["nvhpcwrapnvtx"])
 
         fcgroup = self.spec.variants["fcgroup"].value
         # ('none',) is the values spack assign if fcgroup is not set
