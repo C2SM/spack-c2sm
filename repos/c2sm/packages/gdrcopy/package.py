@@ -36,20 +36,14 @@ class Gdrcopy(MakefilePackage, CudaPackage):
     depends_on("check")
     requires("+cuda")
 
-    def cuda_flags(arch_list):
-        return [
-                (
-                    "--generate-code arch=compute_{0},code=sm_{0} "
-                    "--generate-code arch=compute_{0},code=compute_{0} "
-                ).format(s)
-                for s in arch_list
-            ]
-
     def setup_build_environment(self, env):
         env.set("CUDA", self.spec["cuda"].prefix)
 
         if self.spec.satisfies("@2.4:"):
-            env.set("NVCCFLAGS", " ".join(self.cuda_flags(self.spec.variants["cuda_arch"].value)))
+            cuda_arch = self.spec.variants["cuda_arch"].value
+            print(type(cuda_arch))
+            print(cuda_arch)
+            env.set("NVCCFLAGS", " ".join(self.cuda_flags(cuda_arch)))
 
     def build(self, spec, prefix):
         make("lib")
