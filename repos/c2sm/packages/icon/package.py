@@ -158,6 +158,9 @@ class Icon(SpackIcon):
         description="Create a Fortran compile group: GROUP;files;flag \nNote: flag can only be one single value, i.e. -O1",
     )
 
+    variant("nvtx", default=False, description="Enable NVTX for profiling")
+    requires("%nvhpc", when="+nvtx")  # NVTX is only supported for nvhpc
+
     # verbosity
     variant(
         "silent-rules",
@@ -233,6 +236,16 @@ class Icon(SpackIcon):
 
         if "+sct" in self.spec:
             libs += self.spec["hdf5"].libs
+
+        if "+nvtx" in self.spec:
+            for i, arg in enumerate(args):
+                if "FCFLAGS" in arg:
+                    args[i] += " -D_USE_NVTX"
+                    break
+            else:
+                flags["FCFLAGS"].append("-D_USE_NVTX")
+
+            libs += LibraryList(["nvhpcwrapnvtx"])
 
         fcgroup = self.spec.variants["fcgroup"].value
         # ('none',) is the values spack assign if fcgroup is not set
