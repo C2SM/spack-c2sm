@@ -38,9 +38,12 @@ class IconExclaim(Icon):
 
 
     # TODO: Should this be set here or in the icon4py package?
-    # def setup_build_environment(self, env):
-        # TODO: Guard with dsl variant
-        # env.prepend_path("PATH", self.spec["icon4py"].prefix.share.venv.bin)
+    def setup_build_environment(self, env):
+        if self.spec.variants['dsl'].value != ('none', ):
+            # TODO: clean up
+            print(f"adding {self.spec['icon4py'].prefix.share.venv.bin} to PATH for icon4py bindings because +dsl is enabled")
+            env.prepend_path("PATH", self.spec["icon4py"].prefix.share.venv.bin)
+            env.append_path("PATH", self.spec["icon4py"].prefix.share.venv.bin)
 
 
     def configure_args(self):
