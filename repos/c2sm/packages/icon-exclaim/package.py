@@ -36,6 +36,13 @@ class IconExclaim(Icon):
     for x in dsl_values:
         depends_on("icon4py", type="build", when=f"dsl={x}")
 
+
+    # TODO: Should this be set here or in the icon4py package?
+    # def setup_build_environment(self, env):
+        # TODO: Guard with dsl variant
+        # env.prepend_path("PATH", self.spec["icon4py"].prefix.share.venv.bin)
+
+
     def configure_args(self):
         raw_args = super().configure_args()
 
@@ -59,21 +66,14 @@ class IconExclaim(Icon):
         dsl = self.spec.variants["dsl"].value
         if dsl != ("none",):
             if "substitute" in dsl:
-                args_flags.append("--enable-py2f=substitute")
+                args_flags.append("--enable-icon4py=substitute")
             elif "verify" in dsl:
-                args_flags.append("--enable-py2f=verify")
+                args_flags.append("--enable-icon4py=verify")
             else:
                 raise ValueError(
                     f"Unknown DSL variant '{dsl}'. "
                     f"Valid options are: {', '.join(('none',) + dsl_values)}"
                 )
-
-            # Add icon4py paths and libs
-            icon4py_prefix = self.spec["icon4py"].prefix
-            bindings_dir = os.path.join(icon4py_prefix, "src")
-
-            ldflags.append(f"-L{bindings_dir} -Wl,-rpath,{bindings_dir}")
-            libs.append("-licon4py_bindings")
 
         # Remove duplicates
         icon_ldflags = list(dict.fromkeys(icon_ldflags))
