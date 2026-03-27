@@ -14,7 +14,11 @@ class Icon4py(Package):
 
     # --- Versions ---
     version("main", branch="main")
-    version("0.0.15", commit="9a7f7d68f0e8be18f746044879c49e4d87e20ff6")
+    version(
+        "0.1.0",
+        sha256="0d48d34234af32243fe899a9e86edd90bbd57890cb89bfda8de906589a70e273",
+        extension="zip",
+    )
     version(
         "0.0.14",
         sha256="8aadb6fe7af55fc41d09daa4e74739bd7ab01b4e",
