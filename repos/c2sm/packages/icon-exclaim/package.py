@@ -19,7 +19,7 @@ class IconExclaim(Icon):
     maintainers("huppd", "leclairm", "stelliom")
 
     version("develop", branch="icon-dsl", submodules=True)
-    version("0.3.0", commit="5c5b742a969af2bd491e26cd0a05a35838f121c4", submodules=True)
+    version("0.3.0", commit="a0be2c3e0448ec2dc92024e3b38ec635435ac0dd", submodules=True)
 
     # EXCLAIM-GT4Py specific features:
     dsl_values = ("substitute", "verify")
