@@ -12,21 +12,12 @@ class Ghex(CMakePackage, CudaPackage, ROCmPackage):
     """
 
     homepage = "https://github.com/ghex-org/GHEX"
-    url = "https://github.com/ghex-org/GHEX/archive/refs/tags/v0.3.0.tar.gz"
+    url = "https://github.com/ghex-org/GHEX/archive/refs/tags/v0.0.0.tar.gz"
     git = "https://github.com/ghex-org/GHEX.git"
     maintainers = ["boeschf"]
 
-    version("0.4.1", tag="v0.4.1", submodules=True)
-    version("0.4.0", tag="v0.4.0", submodules=True)
-    version("0.3.0", tag="v0.3.0", submodules=True)
     version("master", branch="master", submodules=True)
-    version(
-        "async-mpi",
-        git="https://github.com/msimberg/GHEX.git",
-        # Pinned commit from https://github.com/msimberg/GHEX/commits/async-mpi/
-        commit="6d896166994cedbcfc50da1873239a5edb212e3f",
-        submodules=True,
-    )
+    version("0.5.0", tag="v0.5.0", submodules=True)
 
     depends_on("cxx", type="build")
 
@@ -48,12 +39,12 @@ class Ghex(CMakePackage, CudaPackage, ROCmPackage):
     depends_on("boost")
     depends_on("xpmem", when="+xpmem", type=("build", "run"))
 
-    depends_on("oomph@async-mpi", when="@async-mpi")
+    depends_on("oomph")
+    depends_on("oomph~cuda~rocm", when="~cuda~rocm")
     for backend in backends:
         depends_on(f"oomph backend={backend}", when=f"backend={backend}")
     depends_on("oomph+cuda", when="+cuda")
     depends_on("oomph+rocm", when="+rocm")
-    depends_on("oomph@0.3:", when="@0.3:")
 
     conflicts("+cuda+rocm")
 

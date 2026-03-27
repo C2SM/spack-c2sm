@@ -14,7 +14,11 @@ class Icon4py(Package):
 
     # --- Versions ---
     version("main", branch="main")
-    version("0.0.15", commit="9a7f7d68f0e8be18f746044879c49e4d87e20ff6")
+    version(
+        "0.1.0",
+        sha256="0d48d34234af32243fe899a9e86edd90bbd57890cb89bfda8de906589a70e273",
+        extension="zip",
+    )
     version(
         "0.0.14",
         sha256="8aadb6fe7af55fc41d09daa4e74739bd7ab01b4e",
@@ -45,8 +49,7 @@ class Icon4py(Package):
     depends_on("py-pybind11")
     depends_on("py-nanobind")
     depends_on("py-mpi4py")
-    depends_on("ghex@async-mpi", when="@0.0.15")
-    depends_on("ghex@async-mpi", when="@main")
+    depends_on("ghex")
 
     with when("+cuda"):
         depends_on("py-cupy +cuda")
@@ -112,20 +115,10 @@ class Icon4py(Package):
             f"{venv_path.lib.python}{python_spec.version.up_to(2)}/site-packages/spack_installed.pth"
         ).write_text(pythonpath_to_pth())
 
-        tty.msg("Running py2fgen code generator")
-        py2fgen = Executable(venv_path.bin.py2fgen)
-        py2fgen(
-            "icon4py.tools.py2fgen.wrappers.all_bindings",
-            "diffusion_init,diffusion_run,grid_init,solve_nh_init,solve_nh_run",
-            "icon4py_bindings",
-            "-o",
-            prefix.src,
-            extra_env={
-                "VIRTUAL_ENV": str(venv_path),
-                "CC": "gcc",
-                "CXX": "g++",
-            },
-        )
+
+# TODO: Should this be set here or in the icon-exclaim package?
+def setup_dependent_build_environment(self, env, dependent_spec):
+    env.prepend_path("PATH", self.prefix.share.venv.bin)
 
 
 def prepare_uv():
