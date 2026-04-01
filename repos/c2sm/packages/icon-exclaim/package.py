@@ -80,7 +80,7 @@ class IconExclaim(Icon):
             libs.append("-licon4py_bindings")
 
         # enable cuda memory pool
-        if self.spec.satisfies("+cuda_mempool"):
+        if self.spec.satisfies("+cuda-mempool"):
             icon_fcflags.append("-cuda")
 
         # Remove duplicates
