@@ -31,7 +31,7 @@ class IconExclaim(Icon):
         description="Build with GT4Py dynamical core",
         multi=True,
     )
-    variant("cuda-mempool", default=False, description="Enable cuda memory pool")x
+    variant("cuda-mempool", default=False, description="Enable cuda memory pool")
 
     depends_on("icon4py@0.0.15", when="@0.3.0")
     for x in dsl_values:
