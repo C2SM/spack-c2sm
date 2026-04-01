@@ -31,6 +31,7 @@ class IconExclaim(Icon):
         description="Build with GT4Py dynamical core",
         multi=True,
     )
+    variant("cuda_mempool", default=False, description="Enable cuda memory pool")
 
     depends_on("icon4py@0.0.15", when="@0.3.0")
     for x in dsl_values:
@@ -40,16 +41,19 @@ class IconExclaim(Icon):
         raw_args = super().configure_args()
 
         # Split into categories
-        args_flags = []
-        icon_ldflags = []
-        ldflags = []
-        libs = []
+        args_flags: list[str] = []
+        icon_ldflags: list[str] = []
+        icon_fcflags: list[str] = []
+        ldflags: list[str] = []
+        libs: list[str] = []
 
         for a in raw_args:
             if a.startswith("LIBS="):
                 libs.append(a.split("=", 1)[1].strip())
             elif a.startswith("ICON_LDFLAGS="):
                 icon_ldflags.append(a.split("=", 1)[1].strip())
+            elif a.startswith("ICON_FCFLAGS="):
+                icon_fcflags.append(a.split("=", 1)[1].strip())
             elif a.startswith("LDFLAGS="):
                 ldflags.append(a.split("=", 1)[1].strip())
             else:
@@ -65,7 +69,7 @@ class IconExclaim(Icon):
             else:
                 raise ValueError(
                     f"Unknown DSL variant '{dsl}'. "
-                    f"Valid options are: {', '.join(('none',) + dsl_values)}"
+                    f"Valid options are: {', '.join(('none',) + self.dsl_values)}"
                 )
 
             # Add icon4py paths and libs
@@ -75,10 +79,14 @@ class IconExclaim(Icon):
             ldflags.append(f"-L{bindings_dir} -Wl,-rpath,{bindings_dir}")
             libs.append("-licon4py_bindings")
 
+        # enable cuda memory pool
+        if self.spec.satisfies("+cuda_mempool"):
+            icon_fcflags.append("-cuda")
+
         # Remove duplicates
-        icon_ldflags = list(dict.fromkeys(icon_ldflags))
-        ldflags = list(dict.fromkeys(ldflags))
-        libs = list(dict.fromkeys(libs))
+        icon_ldflags = list(set(icon_ldflags))
+        ldflags = list(set(ldflags))
+        libs = list(set(libs))
 
         # Reconstruct final configure args
         final_args = args_flags
@@ -86,6 +94,8 @@ class IconExclaim(Icon):
             final_args.append("ICON_LDFLAGS=" + " ".join(icon_ldflags))
         if ldflags:
             final_args.append("LDFLAGS=" + " ".join(ldflags))
+        if icon_fcflags:
+            final_args.append("ICON_FCFLAGS=" + " ".join(icon_fcflags))
         if libs:
             final_args.append("LIBS=" + " ".join(libs))
 
