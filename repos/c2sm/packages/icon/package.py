@@ -150,6 +150,8 @@ class Icon(SpackIcon):
     variant("cuda-graphs", default=False, description="Enable CUDA graphs.")
     requires("%nvhpc@23.3:", when="+cuda-graphs")
 
+    variant("cuda-mempool", default=False, description="Enable CUDA memory pool.")
+
     variant(
         "fcgroup",
         default="none",
@@ -277,6 +279,10 @@ class Icon(SpackIcon):
             ["{0}={1}".format(name, " ".join(value)) for name, value in flags.items()]
         )
         args.append(f"{super_libs} {libs.link_flags}")
+
+        if self.spec.satisfies("+cuda-mempool"):
+            args.append("ICON_FCFLAGS=-cuda")
+
         return args
 
     def fcgroup_to_config_arg(self):
