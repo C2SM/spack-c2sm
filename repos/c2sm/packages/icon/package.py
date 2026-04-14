@@ -146,6 +146,7 @@ class Icon(SpackIcon):
         description="Enable PGI/NVIDIA cross-file function inlining via an inline library",
     )
     variant("nccl", default=False, description="Enable NCCL for communication")
+    depends_on("nccl", when="+nccl")
 
     variant("cuda-graphs", default=False, description="Enable CUDA graphs.")
     requires("%nvhpc@23.3:", when="+cuda-graphs")
