@@ -1,6 +1,4 @@
 from spack.pkg.c2sm.icon import Icon
-import shutil
-import os
 import spack.error as error
 
 
@@ -35,7 +33,12 @@ class IconExclaim(Icon):
 
     depends_on("icon4py@0.0.15", when="@0.3.0")
     for x in dsl_values:
-        depends_on("icon4py", type="build", when=f"dsl={x}")
+        # icon4py is used at build time (py2fgen) and at runtime
+        # (embedded Python imports icon4py inside the ICON executable).
+        depends_on("icon4py", type=("build", "run"), when=f"dsl={x}")
+        # libpython is linked into the ICON executable; also used at
+        # build time and by the embedded runtime interpreter.
+        depends_on("python@3.11:", type=("build", "link", "run"), when=f"dsl={x}")
 
 
     # TODO: Should this be set here or in the icon4py package?
@@ -54,6 +57,7 @@ class IconExclaim(Icon):
         args_flags: list[str] = []
         icon_ldflags: list[str] = []
         icon_fcflags: list[str] = []
+        cppflags: list[str] = []
         ldflags: list[str] = []
         libs: list[str] = []
 
@@ -66,6 +70,8 @@ class IconExclaim(Icon):
                 icon_fcflags.append(a.split("=", 1)[1].strip())
             elif a.startswith("LDFLAGS="):
                 ldflags.append(a.split("=", 1)[1].strip())
+            elif a.startswith("CPPFLAGS="):
+                cppflags.append(a.split("=", 1)[1].strip())
             else:
                 args_flags.append(a)
 
@@ -82,17 +88,28 @@ class IconExclaim(Icon):
                     f"Valid options are: {', '.join(('none',) + self.dsl_values)}"
                 )
 
+            # Python embedding flags. ICON's configure no longer auto-detects
+            # these; derive them from the concretized python's own
+            # headers/libs lists exposed by Spack's Python package.
+            python_pkg = self.spec["python"].package
+            cppflags.append(python_pkg.headers.cpp_flags)
+            ldflags.append(python_pkg.libs.search_flags)
+            libs.append(python_pkg.libs.link_flags)
+
         # enable cuda memory pool
         if self.spec.satisfies("+cuda-mempool"):
             icon_fcflags.append("-cuda")
 
         # Remove duplicates
+        cppflags = list(set(cppflags))
         icon_ldflags = list(set(icon_ldflags))
         ldflags = list(set(ldflags))
         libs = list(set(libs))
 
         # Reconstruct final configure args
         final_args = args_flags
+        if cppflags:
+            final_args.append("CPPFLAGS=" + " ".join(cppflags))
         if icon_ldflags:
             final_args.append("ICON_LDFLAGS=" + " ".join(icon_ldflags))
         if ldflags:
