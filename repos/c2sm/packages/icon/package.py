@@ -243,6 +243,8 @@ class Icon(SpackIcon):
                     args[i] += " -D_USE_NVTX"
                     break
             else:
+                if "FCFLAGS" not in flags:
+                    flags["FCFLAGS"] = []
                 flags["FCFLAGS"].append("-D_USE_NVTX")
 
             libs += LibraryList(["nvhpcwrapnvtx"])
