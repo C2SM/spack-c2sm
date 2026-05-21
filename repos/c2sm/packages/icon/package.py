@@ -239,7 +239,7 @@ class Icon(SpackIcon):
 
         if "+nvtx" in self.spec:
             for i, arg in enumerate(args):
-                if "FCFLAGS" in arg:
+                if arg.startswith("FCFLAGS="):
                     args[i] += " -D_USE_NVTX"
                     break
             else:
