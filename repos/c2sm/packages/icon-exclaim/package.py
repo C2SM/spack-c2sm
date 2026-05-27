@@ -53,9 +53,8 @@ class IconExclaim(IconNwp):
             tty.msg(f"adding {self.spec['icon4py'].prefix.share.venv.bin} to PATH for icon4py bindings because +dsl is enabled")
             env.prepend_path("PATH", self.spec["icon4py"].prefix.share.venv.bin)
 
-    def configure_args(self):
-        # populate self.icon_configure_args
-        _ = super().configure_args()
+    def set_configure_args(self) -> None:
+        super().set_configure_args()
 
         # Handle DSL variants
         dsl = self.spec.variants["dsl"].value
@@ -78,5 +77,3 @@ class IconExclaim(IconNwp):
         # enable cuda memory pool
         if self.spec.satisfies("+cuda-mempool"):
             self.icon_configure_args.flags["ICON_FCFLAGS"].append("-cuda")
-
-        return self.icon_configure_args.to_args()

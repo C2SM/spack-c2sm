@@ -28,12 +28,12 @@ class IconConfigureArgs:
 
     def remove_dupplicates(self) -> None:
         self.args = list(set(self.args))
-        for k, v in self.flags.items:
-            self.flags[k] = list(set(v))
+        for key, values in self.flags.items:
+            self.flags[key] = list(set(values))
 
     def to_args(self) -> list[str]:
         self.remove_dupplicates()
-        return [ *chain( self.args, ("{0}={1}".format(name, " ".join(values)) for name, values in flags.items()) ) ]
+        return [ *chain( self.args, ("{0}={1}".format(name, " ".join(values)) for name, values in self.flags.items()) ) ]
 
     @classmethod
     def from_args(cls: type[Self], args: list[str]) -> Self:
@@ -215,7 +215,7 @@ class IconNwp(Icon):
     # also the folder where libtool package itself is installed.
     patch_libtool = False
 
-    def configure_args(self):
+    def set_configure_args(self) -> None:
         self.icon_configure_args = IconConfigureArgs.from_args(super().configure_args())
         libs = LibraryList([])
 
@@ -281,6 +281,9 @@ class IconNwp(Icon):
         )
 
         self.icon_configure_args.flags["LIBS"].append(libs.link_flags)
+
+    def configure_args(self) -> list[str]:
+        self.set_configure_args()
         return self.icon_configure_args.to_args()
 
     def strip_variant_prefix(self, variant_string):
