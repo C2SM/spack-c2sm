@@ -98,6 +98,7 @@ class Icon4py(Package):
         extras = ["all"]
         no_install = [*spack_installed, "ghex"]
 
+        # TODO: Check if there's a way to avoid hardcoded cuda version
         if "+cuda" in spec:
             extras.append("cuda12")
             no_install.append("cupy-cuda12x")
@@ -106,12 +107,12 @@ class Icon4py(Package):
         uv(
             "sync",
             "--active",
-            *sum([["--extra", e] for e in extras], []),
+            *(f"--extra {e}" for e in extras),
             "--inexact",
             "--no-editable",
             "--python",
             str(venv_path.bin.python),
-            *no_install_options(no_install),
+            *(f"--no-install-package {p}" for p in no_install),
             extra_env={
                 "VIRTUAL_ENV": str(venv_path),
                 "CC": self.compiler.cc,
@@ -152,12 +153,6 @@ def get_installed_pkg(pip):
     return [
         item["name"] for item in json.loads(pip("list", "--format", "json", output=str))
     ]
-
-
-def no_install_options(installed):
-    for name in installed:
-        yield "--no-install-package"
-        yield name
 
 
 def pythonpath_to_pth():
