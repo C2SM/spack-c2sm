@@ -30,6 +30,7 @@ class Uv(Package):
     version("0.7.20", sha256="dummy")
     version("0.9.3", sha256="dummy")
     version("0.9.4", sha256="dummy")
+    version("0.11.16", sha256="dummy")
 
     # Platform-specific checksums
     checksums = {
@@ -78,6 +79,16 @@ class Uv(Package):
             "unknown-linux-gnu",
             "x86_64",
         ): "e02f7fc102d6a1ebfa3b260b788e9adf35802be28c8d85640e83246e61519c1e",
+        (
+            "0.11.16",
+            "unknown-linux-gnu",
+            "aarch64",
+        ): "8c9d0f0ee98166ae6ab198747519ba6f25db29d185bd2ae5960ecebc91a5c22a",
+        (
+            "0.11.16",
+            "unknown-linux-gnu",
+            "x86_64",
+        ): "74947fe2c03315cf07e82ab3acc703eddef01aba4d5232a98e4c6825ec116131",
     }
 
     def url_for_version(self, version):
