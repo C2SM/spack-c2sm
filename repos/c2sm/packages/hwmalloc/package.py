@@ -16,6 +16,8 @@ class Hwmalloc(CMakePackage, CudaPackage, ROCmPackage):
     git = "https://github.com/ghex-org/hwmalloc.git"
     maintainers = ["boeschf"]
 
+    version("master", branch="master")
+    version("async-mpi", commit="c3ddc35f58ad6709388c209dfaec59b1ff40d472")
     version(
         "0.3.0",
         sha256="d4d4ac6087a806600d79fb62c02719ca3d58a412968fe1ef4a2fd58d9e7ee950",
@@ -28,7 +30,6 @@ class Hwmalloc(CMakePackage, CudaPackage, ROCmPackage):
         "0.1.0",
         sha256="06e9bfcef0ecce4d19531ccbe03592b502d1281c7a092bc0ff51ca187899b21c",
     )
-    version("master", branch="master")
 
     depends_on("cxx", type="build")
 
@@ -50,7 +51,7 @@ class Hwmalloc(CMakePackage, CudaPackage, ROCmPackage):
     )
     variant("logging", default=False, description="print logging info to cerr")
 
-    patch("cmake_install_path.patch", when="@:0.3.0", level=1)
+    patch("cmake_install_path.patch", when="@0:0.3.0", level=1)
 
     def cmake_args(self):
         args = [
