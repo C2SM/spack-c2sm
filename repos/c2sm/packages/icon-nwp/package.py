@@ -2,9 +2,52 @@ import os
 import re
 import glob
 from collections import defaultdict
+from dataclasses import dataclass, field
+
+from typing import Self, ClassVar
+from itertools import chain
 
 from spack_repo.builtin.packages.icon.package import Icon
 from spack.package import *
+
+
+@dataclass(kw_only=True)
+class IconConfigureArgs:
+    FLAG_KEYS: ClassVar[list[str]] = ["LIBS",
+                                      "CFLAGS",
+                                      "FCFLAGS",
+                                      "ICON_FCFLAGS",
+                                      "LDFLAGS",
+                                      "ICON_LDFLAGS",
+                                      "ICON_BUNDLED_CFLAGS",
+                                      "ICON_YAC_CFLAGS",
+                                      "ICON_OCEAN_FCFLAGS",
+                                      "ICON_ECRAD_FCFLAGS"]
+    args: list[str] = field(default_factory=list)
+    flags: dict[str, list[str]] = defaultdict(list)
+
+    def remove_dupplicates(self) -> None:
+        self.args = list(set(self.args))
+        for k, v in self.flags.items:
+            self.flags[k] = list(set(v))
+
+    def to_args(self) -> list[str]:
+        self.remove_dupplicates()
+        return [ *chain( self.args, ("{0}={1}".format(name, " ".join(values)) for name, values in flags.items()) ) ]
+
+    @classmethod
+    def from_args(cls: type[Self], args: list[str]) -> Self:
+        icon_configure_args = cls()
+        for a in args:
+            found_key=False
+            for key in self.FLAG_KEYS:
+                if a.startswith(f"{key}="):
+                    icon_configure_args.flags[key].append(a.split("=", 1)[1].strip())
+                    found_key=True
+                    break
+            if not found_key:
+                icon_configure_args.args.append(a)
+        return icon_configure_args
 
 
 def check_variant_fcgroup(fcgroup):
@@ -40,7 +83,7 @@ class IconNwp(Icon):
     git = "git@gitlab.dkrz.de:icon/icon-nwp.git"
     submodules = True
 
-    maintainers("stelliom", "leclairm", "huppd")
+    maintainers("leclairm", "stelliom", "huppd")
 
     version("develop", branch="master")
     version("main", branch="master")
@@ -127,6 +170,9 @@ class IconNwp(Icon):
         description="Create a Fortran compile group: GROUP;files;flag \nNote: flag can only be one single value, i.e. -O1",
     )
 
+    variant("nvtx", default=False, description="Enable NVTX for profiling")
+    requires("%nvhpc", when="+nvtx")  # NVTX is only supported for nvhpc
+
     # verbosity
     variant(
         "silent-rules",
@@ -170,44 +216,48 @@ class IconNwp(Icon):
     patch_libtool = False
 
     def configure_args(self):
-        args = super().configure_args()
-        super_libs = args.pop()
-
+        self.icon_configure_args = IconConfigureArgs.from_args(super().configure_args())
         libs = LibraryList([])
-        flags = defaultdict(list)
 
-        for x in [
-            "dace",
-            "emvorado",
-            "art-gpl",
-            "acm-license",
-            "active-target-sync",
-            "async-io-rma",
-            "realloc-buf",
-            "parallel-netcdf",
-            "sct",
-            "loop-exchange",
-            "vectorized-lrtm",
-            "pgi-inlib",
-            "nccl",
-            "cuda-graphs",
-            "silent-rules",
-        ]:
-            args += self.enable_or_disable(x)
+        self.icon_configure_args.args.extend(
+            self.enable_or_disable(x) for x in [
+                "dace",
+                "emvorado",
+                "art-gpl",
+                "acm-license",
+                "active-target-sync",
+                "async-io-rma",
+                "realloc-buf",
+                "parallel-netcdf",
+                "sct",
+                "loop-exchange",
+                "vectorized-lrtm",
+                "pgi-inlib",
+                "nccl",
+                "cuda-graphs",
+                "silent-rules",
+            ]
+        )
 
         if "+emvorado" in self.spec:
-            libs += self.spec["eccodes:fortran"].libs
-            libs += self.spec["hdf5:fortran,hl"].libs
-            libs += self.spec["zlib-ng"].libs
+            libs.append(self.spec["eccodes:fortran"].libs)
+            libs.append(self.spec["hdf5:fortran,hl"].libs)
+            libs.append(self.spec["zlib-ng"].libs)
 
         if "+sct" in self.spec:
-            libs += self.spec["hdf5"].libs
+            libs.append(self.spec["hdf5"].libs)
+
+        if "+nvtx" in self.spec:
+            self.icon_configure_args.flags["FCFLAGS"].append("-D_USE_NVTX")
+            libs.append(LibraryList(["nvhpcwrapnvtx"]))
 
         fcgroup = self.spec.variants["fcgroup"].value
-        # ('none',) is the values spack assign if fcgroup is not set
+        # ('none',) is the values spack assigns if fcgroup is not set
         if fcgroup != ("none",):
-            args.extend(self.fcgroup_to_config_arg())
-            flags.update(self.fcgroup_to_config_var())
+            for group in fcgroup:
+                name, files, flag = group.split(".")
+                self.icon_configure_args.args.append(f"--enable-fcgroup-{name}={files}")
+                self.icon_configure_args.flags[f"ICON_{name}_FCFLAGS"].append(flag)
 
         # add configure arguments not yet available as variant
         extra_config_args = self.spec.variants["extra-config-args"].value
@@ -216,7 +266,7 @@ class IconNwp(Icon):
                 # prevent configure-args already available as variant
                 # to be set through variant extra_config_args
                 self.validate_extra_config_args(x)
-                args.append(x)
+                self.icon_configure_args.args.append(x)
             tty.warn(
                 "You use variant extra-config-args. Injecting non-variant configure arguments may potentially disrupt the build process!"
             )
@@ -226,44 +276,12 @@ class IconNwp(Icon):
         # in the reversed order
         # (see https://gitlab.dkrz.de/icon/icon#icon-dependencies):
         # and for non-system directories only:
-        flags["LDFLAGS"].extend(
-            [
-                "-L{0}".format(d)
-                for d in reversed(libs.directories)
-                if not is_system_path(d)
-            ]
+        self.icon_configure_args.flags["LDFLAGS"].extend(
+            (f"-L{d}" for d in reversed(libs.directories) if not is_system_path(d))
         )
 
-        # Temporary back port fix from upstream package for building comin on cpu
-        # See https://github.com/spack/spack-packages/commit/b992c44bb52d034fe57637f3da42483501442af3
-        # TODO: Remove this dupplicate once spack-c2sm points to an upstream spack containing the fix.
-        if self.spec.variants[
-            "gpu"
-        ].value in self.nvidia_targets or self.spec.satisfies("+comin"):
-            flags["ICON_LDFLAGS"].extend(self.compiler.stdcxx_libs)
-
-        args.extend(
-            ["{0}={1}".format(name, " ".join(value)) for name, value in flags.items()]
-        )
-        args.append(f"{super_libs} {libs.link_flags}")
-        return args
-
-    def fcgroup_to_config_arg(self):
-        arg = []
-        for group in self.spec.variants["fcgroup"].value:
-            name = group.split(".")[0]
-            files = group.split(".")[1]
-            arg.append(f"--enable-fcgroup-{name}={files}")
-        return arg
-
-    def fcgroup_to_config_var(self):
-        var = {}
-        for group in self.spec.variants["fcgroup"].value:
-            name = group.split(".")[0]
-            flag = group.split(".")[2]
-            # Note: flag needs to be a list
-            var[f"ICON_{name}_FCFLAGS"] = [flag]
-        return var
+        self.icon_configure_args.flags["LIBS"].append(libs.link_flags)
+        return self.icon_configure_args.to_args()
 
     def strip_variant_prefix(self, variant_string):
         prefixes = ["--enable-", "--disable-"]
@@ -322,7 +340,7 @@ class IconNwp(Icon):
 
         # first build in self.build_directory, no worries
         else:
-            is_same_spec = True
+            is_same_spec = False
 
         # dump spec of new build
         with open(previous_spec, mode="w") as f:
