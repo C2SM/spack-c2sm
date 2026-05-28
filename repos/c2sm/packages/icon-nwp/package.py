@@ -24,7 +24,7 @@ class IconConfigureArgs:
                                       "ICON_OCEAN_FCFLAGS",
                                       "ICON_ECRAD_FCFLAGS"]
     args: list[str] = field(default_factory=list)
-    flags: dict[str, list[str]] = defaultdict(list)
+    flags: dict[str, list[str]] = field(default_factory=lambda: defaultdict(list))
 
     def remove_dupplicates(self) -> None:
         self.args = list(set(self.args))
