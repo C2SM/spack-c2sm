@@ -30,7 +30,7 @@ class Icon4py(Package):
 
     # --- Dependencies ---
     extends("python")
-    depends_on("python@3.11:3.12")
+    depends_on("python@3.12")
 
     depends_on("c", type="build")
     depends_on("cxx", type="build")
