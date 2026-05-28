@@ -202,7 +202,7 @@ class IconNwp(Icon):
     variant("cuda-mempool", default=False, description="Enable cuda memory pool")
     requires("+realloc-buf", when="+cuda-mempool")
 
-    variant('icon4py', default=False, description='Build with GT4Py granules')
+    variant('icon4py', default=False, description='Build with ICON4Py granules')
     
     depends_on("eccodes-cosmo-resources", type="run", when="+eccodes-definitions")
 

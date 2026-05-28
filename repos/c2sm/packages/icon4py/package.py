@@ -100,8 +100,9 @@ class Icon4py(Package):
 
         # TODO: Check if there's a way to avoid hardcoded cuda version
         if "+cuda" in spec:
-            extras.append("cuda12")
-            no_install.append("cupy-cuda12x")
+            cuda_major_version = spec["cuda"].version[0]
+            extras.append(f"cuda{cuda_major_version}")
+            no_install.append(f"cupy-cuda{cuda_major_version}x")
 
         tty.msg("Installing missing packages via uv sync")
         uv(
