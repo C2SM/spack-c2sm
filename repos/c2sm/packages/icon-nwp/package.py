@@ -11,6 +11,14 @@ from spack_repo.builtin.packages.icon.package import Icon
 from spack.package import *
 
 
+# NOTE: The aim is to upstream `IconConfigureArgs` to `spack_repo.builtin.packages.icon.package`.
+#       This way, we only need to directly modify `set_configure_args` like this:
+#       ````
+#       def set_configure_args(self) -> None:
+#           super().set_configure_args()
+#           # modify self.icon_configure_args
+#       ````
+#       The ``from_args`` class method would also disappear then.
 @dataclass(kw_only=True)
 class IconConfigureArgs:
     FLAG_KEYS: ClassVar[list[str]] = [
@@ -62,7 +70,6 @@ def check_variant_fcgroup(fcgroup):
         tty.warn("Variant fcgroup needs format GROUP.files.flag")
         return False
 
-
 def check_variant_extra_config_args(extra_config_arg):
     pattern = re.compile(r"--(enable|disable)-\S+")
     if pattern.match(extra_config_arg) or extra_config_arg == "none":
@@ -72,6 +79,14 @@ def check_variant_extra_config_args(extra_config_arg):
             f'The value "{extra_config_arg}" for the extra_config_args variant must follow the format "--enable-arg" or "--disable-arg"'
         )
         return False
+
+def validate_variant_dsl(pkg, name, value):
+    set_mutual_excl = set(['substitute', 'verify', 'serialize'])
+    set_input_var = set(value)
+    if len(set_mutual_excl.intersection(set_input_var)) > 1:
+        raise error.SpecError(
+            'Cannot have more than one of (substitute, verify, serialize) in the same build'
+        )
 
 
 class IconNwp(Icon):
@@ -190,6 +205,19 @@ class IconNwp(Icon):
     )
     depends_on("eccodes-cosmo-resources", type="run", when="+eccodes-definitions")
 
+    dsl_values = ('substitute', 'verify')
+    variant(
+        'dsl',
+        default='none',
+        validator=validate_variant_dsl,
+        values=('none', ) + dsl_values,
+        description='Build with GT4Py dynamical core',
+        multi=True
+    )
+
+    variant("cuda-mempool", default=False, description="Enable cuda memory pool")
+    requires("+realloc-buf", when="+cuda-mempool")
+
     with when("+emvorado"):
         depends_on("eccodes +fortran")
         depends_on("hdf5 +szip +hl +fortran")
@@ -211,12 +239,20 @@ class IconNwp(Icon):
 
     depends_on("hdf5 +szip", when="+sct")
 
+    for x in dsl_values:
+        depends_on('icon4py', type="build", when=f"dsl={x}")
+
     # patch_libtool is a function from Autotoolspackage.
     # For BB we cannot use it because it finds all files
     # named "libtool". spack-c2sm is cloned into icon-repo,
     # therefore this function detects not only "libtool" files, but
     # also the folder where libtool package itself is installed.
     patch_libtool = False
+
+    def setup_build_environment(self, env):
+        if self.spec.variants['dsl'].value != ('none', ):
+            tty.msg(f"adding {self.spec['icon4py'].prefix.share.venv.bin} to PATH for icon4py bindings because +dsl is enabled")
+            env.prepend_path("PATH", self.spec["icon4py"].prefix.share.venv.bin)
 
     def set_configure_args(self) -> None:
         self.icon_configure_args = IconConfigureArgs.from_args(super().configure_args())
@@ -271,6 +307,20 @@ class IconNwp(Icon):
                 "You use variant extra-config-args. Injecting non-variant configure arguments may potentially disrupt the build process!"
             )
 
+        if self.spec.satisfies("+cuda-mempool"):
+            self.icon_configure_args.flags["ICON_FCFLAGS"].append("-cuda")
+
+        if (dsl := self.spec.variants["dsl"].value) != ("none",):
+            if "substitute" in dsl:
+                self.icon_configure_args.args.append("--enable-icon4py=substitute")
+            elif "verify" in dsl:
+                self.icon_configure_args.args.append("--enable-icon4py=verify")
+            else:
+                raise ValueError(
+                    f"Unknown DSL variant '{dsl}'. "
+                    f"Valid options are: {', '.join(('none',) + self.dsl_values)}"
+                )
+
         # Help the libtool scripts of the bundled libraries find the correct
         # paths to the external libraries. Specify the library search (-L) flags
         # in the reversed order
@@ -278,6 +328,11 @@ class IconNwp(Icon):
         # and for non-system directories only:
         if non_system_reversed_lib_dirs := [f"-L{d}" for d in reversed(libs.directories) if not is_system_path(d)]:
             self.icon_configure_args.flags["LDFLAGS"].extend(non_system_reversed_lib_dirs)
+
+            # Add icon4py paths and libs
+            bindings_dir = os.path.join(self.spec["icon4py"].prefix, "src")
+            self.icon_configure_args.flags["LDFLAGS"].append(f"-L{bindings_dir} -Wl,-rpath,{bindings_dir}")
+            self.icon_configure_args.flags["LIBS"].append("-licon4py_bindings")
 
         self.icon_configure_args.flags["LIBS"].append(libs.link_flags)
 
