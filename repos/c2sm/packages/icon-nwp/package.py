@@ -103,6 +103,9 @@ class IconNwp(Icon):
     version("2024.01-mch-2.0", tag="icon-2024.01-mch-2.0")
     version("2.6.6-mch2b", tag="icon-nwp/icon-2.6.6-mch2b")
     version("2.6.6-mch2a", tag="icon-nwp/icon-2.6.6-mch2a")
+    # temporary version for testing icon +icon4py in the uenv
+    version("add_icon4py", branch="add_icon4py")
+    
 
     # Model Features:
     variant(
