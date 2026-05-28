@@ -80,14 +80,6 @@ def check_variant_extra_config_args(extra_config_arg):
         )
         return False
 
-def validate_variant_dsl(pkg, name, value):
-    set_mutual_excl = set(['substitute', 'verify', 'serialize'])
-    set_input_var = set(value)
-    if len(set_mutual_excl.intersection(set_input_var)) > 1:
-        raise error.SpecError(
-            'Cannot have more than one of (substitute, verify, serialize) in the same build'
-        )
-
 
 class IconNwp(Icon):
     """ICON - is a modeling framework for weather, climate, and environmental
@@ -203,20 +195,13 @@ class IconNwp(Icon):
         default=False,
         description="Enable extension of eccodes with center specific definition files",
     )
-    depends_on("eccodes-cosmo-resources", type="run", when="+eccodes-definitions")
-
-    dsl_values = ('substitute', 'verify')
-    variant(
-        'dsl',
-        default='none',
-        validator=validate_variant_dsl,
-        values=('none', ) + dsl_values,
-        description='Build with GT4Py dynamical core',
-        multi=True
-    )
 
     variant("cuda-mempool", default=False, description="Enable cuda memory pool")
     requires("+realloc-buf", when="+cuda-mempool")
+
+    variant('icon4py', default=False, description='Build with GT4Py granules')
+    
+    depends_on("eccodes-cosmo-resources", type="run", when="+eccodes-definitions")
 
     with when("+emvorado"):
         depends_on("eccodes +fortran")
@@ -239,8 +224,7 @@ class IconNwp(Icon):
 
     depends_on("hdf5 +szip", when="+sct")
 
-    for x in dsl_values:
-        depends_on('icon4py', type="build", when=f"dsl={x}")
+    depends_on('icon4py', type="build", when="+icon4py")
 
     # patch_libtool is a function from Autotoolspackage.
     # For BB we cannot use it because it finds all files
@@ -250,8 +234,8 @@ class IconNwp(Icon):
     patch_libtool = False
 
     def setup_build_environment(self, env):
-        if self.spec.variants['dsl'].value != ('none', ):
-            tty.msg(f"adding {self.spec['icon4py'].prefix.share.venv.bin} to PATH for icon4py bindings because +dsl is enabled")
+        if self.spec.satisfies("+icon4py"):
+            tty.msg(f"adding {self.spec['icon4py'].prefix.share.venv.bin} to PATH for icon4py bindings because +icon4py is enabled")
             env.prepend_path("PATH", self.spec["icon4py"].prefix.share.venv.bin)
 
     def set_configure_args(self) -> None:
@@ -274,6 +258,7 @@ class IconNwp(Icon):
                 "nccl",
                 "cuda-graphs",
                 "silent-rules",
+                "icon4py",
             ):
            self.icon_configure_args.args.extend(self.enable_or_disable(x))
 
@@ -310,17 +295,6 @@ class IconNwp(Icon):
         if self.spec.satisfies("+cuda-mempool"):
             self.icon_configure_args.flags["ICON_FCFLAGS"].append("-cuda")
 
-        if (dsl := self.spec.variants["dsl"].value) != ("none",):
-            if "substitute" in dsl:
-                self.icon_configure_args.args.append("--enable-icon4py=substitute")
-            elif "verify" in dsl:
-                self.icon_configure_args.args.append("--enable-icon4py=verify")
-            else:
-                raise ValueError(
-                    f"Unknown DSL variant '{dsl}'. "
-                    f"Valid options are: {', '.join(('none',) + self.dsl_values)}"
-                )
-
         # Help the libtool scripts of the bundled libraries find the correct
         # paths to the external libraries. Specify the library search (-L) flags
         # in the reversed order
@@ -328,11 +302,6 @@ class IconNwp(Icon):
         # and for non-system directories only:
         if non_system_reversed_lib_dirs := [f"-L{d}" for d in reversed(libs.directories) if not is_system_path(d)]:
             self.icon_configure_args.flags["LDFLAGS"].extend(non_system_reversed_lib_dirs)
-
-            # Add icon4py paths and libs
-            bindings_dir = os.path.join(self.spec["icon4py"].prefix, "src")
-            self.icon_configure_args.flags["LDFLAGS"].append(f"-L{bindings_dir} -Wl,-rpath,{bindings_dir}")
-            self.icon_configure_args.flags["LIBS"].append("-licon4py_bindings")
 
         self.icon_configure_args.flags["LIBS"].append(libs.link_flags)
 
