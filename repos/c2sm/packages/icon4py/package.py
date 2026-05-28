@@ -14,12 +14,7 @@ class Icon4py(Package):
 
     # --- Versions ---
     version("main", branch="main")
-    version("0.0.15", commit="9a7f7d68f0e8be18f746044879c49e4d87e20ff6")
-    version(
-        "0.0.14",
-        sha256="8aadb6fe7af55fc41d09daa4e74739bd7ab01b4e",
-        extension="zip",
-    )
+    version("0.2.0rc2", tag="v0.2.0rc2")
 
     def url_for_version(self, version):
         return f"https://github.com/C2SM/icon4py/archive/refs/tags/v{version}.zip"
@@ -48,8 +43,7 @@ class Icon4py(Package):
     depends_on("py-pybind11")
     depends_on("py-nanobind")
     depends_on("py-mpi4py")
-    depends_on("ghex@async-mpi", when="@0.0.15")
-    depends_on("ghex@async-mpi", when="@main")
+    depends_on("ghex@0.5.1:")
 
     with when("+cuda"):
         depends_on("py-cupy +cuda")
