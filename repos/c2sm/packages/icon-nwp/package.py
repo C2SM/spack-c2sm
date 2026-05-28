@@ -238,6 +238,12 @@ class IconNwp(Icon):
             tty.msg(f"adding {self.spec['icon4py'].prefix.share.venv.bin} to PATH for icon4py bindings because +icon4py is enabled")
             env.prepend_path("PATH", self.spec["icon4py"].prefix.share.venv.bin)
 
+    def setup_run_environment(self, env):
+        if self.spec.satisfies("+icon4py"):
+            tty.msg(f"adding {self.spec['icon4py'].prefix.share.venv.bin} to PATH for runtime because +icon4py is enabled")
+            env.prepend_path("PATH", self.spec["icon4py"].prefix.share.venv.bin)
+            env["VIRTUAL_ENV"] = self.spec["icon4py"].prefix.share.venv
+
     def set_configure_args(self) -> None:
         self.icon_configure_args = IconConfigureArgs.from_args(super().configure_args())
         libs = LibraryList([])
