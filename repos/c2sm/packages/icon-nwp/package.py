@@ -13,22 +13,25 @@ from spack.package import *
 
 @dataclass(kw_only=True)
 class IconConfigureArgs:
-    FLAG_KEYS: ClassVar[list[str]] = ["LIBS",
-                                      "CFLAGS",
-                                      "FCFLAGS",
-                                      "ICON_FCFLAGS",
-                                      "LDFLAGS",
-                                      "ICON_LDFLAGS",
-                                      "ICON_BUNDLED_CFLAGS",
-                                      "ICON_YAC_CFLAGS",
-                                      "ICON_OCEAN_FCFLAGS",
-                                      "ICON_ECRAD_FCFLAGS"]
+    FLAG_KEYS: ClassVar[list[str]] = [
+        "LIBS",
+        "CFLAGS",
+        "FCFLAGS",
+        "ICON_FCFLAGS",
+        "LDFLAGS",
+        "ICON_LDFLAGS",
+        "ICON_BUNDLED_CFLAGS",
+        "ICON_YAC_CFLAGS",
+        "ICON_OCEAN_FCFLAGS",
+        "ICON_ECRAD_FCFLAGS",
+        "CUDAFLAGS",
+    ]
     args: list[str] = field(default_factory=list)
     flags: dict[str, list[str]] = field(default_factory=lambda: defaultdict(list))
 
     def remove_dupplicates(self) -> None:
         self.args = list(set(self.args))
-        for key, values in self.flags.items:
+        for key, values in self.flags.items():
             self.flags[key] = list(set(values))
 
     def to_args(self) -> list[str]:
@@ -40,7 +43,7 @@ class IconConfigureArgs:
         icon_configure_args = cls()
         for a in args:
             found_key=False
-            for key in self.FLAG_KEYS:
+            for key in cls.FLAG_KEYS:
                 if a.startswith(f"{key}="):
                     icon_configure_args.flags[key].append(a.split("=", 1)[1].strip())
                     found_key=True
@@ -219,8 +222,7 @@ class IconNwp(Icon):
         self.icon_configure_args = IconConfigureArgs.from_args(super().configure_args())
         libs = LibraryList([])
 
-        self.icon_configure_args.args.extend(
-            self.enable_or_disable(x) for x in [
+        for x in (
                 "dace",
                 "emvorado",
                 "art-gpl",
@@ -236,8 +238,8 @@ class IconNwp(Icon):
                 "nccl",
                 "cuda-graphs",
                 "silent-rules",
-            ]
-        )
+            ):
+           self.icon_configure_args.args.extend(self.enable_or_disable(x))
 
         if "+emvorado" in self.spec:
             libs.append(self.spec["eccodes:fortran"].libs)
@@ -251,17 +253,15 @@ class IconNwp(Icon):
             self.icon_configure_args.flags["FCFLAGS"].append("-D_USE_NVTX")
             libs.append(LibraryList(["nvhpcwrapnvtx"]))
 
-        fcgroup = self.spec.variants["fcgroup"].value
-        # ('none',) is the values spack assigns if fcgroup is not set
-        if fcgroup != ("none",):
+        if (fcgroup := self.spec.variants["fcgroup"].value) != ("none",):
+            # ('none',) is the values spack assigns if fcgroup is not set
             for group in fcgroup:
                 name, files, flag = group.split(".")
                 self.icon_configure_args.args.append(f"--enable-fcgroup-{name}={files}")
                 self.icon_configure_args.flags[f"ICON_{name}_FCFLAGS"].append(flag)
 
         # add configure arguments not yet available as variant
-        extra_config_args = self.spec.variants["extra-config-args"].value
-        if extra_config_args != ("none",):
+        if (extra_config_args := self.spec.variants["extra-config-args"].value) != ("none",):
             for x in extra_config_args:
                 # prevent configure-args already available as variant
                 # to be set through variant extra_config_args
@@ -276,9 +276,8 @@ class IconNwp(Icon):
         # in the reversed order
         # (see https://gitlab.dkrz.de/icon/icon#icon-dependencies):
         # and for non-system directories only:
-        self.icon_configure_args.flags["LDFLAGS"].extend(
-            (f"-L{d}" for d in reversed(libs.directories) if not is_system_path(d))
-        )
+        if non_system_reversed_lib_dirs := [f"-L{d}" for d in reversed(libs.directories) if not is_system_path(d)]:
+            self.icon_configure_args.flags["LDFLAGS"].extend(non_system_reversed_lib_dirs)
 
         self.icon_configure_args.flags["LIBS"].append(libs.link_flags)
 
