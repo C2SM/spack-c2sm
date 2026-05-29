@@ -281,7 +281,8 @@ class IconNwp(Icon):
             self.icon_configure_args.flags["FCFLAGS"].append("-D_USE_NVTX")
             libs.append(LibraryList(["nvhpcwrapnvtx"]))
 
-        if (fcgroup := self.spec.variants["fcgroup"].value) != ("none",):
+        fcgroup = self.spec.variants["fcgroup"].value
+        if fcgroup != ("none",):
             # ('none',) is the values spack assigns if fcgroup is not set
             for group in fcgroup:
                 name, files, flag = group.split(".")
@@ -289,7 +290,8 @@ class IconNwp(Icon):
                 self.icon_configure_args.flags[f"ICON_{name}_FCFLAGS"].append(flag)
 
         # add configure arguments not yet available as variant
-        if (extra_config_args := self.spec.variants["extra-config-args"].value) != ("none",):
+        extra_config_args = self.spec.variants["extra-config-args"].value
+        if extra_config_args != ("none",):
             for x in extra_config_args:
                 # prevent configure-args already available as variant
                 # to be set through variant extra_config_args
@@ -307,7 +309,8 @@ class IconNwp(Icon):
         # in the reversed order
         # (see https://gitlab.dkrz.de/icon/icon#icon-dependencies):
         # and for non-system directories only:
-        if non_system_reversed_lib_dirs := [f"-L{d}" for d in reversed(libs.directories) if not is_system_path(d)]:
+        non_system_reversed_lib_dirs = [f"-L{d}" for d in reversed(libs.directories) if not is_system_path(d)]
+        if non_system_reversed_lib_dirs:
             self.icon_configure_args.flags["LDFLAGS"].extend(non_system_reversed_lib_dirs)
 
         self.icon_configure_args.flags["LIBS"].append(libs.link_flags)
