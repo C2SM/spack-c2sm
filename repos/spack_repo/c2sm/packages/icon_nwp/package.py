@@ -182,7 +182,7 @@ class IconNwp(Icon):
     # also the folder where libtool package itself is installed.
     patch_libtool = False
 
-    FLAG_KEYS: list[str] = [
+    FLAG_KEYS = [
         "LIBS",
         "CFLAGS",
         "FCFLAGS",
@@ -205,9 +205,9 @@ class IconNwp(Icon):
     #       ````
     #       The `parse_config_args` method would also disappear then.
 
-    def parse_config_args(self, args: list[str]) -> None:
-        self.single_args: list[str] = []
-        self.flags: dict[str, list[str]] = defaultdict(list)
+    def parse_config_args(self, args) -> None:
+        self.single_args = []
+        self.flags = defaultdict(list)
         for a in args:
             for key in self.FLAG_KEYS:
                 if a.startswith(f"{key}="):
