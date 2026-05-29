@@ -209,13 +209,11 @@ class IconNwp(Icon):
         self.single_args: list[str] = []
         self.flags: dict[str, list[str]] = defaultdict(list)
         for a in args:
-            found_key=False
             for key in self.FLAG_KEYS:
                 if a.startswith(f"{key}="):
                     self.flags[key].append(a.split("=", 1)[1].strip())
-                    found_key=True
                     break
-            if not found_key:
+            else:
                 self.single_args.append(a)
 
     def setup_build_environment(self, env):
@@ -300,8 +298,9 @@ class IconNwp(Icon):
         self.flags["LIBS"].append(libs.link_flags)
 
     def configure_args(self) -> list[str]:
-        # Remove dupplicates
+        # Set configure args
         self.set_configure_args()
+        # Remove dupplicates
         self.single_args = list(set(self.single_args))
         for key, values in self.flags.items():
             self.flags[key] = list(set(values))
