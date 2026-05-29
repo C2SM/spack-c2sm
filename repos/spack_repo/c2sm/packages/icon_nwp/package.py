@@ -297,7 +297,7 @@ class IconNwp(Icon):
 
         self.flags["LIBS"].append(libs.link_flags)
 
-    def configure_args(self) -> list[str]:
+    def configure_args(self):
         # Set configure args
         self.set_configure_args()
         # Remove dupplicates
