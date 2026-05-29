@@ -182,7 +182,7 @@ class IconNwp(Icon):
     # also the folder where libtool package itself is installed.
     patch_libtool = False
 
-    FLAG_KEYS: ClassVar[list[str]] = [
+    FLAG_KEYS: list[str] = [
         "LIBS",
         "CFLAGS",
         "FCFLAGS",
