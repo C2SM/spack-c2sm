@@ -1,2 +1,2 @@
 repos:
-  c2sm: $spack/../repos/c2sm
+  c2sm: $spack/../repos/spack_repo/c2sm
