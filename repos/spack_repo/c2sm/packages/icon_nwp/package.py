@@ -2,63 +2,11 @@ import os
 import re
 import glob
 from collections import defaultdict
-from dataclasses import dataclass, field
 
-from typing import Self, ClassVar
 from itertools import chain
 
 from spack_repo.builtin.packages.icon.package import Icon
 from spack.package import *
-
-
-# NOTE: The aim is to upstream `IconConfigureArgs` to `spack_repo.builtin.packages.icon.package`.
-#       This way, we only need to directly modify `set_configure_args` like this:
-#       ````
-#       def set_configure_args(self) -> None:
-#           super().set_configure_args()
-#           # modify self.icon_configure_args
-#       ````
-#       The ``from_args`` class method would also disappear then.
-@dataclass(kw_only=True)
-class IconConfigureArgs:
-    FLAG_KEYS: ClassVar[list[str]] = [
-        "LIBS",
-        "CFLAGS",
-        "FCFLAGS",
-        "ICON_FCFLAGS",
-        "LDFLAGS",
-        "ICON_LDFLAGS",
-        "ICON_BUNDLED_CFLAGS",
-        "ICON_YAC_CFLAGS",
-        "ICON_OCEAN_FCFLAGS",
-        "ICON_ECRAD_FCFLAGS",
-        "CUDAFLAGS",
-    ]
-    args: list[str] = field(default_factory=list)
-    flags: dict[str, list[str]] = field(default_factory=lambda: defaultdict(list))
-
-    def remove_dupplicates(self) -> None:
-        self.args = list(set(self.args))
-        for key, values in self.flags.items():
-            self.flags[key] = list(set(values))
-
-    def to_args(self) -> list[str]:
-        self.remove_dupplicates()
-        return [ *chain( self.args, ("{0}={1}".format(name, " ".join(values)) for name, values in self.flags.items()) ) ]
-
-    @classmethod
-    def from_args(cls: type[Self], args: list[str]) -> Self:
-        icon_configure_args = cls()
-        for a in args:
-            found_key=False
-            for key in cls.FLAG_KEYS:
-                if a.startswith(f"{key}="):
-                    icon_configure_args.flags[key].append(a.split("=", 1)[1].strip())
-                    found_key=True
-                    break
-            if not found_key:
-                icon_configure_args.args.append(a)
-        return icon_configure_args
 
 
 def check_variant_fcgroup(fcgroup):
@@ -234,6 +182,42 @@ class IconNwp(Icon):
     # also the folder where libtool package itself is installed.
     patch_libtool = False
 
+    FLAG_KEYS: ClassVar[list[str]] = [
+        "LIBS",
+        "CFLAGS",
+        "FCFLAGS",
+        "ICON_FCFLAGS",
+        "LDFLAGS",
+        "ICON_LDFLAGS",
+        "ICON_BUNDLED_CFLAGS",
+        "ICON_YAC_CFLAGS",
+        "ICON_OCEAN_FCFLAGS",
+        "ICON_ECRAD_FCFLAGS",
+        "CUDAFLAGS",
+    ]
+
+    # NOTE: The aim is to upstream `set_configure_args` to `spack_repo.builtin.packages.icon.package`.
+    #       This way, we only need to directly modify `set_configure_args` like this:
+    #       ````
+    #       def set_configure_args(self) -> None:
+    #           super().set_configure_args()
+    #           # modify self.single_args and self.flags
+    #       ````
+    #       The `parse_config_args` method would also disappear then.
+
+    def parse_config_args(self, args: list[str]) -> None:
+        self.single_args: list[str] = []
+        self.flags: dict[str, list[str]] = defaultdict(list)
+        for a in args:
+            found_key=False
+            for key in self.FLAG_KEYS:
+                if a.startswith(f"{key}="):
+                    self.flags[key].append(a.split("=", 1)[1].strip())
+                    found_key=True
+                    break
+            if not found_key:
+                self.single_args.append(a)
+
     def setup_build_environment(self, env):
         if self.spec.satisfies("+icon4py"):
             tty.msg(f"adding {self.spec['icon4py'].prefix.share.venv.bin} to PATH for icon4py bindings because +icon4py is enabled")
@@ -246,7 +230,7 @@ class IconNwp(Icon):
             env["VIRTUAL_ENV"] = self.spec["icon4py"].prefix.share.venv
 
     def set_configure_args(self) -> None:
-        self.icon_configure_args = IconConfigureArgs.from_args(super().configure_args())
+        self.parse_config_args(super().configure_args())
         libs = LibraryList([])
 
         for x in (
@@ -267,7 +251,7 @@ class IconNwp(Icon):
                 "silent-rules",
                 "icon4py",
             ):
-           self.icon_configure_args.args.extend(self.enable_or_disable(x))
+           self.single_args.extend(self.enable_or_disable(x))
 
         if "+emvorado" in self.spec:
             libs.append(self.spec["eccodes:fortran"].libs)
@@ -278,7 +262,7 @@ class IconNwp(Icon):
             libs.append(self.spec["hdf5"].libs)
 
         if "+nvtx" in self.spec:
-            self.icon_configure_args.flags["FCFLAGS"].append("-D_USE_NVTX")
+            self.flags["FCFLAGS"].append("-D_USE_NVTX")
             libs.append(LibraryList(["nvhpcwrapnvtx"]))
 
         fcgroup = self.spec.variants["fcgroup"].value
@@ -286,8 +270,8 @@ class IconNwp(Icon):
             # ('none',) is the values spack assigns if fcgroup is not set
             for group in fcgroup:
                 name, files, flag = group.split(".")
-                self.icon_configure_args.args.append(f"--enable-fcgroup-{name}={files}")
-                self.icon_configure_args.flags[f"ICON_{name}_FCFLAGS"].append(flag)
+                self.single_args.append(f"--enable-fcgroup-{name}={files}")
+                self.flags[f"ICON_{name}_FCFLAGS"].append(flag)
 
         # add configure arguments not yet available as variant
         extra_config_args = self.spec.variants["extra-config-args"].value
@@ -296,13 +280,13 @@ class IconNwp(Icon):
                 # prevent configure-args already available as variant
                 # to be set through variant extra_config_args
                 self.validate_extra_config_args(x)
-                self.icon_configure_args.args.append(x)
+                self.single_args.append(x)
             tty.warn(
                 "You use variant extra-config-args. Injecting non-variant configure arguments may potentially disrupt the build process!"
             )
 
         if self.spec.satisfies("+cuda-mempool"):
-            self.icon_configure_args.flags["ICON_FCFLAGS"].append("-cuda")
+            self.flags["ICON_FCFLAGS"].append("-cuda")
 
         # Help the libtool scripts of the bundled libraries find the correct
         # paths to the external libraries. Specify the library search (-L) flags
@@ -311,13 +295,18 @@ class IconNwp(Icon):
         # and for non-system directories only:
         non_system_reversed_lib_dirs = [f"-L{d}" for d in reversed(libs.directories) if not is_system_path(d)]
         if non_system_reversed_lib_dirs:
-            self.icon_configure_args.flags["LDFLAGS"].extend(non_system_reversed_lib_dirs)
+            self.flags["LDFLAGS"].extend(non_system_reversed_lib_dirs)
 
-        self.icon_configure_args.flags["LIBS"].append(libs.link_flags)
+        self.flags["LIBS"].append(libs.link_flags)
 
     def configure_args(self) -> list[str]:
+        # Remove dupplicates
         self.set_configure_args()
-        return self.icon_configure_args.to_args()
+        self.single_args = list(set(self.single_args))
+        for key, values in self.flags.items():
+            self.flags[key] = list(set(values))
+        # Return final list
+        return [ *chain( self.single_args, ("{0}={1}".format(name, " ".join(values)) for name, values in self.flags.items()) ) ]
 
     def strip_variant_prefix(self, variant_string):
         prefixes = ["--enable-", "--disable-"]
