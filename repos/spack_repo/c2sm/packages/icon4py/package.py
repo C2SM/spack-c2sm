@@ -102,12 +102,12 @@ class Icon4py(Package):
         uv(
             "sync",
             "--active",
-            *(f"--extra {e}" for e in extras),
+            *(f"--extra={e}" for e in extras),
             "--inexact",
             "--no-editable",
             "--python",
             str(venv_path.bin.python),
-            *(f"--no-install-package {p}" for p in no_install),
+            *(f"--no-install-package={p}" for p in no_install),
             extra_env={
                 "VIRTUAL_ENV": str(venv_path),
                 "CC": self.compiler.cc,
