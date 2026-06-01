@@ -23,11 +23,6 @@ def translate_arch(arch_name: str) -> str:
 
 class Uv(Package):
     """Install UV from binary releases"""
-    
-    # - ML - TEST
-    import sys
-    tty.msg(f" - ML - DBG ::  using {sys.version}")
-    # - ML - END TEST
 
     url = "https://github.com/astral-sh/uv/releases/download/0.0.0/uv-ARCH-PLATFORM.tar.gz"
 
