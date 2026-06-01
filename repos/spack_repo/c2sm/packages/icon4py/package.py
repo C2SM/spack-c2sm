@@ -55,10 +55,6 @@ class Icon4py(Package):
     # --- Environment setup ---
     def setup_build_environment(self, env):
         """Propagate CUDA architecture to dependencies."""
-        # - ML - TEST
-        import sys
-        tty.msg(f" - ML - DBG ::  using {sys.version}")
-        # - ML - END TEST
         cuda_arch = self.spec.variants["cuda_arch"].value
         if "+cuda" in self.spec:
             if cuda_arch == "none":
