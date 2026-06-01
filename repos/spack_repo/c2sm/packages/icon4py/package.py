@@ -120,21 +120,6 @@ class Icon4py(Package):
             f"{venv_path.lib.python}{python_spec.version.up_to(2)}/site-packages/spack_installed.pth"
         ).write_text(pythonpath_to_pth())
 
-        tty.msg("Running py2fgen code generator")
-        py2fgen = Executable(venv_path.bin.py2fgen)
-        py2fgen(
-            "icon4py.tools.py2fgen.wrappers.all_bindings",
-            "diffusion_init,diffusion_run,grid_init,solve_nh_init,solve_nh_run",
-            "icon4py_bindings",
-            "-o",
-            prefix.src,
-            extra_env={
-                "VIRTUAL_ENV": str(venv_path),
-                "CC": self.compiler.cc,
-                "CXX": self.compiler.cxx,
-            },
-        )
-
 
 def prepare_uv():
     uv = which("uv")
