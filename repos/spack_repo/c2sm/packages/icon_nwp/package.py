@@ -173,7 +173,7 @@ class IconNwp(Icon):
 
     depends_on("hdf5 +szip", when="+sct")
 
-    depends_on('icon4py', type="build", when="+icon4py")
+    # depends_on('icon4py', type="build", when="+icon4py")
 
     # patch_libtool is a function from Autotoolspackage.
     # For BB we cannot use it because it finds all files
@@ -216,16 +216,19 @@ class IconNwp(Icon):
             else:
                 self.single_args.append(a)
 
-    def setup_build_environment(self, env):
-        if self.spec.satisfies("+icon4py"):
-            tty.msg(f"adding {self.spec['icon4py'].prefix.share.venv.bin} to PATH for icon4py bindings because +icon4py is enabled")
-            env.prepend_path("PATH", self.spec["icon4py"].prefix.share.venv.bin)
+    # def setup_build_environment(self, env):
+    #     if self.spec.satisfies("+icon4py"):
+    #         tty.msg(f"adding {self.spec['icon4py'].prefix.share.venv.bin} to PATH for icon4py bindings because +icon4py is enabled")
+    #         env.prepend_path("PATH", self.spec["icon4py"].prefix.share.venv.bin)
 
-    def setup_run_environment(self, env):
-        if self.spec.satisfies("+icon4py"):
-            tty.msg(f"adding {self.spec['icon4py'].prefix.share.venv.bin} to PATH for runtime because +icon4py is enabled")
-            env.prepend_path("PATH", self.spec["icon4py"].prefix.share.venv.bin)
-            env["VIRTUAL_ENV"] = self.spec["icon4py"].prefix.share.venv
+    # # - ML - TODO: Is it really the behaviour we want?
+    # #              Not sure users expect the env to be sourced when they activate the spack env or the uenv view.
+    # #              Check if we rely on that in the CI or other runscripts.
+    # def setup_run_environment(self, env):
+    #     if self.spec.satisfies("+icon4py"):
+    #         tty.msg(f"adding {self.spec['icon4py'].prefix.share.venv.bin} to PATH for runtime because +icon4py is enabled")
+    #         env.prepend_path("PATH", self.spec["icon4py"].prefix.share.venv.bin)
+    #         env["VIRTUAL_ENV"] = self.spec["icon4py"].prefix.share.venv
 
     def set_configure_args(self) -> None:
         self.parse_config_args(super().configure_args())

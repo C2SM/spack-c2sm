@@ -36,7 +36,7 @@ class Icon4py(Package):
     depends_on("cxx", type="build")
 
     depends_on("git")
-    depends_on("uv@0.7:", type="build")
+    depends_on("uv@0.11:", type="build")
     depends_on("bzip2", type="build")
     depends_on("py-numpy")
     depends_on("py-cffi")
