@@ -221,7 +221,12 @@ class IconNwp(Icon):
     def setup_build_environment(self, env):
         if self.spec.satisfies("+icon4py"):
             env.set("CMAKE", join_path(self.spec["cmake"].prefix.bin, "cmake"))
-            env.prepend_path("PATH", f"{self.configure_directory}/externals/icon4py/.venv/bin")
+            icon4py_bin_dir = f"{self.configure_directory}/externals/icon4py/.venv/bin"
+            if not os.path.exists(icon4py_bin_dir):
+                msg = f"icon4py bin dir not found at {icon4py_bin_dir}"
+                tty.error(msg)
+                raise RuntimeError(msg)
+            env.prepend_path("PATH", icon4py_bin_dir)
 
     # # - ML - TODO: Is it really the behaviour we want?
     # #              Not sure users expect the env to be sourced when they activate the spack env or the uenv view.
@@ -408,6 +413,7 @@ class IconNwp(Icon):
                     "--exclude=tests",
                     "--exclude=*.mod",
                     "--exclude=*.o",
+                    "--exclude=.icon4py_clone",
                 )
                 Rsync("-uavz", f"{icon_dir}/make_runscripts", ".")
 
@@ -418,3 +424,6 @@ class IconNwp(Icon):
                 Ln("-sf", f"{icon_dir}/data")
                 Ln("-sf", f"{icon_dir}/vertical_coord_tables")
                 Ln("-sf", f"{icon_dir}/scripts")
+                with when("+icon4py"):
+                    with working_dir(self.build_directory.externals):
+                        Ln("-sf", f"{icon_dir}/externals/.icon4py_clone")
