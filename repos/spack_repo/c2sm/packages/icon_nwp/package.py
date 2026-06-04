@@ -413,7 +413,7 @@ class IconNwp(Icon):
                     "--exclude=tests",
                     "--exclude=*.mod",
                     "--exclude=*.o",
-                    "--exclude=.icon4py_clone",
+                    "--exclude=.icon4py_clone/",
                 )
                 Rsync("-uavz", f"{icon_dir}/make_runscripts", ".")
 
@@ -425,5 +425,5 @@ class IconNwp(Icon):
                 Ln("-sf", f"{icon_dir}/vertical_coord_tables")
                 Ln("-sf", f"{icon_dir}/scripts")
                 with when("+icon4py"):
-                    with working_dir(self.build_directory.externals):
+                    with working_dir(os.apth.join(self.build_directory, "externals")):
                         Ln("-sf", f"{icon_dir}/externals/.icon4py_clone")
