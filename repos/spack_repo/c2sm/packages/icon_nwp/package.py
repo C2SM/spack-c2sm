@@ -216,10 +216,9 @@ class IconNwp(Icon):
             else:
                 self.single_args.append(a)
 
-    # def setup_build_environment(self, env):
-    #     if self.spec.satisfies("+icon4py"):
-    #         tty.msg(f"adding {self.spec['icon4py'].prefix.share.venv.bin} to PATH for icon4py bindings because +icon4py is enabled")
-    #         env.prepend_path("PATH", self.spec["icon4py"].prefix.share.venv.bin)
+    def setup_build_environment(self, env):
+        if self.spec.satisfies("+icon4py"):
+            env.prepend_path("PATH", self.prefix.externals.icon4py.venv.bin)
 
     # # - ML - TODO: Is it really the behaviour we want?
     # #              Not sure users expect the env to be sourced when they activate the spack env or the uenv view.
