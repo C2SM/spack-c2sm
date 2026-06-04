@@ -149,6 +149,8 @@ class IconNwp(Icon):
     requires("+realloc-buf", when="+cuda-mempool")
 
     variant('icon4py', default=False, description='Build with ICON4Py granules')
+    extends("python", when="+icon4py")
+    depends_on("python@3.12:", when="+icon4py")
     
     depends_on("eccodes-cosmo-resources", type="run", when="+eccodes-definitions")
 
@@ -218,7 +220,9 @@ class IconNwp(Icon):
 
     def setup_build_environment(self, env):
         if self.spec.satisfies("+icon4py"):
-            env.prepend_path("PATH", self.prefix.externals.icon4py.venv.bin)
+            icon4py_venv_path = f"{self.build_directory}/externals/icon4py/.venv/bin"
+            tty.msg(f"prepending PATH with {icon4py_venv_path}")
+            env.prepend_path("PATH", icon4py_venv_path)
 
     # # - ML - TODO: Is it really the behaviour we want?
     # #              Not sure users expect the env to be sourced when they activate the spack env or the uenv view.
@@ -254,16 +258,19 @@ class IconNwp(Icon):
            self.single_args.extend(self.enable_or_disable(x))
 
         if "+emvorado" in self.spec:
-            libs.append(self.spec["eccodes:fortran"].libs)
-            libs.append(self.spec["hdf5:fortran,hl"].libs)
-            libs.append(self.spec["zlib-ng"].libs)
+            libs += self.spec["eccodes:fortran"].libs
+            libs += self.spec["hdf5:fortran,hl"].libs
+            libs += self.spec["zlib-ng"].libs
 
         if "+sct" in self.spec:
-            libs.append(self.spec["hdf5"].libs)
+            libs += self.spec["hdf5"].libs
 
         if "+nvtx" in self.spec:
             self.flags["FCFLAGS"].append("-D_USE_NVTX")
-            libs.append(LibraryList(["nvhpcwrapnvtx"]))
+            libs += LibraryList(["nvhpcwrapnvtx"])
+
+        if "+icon4py" in self.spec:
+            libs += self.spec["python"].libs
 
         fcgroup = self.spec.variants["fcgroup"].value
         if fcgroup != ("none",):
