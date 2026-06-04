@@ -149,8 +149,10 @@ class IconNwp(Icon):
     requires("+realloc-buf", when="+cuda-mempool")
 
     variant('icon4py', default=False, description='Build with ICON4Py granules')
-    extends("python", when="+icon4py")
-    depends_on("python@3.12:", when="+icon4py")
+    with when("+icon4py"):
+        extends("python")
+        depends_on("python@3.12:")
+        depends_on("cmake", type="build")
     
     depends_on("eccodes-cosmo-resources", type="run", when="+eccodes-definitions")
 
@@ -174,8 +176,6 @@ class IconNwp(Icon):
     depends_on("netcdf-fortran %gcc", when="%gcc")
 
     depends_on("hdf5 +szip", when="+sct")
-
-    # depends_on('icon4py', type="build", when="+icon4py")
 
     # patch_libtool is a function from Autotoolspackage.
     # For BB we cannot use it because it finds all files
@@ -220,9 +220,8 @@ class IconNwp(Icon):
 
     def setup_build_environment(self, env):
         if self.spec.satisfies("+icon4py"):
-            icon4py_venv_path = f"{self.build_directory}/externals/icon4py/.venv/bin"
-            tty.msg(f"prepending PATH with {icon4py_venv_path}")
-            env.prepend_path("PATH", icon4py_venv_path)
+            env.set("CMAKE", join_path(self.spec["cmake"].prefix.bin, "cmake"))
+            env.prepend_path("PATH", f"{self.configure_directory}/externals/icon4py/.venv/bin")
 
     # # - ML - TODO: Is it really the behaviour we want?
     # #              Not sure users expect the env to be sourced when they activate the spack env or the uenv view.
