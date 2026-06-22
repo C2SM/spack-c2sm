@@ -12,23 +12,14 @@ class Hwmalloc(CMakePackage, CudaPackage, ROCmPackage):
     """
 
     homepage = "https://github.com/ghex-org/hwmalloc"
-    url = "https://github.com/ghex-org/hwmalloc/archive/refs/tags/v0.3.0.tar.gz"
+    url = "https://github.com/ghex-org/hwmalloc/archive/refs/tags/v0.0.0.tar.gz"
     git = "https://github.com/ghex-org/hwmalloc.git"
     maintainers = ["boeschf"]
 
     version("master", branch="master")
-    version("async-mpi", commit="c3ddc35f58ad6709388c209dfaec59b1ff40d472")
     version(
-        "0.3.0",
-        sha256="d4d4ac6087a806600d79fb62c02719ca3d58a412968fe1ef4a2fd58d9e7ee950",
-    )
-    version(
-        "0.2.0",
-        sha256="734758a390a3258b86307e4aef50a7ca2e5d0e2e579f18aeefcd05397e114419",
-    )
-    version(
-        "0.1.0",
-        sha256="06e9bfcef0ecce4d19531ccbe03592b502d1281c7a092bc0ff51ca187899b21c",
+        "0.4.0",
+        sha256="1161048e915cf196a86a6241d7354dd56b0e02782000507bab19be5628763ab3",
     )
 
     depends_on("cxx", type="build")
@@ -38,6 +29,8 @@ class Hwmalloc(CMakePackage, CudaPackage, ROCmPackage):
     depends_on("numactl", type=("build", "run"))
     depends_on("boost", type=("build"))
     depends_on("cmake@3.19:", type="build")
+
+    conflicts("+cuda+rocm")
 
     variant(
         "numa-throws",

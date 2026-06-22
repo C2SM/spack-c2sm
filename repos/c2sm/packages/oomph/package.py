@@ -15,16 +15,15 @@ class Oomph(CMakePackage, CudaPackage, ROCmPackage):
     """
 
     homepage = "https://github.com/ghex-org/oomph"
-    url = "https://github.com/ghex-org/oomph/archive/refs/tags/v0.4.0.tar.gz"
+    url = "https://github.com/ghex-org/oomph/archive/refs/tags/v0.0.0.tar.gz"
     git = "https://github.com/ghex-org/oomph.git"
     maintainers = ["boeschf"]
 
-    version(
-        "0.4.0",
-        sha256="e342c872dfe4832be047f172dc55c12951950c79da2630b071c61607ef913144",
-    )
     version("main", branch="main")
-    version("async-mpi", commit="2814e2a7d66b96737f1845c510dadd1b816ab5eb")
+    version(
+        "0.5.0",
+        sha256="4c79ff50d14efcde7ce4d14122714efb16443ccff437ab60973cf1db1032fc3d",
+    )
 
     depends_on("cxx", type="build")
     depends_on("fortran", type="build", when="+fortran-bindings")
@@ -57,10 +56,12 @@ class Oomph(CMakePackage, CudaPackage, ROCmPackage):
         description="Enable thread barrier (disable for task based runtime)",
     )
 
+    depends_on("hwmalloc")
+    depends_on("hwmalloc~cuda~rocm", when="~cuda~rocm")
     depends_on("hwmalloc+cuda", when="+cuda")
-    depends_on("hwmalloc@async-mpi", when="@async-mpi")
     depends_on("hwmalloc+rocm", when="+rocm")
-    depends_on("hwmalloc", when="~cuda~rocm")
+
+    conflicts("+cuda+rocm")
 
     with when("backend=ucx"):
         depends_on("ucx+thread_multiple")
