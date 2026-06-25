@@ -424,7 +424,7 @@ class IconNwp(Icon):
                 Ln("-sf", f"{icon_dir}/data")
                 Ln("-sf", f"{icon_dir}/vertical_coord_tables")
                 Ln("-sf", f"{icon_dir}/scripts")
-                with when("+icon4py"):
+                if self.spec.satisfies("+icon4py"):
                     icon4py_base = f"{icon_dir}/externals/icon4py"
                     icon4py_target = os.path.join(self.build_directory, "externals/icon4py")
                     with working_dir(icon4py_target):
