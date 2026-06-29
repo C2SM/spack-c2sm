@@ -66,6 +66,8 @@ def run_with_spack(command: str, log: Path) -> None:
     success = "OK" if ret.returncode == 0 else "FAILED"
     with log.open("a") as f:
         f.write(f"\n\n{duration}\n{success}\n")
+    if success == "FAILED":
+        print(log.read_text())
 
     ret.check_returncode()
 
