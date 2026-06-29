@@ -8,7 +8,6 @@ if [[ "$#" == 1 ]]; then
     upstream="$1"
     if [[ $upstream == "euler" ]]; then
         export SPACK_SYSTEM_CONFIG_PATH="${parent_dir}/sysconfigs/euler"
-        export SPACK_USER_CONFIG_PATH="${parent_dir}/user-config/default"
     else
         # NOTE: SPACK_UENV_PATH used tests/spack_commands.py
         export SPACK_UENV_PATH="${upstream}"
