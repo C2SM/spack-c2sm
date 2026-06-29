@@ -184,6 +184,9 @@ class IconNwp(Icon):
     # also the folder where libtool package itself is installed.
     patch_libtool = False
 
+    # patches
+    patch("mo_nh_stepping_null_pointer.patch", when="%fortran=nvhpc@26.1")
+
     FLAG_KEYS = [
         "LIBS",
         "CFLAGS",
@@ -218,6 +221,11 @@ class IconNwp(Icon):
             else:
                 self.single_args.append(a)
 
+    # TODO: install icon4py from within the icon package recipe
+    #       following a similar strategy as the icon4py package.
+    #       Also make sure to point to the uv found as dependency
+    #       with `uv=Executable(spec["uv"].prefix.bin.uv)` rather than
+    #       uv = which("uv"), potentially leading to another location
     def setup_build_environment(self, env):
         if self.spec.satisfies("+icon4py"):
             env.set("CMAKE", join_path(self.spec["cmake"].prefix.bin, "cmake"))
@@ -227,15 +235,6 @@ class IconNwp(Icon):
                 tty.error(msg)
                 raise RuntimeError(msg)
             env.prepend_path("PATH", icon4py_bin_dir)
-
-    # # - ML - TODO: Is it really the behaviour we want?
-    # #              Not sure users expect the env to be sourced when they activate the spack env or the uenv view.
-    # #              Check if we rely on that in the CI or other runscripts.
-    # def setup_run_environment(self, env):
-    #     if self.spec.satisfies("+icon4py"):
-    #         tty.msg(f"adding {self.spec['icon4py'].prefix.share.venv.bin} to PATH for runtime because +icon4py is enabled")
-    #         env.prepend_path("PATH", self.spec["icon4py"].prefix.share.venv.bin)
-    #         env["VIRTUAL_ENV"] = self.spec["icon4py"].prefix.share.venv
 
     def set_configure_args(self) -> None:
         self.parse_config_args(super().configure_args())
