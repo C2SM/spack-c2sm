@@ -312,7 +312,7 @@ class IconNwp(Icon):
     def configure_args(self):
         # Set configure args
         self.set_configure_args()
-        # Remove dupplicates
+        # Remove duplicates
         self.single_args = list(set(self.single_args))
         for key, values in self.flags.items():
             self.flags[key] = list(set(values))
