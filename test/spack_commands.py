@@ -4,7 +4,7 @@ import time
 from pathlib import Path
 
 REPO_DIR = Path(__file__).parents[1].resolve()
-PACKAGES_DIR = REPO_DIR / "repos/spack-repo/c2sm/packages"
+PACKAGES_DIR = REPO_DIR / "repos/spack_repo/c2sm/packages"
 ALL_PACKAGES = [name for name in PACKAGES_DIR.iterdir() if name.is_dir()]
 
 
