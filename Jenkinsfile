@@ -1,5 +1,8 @@
 pipeline {
     agent none
+    options {
+        timeout(time: 4, unit: 'HOURS')
+    }
     environment {
         upstream = '/mch-environment/v8'
     }

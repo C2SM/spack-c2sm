@@ -34,7 +34,7 @@ jobs:
       - name: Unit test
         run: |
           source .venv/bin/activate
-          python3 test/unit_test.py
+          pytest -v -n  ${NTHREADS} test/unit_test.py
 
       - name: Integration test
         run: |
