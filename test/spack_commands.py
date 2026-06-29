@@ -5,7 +5,7 @@ from pathlib import Path
 
 REPO_DIR = Path(__file__).parents[1].resolve()
 PACKAGES_DIR = REPO_DIR / "repos/spack_repo/c2sm/packages"
-ALL_PACKAGES = [p.name() for p in PACKAGES_DIR.iterdir() if name.is_dir()]
+ALL_PACKAGES = [p.name() for p in PACKAGES_DIR.iterdir() if p.is_dir()]
 
 
 def time_format(seconds) -> str:
