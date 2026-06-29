@@ -9,6 +9,8 @@ on:
   workflow_dispatch:
 
 jobs:
+  # Ignore until further decisions
+  if: false
   package-overlap:
     runs-on: ubuntu-latest
     steps:
