@@ -18,6 +18,7 @@ def check_variant_fcgroup(fcgroup):
         tty.warn("Variant fcgroup needs format GROUP.files.flag")
         return False
 
+
 def check_variant_extra_config_args(extra_config_arg):
     pattern = re.compile(r"--(enable|disable)-\S+")
     if pattern.match(extra_config_arg) or extra_config_arg == "none":
@@ -51,7 +52,6 @@ class IconNwp(Icon):
     version("2024.01-mch-2.0", tag="icon-2024.01-mch-2.0")
     version("2.6.6-mch2b", tag="icon-nwp/icon-2.6.6-mch2b")
     version("2.6.6-mch2a", tag="icon-nwp/icon-2.6.6-mch2a")
-
 
     # Model Features:
     variant(
@@ -148,7 +148,7 @@ class IconNwp(Icon):
     variant("cuda-mempool", default=False, description="Enable cuda memory pool")
     requires("+realloc-buf", when="+cuda-mempool")
 
-    variant('icon4py', default=False, description='Build with ICON4Py granules')
+    variant("icon4py", default=False, description="Build with ICON4Py granules")
     with when("+icon4py"):
         extends("python")
         depends_on("python@3.12:")
@@ -241,24 +241,24 @@ class IconNwp(Icon):
         libs = LibraryList([])
 
         for x in (
-                "dace",
-                "emvorado",
-                "art-gpl",
-                "acm-license",
-                "active-target-sync",
-                "async-io-rma",
-                "realloc-buf",
-                "parallel-netcdf",
-                "sct",
-                "loop-exchange",
-                "vectorized-lrtm",
-                "pgi-inlib",
-                "nccl",
-                "cuda-graphs",
-                "silent-rules",
-                "icon4py",
-            ):
-           self.single_args.extend(self.enable_or_disable(x))
+            "dace",
+            "emvorado",
+            "art-gpl",
+            "acm-license",
+            "active-target-sync",
+            "async-io-rma",
+            "realloc-buf",
+            "parallel-netcdf",
+            "sct",
+            "loop-exchange",
+            "vectorized-lrtm",
+            "pgi-inlib",
+            "nccl",
+            "cuda-graphs",
+            "silent-rules",
+            "icon4py",
+        ):
+            self.single_args.extend(self.enable_or_disable(x))
 
         if "+emvorado" in self.spec:
             libs += self.spec["eccodes:fortran"].libs
@@ -303,7 +303,9 @@ class IconNwp(Icon):
         # in the reversed order
         # (see https://gitlab.dkrz.de/icon/icon#icon-dependencies):
         # and for non-system directories only:
-        non_system_reversed_lib_dirs = [f"-L{d}" for d in reversed(libs.directories) if not is_system_path(d)]
+        non_system_reversed_lib_dirs = [
+            f"-L{d}" for d in reversed(libs.directories) if not is_system_path(d)
+        ]
         if non_system_reversed_lib_dirs:
             self.flags["LDFLAGS"].extend(non_system_reversed_lib_dirs)
 
@@ -317,7 +319,15 @@ class IconNwp(Icon):
         for key, values in self.flags.items():
             self.flags[key] = list(set(values))
         # Return final list
-        return [ *chain( self.single_args, ("{0}={1}".format(name, " ".join(values)) for name, values in self.flags.items()) ) ]
+        return [
+            *chain(
+                self.single_args,
+                (
+                    "{0}={1}".format(name, " ".join(values))
+                    for name, values in self.flags.items()
+                ),
+            )
+        ]
 
     def strip_variant_prefix(self, variant_string):
         prefixes = ["--enable-", "--disable-"]
@@ -425,6 +435,13 @@ class IconNwp(Icon):
                 Ln("-sf", f"{icon_dir}/scripts")
                 if self.spec.satisfies("+icon4py"):
                     icon4py_base = f"{icon_dir}/externals/icon4py"
-                    icon4py_target = os.path.join(self.build_directory, "externals/icon4py")
+                    icon4py_target = os.path.join(
+                        self.build_directory, "externals/icon4py"
+                    )
                     with working_dir(icon4py_target):
-                        Ln("-sf", os.path.join(os.path.relpath(icon4py_base, icon4py_target), ".venv"))
+                        Ln(
+                            "-sf",
+                            os.path.join(
+                                os.path.relpath(icon4py_base, icon4py_target), ".venv"
+                            ),
+                        )
