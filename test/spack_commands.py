@@ -3,9 +3,9 @@ import subprocess
 import time
 from pathlib import Path
 
-REPO_DIR = Path(__file__).parent.parent.resolve()
-PACKAGES_DIR = Path(REPO_DIR / "repos/spack-repo/c2sm/packages")
-ALL_PACKAGES = [ name for name in PACKAGES_DIR.iterdir() if name.is_dir() ]
+REPO_DIR = Path(__file__).parents[1].resolve()
+PACKAGES_DIR = REPO_DIR / "repos/spack-repo/c2sm/packages"
+ALL_PACKAGES = [name for name in PACKAGES_DIR.iterdir() if name.is_dir()]
 
 
 def time_format(seconds) -> str:
@@ -35,7 +35,7 @@ def log_file(command: str) -> Path:
     # Remove . because they cause problems in shell commands
     command = command.replace("%", "")
 
-    return Path(REPO_DIR) / "log" / (command + ".log")
+    return REPO_DIR / "log" / (command + ".log")
 
 
 def run_with_spack(command: str, log: Path) -> None:
