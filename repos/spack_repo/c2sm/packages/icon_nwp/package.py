@@ -51,7 +51,7 @@ class IconNwp(Icon):
     version("2024.01-mch-2.0", tag="icon-2024.01-mch-2.0")
     version("2.6.6-mch2b", tag="icon-nwp/icon-2.6.6-mch2b")
     version("2.6.6-mch2a", tag="icon-nwp/icon-2.6.6-mch2a")
-    
+
 
     # Model Features:
     variant(
@@ -153,7 +153,7 @@ class IconNwp(Icon):
         extends("python")
         depends_on("python@3.12:")
         depends_on("cmake", type="build")
-    
+
     depends_on("eccodes-cosmo-resources", type="run", when="+eccodes-definitions")
 
     with when("+emvorado"):
