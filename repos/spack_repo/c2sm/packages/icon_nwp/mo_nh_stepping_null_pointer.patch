@@ -1,0 +1,56 @@
+diff --git a/src/atm_dyn_iconam/mo_nh_stepping.f90 b/src/atm_dyn_iconam/mo_nh_stepping.f90
+--- a/src/atm_dyn_iconam/mo_nh_stepping.f90
++++ b/src/atm_dyn_iconam/mo_nh_stepping.f90
+@@ -852,7 +852,7 @@ MODULE mo_nh_stepping
+     TYPE(t_latbc_data),  INTENT(INOUT) :: latbc             !< data structure for async latbc prefetching
+     CLASS(t_RestartDescriptor), POINTER, INTENT(IN)  :: restartDescriptor
+
+-  TYPE(datetime), POINTER              :: mtime_current => NULL()  ! current datetime (mtime)
++  TYPE(datetime), POINTER              :: mtime_current  ! current datetime (mtime)
+
+   INTEGER                              :: jg, jn, jgc, jc, jb
+   INTEGER                              :: ierr
+@@ -872,19 +872,19 @@ MODULE mo_nh_stepping
+   INTEGER                              :: jstep_shift ! start counter for time loop
+   INTEGER, ALLOCATABLE                 :: output_jfile(:)
+
+-  TYPE(timedelta), POINTER             :: model_time_step => NULL()
++  TYPE(timedelta), POINTER             :: model_time_step
+
+-  TYPE(datetime), POINTER              :: eventStartDate    => NULL(), &
+-       &                                  eventEndDate      => NULL()
+-  TYPE(datetime), POINTER              :: checkpointRefDate => NULL(), &
+-       &                                  restartRefDate    => NULL()
+-  TYPE(timedelta), POINTER             :: eventInterval     => NULL()
+-  TYPE(event), POINTER                 :: checkpointEvent   => NULL()
+-  TYPE(event), POINTER                 :: restartEvent      => NULL()
+-  TYPE(event), POINTER                 :: lpi_max_Event     => NULL()
+-  TYPE(event), POINTER                 :: celltracks_Event  => NULL()
+-  TYPE(event), POINTER                 :: hail_max_Event    => NULL()
+-  TYPE(event), POINTER                 :: dbz_Event         => NULL()
++  TYPE(datetime), POINTER              :: eventStartDate   , &
++       &                                  eventEndDate
++  TYPE(datetime), POINTER              :: checkpointRefDate, &
++       &                                  restartRefDate
++  TYPE(timedelta), POINTER             :: eventInterval
++  TYPE(event), POINTER                 :: checkpointEvent
++  TYPE(event), POINTER                 :: restartEvent
++  TYPE(event), POINTER                 :: lpi_max_Event
++  TYPE(event), POINTER                 :: celltracks_Event
++  TYPE(event), POINTER                 :: hail_max_Event
++  TYPE(event), POINTER                 :: dbz_Event
+
+   INTEGER                              :: checkpointEvents
+   LOGICAL                              :: lret
+@@ -917,6 +917,11 @@ MODULE mo_nh_stepping
+
+ !-----------------------------------------------------------------------
+
++  NULLIFY(mtime_current, model_time_step, eventStartDate, eventEndDate, &
++    &     checkpointRefDate, restartRefDate, eventInterval, &
++    &     checkpointEvent, restartEvent, lpi_max_Event, celltracks_Event, &
++    &     hail_max_Event, dbz_Event)
++
+   IF (ltimer) CALL timer_start(timer_total)
+
+   ! convenience pointer
