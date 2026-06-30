@@ -7,6 +7,7 @@ import os
 import re
 from collections import defaultdict
 
+from spack_repo.builtin.build_systems.autotools import AutotoolsPackage
 from spack.util.environment import is_system_path
 from llnl.util import tty
 
