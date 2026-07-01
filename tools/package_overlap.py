@@ -2,7 +2,7 @@ import os
 import sys
 
 spack = set(os.listdir("./spack/var/spack/repos/builtin/packages"))
-spack_c2sm = set(os.listdir("./repos/c2sm/packages"))
+spack_c2sm = set(os.listdir("./repos/spack_repo/c2sm/packages"))
 
 overlapping_packages = sorted(spack & spack_c2sm)
 

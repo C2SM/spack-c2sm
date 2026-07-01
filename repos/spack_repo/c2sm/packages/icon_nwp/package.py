@@ -1,0 +1,447 @@
+import os
+import re
+import glob
+from collections import defaultdict
+
+from itertools import chain
+
+from spack_repo.builtin.packages.icon.package import Icon
+from spack.package import *
+
+
+def check_variant_fcgroup(fcgroup):
+    pattern = re.compile(r"^[A-Z]+\..+\..")
+    # fcgroup is False as default
+    if pattern.match(fcgroup) or fcgroup == "none":
+        return True
+    else:
+        tty.warn("Variant fcgroup needs format GROUP.files.flag")
+        return False
+
+
+def check_variant_extra_config_args(extra_config_arg):
+    pattern = re.compile(r"--(enable|disable)-\S+")
+    if pattern.match(extra_config_arg) or extra_config_arg == "none":
+        return True
+    else:
+        tty.warn(
+            f'The value "{extra_config_arg}" for the extra_config_args variant must follow the format "--enable-arg" or "--disable-arg"'
+        )
+        return False
+
+
+class IconNwp(Icon):
+    """ICON - is a modeling framework for weather, climate, and environmental
+    prediction.
+    It solves the full three-dimensional non-hydrostatic and compressible
+    Navier-Stokes equations on an icosahedral grid and allows seamless
+    predictions from local to global scales.
+    This is for additional options from the upstream ICON for NWP specific features."""
+
+    homepage = "https://gitlab.dkrz.de/icon/icon-nwp"
+    git = "git@gitlab.dkrz.de:icon/icon-nwp.git"
+    submodules = True
+
+    maintainers("leclairm", "stelliom", "huppd")
+
+    version("develop", branch="master")
+    version("main", branch="master")
+
+    version("2024.10-mch-1.0", tag="icon-2024.10-mch-1.0", preferred=True)
+    version("2024.01-mch-2.1", tag="icon-2024.01-mch-2.1")
+    version("2024.01-mch-2.0", tag="icon-2024.01-mch-2.0")
+    version("2.6.6-mch2b", tag="icon-nwp/icon-2.6.6-mch2b")
+    version("2.6.6-mch2a", tag="icon-nwp/icon-2.6.6-mch2a")
+
+    # Model Features:
+    variant(
+        "dace",
+        default=False,
+        description="Enable the DACE modules for data assimilation",
+    )
+    requires("+mpi", when="+dace")
+
+    variant(
+        "emvorado",
+        default=False,
+        description="Enable the radar forward operator EMVORADO",
+    )
+    requires("+mpi", when="+emvorado")
+
+    variant(
+        "art-gpl",
+        default=False,
+        description="Enable GPL-licensed code parts of the ART component",
+    )
+    variant(
+        "acm-license",
+        default=False,
+        description="Enable code parts that require accepting the ACM Software License",
+    )
+
+    # Infrastructural Features:
+    variant(
+        "active-target-sync",
+        default=False,
+        description="Enable MPI active target mode (otherwise, passive target mode is used)",
+    )
+    variant(
+        "async-io-rma",
+        default=True,
+        description="Enable remote memory access (RMA) for async I/O",
+    )
+    variant(
+        "realloc-buf",
+        default=False,
+        description="Enable reallocatable communication buffer",
+    )
+    variant("sct", default=False, description="Enable the SCT timer")
+    variant(
+        "extra-config-args",
+        default="none",
+        multi=True,
+        values=check_variant_extra_config_args,
+        description="Inject any configure argument not yet available as variant\nUse this feature cautiously, as injecting non-variant configure arguments may potentially disrupt the build process",
+    )
+
+    # Optimization Features:
+    variant("loop-exchange", default=False, description="Enable loop exchange")
+    variant(
+        "vectorized-lrtm",
+        default=False,
+        description="Enable the parallelization-invariant version of LRTM",
+    )
+    variant(
+        "pgi-inlib",
+        default=False,
+        description="Enable PGI/NVIDIA cross-file function inlining via an inline library",
+    )
+    variant("nccl", default=False, description="Enable NCCL for communication")
+
+    variant("cuda-graphs", default=False, description="Enable CUDA graphs.")
+    requires("%nvhpc@23.3:", when="+cuda-graphs")
+
+    variant(
+        "fcgroup",
+        default="none",
+        multi=True,
+        values=check_variant_fcgroup,
+        description="Create a Fortran compile group: GROUP;files;flag \nNote: flag can only be one single value, i.e. -O1",
+    )
+
+    variant("nvtx", default=False, description="Enable NVTX for profiling")
+    requires("%nvhpc", when="+nvtx")  # NVTX is only supported for nvhpc
+
+    # verbosity
+    variant(
+        "silent-rules",
+        default=True,
+        description="Enable silent-rules for build-process",
+    )
+
+    variant(
+        "eccodes-definitions",
+        default=False,
+        description="Enable extension of eccodes with center specific definition files",
+    )
+
+    variant("cuda-mempool", default=False, description="Enable cuda memory pool")
+    requires("+realloc-buf", when="+cuda-mempool")
+
+    variant("icon4py", default=False, description="Build with ICON4Py granules")
+    with when("+icon4py"):
+        extends("python")
+        depends_on("python@3.12:")
+        depends_on("cmake", type="build")
+
+    depends_on("eccodes-cosmo-resources", type="run", when="+eccodes-definitions")
+
+    with when("+emvorado"):
+        depends_on("eccodes +fortran")
+        depends_on("hdf5 +szip +hl +fortran")
+        depends_on("zlib-ng")
+        # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
+        depends_on("eccodes %nvhpc", when="%nvhpc")
+        depends_on("eccodes %gcc", when="%gcc")
+
+    # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
+    for __x in Icon.serialization_values:
+        depends_on(
+            "serialbox+fortran %nvhpc", when="serialization={0} %nvhpc".format(__x)
+        )
+        depends_on("serialbox+fortran %gcc", when="serialization={0} %gcc".format(__x))
+
+    # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
+    depends_on("netcdf-fortran %nvhpc", when="%nvhpc")
+    depends_on("netcdf-fortran %gcc", when="%gcc")
+
+    depends_on("hdf5 +szip", when="+sct")
+
+    # patch_libtool is a function from Autotoolspackage.
+    # For BB we cannot use it because it finds all files
+    # named "libtool". spack-c2sm is cloned into icon-repo,
+    # therefore this function detects not only "libtool" files, but
+    # also the folder where libtool package itself is installed.
+    patch_libtool = False
+
+    # patches
+    patch("mo_nh_stepping_null_pointer.patch", when="%fortran=nvhpc@26.1")
+
+    FLAG_KEYS = [
+        "LIBS",
+        "CFLAGS",
+        "FCFLAGS",
+        "ICON_FCFLAGS",
+        "LDFLAGS",
+        "ICON_LDFLAGS",
+        "ICON_BUNDLED_CFLAGS",
+        "ICON_YAC_CFLAGS",
+        "ICON_OCEAN_FCFLAGS",
+        "ICON_ECRAD_FCFLAGS",
+        "CUDAFLAGS",
+    ]
+
+    # NOTE: The aim is to upstream `set_configure_args` to `spack_repo.builtin.packages.icon.package`.
+    #       This way, we only need to directly modify `set_configure_args` like this:
+    #       ````
+    #       def set_configure_args(self) -> None:
+    #           super().set_configure_args()
+    #           # modify self.single_args and self.flags
+    #       ````
+    #       The `parse_config_args` method would also disappear then.
+
+    def parse_config_args(self, args) -> None:
+        self.single_args = []
+        self.flags = defaultdict(list)
+        for a in args:
+            for key in self.FLAG_KEYS:
+                if a.startswith(f"{key}="):
+                    self.flags[key].append(a.split("=", 1)[1].strip())
+                    break
+            else:
+                self.single_args.append(a)
+
+    # TODO: install icon4py from within the icon package recipe
+    #       following a similar strategy as the icon4py package.
+    #       Also make sure to point to the uv found as dependency
+    #       with `uv=Executable(spec["uv"].prefix.bin.uv)` rather than
+    #       uv = which("uv"), potentially leading to another location
+    def setup_build_environment(self, env):
+        if self.spec.satisfies("+icon4py"):
+            env.set("CMAKE", join_path(self.spec["cmake"].prefix.bin, "cmake"))
+            icon4py_bin_dir = f"{self.configure_directory}/externals/icon4py/.venv/bin"
+            if not os.path.exists(icon4py_bin_dir):
+                msg = f"icon4py bin dir not found at {icon4py_bin_dir}"
+                tty.error(msg)
+                raise RuntimeError(msg)
+            env.prepend_path("PATH", icon4py_bin_dir)
+
+    def set_configure_args(self) -> None:
+        self.parse_config_args(super().configure_args())
+        libs = LibraryList([])
+
+        for x in (
+            "dace",
+            "emvorado",
+            "art-gpl",
+            "acm-license",
+            "active-target-sync",
+            "async-io-rma",
+            "realloc-buf",
+            "parallel-netcdf",
+            "sct",
+            "loop-exchange",
+            "vectorized-lrtm",
+            "pgi-inlib",
+            "nccl",
+            "cuda-graphs",
+            "silent-rules",
+            "icon4py",
+        ):
+            self.single_args.extend(self.enable_or_disable(x))
+
+        if "+emvorado" in self.spec:
+            libs += self.spec["eccodes:fortran"].libs
+            libs += self.spec["hdf5:fortran,hl"].libs
+            libs += self.spec["zlib-ng"].libs
+
+        if "+sct" in self.spec:
+            libs += self.spec["hdf5"].libs
+
+        if "+nvtx" in self.spec:
+            self.flags["FCFLAGS"].append("-D_USE_NVTX")
+            libs += LibraryList(["nvhpcwrapnvtx"])
+
+        if "+icon4py" in self.spec:
+            libs += self.spec["python"].libs
+
+        fcgroup = self.spec.variants["fcgroup"].value
+        if fcgroup != ("none",):
+            # ('none',) is the values spack assigns if fcgroup is not set
+            for group in fcgroup:
+                name, files, flag = group.split(".")
+                self.single_args.append(f"--enable-fcgroup-{name}={files}")
+                self.flags[f"ICON_{name}_FCFLAGS"].append(flag)
+
+        # add configure arguments not yet available as variant
+        extra_config_args = self.spec.variants["extra-config-args"].value
+        if extra_config_args != ("none",):
+            for x in extra_config_args:
+                # prevent configure-args already available as variant
+                # to be set through variant extra_config_args
+                self.validate_extra_config_args(x)
+                self.single_args.append(x)
+            tty.warn(
+                "You use variant extra-config-args. Injecting non-variant configure arguments may potentially disrupt the build process!"
+            )
+
+        if self.spec.satisfies("+cuda-mempool"):
+            self.flags["ICON_FCFLAGS"].append("-cuda")
+
+        # Help the libtool scripts of the bundled libraries find the correct
+        # paths to the external libraries. Specify the library search (-L) flags
+        # in the reversed order
+        # (see https://gitlab.dkrz.de/icon/icon#icon-dependencies):
+        # and for non-system directories only:
+        non_system_reversed_lib_dirs = [
+            f"-L{d}" for d in reversed(libs.directories) if not is_system_path(d)
+        ]
+        if non_system_reversed_lib_dirs:
+            self.flags["LDFLAGS"].extend(non_system_reversed_lib_dirs)
+
+        self.flags["LIBS"].append(libs.link_flags)
+
+    def configure_args(self):
+        # Set configure args
+        self.set_configure_args()
+        # Remove duplicates
+        self.single_args = list(set(self.single_args))
+        for key, values in self.flags.items():
+            self.flags[key] = list(set(values))
+        # Return final list
+        return [
+            *chain(
+                self.single_args,
+                (
+                    "{0}={1}".format(name, " ".join(values))
+                    for name, values in self.flags.items()
+                ),
+            )
+        ]
+
+    def strip_variant_prefix(self, variant_string):
+        prefixes = ["--enable-", "--disable-"]
+
+        for prefix in prefixes:
+            if variant_string.startswith(prefix):
+                return variant_string[len(prefix) :]
+
+        raise ValueError
+
+    def validate_extra_config_args(self, arg):
+        variant_from_arg = self.strip_variant_prefix(arg)
+        if variant_from_arg in self.spec.variants:
+            raise error.SpecError(
+                f'The value "{arg}" for the extra_config_args variant conflicts '
+                f"with the existing variant {variant_from_arg}. Set this variant instead."
+            )
+
+    def configure(self, spec, prefix):
+        if (
+            os.path.exists(os.path.join(self.build_directory, "icon.mk"))
+            and self.build_uses_same_spec()
+        ):
+            tty.warn(
+                "icon.mk already present -> skip configure stage",
+                '\t delete "icon.mk" or run "make distclean" to not skip configure',
+            )
+            return
+
+        # Call configure of Autotools
+        super().configure(spec, prefix)
+
+    def build_uses_same_spec(self):
+        """
+        Ensure that configure is rerun in case spec has changed,
+        otherwise for the case below
+
+            $ spack dev-build icon @develop ~dace
+            $ spack dev-build icon @develop +dace
+
+        configure is skipped for the latter.
+        """
+
+        is_same_spec = False
+
+        previous_spec = os.path.join(self.build_directory, ".previous_spec.yaml")
+
+        # not the first build in self.build_directory
+        if os.path.exists(previous_spec):
+            with open(previous_spec, mode="r") as f:
+                if self.spec == Spec.from_yaml(f):
+                    is_same_spec = True
+                else:
+                    is_same_spec = False
+                    tty.warn("Cannot skip configure phase because spec changed")
+
+        # first build in self.build_directory, no worries
+        else:
+            is_same_spec = False
+
+        # dump spec of new build
+        with open(previous_spec, mode="w") as f:
+            f.write(self.spec.to_yaml())
+
+        return is_same_spec
+
+    @run_after("configure")
+    def copy_runscript_related_input_files(self):
+        with working_dir(self.build_directory):
+            icon_dir = self.configure_directory
+            # only synchronize if out-of-source build
+            if os.path.abspath(icon_dir) != os.path.abspath(self.build_directory):
+                Rsync = which("rsync", required=True)
+                Rsync(
+                    "-uavz",
+                    f"{icon_dir}/run",
+                    ".",
+                    "--exclude=*.in",
+                    "--exclude=.*",
+                    "--exclude=standard_*",
+                )
+                Rsync(
+                    "-uavz",
+                    f"{icon_dir}/externals",
+                    ".",
+                    "--exclude=.git",
+                    "--exclude=*.f90",
+                    "--exclude=*.F90",
+                    "--exclude=*.c",
+                    "--exclude=*.h",
+                    "--exclude=*.Po",
+                    "--exclude=tests",
+                    "--exclude=*.mod",
+                    "--exclude=*.o",
+                    "--exclude=externals/icon4py/.venv/",
+                )
+                Rsync("-uavz", f"{icon_dir}/make_runscripts", ".")
+
+                Ln = which("ln", required=True)
+                dirs = glob.glob(f"{icon_dir}/run/standard_*")
+                for dir in dirs:
+                    Ln("-sf", "-t", "run/", f"{dir}")
+                Ln("-sf", f"{icon_dir}/data")
+                Ln("-sf", f"{icon_dir}/vertical_coord_tables")
+                Ln("-sf", f"{icon_dir}/scripts")
+                if self.spec.satisfies("+icon4py"):
+                    icon4py_base = f"{icon_dir}/externals/icon4py"
+                    icon4py_target = os.path.join(
+                        self.build_directory, "externals/icon4py"
+                    )
+                    with working_dir(icon4py_target):
+                        Ln(
+                            "-sf",
+                            os.path.join(
+                                os.path.relpath(icon4py_base, icon4py_target), ".venv"
+                            ),
+                        )

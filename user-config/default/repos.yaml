@@ -1,0 +1,5 @@
+repos:
+  c2sm: $spack/../repos/spack_repo/c2sm
+  builtin:
+    git: https://github.com/spack/spack-packages.git
+    tag: v2026.06.0

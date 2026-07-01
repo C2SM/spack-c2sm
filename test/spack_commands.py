@@ -3,13 +3,9 @@ import subprocess
 import time
 from pathlib import Path
 
-REPO_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-PACKAGES_DIR = os.path.join(REPO_DIR, "repos", "c2sm", "packages")
-ALL_PACKAGES = [
-    name
-    for name in os.listdir(PACKAGES_DIR)
-    if os.path.isdir(os.path.join(PACKAGES_DIR, name))
-]
+REPO_DIR = Path(__file__).parents[1].resolve()
+PACKAGES_DIR = REPO_DIR / "repos/spack_repo/c2sm/packages"
+ALL_PACKAGES = [p.name.replace("_", "-") for p in PACKAGES_DIR.iterdir() if p.is_dir()]
 
 
 def time_format(seconds) -> str:
@@ -39,7 +35,7 @@ def log_file(command: str) -> Path:
     # Remove . because they cause problems in shell commands
     command = command.replace("%", "")
 
-    return Path(REPO_DIR) / "log" / (command + ".log")
+    return REPO_DIR / "log" / (command + ".log")
 
 
 def run_with_spack(command: str, log: Path) -> None:
@@ -70,6 +66,8 @@ def run_with_spack(command: str, log: Path) -> None:
     success = "OK" if ret.returncode == 0 else "FAILED"
     with log.open("a") as f:
         f.write(f"\n\n{duration}\n{success}\n")
+    if success == "FAILED":
+        print(log.read_text())
 
     ret.check_returncode()
 
