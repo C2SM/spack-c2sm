@@ -25,10 +25,10 @@ git clone --depth 1 --recurse-submodules --shallow-submodules -b v1.1.1.0 https:
 ```
 Setup the shell environment and optionally specify an upstream, where spack will look for installed software, i.e.
 ```bash
-. spack-c2sm/setup-env.sh
-. spack-c2sm/setup-env.sh euler
-. spack-c2sm/setup-env.sh /user-environment
-. spack-c2sm/setup-env.sh /mch-environment/v8
+. spack-c2sm/setup-env.sh # Generic
+. spack-c2sm/setup-env.sh euler # For Euler
+. spack-c2sm/setup-env.sh icon/26.7:v1 # For Santis
+. spack-c2sm/setup-env.sh /mch-environment/v8 # For Balfrin / MeteoSwiss
 ```
 Sourcing this file will put the spack command in your PATH, set up your MODULEPATH to use Spack’s packages, and add other useful shell integration for certain commands, environments, and modules. For bash, it also sets up tab completion. (source: [spack docu](https://spack.readthedocs.io/en/v1.1.1/getting_started.html#shell-support))
 
