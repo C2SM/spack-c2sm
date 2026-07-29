@@ -1,11 +1,10 @@
 # The spack extension of C2SM and MCH
-[![Documentation Status](https://readthedocs.org/projects/ansicolortags/badge/?version=latest)](https://C2SM.github.io/spack-c2sm/latest)
 
 Spack is the package manager used by C2SM and MeteoSwiss to install and deploy software on supercomputers, local machines and the cloud.
 
 ## Documentations
 
-**Infos about c2sm-supported software and machines**
+**Infos about c2sm-supported software and machines (legacy versions)**
   * [spack-c2sm latest](https://C2SM.github.io/spack-c2sm/latest)
   * [spack-c2sm v0.20.1.4](https://C2SM.github.io/spack-c2sm/v0.20.1.4)
   * [spack-c2sm v0.20.1.3](https://C2SM.github.io/spack-c2sm/v0.20.1.3)
@@ -13,9 +12,7 @@ Spack is the package manager used by C2SM and MeteoSwiss to install and deploy s
   * [spack-c2sm v0.18.x](https://C2SM.github.io/spack-c2sm/v0.18.1.12) [deprecated]
 
 **General infos about spack**
-  * [Official spack v0.21.1](https://spack.readthedocs.io/en/v0.21.1/)
-  * [Official spack v0.20.1](https://spack.readthedocs.io/en/v0.20.1/)
-  * [Official spack v0.18.1](https://spack.readthedocs.io/en/v0.18.1/) [deprecated]
+  * [Official spack v1.1.1](https://spack.readthedocs.io/en/v1.1.1/) (version currently used by spack-c2sm)
 
 The first 3 numbers of every spack-c2sm version match with the version of spack it uses as a submodule.
 
@@ -24,16 +21,15 @@ We suggest local/individual spack instances and the use of spack environments.
 
 Clone the repository
 ```bash
-git clone --depth 1 --recurse-submodules --shallow-submodules -b v0.21.1.3 https://github.com/C2SM/spack-c2sm.git
+git clone --depth 1 --recurse-submodules --shallow-submodules -b v1.1.1.0 https://github.com/C2SM/spack-c2sm.git
 ```
 Setup the shell environment and optionally specify an upstream, where spack will look for installed software, i.e.
 ```bash
 . spack-c2sm/setup-env.sh
 . spack-c2sm/setup-env.sh /user-environment
-. spack-c2sm/setup-env.sh /mch-environment/v6
-. spack-c2sm/setup-env.sh /mch-environment/v7
+. spack-c2sm/setup-env.sh /mch-environment/v8
 ```
-Sourcing this file will put the spack command in your PATH, set up your MODULEPATH to use Spack’s packages, and add other useful shell integration for certain commands, environments, and modules. For bash, it also sets up tab completion. (source: [spack docu](https://spack.readthedocs.io/en/v0.21.1/getting_started.html#shell-support))
+Sourcing this file will put the spack command in your PATH, set up your MODULEPATH to use Spack’s packages, and add other useful shell integration for certain commands, environments, and modules. For bash, it also sets up tab completion. (source: [spack docu](https://spack.readthedocs.io/en/v1.1.1/getting_started.html#shell-support))
 
 Optionally activate a spack environment
 ```bash
@@ -120,10 +116,10 @@ Where `SPACK_VERSION` corresponds to the upstream Spack version this repo is bas
 | --- | --- |
 | Clone | `git clone --depth 1 --recurse-submodules --shallow-submodules -b <branch/tag> https://github.com/C2SM/spack-c2sm.git` |
 | Update | `git pull`<br>`git submodule update --recursive` |
-| Load | `. spack-c2sm/setup-env.sh` to run without an upstream<br>or<br>`. spack-c2sm/setup-env.sh /user-environment` to use `/user-environment` as an upsream<br>`spack compiler find` [autodetects compilers](https://spack.readthedocs.io/en/v0.21.1/command_index.html?highlight=spack%20load#spack-compiler-find)<br>`spack external find --all` [autodetects externally installed packages](https://spack.readthedocs.io/en/v0.21.1/command_index.html?highlight=spack%20load#spack-external-find)|
-| Clean | `spack uninstall -a` [uninstalls all packages](https://spack.readthedocs.io/en/v0.21.1/command_index.html?highlight=spack%20load#spack-uninstall)<br>`spack clean -a` [cleans all misc caches](https://spack.readthedocs.io/en/v0.21.1/command_index.html?highlight=spack%20load#spack-clean)|
+| Load | `. spack-c2sm/setup-env.sh` to run without an upstream<br>or<br>`. spack-c2sm/setup-env.sh /user-environment` to use `/user-environment` as an upsream<br>`spack compiler find` [autodetects compilers](https://spack.readthedocs.io/en/v1.1.1/command_index.html?highlight=spack%20load#spack-compiler-find)<br>`spack external find --all` [autodetects externally installed packages](https://spack.readthedocs.io/en/v1.1.1/command_index.html?highlight=spack%20load#spack-external-find)|
+| Clean | `spack uninstall -a` [uninstalls all packages](https://spack.readthedocs.io/en/v1.1.1/command_index.html?highlight=spack%20load#spack-uninstall)<br>`spack clean -a` [cleans all misc caches](https://spack.readthedocs.io/en/v1.1.1/command_index.html?highlight=spack%20load#spack-clean)|
 
-[**Spec syntax**](https://spack.readthedocs.io/en/v0.21.1/basic_usage.html#specs-dependencies): `<package>`[`@<version>`](https://spack.readthedocs.io/en/v0.21.1/basic_usage.html#version-specifier)[`%<compiler>`](https://spack.readthedocs.io/en/v0.21.1/basic_usage.html#compiler-specifier)[`+<variant> ~<variant>`](https://spack.readthedocs.io/en/v0.21.1/basic_usage.html#variants)[`^<sub-package> +<sub-package-variant>`](https://spack.readthedocs.io/en/v0.21.1/basic_usage.html#specs-dependencies)[`<compiler flags>`](https://spack.readthedocs.io/en/v0.21.1/basic_usage.html#compiler-flags)
+[**Spec syntax**](https://spack.readthedocs.io/en/v1.1.1/basic_usage.html#specs-dependencies): `<package>`[`@<version>`](https://spack.readthedocs.io/en/v1.1.1/basic_usage.html#version-specifier)[`%<compiler>`](https://spack.readthedocs.io/en/v1.1.1/basic_usage.html#compiler-specifier)[`+<variant> ~<variant>`](https://spack.readthedocs.io/en/v1.1.1/basic_usage.html#variants)[`^<sub-package> +<sub-package-variant>`](https://spack.readthedocs.io/en/v1.1.1/basic_usage.html#specs-dependencies)[`<compiler flags>`](https://spack.readthedocs.io/en/v1.1.1/basic_usage.html#compiler-flags)
 
 |  | Command |
 | --- | --- |
@@ -132,6 +128,6 @@ Where `SPACK_VERSION` corresponds to the upstream Spack version this repo is bas
 | Spec | `spack spec <spec>` concretizes abstract spec (unspecfied variant = **any**)<br>*Spack is not required to use the default of an unspecified variant. The default value is only a tiebreaker for the concretizer.* |
 | Install  | `spack install <spec>` |
 | Locate | `spack location --install-dir <spec>` prints location of **all** installs that satisfy the spec |
-| [Load env](https://spack.readthedocs.io/en/v0.21.1/command_index.html?highlight=spack%20load#spack-load) | `spack load <spec>` loads run environment |
-| [Activate env](https://spack.readthedocs.io/en/v0.21.1/environments.html) | `spack env activate <env_name>` |
-| [Deactivate env](https://spack.readthedocs.io/en/v0.21.1/environments.html) | `spack deactivate` |
+| [Load env](https://spack.readthedocs.io/en/v1.1.1/command_index.html?highlight=spack%20load#spack-load) | `spack load <spec>` loads run environment |
+| [Activate env](https://spack.readthedocs.io/en/v1.1.1/environments.html) | `spack env activate <env_name>` |
+| [Deactivate env](https://spack.readthedocs.io/en/v1.1.1/environments.html) | `spack deactivate` |
