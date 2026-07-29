@@ -26,6 +26,7 @@ git clone --depth 1 --recurse-submodules --shallow-submodules -b v1.1.1.0 https:
 Setup the shell environment and optionally specify an upstream, where spack will look for installed software, i.e.
 ```bash
 . spack-c2sm/setup-env.sh
+. spack-c2sm/setup-env.sh euler
 . spack-c2sm/setup-env.sh /user-environment
 . spack-c2sm/setup-env.sh /mch-environment/v8
 ```
