@@ -16,13 +16,20 @@ Spack is the package manager used by C2SM and MeteoSwiss to install and deploy s
 The first 3 numbers of every spack-c2sm version match with the version of spack it uses as a submodule.
 
 ## Workflow for Users
+
 We suggest local/individual spack instances and the use of spack environments.
 
 Clone the repository
+
 ```bash
-git clone --depth 1 --recurse-submodules --shallow-submodules -b v1.1.1.0 https://github.com/C2SM/spack-c2sm.git
+git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/C2SM/spack-c2sm.git
 ```
+
+> [!TIP]
+> Use `-b <tag>` (e.g. `-b v1.1.1.0`) to target a specific version/branch instead of the default branch.
+
 Setup the shell environment and optionally specify an upstream, where spack will look for installed software, i.e.
+
 ```bash
 . spack-c2sm/setup-env.sh # Generic
 . spack-c2sm/setup-env.sh euler # For Euler
@@ -35,29 +42,38 @@ Optionally activate a spack environment
 ```bash
 spack env activate <path_to_env>
 ```
+
 and starts exploring
+
 ```bash
 spack info <package>
 spack spec <spec>
 ```
+
 and installing
+
 ```bash
 spack install <spec>
 spack dev-build <spec>
 ```
+
 packages.
 
 Updating spack-c2sm is in the hands of the user.
+
 ```bash
 git pull
 git submodule update --recursive
 ```
+
 Before an update we advice to clean your instance
+
 ```bash
 spack uninstall -a
 spack clean -a
 rm -rf ~/.spack
 ```
+
 After an update we advice to rebuild packages, preferably in a new shell so that no outdated shell variables are retained.
 
 ## Workflow for Local Spack Development (Linting & Testing)
@@ -67,22 +83,29 @@ Create a virtual environment
 python3 -m venv .venv
 source .venv/bin/activate
 ```
+
 Install pinned dev tools
+
 ```bash
 pip install --upgrade pip
 pip install -r requirements/dev.txt
 pip install -r requirements/test.txt
+
 ```
+
 Install pre-commit hooks locally (optional)
+
 ```bash
 pre-commit install
 ```
 > Hooks run automatically on `git commit`
 
 Run all hooks manually (recommended before push)
+
 ```bash
 pre-commit run --all-files
 ```
+
 > * Lints and auto-fixes safe issues (like unused imports)
 > * Checks YAML, formatting, and other configured hooks
 > * Shows errors/warnings for anything that cannot be auto-fixed
