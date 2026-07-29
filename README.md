@@ -30,7 +30,7 @@ Setup the shell environment and optionally specify an upstream, where spack will
 . spack-c2sm/setup-env.sh icon/26.7:v1 # For Santis
 . spack-c2sm/setup-env.sh /mch-environment/v8 # For Balfrin / MeteoSwiss
 ```
-Sourcing this file will put the spack command in your PATH, set up your MODULEPATH to use Spack’s packages, and add other useful shell integration for certain commands, environments, and modules. For bash, it also sets up tab completion. (source: [spack docu](https://spack.readthedocs.io/en/v1.1.1/getting_started.html#shell-support))
+Sourcing this file will put the spack command in your PATH, set up your MODULEPATH to use Spack’s packages, and add other useful shell integration for certain commands, environments, and modules. For bash, it also sets up tab completion. (source: [spack docu](https://spack.readthedocs.io/en/v1.1.1/getting_started.html))
 
 Optionally activate a spack environment
 ```bash
@@ -120,7 +120,7 @@ Where `SPACK_VERSION` corresponds to the upstream Spack version this repo is bas
 | Load | `. spack-c2sm/setup-env.sh` to run without an upstream<br>or<br>`. spack-c2sm/setup-env.sh /user-environment` to use `/user-environment` as an upstream<br>`spack compiler find` [autodetects compilers](https://spack.readthedocs.io/en/v1.1.1/command_index.html?highlight=spack%20load#spack-compiler-find)<br>`spack external find --all` [autodetects externally installed packages](https://spack.readthedocs.io/en/v1.1.1/command_index.html?highlight=spack%20load#spack-external-find)|
 | Clean | `spack uninstall -a` [uninstalls all packages](https://spack.readthedocs.io/en/v1.1.1/command_index.html?highlight=spack%20load#spack-uninstall)<br>`spack clean -a` [cleans all misc caches](https://spack.readthedocs.io/en/v1.1.1/command_index.html?highlight=spack%20load#spack-clean)|
 
-[**Spec syntax**](https://spack.readthedocs.io/en/v1.1.1/basic_usage.html#specs-dependencies): `<package>`[`@<version>`](https://spack.readthedocs.io/en/v1.1.1/basic_usage.html#version-specifier)[`%<compiler>`](https://spack.readthedocs.io/en/v1.1.1/basic_usage.html#compiler-specifier)[`+<variant> ~<variant>`](https://spack.readthedocs.io/en/v1.1.1/basic_usage.html#variants)[`^<sub-package> +<sub-package-variant>`](https://spack.readthedocs.io/en/v1.1.1/basic_usage.html#specs-dependencies)[`<compiler flags>`](https://spack.readthedocs.io/en/v1.1.1/basic_usage.html#compiler-flags)
+[**Spec syntax**](https://spack.readthedocs.io/en/v1.1.1/spec_syntax.html): `<package>`[`@<version>`](https://spack.readthedocs.io/en/v1.1.1/spec_syntax.html#version-specifier)[`%<compiler>`](https://spack.readthedocs.io/en/v1.1.1/spec_syntax.html#dependencies)[`+<variant> ~<variant>`](https://spack.readthedocs.io/en/v1.1.1/spec_syntax.html#variants)[`^<sub-package> +<sub-package-variant>`](https://spack.readthedocs.io/en/v1.1.1/spec_syntax.html#dependencies)[`<compiler flags>`](https://spack.readthedocs.io/en/v1.1.1/spec_syntax.html#compiler-flags)
 
 |  | Command |
 | --- | --- |
