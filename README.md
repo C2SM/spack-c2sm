@@ -5,11 +5,10 @@ Spack is the package manager used by C2SM and MeteoSwiss to install and deploy s
 ## Documentations
 
 **Infos about c2sm-supported software and machines (legacy versions)**
-  * [spack-c2sm latest](https://C2SM.github.io/spack-c2sm/latest)
-  * [spack-c2sm v0.20.1.4](https://C2SM.github.io/spack-c2sm/v0.20.1.4)
-  * [spack-c2sm v0.20.1.3](https://C2SM.github.io/spack-c2sm/v0.20.1.3)
-  * [spack-c2sm v0.20.1.0](https://C2SM.github.io/spack-c2sm/v0.20.1.0)
-  * [spack-c2sm v0.18.x](https://C2SM.github.io/spack-c2sm/v0.18.1.12) [deprecated]
+  * [spack-c2sm v0.22.2.3](https://C2SM.github.io/spack-c2sm/latest)
+
+> [!NOTE]
+> Docs for other spack-c2sm versions are available at `https://C2SM.github.io/spack-c2sm/VERSION_NUMBER`, e.g. [v0.20.1.4](https://C2SM.github.io/spack-c2sm/v0.20.1.4).
 
 **General infos about spack**
   * [Official spack v1.1.1](https://spack.readthedocs.io/en/v1.1.1/) (version currently used by spack-c2sm)
