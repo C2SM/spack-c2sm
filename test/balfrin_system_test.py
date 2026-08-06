@@ -19,7 +19,8 @@ def test_icon_nwp_fflags_reach_fortran_compiler():
 
     content = log.read_text()
     assert re.search(r"FCFLAGS=[^\n]*-traceback", content), (
-        f"-traceback missing from the FCFLAGS configure argument; see {log}")
+        f"-traceback missing from the FCFLAGS configure argument; see {log}"
+    )
 
 
 def test_install_icon_conditional_dependencies():
