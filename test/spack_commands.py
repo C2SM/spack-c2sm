@@ -91,5 +91,5 @@ def spack_install(spec: str, test_root: bool = True, extra_args: str = ""):
 
     test_arg = "--test=root" if test_root else ""
     run_with_spack(f"spack install --verbose {test_arg} {extra_args} {spec}",
-                    log)
+                   log)
     return log
