@@ -164,6 +164,21 @@ class Icon(SpackIcon):
         args = super().configure_args()
         super_libs = args.pop()
 
+        # The base class hardcodes FCFLAGS per compiler vendor and never
+        # consults self.spec.compiler_flags. On top of that, FC is forced
+        # above to the MPI compiler wrapper, which bypasses Spack's own
+        # compiler-wrapper flag injection (SPACK_FFLAGS). Without this,
+        # any `fflags=...` set on the spec (e.g. via spack.yaml) would be
+        # silently dropped instead of reaching the Fortran compiler.
+        extra_fflags = self.spec.compiler_flags['fflags']
+        if extra_fflags:
+            for i, arg in enumerate(args):
+                if arg.startswith('FCFLAGS='):
+                    args[i] = arg + ' ' + ' '.join(extra_fflags)
+                    break
+            else:
+                args.append('FCFLAGS=' + ' '.join(extra_fflags))
+
         libs = LibraryList([])
         flags = defaultdict(list)
 

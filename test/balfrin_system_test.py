@@ -1,3 +1,5 @@
+import re
+
 import pytest
 from spack_commands import spack_install
 
@@ -24,6 +26,24 @@ def test_build_only_py_gt4py_for_1_0_3_10():
 # fails due to sql error
 def test_build_only_py_icon4py_for_0_0_14():
     spack_install('py-icon4py@ 0.0.14 ^py-gt4py @1.0.3.10', test_root=False)
+
+
+def test_icon_fflags_reach_fortran_compiler():
+    # Regression test for `fflags="..."` set on the icon spec (e.g. via
+    # spack.yaml) being silently dropped instead of reaching the Fortran
+    # compiler: icon's configure_args() hardcodes FCFLAGS per compiler
+    # vendor and forces FC to the MPI compiler wrapper, which bypasses
+    # spack's own SPACK_FFLAGS compiler-wrapper injection. --until=configure
+    # keeps this cheap: it stops right after configure, before any of
+    # icon's sources are actually compiled.
+    #
+    # WORKAROUND: A build and link dependency should imply that the same compiler is used. ^cray-mpich%nvhpc enforces it.
+    spec = 'icon @2.6.6-mch2b %nvhpc +mpi gpu=nvidia-80 fflags="-traceback" ^cray-mpich%nvhpc'
+    log = spack_install(spec, test_root=False, extra_args="--until=configure")
+
+    content = log.read_text()
+    assert re.search(r"FCFLAGS=[^\n]*-traceback", content), (
+        f"-traceback missing from the FCFLAGS configure argument; see {log}")
 
 
 def test_install_yaxt():
