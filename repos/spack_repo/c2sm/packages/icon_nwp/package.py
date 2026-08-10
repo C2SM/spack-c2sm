@@ -240,6 +240,14 @@ class IconNwp(Icon):
         self.parse_config_args(super().configure_args())
         libs = LibraryList([])
 
+        # The base class hardcodes FCFLAGS per compiler vendor and never
+        # consults self.spec.compiler_flags. On top of that, FC is forced
+        # to the MPI compiler wrapper, which bypasses Spack's own
+        # compiler-wrapper flag injection (SPACK_FFLAGS). Without this,
+        # any `fflags=...` set on the spec (e.g. via spack.yaml) would be
+        # silently dropped instead of reaching the Fortran compiler.
+        self.flags["FCFLAGS"].extend(self.spec.compiler_flags["fflags"])
+
         for x in (
             "dace",
             "emvorado",
