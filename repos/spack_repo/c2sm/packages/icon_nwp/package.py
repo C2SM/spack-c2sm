@@ -246,9 +246,7 @@ class IconNwp(Icon):
         # compiler-wrapper flag injection (SPACK_FFLAGS). Without this,
         # any `fflags=...` set on the spec (e.g. via spack.yaml) would be
         # silently dropped instead of reaching the Fortran compiler.
-        extra_fflags = self.spec.compiler_flags["fflags"]
-        if extra_fflags:
-            self.flags["FCFLAGS"].extend(extra_fflags)
+        self.flags["FCFLAGS"].extend(self.spec.compiler_flags["fflags"])
 
         for x in (
             "dace",
