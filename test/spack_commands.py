@@ -82,12 +82,16 @@ def spack_spec(spec: str):
     run_with_spack(f"spack spec {spec}", log)
 
 
-def spack_install(spec: str, test_root: bool = True, extra_args: str = ""):
+def spack_install(spec: str, test_root: bool = True, extra_args: list[str] = None):
     log = log_file(f"install {spec}")
 
     # A spec at the top of a log helps debugging.
     run_with_spack(f"spack spec {spec}", log)
 
-    test_arg = "--test=root" if test_root else ""
-    run_with_spack(f"spack install --verbose {test_arg} {extra_args} {spec}", log)
+    spack_cmd = ["spack", "install", "--verbose"]
+    if test_root:
+        spack_cmd.append("--test=root")
+    spack_cmd.extend(extra_args or [])
+    spack_cmd.append(spec)
+    run_with_spack(" ".join(spack_cmd), log)
     return log
