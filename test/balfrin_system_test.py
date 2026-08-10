@@ -39,7 +39,9 @@ def test_icon_fflags_reach_fortran_compiler():
     #
     # WORKAROUND: A build and link dependency should imply that the same compiler is used. ^cray-mpich%nvhpc enforces it.
     spec = 'icon @2.6.6-mch2b %nvhpc +mpi gpu=nvidia-80 fflags=-traceback ^cray-mpich%nvhpc'
-    log = spack_install(spec, test_root=False, extra_args=["--until=configure"])
+    log = spack_install(spec,
+                        test_root=False,
+                        extra_args=["--until=configure"])
 
     content = log.read_text()
     assert re.search(r"FCFLAGS=[^\n]*-traceback", content), (
