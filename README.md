@@ -134,18 +134,19 @@ v${SPACK_VERSION}-${SPACK_C2SM_VERSION}
 
 Where `SPACK_VERSION` corresponds to the upstream Spack version this repo is
 based on, e.g. `SPACK_VERSION=1.1.0`. `SPACK_C2SM_VERSION` is
-`${MAJOR}.${PATCH}`:
+`${MAJOR}(.${PATCH})`:
 
 - `MAJOR` increments with every regular spack-c2sm release based on a specific
   `SPACK_VERSION`, starting from 0. `0` marks the transitional release that
   adapts spack-c2sm to a new upstream Spack version, and `MAJOR`/`PATCH` both
   reset to `0` whenever `SPACK_VERSION` changes.
-- `PATCH` is only used to backport a fix onto a release line that is no longer
-  at the tip of `main` (see below), and resets to `0` for each new `MAJOR`. It's
-  not used for ordinary releases off `main`.
+- `PATCH` is optional and only appears once a fix needs to be backported onto a
+  release line that is no longer at the tip of `main` (see below), starting at
+  `1` and incrementing from there for each new `MAJOR`. It's omitted entirely
+  for ordinary releases off `main`.
 
-So, for example, `v1.1.0-0.0` is the transitional release for Spack `v1.1.0`,
-`v1.1.0-1.0` is the next regular release, and `v1.1.0-1.1` is a backported patch
+So, for example, `v1.1.0-0` is the transitional release for Spack `v1.1.0`,
+`v1.1.0-1` is the next regular release, and `v1.1.0-1.1` is a backported patch
 on top of the `1.1.0-1` line.
 
 ### Patching an older release
@@ -157,9 +158,12 @@ If a fix needs to be backported onto a `MAJOR` line that's already in production
 release/v${SPACK_VERSION}-${MAJOR}
 ```
 
-e.g. `release/v1.1.0-1`, branched from the `v1.1.0-1.0` tag. Merge the fix(es)
+e.g. `release/v1.1.0-1`, branched from the `v1.1.0-1` tag. Merge the fix(es)
 into that branch, then tag the result `v${SPACK_VERSION}-${MAJOR}.${PATCH}`
-(incrementing `PATCH`), e.g. `v1.1.0-1.1`, then `v1.1.0-1.2`, etc.
+(starting `PATCH` at 1 and incrementing from there), e.g. `v1.1.0-1.1`, then
+`v1.1.0-1.2`, etc. The release branch and `PATCH` component only come into play
+once a backport is actually needed — ordinary releases off `main` never carry
+a `PATCH`.
 
 > [!NOTE]
 > Tags created before this scheme was introduced use the older `vX.Y.Z.W` format
