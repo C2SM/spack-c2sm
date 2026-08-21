@@ -212,8 +212,8 @@ class Icon(SpackIcon):
                 args.append('ICON_FCFLAGS=-cuda')
             name, sep, value = super_libs.partition('=')
             super_libs = '{0}={1}'.format(
-                name, ' '.join(tok for tok in value.split()
-                               if tok != '-lcudart'))
+                name,
+                ' '.join(tok for tok in value.split() if tok != '-lcudart'))
 
         libs = LibraryList([])
         flags = defaultdict(list)
