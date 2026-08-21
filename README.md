@@ -146,8 +146,8 @@ based on, e.g. `SPACK_VERSION=1.1.0`. `SPACK_C2SM_VERSION` is
   for ordinary releases off `main`.
 
 So, for example, `v1.1.0-0` is the transitional release for Spack `v1.1.0`,
-`v1.1.0-1` is the next regular release, and `v1.1.0-1.1` is a backported patch
-on top of the `1.1.0-1` line.
+`v1.1.0-1` is the next regular release, and `v1.1.0-0.1` is a backported patch
+on top of the `1.1.0-0` line.
 
 ### Patching an older release
 
