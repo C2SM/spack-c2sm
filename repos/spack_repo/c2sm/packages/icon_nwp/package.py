@@ -172,7 +172,7 @@ class BaseIcon(AutotoolsPackage):
         super().__init__(spec)
         self.single_args: list[str] = []
         self.flags: dict(str, list[str]) = defaultdict(list)
-        self.libs: LibraryList = LibraryList([])
+        self.config_libs: LibraryList = LibraryList([])
 
     def set_configure_args(self) -> None:
         self.single_args.append("--disable-rpaths")
@@ -202,13 +202,13 @@ class BaseIcon(AutotoolsPackage):
 
         if self.spec.satisfies("+art"):
             self.single_args.append("--enable-art")
-            self.libs += self.spec["libxml2"].libs
+            self.config_libs += self.spec["libxml2"].libs
         else:
             self.single_args.append("--disable-art")
 
         if self.spec.satisfies("+coupling"):
             self.single_args.append("--enable-coupling")
-            self.libs += self.spec["libfyaml"].libs
+            self.config_libs += self.spec["libfyaml"].libs
         else:
             self.single_args.append("--disable-coupling")
 
@@ -222,18 +222,18 @@ class BaseIcon(AutotoolsPackage):
                     "SB2PP={0}".format(self.spec["serialbox"].pp_ser),
                 ]
             )
-            self.libs += self.spec["serialbox:fortran"].libs
+            self.config_libs += self.spec["serialbox:fortran"].libs
 
         if self.spec.satisfies("+grib2"):
             self.single_args.append("--enable-grib2")
-            self.libs += self.spec["eccodes:c"].libs
+            self.config_libs += self.spec["eccodes:c"].libs
         else:
             self.single_args.append("--disable-grib2")
 
-        self.libs += self.spec["lapack:fortran"].libs
-        self.libs += self.spec["blas:fortran"].libs
-        self.libs += self.spec["netcdf-fortran"].libs
-        self.libs += self.spec["netcdf-c"].libs
+        self.config_libs += self.spec["lapack:fortran"].libs
+        self.config_libs += self.spec["blas:fortran"].libs
+        self.config_libs += self.spec["netcdf-fortran"].libs
+        self.config_libs += self.spec["netcdf-c"].libs
 
         if self.spec.satisfies("+mpi"):
             self.single_args.extend(
@@ -259,7 +259,7 @@ class BaseIcon(AutotoolsPackage):
                 "-arch=sm_{0}".format(self.nvidia_targets[gpu]),
                 "-ccbin={0}".format(spack_cxx),
             ]
-            self.libs += self.spec["cuda"].libs
+            self.config_libs += self.spec["cuda"].libs
         else:
             self.single_args.append("--disable-gpu")
 
@@ -556,19 +556,19 @@ class IconNwp(BaseIcon):
             self.single_args.extend(self.enable_or_disable(x))
 
         if "+emvorado" in self.spec:
-            self.libs += self.spec["eccodes:fortran"].libs
-            self.libs += self.spec["hdf5:fortran,hl"].libs
-            self.libs += self.spec["zlib-ng"].libs
+            self.config_libs += self.spec["eccodes:fortran"].libs
+            self.config_libs += self.spec["hdf5:fortran,hl"].libs
+            self.config_libs += self.spec["zlib-ng"].libs
 
         if "+sct" in self.spec:
-            self.libs += self.spec["hdf5"].libs
+            self.config_libs += self.spec["hdf5"].libs
 
         if "+nvtx" in self.spec:
             self.flags["FCFLAGS"].append("-D_USE_NVTX")
-            self.libs += LibraryList(["nvhpcwrapnvtx"])
+            self.config_libs += LibraryList(["nvhpcwrapnvtx"])
 
         if "+icon4py" in self.spec:
-            self.libs += self.spec["python"].libs
+            self.config_libs += self.spec["python"].libs
 
         fcgroup = self.spec.variants["fcgroup"].value
         if fcgroup != ("none",):
@@ -599,7 +599,7 @@ class IconNwp(BaseIcon):
         # (see https://gitlab.dkrz.de/icon/icon#icon-dependencies):
         # and for non-system directories only:
         non_system_reversed_lib_dirs = [
-            f"-L{d}" for d in reversed(self.libs.directories) if not is_system_path(d)
+            f"-L{d}" for d in reversed(self.config_libs.directories) if not is_system_path(d)
         ]
         if non_system_reversed_lib_dirs:
             self.flags["LDFLAGS"].extend(non_system_reversed_lib_dirs)
