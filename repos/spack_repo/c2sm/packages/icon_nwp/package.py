@@ -31,7 +31,7 @@ def check_variant_extra_config_args(extra_config_arg):
         return False
 
 
-class Icon(AutotoolsPackage):
+class BaseIcon(AutotoolsPackage):
     """ICON - is a modeling framework for weather, climate, and environmental prediction. It solves
     the full three-dimensional non-hydrostatic and compressible Navier-Stokes equations on an
     icosahedral grid and allows seamless predictions from local to global scales."""
@@ -352,7 +352,7 @@ class Icon(AutotoolsPackage):
         ]
     
 
-class IconNwp(Icon):
+class IconNwp(BaseIcon):
     """ICON - is a modeling framework for weather, climate, and environmental
     prediction.
     It solves the full three-dimensional non-hydrostatic and compressible
