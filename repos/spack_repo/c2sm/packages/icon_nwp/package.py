@@ -488,7 +488,7 @@ class IconNwp(BaseIcon):
         depends_on("eccodes %gcc", when="%gcc")
 
     # WORKAROUND: A build and link dependency should imply that the same compiler is used. This enforces it.
-    for __x in Icon.serialization_values:
+    for __x in BaseIcon.serialization_values:
         depends_on(
             "serialbox+fortran %nvhpc", when="serialization={0} %nvhpc".format(__x)
         )
