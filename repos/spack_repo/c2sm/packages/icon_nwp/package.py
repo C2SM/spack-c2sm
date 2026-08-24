@@ -8,6 +8,7 @@ from spack_repo.builtin.build_systems.autotools import AutotoolsPackage
 from spack_repo.builtin.build_systems.cuda import CudaPackage
 
 from spack.package import *
+from spack.spec import Spec
 
 
 def check_variant_fcgroup(fcgroup):
@@ -167,7 +168,7 @@ class BaseIcon(AutotoolsPackage):
     for __x in nvidia_targets.keys():
         depends_on("cuda", when="gpu={0}".format(__x))
 
-    def __init__(self, spec: spack.spec.Spec) -> None:
+    def __init__(self, spec: Spec) -> None:
         super().__init__(spec)
         self.single_args: list[str] = []
         self.flags: dict(str, list[str]) = defaultdict(list)
