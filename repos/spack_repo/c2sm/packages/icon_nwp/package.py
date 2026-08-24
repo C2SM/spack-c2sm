@@ -172,10 +172,10 @@ class BaseIcon(AutotoolsPackage):
         super().__init__(spec)
         self.single_args: list[str] = []
         self.flags: dict(str, list[str]) = defaultdict(list)
+        self.libs: LibraryList = LibraryList([])
 
     def set_configure_args(self) -> None:
         self.single_args.append("--disable-rpaths")
-        libs = LibraryList([])
 
         for x in [
             "atmo",
@@ -202,13 +202,13 @@ class BaseIcon(AutotoolsPackage):
 
         if self.spec.satisfies("+art"):
             self.single_args.append("--enable-art")
-            libs += self.spec["libxml2"].libs
+            self.libs += self.spec["libxml2"].libs
         else:
             self.single_args.append("--disable-art")
 
         if self.spec.satisfies("+coupling"):
             self.single_args.append("--enable-coupling")
-            libs += self.spec["libfyaml"].libs
+            self.libs += self.spec["libfyaml"].libs
         else:
             self.single_args.append("--disable-coupling")
 
@@ -222,18 +222,18 @@ class BaseIcon(AutotoolsPackage):
                     "SB2PP={0}".format(self.spec["serialbox"].pp_ser),
                 ]
             )
-            libs += self.spec["serialbox:fortran"].libs
+            self.libs += self.spec["serialbox:fortran"].libs
 
         if self.spec.satisfies("+grib2"):
             self.single_args.append("--enable-grib2")
-            libs += self.spec["eccodes:c"].libs
+            self.libs += self.spec["eccodes:c"].libs
         else:
             self.single_args.append("--disable-grib2")
 
-        libs += self.spec["lapack:fortran"].libs
-        libs += self.spec["blas:fortran"].libs
-        libs += self.spec["netcdf-fortran"].libs
-        libs += self.spec["netcdf-c"].libs
+        self.libs += self.spec["lapack:fortran"].libs
+        self.libs += self.spec["blas:fortran"].libs
+        self.libs += self.spec["netcdf-fortran"].libs
+        self.libs += self.spec["netcdf-c"].libs
 
         if self.spec.satisfies("+mpi"):
             self.single_args.extend(
@@ -259,7 +259,7 @@ class BaseIcon(AutotoolsPackage):
                 "-arch=sm_{0}".format(self.nvidia_targets[gpu]),
                 "-ccbin={0}".format(spack_cxx),
             ]
-            libs += self.spec["cuda"].libs
+            self.libs += self.spec["cuda"].libs
         else:
             self.single_args.append("--disable-gpu")
 
@@ -332,11 +332,10 @@ class BaseIcon(AutotoolsPackage):
             self.flags["CFLAGS"].extend(["-g", "-O2"])
             self.flags["FCFLAGS"].extend(["-g", "-O2"])
 
-        self.flags["LIBS"].append(libs.link_flags)
-
     def configure_args(self) -> list[str]:
         # Populate self.single_args and self.flags
         self.set_configure_args()
+        self.flags["LIBS"].append(libs.link_flags)
         # Remove duplicates while keeping the original order
         self.single_args = list(dict.fromkeys(self.single_args))
         for key, values in self.flags.items():
@@ -527,7 +526,6 @@ class IconNwp(BaseIcon):
 
     def set_configure_args(self) -> None:
         super().set_configure_args()
-        libs = LibraryList([])
 
         # The base class hardcodes FCFLAGS per compiler vendor and never
         # consults self.spec.compiler_flags. On top of that, FC is forced
@@ -558,19 +556,19 @@ class IconNwp(BaseIcon):
             self.single_args.extend(self.enable_or_disable(x))
 
         if "+emvorado" in self.spec:
-            libs += self.spec["eccodes:fortran"].libs
-            libs += self.spec["hdf5:fortran,hl"].libs
-            libs += self.spec["zlib-ng"].libs
+            self.libs += self.spec["eccodes:fortran"].libs
+            self.libs += self.spec["hdf5:fortran,hl"].libs
+            self.libs += self.spec["zlib-ng"].libs
 
         if "+sct" in self.spec:
-            libs += self.spec["hdf5"].libs
+            self.libs += self.spec["hdf5"].libs
 
         if "+nvtx" in self.spec:
             self.flags["FCFLAGS"].append("-D_USE_NVTX")
-            libs += LibraryList(["nvhpcwrapnvtx"])
+            self.libs += LibraryList(["nvhpcwrapnvtx"])
 
         if "+icon4py" in self.spec:
-            libs += self.spec["python"].libs
+            self.libs += self.spec["python"].libs
 
         fcgroup = self.spec.variants["fcgroup"].value
         if fcgroup != ("none",):
@@ -601,12 +599,10 @@ class IconNwp(BaseIcon):
         # (see https://gitlab.dkrz.de/icon/icon#icon-dependencies):
         # and for non-system directories only:
         non_system_reversed_lib_dirs = [
-            f"-L{d}" for d in reversed(libs.directories) if not is_system_path(d)
+            f"-L{d}" for d in reversed(self.libs.directories) if not is_system_path(d)
         ]
         if non_system_reversed_lib_dirs:
             self.flags["LDFLAGS"].extend(non_system_reversed_lib_dirs)
-
-        self.flags["LIBS"].append(libs.link_flags)
 
     def strip_variant_prefix(self, variant_string):
         prefixes = ["--enable-", "--disable-"]
