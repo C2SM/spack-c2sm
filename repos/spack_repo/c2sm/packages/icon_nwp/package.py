@@ -165,6 +165,28 @@ class BaseIcon(AutotoolsPackage):
     depends_on("netcdf-c+mpi", when="+parallel-netcdf")
     depends_on("mpi", when="+mpi")
 
+    EN_DIS_ABLE_FLAGS = (
+        "atmo",
+        "les",
+        "upatmo",
+        "ocean",
+        "jsbach",
+        "waves",
+        "aes",
+        "nwp",
+        "ecrad",
+        "rte-rrtmgp",
+        "openmp",
+        "mpi-gpu",
+        "parallel-netcdf",
+        "cdi-pio",
+        "yaxt",
+        "mixed-precision",
+        "single-precision",
+        "single-precision-ecrad",
+        "comin",
+    )
+
     for __x in nvidia_targets.keys():
         depends_on("cuda", when="gpu={0}".format(__x))
 
@@ -177,27 +199,7 @@ class BaseIcon(AutotoolsPackage):
     def set_configure_args(self) -> None:
         self.single_args.append("--disable-rpaths")
 
-        for x in [
-            "atmo",
-            "les",
-            "upatmo",
-            "ocean",
-            "jsbach",
-            "waves",
-            "aes",
-            "nwp",
-            "ecrad",
-            "rte-rrtmgp",
-            "openmp",
-            "mpi-gpu",
-            "parallel-netcdf",
-            "cdi-pio",
-            "yaxt",
-            "mixed-precision",
-            "single-precision",
-            "single-precision-ecrad",
-            "comin",
-        ]:
+        for x in self.EN_DIS_ABLE_FLAGS:
             self.single_args.extend(self.enable_or_disable(x))
 
         if self.spec.satisfies("+art"):
@@ -509,6 +511,25 @@ class IconNwp(BaseIcon):
     # patches
     patch("mo_nh_stepping_null_pointer.patch", when="%fortran=nvhpc@26.1")
 
+    EN_DIS_ABLE_FLAGS = BaseIcon.EN_DIS_ABLE_FLAGS + (
+        "dace",
+        "emvorado",
+        "art-gpl",
+        "acm-license",
+        "active-target-sync",
+        "async-io-rma",
+        "realloc-buf",
+        "parallel-netcdf",
+        "sct",
+        "loop-exchange",
+        "vectorized-lrtm",
+        "pgi-inlib",
+        "nccl",
+        "cuda-graphs",
+        "silent-rules",
+        "icon4py",
+    )
+
     # TODO: install icon4py from within the icon package recipe
     #       following a similar strategy as the icon4py package.
     #       Also make sure to point to the uv found as dependency
@@ -534,26 +555,6 @@ class IconNwp(BaseIcon):
         # any `fflags=...` set on the spec (e.g. via spack.yaml) would be
         # silently dropped instead of reaching the Fortran compiler.
         self.flags["FCFLAGS"].extend(self.spec.compiler_flags["fflags"])
-
-        for x in (
-            "dace",
-            "emvorado",
-            "art-gpl",
-            "acm-license",
-            "active-target-sync",
-            "async-io-rma",
-            "realloc-buf",
-            "parallel-netcdf",
-            "sct",
-            "loop-exchange",
-            "vectorized-lrtm",
-            "pgi-inlib",
-            "nccl",
-            "cuda-graphs",
-            "silent-rules",
-            "icon4py",
-        ):
-            self.single_args.extend(self.enable_or_disable(x))
 
         if "+emvorado" in self.spec:
             self.config_libs += self.spec["eccodes:fortran"].libs
