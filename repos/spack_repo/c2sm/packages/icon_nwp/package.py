@@ -320,6 +320,14 @@ class IconNwp(Icon):
 
         self.flags["LIBS"].append(libs.link_flags)
 
+        # Add the compiler flags passed via the variants fflags, cflags, ldflags, etc.
+        for flag, values in self.spec.compiler_flags.items():
+            if values:
+                capitalized_flag = "LIBS" if flag == "ldlibs" else flag.upper()
+                self.flags[capitalized_flag].extend(values)
+                if flag == "fflags":
+                    self.flags["FCFLAGS"].extend(values)
+
     def configure_args(self):
         # Set configure args
         self.set_configure_args()
@@ -423,6 +431,9 @@ class IconNwp(Icon):
             f.write(self.spec.to_yaml())
 
         return is_same_spec
+
+    def flag_handler(self, name, flags):
+        return (None, None, None)
 
     @run_after("configure")
     def copy_runscript_related_input_files(self):
