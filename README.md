@@ -26,7 +26,7 @@ git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com
 ```
 
 > [!TIP]
-> Use `-b <tag>` (e.g. `-b v1.1.1.0`) to target a specific version/branch instead of the default branch.
+> Use `-b <tag>` (e.g. `-b v1.1.1-0.0`) to target a specific version/branch instead of the default branch.
 
 Setup the shell environment and optionally specify an upstream, where spack will look for installed software, i.e.
 
@@ -129,10 +129,47 @@ The creation of a new release tag is coordinated within the admin team.
 When creating a new release tag please follow the naming convention below:
 
 ```
-v${SPACK_VERSION}.${SPACK_C2SM_VERSION}
+v${SPACK_VERSION}-${SPACK_C2SM_VERSION}
 ```
 
-Where `SPACK_VERSION` corresponds to the upstream Spack version this repo is based on, e.g. `SPACK_VERSION=0.22.2`. `SPACK_C2SM_VERSION` is the number of releases based on a specific `SPACK_VERSION`, starting from 0, which corresponds to the release adapting spack-c2sm to a new upstream Spack version. So, for example v0.22.2.5 is the fifth (sixth if you count the transitional release v0.22.2.0) spack-c2sm release based on Spack v0.22.2.
+Where `SPACK_VERSION` corresponds to the upstream Spack version this repo is
+based on, e.g. `SPACK_VERSION=1.1.0`. `SPACK_C2SM_VERSION` is
+`${MAJOR}(.${PATCH})`:
+
+- `MAJOR` increments with every regular spack-c2sm release based on a specific
+  `SPACK_VERSION`, starting from 0. `0` marks the transitional release that
+  adapts spack-c2sm to a new upstream Spack version, and `MAJOR`/`PATCH` both
+  reset to `0` whenever `SPACK_VERSION` changes.
+- `PATCH` is optional and only appears once a fix needs to be backported onto a
+  release line that is no longer at the tip of `main` (see below), starting at
+  `1` and incrementing from there for each new `MAJOR`. It's omitted entirely
+  for ordinary releases off `main`.
+
+So, for example, `v1.1.0-0` is the transitional release for Spack `v1.1.0`,
+`v1.1.0-1` is the next regular release, and `v1.1.0-0.1` is a backported patch
+on top of the `1.1.0-0` line.
+
+### Patching an older release
+
+If a fix needs to be backported onto a `MAJOR` line that's already in production
+(i.e. superseded on `main`), create (or reuse) a branch named:
+
+```
+release/v${SPACK_VERSION}-${MAJOR}
+```
+
+e.g. `release/v1.1.0-1`, branched from the `v1.1.0-1` tag. Merge the fix(es)
+into that branch, then tag the result `v${SPACK_VERSION}-${MAJOR}.${PATCH}`
+(starting `PATCH` at 1 and incrementing from there), e.g. `v1.1.0-1.1`, then
+`v1.1.0-1.2`, etc. The release branch and `PATCH` component only come into play
+once a backport is actually needed — ordinary releases off `main` never carry
+a `PATCH`.
+
+> [!NOTE]
+> Tags created before this scheme was introduced use the older `vX.Y.Z.W` format
+> (a single incrementing number, e.g. `v1.1.1.1`, `v0.22.2.5`), occasionally
+> with an extra `.N` hotfix suffix (e.g. `v0.22.2.5.1`). The `vX.Y.Z-M.P` scheme
+> described above applies from the next release onward.
 
 ## Command cheat sheet
 |  | Command |
