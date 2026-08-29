@@ -1,6 +1,7 @@
 import os
 import re
 import glob
+import subprocess
 from collections import defaultdict
 
 from itertools import chain
@@ -361,6 +362,27 @@ class IconNwp(Icon):
                 f'The value "{arg}" for the extra_config_args variant conflicts '
                 f"with the existing variant {variant_from_arg}. Set this variant instead."
             )
+
+    @run_before("configure")
+    def fetch_dace_sources(self):
+        """Populate DACE after Spack has generated the distribution tree."""
+        if not self.spec.satisfies("+dace"):
+            return
+
+        dace_dir = os.path.join(self.configure_directory, "externals", "dace")
+        unique_file = os.path.join(
+            dace_dir, "src", "src_for_icon", "mo_fdbk_tables.f90"
+        )
+        if os.path.isfile(unique_file):
+            return
+
+        fetch_script = os.path.join(dace_dir, "fetch.sh")
+        if not os.path.isfile(fetch_script):
+            raise RuntimeError(f"ICON DACE fetch script is missing: {fetch_script}")
+
+        subprocess.check_call([fetch_script], cwd=dace_dir, env=os.environ.copy())
+        if not os.path.isfile(unique_file):
+            raise RuntimeError(f"ICON DACE source fetch did not create: {unique_file}")
 
     def configure(self, spec, prefix):
         if (
