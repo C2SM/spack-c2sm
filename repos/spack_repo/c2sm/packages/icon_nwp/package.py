@@ -184,9 +184,6 @@ class IconNwp(Icon):
     # also the folder where libtool package itself is installed.
     patch_libtool = False
 
-    # patches
-    patch("mo_nh_stepping_null_pointer.patch", when="%fortran=nvhpc@26.1")
-
     FLAG_KEYS = [
         "LIBS",
         "CFLAGS",
