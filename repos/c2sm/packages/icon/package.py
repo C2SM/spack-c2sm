@@ -179,6 +179,42 @@ class Icon(SpackIcon):
             else:
                 args.append('FCFLAGS=' + ' '.join(extra_fflags))
 
+        # Restore the CUDA flag handling of #996, which the switch to the builtin
+        # Spack recipe in #1011 reverted.  Delegating to spack.pkg.builtin.icon
+        # reinstated '-ccbin=<spack_cxx>' and the explicit cudart that #996 removed,
+        # and dropped the '-cuda' umbrella flag that replaced them.
+        #
+        #  - '-ccbin=<spack_cxx>' points nvcc at a host compiler that does not match
+        #    the nvhpc toolchain the rest of the build uses.
+        #  - '-cuda' pulls in the CUDA libraries and wrappers, so the explicit cudart
+        #    is redundant.  It cannot go into libs, as Spack prepends -l.
+        #  - ICON_FCFLAGS is needed as well as LDFLAGS for sources that use CUDA
+        #    Fortran (USE cudafor, cudaMalloc).
+        #
+        # These rewrite assignments the builtin recipe has already emitted rather than
+        # appending new ones: configure keeps the LAST assignment of a variable, so a
+        # second 'ICON_FCFLAGS=' here would silently discard the first one.
+        if self.spec.variants['gpu'].value in self.nvidia_targets:
+            seen_icon_fcflags = False
+            for i, arg in enumerate(args):
+                name, sep, value = arg.partition('=')
+                if not sep:
+                    continue
+                if name == 'CUDAFLAGS':
+                    args[i] = '{0}={1}'.format(
+                        name, ' '.join(tok for tok in value.split()
+                                       if not tok.startswith('-ccbin=')))
+                elif name == 'ICON_FCFLAGS':
+                    seen_icon_fcflags = True
+                    if '-cuda' not in value.split():
+                        args[i] = arg + ' -cuda'
+            if not seen_icon_fcflags:
+                args.append('ICON_FCFLAGS=-cuda')
+            name, sep, value = super_libs.partition('=')
+            super_libs = '{0}={1}'.format(
+                name,
+                ' '.join(tok for tok in value.split() if tok != '-lcudart'))
+
         libs = LibraryList([])
         flags = defaultdict(list)
 
