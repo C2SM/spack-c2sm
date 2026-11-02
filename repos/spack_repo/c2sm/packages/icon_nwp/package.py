@@ -387,9 +387,9 @@ class IconNwp(Icon):
             return
 
         with working_dir(dace_dir):
-            fetch = which(fetch_script, required=True)
+            fetch = which("bash", required=True)
             touch(pending)
-            fetch()
+            fetch(fetch_script)
         if not set(os.listdir(dace_dir)) - {"fetch.sh", ".spack-fetch-in-progress"}:
             raise RuntimeError(f"ICON DACE source fetch left an empty tree: {dace_dir}")
         os.unlink(pending)
