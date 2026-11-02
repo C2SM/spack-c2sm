@@ -1,6 +1,7 @@
 import os
 import re
 import glob
+import shutil
 from collections import defaultdict
 
 from itertools import chain
@@ -358,6 +359,40 @@ class IconNwp(Icon):
                 f'The value "{arg}" for the extra_config_args variant conflicts '
                 f"with the existing variant {variant_from_arg}. Set this variant instead."
             )
+
+    @run_before("configure")
+    def fetch_dace_sources(self):
+        """Populate DACE after Spack has generated the distribution tree."""
+        if not self.spec.satisfies("+dace"):
+            return
+
+        dace_dir = os.path.join(self.configure_directory, "externals", "dace")
+        fetch_script = os.path.join(dace_dir, "fetch.sh")
+        if not os.path.isfile(fetch_script):
+            return
+
+        # Only take ownership of a generated placeholder, never a populated
+        # checkout. Keep the marker until fetching and validation both succeed.
+        pending = os.path.join(dace_dir, ".spack-fetch-in-progress")
+        if os.path.isfile(pending):
+            # A previous attempt failed or was interrupted. Remove its partial
+            # output so fetch.sh can start again, without following symlinks.
+            for entry in os.scandir(dace_dir):
+                if entry.name not in ("fetch.sh", ".spack-fetch-in-progress"):
+                    if entry.is_dir(follow_symlinks=False):
+                        shutil.rmtree(entry.path)
+                    else:
+                        os.unlink(entry.path)
+        elif set(os.listdir(dace_dir)) != {"fetch.sh"}:
+            return
+
+        with working_dir(dace_dir):
+            fetch = which("bash", required=True)
+            touch(pending)
+            fetch(fetch_script)
+        if not set(os.listdir(dace_dir)) - {"fetch.sh", ".spack-fetch-in-progress"}:
+            raise RuntimeError(f"ICON DACE source fetch left an empty tree: {dace_dir}")
+        os.unlink(pending)
 
     def configure(self, spec, prefix):
         if (
