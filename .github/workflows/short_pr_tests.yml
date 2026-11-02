@@ -41,3 +41,9 @@ jobs:
           source ./setup-env.sh
           source .venv/bin/activate
           pytest -v -n  ${NTHREADS} test/integration_test.py
+
+      - name: ICON-NWP fetch hook tests
+        run: |
+          source .venv/bin/activate
+          source ./setup-env.sh
+          spack python -m pytest -v test/icon_nwp_test.py

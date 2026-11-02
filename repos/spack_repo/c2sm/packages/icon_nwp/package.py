@@ -1,7 +1,7 @@
 import os
 import re
 import glob
-import subprocess
+import shutil
 from collections import defaultdict
 
 from itertools import chain
@@ -367,19 +367,32 @@ class IconNwp(Icon):
             return
 
         dace_dir = os.path.join(self.configure_directory, "externals", "dace")
-        unique_file = os.path.join(
-            dace_dir, "src", "src_for_icon", "mo_fdbk_tables.f90"
-        )
-        if os.path.isfile(unique_file):
-            return
-
         fetch_script = os.path.join(dace_dir, "fetch.sh")
         if not os.path.isfile(fetch_script):
-            raise RuntimeError(f"ICON DACE fetch script is missing: {fetch_script}")
+            return
 
-        subprocess.check_call([fetch_script], cwd=dace_dir, env=os.environ.copy())
-        if not os.path.isfile(unique_file):
-            raise RuntimeError(f"ICON DACE source fetch did not create: {unique_file}")
+        # Only take ownership of a generated placeholder, never a populated
+        # checkout. Keep the marker until fetching and validation both succeed.
+        pending = os.path.join(dace_dir, ".spack-fetch-in-progress")
+        if os.path.isfile(pending):
+            # A previous attempt failed or was interrupted. Remove its partial
+            # output so fetch.sh can start again, without following symlinks.
+            for entry in os.scandir(dace_dir):
+                if entry.name not in ("fetch.sh", ".spack-fetch-in-progress"):
+                    if entry.is_dir(follow_symlinks=False):
+                        shutil.rmtree(entry.path)
+                    else:
+                        os.unlink(entry.path)
+        elif set(os.listdir(dace_dir)) != {"fetch.sh"}:
+            return
+
+        with working_dir(dace_dir):
+            fetch = which(fetch_script, required=True)
+            touch(pending)
+            fetch()
+        if not set(os.listdir(dace_dir)) - {"fetch.sh", ".spack-fetch-in-progress"}:
+            raise RuntimeError(f"ICON DACE source fetch left an empty tree: {dace_dir}")
+        os.unlink(pending)
 
     def configure(self, spec, prefix):
         if (
